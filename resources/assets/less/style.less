@@ -1,0 +1,419 @@
+/**
+ * This file (style.less) was created on 04/23/2016 at 16:39.
+ * Author: Max Cassee
+ * This project was commissioned by HU University of Applied Sciences.
+ */
+
+/* Print Specific CSS */
+/* Colors */
+@clr-bg: #FFFFFF;
+@clr-bg-top: rgb(255,255,255);
+@clr-bg-nav: #E2E2E2;
+@clr-print: #FFFFFF;
+
+// Import Fonts
+@import "fonts.less";
+
+/* Element Sizes */
+@nav-width: 330px;
+@menu-height: 60px;
+
+/* HU Colorscheme */
+@hu-blue: #00A1E2;
+@hu-red: #e72e2a;
+@hu-white: #ffffff;
+@hu-green: #6aea7a;
+
+// Header Styles
+h1,h2,h3,h4,h5{
+  font-family: 'HusansNormal';
+  text-transform: uppercase;
+}
+
+#login-logo-container{
+  margin: auto;
+  margin-bottom: 10px;
+  width: 200px;
+  height: 30px;
+  background-image: url('/assets/img/hu-logo-large.png');
+}
+
+#menu-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  box-shadow: 0px -2px 15px #888888;
+  margin: 0;
+  background: @clr-bg-top;
+  border-bottom: 1px solid #CFCFCF;
+  padding: 0;
+  width: 100%;
+  @media screen {
+    height: @menu-height;
+  }
+  @media handheld {
+    height: 40px;
+  }
+  .stud-info-header{
+    height: 40px;
+    width: 260px;
+    color: black;
+    float: right;
+    text-align: right;
+    margin: 7px 10px 0 0;
+    display: block;
+  }
+  a {
+    .logo {
+      float: left;
+      width: 66px;
+      height: 60px;
+      font-size: 36px;
+      color: #00a1e2;
+      text-decoration: none;
+    }
+    span {
+      font-family: HusansNormal,Arial,sans-serif;
+      text-transform: uppercase;
+      margin-top: 10px;
+      font-size: 26px;
+      color: @hu-blue;
+      float: left;
+    }
+    .toggle {
+      float: left;
+      margin: 7px 0 0 10px;
+    }
+    .langselect {
+      float: right;
+      width: 39px;
+      height: 26px;
+      margin: 15px 12px 0 0;
+    }
+    .logout {
+      float: right;
+      margin: 13px 15px 0 0;
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+#wrapper {
+  padding-left: 0;
+  z-index: 0;
+  margin-top: @menu-height;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  &.toggled {
+    padding-left: @nav-width;
+
+    #sidebar-wrapper {
+      width: @nav-width;
+    }
+    #page-content-wrapper {
+      position: absolute;
+      margin-right: -@nav-width;
+    }
+  }
+}
+
+#sidebar-wrapper {
+  z-index: 1;
+  position: fixed;
+  left: @nav-width;
+  width: 0;
+  height: 100%;
+  margin-left: -@nav-width;
+  overflow-y: auto;
+  background: @clr-bg-nav;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+
+/* Sidebar Styles */
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  margin-top: 10px;
+  width: @nav-width;
+  padding: 0;
+  list-style: none;
+  li {
+    text-indent: 20px;
+    line-height: 40px;
+    a {
+      display: block;
+      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+        color: #fff;
+        background: rgba(255,255,255,0.2);
+      }
+      &:active,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+a.nav-tile {
+  display: block;
+  text-decoration: none;
+  &:hover,
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+}
+.tile {
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+  float: left;
+  img.icon{
+    width: 50px;
+    height: 50px;
+    margin: 15px 25px 10px 25px;
+  }
+  div.nav-title {
+    position: relative;
+    line-height: 15px;
+    color: @hu-white;
+    background: @hu-red;
+    padding: 3px 5px;
+  }
+}
+
+.blue_tile{
+  background-color: @hu-blue;
+}
+
+.white_tile{
+  background-color: @hu-white;
+}
+
+.red_tile {
+  background-color: @hu-red;
+}
+
+// Dashboard Specfic styling
+.dash-bar {
+  display: flex;
+  min-width: 855px;
+  width: 40%;
+  min-height: 40px;
+  margin: 2px 0;
+  color: @hu-white;
+  b {
+    padding: 10px;
+  }
+}
+
+.dash-date {
+  align-items: stretch;
+  float: left;
+  min-width: 160px;
+  padding: 10px;
+  background: @hu-red;
+}
+
+.dash-description{
+  align-items: stretch;
+  background: @hu-blue;
+  min-width: 575px;
+  padding: 10px;
+}
+
+.dash-hours{
+  align-items: stretch;
+  min-width: 120px;
+  float: right;
+  background: @hu-blue;
+  b {
+    position:absolute;
+  }
+}
+
+.alert {
+  color: #555;
+  font-size: 13px;
+  border-radius: 10px;
+  padding: 10px 10px 10px 36px;
+  margin: 10px;
+  span {
+    font-weight:bold;
+    text-transform:uppercase;
+  }
+}
+
+.alert-error {
+  background:#ffecec url('/assets/img/error.png') no-repeat 10px 50%;
+  border:1px solid #f5aca6;
+}
+.alert-success {
+  background:#e9ffd9 url('/assets/img/success.png') no-repeat 10px 50%;
+  border:1px solid #a6ca8a;
+}
+.alert-warn {
+  background:#fff8c4 url('/assets/img/warning.png') no-repeat 10px 50%;
+  border:1px solid #f2c779;
+}
+.alert-notice {
+  background:#e3f7fc url('/assets/img/notice.png') no-repeat 10px 50%;
+  border:1px solid #8ed9f6;
+}
+
+.report-success {
+  border: 3px solid @hu-green !important;
+  span {
+    background: @hu-green !important;
+  }
+}
+
+// Profile Specific styling
+.blockTable{
+  thead{
+    color: @hu-white;
+    font-weight: bold;
+  }
+  tbody {
+    color: black;
+    tr:nth-child(even){
+      background: #EEEEEE;
+    }
+    tr:nth-child(odd){
+      background: @hu-white;
+    }
+    tr.highlight {
+      background: #6aea7a;
+    }
+  }
+}
+
+.table-icon {
+  width: 25px;
+}
+
+#taskForm{
+  display: block;
+  overflow: auto;
+}
+
+// Tasks specific styling
+.buttons {
+  min-width: 200px;
+  label {
+    float: left;
+    margin: 5px;
+    cursor: pointer;
+    span {
+      display: block;
+      width: 150px;
+      border-radius: 4px;
+      color: @hu-white;
+      background-color: @hu-blue;
+      font-size: 12px;
+      padding: 8px;
+      text-align: center;
+    }
+    span.new {
+      background-color: @hu-green;
+    }
+  }
+  input:checked + span{
+    background-color: @hu-red;
+  }
+  input[type="radio"]{
+    visibility: hidden;
+    display: none;
+  }
+}
+
+.numpad {
+  max-width: 200px;
+  label span {
+    width: 40px !important;
+  }
+}
+
+.fit-bs{
+  max-width: 85%;
+}
+
+@media only screen and (max-width:768px){
+  // Mobile Devices in portrait mode
+  .dash-date{
+    display: none;
+  }
+  #menu-bar {
+    .stud-info-header {
+      display: none;
+    }
+    a {
+      span {
+        display: none;
+      }
+      .logout {
+        float: right;
+        margin: 18px 7px 0 0;
+        width: 23px;
+        height: 23px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width:768px) {
+  // Monitors and Mobile devices in landscape mode
+
+  // Hide the menu toggle button as the menu should always fit on screen.
+  #menu-bar {
+    .stud-info-header {
+      display: block;
+    }
+    a {
+      img.toggle{
+        display: none;
+      }
+    }
+  }
+
+  #wrapper {
+    padding-left: @nav-width;
+  }
+
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+
+  #sidebar-wrapper {
+    width: @nav-width;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    width: 0;
+  }
+
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
