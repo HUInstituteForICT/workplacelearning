@@ -64,6 +64,7 @@ return [
             "register"  => "Register",
             "reset"     => "Reset",
         ],
+        "privacyagreement" => "By registering you agree with our <a href=\"%s\">privacy policy</a>.",
     ],
 
     // Profile Page

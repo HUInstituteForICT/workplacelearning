@@ -64,7 +64,8 @@ return [
             "register"  => "Registreer",
             "reset"     => "Reset",
 
-        ]
+        ],
+        "privacyagreement" => "Door te registreren voor deze applicatie ga je akkoord met de <a href=\"%s\">privacyverklaring</a>.",
     ],
 
     // Profile Page
