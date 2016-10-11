@@ -23,6 +23,7 @@ class LogController extends Controller{
             [
                 'user_id'       =>  Auth::user()->stud_id,
                 'session_id'    => $r->session()->getId(),
+                'user_ip'       => $r->ip(),
                 'screen_width'  => $r['width'],
                 'screen_height' => $r['height'],
                 'user_agent'    => $r['agent'],
