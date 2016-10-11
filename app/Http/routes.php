@@ -29,6 +29,9 @@ Route::group([
         ], function(){
                 // Register the Authentication Controller
 
+                // Catch the stat registration post
+                Route::post('/log',                                     'LogController@log');
+
                 /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
                 Route::get('/',                                         'HomeController@showHome');
                 Route::get('home',                                      'HomeController@showHome');

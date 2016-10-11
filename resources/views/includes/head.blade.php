@@ -16,6 +16,7 @@
         <!-- Jquery Touch Punch for Mobile Jquery Support -->
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
         <script type="text/javascript" src="{{ secure_asset('js/HUhelper.js') }}"></script>
+        <meta name="_token" content="{!! csrf_token() !!}" />
         <!-- Bootstrap -->
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
