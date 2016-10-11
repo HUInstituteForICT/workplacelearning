@@ -18,23 +18,19 @@ class LogController extends Controller{
             'OS'        => 'required|string|min:1|max:1000',
             'url'       => 'required|url',
         ]);
-        if ($validator->fails()) return 0;
-        $data =             [
-            'user_id'       =>  Auth::user()->stud_id,
-            'session_id'    => $r->session()->getId(),
-            'screen_width'  => $r['width'],
-            'screen_height' => $r['height'],
-            'user_agent'    => $r['agent'],
-            'OS'            => $r['OS'],
-            'url'           => $r['url'],
-            'timestamp'     => time(),
-        ];
+        if ($validator->fails()) return;
         $result = DB::table('access_log')->insert(
-            $data
+            [
+                'user_id'       =>  Auth::user()->stud_id,
+                'session_id'    => $r->session()->getId(),
+                'screen_width'  => $r['width'],
+                'screen_height' => $r['height'],
+                'user_agent'    => $r['agent'],
+                'OS'            => $r['OS'],
+                'url'           => $r['url'],
+                'timestamp'     => time(),
+            ]
         );
-        return json_encode($result);
-
-        return 1;
     }
 
     public function __construct(){
