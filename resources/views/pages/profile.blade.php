@@ -91,7 +91,7 @@
                 <h3>{{ Lang::get('elements.profile.internships.profile.title') }}</h3>
             </div>
             <div class="col-md-1">
-                <a href="{{ url('/stageperiode/edit/0') }}"><img style="float:right; margin-top:20px;" class="table-icon" src="{{ asset('assets/img/icn-new.svg') }}" /></a>
+                <a href="{{ url('/stageperiode/edit/0') }}"><img style="float:right; margin-top:20px;" class="table-icon" src="{{ secure_asset('assets/img/icn-new.svg') }}" /></a>
             </div>
             <table class="table blockTable col-md-12">
                 <thead class="blue_tile">
@@ -110,7 +110,7 @@
                 <tbody>
                 @foreach(Auth::user()->getInternshipPeriods() as $is)
                     <tr class="{{ (Auth::user()->getCurrentInternshipPeriod() && Auth::user()->getCurrentInternshipPeriod()->stud_stid == $is->stud_stid) ? "highlight" : "" }}">
-                        <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/stageperiode/edit/'.$is->stud_stid, array()) }}"><img class="table-icon" src="{{ asset("assets/img/icn-edit.svg") }}" /></td></a>
+                        <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/stageperiode/edit/'.$is->stud_stid, array()) }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
                         <td>{{ $is->bedrijfsnaam }}</td>
                         <td>{{ date('d-m-Y', strtotime($is->startdatum)) }}</td>
                         <td>{{ date('d-m-Y', strtotime($is->einddatum)) }}</td>
