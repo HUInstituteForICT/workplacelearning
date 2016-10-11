@@ -11,3 +11,5 @@ tmp/      bevat copies van beide
 
 DocumentRoot      /sites/werkplekleren.hu.nl/htdocs/public
 Directory         /sites/werkplekleren.hu.nl/htdocs
+
+#Test
