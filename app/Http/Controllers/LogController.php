@@ -29,7 +29,7 @@ class LogController extends Controller{
                 'user_agent'    => $r['agent'],
                 'OS'            => $r['OS'],
                 'url'           => $r['url'],
-                'timestamp'     => time(),
+                'timestamp'     => date_format(date_create(null, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s'),
             ]
         );
     }
