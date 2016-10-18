@@ -170,7 +170,6 @@ class TaskController extends Controller{
             if(
                 ($w->moeilijkheid_id == 2 || $w->moeilijkheid_id == 3)
                 && ($w->status_id == 2)
-                && ($w->prev_wzh_id != NULL)
             ){
                 // Create Feedback object and redirect
                 $fb = new Feedback;
