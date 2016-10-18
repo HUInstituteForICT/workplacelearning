@@ -168,7 +168,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <p style="font-size: 10px;">{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "https://werkplekleren.hu.nl/assets/pdf/privacyverklaring.pdf", array()), Lang::get('elements.registration.privacyagreement')) !!}</p>
+                                <p style="font-size: 10px;">{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "/assets/pdf/privacyverklaring.pdf", array()), Lang::get('elements.registration.privacyagreement')) !!}</p>
                             </div>
                         </div>
                         <div class="form-group">
