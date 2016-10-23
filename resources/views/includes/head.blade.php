@@ -22,5 +22,7 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <!-- Moment Time localization -->
         <script src="{{ secure_asset('js/moment-with-locales.js') }}"></script>
+        <!-- Chart.JS library -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{{ secure_asset('css/style.css') }}">
