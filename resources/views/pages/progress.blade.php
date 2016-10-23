@@ -52,7 +52,7 @@
             @if(Auth::user()->getCurrentInternship() && Auth::user()->getCurrentInternshipPeriod()->hasLoggedHours())
                 @foreach(Auth::user()->getCurrentInternshipPeriod()->getWerkzaamheden(15, $page) as $wzh)
                 <tr>
-                    <td>{{ date('m-d', strtotime($wzh->wzh_datum)) }}</td>
+                    <td>{{ date('d-m', strtotime($wzh->wzh_datum)) }}</td>
                     <td>{{ $wzh->wzh_omschrijving }}</td>
                     <td>{{ $wzh->getAantalUrenString() }}</td>
                     <td>{{ ucwords($wzh->lerenmet) . (($wzh->lerenmetdetail != null) ? ": ".$wzh->getlerenmetdetail() : "") }}</td>
