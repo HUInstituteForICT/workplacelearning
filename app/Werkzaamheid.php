@@ -35,6 +35,7 @@ class Werkzaamheid extends Model{
         'prev_wzh_id',
         'display',
         'created_at',
+        'session_id',
     ];
 
     public function internshipperiods(){

@@ -152,13 +152,14 @@ class TaskController extends Controller{
                 break;
                 default:            $w->lerenmetdetail = "";
             }
-            //$w->samenwerkingsverband_id = ($r['samenwerkingsverband'] == "new") ? $swv->swv_id : $r['samenwerkingsverband'];
+
             $w->categorie_id            = ($r['cat_id'] == "new") ? $c->cg_id : $r['cat_id'];
             $w->moeilijkheid_id         = $r['moeilijkheid'];
             $w->status_id               = $r['status'];
             $w->prev_wzh_id             = ($r['previous_wzh'] != "-1") ? $r['previous_wzh'] : NULL;
             $w->display                 = ($r['status'] == 2) ? 1 : 0; // Only set this WZH to display if it is unfinished
-            $w->created_at              = new \DateTime("now");
+            $w->created_at              = date_format(date_create(null, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
+            $w->session_id              = $r->session()->getId();
             $w->save();
             // Update the previous WZH
             if($r['previous_wzh'] > 1){
