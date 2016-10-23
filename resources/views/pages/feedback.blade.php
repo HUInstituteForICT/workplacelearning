@@ -108,7 +108,7 @@
                     <textarea class="form-control fit-bs" {!! ($fb->isSaved()) ? "disabled " : "" !!}name="vervolgstap_zelf"
                               oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z()-_,. ]{3,150}"
                               oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z()-_,.')"
-                              placeholder="" rows="8" cols="40">{{ ($fb->isSaved()) ? $fb->vervolgstap_zelf : "" }}</textarea>
+                              placeholder="Welke persoon/bron kun je raadplegen?" rows="8" cols="40">{{ ($fb->isSaved()) ? $fb->vervolgstap_zelf : "" }}</textarea>
                 </div>
                 <div class="col-sm-4 form-group">
                     <h4>Welke ondersteuning heb je daarbij nodig van je werkplek?</h4>
