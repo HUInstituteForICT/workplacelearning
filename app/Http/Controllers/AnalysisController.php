@@ -18,7 +18,8 @@ class AnalysisController extends Controller {
     public function showChoiceScreen(){
         if(Auth::user()->getCurrentInternshipPeriod() == null) return redirect('home')->withErrors(["Je kan deze pagina niet bekijken zonder actieve stage."]);
         if(!Auth::user()->getCurrentInternshipPeriod()->hasLoggedHours()) return redirect('home')->withErrors(["Je hebt nog geen uren geregistreerd voor deze stage."]);
-        return view('pages.analysis.choice');
+        return view('pages.analysis.choice')
+                ->with('numhours', $this->getNumHoursByDate("all", "all"));
     }
 
     public function showDetail(Request $r, $year, $month){

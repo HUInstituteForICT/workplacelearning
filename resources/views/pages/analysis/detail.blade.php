@@ -35,10 +35,10 @@
                                 IntlDateFormatter::NONE,
                                 NULL,
                                 NULL,
-                                "MMMM"
+                                "MMMM YYYY"
                         );
+                        echo $intlfmt->format(strtotime("2016-".$monthno."-01"));
                         ?>
-                        {{ $intlfmt->format(strtotime("2016-".$monthno."-01")) }}
                     </h1>
                 </div>
             </div>
@@ -53,7 +53,14 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('', "Aantal ingevoerde uren", array('class' => 'col-sm-3 control-label')) !!}
-                        <div class="col-sm-9"><p class="form-control-static">{{ $analysis['num_hours'] }} uren ingevoerd. ({{ round(($analysis['num_hours']/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}% van het totaal)</p></div>
+                        <div class="col-sm-6">
+                        <div class="progress" style="margin-top: 8px;">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{ round(($analysis['num_hours']/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}"
+                                 aria-valuemin="0" aria-valuemax="100" style="width:{{ round(($analysis['num_hours']/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%">
+                                {{ round(($analysis['num_hours']/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%
+                            </div>
+                        </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('', "Percentage moeilijke activiteiten", array('class' => 'col-sm-3 control-label')) !!}
@@ -63,29 +70,64 @@
                         {!! Form::label('', "Percentage zelfstandig werken", array('class' => 'col-sm-3 control-label')) !!}
                         <div class="col-sm-9"><p class="form-control-static">{{ round(($analysis['num_hours_alone']/$analysis['num_hours'])*100,1) }}% van de activiteiten voerde je Alleen uit</p></div>
                     </div>
-                    <div class="form-group">
-                        {!! Form::label('', "Meest voorkomende categorie", array('class' => 'col-sm-3 control-label')) !!}
-                        <div class="col-sm-9"><p class="form-control-static">{{ $analysis['most_occuring_category']->name }} ({{ round(($analysis['most_occuring_category']->aantaluren/$analysis['num_wzh'])*100,1) }}% van je ingevoerde uren)</p></div>
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('', "Makkelijkste Categorie", array('class' => 'col-sm-3 control-label')) !!}
-                        <div class="col-sm-9"><p class="form-control-static">{{ end($analysis['category_difficulty'])->name }} vond je deze maand het makkelijkst (Gemiddeld gaf je deze categorie een {{ round(end($analysis['category_difficulty'])->difficulty,1) }})</p></div>
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('', "Moeilijkste Categorie", array('class' => 'col-sm-3 control-label')) !!}
-                        <div class="col-sm-9"><p class="form-control-static">{{ reset($analysis['category_difficulty'])->name }} vond je het moeilijkst (Gemiddeld gaf je deze categorie een {{ round(reset($analysis['category_difficulty'])->difficulty,1) }})</p></div>
-                    </div>
 
                     @if((($analysis['num_hours_alone']/$analysis['num_hours'])*100) > 75 && (($analysis['num_difficult_wzh']/$analysis['num_wzh'])*100) > 50)
                         <p>Tip: Je hebt {{ round(($analysis['num_hours_alone']/$analysis['num_hours'])*100,1) }}% van de tijd Alleen gewerkt, en je vond {{ round(($analysis['num_difficult_wzh']/$analysis['num_wzh'])*100,1) }}% van dit zelfstandige werk Moeilijk. Je zou met je bedrijfsbegeleider kunnen bespreken op welke manier je er samen voor kunt zorgen dat je eerder hulp of ondersteuning krijgt bij moeilijke werkzaamheden.</p>
                     @endif
                     {!! Form::close() !!}
+                    <canvas id="chart_categories"></canvas>
+
+                    <script>
+                        var canvas_categories = document.getElementById("chart_categories");
+                        var cat_chart = new Chart(canvas_categories, {
+                            type: 'bar',
+                            data: {
+                                labels: [ @foreach($analysis['category_difficulty'] as $category) "{{ $category->name }}", @endforeach ],
+                                datasets: [{
+                                    label: 'Moeilijkheidsgraad op schaal van 1-10',
+                                    data: [
+                                        @foreach($analysis['category_difficulty'] as $category)
+                                                "{{ $category->difficulty }}",
+                                        @endforeach
+                                    ],
+                                    backgroundColor: [
+                                    ],
+                                    borderColor: [
+                                        'rgba(255,99,132,1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero:true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    </script>
                     <hr />
                 </div>
             </div>
+
+            <!-- Tips -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Tips</h2>
+                </div>
+            </div>
+
             @if(count($chains) > 0)
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <h2>Detail</h2>
                         <p>Hieronder zie je alle series van opeenvolgende activiteiten in deze maand.</p>
                         <p>Je kunt hier op terugblikken en bekijken wat je in deze maand moeilijk vond en hoe je moeilijke situaties hebt overwonnen. Als je deze informatie wilt delen, zou je het kunnen bespreken bij een voortgangsgesprek met je bedrijfsbegeleider of je stagedocent.</p>

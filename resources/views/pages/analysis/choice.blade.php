@@ -26,6 +26,29 @@
             </div>
 
             <div class="row">
+                <div class="col-lg-12">
+                    <h3>Aantal geregistreerde uren</h3>
+                </div>
+                <div class="col-lg-1">
+                    <p>Aantal uren: </p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ round(($numhours/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%">
+                            @if($numhours >= (Auth::user()->getCurrentInternshipPeriod()->aantaluren / 2))
+                                {{ $numhours." / ".Auth::user()->getCurrentInternshipPeriod()->aantaluren." uur (".round(($numhours/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%)
+                            @endif
+                        </div>
+                        <div class="progress-bar" role="progressbar" style="width:{{ (100-round(($numhours/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1)) }}%">
+                            @if($numhours < (Auth::user()->getCurrentInternshipPeriod()->aantaluren / 2))
+                                {{ $numhours." / ".Auth::user()->getCurrentInternshipPeriod()->aantaluren." uur (".round(($numhours/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%)
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-md-12">
                     <h3>Kies een maand om weer te geven</h3>
                     <?php
