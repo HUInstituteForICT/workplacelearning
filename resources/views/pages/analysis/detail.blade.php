@@ -52,17 +52,6 @@
                         <div class="col-sm-9"><p class="form-control-static">{{ round($analysis['avg_difficulty'],1) }} (10 is het meest complex)</p></div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('', "Aantal ingevoerde uren", array('class' => 'col-sm-3 control-label')) !!}
-                        <div class="col-sm-6">
-                        <div class="progress" style="margin-top: 8px;">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="{{ round(($analysis['num_hours']/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}"
-                                 aria-valuemin="0" aria-valuemax="100" style="width:{{ round(($analysis['num_hours']/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%">
-                                {{ round(($analysis['num_hours']/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         {!! Form::label('', "Percentage moeilijke activiteiten", array('class' => 'col-sm-3 control-label')) !!}
                         <div class="col-sm-9"><p class="form-control-static">{{ round(($analysis['num_difficult_wzh']/$analysis['num_wzh'])*100,1) }}% van je werkzaamheden vond je <b>Moeilijk</b></p></div>
                     </div>
