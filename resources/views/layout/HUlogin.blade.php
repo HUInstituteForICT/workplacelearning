@@ -67,7 +67,7 @@
             margin-bottom: 10px;
             width:227px;
             height:74px;
-            background-image:url('{{ asset('assets/img/hu-logo-medium.png') }}');
+            background-image:url('{{ secure_asset('assets/img/hu-logo-medium.png') }}');
         }
         .alert {
             color: #555;
