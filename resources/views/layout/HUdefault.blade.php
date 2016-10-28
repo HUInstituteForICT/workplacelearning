@@ -28,15 +28,16 @@
         @yield('content')
     </div>
 
-    <div id="footer">
-        <script>
-            $("#menu-toggle").click(function(e) {
-                e.preventDefault();
-                $("#wrapper").toggleClass("toggled");
-            });
-        </script>
-        <!-- /#wrapper -->
-    </div>
+    <!-- /#wrapper -->
+</div>
+<div id="footer">
+    <p>&copy; 2016 - HU University of applied Sciences | Icons courtesy of <a href="http://famfamfam.com">FamFamFam.com</a></p>
+    <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
 </div>
 </body>
 </html>

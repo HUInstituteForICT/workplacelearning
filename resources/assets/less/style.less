@@ -11,8 +11,25 @@
 @clr-bg-nav: #E2E2E2;
 @clr-print: #FFFFFF;
 
-// Import Fonts
-@import "fonts.less";
+/* Fonts */
+@font-face {
+  font-family: 'husansnormal';
+  src: url('/assets/fonts/husans-normal-webfont.eot');
+  src: url('/assets/fonts/husans-normal-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/assets/fonts/husans-normal-webfont.woff') format('woff'),
+  url('/assets/fonts/husans-normal-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal
+}
+@font-face {
+  font-family: 'husansinline';
+  src: url('/assets/fonts/husans-inline-webfont.eot');
+  src: url('/assets/fonts/husans-inline-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/assets/fonts/husans-inline-webfont.woff') format('woff'),
+  url('/assets/fonts/husans-inline-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal
+}
 
 /* Element Sizes */
 @nav-width: 330px;
@@ -207,6 +224,25 @@ a.nav-tile {
 
 .red_tile {
   background-color: @hu-red;
+}
+
+// Footer
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: 2;
+  box-shadow: 0px -2px 15px #888888;
+  background: @clr-bg-top;
+  border-top: 1px solid #CFCFCF;
+  text-align: center;
+  p {
+    margin-top: 10px;
+  }
 }
 
 // Dashboard Specfic styling
