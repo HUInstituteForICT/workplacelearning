@@ -49,6 +49,47 @@
             </div>
 
             <div class="row">
+                <div class="col-md-6">
+                    <h3>Tijd per categorie</h3>
+                    <canvas id="chart_hours"></canvas>
+                    <script>
+                        var canvasHours = document.getElementById('chart_hours');
+                        var chart_hours = new Chart(canvasHours, {
+                            type: 'pie',
+                            data: {
+                                labels: [ @foreach($analysis as $category) "{{ $category->name }}", @endforeach ],
+                                datasets: [{
+                                    data: [ @foreach($analysis as $category) "{{ round($category->totalhours / $numhours * 100) }}", @endforeach ],
+                                    backgroundColor: [
+                                        'rgba(255,99,132,1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 206, 86, 1)',
+                                        'rgba(75, 192, 192, 1)',
+                                        'rgba(153, 102, 255, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    hoverBackgroundColor: []
+                                }]
+                            },
+                            options: {
+                                tooltips: {
+                                    enabled: true,
+                                    mode: 'single',
+                                    callbacks: {
+                                        label: function(tooltipItem, data) {
+                                            var tooltipLabel = data.labels[tooltipItem.index];
+                                            var tooltipData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                                            return tooltipLabel + ' ' + tooltipData + '%';
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    </script>
+                </dittv>
+            </div>
+
+            <div class="row">
                 <div class="col-md-12">
                     <h3>Kies een maand om weer te geven</h3>
                     <?php

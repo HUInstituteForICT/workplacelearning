@@ -18,8 +18,10 @@ class AnalysisController extends Controller {
     public function showChoiceScreen(){
         if(Auth::user()->getCurrentInternshipPeriod() == null) return redirect('home')->withErrors(["Je kan deze pagina niet bekijken zonder actieve stage."]);
         if(!Auth::user()->getCurrentInternshipPeriod()->hasLoggedHours()) return redirect('home')->withErrors(["Je hebt nog geen uren geregistreerd voor deze stage."]);
+
         return view('pages.analysis.choice')
-                ->with('numhours', $this->getNumHoursByDate("all", "all"));
+                ->with('numhours', $this->getNumHoursByDate("all", "all"))
+                ->with('analysis', $this->getNumHoursCategory());
     }
 
     public function showDetail(Request $r, $year, $month){
@@ -148,6 +150,15 @@ class AnalysisController extends Controller {
     public function getNumTasksByDate($year, $month){
         $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
         return $this->limitCollectionByDate($wzh_collection, $year, $month)->count('wzh_aantaluren');
+    }
+
+    public function getNumHoursCategory() {
+        $result = DB::table('werkzaamheden')
+                    ->select(DB::raw('cg_value as name, SUM(wzh_aantaluren) as totalhours'))
+                    ->join('categorieen', 'werkzaamheden.categorie_id', '=', 'categorieen.cg_id')
+                    ->where('student_stage_id', '=', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
+
+        return $result->groupBy('categorie_id')->get();
     }
 
     public function __construct(){
