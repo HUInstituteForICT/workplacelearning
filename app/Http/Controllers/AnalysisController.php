@@ -20,8 +20,7 @@ class AnalysisController extends Controller {
         if(!Auth::user()->getCurrentInternshipPeriod()->hasLoggedHours()) return redirect('home')->withErrors(["Je hebt nog geen uren geregistreerd voor deze stage."]);
 
         return view('pages.analysis.choice')
-                ->with('numhours', $this->getNumHoursByDate("all", "all"))
-                ->with('analysis', $this->getNumHoursCategory());
+                ->with('numhours', $this->getNumHoursByDate("all", "all"));
     }
 
     public function showDetail(Request $r, $year, $month){
@@ -45,6 +44,7 @@ class AnalysisController extends Controller {
         $a['category_difficulty']   = $this->getCategoryDifficultyByDate($year, $month);
         $a['num_hours']             = $this->getNumHoursByDate($year, $month);
         $a['num_wzh']               = $this->getNumTasksByDate($year, $month);
+        $a['num_hours_category']    = $this->getNumHoursCategory($year, $month);
 
         return view('pages.analysis.detail')
                 ->with('analysis', $a)
@@ -152,11 +152,12 @@ class AnalysisController extends Controller {
         return $this->limitCollectionByDate($wzh_collection, $year, $month)->count('wzh_aantaluren');
     }
 
-    public function getNumHoursCategory() {
+    public function getNumHoursCategory($year, $month) {
         $result = DB::table('werkzaamheden')
                     ->select(DB::raw('cg_value as name, SUM(wzh_aantaluren) as totalhours'))
                     ->join('categorieen', 'werkzaamheden.categorie_id', '=', 'categorieen.cg_id')
                     ->where('student_stage_id', '=', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
+        $result = $this->LimitCollectionByDate($result, $year, $month);
 
         return $result->groupBy('categorie_id')->get();
     }
