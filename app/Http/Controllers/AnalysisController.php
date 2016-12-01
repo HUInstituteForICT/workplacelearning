@@ -60,7 +60,7 @@ class AnalysisController extends Controller {
 
     public function getNumDifficultTasksByDate($year, $month){
         $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
-                            ->where('categorie_id', 3);
+                            ->where('moeilijkheid_id', 3);
         return $this->limitCollectionByDate($wzh_collection, $year, $month)->count();
     }
 
