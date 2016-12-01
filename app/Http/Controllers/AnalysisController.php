@@ -38,6 +38,7 @@ class AnalysisController extends Controller {
         $a = array();
         $a['avg_difficulty']        = $this->getAverageDifficultyByDate($year, $month);
         $a['num_difficult_wzh']     = $this->getNumDifficultTasksByDate($year, $month);
+        $a['hours_difficult_wzh']   = $this->getHoursDifficultTasksByDate($year, $month);
         $a['most_occuring_category']= $this->getMostOccuringCategoryByDate($year, $month);
         $a['category_difficulty']   = $this->getCategoryDifficultyByDate($year, $month);
         $a['num_hours_alone']       = $this->getNumHoursAlone($year, $month);
@@ -62,6 +63,12 @@ class AnalysisController extends Controller {
         $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
                             ->where('moeilijkheid_id', 3);
         return $this->limitCollectionByDate($wzh_collection, $year, $month)->count();
+    }
+
+    public function getHoursDifficultTasksByDate($year, $month){
+        $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
+            ->where('moeilijkheid_id', 3);
+        return $this->limitCollectionByDate($wzh_collection, $year, $month)->sum('wzh_aantaluren');
     }
 
     public function LimitCollectionByDate($collection, $year, $month){

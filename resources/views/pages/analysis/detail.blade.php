@@ -94,7 +94,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('', "Percentage moeilijke activiteiten", array('class' => 'col-sm-3 control-label')) !!}
-                        <div class="col-sm-9"><p class="form-control-static">{{ round(($analysis['num_difficult_wzh']/$analysis['num_wzh'])*100,1) }}% van je werkzaamheden vond je <b>Moeilijk</b></p></div>
+                        <div class="col-sm-9"><p class="form-control-static">{{ round(($analysis['hours_difficult_wzh']/$analysis['num_hours'])*100,1) }}% van je werkzaamheden vond je <b>Moeilijk</b></p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('', "Percentage zelfstandig werken", array('class' => 'col-sm-3 control-label')) !!}
