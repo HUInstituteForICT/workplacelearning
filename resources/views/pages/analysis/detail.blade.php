@@ -176,24 +176,31 @@
                         <tbody>
                         @foreach($chains as $wzh_chain)
                             <tr>
-                                <td>{{
-                                    date('d-m', strtotime(reset($wzh_chain)->wzh_datum))
-                                    ." t/m ".
-                                    date('d-m', strtotime(end($wzh_chain)->wzh_datum))
-                                }}</td>
-                                <td>{{
-                                    reset($wzh_chain)->wzh_omschrijving
-                                    ." - ".
-                                    end($wzh_chain)->wzh_omschrijving
-                                }}</td>
+                                <td>{{ date('d-m', strtotime(reset($wzh_chain)->wzh_datum)) }}
+                                    @if(reset($wzh_chain) != end($wzh_chain))
+                                        {{  " t/m ".date('d-m', strtotime(end($wzh_chain)->wzh_datum)) }}
+                                    @endif
+                                </td>
+                                <td>{{ reset($wzh_chain)->wzh_omschrijving }}
+                                    @if(reset($wzh_chain) != end($wzh_chain))
+                                        {{ " - ".end($wzh_chain)->wzh_omschrijving }}
+                                    @endif
+                                </td>
                                 <td><?php
                                     $hrs = 0;
                                     foreach($wzh_chain as $w){ $hrs += $w->wzh_aantaluren;}
                                 ?>{{ $hrs }}
                                 </td>
                                 <td>{{ end($wzh_chain)->getStatus() }}</td>
-                                <td><a data-id="{{ reset($wzh_chain)->wzh_id }}" href="#" class="expand-detail">Toon Detail</a></td>
+                                <td>
+                                    @if(reset($wzh_chain) != end($wzh_chain))
+                                        <a data-id="{{ reset($wzh_chain)->wzh_id }}" href="#" class="expand-detail">Toon Detail</a>
+                                    @else
+                                        <p>N.V.T.</p>
+                                    @endif
+                                </td>
                             </tr>
+                            @if(count($wzh_chain) > 1)
                             <tr id="detail-{{ reset($wzh_chain)->wzh_id }}" style="display:none;" >
                             <td colspan="5">
                             <table class="table blockTable col-md-12">
@@ -230,6 +237,7 @@
                             </table>
                             </td>
                             </tr>
+                            @endif
                         @endforeach
                         </tbody>
                     </table>
