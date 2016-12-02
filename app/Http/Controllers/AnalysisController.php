@@ -43,7 +43,7 @@ class AnalysisController extends Controller {
         $a['category_difficulty']   = $this->getCategoryDifficultyByDate($year, $month);
         $a['num_hours_alone']       = $this->getNumHoursAlone($year, $month);
         $a['category_difficulty']   = $this->getCategoryDifficultyByDate($year, $month);
-        $a['num_hours']             = $this->getNumHoursByDate($year, $month);
+        $a['nu_hours']             = $this->getNumHoursByDate($year, $month);
         $a['num_wzh']               = $this->getNumTasksByDate($year, $month);
         $a['num_hours_category']    = $this->getNumHoursCategory($year, $month);
 
