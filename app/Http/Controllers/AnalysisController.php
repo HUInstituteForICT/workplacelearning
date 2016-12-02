@@ -83,11 +83,11 @@ class AnalysisController extends Controller {
     public function getTaskChainsByDate($amt = 50, $year, $month){
         // First, fetch the tasks that "start" the chain.
         $wzh_start = Werkzaamheid::where('prev_wzh_id', NULL)
-                        ->where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
-                        ->whereIn('wzh_id', function($query){
+                        ->where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
+                        /*->whereIn('wzh_id', function($query){
                             $query->select('prev_wzh_id')
                                     ->from('werkzaamheden');
-                        });
+                        });*/ // Disabled for now, enable this to only show task chains and hide single tasks in the analysis.
         $wzh_start = $this->limitCollectionByDate($wzh_start, $year, $month)->orderBy('wzh_datum', 'desc')->take($amt)->get();
 
         // Iterate over the array and add tasks that follow.
@@ -96,6 +96,7 @@ class AnalysisController extends Controller {
             $arr_key = count($task_chains);
             $nw = $w->getNextWerkzaamheid();
             $task_chains[$arr_key][] = $w;
+            if(is_null($nw)) continue;
             $task_chains[$arr_key][] = $nw;
             while(($nw = $nw->getNextWerkzaamheid()) != NULL){
                 $task_chains[$arr_key][] = $nw;
@@ -114,6 +115,7 @@ class AnalysisController extends Controller {
             $arr_key = count($task_chains);
             $pw = $w->getPreviousWerkzaamheid();
             $task_chains[$arr_key][] = $w;
+            if(is_null($pw)) continue;
             array_unshift($task_chains[$arr_key], $pw);
             while(($pw = $pw->getPreviousWerkzaamheid()) != NULL){
                 array_unshift($task_chains[$arr_key], $pw);
