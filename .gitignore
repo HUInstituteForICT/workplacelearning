@@ -4,5 +4,18 @@
 Homestead.yaml
 Homestead.json
 .env
+.ftpconfig
 
-.keep
+.idea/
+
+# Windows
+[Tt]humbs.db
+ehthumbs.db
+
+# Folder config files
+[Dd]esktop.ini
+
+# Mac osx
+.DS_Store
+.AppleDouble
+.LSOverride
