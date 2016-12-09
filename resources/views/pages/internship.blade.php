@@ -41,7 +41,7 @@
                     </h2>
                     <div class="form-group">
                         <div class="col-sm-4"></div>
-                        <div class="col-sm-8"><label><input type="checkbox" name="isActive" value="1" {{ (Auth::user()->getCurrentInternshipPeriod() != null && $period->stud_stid == Auth::user()->getUserSetting('active_internship')->setting_value) ? "checked" : "" }}/> {{ Lang::get('elements.profile.internships.activeinternship') }}</label></div>
+                        <div class="col-sm-8"><label><input type="checkbox" name="isActive" value="1" {{ ((Auth::user()->getCurrentInternshipPeriod() != null && $period->stud_stid == Auth::user()->getUserSetting('active_internship')->setting_value) || Auth::user()->getUserSetting('active_internship') == NULL) ? "checked" : "" }}/> {{ Lang::get('elements.profile.internships.activeinternship') }}</label></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('companyname', Lang::get('elements.profile.internships.companyname'), array('class' => 'col-sm-4 control-label')) !!}
