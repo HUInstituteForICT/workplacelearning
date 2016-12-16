@@ -41,7 +41,7 @@
         </script>
         <div class="row">
             <div class="col-md-12 well">
-                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">Hoe werkt deze pagina?</h4>
+                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i> Hoe werkt deze pagina?</h4>
                 <div id="help-text">
                     <ol>
                         <li>Kies een datum waarop je de werkzaamheid hebt uitgevoerd. Deze mag alleen in het verleden of heden liggen.</li>
