@@ -36,7 +36,9 @@
                 $(".expand-click :input[value='persoon']").click();
                 $("#newcat").click(function(){
                     $("#category").show();
-                })
+                });
+
+                $('[data-toggle="tooltip"]').tooltip(); 
             });
         </script>
         <div class="row">
@@ -102,7 +104,7 @@
                     @endfor
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Categorie</h4>
+                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Categorie <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     @if(Auth::user()->getCurrentInternshipPeriod() != null)
                         @foreach(Auth::user()->getCurrentInternshipPeriod()->categorieen()->orWhere('ss_id', '=', 0)->orderBy('cg_id', 'asc')->get() as $cat)
                             <label><input type="radio" name="cat_id" value="{{ $cat->cg_id }}" {{ ($cat->cg_id == 1) ? "checked" : "" }}/><span>{{ $cat->cg_value }}</span></label>
@@ -114,7 +116,7 @@
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Werken/Leren Met</h4>
+                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Werken/Leren Met <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     <div id="swvcontainer">
                         <label class="expand-click"><input type="radio" name="lerenmet" value="persoon" checked/><span>Persoon</span></label>
                         @if(Auth::user()->getCurrentInternshipPeriod() != null)
@@ -144,13 +146,13 @@
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Status</h4>
+                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Status <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     <label><input type="radio" name="status" value="1" checked/><span>Afgerond</span></label>
                     <label><input type="radio" name="status" value="2"/><span>Mee Bezig</span></label>
                     <label><input type="radio" name="status" value="3"/><span>Overgedragen</span></label>
                 </div>
                 <div class="col-md-1 form-group buttons">
-                    <h4>Moeilijkheidsgraad</h4>
+                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Moeilijkheidsgraad <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     <label><input type="radio" name="moeilijkheid" value="1" checked/><span>Makkelijk</span></label>
                     <label><input type="radio" name="moeilijkheid" value="2"/><span>Gemiddeld</span></label>
                     <label><input type="radio" name="moeilijkheid" value="3"/><span>Moeilijk</span></label>
