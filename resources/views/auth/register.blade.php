@@ -14,7 +14,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('studentnummer') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.studentnr') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.studentnr') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.studentnr') }}" name="studentnummer" value="{{ old('studentnummer') }}">
@@ -28,7 +28,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.firstname') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.firstname') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.firstname') }}" name="firstname" value="{{ old('firstname') }}">
@@ -42,7 +42,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.lastname') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.lastname') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.lastname') }}" name="lastname" value="{{ old('lastname') }}">
@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.gender.text') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.gender.text') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <label class="radio-inline">
@@ -69,7 +69,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('birthdate') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.birthdate') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.birthdate') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="date" name="birthdate" max="{{ date("Y\\-m\\-d", strtotime("-17 years")) }}" value="{{ date("Y\\-m\\-d", ((!empty(old('birthdate'))) ? strtotime(old('birthdate')) : strtotime("-17 years"))) }}">
@@ -84,7 +84,7 @@
 
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.email') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.email') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="email" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.email') }}" name="email" value="{{ old('email') }}">
@@ -98,7 +98,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.phone') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.phone') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="tel" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.phone') }}" name="phone" value="{{ old('phone') }}">
@@ -112,7 +112,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.password') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.password') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="password" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.password') }}" name="password">
@@ -126,7 +126,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.password_confirm') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.password_confirm') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="password" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.password') }}" name="password_confirmation">
@@ -140,7 +140,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.answer') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.answer') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.answer') }}" name="answer" value="{{ old('answer') }}">
@@ -154,7 +154,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('secret') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.secret') }}</label>
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.secret') }}<span class="required"></span></label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.secret') }}" name="secret" value="{{ old('secret') }}">
@@ -168,6 +168,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
+                                <p style="font-size: 10px;">Alle velden met een * zijn verplicht</p>
                                 <p style="font-size: 10px;">{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "/assets/pdf/privacyverklaring.pdf", array()), Lang::get('elements.registration.privacyagreement')) !!}</p>
                             </div>
                         </div>

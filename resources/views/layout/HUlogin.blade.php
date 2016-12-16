@@ -88,6 +88,11 @@
             background:#e9ffd9 url('/assets/img/success.png') no-repeat 10px 50%;
             border:1px solid #a6ca8a;
         }
+        .control-label span.required:before {
+            content: "*";
+            padding-left: 5px;
+            color: #ff0000;
+        }
     </style>
 </head>
 <body>
