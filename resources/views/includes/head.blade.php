@@ -24,5 +24,7 @@
         <script src="{{ secure_asset('js/moment-with-locales.js') }}"></script>
         <!-- Chart.JS library -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+        <!-- Font Awesome libary -->
+        <script src="//use.fontawesome.com/ed94d838ea.js"></script>
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{{ secure_asset('css/style.css') }}">
