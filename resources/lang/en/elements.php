@@ -107,7 +107,7 @@ return [
                 "titleadditive" => "(Current Internship)",
                 "titleassignment" => "Internship Assignment",
             ],
-            "numhours"          => "Number of Hours",
+            "numhours"          => "Number of Days",
             "companyname"       => "Company Name",
             "companylocation"   => "Location",
             "activeinternship"  => "This is my current internship",
@@ -115,7 +115,7 @@ return [
             "enddate"           => "Planned end date",
             "contactperson"     => "Contact",
             "contactphone"      => "Phone Number",
-            "contactemail"      => "Email Addres",
+            "contactemail"      => "Email Address",
         ],
         "categories"   => [
             "title"             => "Categories",
@@ -129,7 +129,7 @@ return [
             "cooperationdesc"   => "Description",
         ],
     ],
-    
+
     "general"   => [
         "mayonlycontain"    => "Dit veld mag alleen de volgende tekens bevatten:",
     ],

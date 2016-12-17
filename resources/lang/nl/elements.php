@@ -29,7 +29,7 @@ return [
         "error"   => "Fout",
         "success" => "Succes",
     ],
-    
+
     // Registration Form
     "registration"  => [
         "title" => "Account Registratie",
@@ -106,9 +106,9 @@ return [
             "current"   => [
                 "title"     => "Stageplaats Informatie",
                 "titleadditive" => "(Huidige Stage)",
-                "titleassignment" => "Stage Opdracht (Omschrijving)",
+                "titleassignment" => "Stageopdracht (Beschrijving)",
             ],
-            "numhours"          => "Aantal Uren",
+            "numhours"           => "Aantal Dagen",
             "companyname"       => "Bedrijfsnaam",
             "companylocation"   => "Locatie",
             "activeinternship"  => "Dit is mijn huidige stage",
@@ -116,7 +116,7 @@ return [
             "enddate"           => "Geplande Einddatum",
             "contactperson"     => "Contactpersoon",
             "contactphone"      => "Telefoonnummer",
-            "contactemail"      => "Email Adres",
+            "contactemail"      => "Emailadres",
         ],
         "categories"   => [
             "title"             => "Categorieën",

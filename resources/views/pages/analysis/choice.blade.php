@@ -27,21 +27,22 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h3>Aantal geregistreerde uren</h3>
+                    <h3>Aantal geregistreerde dagen</h3>
                 </div>
                 <div class="col-lg-1">
-                    <p>Aantal uren: </p>
+                    <p>Aantal dagen: </p>
                 </div>
                 <div class="col-lg-4">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ round(($numhours/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%">
-                            @if($numhours >= (Auth::user()->getCurrentInternshipPeriod()->aantaluren / 2))
-                                {{ $numhours." / ".Auth::user()->getCurrentInternshipPeriod()->aantaluren." uur (".round(($numhours/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%)
+                        <!-- $numdays is number of valid full working days, aantaluren is the goal number of internship *days* -->
+                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ round(($numdays/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%">
+                            @if($numdays >= (Auth::user()->getCurrentInternshipPeriod()->aantaluren / 2))
+                                {{ $numdays." / ".(Auth::user()->getCurrentInternshipPeriod()->aantaluren)." dag(en) (".round(($numdays/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%)
                             @endif
                         </div>
-                        <div class="progress-bar" role="progressbar" style="width:{{ (100-round(($numhours/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1)) }}%">
-                            @if($numhours < (Auth::user()->getCurrentInternshipPeriod()->aantaluren / 2))
-                                {{ $numhours." / ".Auth::user()->getCurrentInternshipPeriod()->aantaluren." uur (".round(($numhours/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%)
+                        <div class="progress-bar" role="progressbar" style="width:{{ (100-round(($numdays/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1)) }}%">
+                            @if($numdays < (Auth::user()->getCurrentInternshipPeriod()->aantaluren / 2))
+                                {{ $numdays." / ".(Auth::user()->getCurrentInternshipPeriod()->aantaluren)." dag(en) (".round(($numdays/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%)
                             @endif
                         </div>
                     </div>
