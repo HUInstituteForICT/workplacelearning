@@ -28,6 +28,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h3>Aantal geregistreerde dagen</h3>
+                    <p>{{ Lang::get('elements.analysis.workingdaysexplained')}}</p>
                 </div>
                 <div class="col-lg-1">
                     <p>Aantal dagen: </p>

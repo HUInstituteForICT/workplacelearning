@@ -157,6 +157,9 @@ return [
     "tasks"     => [
         "hour"  => "uur|uur",
     ],
+    "analysis" => [
+      "workingdaysexplained"  => "Alleen werkdagen waarop minstens 7,5 uur is geregistreerd worden meegerekend.",
+    ],
 
 ];
 ?>

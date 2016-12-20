@@ -159,5 +159,9 @@ return [
         "hour"  => "hour|hours",
     ],
 
+    "analysis" => [
+      "workingdaysexplained"  => "Only days with at least 7.5 hours of registered activities are included.",
+    ],
+
 ];
 ?>
