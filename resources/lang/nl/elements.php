@@ -158,7 +158,14 @@ return [
         "hour"  => "uur|uur",
     ],
     "analysis" => [
+      "analysisexplanation"  => "Deze pagina geeft je meer inzicht in hoe je werkt en leert, en helpt je om na te denken over je werkzaamheden tijdens je stage, zodat je inzicht krijgt in hoe jij optimaal leert en zo je leerproces kunt verbeteren.",
+      "analysischoice"      => "Kies hieronder voor een maand om de activiteiten in die maand te analyseren, of kies ervoor om alles te bekijken.",
+      "workingdaysheader"    => "Aantal geregistreerde dagen",
       "workingdaysexplained"  => "Alleen werkdagen waarop minstens 7,5 uur is geregistreerd worden meegerekend.",
+      "numberofdays"        => "Aantal dagen:",
+      "days"                => "dag(en)",
+      "choice"              => "Kies een maand om weer te geven",
+      "showall"             => "Toon alle gegevens",
     ],
 
 ];

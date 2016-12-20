@@ -160,7 +160,14 @@ return [
     ],
 
     "analysis" => [
+      "analysisexplanation"  => "This page can give you insight in how you work and learn, and helps you to reflect on your activities in the workplace. This can give you insight in how to improve your learning process.",
+      "analysischoice"      => "Below, you can choose to analyse the activities for a specific month or to view activities for all months.",
+      "workingdaysheader"    => "Number of registered working days",
       "workingdaysexplained"  => "Only days with at least 7.5 hours of registered activities are included.",
+      "numberofdays"          => "Number of days:",
+      "days"                => "day(s)",
+      "choice"              => "Choose a month to display",
+      "showall"             => "Show all data",
     ],
 
 ];
