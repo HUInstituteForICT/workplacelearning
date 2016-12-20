@@ -68,7 +68,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('birthdate') ? ' has-error' : '' }}">
+                        <!-- <div class="form-group{{ $errors->has('birthdate') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.birthdate') }}</label>
 
                             <div class="col-md-6">
@@ -79,7 +79,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> -->
 
 
 
@@ -97,7 +97,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
+                        <!-- <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.phone') }}</label>
 
                             <div class="col-md-6">
@@ -109,7 +109,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.password') }}</label>

@@ -19,13 +19,14 @@ class ProfileController extends Controller{
     public function show(){
         return view('pages.profile');
     }
-    
+
     public function update(Request $request){
-        // Validate the input        
+        // Validate the input
         $validator = Validator::make($request->all(), [
             'firstname'     => 'required|regex:/^[a-zA-Z -]*$/|max:255|min:3',
             'lastname'      => 'required|regex:/^[a-zA-Z -]*$/|max:255|min:3',
-            'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
+            'email'         => 'required|email|max:255|unique:students,email,'.$request->stud_id.',stud_id',
+            //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
         ]);
 
         if ($validator->fails()) {
@@ -37,7 +38,8 @@ class ProfileController extends Controller{
             $u = User::find(Auth::user()->stud_id);
             $u->voornaam    = $request->firstname;
             $u->achternaam  = $request->lastname;
-            $u->telefoon    = $request->phone;
+            $u->email       = $request->email;
+            //$u->telefoon    = $request->phone;
             $u->save();
 
             return redirect('profiel')->with('success', 'De wijzigingen zijn opgeslagen.');
