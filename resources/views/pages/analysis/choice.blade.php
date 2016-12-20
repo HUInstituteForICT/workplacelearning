@@ -70,7 +70,7 @@
                         @if($end <= strtotime((new DateTime("now"))->modify("last day of this month")->format('Y-m-d')))
                             <a href="{{ LaravelLocalization::GetLocalizedURL(null, '/analyse/'.date('Y', $end).'/'.date('m', $end), array()) }}">{{ ucwords($intlfmt->format($end)) }}</a><br />
                         @endif
-                        <?php $end = strtotime("-1 month", $end); ?>
+                        <?php $end = strtotime("last day of previous month", $end); ?>
                     @endwhile
                 </div>
             </div>
