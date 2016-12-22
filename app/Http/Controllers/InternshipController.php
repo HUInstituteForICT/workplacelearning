@@ -23,7 +23,7 @@ class InternshipController extends Controller{
     public function show(){
         return view('pages.profile');
     }
-    
+
     public function editInternshipPeriod($id){
         if($id === "0"){
             $ip = new InternshipPeriod;
@@ -38,7 +38,7 @@ class InternshipController extends Controller{
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien')
             : view('pages.internship')->with('period', $ip);
     }
-    
+
     public function updateInternshipPeriod(Request $request, $id){
         // Validate the input
         $validator = Validator::make($request->all(), [
@@ -84,7 +84,7 @@ class InternshipController extends Controller{
         $ip->stageplaats_id         = $is->stp_id;
         $ip->startdatum             = $request['startdate'];
         $ip->einddatum              = $request['enddate'];
-        $ip->aantaluren             = $request['numhours'];
+        $ip->aantaluren             = $request['numhours']; // is in fact number of DAYS instead of HOURS!
         $ip->opdrachtomschrijving   = $request['internshipAssignment'];
         $ip->save();
 
@@ -92,7 +92,7 @@ class InternshipController extends Controller{
         if($request['isActive'] == 1){
             Auth::user()->setUserSetting('active_internship', $ip->stud_stid);
         }
-        
+
         return redirect('stageperiode/edit/'.$ip->stud_stid)->with('success', 'De wijzigingen zijn opgeslagen.');
     }
 
@@ -138,7 +138,7 @@ class InternshipController extends Controller{
             return redirect('stageperiode/edit/'.$id);
         }
     }
-    
+
     public function updateCooperations(Request $request, $id){
         // Verify the given ID is valid and belongs to the student
         $t = false;

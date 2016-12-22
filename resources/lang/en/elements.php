@@ -107,7 +107,7 @@ return [
                 "titleadditive" => "(Current Internship)",
                 "titleassignment" => "Internship Assignment",
             ],
-            "numhours"          => "Number of Hours",
+            "numhours"          => "Number of Days",
             "companyname"       => "Company Name",
             "companylocation"   => "Location",
             "activeinternship"  => "This is my current internship",
@@ -115,7 +115,7 @@ return [
             "enddate"           => "Planned end date",
             "contactperson"     => "Contact",
             "contactphone"      => "Phone Number",
-            "contactemail"      => "Email Addres",
+            "contactemail"      => "Email Address",
         ],
         "categories"   => [
             "title"             => "Categories",
@@ -129,7 +129,7 @@ return [
             "cooperationdesc"   => "Description",
         ],
     ],
-    
+
     "general"   => [
         "mayonlycontain"    => "Dit veld mag alleen de volgende tekens bevatten:",
     ],
@@ -157,6 +157,17 @@ return [
     // Weekstaten
     "tasks"     => [
         "hour"  => "hour|hours",
+    ],
+
+    "analysis" => [
+      "analysisexplanation"  => "This page can give you insight in how you work and learn, and helps you to reflect on your activities in the workplace. This can give you insight in how to improve your learning process.",
+      "analysischoice"      => "Below, you can choose to analyse the activities for a specific month or to view activities for all months.",
+      "workingdaysheader"    => "Number of registered working days",
+      "workingdaysexplained"  => "Only days with at least 7.5 hours of registered activities are included.",
+      "numberofdays"          => "Number of days:",
+      "days"                => "day(s)",
+      "choice"              => "Choose a month to display",
+      "showall"             => "Show all data",
     ],
 
 ];
