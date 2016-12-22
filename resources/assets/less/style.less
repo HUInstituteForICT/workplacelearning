@@ -1,3 +1,5 @@
+// out: ../../../public/css/style.css, sourcemap: true, compress: true
+
 /**
  * This file (style.less) was created on 04/23/2016 at 16:39.
  * Author: Max Cassee
@@ -34,6 +36,7 @@
 /* Element Sizes */
 @nav-width: 330px;
 @menu-height: 60px;
+@footer-height: 40px;
 
 /* HU Colorscheme */
 @hu-blue: #00A1E2;
@@ -132,7 +135,6 @@ h1,h2,h3,h4,h5{
       width: @nav-width;
     }
     #page-content-wrapper {
-      position: absolute;
       margin-right: -@nav-width;
     }
   }
@@ -154,9 +156,9 @@ h1,h2,h3,h4,h5{
 }
 
 #page-content-wrapper {
-  width: 100%;
   position: absolute;
-  padding: 15px;
+  width: 100%;
+  padding: 15px 15px calc(@footer-height + 25px) 15px;
 }
 
 /* Sidebar Styles */
@@ -231,7 +233,7 @@ a.nav-tile {
 #footer {
   position: fixed;
   bottom: 0;
-  height: 40px;
+  height: @footer-height;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -448,12 +450,11 @@ a.nav-tile {
   }
 
   #page-content-wrapper {
-    padding: 20px;
     position: relative;
+    padding: 15px 15px calc(@footer-height + 25px) 15px;
   }
 
   #wrapper.toggled #page-content-wrapper {
-    position: relative;
     margin-right: 0;
   }
 }
