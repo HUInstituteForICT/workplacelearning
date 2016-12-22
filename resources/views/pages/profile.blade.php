@@ -25,6 +25,7 @@
             <!-- Profile Info -->
             <div class="col-md-6">
                 {!! Form::open(array('url' => URL::to('profiel/update', array(), true), 'class' => 'form-horizontal well')) !!}
+                {!! Form::hidden('stud_id', Auth::user()->stud_id) !!}
                 <h2>{{ Lang::get('elements.profile.title') }}</h2>
                 <div class="form-group">
                     {!! Form::label('studentnr', Lang::get('elements.profile.labels.studentnr'), array('class' => 'col-sm-3 control-label')) !!}
@@ -38,19 +39,19 @@
                     {!! Form::label('lastname', Lang::get('elements.profile.labels.lastname'), array('class' => 'col-sm-3 control-label')) !!}
                     <div class="col-sm-6">{!! Form::text('lastname', Auth::user()->achternaam, array('placeholder' => Lang::get('elements.profile.placeholders.lastname'), 'class' => 'form-control')) !!}</div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     {!! Form::label('birthdate', Lang::get('elements.profile.labels.birthdate'), array('class' => 'col-sm-3 control-label')) !!}
                     <div class="col-sm-6"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->geboortedatum)) }}</p></div>
-                </div>
+                </div> -->
                 <div class="form-group">
                     {!! Form::label('email', Lang::get('elements.profile.labels.email'), array('class' => 'col-sm-3 control-label')) !!}
-                    <div class="col-sm-6"><p class="form-control-static">{{ Auth::user()->email }}</p></div>
-                </div>
-                <div class="form-group">
-                    {!! Form::label('phone', Lang::get('elements.profile.labels.phone'), array('class' => 'col-sm-3 control-label')) !!}
-                    <div class="col-sm-4">{!! Form::text('phone', Auth::user()->telefoon, array('placeholder' => Lang::get('elements.profile.placeholders.email'), 'class' => 'form-control')) !!}</div>
+                    <div class="col-sm-6">{!! Form::text('email', Auth::user()->email, array('placeholder' => Lang::get('elements.profile.placeholders.email'), 'class' => 'form-control')) !!}</p></div>
                     <div class="col-sm-2"><input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" /></div>
                 </div>
+                <!-- <div class="form-group">
+                    {!! Form::label('phone', Lang::get('elements.profile.labels.phone'), array('class' => 'col-sm-3 control-label')) !!}
+                    <div class="col-sm-4">{!! Form::text('phone', Auth::user()->telefoon, array('placeholder' => Lang::get('elements.profile.placeholders.phone'), 'class' => 'form-control')) !!}</div>
+                </div> -->
                 {!! Form::close() !!}
             </div>
             @if(Auth::user()->getCurrentInternship())

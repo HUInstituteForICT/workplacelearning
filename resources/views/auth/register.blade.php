@@ -68,9 +68,9 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('birthdate') ? ' has-error' : '' }}">
+                        <!-- <div class="form-group{{ $errors->has('birthdate') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.birthdate') }}<span class="required"></span></label>
-
+                            
                             <div class="col-md-6">
                                 <input type="date" name="birthdate" max="{{ date("Y\\-m\\-d", strtotime("-17 years")) }}" value="{{ date("Y\\-m\\-d", ((!empty(old('birthdate'))) ? strtotime(old('birthdate')) : strtotime("-17 years"))) }}">
                                 @if ($errors->has('birthdate'))
@@ -79,7 +79,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> -->
 
 
 
@@ -97,8 +97,13 @@
                             </div>
                         </div>
 
+<<<<<<< HEAD
                         <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.phone') }}<span class="required"></span></label>
+=======
+                        <!-- <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.phone') }}</label>
+>>>>>>> esthers-branch
 
                             <div class="col-md-6">
                                 <input type="tel" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.phone') }}" name="phone" value="{{ old('phone') }}">
@@ -109,7 +114,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.password') }}<span class="required"></span></label>
