@@ -119,7 +119,7 @@ class InternshipController extends Controller{
         ]);
         if($validator->fails()){
             // Noes. errors occured. Exit back to profile page with errors
-            return redirect('profiel')
+            return redirect('stageperiode/edit/'.$id)
                 ->withErrors($validator)
                 ->withInput();
         } else {
