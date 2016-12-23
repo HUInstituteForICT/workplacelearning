@@ -37,6 +37,12 @@
                 $("#newcat").click(function(){
                     $("#category").show();
                 })
+
+                $('.input-group.date').datepicker({
+                    daysOfWeekDisabled: "0,6",
+                    todayHighlight: true
+                });
+
             });
         </script>
         <div class="row">
@@ -76,7 +82,9 @@
             {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => URL::to('leerproces/create', array(), true))) !!}
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
-                    <input class="form-control fit-bs" type="date" name="datum" value="{{ date('Y-m-d', strtotime("now")) }}" /><br/>
+                    <div class="input-group date">
+                        <input type="text" name="datum" value="{{ date('m/d/Y', strtotime("now")) }}" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                    </div>
 
                     <h5>Omschrijving:</h5>
                     <textarea class="form-control fit-bs" name="omschrijving" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
