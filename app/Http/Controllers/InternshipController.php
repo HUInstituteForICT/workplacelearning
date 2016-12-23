@@ -93,7 +93,7 @@ class InternshipController extends Controller{
             Auth::user()->setUserSetting('active_internship', $ip->stud_stid);
         }
         
-        return redirect('stageperiode/edit/'.$ip->stud_stid)->with('success', 'De wijzigingen zijn opgeslagen.');
+        return redirect('profiel')->with('success', 'De wijzigingen zijn opgeslagen.');
     }
 
     public function updateCategories(Request $request, $id){
