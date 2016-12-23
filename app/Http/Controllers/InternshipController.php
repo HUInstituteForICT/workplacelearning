@@ -109,7 +109,7 @@ class InternshipController extends Controller{
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
         if(!empty($request['newcat']['-1']['cg_value'])){
-           $request['cat'] = array_merge($request['cat'], $request['newcat']);
+           $request['cat'] = array_merge(((is_array($request['cat'])) ? $request['cat'] : array()), $request['newcat']);
         }
 
         $validator = Validator::make($request->all(), [
