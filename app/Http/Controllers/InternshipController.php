@@ -50,7 +50,7 @@ class InternshipController extends Controller{
             'numhours'              => 'required|digits_between:1,5',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
-            'internshipAssignment'  => 'required|regex:/^[0-9a-zA-Z ()-,.*&:_+=%$@!]*$/|min:15|max:500',
+            'internshipAssignment'  => 'required|regex:/^[0-9a-zA-Z ()-,.*&:_+=%$@!?;]*$/|min:15|max:500',
             'isActive'              => 'sometimes|required|in:1,0'
         ]);
 
