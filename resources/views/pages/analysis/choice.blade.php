@@ -63,7 +63,7 @@
                                 "MMMM YYYY"
                         );
                         $begin  = strtotime((new DateTime(Auth::user()->getCurrentInternshipPeriod()->startdatum))->modify("first day of this month")->format('Y-m-d'));
-                        $end    = strtotime((new DateTime(Auth::user()->getCurrentInternshipPeriod()->einddatum))->modify("last day of this month")->format('Y-m-d'));
+                        $end    = strtotime((new DateTime(Auth::user()->getCurrentInternshipPeriod()->einddatum))->format('Y-m-d'));
                     ?>
                     <a href="{{ LaravelLocalization::GetLocalizedURL(null, '/analyse/all/all', array()) }}">{{ Lang::get('elements.analysis.showall') }}</a><br />
                     @while($end > $begin)

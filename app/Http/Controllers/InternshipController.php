@@ -49,8 +49,8 @@ class InternshipController extends Controller{
             'contactEmail'          => 'required|email|max:255',
             'numhours'              => 'required|digits_between:1,5',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
-            'enddate'               => 'required|date|after:'.date("Y-m-d", strtotime('now')),
-            'internshipAssignment'  => 'required|regex:/^[0-9a-zA-Z ()-,.]*$/|min:15|max:500',
+            'enddate'               => 'required|date|after:startdate',
+            'internshipAssignment'  => 'required|regex:/^[0-9a-zA-Z ()-,.*&:_+=%$@!]*$/|min:15|max:500',
             'isActive'              => 'sometimes|required|in:1,0'
         ]);
 
@@ -93,7 +93,8 @@ class InternshipController extends Controller{
             Auth::user()->setUserSetting('active_internship', $ip->stud_stid);
         }
 
-        return redirect('stageperiode/edit/'.$ip->stud_stid)->with('success', 'De wijzigingen zijn opgeslagen.');
+        return redirect('profiel')->with('success', 'De wijzigingen zijn opgeslagen.');
+
     }
 
     public function updateCategories(Request $request, $id){
@@ -109,7 +110,7 @@ class InternshipController extends Controller{
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
         if(!empty($request['newcat']['-1']['cg_value'])){
-           $request['cat'] = array_merge($request['cat'], $request['newcat']);
+           $request['cat'] = array_merge(((is_array($request['cat'])) ? $request['cat'] : array()), $request['newcat']);
         }
 
         $validator = Validator::make($request->all(), [
@@ -119,7 +120,7 @@ class InternshipController extends Controller{
         ]);
         if($validator->fails()){
             // Noes. errors occured. Exit back to profile page with errors
-            return redirect('profiel')
+            return redirect('stageperiode/edit/'.$id)
                 ->withErrors($validator)
                 ->withInput();
         } else {

@@ -35,7 +35,7 @@
                 <h3>Weekstaten</h3>
             </div>
             <div class="col-md-1">
-                <a class="btn btn-info" role="button" href="{{ url('/weekstaten/export') }}">Export</a>
+                <a class="btn btn-info" role="button" target="_blank" href="{{ url('/weekstaten/export') }}">Export</a>
             </div>
         </div>
         <div clas="row">
