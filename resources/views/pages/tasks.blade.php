@@ -40,7 +40,8 @@
 
                 $('.input-group.date').datepicker({
                     daysOfWeekDisabled: "0,6",
-                    todayHighlight: true
+                    todayHighlight: true,
+                    endDate: "0d"
                 });
 
             });
