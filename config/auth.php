@@ -96,9 +96,9 @@ return [
     */
 
     'passwords' => [
-        'users' => [
+        'students' => [
             'provider' => 'users',
-            'email' => 'auth.emails.password',
+            'email' => 'templates.resetpassword-email',
             'table' => 'password_resets',
             'expire' => 60,
         ],

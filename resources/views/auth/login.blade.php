@@ -33,7 +33,7 @@
                         <input type="submit" class="btn btn-def btn-block" value="Login" />
                     </div>
                     <div class="form-group text-center">
-                        <a href="{{ url('/register') }}">Registreer Account</a>&nbsp;|&nbsp;<a href="{{ url('/reset/password') }}">Reset Wachtwoord</a>
+                        <a href="{{ url('/register') }}">Registreer Account</a>&nbsp;|&nbsp;<a href="{{ url('/password/reset') }}">Reset Wachtwoord</a>
                     </div>
                     @if(count($errors) > 0 || session()->has('success'))
                         <div class="row">
