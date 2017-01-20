@@ -53,34 +53,34 @@
                 </div> -->
                 {!! Form::close() !!}
             </div>
-            @if(Auth::user()->getCurrentWorkplaceLearning())
+            @if(Auth::user()->getCurrentWorkplace())
                 <!-- Current Internship -->
                 <div class="col-md-6">
                     {!! Form::open(array('url' => 'dummy', 'class' => 'form-horizontal well')) !!}
                     <h2>{{ Lang::get('elements.profile.internships.current.title') }}</h2>
                     <div class="form-group">
                         {!! Form::label('companyname', Lang::get('elements.profile.internships.companyname'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplaceLearning()->bedrijfsnaam ." (".Auth::user()->getCurrentWorkplaceLearning()->plaats.")" }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplace()->wp_name ." (".Auth::user()->getCurrentWorkplace()->town.")" }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactperson', Lang::get('elements.profile.internships.contactperson'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplaceLearning()->contactpersoon }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplace()->contact_name }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactphone', Lang::get('elements.profile.internships.contactphone'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplaceLearning()->telefoon }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplace()->contact_phone }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactemail', Lang::get('elements.profile.internships.contactemail'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplaceLearning()->contactemail }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplace()->contact_email }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('startdate', Lang::get('elements.profile.internships.startdate'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdatum)) }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate)) }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('enddate', Lang::get('elements.profile.internships.enddate'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->einddatum)) }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->enddate)) }}</p></div>
                     </div>
                     {!! Form::close() !!}
                 </div>
@@ -108,16 +108,16 @@
                 </thead>
 
                 <tbody>
-                @foreach(Auth::user()->workplaceLearningPeriods() as $is)
-                    <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->stud_stid == $is->stud_stid) ? "highlight" : "" }}">
-                        <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/stageperiode/edit/'.$is->stud_stid, array()) }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
-                        <td>{{ $is->bedrijfsnaam }}</td>
-                        <td>{{ date('d-m-Y', strtotime($is->startdatum)) }}</td>
-                        <td>{{ date('d-m-Y', strtotime($is->einddatum)) }}</td>
-                        <td>{{ $is->plaats }}</td>
-                        <td>{{ $is->contactpersoon }}</td>
-                        <td>{{ $is->contactemail }}</td>
-                        <td>{{ $is->telefoon }}</td>
+                @foreach(Auth::user()->getWorkplaceLearningPeriods() as $wp)
+                    <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id == $wp->wplp_id) ? "highlight" : "" }}">
+                        <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/stageperiode/edit/'.$wp->student_id, array()) }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
+                        <td>{{ $wp->wp_name }}</td>
+                        <td>{{ date('d-m-Y', strtotime($wp->startdate)) }}</td>
+                        <td>{{ date('d-m-Y', strtotime($wp->enddate)) }}</td>
+                        <td>{{ $wp->town }}</td>
+                        <td>{{ $wp->contact_name }}</td>
+                        <td>{{ $wp->contact_email }}</td>
+                        <td>{{ $wp->contact_phone }}</td>
                     </tr>
                 @endforeach
                 </tbody>

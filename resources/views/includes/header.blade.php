@@ -12,6 +12,6 @@
         <a href="{{ url('/profiel') }}"><img class="logout" src="{{ secure_asset('assets/img/btn-setting.svg') }}" /></a>
                 <div class="stud-info-header">
                 <p>{{ Auth::user()->lastname .", ". Auth::user()->getInitials() }}<br />
-                {{ (Auth::user()->getCurrentWorkplaceLearning() != null) ? Auth::user()->getCurrentWorkplaceLearning()->wp_name ." (t/m ".date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningLearningPeriod()->enddate)).")" : "Geen Stage Actief" }}
+                {{ (Auth::user()->getCurrentWorkplace() != null) ? Auth::user()->getCurrentWorkplace()->wp_name ." (t/m ".date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->enddate)).")" : "Geen Stage Actief" }}
         </div>
         @endif

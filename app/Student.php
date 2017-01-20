@@ -56,15 +56,15 @@ class Student extends Authenticatable
         return ($this->userlevel > 0);
     }
 
-    public function getUserSetting($name){
-        return ($this->usersettings()->where('setting_label', '=', $name)->first());
+    public function getUserSetting($label){
+        return ($this->usersettings()->where('setting_label', '=', $label)->first());
     }
 
     public function setUserSetting($label, $value){
-        $setting = $this->getUserSetting($name);
+        $setting = $this->getUserSetting($label);
         if(!$setting)
             $setting = UserSetting::create(array(
-                'student_id'    => $this->stud_id,
+                'student_id'    => $this->student_id,
                 'setting_label'  => $label,
                 'setting_value' => $value,
             ));
@@ -89,26 +89,25 @@ class Student extends Authenticatable
     }
 
     public function workplaces() {
-        return $this->belongsToMany('app\Workplaces', 'WorkplacelearningPeriod', 'student_id', 'wp_id');
+        return $this->belongsToMany('App\Workplace', 'workplacelearningperiod', 'student_id', 'wp_id');
+    }
+
+    public function getWorkplaceLearningPeriods() {
+        return $this->workplaceLearningPeriods()
+            ->join("workplace", 'workplacelearningperiod.wp_id', '=', 'workplace.wp_id')
+            ->orderBy('startdate', 'desc')
+            ->get();
     }
 
     public function getCurrentWorkplaceLearningPeriod() {
         if (!$this->getUserSetting('active_internship')) return null;
-        return $this->workplaceLearningPeriods()->where('wp_id', '=', $this->getUserSetting('active_internship')->setting_value)->first();
+        return $this->workplaceLearningPeriods()->where('wplp_id', '=', $this->getUserSetting('active_internship')->setting_value)->first();
     }
 
-    public function getCurrentWorkplaceLearning() {
-        if ($period = $this->getCurrentWorkplaceLearningPeriod() == null) return null;
-        return $this->workplaces()->where('wp_id', '=' , $period->wplp_id)->first();
+    public function getCurrentWorkplace() {
+        if (($wplp = $this->getCurrentWorkplaceLearningPeriod()) == null) return null;
+        return $this->workplaces()->where('workplace.wp_id', '=' , $wplp->wp_id)->first();
     }
-
-    /*
-    public function internships(){
-        return $this->belongsToMany('App\Internship', 'student_stages', 'student_id', 'stageplaats_id');
-    }
-
-
-    */
 
     /* OVERRIDE IN ORDER TO DISABLE THE REMEMBER_ME TOKEN */
     public function getRememberToken(){ return null; }
