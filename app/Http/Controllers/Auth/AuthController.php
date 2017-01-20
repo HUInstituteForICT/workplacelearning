@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Student;
+use App\EducationProgram;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -15,40 +16,50 @@ class AuthController extends Controller
 
     protected $redirectTo = '/home';
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
-    protected function validator(array $data)
-    {
+    protected function validator(array $data){
         return Validator::make($data, [
-            'studentnummer' => 'required|digits:7|unique:students',
+            'studentnr'     => 'required|digits:7|unique:student',
             'firstname'     => 'required|max:255|min:3',
             'lastname'      => 'required|max:255|min:3',
             'gender'        => 'required|in:male,female',
-            'birthdate'     => 'required|date|before:'.date("Y-m-d", strtotime('-17 years')),
-            'email'         => 'required|email|max:255|unique:students',
-            'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
+            //'birthdate'     => 'required|date|before:'.date("Y-m-d", strtotime('-17 years')),
+            'email'         => 'required|email|max:255|unique:student',
+            //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
             'password'      => 'required|min:8|confirmed',
             'secret'        => 'required|in:ICTstage2016',
-            'answer'        => 'required|min:3|max:30',
+            //'answer'        => 'required|min:3|max:30',
         ]);
     }
     
-    protected function create(array $data)
-    {
-        return User::create([
-            'studentnummer'     => $data['studentnummer'],
-            'voornaam'          => $data['firstname'],
-            'achternaam'        => $data['lastname'],
+    protected function create(array $data){
+        return Student::create([
+            'studentnr'         => $data['studentnr'],
+            'firstname'         => $data['firstname'],
+            'lastname'          => $data['lastname'],
+            'ep_id'             => $data['education'],
             'pw_hash'           => bcrypt($data['password']),
-            'geslacht'          => strtoupper(substr($data['gender'], 0, 1)),
-            'geboortedatum'     => $data['birthdate'],
+            'gender'            => strtoupper(substr($data['gender'], 0, 1)),
+            //'birthdate'        => $data['birthdate'],     // Deprecated
             'email'             => $data['email'],
-            'telefoon'          => $data['phone'],
-            'datumregistratie'  => date('Y-m-d H:i:s'),
-            'answer'            => $data['answer'],
+            //'phonenr'          => $data['phone'],         // Deprecated
+            'registrationdate'  => date('Y-m-d H:i:s'),
+            //'answer'            => $data['answer'],       // Deprecated
         ]);
+    }
+
+
+    public function showRegistrationForm(){
+        // Retrieve all educationprogram data from DB and pass on to view
+        $programs = EducationProgram::all();
+
+        if (property_exists($this, 'registerView')) {
+            return view($this->registerView);
+        }
+
+        return view('auth.register')->with('educationprograms', $programs);
     }
 }

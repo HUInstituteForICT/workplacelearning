@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="main-login main-center">
-                <form class="form-horizontal" method="post" action="#">
+                <form class="form-horizontal" method="post" action="/login">
                     <div class="form-group">
                         <div class="cols-sm-11">
                             <div class="input-group">
