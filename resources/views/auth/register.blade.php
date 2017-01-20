@@ -10,7 +10,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{{ Lang::get('elements.registration.title') }}</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{  URL::to('/register', array(), false) }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{  URL::to('/register', array(), true) }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('studentnummer') ? ' has-error' : '' }}">
