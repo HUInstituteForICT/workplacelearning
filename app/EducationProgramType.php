@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EducationProgramType extends Model{
     // Override the table used for the User Model
-    protected $table = 'EducationProgramType';
+    protected $table = 'educationprogramtype';
     // Disable using created_at and updated_at columns
     public $timestamps = false;
     // Override the primary key column

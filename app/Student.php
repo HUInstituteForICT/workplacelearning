@@ -83,6 +83,10 @@ class Student extends Authenticatable
     public function usersettings(){
         return $this->hasMany('App\UserSetting', 'student_id', 'student_id');
     }
+
+    public function workplacelearningperiods(){
+        return $this->hasMany('App\WorkplaceLearningPeriod', 'student_id', 'student_id');
+    }
     
     /*
     public function getCurrentInternshipPeriod(){

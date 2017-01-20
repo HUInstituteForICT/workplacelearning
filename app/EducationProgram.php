@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EducationProgram extends Model{
     // Override the table used for the User Model
-    protected $table = 'EducationProgram';
+    protected $table = 'educationprogram';
     // Disable using created_at and updated_at columns
     public $timestamps = false;
     // Override the primary key column
@@ -27,7 +27,7 @@ class EducationProgram extends Model{
         return $this->hasOne('App\EducationProgramType', 'eptype_id', 'eptype_id');
     }
 
-    public function User(){
-        return $this->belongsTo('App\User');
+    public function student(){
+        return $this->belongsToMany('App\Student', 'ep_id', 'ep_id');
     }
 }
