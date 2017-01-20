@@ -17,7 +17,7 @@
                             <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.studentnr') }}</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.studentnr') }}" name="studentnr" value="{{ old('studentnummer') }}">
+                                <input type="text" class="form-control" placeholder="{{Lang::get('elements.registration.placeholders.studentnr') }}" name="studentnr" value="{{ old('studentnr') }}">
 
                                 @if ($errors->has('studentnummer'))
                                     <span class="help-block">
