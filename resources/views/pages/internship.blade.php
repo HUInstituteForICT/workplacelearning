@@ -35,13 +35,13 @@
                 <div class="form-horizontal well">
                     <h2>
                         {{ Lang::get('elements.profile.internships.current.title') }}
-                        @if(Auth::user()->getCurrentInternshipPeriod() && $period->stud_stid == Auth::user()->getCurrentInternshipPeriod()->stud_stid)
+                        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() && $period->stud_stid == Auth::user()->getCurrentWorkplaceLearningPeriod()->stud_stid)
                             {{ Lang::get('elements.profile.internships.current.titleadditive') }}
                         @endif
                     </h2>
                     <div class="form-group">
                         <div class="col-sm-4"></div>
-                        <div class="col-sm-8"><label><input type="checkbox" name="isActive" value="1" {{ ((Auth::user()->getCurrentInternshipPeriod() != null && $period->stud_stid == Auth::user()->getUserSetting('active_internship')->setting_value) || Auth::user()->getUserSetting('active_internship') == NULL) ? "checked" : "" }}/> {{ Lang::get('elements.profile.internships.activeinternship') }}</label></div>
+                        <div class="col-sm-8"><label><input type="checkbox" name="isActive" value="1" {{ ((Auth::user()->getCurrentWorkplaceLearningPeriod() != null && $period->stud_stid == Auth::user()->getUserSetting('active_internship')->setting_value) || Auth::user()->getUserSetting('active_internship') == NULL) ? "checked" : "" }}/> {{ Lang::get('elements.profile.internships.activeinternship') }}</label></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('companyname', Lang::get('elements.profile.internships.companyname'), array('class' => 'col-sm-4 control-label')) !!}

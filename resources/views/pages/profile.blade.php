@@ -28,59 +28,59 @@
                 <h2>{{ Lang::get('elements.profile.title') }}</h2>
                 <div class="form-group">
                     {!! Form::label('studentnr', Lang::get('elements.profile.labels.studentnr'), array('class' => 'col-sm-3 control-label')) !!}
-                    <div class="col-sm-6"><p class="form-control-static"><b>{{ Auth::user()->studentnummer }}</b></p></div>
+                    <div class="col-sm-6"><p class="form-control-static"><b>{{ Auth::user()->studentnr }}</b></p></div>
                 </div>
                 <div class="form-group">
                     {!! Form::label('firstname', Lang::get('elements.profile.labels.firstname'), array('class' => 'col-sm-3 control-label')) !!}
-                    <div class="col-sm-6">{!! Form::text('firstname', Auth::user()->voornaam, array('placeholder' => Lang::get('elements.profile.placeholders.firstname'), 'class' => 'form-control')) !!}</div>
+                    <div class="col-sm-6">{!! Form::text('firstname', Auth::user()->firstname, array('placeholder' => Lang::get('elements.profile.placeholders.firstname'), 'class' => 'form-control')) !!}</div>
                 </div>
                 <div class="form-group">
                     {!! Form::label('lastname', Lang::get('elements.profile.labels.lastname'), array('class' => 'col-sm-3 control-label')) !!}
-                    <div class="col-sm-6">{!! Form::text('lastname', Auth::user()->achternaam, array('placeholder' => Lang::get('elements.profile.placeholders.lastname'), 'class' => 'form-control')) !!}</div>
+                    <div class="col-sm-6">{!! Form::text('lastname', Auth::user()->lastname, array('placeholder' => Lang::get('elements.profile.placeholders.lastname'), 'class' => 'form-control')) !!}</div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     {!! Form::label('birthdate', Lang::get('elements.profile.labels.birthdate'), array('class' => 'col-sm-3 control-label')) !!}
-                    <div class="col-sm-6"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->geboortedatum)) }}</p></div>
-                </div>
+                    <div class="col-sm-6"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->birthdate)) }}</p></div>
+                </div> -->
                 <div class="form-group">
                     {!! Form::label('email', Lang::get('elements.profile.labels.email'), array('class' => 'col-sm-3 control-label')) !!}
                     <div class="col-sm-6"><p class="form-control-static">{{ Auth::user()->email }}</p></div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     {!! Form::label('phone', Lang::get('elements.profile.labels.phone'), array('class' => 'col-sm-3 control-label')) !!}
-                    <div class="col-sm-4">{!! Form::text('phone', Auth::user()->telefoon, array('placeholder' => Lang::get('elements.profile.placeholders.email'), 'class' => 'form-control')) !!}</div>
+                    <div class="col-sm-4">{!! Form::text('phone', Auth::user()->phonenr, array('placeholder' => Lang::get('elements.profile.placeholders.email'), 'class' => 'form-control')) !!}</div>
                     <div class="col-sm-2"><input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" /></div>
-                </div>
+                </div> -->
                 {!! Form::close() !!}
             </div>
-            @if(Auth::user()->getCurrentInternship())
+            @if(Auth::user()->getCurrentWorkplaceLearning())
                 <!-- Current Internship -->
                 <div class="col-md-6">
                     {!! Form::open(array('url' => 'dummy', 'class' => 'form-horizontal well')) !!}
                     <h2>{{ Lang::get('elements.profile.internships.current.title') }}</h2>
                     <div class="form-group">
                         {!! Form::label('companyname', Lang::get('elements.profile.internships.companyname'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentInternship()->bedrijfsnaam ." (".Auth::user()->getCurrentInternship()->plaats.")" }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplaceLearning()->bedrijfsnaam ." (".Auth::user()->getCurrentWorkplaceLearning()->plaats.")" }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactperson', Lang::get('elements.profile.internships.contactperson'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentInternship()->contactpersoon }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplaceLearning()->contactpersoon }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactphone', Lang::get('elements.profile.internships.contactphone'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentInternship()->telefoon }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplaceLearning()->telefoon }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactemail', Lang::get('elements.profile.internships.contactemail'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentInternship()->contactemail }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplaceLearning()->contactemail }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('startdate', Lang::get('elements.profile.internships.startdate'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->getCurrentInternshipPeriod()->startdatum)) }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdatum)) }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('enddate', Lang::get('elements.profile.internships.enddate'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->getCurrentInternshipPeriod()->einddatum)) }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->einddatum)) }}</p></div>
                     </div>
                     {!! Form::close() !!}
                 </div>
@@ -108,8 +108,8 @@
                 </thead>
 
                 <tbody>
-                @foreach(Auth::user()->getInternshipPeriods() as $is)
-                    <tr class="{{ (Auth::user()->getCurrentInternshipPeriod() && Auth::user()->getCurrentInternshipPeriod()->stud_stid == $is->stud_stid) ? "highlight" : "" }}">
+                @foreach(Auth::user()->workplaceLearningPeriods() as $is)
+                    <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->stud_stid == $is->stud_stid) ? "highlight" : "" }}">
                         <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/stageperiode/edit/'.$is->stud_stid, array()) }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
                         <td>{{ $is->bedrijfsnaam }}</td>
                         <td>{{ date('d-m-Y', strtotime($is->startdatum)) }}</td>

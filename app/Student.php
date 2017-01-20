@@ -57,15 +57,15 @@ class Student extends Authenticatable
     }
 
     public function getUserSetting($name){
-        return ($this->usersettings()->where('setting_name', '=', $name)->first());
+        return ($this->usersettings()->where('setting_label', '=', $name)->first());
     }
 
-    public function setUserSetting($name, $value){
+    public function setUserSetting($label, $value){
         $setting = $this->getUserSetting($name);
         if(!$setting)
             $setting = UserSetting::create(array(
                 'student_id'    => $this->stud_id,
-                'setting_name'  => $name,
+                'setting_label'  => $label,
                 'setting_value' => $value,
             ));
         else {
@@ -84,34 +84,25 @@ class Student extends Authenticatable
         return $this->hasMany('App\UserSetting', 'student_id', 'student_id');
     }
 
-    public function workplacelearningperiods(){
+    public function workplaceLearningPeriods(){
         return $this->hasMany('App\WorkplaceLearningPeriod', 'student_id', 'student_id');
     }
-    
+
+    public function workplaces() {
+        return $this->belongsToMany('app\Workplaces', 'WorkplacelearningPeriod', 'student_id', 'wp_id');
+    }
+
+    public function getCurrentWorkplaceLearningPeriod() {
+        if (!$this->getUserSetting('active_internship')) return null;
+        return $this->workplaceLearningPeriods()->where('wp_id', '=', $this->getUserSetting('active_internship')->setting_value)->first();
+    }
+
+    public function getCurrentWorkplaceLearning() {
+        if ($period = $this->getCurrentWorkplaceLearningPeriod() == null) return null;
+        return $this->workplaces()->where('wp_id', '=' , $period->wplp_id)->first();
+    }
+
     /*
-    public function getCurrentInternshipPeriod(){
-        if(!$this->getUserSetting('active_internship')) return null;
-        return $this->internshipperiods()->where('stud_stid', '=', $this->getUserSetting('active_internship')->setting_value)->first();
-    }
-
-    public function getCurrentInternship(){
-        if($this->getCurrentInternshipPeriod() == null) return null;
-        $ip = $this->getCurrentInternshipPeriod();
-        if($ip == null) return null;
-        return $this->internships()->where('stp_id', '=', $ip->stageplaats_id)->first();
-    }
-
-    public function getInternshipPeriods(){
-        return $this->internshipperiods()
-            ->join('stageplaatsen', 'stageplaats_id', '=', 'stp_id')
-            ->orderBy('startdatum', 'desc')
-            ->get();
-    }
-
-    public function internshipperiods(){
-        return $this->hasMany('App\InternshipPeriod', 'student_id', 'stud_id');
-    }
-
     public function internships(){
         return $this->belongsToMany('App\Internship', 'student_stages', 'student_id', 'stageplaats_id');
     }

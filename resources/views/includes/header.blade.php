@@ -11,8 +11,7 @@
         <a href="{{ url('/logout') }}"><img class="logout" src="{{ secure_asset('assets/img/btn-logout.svg') }}" /></a>
         <a href="{{ url('/profiel') }}"><img class="logout" src="{{ secure_asset('assets/img/btn-setting.svg') }}" /></a>
                 <div class="stud-info-header">
-                <p>{{ Auth::user()->achternaam .", ". Auth::user()->getInitials() }}<br />
-                {{ (Auth::user()->getCurrentInternship() != null) ? Auth::user()->getCurrentInternship()->bedrijfsnaam ." (t/m ".date('d-m-Y', strtotime(Auth::user()->getCurrentInternshipPeriod()->einddatum)).")" : "Geen Stage Actief" }}
+                <p>{{ Auth::user()->lastname .", ". Auth::user()->getInitials() }}<br />
+                {{ (Auth::user()->getCurrentWorkplaceLearning() != null) ? Auth::user()->getCurrentWorkplaceLearning()->wp_name ." (t/m ".date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningLearningPeriod()->enddate)).")" : "Geen Stage Actief" }}
         </div>
         @endif
-
