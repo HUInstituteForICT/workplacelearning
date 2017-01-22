@@ -96,10 +96,10 @@ return [
     */
 
     'passwords' => [
-        'students' => [
+        'student' => [
             'provider' => 'users',
             'email' => 'templates.resetpassword-email',
-            'table' => 'password_resets',
+            'table' => 'password_reset',
             'expire' => 60,
         ],
     ],
