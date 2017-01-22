@@ -1,68 +1,80 @@
 @extends('layout.HUlogin')
-@section('title')
-    Reset Wachtwoord
-@stop
+
 @section('content')
-<div class="jumbotron vertical-center" style="background-color: #FFF;">
     <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Reset</div>
-                    <div class="panel-body">
+        <div class="row main">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <div id="logo-container"></div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Reset Password</div>
+
+                <div class="panel-body">
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
 
                     <form class="form-horizontal" role="form" method="POST" action="{{ URL::to('/password/reset', array(), true) }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Controlevraag: Waar ben je geboren?</label>
+                        <input type="hidden" name="token" value="{{ $token }}">
+
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+
                             <div class="col-md-6">
-                                <input type="text" autocomplete="noway" class="form-control" name="answer" value="">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
+
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <label for="password" class="col-md-4 control-label">Nieuw Wachtwoord</label>
+
                             <div class="col-md-6">
-                                <input type="email" autocomplete="noway" class="form-control" name="email" value="{{ $email or old('email') }}">
+                                <input id="password" type="password" class="form-control" name="password" required>
+
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Nieuw Wachtwoord:</label>
+
+                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                            <label for="password-confirm" class="col-md-4 control-label">Bevestig wachtwoord</label>
                             <div class="col-md-6">
-                                <input type="password" autocomplete="noway" class="form-control" name="password" value="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Nieuw Wachtwoord (Bevestiging):</label>
-                            <div class="col-md-6">
-                                <input type="password" autocomplete="noway" class="form-control" name="password_confirmation" value="">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+
+                                @if ($errors->has('password_confirmation'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-user"></i>{{ Lang::get('elements.registration.buttons.reset') }}
+                                    Reset Wachtwoord
                                 </button>
                             </div>
                         </div>
-                        <div class="form-group text-center">
-                            <a href="{{ url('/login') }}">Back to Login</a>
-                        </div>
                     </form>
-                        @if(count($errors) > 0 || session()->has('success'))
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                    </div>
+                </div>
             </div>
         </div>
-        </div>
+    </div>
 </div>
 @endsection

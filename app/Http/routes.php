@@ -16,9 +16,6 @@
 
 
 Route::auth();
-// Addition to override the token-based reset form
-Route::get('reset/password', 'Auth\PasswordController@showPasswordResetForm');
-Route::post('password/reset', 'Auth\PasswordController@reset');
 
 // Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
 // Note: The localisation is saved in a session state.

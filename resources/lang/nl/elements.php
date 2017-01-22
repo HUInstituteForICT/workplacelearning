@@ -48,7 +48,7 @@ return [
             "password"          => "Wachtwoord",
             "password_confirm"  => "Wachtwoord (Bevestiging)",
             "secret"            => "Registratiecode",
-            "answer"            => "Controlevraag: Waar ben je geboren?",
+            "education"         => "Welke opleiding volg je?",
         ],
         "placeholders"  => [
             "studentnr"         => "7 Cijfers",
@@ -58,7 +58,6 @@ return [
             "phone"             => "Bijv: 0612345678",
             "password"          => "Min. 8 karakters, hoofdlettergevoelig",
             "secret"            => "Registratiecode",
-            "answer"            => "Waar ben je geboren?",
         ],
         "buttons"   => [
             "register"  => "Registreer",

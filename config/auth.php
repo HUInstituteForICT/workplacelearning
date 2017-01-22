@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'students',
+        'passwords' => 'student',
     ],
 
     /*
@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Student::class,
         ],
 
         // 'users' => [
@@ -96,10 +96,10 @@ return [
     */
 
     'passwords' => [
-        'users' => [
+        'student' => [
             'provider' => 'users',
-            'email' => 'auth.emails.password',
-            'table' => 'password_resets',
+            'email' => 'templates.resetpassword-email',
+            'table' => 'password_reset',
             'expire' => 60,
         ],
     ],

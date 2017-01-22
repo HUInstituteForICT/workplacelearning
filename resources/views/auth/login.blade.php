@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="main-login main-center">
-                <form class="form-horizontal" method="post" action="#">
+                <form class="form-horizontal" method="post" action="/login">
                     <div class="form-group">
                         <div class="cols-sm-11">
                             <div class="input-group">
@@ -33,7 +33,7 @@
                         <input type="submit" class="btn btn-def btn-block" value="Login" />
                     </div>
                     <div class="form-group text-center">
-                        <a href="{{ url('/register') }}">Registreer Account</a>&nbsp;|&nbsp;<a href="{{ url('/reset/password') }}">Reset Wachtwoord</a>
+                        <a href="{{ url('/register') }}">Registreer Account</a>&nbsp;|&nbsp;<a href="{{ url('/password/reset') }}">Reset Wachtwoord</a>
                     </div>
                     @if(count($errors) > 0 || session()->has('success'))
                         <div class="row">
