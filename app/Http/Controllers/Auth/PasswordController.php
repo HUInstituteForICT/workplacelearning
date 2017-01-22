@@ -35,4 +35,14 @@ class PasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    /* Override to remove the 'remember_token' column and set a custom password column name */
+    protected function resetPassword($user, $password)
+    {
+        $user->forceFill([
+            'pw_hash' => bcrypt($password),
+        ])->save();
+
+        Auth::guard($this->getGuard())->login($user);
+    }
 }
