@@ -30,7 +30,7 @@
             @endif
 
 
-            {!! Form::open(array('url' => (($period->stud_stid != null) ? URL::to('stageperiode/update/'.$period->stud_stid, array(), true) : URL::to('stageperiode/update/0', array(), true)))) !!}
+            {!! Form::open(array('url' => (($period->stud_stid != null) ? URL::to('stageperiode/update/'.$period->stud_stid, array(), true) : URL::to('stageperiode/update/0', array(), true)), 'data-toggle' => 'validator')) !!}
             <div class="col-md-5">
                 <div class="form-horizontal well">
                     <h2>
@@ -45,38 +45,56 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('companyname', Lang::get('elements.profile.internships.companyname'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><input required oninput="this.setCustomValidity('')" pattern="[a-zA-Z0-9 ,.()-]{3,255}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ,.()-')" class="form-control" type="text" name="companyName"     placeholder="{{Lang::get('elements.profile.internships.companyname')}}"         value="{{ ($period->getInternship() == null) ? old("companyName") : $period->getInternship()->bedrijfsnaam }}" /></div>
+                        <div class="col-sm-8">
+                            <input name="companyName" pattern="[a-zA-Z0-9 ,.()-]{3,255}" type="text" class="form-control" placeholder="{{Lang::get('elements.profile.internships.companyname')}}" value="{{ ($period->getInternship() == null) ? old("companyName") : $period->getInternship()->bedrijfsnaam }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ,.()-" required />
+                            <div class="help-block with-errors"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('companylocation', Lang::get('elements.profile.internships.companylocation'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><input required oninput="this.setCustomValidity('')" pattern="[a-zA-Z0-9 ()-]{3,255}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()-')" class="form-control" type="text" name="companyLocation" placeholder="{{ Lang::get('elements.profile.internships.companylocation') }}"   value="{{ ($period->getInternship() == null) ? old("companyLocation") : $period->getInternship()->plaats }}" /></div>
+                        <div class="col-sm-8">
+                            <input name="companyLocation" pattern="[a-zA-Z0-9 ()-]{3,255}" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companylocation') }}" value="{{ ($period->getInternship() == null) ? old("companyLocation") : $period->getInternship()->plaats }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()-" required />
+                            <div class="help-block with-errors"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactperson', Lang::get('elements.profile.internships.contactperson'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><input required oninput="this.setCustomValidity('')" pattern="[a-zA-Z .,()-]{3,255}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} a-zA-Z .,()-')" class="form-control" type="text" name="contactPerson" placeholder="{{ Lang::get('elements.profile.internships.contactperson') }}"   value="{{ ($period->getInternship() == null) ? old("contactPerson") : $period->getInternship()->contactpersoon }}" /></div>
+                        <div class="col-sm-8">
+                            <input name="contactPerson" type="text" pattern="[a-zA-Z .,()-]{3,255}" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.contactperson') }}" value="{{ ($period->getInternship() == null) ? old("contactPerson") : $period->getInternship()->contactpersoon }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} a-zA-Z .,()-" required />
+                            <div class="help-block with-errors"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactphone', Lang::get('elements.profile.internships.contactphone'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><input required oninput="this.setCustomValidity('')" pattern="[0-9]{2,3}-?[0-9]{7,8}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} XX(X)(-)XXXXXXX(X)')" class="form-control" pattern="[0-9]{2,3}-?[0-9]{7,8}" type="text" name="contactPhone" placeholder="{{ Lang::get('elements.profile.internships.contactphone') }}"   value="{{ ($period->getInternship() == null) ? old("contactPhone") : $period->getInternship()->telefoon }}" /></div>
+                        <div class="col-sm-8">
+                            <input name="contactPhone" type="text" pattern="[0-9]{2,3}-?[0-9]{7,8}" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.contactphone') }}" value="{{ ($period->getInternship() == null) ? old("contactPhone") : $period->getInternship()->telefoon }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} XX(X)(-)XXXXXXX(X)" required />
+                            <div class="help-block with-errors"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactemail', Lang::get('elements.profile.internships.contactemail'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><input required class="form-control" type="email" name="contactEmail" placeholder="{{ Lang::get('elements.profile.internships.contactemail') }}"   value="{{ ($period->getInternship() == null) ? old("contactEmail") : $period->getInternship()->contactemail }}" /></div>
+                        <div class="col-sm-8">
+                            <input name="contactEmail" type="email" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.contactemail') }}" value="{{ ($period->getInternship() == null) ? old("contactEmail") : $period->getInternship()->contactemail }}" data-error="Geen geldig e-mail address." required />
+                            <div class="help-block with-errors"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('numhours', Lang::get('elements.profile.internships.numhours'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><input required pattern="[0-9]{1,5}" class="form-control" type="number" name="numhours" placeholder="{{ Lang::get('elements.profile.internships.numhours') }}"   value="{{ ($period->aantaluren == 0) ? old("numhours") : $period->aantaluren }}" /></div>
+                        <div class="col-sm-8">
+                            <input name="numhours" type="number" pattern="[0-9]{1,5}" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.numhours') }}" value="{{ ($period->aantaluren == 0) ? old("numhours") : $period->aantaluren }}" data-error="Dit veld is verplicht."  required />
+                            <div class="help-block with-errors"></div>
+                        </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('startdate', Lang::get('elements.profile.internships.startdate'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-6">
-                            <input type="date" class="form-control" name="startdate" min="{{ date("Y-m-d", strtotime("-6 months")) }}" value="{{ date("Y-m-d", ($period->startdatum) ? strtotime($period->startdatum) : strtotime("now")) }}">
+                            <input name="startdate" type="date" class="form-control" min="{{ date("Y-m-d", strtotime("-6 months")) }}" value="{{ date("Y-m-d", ($period->startdatum) ? strtotime($period->startdatum) : strtotime("now")) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('enddate', Lang::get('elements.profile.internships.enddate'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-6">
-                            <input type="date" class="form-control" name="enddate" min="{{ date("Y-m-d", strtotime("now")) }}" value="{{ date("Y-m-d", ($period->einddatum) ? strtotime($period->einddatum) : strtotime("tomorrow")) }}">
+                            <input name="enddate" type="date" class="form-control" min="{{ date("Y-m-d", strtotime("now")) }}" value="{{ date("Y-m-d", ($period->einddatum) ? strtotime($period->einddatum) : strtotime("tomorrow")) }}">
                         </div>
                         <div class="col-sm-2">
                             <input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" />
@@ -84,9 +102,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-7 well">
+            <div class="col-md-7 well form-group">
                 <h2>{{ Lang::get('elements.profile.internships.current.titleassignment') }}</h2>
-                <textarea style="resize: none;" name="internshipAssignment" rows="19" cols="120" class="col-sm-7" required oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z -_.,()]{15,500}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z -_.,()')">{{ (old('internshipAssignment')) ? old('internshipAssignment') : $period->opdrachtomschrijving }}</textarea>
+                <textarea name="internshipAssignment" rows="19" class="form-control" minlength="15" maxlenght="500" data-error="Dit veld moet minimaal 15 characters hebben en kan maximaal 500 characters bevatten. Alleen de volgende characters zijn toegestaan: [0-9a-zA-Z -_.,()]" required>{{ (old('internshipAssignment')) ? old('internshipAssignment') : $period->opdrachtomschrijving }}</textarea>
+                <div class="help-block with-errors"></div>
             </div>
             {!! Form::close() !!}
         </div>

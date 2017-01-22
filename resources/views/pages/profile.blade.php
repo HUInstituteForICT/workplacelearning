@@ -25,6 +25,7 @@
             <!-- Profile Info -->
             <div class="col-md-6">
                 {!! Form::open(array('url' => URL::to('profiel/update', array(), true), 'class' => 'form-horizontal well')) !!}
+                {!! Form::hidden('stud_id', Auth::user()->stud_id) !!}
                 <h2>{{ Lang::get('elements.profile.title') }}</h2>
                 <div class="form-group">
                     {!! Form::label('studentnr', Lang::get('elements.profile.labels.studentnr'), array('class' => 'col-sm-3 control-label')) !!}

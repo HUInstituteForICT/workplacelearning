@@ -89,12 +89,12 @@
                         </td>
                     </tr>
                     <?php
-                    $days_this_week += ($hrs > 6) ? 1 : 0;
+                    $days_this_week += ($hrs > 7.5) ? 1 : 0;
                     $date_loop = date('d-m-Y', strtotime("+1 day", strtotime($date_loop)));
                     ?>
                 @endfor
                 <tr>
-                    <td colspan="2">Aantal Dagen Gewerkt (6 uur of meer):</td>
+                    <td colspan="2">Aantal Dagen Gewerkt (7,5 uur of meer):</td>
                     <td>{{ $days_this_week . (($days_this_week == 1) ? " dag" : " dagen") }}</td>
                 </tr>
                 <tr>
@@ -105,11 +105,10 @@
                     <td colspan="3">Opmerkingen:</td>
                 </tr>
                 <?php
-                $date_loop = date('Y-m-d', strtotime("+2 days", strtotime($date_loop))); ?>
+                $date_loop = date('d-m-Y', strtotime("+2 days", strtotime($date_loop))); ?>
             </tbody>
         </table>
         <div class="page-break"></div>
         @endwhile
     </div>
 </body>
-

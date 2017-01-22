@@ -20,7 +20,7 @@ class AnalysisController extends Controller {
         if(!Auth::user()->getCurrentInternshipPeriod()->hasLoggedHours()) return redirect('home')->withErrors(["Je hebt nog geen uren geregistreerd voor deze stage."]);
 
         return view('pages.analysis.choice')
-                ->with('numhours', $this->getNumHoursByDate("all", "all"));
+                ->with('numdays', $this->getFullWorkingDays("all", "all"));
     }
 
     public function showDetail(Request $r, $year, $month){
@@ -44,6 +44,7 @@ class AnalysisController extends Controller {
         $a['num_hours_alone']       = $this->getNumHoursAlone($year, $month);
         $a['category_difficulty']   = $this->getCategoryDifficultyByDate($year, $month);
         $a['num_hours']             = $this->getNumHoursByDate($year, $month);
+        $a['num_days']              = $this->getFullWorkingDays($year, $month);
         $a['num_wzh']               = $this->getNumTasksByDate($year, $month);
         $a['num_hours_category']    = $this->getNumHoursCategory($year, $month);
 
@@ -154,6 +155,14 @@ class AnalysisController extends Controller {
     public function getNumHoursByDate($year, $month){
         $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
         return $this->limitCollectionByDate($wzh_collection, $year, $month)->sum('wzh_aantaluren');
+    }
+
+    public function getFullWorkingDays($year, $month){
+        // Retrieve the number of days the student worked at least 7.5 hours
+        $result = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
+                            ->groupBy('wzh_datum')
+                            ->havingRaw('SUM(wzh_aantaluren)>=7.5');
+        return $result->get()->count();
     }
 
     public function getNumTasksByDate($year, $month){

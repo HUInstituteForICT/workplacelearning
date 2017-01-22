@@ -36,19 +36,14 @@
                 $(".expand-click :input[value='persoon']").click();
                 $("#newcat").click(function(){
                     $("#category").show();
-                })
-
-                $('.input-group.date').datepicker({
-                    daysOfWeekDisabled: "0,6",
-                    todayHighlight: true,
-                    endDate: "0d"
                 });
 
+                $('[data-toggle="tooltip"]').tooltip();
             });
         </script>
         <div class="row">
             <div class="col-md-12 well">
-                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">Hoe werkt deze pagina?</h4>
+                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i> Hoe werkt deze pagina?</h4>
                 <div id="help-text">
                     <ol>
                         <li>Kies een datum waarop je de werkzaamheid hebt uitgevoerd. Deze mag alleen in het verleden of heden liggen.</li>
@@ -83,9 +78,7 @@
             {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => URL::to('leerproces/create', array(), true))) !!}
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
-                    <div class="input-group date">
-                        <input type="text" name="datum" value="{{ date('m/d/Y', strtotime("now")) }}" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                    </div>
+                    <input class="form-control fit-bs" type="date" name="datum" value="{{ date('Y-m-d', strtotime("now")) }}" /><br/>
 
                     <h5>Omschrijving:</h5>
                     <textarea class="form-control fit-bs" name="omschrijving" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
@@ -111,7 +104,7 @@
                     @endfor
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Categorie</h4>
+                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Categorie <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories() as $cat)
                             <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->cg_id == 1) ? "checked" : "" }}/><span>{{ $cat->cg_value }}</span></label>
@@ -123,7 +116,7 @@
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Werken/Leren Met</h4>
+                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Werken/Leren Met <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     <div id="swvcontainer">
                         <label class="expand-click"><input type="radio" name="lerenmet" value="persoon" checked/><span>Persoon</span></label>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
@@ -153,13 +146,13 @@
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Status</h4>
+                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Status <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     <label><input type="radio" name="status" value="1" checked/><span>Afgerond</span></label>
                     <label><input type="radio" name="status" value="2"/><span>Mee Bezig</span></label>
                     <label><input type="radio" name="status" value="3"/><span>Overgedragen</span></label>
                 </div>
                 <div class="col-md-1 form-group buttons">
-                    <h4>Moeilijkheidsgraad</h4>
+                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Moeilijkheidsgraad <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     <label><input type="radio" name="moeilijkheid" value="1" checked/><span>Makkelijk</span></label>
                     <label><input type="radio" name="moeilijkheid" value="2"/><span>Gemiddeld</span></label>
                     <label><input type="radio" name="moeilijkheid" value="3"/><span>Moeilijk</span></label>

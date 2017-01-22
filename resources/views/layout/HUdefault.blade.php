@@ -39,5 +39,7 @@
         });
     </script>
 </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
 </body>
 </html>

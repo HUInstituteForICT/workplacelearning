@@ -26,15 +26,15 @@ class AuthController extends Controller
             'firstname'     => 'required|max:255|min:3',
             'lastname'      => 'required|max:255|min:3',
             'gender'        => 'required|in:male,female',
+            //'birthdate'     => 'required|date|before:'.date("Y-m-d", strtotime('-17 years')),
             'email'         => 'required|email|max:255|unique:student',
+            //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
             'password'      => 'required|min:8|confirmed',
             'secret'        => 'required|in:ICTstage2016',
-            //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
-            //'birthdate'     => 'required|date|before:'.date("Y-m-d", strtotime('-17 years')),
             //'answer'        => 'required|min:3|max:30',
         ]);
     }
-    
+
     protected function create(array $data){
         return Student::create([
             'studentnr'         => $data['studentnr'],
@@ -43,10 +43,10 @@ class AuthController extends Controller
             'ep_id'             => $data['education'],
             'pw_hash'           => bcrypt($data['password']),
             'gender'            => strtoupper(substr($data['gender'], 0, 1)),
-            'email'             => $data['email'],
-            'registrationdate'  => date('Y-m-d H:i:s'),
-            //'phonenr'          => $data['phone'],         // Deprecated
             //'birthdate'        => $data['birthdate'],     // Deprecated
+            'email'             => $data['email'],
+            //'phonenr'          => $data['phone'],         // Deprecated
+            'registrationdate'  => date('Y-m-d H:i:s'),
             //'answer'            => $data['answer'],       // Deprecated
         ]);
     }
