@@ -4,7 +4,7 @@
 @stop
 @section('content')
         <div class="container-fluid">
-            @if(Auth::user()->getCurrentWorkplacePeriod() == NULL)
+            @if(Auth::user()->getCurrentWorkplaceLearningPeriod() == NULL)
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="alert alert-notice">
@@ -34,9 +34,9 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    @if(Auth::user()->getCurrentWorkplacePeriod() != null && Auth::user()->getCurrentWorkplacePeriod()->hasLoggedHours())
+                    @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
                         <h1>{{ Lang::get('dashboard.lastWZHtitle') }}</h1>
-                        @foreach(Auth::user()->getCurrentWorkplacePeriod()->getLastWerkzaamheden(5) as $wzh)
+                        @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastWerkzaamheden(5) as $wzh)
                             <div class="dash-bar">
                                 <?php
                                 $fmt = new IntlDateFormatter(
