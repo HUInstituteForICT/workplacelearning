@@ -36,4 +36,53 @@ class WorkplaceLearningPeriod extends Model{
         return $this->hasOne('App\Workplace', 'wp_id', 'wp_id');
     }
 
+    public function categories() {
+        return $this->hasMany('App\Category', 'wplp_id', 'wplp_id');
+    }
+
+    public function resourcePersons() {
+        return $this->hasOne('App\ResourcePerson', 'wplp_id', 'wplp_id');
+    }
+
+    public function resourceMaterial() {
+        return $this->hasOne('App\ResourceMaterial', 'wplp_id', 'wplp_id');
+    }
+
+    public function learningActivityProducing() {
+        return $this->hasMany('App\LearningActivityProducing', 'wplp_id', 'wplp_id');
+    }
+
+    public function getUnfinishedActivityProducing() {
+        return $this->learningActivityProducing()
+            ->where('status_id', '=', '2')
+            ->orderBy('date', 'asc')
+            ->orderBy('lap_id', 'desc')
+            ->get();
+    }
+
+    public function getCategories() {
+        return $this->categories()
+            ->orWhere('wplp_id', '=', '0')
+            ->orderBy('category_id', 'desc')
+            ->get();
+    }
+
+    public function hasLoggedHours() {
+        return (count($this->getLastActivity(1)) > 0);
+    }
+
+    public function getResourcesPerson() {
+        return $this->resourcePersons()
+            ->orWhere('wplp_id', '=', '0')
+            ->orderBy('rp_id', 'asc')
+            ->get();
+    }
+
+    public function getLastActivity($count) {
+        return $this->LearningActivityProducing()
+            ->orderBy('date', 'desc')
+            ->orderBy('lap_id', 'desc')
+            ->limit($count)
+            ->get();
+    }
 }

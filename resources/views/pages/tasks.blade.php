@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        @if(Auth::user()->getCurrentInternshipPeriod() == NULL)
+        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() == NULL)
             <div class="row">
                 <div class="col-lg-12">
                     <div class="alert alert-notice">
@@ -93,8 +93,8 @@
                     <h5>Koppel aan vorige activiteit:</h5>
                     <select class="form-control fit-bs" name="previous_wzh" >
                         <option value="-1">- Niet Koppelen-</option>
-                        @if(Auth::user()->getCurrentInternshipPeriod() != NULL)
-                            @foreach(Auth::user()->getCurrentInternshipPeriod()->getUnfinishedWerkzaamheden() as $w)
+                        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != NULL)
+                            @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getUnfinishedActivityProducing() as $w)
                                 <option value="{{ $w->wzh_id }}">{{ date('d-m', strtotime($w->wzh_datum)) ." - ".$w->wzh_omschrijving }}</option>
                             @endforeach
                         @endif
@@ -112,9 +112,9 @@
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Categorie</h4>
-                    @if(Auth::user()->getCurrentInternshipPeriod() != null)
-                        @foreach(Auth::user()->getCurrentInternshipPeriod()->categorieen()->orWhere('ss_id', '=', 0)->orderBy('cg_id', 'asc')->get() as $cat)
-                            <label><input type="radio" name="cat_id" value="{{ $cat->cg_id }}" {{ ($cat->cg_id == 1) ? "checked" : "" }}/><span>{{ $cat->cg_value }}</span></label>
+                    @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
+                        @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories() as $cat)
+                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->cg_id == 1) ? "checked" : "" }}/><span>{{ $cat->cg_value }}</span></label>
                         @endforeach
                     @endif
                     <div>
@@ -126,11 +126,11 @@
                     <h4>Werken/Leren Met</h4>
                     <div id="swvcontainer">
                         <label class="expand-click"><input type="radio" name="lerenmet" value="persoon" checked/><span>Persoon</span></label>
-                        @if(Auth::user()->getCurrentInternshipPeriod() != null)
+                        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                             <select id="swv_id" name="swv_id" class="cond-hidden">
-                            @foreach(Auth::user()->getCurrentInternshipPeriod()->samenwerkingsverbanden()->orWhere('ss_id', '=', 0)->orderBy('swv_id', 'asc')->get() as $swv)
-                                <option value="{{ $swv->swv_id }}">{{ $swv->swv_value }}</option>
-                            @endforeach
+                            @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcesPerson() as $swv)
+                                <option value="{{ $swv->swv_id }}">{{ $swv->person_label }}</option>
+                            @endforeach */ ?>
                                 <option value="new">Nieuw/Anders</option>
                             </select>
                             <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" placeholder="Omschrijving" />
@@ -180,8 +180,8 @@
                     <td>Complexiteit</td>
                 </tr>
                 </thead>
-                @if(Auth::user()->getCurrentInternship() && Auth::user()->getCurrentInternshipPeriod()->hasLoggedHours())
-                    @foreach(Auth::user()->getCurrentInternshipPeriod()->getLastWerkzaamheden(8) as $wzh)
+                @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
+                    @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastWerkzaamheden(8) as $wzh)
                         <tr>
                             <td>{{ date('d-m', strtotime($wzh->wzh_datum)) }}</td>
                             <td>{{ $wzh->wzh_omschrijving }}</td>
