@@ -13,7 +13,7 @@
     <div class="container-fluid">
         <script>
             $(document).ready(function() {
-                $("#swv_id").on('change', function(){
+                $("#rp_id").on('change', function(){
                     if($(this).val() == "new" && $(this).is(":visible")){
                         $("#cond-select-hidden").show();
                     } else {
@@ -24,7 +24,7 @@
                     $(".cond-hidden").hide();
                     $(this).siblings().show();
                     $("#cond-select-hidden").hide();
-                    $("#swv_id").trigger("change");
+                    $("#rp_id").trigger("change");
                 });
                 $("#help-click").click(function(){
                     $('#help-text').slideToggle('slow');
@@ -107,22 +107,22 @@
                     <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Categorie <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories() as $cat)
-                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->cg_id == 1) ? "checked" : "" }}/><span>{{ $cat->cg_value }}</span></label>
+                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->category_id == 1) ? "checked" : "" }}/><span>{{ $cat->category_label }}</span></label>
                         @endforeach
                     @endif
                     <div>
-                        <label class="newcat"><input type="radio" name="cat_id" value="new" /><span class="new" id="newcat">Anders<br />(Toevoegen)</span></label>
+                        <label class="newcat"><input type="radio" name="category_id" value="new" /><span class="new" id="newcat">Anders<br />(Toevoegen)</span></label>
                         <input id="category" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newcat" placeholder="Omschrijving" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Werken/Leren Met <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
                     <div id="swvcontainer">
-                        <label class="expand-click"><input type="radio" name="lerenmet" value="persoon" checked/><span>Persoon</span></label>
+                        <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>Persoon</span></label>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
-                            <select id="swv_id" name="swv_id" class="cond-hidden">
+                            <select id="rp_id" name="personsource" class="cond-hidden">
                             @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcesPerson() as $swv)
-                                <option value="{{ $swv->swv_id }}">{{ $swv->person_label }}</option>
+                                <option value="{{ $swv->rp_id }}">{{ $swv->person_label }}</option>
                             @endforeach */ ?>
                                 <option value="new">Nieuw/Anders</option>
                             </select>
@@ -130,20 +130,20 @@
                         @endif
                     </div>
                     <div id="solocontainer">
-                        <label class="expand-click"><input type="radio" name="lerenmet" value="alleen" /><span>Alleen</span></label>
+                        <label class="expand-click"><input type="radio" name="resource" value="alleen" /><span>Alleen</span></label>
                     </div>
                     <div id="internetcontainer">
-                        <label class="expand-click"><input type="radio" name="lerenmet" value="internet" /><span>Internetbron</span></label>
+                        <label class="expand-click"><input type="radio" name="resource" value="internet" /><span>Internetbron</span></label>
                         <input class="cond-hidden" type="text" name="internetsource" value="" placeholder="http://www.bron.domein/" />
                     </div>
                     <div id="boekcontainer">
-                        <label class="expand-click"><input type="radio" name="lerenmet" value="boek" /><span>Boek/Artikel</span></label>
+                        <label class="expand-click"><input type="radio" name="resource" value="boek" /><span>Boek/Artikel</span></label>
                         <input class="cond-hidden" type="text" name="booksource" value="" placeholder="Naam Boek/Artikel" />
                     </div>
-                    <div id="newcontainer">
+                    <!--<div id="newcontainer">
                         <label class="expand-click"><input type="radio" name="lerenmet" value="new" /><span class="new" id="newswv">Anders<br />(Toevoegen)</span></label>
                         <input class="cond-hidden" type="text" name="newlerenmet" placeholder="Omschrijving" />
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Status <i class="fa fa-info-circle" aria-hidden="true"></i></h4>

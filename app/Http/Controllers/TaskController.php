@@ -7,10 +7,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Categorie;
+use App\Category;
 use App\Feedback;
-use App\Samenwerkingsverband;
-use App\Werkzaamheid;
+use App\personsource;
+use App\LearningActivityProducing;
 use App\Http\Requests;
 use phpDocumentor\Reflection\Types\This;
 use Validator;
@@ -26,7 +26,7 @@ class TaskController extends Controller{
     public function feedback($id){
         $fb  = Feedback::find($id);
         if($fb != null) {
-            $wzh = Werkzaamheid::find($fb->wzh_id);
+            $wzh = LearningActivityProducing::find($fb->wzh_id);
         }
         return view('pages.feedback')
             ->with('wzh', $wzh)
@@ -40,7 +40,7 @@ class TaskController extends Controller{
     public function updateFeedback(Request $r, $id){
         $fb  = Feedback::find($id); $wzh = null;
         if($fb != null) {
-            $wzh = Werkzaamheid::find($fb->wzh_id);
+            $wzh = LearningActivityProducing::find($fb->wzh_id);
         }
         //if(strlen($fb->notfinished) > 0) return redirect('feedback/'.$id)->withErrors(['Je kan deze feedback niet meer aanpassen.']);
 
@@ -72,45 +72,45 @@ class TaskController extends Controller{
             return redirect('leerproces')->with('success', 'De feedback is opgeslagen.');
         }
     }
-    
+
     public function create(Request $r){
         // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentInternshipPeriod() == null)
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
             return redirect('profiel')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
 
         $v = Validator::make($r->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
             'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
             'aantaluren'    => 'required|regex:/^[0-9]{1}[.]?[0-9]{0,2}$/',
-            'lerenmet'      => 'required|in:persoon,alleen,internet,boek,new',
-            'moeilijkheid'  => 'required|exists:moeilijkheden,mh_id',
-            'status'        => 'required|exists:statussen,st_id',
+            'resource'      => 'required|in:persoon,alleen,internet,boek,new',
+            'moeilijkheid'  => 'required|exists:difficulty,difficulty_id',
+            'status'        => 'required|exists:status,status_id',
         ]);
 
         // Conditional Validators
-        $v->sometimes('previous_wzh', 'required|exists:werkzaamheden,wzh_id', function($input){
+        $v->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function($input){
             return $input->previous_wzh != "-1";
         });
         $v->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()]{1,50}$/', function($input){
-            return $input->cat_id == "new";
+            return $input->category_id == "new";
         });
-        $v->sometimes('cat_id', 'required|exists:categorieen,cg_id', function($input){
-            return $input->cat_id != "new";
+        $v->sometimes('category_id', 'required|exists:category,category_id', function($input){
+            return $input->category_id != "new";
         });
         $v->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()]{1,50}$/', function($input) {
-            return ($input->swv_id == "new" && $input->lerenmet == "persoon");
+            return ($input->personsource == "new" && $input->resource == "persoon");
         });
-        $v->sometimes('swv_id', 'required|exists:samenwerkingsverbanden,swv_id', function($input){
-            return ($input->swv_id != "new" && $input->lerenmet == "persoon");
+        $v->sometimes('personsource', 'required|exists:resourceperson,rp_id', function($input){
+            return ($input->personsource != "new" && $input->resource == "persoon");
         });
         $v->sometimes('internetsource', 'required|url', function($input){
-            return $input->lerenmet == "internet";
+            return $input->resource == "internet";
         });
         $v->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.-_!@%()]{1,250}$/', function($input){
-            return $input->lerenmet == "boek";
+            return $input->resource == "book";
         });
         $v->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.-_()]{1,250}$/', function($input){
-            return $input->lerenmet == "new";
+            return $input->resource == "new";
         });
 
         // Validate the input
@@ -120,56 +120,63 @@ class TaskController extends Controller{
                 ->withInput();
         } else {
             // All ok.
-            if($r['lerenmet'] == "new"){
-                $r['lerenmet'] = "Anders";
+            if($r['resource'] == "new"){
+                $r['resource'] = "other";
             }
-            if($r['cat_id'] == "new"){
+            if($r['category_id'] == "new"){
                 $c = new Categorie;
                 $c->cg_value    = $r['newcat'];
-                $c->ss_id       = Auth::user()->getCurrentInternshipPeriod()->stud_stid;
+                $c->ss_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->student_id;
                 $c->save();
             }
-            if($r['swv_id'] == "new"){
+            if($r['personresource'] == "new"){
                 $swv = new Samenwerkingsverband;
                 $swv->swv_value = $r['newswv'];
-                $swv->ss_id     = Auth::user()->getCurrentInternshipPeriod()->stud_stid;
+                $swv->ss_id     = Auth::user()->getCurrentWorkplaceLearningPeriod()->student_id;
                 $swv->save();
             }
-            $w = new Werkzaamheid;
-            $w->student_stage_id        = Auth::user()->getCurrentInternshipPeriod()->stud_stid;
-            $w->wzh_datum               = $r['datum'];
-            $w->wzh_omschrijving        = $r['omschrijving'];
-            $w->wzh_aantaluren          = $r['aantaluren'];
-            $w->lerenmet                = $r['lerenmet'];
-            switch($r['lerenmet']){
-                case "persoon":     $w->lerenmetdetail = ($r['swv_id'] == "new") ? $swv->swv_id : $r['swv_id'];
-                break;
-                case "internet":    $w->lerenmetdetail = $r['internetsource'];
-                break;
-                case "boek":        $w->lerenmetdetail = $r['booksource'];
-                break;
-                case "Anders":      $w->lerenmetdetail = $r['newlerenmet'];
-                break;
-                default:            $w->lerenmetdetail = "";
+            $w = new LearningActivityProducing;
+            $w->wplp_id        = Auth::user()->getCurrentWorkplaceLearningPeriod()->student_id;
+            $w->date               = $r['datum'];
+            $w->description        = $r['omschrijving'];
+            $w->duration           = $r['aantaluren'];
+
+            switch($r['resource']) {
+                case 'persoon':
+                    $w->res_person_id = $r['personresource'];
+                    break;
             }
 
-            $w->categorie_id            = ($r['cat_id'] == "new") ? $c->cg_id : $r['cat_id'];
-            $w->moeilijkheid_id         = $r['moeilijkheid'];
+            // $w->rest_material_id   = $r['lerenmet'];
+            // switch($r['lerenmet']){
+            //     case "persoon":     $w->lerenmetdetail = ($r['rp_id'] == "new") ? $swv->rp_id : $r['rp_id'];
+            //     break;
+            //     case "internet":    $w->lerenmetdetail = $r['internetsource'];
+            //     break;
+            //     case "boek":        $w->lerenmetdetail = $r['booksource'];
+            //     break;
+            //     case "Anders":      $w->lerenmetdetail = $r['newlerenmet'];
+            //     break;
+            //     default:            $w->lerenmetdetail = "";
+            // }
+
+            $w->category_id             = ($r['category_id'] == "new") ? $c->cg_id : $r['category_id'];
+            $w->difficulty_id           = $r['moeilijkheid'];
             $w->status_id               = $r['status'];
-            $w->prev_wzh_id             = ($r['previous_wzh'] != "-1") ? $r['previous_wzh'] : NULL;
-            $w->display                 = ($r['status'] == 2) ? 1 : 0; // Only set this WZH to display if it is unfinished
-            $w->created_at              = date_format(date_create(null, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
-            $w->session_id              = $r->session()->getId();
+            $w->prev_lap_id             = ($r['previous_wzh'] != "-1") ? $r['previous_wzh'] : NULL;
+            // $w->display                 = ($r['status'] == 2) ? 1 : 0; // Only set this WZH to display if it is unfinished
+            $w->date              = date_format(date_create(null, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
+            //$w->session_id              = $r->session()->getId();
             $w->save();
             // Update the previous WZH
             if($r['previous_wzh'] > 1){
-                $prev_wzh = Werkzaamheid::find($w->prev_wzh_id);
-                $prev_wzh->display = 0;
-                $prev_wzh->save();
+                $prev_lap_id = LearningActivityProducing::find($w->prev_lap_id);
+                //$prev_wzh->display = 0;
+                $prev_lap_id->save();
             }
-            
+
             if(
-                ($w->moeilijkheid_id == 2 || $w->moeilijkheid_id == 3)
+                ($w->difficulty_id == 2 || $w->difficulty_id == 3)
                 && ($w->status_id == 2)
             ){
                 // Create Feedback object and redirect
@@ -184,14 +191,14 @@ class TaskController extends Controller{
 
     public function edit(Request $r){
         // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentInternship() == null)
+        if(Auth::user()->getCurrentWorkplace() == null)
             return redirect('profiel');
         return view('pages.tasks');
     }
 
     public function update(Request $r){
         // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentInternship() == null)
+        if(Auth::user()->getCurrentWorkplace() == null)
             return redirect('profiel');
         return view('pages.tasks');
     }

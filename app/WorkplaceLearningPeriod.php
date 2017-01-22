@@ -63,7 +63,7 @@ class WorkplaceLearningPeriod extends Model{
     public function getCategories() {
         return $this->categories()
             ->orWhere('wplp_id', '=', '0')
-            ->orderBy('category_id', 'desc')
+            ->orderBy('category_id', 'asc')
             ->get();
     }
 
