@@ -1,6 +1,6 @@
 <?php
 /**
- * This file (TaskController.php) was created on 06/27/2016 at 16:10.
+ * This file (ProducingActivityController.php) was created on 06/27/2016 at 16:10.
  * (C) Max Cassee
  * This project was commissioned by HU University of Applied Sciences.
  */
@@ -9,7 +9,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Feedback;
-use App\personsource;
+use App\ResourcePerson;
 use App\LearningActivityProducing;
 use App\Http\Requests;
 use phpDocumentor\Reflection\Types\This;
@@ -17,7 +17,7 @@ use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TaskController extends Controller{
+class ProducingActivityController extends Controller{
 
     public function show(){
         return view('pages.tasks');
@@ -124,26 +124,36 @@ class TaskController extends Controller{
                 $r['resource'] = "other";
             }
             if($r['category_id'] == "new"){
-                $c = new Categorie;
-                $c->cg_value    = $r['newcat'];
-                $c->ss_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->student_id;
+                $c                  = new Categorie;
+                $c->category_label  = $r['newcat'];
+                $c->ss_id           = Auth::user()->getCurrentWorkplaceLearningPeriod()->student_id;
                 $c->save();
             }
-            if($r['personresource'] == "new"){
-                $swv = new Samenwerkingsverband;
-                $swv->swv_value = $r['newswv'];
-                $swv->ss_id     = Auth::user()->getCurrentWorkplaceLearningPeriod()->student_id;
-                $swv->save();
+            if($r['personsource'] == "new"){
+                $p                = new ResourcePerson;
+                $p->person_label  = $r['newswv'];
+                $p->wplp_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+                $p->ep_id         = Auth::user()->getEducationProgram()->ep_id;
+                $p->save();
             }
+
             $w = new LearningActivityProducing;
-            $w->wplp_id        = Auth::user()->getCurrentWorkplaceLearningPeriod()->student_id;
+            $w->wplp_id            = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
             $w->date               = $r['datum'];
             $w->description        = $r['omschrijving'];
             $w->duration           = $r['aantaluren'];
 
             switch($r['resource']) {
                 case 'persoon':
-                    $w->res_person_id = $r['personresource'];
+                    $w->res_person_id = $r['personsource'] == 'new' ? $p->rp_id : $r['personsource'];
+                    break;
+                case 'internet':
+                    $w->res_material_id = 1;
+                    $w->res_material_detail = $r['internetsource'];
+                    break;
+                case 'boek':
+                    $w->res_material_id = 2;
+                    $w->res_material_detail = $r['booksource'];
                     break;
             }
 
@@ -168,12 +178,12 @@ class TaskController extends Controller{
             $w->date              = date_format(date_create(null, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
             //$w->session_id              = $r->session()->getId();
             $w->save();
-            // Update the previous WZH
-            if($r['previous_wzh'] > 1){
-                $prev_lap_id = LearningActivityProducing::find($w->prev_lap_id);
-                //$prev_wzh->display = 0;
-                $prev_lap_id->save();
-            }
+            // // Update the previous WZH
+            // if($r['previous_wzh'] > 1){
+            //     $prev_lap_id = LearningActivityProducing::find($w->prev_lap_id);
+            //     //$prev_wzh->display = 0;
+            //     $prev_lap_id->save();
+            // }
 
             if(
                 ($w->difficulty_id == 2 || $w->difficulty_id == 3)

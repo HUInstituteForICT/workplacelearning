@@ -5,7 +5,6 @@ namespace App;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\UserSetting;
 
 class Student extends Authenticatable
 {
@@ -75,6 +74,9 @@ class Student extends Authenticatable
         return;
     }
 
+    public function educationProgram() {
+        return $this->hasOne('App\educationProgram', 'ep_id', 'ep_id');
+    }
 
     public function deadlines(){
         return $this->hasMany('App\Deadline', 'student_id', 'student_id');
@@ -107,6 +109,10 @@ class Student extends Authenticatable
     public function getCurrentWorkplace() {
         if (($wplp = $this->getCurrentWorkplaceLearningPeriod()) == null) return null;
         return $this->workplaces()->where('workplace.wp_id', '=' , $wplp->wp_id)->first();
+    }
+
+    public function getEducationProgram() {
+        return $this->educationProgram()->first();
     }
 
     /* OVERRIDE IN ORDER TO DISABLE THE REMEMBER_ME TOKEN */

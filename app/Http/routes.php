@@ -55,14 +55,14 @@ Route::group([
                 Route::post('bugreport/create',                         'HomeController@createBugReport');
 
                 // Task Creation
-                Route::get('leerproces',                                'TaskController@show');
-                Route::post('leerproces/create',                        'TaskController@create');
-                Route::post('leerproces/update/{id}',                   'TaskController@update');
+                Route::get('leerproces',                                'ProducingActivityController@show');
+                Route::post('leerproces/create',                        'ProducingActivityController@create');
+                Route::post('leerproces/update/{id}',                   'ProducingActivityController@update');
                 // Feedback
-                Route::get('feedback/{id}',                             'TaskController@feedback');
-                Route::post('feedback/update/{id}',                     'TaskController@updateFeedback');
+                Route::get('feedback/{id}',                             'ProducingActivityController@feedback');
+                Route::post('feedback/update/{id}',                     'ProducingActivityController@updateFeedback');
                 // Progress
-                Route::get('voortgang/{page}',                          'TaskController@progress');
+                Route::get('voortgang/{page}',                          'ProducingActivityController@progress');
                 Route::get('weekstaten/export',                         'ReportController@export');
 
                 // Report Creation

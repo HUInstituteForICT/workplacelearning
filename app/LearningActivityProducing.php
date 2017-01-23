@@ -3,9 +3,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\User;
-use App\Workplace;
-use App\WorkplaceLearningPeriod;
 
 class LearningActivityProducing extends Model{
     // Override the table used for the User Model
@@ -40,7 +37,40 @@ class LearningActivityProducing extends Model{
     }
 
     public function resourcePerson() {
-        return $this->hasOne('App\ResourcePerson');
+        return $this->hasOne('App\ResourcePerson', 'rp_id', 'res_person_id');
+    }
+
+    public function resourceMaterial() {
+        return $this->hasOne('App\resourceMaterial', 'rm_id', 'res_material_id');
+    }
+
+    public function difficulty() {
+        return $this->hasOne('App\Difficulty', 'difficulty_id', 'difficulty_id');
+    }
+
+    public function getDifficulty() {
+        return $this->difficulty()->first()->difficulty_label;
+    }
+
+    public function getDurationString(){
+        switch($this->duration){
+            case 0.25: return "15 min";
+            case 0.5 : return "30 min";
+            case 0.75: return "45 min";
+            default: return $this->duration." uur";
+        }
+    }
+
+    public function getResourceDetail() {
+        if ($this->res_material_id) {
+            return $this->resourceMaterial()
+                ->first()
+                ->rm_label . ': ' . $this->res_material_detail;
+        } else if ($this->res_person_id) {
+            return 'Persoon: ' . $this->resourcePerson()->first()->person_label;
+        } else {
+            return 'Alleen';
+        }
     }
 
     // Note: DND, object comparison

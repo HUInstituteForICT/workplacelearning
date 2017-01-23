@@ -121,8 +121,8 @@
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>Persoon</span></label>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                             <select id="rp_id" name="personsource" class="cond-hidden">
-                            @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcesPerson() as $swv)
-                                <option value="{{ $swv->rp_id }}">{{ $swv->person_label }}</option>
+                            @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcesPerson() as $res)
+                                <option value="{{ $res->rp_id }}">{{ $res->person_label }}</option>
                             @endforeach */ ?>
                                 <option value="new">Nieuw/Anders</option>
                             </select>
@@ -174,13 +174,13 @@
                 </tr>
                 </thead>
                 @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
-                    @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastWerkzaamheden(8) as $wzh)
+                    @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8) as $a)
                         <tr>
-                            <td>{{ date('d-m', strtotime($wzh->wzh_datum)) }}</td>
-                            <td>{{ $wzh->wzh_omschrijving }}</td>
-                            <td>{{ $wzh->wzh_aantaluren ." ". Lang::choice('dashboard.hours', $wzh['hours']) }}</td>
-                            <td>{{ ucwords($wzh->lerenmet) . (($wzh->lerenmetdetail != null) ? ": ".$wzh->getlerenmetdetail() : "") }}</td>
-                            <td>{{ $wzh->getMoeilijkheid() }}</td>
+                            <td>{{ date('d-m', strtotime($a->date)) }}</td>
+                            <td>{{ $a->description }}</td>
+                            <td>{{ $a->getDurationString() }}</td>
+                            <td>{{ $a->getResourceDetail() }}</td>
+                            <td>{{ $a->getDifficulty() }}</td>
                         </tr>
                     @endforeach
                 @endif

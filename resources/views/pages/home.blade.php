@@ -36,7 +36,7 @@
                 <div class="col-lg-12">
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
                         <h1>{{ Lang::get('dashboard.lastWZHtitle') }}</h1>
-                        @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastWerkzaamheden(5) as $wzh)
+                        @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(5) as $a)
                             <div class="dash-bar">
                                 <?php
                                 $fmt = new IntlDateFormatter(
@@ -49,12 +49,12 @@
                                 );
                                 ?>
                                 <div class="dash-date">
-                                    {{ucwords($fmt->format(strtotime($wzh->wzh_datum))) }}
+                                    {{ucwords($fmt->format(strtotime($a->date))) }}
                                 </div>
                                 <div class="dash-description">
-                                    <b>{{ $wzh->wzh_omschrijving }}</b>
+                                    <b>{{ $a->description }}</b>
                                 </div>
-                                <div class="dash-hours"><b>({{ $wzh->getAantalUrenString() }})</b></div>
+                                <div class="dash-hours"><b>({{ $a->getDurationString() }})</b></div>
                             </div>
                         @endforeach
                     @endif
