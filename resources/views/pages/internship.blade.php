@@ -29,12 +29,10 @@
                 </div>
             @endif
 
-            {{ dump($workplace->town) }}
-
             {!! Form::open(array(
                 'url' => URL::to(((is_null($period->student_id)) ? 'stageperiode/create' : 'stageperiode/update'),
                 ((is_null($period->student_id)) ? array() : array("id" => $period->student_id)),
-                false),
+                true),
                 'data-toggle' => 'validator'))
              !!}
             <div class="col-md-5">
