@@ -24,7 +24,7 @@
             </div>
         @endif
 
-        @if(Auth::user()->getCurrentInternshipPeriod() != null && Auth::user()->getCurrentInternshipPeriod()->hasLoggedHours())
+        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
             <div class="row">
                 <div class="col-lg-12">
                     <h1>{{ Lang::get('rapportages.pageheader') }}
@@ -221,8 +221,8 @@
                                     <tr>
                                         <td>{{ date('d-m', strtotime($wzh->wzh_datum)) }}</td>
                                         <td>{{ $wzh->wzh_omschrijving }}</td>
-                                        <td>{{ ($fb != null) ? $wzh->getMoeilijkheid().": ".$fb->notfinished : $wzh->getMoeilijkheid() }}</td>
-                                        <td>{{ $wzh->getAantalUrenString() }}</td>
+                                        <td>{{ ($fb != null) ? $wzh->getDifficulty().": ".$fb->notfinished : $wzh->getDifficulty() }}</td>
+                                        <td>{{ $wzh->getDurationString() }}</td>
                                         <td>{{
                                     (($fb != null && $wzh->lerenmet == "persoon") ? ($fb->help_asked == 1) ? "Hulp gekregen: " : "Hulp gevraagd: " : "")
                                     .ucwords($wzh->lerenmet)
