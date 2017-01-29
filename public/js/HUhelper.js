@@ -12,7 +12,7 @@ $(document).ready( function() {
             'height'    : screen.height,
             'agent'     : navigator.userAgent,
             'OS'        : navigator.appVersion,
-            'url'       : location.href,
+            'url'       : location.href
         },
     });
 });

@@ -19,9 +19,9 @@ class LogController extends Controller{
             'url'       => 'required|url',
         ]);
         if ($validator->fails()) return;
-        $result = DB::table('access_log')->insert(
+        $result = DB::table('accesslog')->insert(
             [
-                'user_id'       =>  Auth::user()->stud_id,
+                'student_id'    =>  Auth::user()->student_id,
                 'session_id'    => $r->session()->getId(),
                 'user_ip'       => $r->ip(),
                 'screen_width'  => $r['width'],
