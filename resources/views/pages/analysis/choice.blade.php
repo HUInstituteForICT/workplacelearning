@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        @if(Auth::user()->getCurrentInternshipPeriod() != null && Auth::user()->getCurrentInternshipPeriod()->hasLoggedHours())
+        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
             <div class="row">
                 <div class="col-lg-6">
                     <h1>{{ Lang::get('rapportages.pageheader') }}</h1>
@@ -36,14 +36,14 @@
                 <div class="col-lg-4">
                     <div class="progress">
                         <!-- $numdays is number of valid full working days, aantaluren is the goal number of internship *days* -->
-                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ round(($numdays/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%">
-                            @if($numdays >= (Auth::user()->getCurrentInternshipPeriod()->aantaluren / 2))
-                                {{ $numdays." / ".(Auth::user()->getCurrentInternshipPeriod()->aantaluren) }} {{ Lang::get('elements.analysis.days') }} ( {{ round(($numdays/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%)
+                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1) }}%">
+                            @if($numdays >= (Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays / 2))
+                                {{ $numdays." / ".(Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays) }} {{ Lang::get('elements.analysis.days') }} ( {{ round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1) }}%)
                             @endif
                         </div>
-                        <div class="progress-bar" role="progressbar" style="width:{{ (100-round(($numdays/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1)) }}%">
-                            @if($numdays < (Auth::user()->getCurrentInternshipPeriod()->aantaluren / 2))
-                                {{ $numdays." / ".(Auth::user()->getCurrentInternshipPeriod()->aantaluren) }} {{ Lang::get('elements.analysis.days') }} ( {{ round(($numdays/Auth::user()->getCurrentInternshipPeriod()->aantaluren)*100,1) }}%)
+                        <div class="progress-bar" role="progressbar" style="width:{{ (100-round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1)) }}%">
+                            @if($numdays < (Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays / 2))
+                                {{ $numdays." / ".(Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays) }} {{ Lang::get('elements.analysis.days') }} ( {{ round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1) }}%)
                             @endif
                         </div>
                     </div>
@@ -62,8 +62,8 @@
                                 NULL,
                                 "MMMM YYYY"
                         );
-                        $begin  = strtotime((new DateTime(Auth::user()->getCurrentInternshipPeriod()->startdatum))->modify("first day of this month")->format('Y-m-d'));
-                        $end    = strtotime((new DateTime(Auth::user()->getCurrentInternshipPeriod()->einddatum))->format('Y-m-d'));
+                        $begin  = strtotime((new DateTime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate))->modify("first day of this month")->format('Y-m-d'));
+                        $end    = strtotime((new DateTime(Auth::user()->getCurrentWorkplaceLearningPeriod()->enddate))->format('Y-m-d'));
                     ?>
                     <a href="{{ LaravelLocalization::GetLocalizedURL(null, '/analyse/all/all', array()) }}">{{ Lang::get('elements.analysis.showall') }}</a><br />
                     @while($end > $begin)

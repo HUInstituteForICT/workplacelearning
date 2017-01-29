@@ -7,7 +7,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Werkzaamheid;
+use App\LearningActivityProducing;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\DB;
 class AnalysisController extends Controller {
 
     public function showChoiceScreen(){
-        if(Auth::user()->getCurrentInternshipPeriod() == null) return redirect('home')->withErrors(["Je kan deze pagina niet bekijken zonder actieve stage."]);
-        if(!Auth::user()->getCurrentInternshipPeriod()->hasLoggedHours()) return redirect('home')->withErrors(["Je hebt nog geen uren geregistreerd voor deze stage."]);
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null) return redirect('home')->withErrors(["Je kan deze pagina niet bekijken zonder actieve stage."]);
+        if(!Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) return redirect('home')->withErrors(["Je hebt nog geen uren geregistreerd voor deze stage."]);
 
         return view('pages.analysis.choice')
                 ->with('numdays', $this->getFullWorkingDays("all", "all"));
@@ -25,7 +25,7 @@ class AnalysisController extends Controller {
 
     public function showDetail(Request $r, $year, $month){
         // If no data or not enough data, redirect to analysis choice page
-        if(Auth::user()->getCurrentInternshipPeriod() == null) return redirect('analysis')->with('error', 'Je hebt geen actieve stage ingesteld!');
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null) return redirect('analysis')->with('error', 'Je hebt geen actieve stage ingesteld!');
 
         if(($year != "all" && $month != "all")
             && (0 == preg_match('/^(201)([0-9]{1})$/', $year) || 0 == preg_match('/^([0-9]{2})$/', $month))
@@ -55,129 +55,132 @@ class AnalysisController extends Controller {
     }
 
     public function getNumHoursAlone($year, $month){
-        $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
-            ->where('lerenmet', 'alleen');
-        return $this->limitCollectionByDate($wzh_collection, $year, $month)->sum('wzh_aantaluren');
+        $wzh_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
+            ->whereNull('res_person_id')
+            ->whereNull('res_material_id');
+        return $this->limitCollectionByDate($wzh_collection, $year, $month)->sum('duration');
     }
 
     public function getNumDifficultTasksByDate($year, $month){
-        $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
-                            ->where('moeilijkheid_id', 3);
+        $wzh_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
+                            ->where('difficulty_id', 3);
         return $this->limitCollectionByDate($wzh_collection, $year, $month)->count();
     }
 
     public function getHoursDifficultTasksByDate($year, $month){
-        $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
-            ->where('moeilijkheid_id', 3);
-        return $this->limitCollectionByDate($wzh_collection, $year, $month)->sum('wzh_aantaluren');
+        $wzh_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
+            ->where('difficulty_id', 3);
+        return $this->limitCollectionByDate($wzh_collection, $year, $month)->sum('duration');
     }
 
     public function LimitCollectionByDate($collection, $year, $month){
         if($year != "all" && $month != "all"){
             $dtime = mktime(0,0,0,intval($month),1,intval($year));
-            $collection->whereDate('wzh_datum', '>=', date('Y-m-d', $dtime))
-                ->whereDate('wzh_datum', '<=', date('Y-m-d', strtotime("+1 month", $dtime)));
+            $collection->whereDate('date', '>=', date('Y-m-d', $dtime))
+                ->whereDate('date', '<=', date('Y-m-d', strtotime("+1 month", $dtime)));
         }
         return $collection;
     }
 
     public function getTaskChainsByDate($amt = 50, $year, $month){
         // First, fetch the tasks that "start" the chain.
-        $wzh_start = Werkzaamheid::where('prev_wzh_id', NULL)
-                        ->where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
-                        /*->whereIn('wzh_id', function($query){
-                            $query->select('prev_wzh_id')
-                                    ->from('werkzaamheden');
+        $wzh_start = LearningActivityProducing::where('prev_lap_id', NULL)
+                        ->where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
+                        /*->whereIn('lap_id', function($query){
+                            $query->select('prev_lap_id')
+                                    ->from('learningactivityproducing');
                         });*/ // Disabled for now, enable this to only show task chains and hide single tasks in the analysis.
-        $wzh_start = $this->limitCollectionByDate($wzh_start, $year, $month)->orderBy('wzh_datum', 'desc')->take($amt)->get();
+        $wzh_start = $this->limitCollectionByDate($wzh_start, $year, $month)->orderBy('date', 'desc')->take($amt)->get();
 
         // Iterate over the array and add tasks that follow.
         $task_chains = array();
         foreach($wzh_start as $w){
             $arr_key = count($task_chains);
-            $nw = $w->getNextWerkzaamheid();
+            $nw = $w->getNextLearningActivity();
             $task_chains[$arr_key][] = $w;
             if(is_null($nw)) continue;
             $task_chains[$arr_key][] = $nw;
-            while(($nw = $nw->getNextWerkzaamheid()) != NULL){
+            while(($nw = $nw->getNextLearningActivity()) != NULL){
                 $task_chains[$arr_key][] = $nw;
             }
         }
         // Workaround: Get end dates and reverse from there, then array unique the duplicates
-        $wzh_end = Werkzaamheid::whereNotNull('prev_wzh_id')
-                        ->where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
-                        ->whereNotIn('wzh_id', function($query){
-                           $query->select('prev_wzh_id')
-                                    ->from('werkzaamheden')
-                                    ->whereNotNull('prev_wzh_id');
+        $wzh_end = LearningActivityProducing::whereNotNull('prev_lap_id')
+                        ->where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
+                        ->whereNotIn('lap_id', function($query){
+                           $query->select('prev_lap_id')
+                                    ->from('learningactivityproducing')
+                                    ->whereNotNull('prev_lap_id');
                         });
-        $wzh_end = $this->LimitCollectionByDate($wzh_end, $year, $month)->orderBy('wzh_datum', 'desc')->take($amt)->get();
+
+        $wzh_end = $this->LimitCollectionByDate($wzh_end, $year, $month)->orderBy('date', 'desc')->take($amt)->get();
         foreach($wzh_end as $w){
             $arr_key = count($task_chains);
-            $pw = $w->getPreviousWerkzaamheid();
+            $pw = $w->getPrevousLearningActivity();
             $task_chains[$arr_key][] = $w;
             if(is_null($pw)) continue;
             array_unshift($task_chains[$arr_key], $pw);
-            while(($pw = $pw->getPreviousWerkzaamheid()) != NULL){
+            while(($pw = $pw->getPrevousLearningActivity()) != NULL){
                 array_unshift($task_chains[$arr_key], $pw);
             }
         }
+
         $task_chains = array_unique($task_chains, SORT_REGULAR);
         return $task_chains;
     }
 
     public function getAverageDifficultyByDate($year, $month){
-        $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
+        $wzh_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
         $wzh_collection = $this->limitCollectionByDate($wzh_collection, $year, $month);
-        return ($wzh_collection->count() == 0) ? 0 : ($wzh_collection->sum('moeilijkheid_id')/$wzh_collection->count())*3.33;
+        return ($wzh_collection->count() == 0) ? 0 : ($wzh_collection->sum('difficulty_id')/$wzh_collection->count())*3.33;
     }
 
     public function getCategoryDifficultyByDate($year, $month){
-        $result = DB::table('werkzaamheden')
-            ->select(DB::raw('cg_value as name, (AVG(moeilijkheid_id)*3.33) as difficulty'))
-            ->join('categorieen', 'werkzaamheden.categorie_id', '=', 'categorieen.cg_id')
-            ->where('student_stage_id', '=', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
+        $result = DB::table('learningactivityproducing')
+            ->select(DB::raw('category_label as name, (AVG(learningactivityproducing.difficulty_id)*3.33) as difficulty'))
+            ->join('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
+            ->where('learningactivityproducing.wplp_id', '=', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
         $result = $this->LimitCollectionByDate($result, $year, $month);
-        $result = $result->groupBy('categorie_id')->orderBy('difficulty', 'desc')->get();
+        $result = $result->groupBy('learningactivityproducing.category_id')->orderBy('difficulty', 'desc')->get();
         return $result;
     }
 
     public function getMostOccuringCategoryByDate($year, $month){
-        $result = DB::table('werkzaamheden')
-                    ->select(DB::raw('cg_value as name, COUNT(cg_id) AS count, SUM(wzh_aantaluren) as aantaluren'))
-                    ->join('categorieen', 'werkzaamheden.categorie_id', '=', 'categorieen.cg_id')
-                    ->where('student_stage_id', '=', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
+        $result = DB::table('learningactivityproducing')
+                    ->select(DB::raw('category_label as name, COUNT(learningactivityproducing.category_id) AS count, SUM(duration) as aantaluren'))
+                    ->join('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
+                    ->where('learningactivityproducing.wplp_id', '=', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
         $result = $this->LimitCollectionByDate($result, $year, $month);
-        $result = $result->groupBy('categorie_id')->orderBy('count', 'desc')->first();
+        $result = $result->groupBy('learningactivityproducing.category_id')->orderBy('count', 'desc')->first();
         return $result;
     }
 
     public function getNumHoursByDate($year, $month){
-        $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
-        return $this->limitCollectionByDate($wzh_collection, $year, $month)->sum('wzh_aantaluren');
+        $wzh_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
+        return $this->limitCollectionByDate($wzh_collection, $year, $month)->sum('duration');
     }
 
     public function getFullWorkingDays($year, $month){
         // Retrieve the number of days the student worked at least 7.5 hours
-        $result = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid)
-                            ->groupBy('wzh_datum')
-                            ->havingRaw('SUM(wzh_aantaluren)>=7.5');
+        $result = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
+                            ->groupBy('date')
+                            ->havingRaw('SUM(duration)>=7.5');
         return $result->get()->count();
     }
 
     public function getNumTasksByDate($year, $month){
-        $wzh_collection = Werkzaamheid::where('student_stage_id', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
-        return $this->limitCollectionByDate($wzh_collection, $year, $month)->count('wzh_aantaluren');
+        $wzh_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
+        return $this->limitCollectionByDate($wzh_collection, $year, $month)->count('duration');
     }
 
     public function getNumHoursCategory($year, $month) {
-        $result = DB::table('werkzaamheden')
-                    ->select(DB::raw('cg_value as name, SUM(wzh_aantaluren) as totalhours'))
-                    ->join('categorieen', 'werkzaamheden.categorie_id', '=', 'categorieen.cg_id')
-                    ->where('student_stage_id', '=', Auth::user()->getCurrentInternshipPeriod()->stud_stid);
+        $result = DB::table('learningactivityproducing')
+                    ->select(DB::raw('category_label as name, SUM(duration) as totalhours'))
+                    ->join('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
+                    ->where('learningactivityproducing.wplp_id', '=', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
         $result = $this->LimitCollectionByDate($result, $year, $month);
 
-        return $result->groupBy('categorie_id')->get();
+        return $result->groupBy('learningactivityproducing.category_id')->get();
     }
 
     public function __construct(){
