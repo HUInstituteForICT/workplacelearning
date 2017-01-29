@@ -13,24 +13,21 @@ use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Support\Collection;
 use Validator;
-use IntlDateFormatter;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class WorkplaceLearningController extends Controller{
 
     public function show(){
         return view("pages.internship")
                 ->with("period", new WorkplaceLearningPeriod)
-                ->with("workplace", (new Workplace)->first())
+                ->with("workplace", new Workplace)
                 ->with("categories", new Collection)
                 ->with("resource", new Collection);
     }
 
-    public function edit($id)
-    {
+    public function edit($id){
         $wplp = WorkplaceLearningPeriod::find($id);
         if (is_null($wplp) || $wplp->student_id != Auth::user()->student_id) {
             return redirect('profiel')
@@ -55,7 +52,7 @@ class WorkplaceLearningController extends Controller{
             'contactPerson'         => 'required|regex:/^[0-9a-zA-Z ()-,.]*$/|max:255|min:3',
             'contactPhone'          => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
             'contactEmail'          => 'required|email|max:255',
-            'numdays'               => 'required|digits_between:1,5',
+            'numdays'               => 'required|integer|min:1sx',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
             'internshipAssignment'  => 'required|regex:/^[0-9a-zA-Z ()-,.*&:_+=%$@!?;]*$/|min:15|max:500',
@@ -111,7 +108,7 @@ class WorkplaceLearningController extends Controller{
             'contactPerson'         => 'required|regex:/^[0-9a-zA-Z ()-,.]*$/|max:255|min:3',
             'contactPhone'          => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
             'contactEmail'          => 'required|email|max:255',
-            'numdays'               => 'required|digits_between:1,5',
+            'numdays'               => 'required|integer|min:1',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
             'internshipAssignment'  => 'required|regex:/^[0-9a-zA-Z ()-,.*&:_+=%$@!?;]*$/|min:15|max:500',

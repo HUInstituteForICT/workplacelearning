@@ -109,16 +109,16 @@
                 </thead>
 
                 <tbody>
-                @foreach(Auth::user()->getWorkplaceLearningPeriods() as $wp)
-                    <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id == $wp->wplp_id) ? "highlight" : "" }}">
-                        <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/stageperiode/edit/'.$wp->student_id, array()) }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
-                        <td>{{ $wp->wp_name }}</td>
-                        <td>{{ date('d-m-Y', strtotime($wp->startdate)) }}</td>
-                        <td>{{ date('d-m-Y', strtotime($wp->enddate)) }}</td>
-                        <td>{{ $wp->town }}</td>
-                        <td>{{ $wp->contact_name }}</td>
-                        <td>{{ $wp->contact_email }}</td>
-                        <td>{{ $wp->contact_phone }}</td>
+                @foreach(Auth::user()->getWorkplaceLearningPeriods() as $wplp)
+                    <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id == $wplp->wplp_id) ? "highlight" : "" }}">
+                        <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/stageperiode/edit/'.$wplp->wplp_id, array()) }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
+                        <td>{{ $wplp->getWorkplace()->wp_name }}</td>
+                        <td>{{ date('d-m-Y', strtotime($wplp->startdate)) }}</td>
+                        <td>{{ date('d-m-Y', strtotime($wplp->enddate)) }}</td>
+                        <td>{{ $wplp->getWorkplace()->town }}</td>
+                        <td>{{ $wplp->getWorkplace()->contact_name }}</td>
+                        <td>{{ $wplp->getWorkplace()->contact_email }}</td>
+                        <td>{{ $wplp->getWorkplace()->contact_phone }}</td>
                     </tr>
                 @endforeach
                 </tbody>
