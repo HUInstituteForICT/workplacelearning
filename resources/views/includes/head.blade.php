@@ -20,11 +20,13 @@
         <!-- Bootstrap -->
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.min.css">
+        <script src="{{ secure_asset('js/transition.js') }}"></script>
+        <script src="{{ secure_asset('js/collapse.js') }}"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.nl.min.js"></script>
         <!-- Moment Time localization -->
         <script src="{{ secure_asset('js/moment-with-locales.js') }}"></script>
+        <!-- Datetime Picker -->
+        <script type="text/javascript" src="{{ secure_asset('js/bootstrap-datetimepicker.js') }}"></script>
         <!-- Chart.JS library -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
         <!-- Font Awesome libary -->

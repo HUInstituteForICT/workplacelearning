@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Deadline extends Model{
     // Override the table used for the User Model
-    protected $table = 'deadlines';
+    protected $table = 'deadline';
     // Disable using created_at and updated_at columns
     public $timestamps = false;
     // Override the primary key column
@@ -21,11 +21,11 @@ class Deadline extends Model{
     protected $fillable = [
         'dl_id',
         'dl_value',
-        'dl_tijd',
+        'dl_datetime',
         'student_id',
     ];
 
     public function User(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Student');
     }
 }
