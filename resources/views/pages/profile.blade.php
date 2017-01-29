@@ -92,7 +92,7 @@
                 <h3>{{ Lang::get('elements.profile.internships.profile.title') }}</h3>
             </div>
             <div class="col-md-1">
-                <a href="{{ url('/stageperiode/edit/0') }}"><img style="float:right; margin-top:20px;" class="table-icon" src="{{ secure_asset('assets/img/icn-new.svg') }}" /></a>
+                <a href="{{ url('/stageperiode/create') }}"><img style="float:right; margin-top:20px;" class="table-icon" src="{{ secure_asset('assets/img/icn-new.svg') }}" /></a>
             </div>
             <table class="table blockTable col-md-12">
                 <thead class="blue_tile">

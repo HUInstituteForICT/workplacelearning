@@ -52,6 +52,10 @@ class WorkplaceLearningPeriod extends Model{
         return $this->hasMany('App\LearningActivityProducing', 'wplp_id', 'wplp_id');
     }
 
+    public function getWorkplace(){
+        return $this->workplace()->first();
+    }
+
     public function getUnfinishedActivityProducing() {
         return $this->learningActivityProducing()
             ->where('status_id', '=', '2')
