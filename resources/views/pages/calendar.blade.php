@@ -30,9 +30,13 @@
         .fc-event:hover{
             cursor:pointer;
         }
+        .fc-sat, .fc-sun{
+            background: #F7F7F7;
+        }
     </style>
     <script>
         $(document).ready(function() {
+            $("#delButton").hide(1);
             $("#calendar").fullCalendar({
                 lang: '{{LaravelLocalization::getCurrentLocale()}}',
                 defaultDate: '{{ date('Y-m-d', strtotime("now")) }}',
@@ -42,10 +46,7 @@
                         text: '{{ Lang::get('elements.calendar.btntext.newdeadline') }}',
                         click: function() {
                             if($("#newCalendarEvent").length) {
-                                var nce = $("#newCalendarEvent").html();
-                                $("#newCalendarEvent").remove();
-                                $(".fc-toolbar").after(nce);
-                                $(".fc-view-container").css("margin-top", "90px");
+                                $('#eventForm').attr('action', '{{ URL::to('deadline/update', array(), false) }}');
                                 $("#delButton").hide(1);
                             }
                         }
@@ -62,15 +63,15 @@
                 eventTextColor:'#FFFFFF',
                 eventClick: function(calEvent, jsEvent, view) {
                     $('.fc-newEvent-button').trigger('click');
-                    $('#eventForm').attr('action', '{{ URL::to('deadline/update', array(), true) }}');
+                    $('#eventForm').attr('action', '{{ URL::to('deadline/update', array(), false) }}');
                     $('#idDeadline').val(calEvent.id);
                     $('#nameDeadline').val(calEvent.title);
-                    $('#dateDeadline').val(calEvent.start.local().format('YYYY-MM-DD[T]HH:mm'));
+                    $('input[name="dateDeadline"]').val(calEvent.start.local().format('DD-MM-YYYY HH:mm'));
                     $("#delButton").show(1);
                 },
                 events: [
-                    @foreach(Auth::user()->deadlines()->orderBy('dl_tijd', 'asc')->get() as $dl)
-                            {id:{{ $dl->dl_id }},title:'{{ $dl->dl_value }}',start:'{{ $dl->dl_tijd }}'},
+                    @foreach($deadlines as $dl)
+                            {id:{{ $dl->dl_id }},title:'{{ $dl->dl_value }}',start:'{{ $dl->dl_datetime }}'},
                     @endforeach
                 ],
                 timeFormat: 'H:mm',
@@ -78,19 +79,37 @@
         });
     </script>
     <div id='calendar'></div>
-    <div id="newCalendarEvent" style="display:none;">
-    {!! Form::open(array('id' => 'eventForm', 'class' => 'form-inline col-md-12 well', 'url' => URL::to('deadline/create', array(), true))) !!}
+    <div id="newCalendarEvent" style="display: true;">
+    {!! Form::open(array('id' => 'eventForm', 'class' => 'form-inline col-md-12 well', 'url' => URL::to('deadline/create', array(), false))) !!}
         <input type="hidden" id="idDeadline" name="id" value="0" />
+        <div class="col-sm-3 col-md-3">
         <div class="form-group">
             <label for="nameDeadline">{{ Lang::get('elements.calendar.labels.newdeadline') }}: </label>
-            <input type="text" id="nameDeadline" name="nameDeadline" class="form-control" placeholder="{{ Lang::get('elements.calendar.placeholders.description') }}" />
+            <input type="text" id="nameDeadline" name="nameDeadline" class="form-control" value="{{ old('nameDeadline') }}" placeholder="{{ Lang::get('elements.calendar.placeholders.description') }}" />
         </div>
+        </div>
+
+        <div class="col-sm-3 col-md-3">
         <div class="form-group">
-            <label for="dateDeadline">{{ Lang::get('elements.calendar.labels.date') }}: </label>
-            <input type="datetime-local" id="dateDeadline" name="dateDeadline" class="form-control" value="{{ date('Y-m-d', strtotime('+2 days')) ."T13:00" }}" />
+            <div class='input-group date' id='date-deadline'>
+                <input name="dateDeadline" type='text' class="form-control" value="{{ old('dateDeadline') }}"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
         </div>
         <button type="submit" name="action" value="submit" class="btn btn-default">{{ Lang::get('elements.calendar.btntext.adddeadline') }}</button>
         <button type="submit" name="action" value="delete" class="btn btn-danger" id="delButton">{{ Lang::get('elements.calendar.btntext.removedeadline') }}</button>
+        <script type="text/javascript">
+            $(function () {
+                $('#date-deadline').datetimepicker({
+                    locale: 'nl',
+                    daysOfWeekDisabled: [0,6],
+                    minDate: "now",
+                });
+            });
+        </script>
     {!! Form::close() !!}
     </div>
 @stop

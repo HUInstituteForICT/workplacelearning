@@ -73,6 +73,23 @@ class LearningActivityProducing extends Model{
         }
     }
 
+    public function getPrevousLearningActivity(){
+        return LearningActivityProducing::where('lap_id', $this->prev_lap_id)->first();
+    }
+
+    public function getNextLearningActivity(){
+        return LearningActivityProducing::where('prev_lap_id', $this->lap_id)->first();
+    }
+
+    public function getStatus(){
+        $st = DB::table("status")->where('status_id', $this->status_id)->first();
+        return $st->status_label;
+    }
+
+    public function getFeedback(){
+        return Feedback::where('learningactivity_id', $this->lap_id)->first();
+    }
+
     // Note: DND, object comparison
     public function __toString() {
         return $this->lap_id;

@@ -191,7 +191,7 @@ class ProducingActivityController extends Controller{
             ){
                 // Create Feedback object and redirect
                 $fb = new Feedback;
-                $fb->wzh_id = $w->wzh_id;
+                $fb->learningactivity_id = $w->lap_id;
                 $fb->save();
                 return redirect('feedback/'.$fb->fb_id)->with('success', 'De leeractiviteit is opgeslagen.');
             }

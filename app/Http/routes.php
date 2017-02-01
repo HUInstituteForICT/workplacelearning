@@ -38,8 +38,11 @@ Route::group([
                 Route::post('profiel/update',                           'ProfileController@update');
 
                 // Internships & Internship Periods
-                Route::get('stageperiode/edit/{id}',                    'InternshipController@editInternshipPeriod');
-                Route::post('stageperiode/update/{id}',                 'InternshipController@updateInternshipPeriod');
+                Route::get('stageperiode/edit/{id}',                    'WorkplaceLearningController@edit')->where('id', '[0-9]*');
+                Route::get('stageperiode/create',                       'WorkplaceLearningController@show');
+                Route::post('stageperiode/create',                      'WorkplaceLearningController@create');
+                Route::post('stageperiode/update/{id}',                 'WorkplaceLearningController@update')->where('id', '[0-9]*');
+
 
                 // Category and SWV creation/updating
                 Route::post('categorie/update/{id}',                    'InternshipController@updateCategories');
