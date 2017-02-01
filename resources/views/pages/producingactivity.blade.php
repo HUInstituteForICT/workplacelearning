@@ -121,7 +121,7 @@
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>Persoon</span></label>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                             <select id="rp_id" name="personsource" class="cond-hidden">
-                            @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcesPerson() as $res)
+                            @foreach($learningWith as $res)
                                 <option value="{{ $res->rp_id }}">{{ $res->person_label }}</option>
                             @endforeach */ ?>
                                 <option value="new">Nieuw/Anders</option>

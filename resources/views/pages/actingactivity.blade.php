@@ -6,32 +6,39 @@
     <div class="container-fluid">
         <script>
             $(document).ready(function() {
-                $("#rp_id").on('change', function(){
-                    if($(this).val() == "new" && $(this).is(":visible")){
-                        $("#cond-select-hidden").show();
-                    } else {
-                        $("#cond-select-hidden").hide();
-                    }
-                });
-                $(".expand-click").click(function(){
-                    $(".cond-hidden").hide();
-                    $(this).siblings().show();
-                    $("#cond-select-hidden").hide();
-                    $("#rp_id").trigger("change");
-                });
-                $("#help-click").click(function(){
-                    $('#help-text').slideToggle('slow');
-                });
-                $(".cond-hidden").hide();
-                $("#cond-select-hidden").hide();
-                $("#category").hide();
-                $("#help-text").hide();
-                $(".expand-click :input[value='persoon']").click();
-                $("#newcat").click(function(){
-                    $("#category").show();
-                });
+                // Add addition person
+                (function() {
+                    $('#cond-select-hidden').hide();
 
-                $('[data-toggle="tooltip"]').tooltip();
+                    $('[name="learning_with"]').click(function() {
+                        if ($('#new_rp').is(':checked')) {
+                            $('#cond-select-hidden').show();
+                        } else {
+                            $('#cond-select-hidden').hide();
+                        }
+                    });
+                })();
+
+                // Help Text
+                (function() {
+                    $("#help-text").hide();
+
+                    $(".expand-click").click(function(){
+                        $(".cond-hidden").hide();
+                        $(this).siblings().show();
+                        $("#cond-select-hidden").hide();
+                        $("#rp_id").trigger("change");
+                    });
+
+                    $("#help-click").click(function(){
+                        $('#help-text').slideToggle('slow');
+                    });
+                })();
+
+                // Tooltips
+                (function() {
+                    $('[data-toggle="tooltip"]').tooltip();
+                })();
             });
         </script>
         <div class="row">
@@ -53,18 +60,33 @@
             <div class="col-md-2 form-group">
                 <h4>Activiteit</h4>
                 <input class="form-control fit-bs" type="date" name="datum" value="{{ date('Y-m-d', strtotime("now")) }}" /><br/>
-
                 <h4>Omschrijving:</h4>
                 <textarea class="form-control fit-bs" name="omschrijving" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
             </div>
-            <div class="col-md-2 form-group">
+            <div class="col-md-2 form-group buttons">
                 <h4>Wanneer?</h4>
+                @foreach ($timeslots as $key => $value)
+                    <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ ($key == 0) ? "checked" : "" }}><span>{{ $value->timeslot_text }}</span></label>
+                @endforeach
             </div>
-            <div class="col-md-2 from-group">
+            <div class="col-md-2 from-group buttons">
                 <h4>Met wie?</h4>
+                @foreach ($learningWith as $key => $value)
+                    <label><input type="radio" name="learning_with" value="{{ $value->rp_id }}" {{ ($key == 0) ? "checked" : "" }}><span>{{ $value->person_label }}</span></label>
+                @endforeach
+                <div>
+                    <label><input type="radio" name="learning_with" id="new_rp" value="new"><span class="new">Anders<br />(Toevoegen)</span></label>
+                    <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" placeholder="Omschrijving" />
+                </div>
             </div>
-            <div class="col-md-2 from-group">
+            <div class="col-md-2 from-group buttons">
                 <h4>Met welke theorie?</h4>
+                @foreach ($theory as $key => $value)
+                    <label><input type="radio" name="theory" value="{{ $value->rm_id }}"><span>{{ $value->rm_label }}</span></label>
+                @endforeach
+                <label><input type="radio" name="theory" id="new_rm" value="none"><span>Geen</span></label>
+                <input type="text" name="theory_desc" placeholder="Beschrijving bron" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" />
+                <label><input type="radio" name="theory" id="new_rm" value="new"><span class="new">Anders<br />(Toevoegen)</span></label>
             </div>
             <div class="col-md-2 from-group">
                 <h4>Wat heb je geleerd?<br />Wat is het gevolg?</h4>
@@ -75,8 +97,23 @@
                 <textarea class="form-control fit-bs" name="required_school" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
             </div>
             <div class="col-md-2 from-group">
-                <h4>Leervraag</h4>
-                <h4>Competentie</h4>
+                <div>
+                    <h4>Leervraag</h4>
+                    <select name="learning_goal">
+                        @foreach ($learningGoals as $key => $value)
+                            <option value="{{ $value->learninggoal_id }}">{{ $value->learninggoal_label }}</option>
+                        @endforeach
+                    </select>
+                    <h4>Competentie</h4>
+                    <select name="competence">
+                        @foreach ($competencies as $value)
+                            <option value="{{ $value->competence_id }}">{{ $value->competence_label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />
+                </div>
             </div>
         </div>
     </div>

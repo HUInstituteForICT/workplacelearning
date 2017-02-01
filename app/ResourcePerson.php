@@ -32,4 +32,8 @@ class ResourcePerson extends Model{
     public function learningActivityProducing() {
         return $this->belongsTo('App\learningActivityProducing');
     }
+
+    public function educationProgram() {
+        return $this->belongsTo('App\educationProgram');
+    }
 }

@@ -20,7 +20,12 @@ use Illuminate\Support\Facades\Auth;
 class ProducingActivityController extends Controller{
 
     public function show(){
-        return view('pages.producingactivity');
+        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
+                Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+        );
+
+        return view('pages.producingactivity')
+            ->with('learningWith', $resourcePersons);
     }
 
     public function feedback($id){

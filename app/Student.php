@@ -74,7 +74,7 @@ class Student extends Authenticatable
     }
 
     public function educationProgram() {
-        return $this->hasOne('App\educationProgram', 'ep_id', 'ep_id');
+        return $this->hasOne('App\EducationProgram', 'ep_id', 'ep_id');
     }
 
     public function deadlines(){

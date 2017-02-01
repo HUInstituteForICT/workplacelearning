@@ -30,4 +30,30 @@ class EducationProgram extends Model{
     public function student(){
         return $this->belongsToMany('App\Student', 'ep_id', 'ep_id');
     }
+
+    public function competence() {
+        return $this->hasMany('App\Competence', 'educationprogram_id', 'ep_id');
+    }
+
+    public function timeslot() {
+        return $this->hasMany('App\Timeslot', 'edprog_id', 'ep_id');
+    }
+
+    public function resourcePerson() {
+        return $this->hasMany('App\resourcePerson', 'ep_id', 'ep_id');
+    }
+
+    public function getCompetencies() {
+        return $this->competence()->get();
+    }
+
+    public function getTimeslots() {
+        return $this->timeslot()->get();
+    }
+
+    public function getResourcePersons() {
+        return $this->resourcePerson()
+            ->where('ep_id', '=', $this->ep_id)
+            ->get();
+    }
 }

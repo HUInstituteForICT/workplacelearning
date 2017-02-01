@@ -40,7 +40,11 @@ class WorkplaceLearningPeriod extends Model{
         return $this->hasMany('App\Category', 'wplp_id', 'wplp_id');
     }
 
-    public function resourcePersons() {
+    public function learningGoal() {
+        return $this->hasMany('App\LearningGoal', 'wplp_id', 'wplp_id');
+    }
+
+    public function resourcePerson() {
         return $this->hasOne('App\ResourcePerson', 'wplp_id', 'wplp_id');
     }
 
@@ -71,14 +75,27 @@ class WorkplaceLearningPeriod extends Model{
             ->get();
     }
 
+    public function getLearningGoals() {
+        return $this->learningGoal()
+            ->orWhere('wplp_id', '=', '0')
+            ->orderBy('learninggoal_id', 'asc')
+            ->get();
+    }
+
     public function hasLoggedHours() {
         return (count($this->getLastActivity(1)) > 0);
     }
 
-    public function getResourcesPerson() {
-        return $this->resourcePersons()
-            ->orWhere('wplp_id', '=', '0')
+    public function getResourcePersons() {
+        return $this->resourcePerson()
             ->orderBy('rp_id', 'asc')
+            ->get();
+    }
+
+    public function getResourceMaterials() {
+        return $this->resourceMaterial()
+            ->orWhere('wplp_id', '=', '0')
+            ->orderBy('rm_id', 'asc')
             ->get();
     }
 
