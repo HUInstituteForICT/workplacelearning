@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class ActingActivtyController extends Controller {
+class ActingActivityController extends Controller {
     public function __construct(){
         $this->middleware('auth');
     }
