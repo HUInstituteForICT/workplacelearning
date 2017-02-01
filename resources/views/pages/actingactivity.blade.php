@@ -66,13 +66,13 @@
             <div class="col-md-2 form-group buttons">
                 <h4>Wanneer?</h4>
                 @foreach ($timeslots as $key => $value)
-                    <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ ($key == 0) ? "checked" : "" }}><span>{{ $value->timeslot_text }}</span></label>
+                    <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ ($key == 0) ? "checked" : "" }} /><span>{{ $value->timeslot_text }}</span></label>
                 @endforeach
             </div>
             <div class="col-md-2 from-group buttons">
                 <h4>Met wie?</h4>
                 @foreach ($learningWith as $key => $value)
-                    <label><input type="radio" name="learning_with" value="{{ $value->rp_id }}" {{ ($key == 0) ? "checked" : "" }}><span>{{ $value->person_label }}</span></label>
+                    <label><input type="radio" name="learning_with" value="{{ $value->rp_id }}" {{ ($key == 0) ? "checked" : "" }} /><span>{{ $value->person_label }}</span></label>
                 @endforeach
                 <div>
                     <label><input type="radio" name="learning_with" id="new_rp" value="new"><span class="new">Anders<br />(Toevoegen)</span></label>
@@ -82,7 +82,7 @@
             <div class="col-md-2 from-group buttons">
                 <h4>Met welke theorie?</h4>
                 @foreach ($theory as $key => $value)
-                    <label><input type="radio" name="theory" value="{{ $value->rm_id }}"><span>{{ $value->rm_label }}</span></label>
+                    <label><input type="radio" name="theory" value="{{ $value->rm_id }}" {{ ($key == 0) ? "checked" : "" }} /><span>{{ $value->rm_label }}</span></label>
                 @endforeach
                 <label><input type="radio" name="theory" id="new_rm" value="none"><span>Geen</span></label>
                 <input type="text" name="theory_desc" placeholder="Beschrijving bron" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" />
