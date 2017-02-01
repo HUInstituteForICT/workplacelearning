@@ -124,8 +124,6 @@ class WorkplaceLearningController extends Controller{
         // Input is valid. Attempt to fetch the WPLP and validate it belongs to the user
         $wplp = WorkplaceLearningPeriod::find($id);
         if(is_null($wplp) || $wplp->student_id != Auth::user()->student_id){
-            dump($id, $wplp, Auth::user()->student_id);
-            die();
             return redirect('profiel')
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
         }
