@@ -30,8 +30,8 @@
             @endif
 
             {!! Form::open(array(
-                'url' => URL::to(((is_null($period->student_id)) ? 'stageperiode/create' : 'stageperiode/update'),
-                ((is_null($period->student_id)) ? array() : array("id" => $period->student_id)),
+                'url' => URL::to(((is_null($period->wplp_id)) ? 'stageperiode/create' : 'stageperiode/update'),
+                ((is_null($period->wplp_id)) ? array() : array("id" => $period->wplp_id)),
                 true),
                 'data-toggle' => 'validator'))
              !!}
@@ -61,7 +61,7 @@
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="col-sm-2">
-                            <input name="companyHousenr" pattern="[0-9]{1,5}[a-zA-Z]{1}" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companyhousenr') }}" value="{{ (is_null($workplace->housenr)) ? old("companyHousenr") : $workplace->housenr }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z" required />
+                            <input name="companyHousenr" pattern="[0-9]{1,5}[a-zA-Z]{0,1}" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companyhousenr') }}" value="{{ (is_null($workplace->housenr)) ? old("companyHousenr") : $workplace->housenr }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z" required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>

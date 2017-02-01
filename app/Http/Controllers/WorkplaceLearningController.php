@@ -46,13 +46,13 @@ class WorkplaceLearningController extends Controller{
         $validator = Validator::make($r->all(), [
             'companyName'           => 'required|regex:/^[0-9a-zA-Z ()-,.]*$/|max:255|min:3',
             'companyStreet'         => 'required|regex:/^[0-9a-zA-Z ()-,.]*$/|max:45|min:3',
-            'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[a-zA-Z]{1}$/|max:4|min:1', //
+            'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[a-zA-Z]{0,1}$/|max:4|min:1', //
             'companyPostalcode'     => 'required|regex:/^[0-9a-zA-Z]*$/|max:10|min:6', //TODO: Fix Regex to proper intl format
             'companyLocation'       => 'required|regex:/^[0-9a-zA-Z ()-]*$/|max:255|min:3',
             'contactPerson'         => 'required|regex:/^[0-9a-zA-Z ()-,.]*$/|max:255|min:3',
             'contactPhone'          => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
             'contactEmail'          => 'required|email|max:255',
-            'numdays'               => 'required|integer|min:1sx',
+            'numdays'               => 'required|integer|min:1',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
             'internshipAssignment'  => 'required|regex:/^[0-9a-zA-Z ()-,.*&:_+=%$@!?;]*$/|min:15|max:500',
@@ -102,7 +102,7 @@ class WorkplaceLearningController extends Controller{
         $validator = Validator::make($r->all(), [
             'companyName'           => 'required|regex:/^[0-9a-zA-Z ()-,.]*$/|max:255|min:3',
             'companyStreet'         => 'required|regex:/^[0-9a-zA-Z ()-,.]*$/|max:45|min:3',
-            'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[a-zA-Z]{1}$/|max:4|min:1', //
+            'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[a-zA-Z]{0,1}$/|max:4|min:1', //
             'companyPostalcode'     => 'required|regex:/^[0-9a-zA-Z]*$/|max:10|min:6', //TODO: Fix Regex to proper intl format
             'companyLocation'       => 'required|regex:/^[0-9a-zA-Z ()-]*$/|max:255|min:3',
             'contactPerson'         => 'required|regex:/^[0-9a-zA-Z ()-,.]*$/|max:255|min:3',
@@ -124,7 +124,7 @@ class WorkplaceLearningController extends Controller{
         // Input is valid. Attempt to fetch the WPLP and validate it belongs to the user
         $wplp = WorkplaceLearningPeriod::find($id);
         if(is_null($wplp) || $wplp->student_id != Auth::user()->student_id){
-            redirect('profiel')
+            return redirect('profiel')
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
         }
 
