@@ -23,7 +23,7 @@ class EducationProgram extends Model{
         'ep_name',
     ];
 
-    public function educationprogramtype(){
+    public function educationprogramType(){
         return $this->hasOne('App\EducationProgramType', 'eptype_id', 'eptype_id');
     }
 

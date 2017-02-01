@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 class ProducingActivityController extends Controller{
 
     public function show(){
-        return view('pages.tasks');
+        return view('pages.producingactivity');
     }
 
     public function feedback($id){
@@ -203,14 +203,14 @@ class ProducingActivityController extends Controller{
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplace() == null)
             return redirect('profiel');
-        return view('pages.tasks');
+        return view('pages.producingactivity');
     }
 
     public function update(Request $r){
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplace() == null)
             return redirect('profiel');
-        return view('pages.tasks');
+        return view('pages.producingactivity');
     }
     public function __construct(){
         $this->middleware('auth');

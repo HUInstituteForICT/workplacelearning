@@ -54,10 +54,14 @@ Route::group([
                 Route::get('bugreport',                                 'HomeController@showBugReport');
                 Route::post('bugreport/create',                         'HomeController@createBugReport');
 
-                // Task Creation
+                // Producing activity
                 Route::get('leerproces',                                'ProducingActivityController@show');
                 Route::post('leerproces/create',                        'ProducingActivityController@create');
                 Route::post('leerproces/update/{id}',                   'ProducingActivityController@update');
+
+                // acting activty
+                Route::get('acting',                                    'ActingActivtyController@show')->middleware('auth');
+
                 // Feedback
                 Route::get('feedback/{id}',                             'ProducingActivityController@feedback');
                 Route::post('feedback/update/{id}',                     'ProducingActivityController@updateFeedback');
