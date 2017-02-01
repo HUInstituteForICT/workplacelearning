@@ -26,4 +26,8 @@ class Competence extends Model {
     public function learningActivityActing() {
         return $this->belongsTo('App\learningActivityActing');
     }
+
+    public function activityForCompetence() {
+        $this->hasMany('App\activityForCompetence', 'competence_id', 'competence_id');
+    }
 }

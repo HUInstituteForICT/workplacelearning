@@ -35,4 +35,8 @@ class LearningActivityActing extends Model {
     public function competence() {
         return $this->hasOne('App\Competence', 'competence_id', 'competence_id');
     }
+
+    public function activityForCompetence() {
+        $this->hasOne('App\activityForCompetence', 'learningactivity_id', 'laa_id');
+    }
 }
