@@ -32,11 +32,39 @@ class LearningActivityActing extends Model {
         return $this->hasOne('App\LearningGoal', 'learninggoal_id', 'learninggoal_id');
     }
 
-    public function competence() {
-        return $this->hasOne('App\Competence', 'competence_id', 'competence_id');
+    public function activityForCompetence() {
+        return $this->belongsToMany('App\activityForCompetence');
     }
 
-    public function activityForCompetence() {
-        $this->hasOne('App\activityForCompetence', 'learningactivity_id', 'laa_id');
+    public function timeslot() {
+        return $this->hasOne('App\Timeslot', 'timeslot_id', 'timeslot_id');
+    }
+
+    public function resourcePerson() {
+        return $this->hasOne('App\ResourcePerson', 'rp_id', 'res_person_id');
+    }
+
+    public function resourceMaterial() {
+        return $this->hasOne('App\ResourceMaterial', 'rm_id', 'res_material_id');
+    }
+
+    public function getTimeslot() {
+        return $this->timeslot()->first()->timeslot_text;
+    }
+
+    public function getResourcePerson() {
+        return $this->resourcePerson()->first()->person_label;
+    }
+
+    public function getResourceMaterial() {
+        return $this->resourceMaterial()->first()->rm_label;
+    }
+
+    public function getLearningGoal() {
+        return $this->learningGoal()->first()->learninggoal_label;
+    }
+
+    public function getCompetencies() {
+        //return $this->activityForCompetence()->competence()->first()->competence_label;
     }
 }

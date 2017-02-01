@@ -29,7 +29,7 @@ class WorkplaceLearningPeriod extends Model{
     ];
 
     public function student(){
-        return $this->belongsTo('App\Student', 'student_id');
+        return $this->belongsTo('App\Student', 'student_id', 'student_id');
     }
 
     public function workplace(){
@@ -54,6 +54,10 @@ class WorkplaceLearningPeriod extends Model{
 
     public function learningActivityProducing() {
         return $this->hasMany('App\LearningActivityProducing', 'wplp_id', 'wplp_id');
+    }
+
+    public function learningActivityActing() {
+        return $this->hasMany('App\learningActivityActing', 'wplp_id', 'wplp_id');
     }
 
     public function getWorkplace(){
@@ -100,9 +104,30 @@ class WorkplaceLearningPeriod extends Model{
     }
 
     public function getLastActivity($count) {
+        switch ($this->student()->first()->ep_id) {
+            case 1:
+                return $this->getLastActivityProducing($count);
+                break;
+            case 2:
+                return $this->getLastActivityActing($count);
+                break;
+            default:
+                return null;
+        }
+    }
+
+    private function getLastActivityProducing($count){
         return $this->LearningActivityProducing()
             ->orderBy('date', 'desc')
             ->orderBy('lap_id', 'desc')
+            ->limit($count)
+            ->get();
+    }
+
+    private function getLastActivityActing($count) {
+        return $this->LearningActivityActing()
+            ->orderBy('date', 'desc')
+            ->orderBy('laa_id', 'desc')
             ->limit($count)
             ->get();
     }

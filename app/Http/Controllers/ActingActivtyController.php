@@ -25,7 +25,8 @@ class ActingActivtyController extends Controller {
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
             ->with('learningGoals', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
-            ->with('competencies', Auth::user()->getEducationProgram()->getCompetencies());
+            ->with('competencies', Auth::user()->getEducationProgram()->getCompetencies())
+            ->with('activities', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8));
     }
 
     public function create(Request $req) {

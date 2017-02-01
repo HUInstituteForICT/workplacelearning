@@ -118,5 +118,33 @@
                 </div>
             </div>
         {{ Form::close() }}
+        <div class="row">
+            <table class="table blockTable col-md-12">
+                <thead class="blue_tile">
+                    <tr>
+                        <td>Datum</td>
+                        <td>omschrijving</td>
+                        <td>Wanneer?</td>
+                        <td>Met wie?</td>
+                        <td>Theorie</td>
+                        <td>Leerpunten en vervolg</td>
+                        <td>Leervraag</td>
+                        <td>Competentie</td>
+                    </tr>
+                </thead>
+                @foreach ($activities as $key => $value)
+                    <tr>
+                        <td>{{ date('d-m', strtotime($value->date)) }}</td>
+                        <td>{{ $value->situation }}</td>
+                        <td>{{ $value->getTimeslot() }}</td>
+                        <td>{{ $value->getResourcePerson() }}</td>
+                        <td>{{ $value->getResourceMaterial() }}</td>
+                        <td>{{ $value->lessonslearned }}</td>
+                        <td>{{ $value->getLearningGoal() }}</td>
+                        <td>{{ $value->getCompetencies() }}</td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
     </div>
 @stop

@@ -23,11 +23,7 @@ class Competence extends Model {
         return $this->belongsTo('App\EducationProgram');
     }
 
-    public function learningActivityActing() {
-        return $this->belongsTo('App\learningActivityActing');
-    }
-
     public function activityForCompetence() {
-        $this->hasMany('App\activityForCompetence', 'competence_id', 'competence_id');
+        return $this->BelongsToMany('App\activityForCompetence');
     }
 }

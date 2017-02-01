@@ -20,10 +20,10 @@ class ActivityForCompetence extends Model {
     ];
 
     public function competence() {
-        return $this->belongsTo('App/Competence');
+        return $this->BelongsToMany('App\Competence');
     }
 
     public function learningActivityActing() {
-        return $this->belongsTo('App/LearningActivityActing');
+        return $this->belongsTo('App\LearningActivityActing', 'laa_id', 'learningactivity_id');
     }
 }

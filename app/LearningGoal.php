@@ -20,10 +20,10 @@ class LearningGoal extends Model {
     ];
 
     public function workplaceLearningPeriod() {
-        return $this->belongsTo('App\workplaceLearningPeriod');
+        return $this->hasOne('App\workplaceLearningPeriod', 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityActing() {
-        return $this->belongsTo('App\learningActivityActing');
+        return $this->belongsTo('App\learningActivityActing', 'learngingoal_id', 'learninggoal_id');
     }
 }
