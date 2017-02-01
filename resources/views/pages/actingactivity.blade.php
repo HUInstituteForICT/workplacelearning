@@ -10,7 +10,7 @@
                 (function() {
                     $('#cond-select-hidden').hide();
 
-                    $('[name="learning_with"]').click(function() {
+                    $('[name="res_person"]').click(function() {
                         if ($('#new_rp').is(':checked')) {
                             $('#cond-select-hidden').show();
                         } else {

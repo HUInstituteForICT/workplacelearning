@@ -32,8 +32,8 @@ class LearningActivityActing extends Model {
         return $this->hasOne('App\LearningGoal', 'learninggoal_id', 'learninggoal_id');
     }
 
-    public function activityForCompetence() {
-        return $this->belongsToMany('App\activityForCompetence');
+    public function competence() {
+        return $this->belongsToMany('App\Competence', 'activityforcompetence', 'learningactivity_id');
     }
 
     public function timeslot() {
@@ -65,6 +65,6 @@ class LearningActivityActing extends Model {
     }
 
     public function getCompetencies() {
-        //return $this->activityForCompetence()->competence()->first()->competence_label;
+        return $this->competence()->first()->competence_label;
     }
 }

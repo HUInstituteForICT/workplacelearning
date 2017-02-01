@@ -63,8 +63,8 @@ Route::group([
                 Route::post('leerproces/update/{id}',                   'ProducingActivityController@update');
 
                 // acting activty
-                Route::get('acting',                                    'ActingActivtyController@show');
-                Route::post('acting/create',                            'ActingActivtyController@create');
+                Route::get('acting',                                    'ActingActivityController@show');
+                Route::post('acting/create',                            'ActingActivityController@create');
 
                 // Feedback
                 Route::get('feedback/{id}',                             'ProducingActivityController@feedback');
