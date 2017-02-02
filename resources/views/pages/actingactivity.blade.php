@@ -6,15 +6,30 @@
     <div class="container-fluid">
         <script>
             $(document).ready(function() {
-                // Add addition person
+                // Add new resource person or material
                 (function() {
-                    $('#cond-select-hidden').hide();
+                    $('#new-rp-hidden').hide();
+                    $('#new-rm-hidden').hide();
 
                     $('[name="res_person"]').click(function() {
                         if ($('#new_rp').is(':checked')) {
-                            $('#cond-select-hidden').show();
+                            $('#new-rp-hidden').show();
                         } else {
-                            $('#cond-select-hidden').hide();
+                            $('#new-rp-hidden').hide();
+                        }
+                    });
+
+                    $('[name="res_material"]').click(function() {
+                        if ($('#new_rm').is(':checked')) {
+                            $('#new-rm-hidden').show();
+                        } else {
+                            $('#new-rm-hidden').hide();
+                        }
+
+                        if ($('#rm_none').is(':checked') || $('#new_rm').is(':checked')) {
+                            $('#res_material_detail').hide();
+                        } else {
+                            $('#res_material_detail').show();
                         }
                     });
                 })();
@@ -56,6 +71,15 @@
                 </div>
             </div>
         </div>
+        @if(count($errors) > 0 || session()->has('success'))
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
+                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
+                    </div>
+                </div>
+            </div>
+        @endif
         {{ Form::open(array('url' => '/acting/create', 'class' => 'form-horizontal')) }}
             <div class="row well">
                 <div class="col-md-2 form-group">
@@ -77,7 +101,7 @@
                     @endforeach
                     <div>
                         <label><input type="radio" name="res_person" id="new_rp" value="new"><span class="new">Anders<br />(Toevoegen)</span></label>
-                        <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" placeholder="Omschrijving" />
+                        <input id="new-rp-hidden" type="text" name="new_rp" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" />
                     </div>
                 </div>
                 <div class="col-md-2 from-group buttons">
@@ -85,9 +109,10 @@
                     @foreach ($resMaterials as $key => $value)
                         <label><input type="radio" name="res_material" value="{{ $value->rm_id }}" {{ ($key == 0) ? "checked" : "" }} /><span>{{ $value->rm_label }}</span></label>
                     @endforeach
-                    <label><input type="radio" name="res_material" id="new_rm" value="none"><span>Geen</span></label>
-                    <input type="text" name="res_material_detail" placeholder="Beschrijving bron" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" />
+                    <label><input type="radio" name="res_material" id="rm_none" value="none"><span>Geen</span></label>
+                    <input type="text" name="res_material_detail" id="res_material_detail" placeholder="Beschrijving bron" />
                     <label><input type="radio" name="res_material" id="new_rm" value="new"><span class="new">Anders<br />(Toevoegen)</span></label>
+                    <input type="text" name="new_rm" id="new-rm-hidden" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" />
                 </div>
                 <div class="col-md-2 from-group">
                     <h4>Wat heb je geleerd?<br />Wat is het gevolg?</h4>
