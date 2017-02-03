@@ -75,7 +75,7 @@
             </div>
         @endif
         <div class="row">
-            {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => URL::to('leerproces/create', array(), true))) !!}
+            {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => URL::to('producing/create', array(), true))) !!}
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
                     <input class="form-control fit-bs" type="date" name="datum" value="{{ date('Y-m-d', strtotime("now")) }}" /><br/>
