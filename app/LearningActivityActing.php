@@ -57,7 +57,8 @@ class LearningActivityActing extends Model {
     }
 
     public function getResourceMaterial() {
-        return $this->resourceMaterial()->first()->rm_label;
+        $label = $this->resourceMaterial()->first();
+        return ($label) ? $label->rm_label : 'Geen';
     }
 
     public function getLearningGoal() {

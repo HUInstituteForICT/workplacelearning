@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\WorkplaceLearningPeriod;
 use App\LearningActivityActing;
 use App\ResourcePerson;
+use App\ResourceMaterial;
 
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
@@ -37,9 +38,9 @@ class ActingActivityController extends Controller {
             'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
             'description'           => 'required|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
             'timeslot'              => 'required|exists:timeslot,timeslot_id',
-            //'res_person'            => 'required_unless:res_person,new|exists:resourceperson,rp_id',
-            'res_material'          => 'required|exists:resourcematerial,rm_id',
-            //'res_material_detail'   => 'required_unless:res_material,none|url',
+            'res_person'            => 'required_unless:res_person,new',
+            'res_material'          => 'required_unless:res_material,none',
+            'res_material_detail'   => 'required_unless:res_material,none',
             'learned'               => 'required|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
             'support_wp'            => 'required|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
             'support_ed'            => 'required|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
@@ -66,7 +67,7 @@ class ActingActivityController extends Controller {
 
         if ($req['res_material'] == 'new') {
             $m = new ResourceMaterial;
-            $m->rm_lavel = $req['new_rm'];
+            $m->rm_label = $req['new_rm'];
             $m->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
             $m->save();
 
@@ -81,7 +82,7 @@ class ActingActivityController extends Controller {
         $a->support_wp = $req['support_wp'];
         $a->support_ed = $req['support_ed'];
         $a->res_person_id = $req['res_person'];
-        $a->res_material_id = $req['res_material'];
+        ($req['res_material'] != 'none') ? $a->res_material_id = $req['res_material'] : null;
         $a->res_material_detail = $req['res_material_detail'];
         $a->learninggoal_id = $req['learning_goal'];
         $a->save();
