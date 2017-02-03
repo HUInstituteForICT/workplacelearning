@@ -43,10 +43,8 @@ Route::group([
                 Route::post('stageperiode/create',                      'WorkplaceLearningController@create');
                 Route::post('stageperiode/update/{id}',                 'WorkplaceLearningController@update')->where('id', '[0-9]*');
 
-
-                // Category and SWV creation/updating
-                Route::post('categorie/update/{id}',                    'InternshipController@updateCategories');
-                Route::post('samenwerkingsverband/update/{id}',         'InternshipController@updateCooperations');
+                // Category updating
+                Route::post('categorie/update/{id}',                    'WorkplaceLearningController@updateCategories')->where('id', '[0-9]*');
 
                 // Calendar Creation
                 Route::get('deadline',                                  'CalendarController@show');
@@ -57,18 +55,6 @@ Route::group([
                 Route::get('bugreport',                                 'HomeController@showBugReport');
                 Route::post('bugreport/create',                         'HomeController@createBugReport');
 
-                // Producing activity
-                Route::get('leerproces',                                'ProducingActivityController@show');
-                Route::post('leerproces/create',                        'ProducingActivityController@create');
-                Route::post('leerproces/update/{id}',                   'ProducingActivityController@update');
-
-                // acting activty
-                Route::get('acting',                                    'ActingActivityController@show');
-                Route::post('acting/create',                            'ActingActivityController@create');
-
-                // Feedback
-                Route::get('feedback/{id}',                             'ProducingActivityController@feedback');
-                Route::post('feedback/update/{id}',                     'ProducingActivityController@updateFeedback');
                 // Progress
                 Route::get('voortgang/{page}',                          'ProducingActivityController@progress');
                 Route::get('weekstaten/export',                         'ReportController@export');
@@ -79,7 +65,27 @@ Route::group([
 
                 // Chart Generation
                 Route::get('chart/generate/{id}',                       'ChartController@show');
+        }
+);
 
-                // Catch Other routes and redirect to home
-                Route::get('/{route}',                                  'HomeController@showDefault');
-        });
+Route::group([
+            'before' => 'auth',
+            'prefix' => LaravelLocalization::setLocale(),
+            'middleware' => [ 'localizationRedirect', 'taskTypeRedirect' ],
+            ], function(){
+
+                Route::get('leerproces',                               'ProducingActivityController@show');
+                // Producing activity
+                Route::get('producing',                                'ProducingActivityController@show');
+                Route::post('producing/create',                        'ProducingActivityController@create');
+                Route::post('producing/update/{id}',                   'ProducingActivityController@update');
+
+                // acting activty
+                Route::get('acting',                                    'ActingActivityController@show');
+                Route::post('acting/create',                            'ActingActivityController@create');
+
+                // Feedback
+                Route::get('feedback/{id}',                             'ProducingActivityController@feedback');
+                Route::post('feedback/update/{id}',                     'ProducingActivityController@updateFeedback');
+            }
+);

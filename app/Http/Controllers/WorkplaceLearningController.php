@@ -9,6 +9,7 @@ namespace app\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 
+use App\Category;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Support\Collection;
@@ -22,9 +23,7 @@ class WorkplaceLearningController extends Controller{
     public function show(){
         return view("pages.internship")
                 ->with("period", new WorkplaceLearningPeriod)
-                ->with("workplace", new Workplace)
-                ->with("categories", new Collection)
-                ->with("resource", new Collection);
+                ->with("workplace", new Workplace);
     }
 
     public function edit($id){
@@ -36,7 +35,7 @@ class WorkplaceLearningController extends Controller{
             return view('pages.internship')
                 ->with('period', $wplp)
                 ->with("workplace", Workplace::find($wplp->wp_id))
-                ->with("categories", new Collection)
+                ->with("categories", Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get())
                 ->with("resource", new Collection);
         }
     }
@@ -158,12 +157,12 @@ class WorkplaceLearningController extends Controller{
 
         return redirect('profiel')->with('success', 'De wijzigingen zijn opgeslagen.');
     }
-/*
+
     public function updateCategories(Request $request, $id){
         // Verify the given ID is valid and belongs to the student
         $t = false;
-        foreach(Auth::user()->internshipperiods()->get() as $ip){
-            if($ip->stud_stid == $id){
+        foreach(Auth::user()->workplacelearningperiods()->get() as $ip){
+            if($ip->wplp_id == $id){
                 $t = true;
                 break;
             }
@@ -171,14 +170,14 @@ class WorkplaceLearningController extends Controller{
         if(!$t) return redirect('profiel'); // $id is invalid or does not belong to the student
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
-        if(!empty($request['newcat']['-1']['cg_value'])){
+        if(!empty($request['newcat']['0']['cg_label'])){
            $request['cat'] = array_merge(((is_array($request['cat'])) ? $request['cat'] : array()), $request['newcat']);
         }
 
         $validator = Validator::make($request->all(), [
+            'cat.*.wplp_id'       => 'required|digits_between:1,5',
             'cat.*.cg_id'       => 'required|digits_between:1,5',
-            'cat.*.ss_id'       => 'required|digits_between:1,5',
-            'cat.*.cg_value'    => 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
+            'cat.*.cg_label'    => 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
         ]);
         if($validator->fails()){
             // Noes. errors occured. Exit back to profile page with errors
@@ -189,19 +188,19 @@ class WorkplaceLearningController extends Controller{
             // All is well :)
             foreach($request['cat'] as $cat){
                 // Either update or create a new row.
-                $c = Categorie::find($cat['cg_id']);
+                $c = Category::find($cat['cg_id']);
                 if(is_null($c)){
-                    $c = new Categorie;
-                    $c->ss_id = $cat['ss_id'];
+                    $c = new Category;
+                    $c->wplp_id = $cat['wplp_id'];
                 }
-                $c->cg_value = $cat['cg_value'];
+                $c->category_label = $cat['cg_label'];
                 $c->save();
             }
             // Done, redirect back to profile page
-            return redirect('stageperiode/edit/'.$id);
+            return redirect('stageperiode/edit/'.$id)->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');
         }
     }
-
+/*
     public function updateCooperations(Request $request, $id){
         // Verify the given ID is valid and belongs to the student
         $t = false;
