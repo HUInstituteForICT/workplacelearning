@@ -51,6 +51,7 @@ class AnalysisController extends Controller {
         return view('pages.analysis.detail')
                 ->with('analysis', $a)
                 ->with('chains', $task_chains)
+                ->with('year', $year)
                 ->with('monthno', $month);
     }
 
