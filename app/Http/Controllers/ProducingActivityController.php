@@ -129,9 +129,9 @@ class ProducingActivityController extends Controller{
                 $r['resource'] = "other";
             }
             if($r['category_id'] == "new"){
-                $c                  = new Categorie;
+                $c                  = new Category;
                 $c->category_label  = $r['newcat'];
-                $c->ss_id           = Auth::user()->getCurrentWorkplaceLearningPeriod()->student_id;
+                $c->wplp_id         = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
                 $c->save();
             }
             if($r['personsource'] == "new"){
@@ -175,7 +175,7 @@ class ProducingActivityController extends Controller{
             //     default:            $w->lerenmetdetail = "";
             // }
 
-            $w->category_id             = ($r['category_id'] == "new") ? $c->cg_id : $r['category_id'];
+            $w->category_id             = ($r['category_id'] == "new") ? $c->category_id : $r['category_id'];
             $w->difficulty_id           = $r['moeilijkheid'];
             $w->status_id               = $r['status'];
             $w->prev_lap_id             = ($r['previous_wzh'] != "-1") ? $r['previous_wzh'] : NULL;
@@ -195,10 +195,11 @@ class ProducingActivityController extends Controller{
                 && ($w->status_id == 2)
             ){
                 // Create Feedback object and redirect
-                $fb = new Feedback;
+                /*$fb = new Feedback;
                 $fb->learningactivity_id = $w->lap_id;
                 $fb->save();
                 return redirect('feedback/'.$fb->fb_id)->with('success', 'De leeractiviteit is opgeslagen.');
+                */
             }
             return redirect('producing')->with('success', 'De leeractiviteit is opgeslagen.');
         }
