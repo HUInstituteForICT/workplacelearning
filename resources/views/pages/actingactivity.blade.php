@@ -26,7 +26,7 @@
                             $('#new-rm-hidden').hide();
                         }
 
-                        if ($('#rm_none').is(':checked') || $('#new_rm').is(':checked')) {
+                        if ($('#rm_none').is(':checked')) {
                             $('#res_material_detail').hide();
                         } else {
                             $('#res_material_detail').show();
