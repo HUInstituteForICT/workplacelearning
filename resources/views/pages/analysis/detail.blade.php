@@ -37,7 +37,7 @@
                                 NULL,
                                 "MMMM YYYY"
                         );
-                        echo $intlfmt->format(strtotime("2016-".$monthno."-01"));
+                        echo $intlfmt->format(strtotime($year."-".$monthno."-01"));
                         ?>
                     </h1>
                 </div>
