@@ -74,7 +74,7 @@ class ProducingActivityController extends Controller{
             $fb->ondersteuning_werkplek     = (!isset($r['ondersteuningWerkplek'])) ? $r['ondersteuning_werkplek'] : "Geen";
             $fb->ondersteuning_opleiding    = (!isset($r['ondersteuningOpleiding'])) ? $r['ondersteuning_opleiding'] : "Geen";
             $fb->save();
-            return redirect('leerproces')->with('success', 'De feedback is opgeslagen.');
+            return redirect('producing')->with('success', 'De feedback is opgeslagen.');
         }
     }
 
@@ -200,7 +200,7 @@ class ProducingActivityController extends Controller{
                 $fb->save();
                 return redirect('feedback/'.$fb->fb_id)->with('success', 'De leeractiviteit is opgeslagen.');
             }
-            return redirect('leerproces')->with('success', 'De leeractiviteit is opgeslagen.');
+            return redirect('producing')->with('success', 'De leeractiviteit is opgeslagen.');
         }
     }
 

@@ -63,7 +63,7 @@
                 eventTextColor:'#FFFFFF',
                 eventClick: function(calEvent, jsEvent, view) {
                     $('.fc-newEvent-button').trigger('click');
-                    $('#eventForm').attr('action', '{{ URL::to('deadline/update', array(), false) }}');
+                    $('#eventForm').attr('action', '{{ URL::to('deadline/update', array(), true) }}');
                     $('#idDeadline').val(calEvent.id);
                     $('#nameDeadline').val(calEvent.title);
                     $('input[name="dateDeadline"]').val(calEvent.start.local().format('DD-MM-YYYY HH:mm'));
@@ -80,7 +80,7 @@
     </script>
     <div id='calendar'></div>
     <div id="newCalendarEvent" style="display: true;">
-    {!! Form::open(array('id' => 'eventForm', 'class' => 'form-inline col-md-12 well', 'url' => URL::to('deadline/create', array(), false))) !!}
+    {!! Form::open(array('id' => 'eventForm', 'class' => 'form-inline col-md-12 well', 'url' => URL::to('deadline/create', array(), true))) !!}
         <input type="hidden" id="idDeadline" name="id" value="0" />
         <div class="col-sm-3 col-md-3">
         <div class="form-group">
