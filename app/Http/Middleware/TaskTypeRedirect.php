@@ -15,9 +15,6 @@ class TaskTypeRedirect {
      * @return mixed
      */
     public function handle(Request $request, Closure $next){
-        dump($request->route());
-        die();
-
         if($request->getRequestUri() == "/leerproces"){
             if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
                 return redirect("acting");

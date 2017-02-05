@@ -46,12 +46,14 @@
                 <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i> Hoe werkt deze pagina?</h4>
                 <div id="help-text">
                     <ol>
-                        <li>Kies een datum waarop je de werkzaamheid hebt uitgevoerd. Deze mag alleen in het verleden of heden liggen.</li>
-                        <li>Vul een omschrijving in van wat je hebt gedaan</li>
-                        <li>Selecteer hoe je aan deze taak hebt gewerkt, of vul een nieuw verband toe. Heb je er alleen aan gewerkt of samen met iemand?</li>
-                        <li>Selecteer de status van deze werkzaamheid. Is deze al afgerond of ben je er nog mee bezig?</li>
+                        <li>Kies een datum waarop je de activiteit hebt uitgevoerd. Deze mag niet in de toekomst liggen.</li>
+                        <li>Vul een omschrijving in van de activiteit die je hebt uitgevoerd.</li>
+                        <li>Geef aan hoeveel tijd je aan deze activiteit hebt besteed.</li>
+                        <li>Selecteer de categorie waarin deze activiteit het beste past.</li>
+                        <li>Selecteer welke hulpbron je hebt ingeschakeld bij deze activiteit.</li>
+                        <li>Selecteer de status van deze werkzaamheid. Is deze al afgerond of ben je er nog mee bezig? Of is deze nog niet klaar maar heb je het overgedragen aan iemand anders?</li>
                         <li>Selecteer hoe moeilijk je deze taak vond. Liep je tegen problemen aan of ging het je goed af?</li>
-                        <li>Klik op 'Opslaan'. De taak wordt onder in het scherm toegevoegd.</li>
+                        <li>Klik op 'Opslaan'. De activiteit wordt onder in het scherm toegevoegd.</li>
                     </ol>
                 </div>
             </div>
