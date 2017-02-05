@@ -12,6 +12,7 @@ namespace app\Http\Controllers;
 use App\Category;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
+use App\LearningGoal;
 use Illuminate\Support\Collection;
 use Validator;
 use Illuminate\Http\Request;
@@ -87,6 +88,14 @@ class WorkplaceLearningController extends Controller{
         $wplp->nrofdays     = $r['numdays'];
         $wplp->description  = $r['internshipAssignment'];
         $wplp->save();
+
+        // Creating default learning goals for internship period
+        for ($i = 1; $i < 4; $i ++) {
+            $l = new LearningGoal;
+            $l->learninggoal_label = sprintf('Leervraag %s', $i);
+            $l->wplp_id = $wplp->wplp_id;
+            $l->save();
+        }
 
         // Set the user setting to the current Internship ID
         if($r['isActive'] == 1){
