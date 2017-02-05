@@ -51,39 +51,74 @@ Route::group([
                 Route::post('deadline/create',                          'CalendarController@create')->name('deadline-create');
                 Route::post('deadline/update',                          'CalendarController@update')->name('deadline-update');
 
+                // acting activty
+                Route::get('acting',                                    'ActingActivityController@show')->name('leerproces-acting');
+                Route::post('acting/create',                            'ActingActivityController@create')->name('leerproces-acting-create');
+
                 // Bugreport
                 Route::get('bugreport',                                 'HomeController@showBugReport')->name('bugreport');
                 Route::post('bugreport/create',                         'HomeController@createBugReport');
+
+
+                Route::group([
+                                'middleware' => [ 'taskTypeRedirect' ],
+                            ], function(){
+                                Route::get('process',   'ActingActivityController@show')->name('process');
+                                Route::get('progress',  'ActingActivityController@show')->name('progress');
+                            }
+                );
+
+                /* EP Type: Acting */
+                Route::group([
+                                'prefix' => "/acting",
+                            ], function(){
+                                Route::get('process',                           'ActingActivityController@show')->name('process-acting');
+                                Route::post('process/create',                   'ActingActivityController@create')->name('process-acting-create');
+                                Route::post('process/update/{id}',              'ActingActivityController@update')->name('process-acting-update');
+
+                                Route::get('progress/{page}',                   'ActingActivityController@show')->where('page', '[1-9]{1}[0-9]*')->name('progress');
+
+                                /*
+                                * Disabled for now, analysis for acting is status: TODO
+                                */
+
+                                // Progress
+                                //Route::get('progress/{page}',                   'ActingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
+                                //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
+
+                                // Report Creation
+                                //Route::get('analyse',                           'ProducingAnalysisController@showChoiceScreen')->name('analyse-redirect');
+                                //Route::get('analyse-producing',                 'ProducingAnalysisController@showChoiceScreen')->name('analyse-producing-choice');
+                                //Route::get('analyse-producing/{year}/{month}',  'ProducingAnalysisController@showDetail')->name('analyse-producing-detail');
+                            }
+                );
+
+                /* EP Type: Producing */
+                Route::group([
+                                'prefix' => "/producing",
+                            ], function(){
+                                Route::get('process',                           'ProducingActivityController@show')->name('process-producing');
+                                Route::post('process/create',                   'ProducingActivityController@create')->name('process-producing-create');
+                                Route::post('process/update/{id}',              'ProducingActivityController@update')->name('process-producing-update');
+
+                                // Progress
+                                Route::get('progress/{page}',                   'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress-producing');
+                                Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
+
+                                // Report Creation
+                                Route::get('analysis',                          'ProducingAnalysisController@showChoiceScreen')->name('analysis-redirect');
+                                Route::get('analysis',                          'ProducingAnalysisController@showChoiceScreen')->name('analysis-producing-choice');
+                                Route::get('analysis/{year}/{month}',           'ProducingAnalysisController@showDetail')->name('analysis-producing-detail');
+
+                                // Feedback
+                                Route::get('feedback/{id}',                     'ProducingActivityController@feedback')->where('id', '[0-9]*')->name('feedback-producing');
+                                Route::post('feedback/update/{id}',             'ProducingActivityController@updateFeedback')->name('feedback-producing-update');
+                            }
+                );
+
         }
 );
 
-Route::group([
-            'before' => 'auth',
-            'prefix' => LaravelLocalization::setLocale(),
-            'middleware' => [ 'localizationRedirect', 'taskTypeRedirect' ],
-            ], function(){
 
-                Route::get('leerproces',                               'ProducingActivityController@show')->name('leerproces');
-                // Producing activity
-                Route::get('producing',                                'ProducingActivityController@show')->name('leerproces-producing');
-                Route::post('producing/create',                        'ProducingActivityController@create');
-                Route::post('producing/update/{id}',                   'ProducingActivityController@update');
 
-                // acting activty
-                Route::get('acting',                                    'ActingActivityController@show');
-                Route::post('acting/create',                            'ActingActivityController@create');
 
-                // Progress
-                Route::get('voortgang/{page}',                          'ProducingActivityController@progress');
-                Route::get('weekstaten/export',                         'ReportController@export');
-
-                // Report Creation
-                Route::get('analyse',                                   'ProducingAnalysisController@showChoiceScreen')->name('analyse-redirect');
-                Route::get('analyse-producing',                         'ProducingAnalysisController@showChoiceScreen')->name('analyse-producing-choice');
-                Route::get('analyse-producing/{year}/{month}',          'ProducingAnalysisController@showDetail')->name('analyse-producing-detail');
-
-                // Feedback
-                Route::get('feedback/{id}',                             'ProducingActivityController@feedback')->where('id', '[0-9]*');
-                Route::post('feedback/update/{id}',                     'ProducingActivityController@updateFeedback');
-            }
-);

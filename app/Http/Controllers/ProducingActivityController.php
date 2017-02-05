@@ -24,7 +24,7 @@ class ProducingActivityController extends Controller{
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
-        return view('pages.producingactivity')
+        return view('pages.producing.activity')
             ->with('learningWith', $resourcePersons);
     }
 
@@ -39,7 +39,7 @@ class ProducingActivityController extends Controller{
     }
 
     public function progress($pagenr){
-        return view('pages.progress')->with('page', $pagenr);
+        return view('pages.producing.progress')->with('page', $pagenr);
     }
 
     public function updateFeedback(Request $r, $id){
@@ -209,16 +209,13 @@ class ProducingActivityController extends Controller{
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplace() == null)
             return redirect('profiel');
-        return view('pages.producingactivity');
+        return view('pages.producing.activity');
     }
 
     public function update(Request $r){
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplace() == null)
             return redirect('profiel');
-        return view('pages.producingactivity');
-    }
-    public function __construct(){
-        $this->middleware('auth');
+        return view('pages.producing.activity');
     }
 }

@@ -103,32 +103,34 @@ class WorkplaceLearningPeriod extends Model{
             ->get();
     }
 
-    public function getLastActivity($count) {
+    public function getLastActivity($count, $offset = 0) {
         switch ($this->student()->first()->ep_id) {
             case 1:
-                return $this->getLastActivityProducing($count);
+                return $this->getLastActivityProducing($count, $offset);
                 break;
             case 2:
-                return $this->getLastActivityActing($count);
+                return $this->getLastActivityActing($count, $offset);
                 break;
             default:
                 return null;
         }
     }
 
-    private function getLastActivityProducing($count){
+    private function getLastActivityProducing($count, $offset = 0){
         return $this->LearningActivityProducing()
             ->orderBy('date', 'desc')
             ->orderBy('lap_id', 'desc')
-            ->limit($count)
+            ->skip($offset)
+            ->take($count)
             ->get();
     }
 
-    private function getLastActivityActing($count) {
+    private function getLastActivityActing($count, $offset = 0) {
         return $this->LearningActivityActing()
             ->orderBy('date', 'desc')
             ->orderBy('laa_id', 'desc')
-            ->limit($count)
+            ->skip($offset)
+            ->take($count)
             ->get();
     }
 }

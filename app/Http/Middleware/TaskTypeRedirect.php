@@ -15,21 +15,18 @@ class TaskTypeRedirect {
      * @return mixed
      */
     public function handle(Request $request, Closure $next){
-        dump($request->route());
-        die();
-
-        if($request->getRequestUri() == "/leerproces"){
+        if($request->route()->getName() == "process"){
             if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-                return redirect("acting");
+                return redirect()->route('process-acting');
             } else {
-                return redirect("producing");
+                return redirect()->route('process-producing');
             }
         }
-        if($request->getRequestUri() == "/analyse"){
+        if($request->route()->getName() == "progress"){
             if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-                return redirect("/analyse-acting");
+                //return redirect()->route('progress-acting', ['page' => 1]);
             } else {
-                return redirect("/analyse-producing");
+                return redirect()->route('progress-producing', ['page' => 1]);
             }
         }
         return $next($request);

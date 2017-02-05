@@ -13,16 +13,13 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class ActingActivityController extends Controller {
-    public function __construct(){
-        $this->middleware('auth');
-    }
 
     public function show() {
         $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
-        return view('pages.actingactivity')
+        return view('pages.acting.activity')
             ->with('timeslots', Auth::user()->getEducationProgram()->getTimeslots())
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
