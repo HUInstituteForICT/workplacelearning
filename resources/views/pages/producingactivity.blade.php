@@ -104,7 +104,7 @@
                     @endfor
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Categorie <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
+                    <h4>Categorie <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories() as $cat)
                             <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->category_id == 1) ? "checked" : "" }}/><span>{{ $cat->category_label }}</span></label>
@@ -116,7 +116,7 @@
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Werken/Leren Met <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
+                    <h4>Werken/Leren Met <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_with') }}"></i></h4>
                     <div id="swvcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>Persoon</span></label>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
@@ -146,13 +146,13 @@
                     </div> -->
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Status <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
+                    <h4>Status <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_status') }}"></i></h4>
                     <label><input type="radio" name="status" value="1" checked/><span>Afgerond</span></label>
                     <label><input type="radio" name="status" value="2"/><span>Mee Bezig</span></label>
                     <label><input type="radio" name="status" value="3"/><span>Overgedragen</span></label>
                 </div>
                 <div class="col-md-1 form-group buttons">
-                    <h4 data-toggle="tooltip" data-placement="bottom" title="[PLACEHOLDER]">Moeilijkheidsgraad <i class="fa fa-info-circle" aria-hidden="true"></i></h4>
+                    <h4>Moeilijkheidsgraad <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_difficulty') }}"></i></h4>
                     <label><input type="radio" name="moeilijkheid" value="1" checked/><span>Makkelijk</span></label>
                     <label><input type="radio" name="moeilijkheid" value="2"/><span>Gemiddeld</span></label>
                     <label><input type="radio" name="moeilijkheid" value="3"/><span>Moeilijk</span></label>
