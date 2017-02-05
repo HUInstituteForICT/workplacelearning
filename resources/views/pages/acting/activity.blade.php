@@ -61,12 +61,13 @@
                 <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i> Hoe werkt deze pagina?</h4>
                 <div id="help-text">
                     <ol>
-                        <li>Kies een datum waarop je de werkzaamheid hebt uitgevoerd. Deze mag alleen in het verleden of heden liggen.</li>
-                        <li>Vul een omschrijving in van wat je hebt gedaan</li>
-                        <li>Selecteer hoe je aan deze taak hebt gewerkt, of vul een nieuw verband toe. Heb je er alleen aan gewerkt of samen met iemand?</li>
-                        <li>Selecteer de status van deze werkzaamheid. Is deze al afgerond of ben je er nog mee bezig?</li>
-                        <li>Selecteer hoe moeilijk je deze taak vond. Liep je tegen problemen aan of ging het je goed af?</li>
-                        <li>Klik op 'Opslaan'. De taak wordt onder in het scherm toegevoegd.</li>
+                        <li>Kies een datum waarop het leermoment plaatsvond. De datum mag niet in de toekomst liggen.</li>
+                        <li>Vul een omschrijving in van de situatie waarin het leermoment plaatsvond.</li>
+                        <li>Geef aan op welk moment van de dag het leermoment plaatsvond.</li>
+                        <li>Geef aan met wie je dit leermoment meemaakte of dat je het alleen hebt ervaren.</li>
+                        <li>Geef aan welke theorie je gebruikte tijdens dit leermoment. Geef het type bron en een beschrijving op.</li>
+                        <li>Geef dan aan wat je precies geleerd hebt van dit moment en wat de volgende stap voor jou gaat zijn. Daarnaast kun je nog aangeven wat je eventueel voor ondersteuning daarbij nodig hebt van je stageplek of van de HU (let op: dit wordt niet doorgegeven aan de betreffende personen, maar wel opgeslagen in het systeem, dus je kunt het later wel weer terugvinden).</li>
+                        <li>Tenslotte kun je dit leermoment nog koppelen aan een van je leervragen (of niet) en aan een van de competenties van je opleiding.</li>
                     </ol>
                 </div>
             </div>
@@ -125,13 +126,13 @@
                 <div class="col-md-2 from-group">
                     <div>
                         <h4>Leervraag <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learninggoal') }}"></i></h4>
-                        <select name="learning_goal" class="selectlist_full_width">
+                        <select name="learning_goal" class="form-control fit-bs">
                             @foreach ($learningGoals as $key => $value)
                                 <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'checked' : null }}>{{ $value->learninggoal_label }}</option>
                             @endforeach
                         </select>
                         <h4>Competentie <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_competence') }}"></i></h4>
-                        <select name="competence" class="selectlist_full_width">
+                        <select name="competence" class="form-control fit-bs">
                             @foreach ($competencies as $value)
                                 <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'checked' : null }}>{{ $value->competence_label }}</option>
                             @endforeach
