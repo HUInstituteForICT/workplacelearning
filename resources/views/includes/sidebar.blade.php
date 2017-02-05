@@ -6,13 +6,13 @@
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.dash') }}</div>
             </div>
         </a>
-        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/leerproces', array()) }}">
+        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/process', array()) }}">
             <div class="tile white_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/productivity_blauw.png', true) }}" />
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.input') }}</div>
             </div>
         </a>
-        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/analyse', array()) }}">
+        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/analysis', array()) }}">
             <div class="tile blue_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/cursus_wit.svg', true) }}" />
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.reports') }}</div>
@@ -30,7 +30,7 @@
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.profile') }}</div>
             </div>
         </a>
-        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/voortgang/1', array()) }}">
+        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/progress', array()) }}">
             <div class="tile white_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/Studievoortgang_blauw.svg', true) }}" />
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.settings') }}</div>

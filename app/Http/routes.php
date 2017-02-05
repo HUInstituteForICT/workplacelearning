@@ -64,7 +64,8 @@ Route::group([
                                 'middleware' => [ 'taskTypeRedirect' ],
                             ], function(){
                                 Route::get('process',   'ActingActivityController@show')->name('process');
-                                Route::get('progress',  'ActingActivityController@show')->name('progress');
+                                Route::get('progress',  'ProducingActivityController@progress')->name('progress');
+                                Route::get('analysis',  'ProducingActivityController@show')->name('analysis');
                             }
                 );
 
@@ -87,9 +88,8 @@ Route::group([
                                 //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
 
                                 // Report Creation
-                                //Route::get('analyse',                           'ProducingAnalysisController@showChoiceScreen')->name('analyse-redirect');
-                                //Route::get('analyse-producing',                 'ProducingAnalysisController@showChoiceScreen')->name('analyse-producing-choice');
-                                //Route::get('analyse-producing/{year}/{month}',  'ProducingAnalysisController@showDetail')->name('analyse-producing-detail');
+                                Route::get('analysis',                          'ProducingAnalysisController@showChoiceScreen')->name('analysis-acting-choice');
+                                Route::get('analysis/{year}/{month}',           'ProducingAnalysisController@showDetail')->name('analysis-acting-detail');
                             }
                 );
 
@@ -106,7 +106,6 @@ Route::group([
                                 Route::get('report/export',                     'ProducingReportController@export')->name('report-producing-export');
 
                                 // Report Creation
-                                Route::get('analysis',                          'ProducingAnalysisController@showChoiceScreen')->name('analysis-redirect');
                                 Route::get('analysis',                          'ProducingAnalysisController@showChoiceScreen')->name('analysis-producing-choice');
                                 Route::get('analysis/{year}/{month}',           'ProducingAnalysisController@showDetail')->name('analysis-producing-detail');
 

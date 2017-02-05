@@ -22,14 +22,20 @@ class TaskTypeRedirect {
                 return redirect()->route('process-producing');
             }
         }
+        if($request->route()->getName() == "analysis"){
+            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
+                return redirect()->route('analysis-acting-choice');
+            } else {
+                return redirect()->route('analysis-producing-choice');
+            }
+        }
         if($request->route()->getName() == "progress"){
             if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-                //return redirect()->route('progress-acting', ['page' => 1]);
+                return redirect()->route('progress-acting', ['page' => 1]);
             } else {
                 return redirect()->route('progress-producing', ['page' => 1]);
             }
         }
         return $next($request);
     }
-
 }
