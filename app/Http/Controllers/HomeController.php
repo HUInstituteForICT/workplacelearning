@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
+use App\EducationProgram;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -44,18 +44,20 @@ class HomeController extends Controller{
             [
                 'student_name'  => Auth::user()->getInitials()." ".Auth::user()->achternaam." (".Auth::user()->voornaam.")",
                 'student_email' => Auth::user()->email,
+                'education'     => EducationProgram::find(Auth::user()->ep_id),
                 'subject'       => $r['onderwerp'],
                 'content'       => $r['uitleg'],
             ],
             function($message){
                 $message->subject('Tip/Bug ingezonden!');
                 $message->from('debug@werkplekleren.hu.nl', 'Werkplekleren @ Hogeschool Utrecht');
-                $message->to('max.cassee@student.hu.nl');
+                $message->to('max.cassee@hu.nl');
                 $message->cc('esther.vanderstappen@hu.nl');
+                $message->cc('dylan.vangils@student.hu.nl');
                 $message->replyTo(Auth::user()->email);
             }
         );
-        return redirect('home')->with('success', 'Bedankt voor je bijdrage! Je krijgt per email een reactie terug.');
+        return redirect()->route('home')->with('success', 'Bedankt voor je bijdrage! Je krijgt per email een reactie terug.');
     }
     
 }
