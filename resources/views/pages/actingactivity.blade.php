@@ -101,7 +101,7 @@
                     @endforeach
                     <div>
                         <label><input type="radio" name="res_person" id="new_rp" value="new"><span class="new">Anders<br />(Toevoegen)</span></label>
-                        <input id="new-rp-hidden" type="text" name="new_rp" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" />
+                        <input id="new-rp-hidden" type="text" name="new_rp" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
                     </div>
                 </div>
                 <div class="col-md-2 from-group buttons">
@@ -112,7 +112,7 @@
                     <label><input type="radio" name="res_material" id="rm_none" value="none"><span>Geen</span></label>
                     <input type="text" name="res_material_detail" id="res_material_detail" placeholder="Beschrijving bron" />
                     <label><input type="radio" name="res_material" id="new_rm" value="new"><span class="new">Anders<br />(Toevoegen)</span></label>
-                    <input type="text" name="new_rm" id="new-rm-hidden" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" />
+                    <input type="text" name="new_rm" id="new-rm-hidden" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
                 </div>
                 <div class="col-md-2 from-group">
                     <h4>Wat heb je geleerd?<br />Wat is het gevolg?</h4>
