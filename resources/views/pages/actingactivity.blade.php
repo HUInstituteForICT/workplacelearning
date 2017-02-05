@@ -84,56 +84,56 @@
             <div class="row well">
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
-                    <input class="form-control fit-bs" type="date" name="date" value="{{ date('Y-m-d', strtotime("now")) }}" /><br/>
+                    <input class="form-control fit-bs" type="date" name="date" value="{{ (count($errors) > 0) ? old('date') : date('Y-m-d', strtotime("now")) }}" /><br/>
                     <h4>Omschrijving:</h4>
-                    <textarea class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('description') }}</textarea>
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Wanneer?</h4>
                     @foreach ($timeslots as $key => $value)
-                        <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ ($key == 0) ? "checked" : "" }} /><span>{{ $value->timeslot_text }}</span></label>
+                        <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ (old('timeslot') != null && old('timeslot') == $value->timeslot_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->timeslot_text }}</span></label>
                     @endforeach
                 </div>
                 <div class="col-md-2 from-group buttons">
                     <h4>Met wie?</h4>
                     @foreach ($resPersons as $key => $value)
-                        <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ ($key == 0) ? "checked" : "" }} /><span>{{ $value->person_label }}</span></label>
+                        <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->person_label }}</span></label>
                     @endforeach
                     <div>
-                        <label><input type="radio" name="res_person" id="new_rp" value="new"><span class="new">Anders<br />(Toevoegen)</span></label>
-                        <input id="new-rp-hidden" type="text" name="new_rp" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                        <label><input type="radio" name="res_person" id="new_rp" value="new" {{ (old('res_person') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
+                        <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
                     </div>
                 </div>
                 <div class="col-md-2 from-group buttons">
                     <h4>Met welke theorie?</h4>
                     @foreach ($resMaterials as $key => $value)
-                        <label><input type="radio" name="res_material" value="{{ $value->rm_id }}" {{ ($key == 0) ? "checked" : "" }} /><span>{{ $value->rm_label }}</span></label>
+                        <label><input type="radio" name="res_material" value="{{ $value->rm_id }}" {{ (old('res_material') != null && old('res_material') == $value->rm_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->rm_label }}</span></label>
                     @endforeach
-                    <label><input type="radio" name="res_material" id="rm_none" value="none"><span>Geen</span></label>
-                    <input type="text" name="res_material_detail" id="res_material_detail" placeholder="Beschrijving bron" />
-                    <label><input type="radio" name="res_material" id="new_rm" value="new"><span class="new">Anders<br />(Toevoegen)</span></label>
-                    <input type="text" name="new_rm" id="new-rm-hidden" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                    <label><input type="radio" name="res_material" id="rm_none" value="none" {{ (old('res_material') == 'none') ? 'checked' : null }}><span>Geen</span></label>
+                    <input type="text" name="res_material_detail" id="res_material_detail" placeholder="Beschrijving bron" value="{{ old('res_material_detail') }}" />
+                    <label><input type="radio" name="res_material" id="new_rm" value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
+                    <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
                 </div>
                 <div class="col-md-2 from-group">
                     <h4>Wat heb je geleerd?<br />Wat is het gevolg?</h4>
-                    <textarea class="form-control fit-bs" name="learned" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="learned" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('learned') }}</textarea>
                     <h4>Wat heb je hierbij nodig van je werkplek?</h4>
-                    <textarea class="form-control fit-bs" name="support_wp" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="support_wp" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_wp') }}</textarea>
                     <h4>Wat heb je hierbij nodig van de HU?</h4>
-                    <textarea class="form-control fit-bs" name="support_ed" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="support_ed" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_ed') }}</textarea>
                 </div>
                 <div class="col-md-2 from-group">
                     <div>
                         <h4>Leervraag</h4>
                         <select name="learning_goal">
                             @foreach ($learningGoals as $key => $value)
-                                <option value="{{ $value->learninggoal_id }}">{{ $value->learninggoal_label }}</option>
+                                <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'checked' : null }}>{{ $value->learninggoal_label }}</option>
                             @endforeach
                         </select>
                         <h4>Competentie</h4>
                         <select name="competence">
                             @foreach ($competencies as $value)
-                                <option value="{{ $value->competence_id }}">{{ $value->competence_label }}</option>
+                                <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'checked' : null }}>{{ $value->competence_label }}</option>
                             @endforeach
                         </select>
                     </div>

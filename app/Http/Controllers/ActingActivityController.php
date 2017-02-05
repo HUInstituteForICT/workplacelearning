@@ -62,10 +62,9 @@ class ActingActivityController extends Controller {
         });
 
         if ($v->fails()) {
-            $req->flash();
             return redirect('acting')
                 ->withErrors($v)
-                ->withInput($req->all());
+                ->withInput();
         }
 
         if ($req['res_person'] == 'new') {
