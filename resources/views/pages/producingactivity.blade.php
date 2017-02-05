@@ -140,10 +140,6 @@
                         <label class="expand-click"><input type="radio" name="resource" value="boek" /><span>Boek/Artikel</span></label>
                         <input class="cond-hidden" type="text" name="booksource" value="" placeholder="Naam Boek/Artikel" />
                     </div>
-                    <!--<div id="newcontainer">
-                        <label class="expand-click"><input type="radio" name="lerenmet" value="new" /><span class="new" id="newswv">Anders<br />(Toevoegen)</span></label>
-                        <input class="cond-hidden" type="text" name="newlerenmet" placeholder="Omschrijving" />
-                    </div> -->
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Status <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_status') }}"></i></h4>
