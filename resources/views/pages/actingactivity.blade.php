@@ -95,7 +95,7 @@
                     @endforeach
                 </div>
                 <div class="col-md-2 from-group buttons">
-                    <h4>Met wie?<i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_with') }}"></i></h4>
+                    <h4>Met wie? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_with') }}"></i></h4>
                     @foreach ($resPersons as $key => $value)
                         <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->person_label }}</span></label>
                     @endforeach
