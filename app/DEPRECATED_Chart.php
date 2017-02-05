@@ -1,6 +1,6 @@
 <?php
 /**
- * This file (Chart.php) was created on 06/12/2016 at 17:58.
+ * This file (DEPRECATED_Chart.php) was created on 06/12/2016 at 17:58.
  * (C) Max Cassee
  * This project was commissioned by HU University of Applied Sciences.
  */
