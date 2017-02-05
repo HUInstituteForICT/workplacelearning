@@ -96,6 +96,11 @@ class WorkplaceLearningController extends Controller{
             $l->wplp_id = $wplp->wplp_id;
             $l->save();
         }
+        // Create unplanned learning as default learning goal
+        $l = new LearningGoal;
+        $l->learninggoal_label = "Ongepland leermoment";
+        $l->wplp_id = $wplp->wplp_id;
+        $l->save();
 
         // Set the user setting to the current Internship ID
         if($r['isActive'] == 1){
