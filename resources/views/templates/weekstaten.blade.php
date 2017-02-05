@@ -3,10 +3,10 @@
 <head>
     <title>{{
         $student->getInitials()
-        ." ".$student->achternaam
-        ." @ ".$stage->bedrijfsnaam
-        ." (".$stageperiode->startdatum
-        ." t/m ".$stageperiode->einddatum.")"
+        ." ".$student->lastname
+        ." @ ".$stage->wp_name
+        ." (".$stageperiode->startdate
+        ." t/m ".$stageperiode->enddate.")"
     }}</title>
 </head>
 <body>
@@ -19,17 +19,17 @@
             </thead>
             <tbody>
             <tr>
-                <td>Naam Stagiair: {{ $student->voornaam." ".$student->achternaam  }}</td>
-                <td>Stageverlenende Organisatie: {{ $stage->bedrijfsnaam }}
-                    <br /><br />Naam Bedrijfsbegeleider: {{ $stage->contactpersoon }}<br /><br /><br />
+                <td>Naam {{ (strtoupper($student->gender == "M")) ? "Stagiair" : "Stagiaire" }}: {{ $student->firstname." ".$student->lastname  }}</td>
+                <td>Stageverlenende Organisatie: {{ $stage->wp_name }}
+                    <br /><br />Naam Bedrijfsbegeleider: {{ $stage->contact_name }}<br /><br /><br />
                 </td>
             </tr>
             <tr>
-                <td rowspan="2">Studentnummer: {{ $student->studentnummer }}</td>
-                <td>Adres: </td>
+                <td rowspan="2">Studentnummer: {{ $student->studentnr }}</td>
+                <td>Adres: {{ $stage->street ." ".$stage->housenr }}</td>
             </tr>
             <tr>
-                <td>Postcode & Plaats: {{ $stage->postcode.", ".$stage->plaats }}</td>
+                <td>Postcode & Plaats: {{ $stage->postalcode.", ".$stage->town }}</td>
             </tr>
             <tr>
                 <td>Totaal aantal dagen stage gelopen:</td>
@@ -46,7 +46,7 @@
             <tbody>
             <tr>
                 <td style="width: 280px;">Bevestiging, namens het bedrijf, dat het aantal dagen dat stage is gelopen, hierboven naar waarheid is ingevuld.</td>
-                <td>Naam: {{ $stage->contactpersoon }}
+                <td>Naam: {{ $stage->contact_name }}
                     <br /><br /><br />Datum: {{ date('d-m-Y') }}
                     <br /><br /><br />Handtekening:
                     <br /><br /><br />
@@ -57,11 +57,11 @@
             </tr>
             </tbody>
         </table>
-        <div class="page-break"></div>
 
         <!-- Auto Import Begin -->
-        @while(strtotime($date_loop) < strtotime($stageperiode->einddatum) && strtotime($date_loop) < time())
+        @while(strtotime($date_loop) < strtotime($stageperiode->enddate) && strtotime($date_loop) < time())
         <?php $weekno = 1; ?>
+        <div class="page-break"></div>
         <table class="full-width" cellpadding="0" cellspacing="0" style="margin-top: 50px;">
             <thead>
             <tr>
@@ -78,10 +78,10 @@
                         <td style="width:100px;">{{ $date_loop }}</td>
                         <td>
                             <?php $hrs = 0; ?>
-                            @if(array_key_exists("".date('d-m-Y', strtotime($date_loop)), $wzh_array))
-                            @foreach($wzh_array["".date('d-m-Y', strtotime($date_loop))] as $wzh)
-                                <?php $hrs += $wzh['hours']; ?>
-                                - {{ $wzh['description'] }}<br />
+                            @if(array_key_exists("".date('d-m-Y', strtotime($date_loop)), $lap_array))
+                            @foreach($lap_array["".date('d-m-Y', strtotime($date_loop))] as $lap)
+                                <?php $hrs += $lap['duration']; ?>
+                                - {{ $lap['description']}}<br />
                             @endforeach
                             @else
                                 {{ "Absent" }}
@@ -108,7 +108,6 @@
                 $date_loop = date('d-m-Y', strtotime("+2 days", strtotime($date_loop))); ?>
             </tbody>
         </table>
-        <div class="page-break"></div>
         @endwhile
     </div>
 </body>

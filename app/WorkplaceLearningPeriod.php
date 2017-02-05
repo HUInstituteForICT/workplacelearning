@@ -90,6 +90,10 @@ class WorkplaceLearningPeriod extends Model{
         return (count($this->getLastActivity(1)) > 0);
     }
 
+    public function getNumLoggedHours(){
+        return ($this->getLastActivity(1000000, 0)->sum('duration'));
+    }
+
     public function getResourcePersons() {
         return $this->resourcePerson()
             ->orderBy('rp_id', 'asc')
@@ -121,8 +125,7 @@ class WorkplaceLearningPeriod extends Model{
             ->orderBy('date', 'desc')
             ->orderBy('lap_id', 'desc')
             ->skip($offset)
-            ->take($count)
-            ->get();
+            ->take($count);
     }
 
     private function getLastActivityActing($count, $offset = 0) {
@@ -130,7 +133,6 @@ class WorkplaceLearningPeriod extends Model{
             ->orderBy('date', 'desc')
             ->orderBy('laa_id', 'desc')
             ->skip($offset)
-            ->take($count)
-            ->get();
+            ->take($count);
     }
 }
