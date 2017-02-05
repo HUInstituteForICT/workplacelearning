@@ -125,7 +125,8 @@ class WorkplaceLearningPeriod extends Model{
             ->orderBy('date', 'desc')
             ->orderBy('lap_id', 'desc')
             ->skip($offset)
-            ->take($count);
+            ->take($count)
+            ->get();
     }
 
     private function getLastActivityActing($count, $offset = 0) {
@@ -133,6 +134,7 @@ class WorkplaceLearningPeriod extends Model{
             ->orderBy('date', 'desc')
             ->orderBy('laa_id', 'desc')
             ->skip($offset)
-            ->take($count);
+            ->take($count)
+            ->get();
     }
 }
