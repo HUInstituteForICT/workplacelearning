@@ -50,7 +50,7 @@
                 </tr>
             </thead>
             @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
-                @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(15, ($page*15)-15)->get() as $a)
+                @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(15, ($page*15)-15) as $a)
                 <tr>
                     <td>{{ date('d-m', strtotime($a->date)) }}</td>
                     <td>{{ $a->description }}</td>

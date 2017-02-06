@@ -74,7 +74,7 @@ class ProducingActivityController extends Controller{
             $fb->ondersteuning_werkplek     = (!isset($r['ondersteuningWerkplek'])) ? $r['ondersteuning_werkplek'] : "Geen";
             $fb->ondersteuning_opleiding    = (!isset($r['ondersteuningOpleiding'])) ? $r['ondersteuning_opleiding'] : "Geen";
             $fb->save();
-            return redirect('producing')->with('success', 'De feedback is opgeslagen.');
+            return redirect()->route('feedback-producing-create')->with('success', 'De feedback is opgeslagen.');
         }
     }
 
@@ -120,7 +120,7 @@ class ProducingActivityController extends Controller{
 
         // Validate the input
         if ($v->fails()) {
-            return redirect('leerproces')
+            return redirect()->route('process-producing-create')
                 ->withErrors($v)
                 ->withInput();
         } else {
@@ -201,21 +201,21 @@ class ProducingActivityController extends Controller{
                 return redirect('feedback/'.$fb->fb_id)->with('success', 'De leeractiviteit is opgeslagen.');
                 */
             }
-            return redirect('producing')->with('success', 'De leeractiviteit is opgeslagen.');
+            return redirect()->route('process-producing')->with('success', 'De leeractiviteit is opgeslagen.');
         }
     }
 
     public function edit(Request $r){
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplace() == null)
-            return redirect('profiel');
+            return redirect()->route('profile');
         return view('pages.producing.activity');
     }
 
     public function update(Request $r){
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplace() == null)
-            return redirect('profiel');
+            return redirect()->route('profile');
         return view('pages.producing.activity');
     }
 }
