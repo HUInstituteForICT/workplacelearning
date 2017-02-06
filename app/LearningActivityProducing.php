@@ -41,7 +41,7 @@ class LearningActivityProducing extends Model{
     }
 
     public function resourceMaterial() {
-        return $this->hasOne('App\resourceMaterial', 'rm_id', 'res_material_id');
+        return $this->hasOne('App\ResourceMaterial', 'rm_id', 'res_material_id');
     }
 
     public function difficulty() {

@@ -23,6 +23,6 @@ class ResourceMaterial extends Model{
     }
 
     public function learningActivityProducing() {
-        return $this->belongsTo('App\learningActivityProducing');
+        return $this->belongsTo('App\LearningActivityProducing');
     }
 }

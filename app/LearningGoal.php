@@ -20,7 +20,7 @@ class LearningGoal extends Model {
     ];
 
     public function workplaceLearningPeriod() {
-        return $this->hasOne('App\workplaceLearningPeriod', 'wplp_id', 'wplp_id');
+        return $this->hasOne('App\WorkplaceLearningPeriod', 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityActing() {

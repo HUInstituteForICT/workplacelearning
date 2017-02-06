@@ -40,7 +40,7 @@ class EducationProgram extends Model{
     }
 
     public function resourcePerson() {
-        return $this->hasMany('App\resourcePerson', 'ep_id', 'ep_id');
+        return $this->hasMany('App\ResourcePerson', 'ep_id', 'ep_id');
     }
 
     public function getCompetencies() {

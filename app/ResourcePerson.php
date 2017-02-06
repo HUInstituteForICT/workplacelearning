@@ -30,10 +30,10 @@ class ResourcePerson extends Model{
     }
 
     public function learningActivityProducing() {
-        return $this->belongsTo('App\learningActivityProducing');
+        return $this->belongsTo('App\LearningActivityProducing');
     }
 
     public function educationProgram() {
-        return $this->belongsTo('App\educationProgram');
+        return $this->belongsTo('App\EducationProgram');
     }
 }
