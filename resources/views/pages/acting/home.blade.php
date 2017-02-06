@@ -30,7 +30,7 @@
                         <br /><br />In het menu zie je een aantal tegels.</p>
                     <ul>
                         <li>Via de tegel <b>Leerproces</b> kun je je werkzaamheden invoeren.</li>
-                        <li>Via de tegel <b>Voortgang</b> kun je alle ingevoerde data terugvinden. Uiterlijk in maart komt hier de mogelijkheid bij om leermomenten te exporteren per leervraag of competentie.</li>
+                        <li>Via de tegel <b>Voortgang</b> kun je alle ingevoerde leermomenten terugvinden. Uiterlijk in maart komt hier de mogelijkheid bij om leermomenten te exporteren per leervraag of competentie.</li>
                         <li>Via de tegel <b>Analyse</b> kun je door verschillende analyses inzichten krijgen over de leermomenten die je hebt doorgemaakt, over hoe en met wie je geleerd hebt. Ook krijg je persoonlijke tips over acties die je kunt ondernemen om moeilijkheden te overwinnen en nog meer uit je stage te halen.</li>
                         <li>Via de tegel <b>Deadlines</b> kun je in een handig overzicht belangrijke deadlines of afspraken bijhouden.</li>
                         <li>Via de tegel <b>Profiel</b> kun je je stages beheren.</li>

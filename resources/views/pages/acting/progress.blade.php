@@ -32,7 +32,7 @@
         <!-- Internship Info -->
         <div class="row">
             <div class="col-md-11">
-                <h3>Weekstaten</h3>
+                <h3>Leermomenten</h3>
             </div>
         </div>
         <div clas="row">
@@ -41,9 +41,10 @@
                 <tr>
                     <td>Datum</td>
                     <td>Situatie</td>
-                    <td>Tijdslot</td>
-                    <td>Ondersteuning Werkplek</td>
-                    <td>Ondersteuning Opleiding</td>
+                    <td>Wanneer?</td>
+                    <td>Wat heb je geleerd?</td>
+                    <td>Leervraag</td>
+                    <td>Competentie</td>
                 </tr>
             </thead>
             @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
@@ -52,8 +53,9 @@
                         <td>{{ date('d-m', strtotime($a->date)) }}</td>
                         <td>{{ $a->situation }}</td>
                         <td>{{ \App\Timeslot::find($a->timeslot_id)->timeslot_text }}</td>
-                        <td>{{ $a->support_wp }}</td>
-                        <td>{{ $a->support_ed }}</td>
+                        <td>{{ $a->lessonslearned }}</td>
+                        <td>{{ $a->getLearningGoal() }}</td>
+                        <td>{{ $a->getCompetencies() }}</td>
                     </tr>
                 @endforeach
             @endif
