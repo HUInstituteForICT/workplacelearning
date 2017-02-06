@@ -169,41 +169,6 @@
                 <input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" />
                 {!! Form::close() !!}
             </div>
-
-            <!-- Werkverbanden -->
-            <div class="col-lg-5">
-                {!! Form::open(array('url' => URL::to('samenwerkingsverband/update/', array('id'=>$period->stud_stid), true), 'class' => 'form form-horizontal well')) !!}
-                <h3>{{ Lang::get('elements.profile.cooperations.title') }}</h3>
-                <table class="table blockTable">
-                    <thead class="blue_tile">
-                    <tr>
-                        <th>{{ Lang::get('elements.profile.cooperations.internshipname') }}</th>
-                        <th>{{ Lang::get('elements.profile.cooperations.cooperationname') }}</th>
-                        <th>{{ Lang::get('elements.profile.cooperations.cooperationdesc') }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($resource as $swv)
-                            <tr>
-                                <input type="hidden" name="swv[{{ $swv->swv_id }}][ss_id]" value="{{ $period->stud_stid }}" />
-                                <input type="hidden" name="swv[{{ $swv->swv_id }}][swv_id]" value="{{ $swv->swv_id }}" />
-                                <td>{{ $workplace->bedrijfsnaam }}<br />{{ "(". date('d-m-Y', strtotime($period->startdatum)). " - " . date('d-m-Y', strtotime($period->enddate)). ")" }}</td>
-                                <td><input name="swv[{{ $swv->swv_id }}][value]" placeholder="{{ Lang::get('elements.profile.placeholders.cooperationname') }}"value="{{ old("swv[". $swv->swv_id ."][value]") ? old("swv[". $swv->swv_id ."][value]") : $swv->swv_value }}" /></td>
-                                <td><input name="swv[{{ $swv->swv_id }}][omschrijving]" placeholder="{{ Lang::get('elements.profile.placeholders.cooperationdesc') }}"value="{{ old("swv[". $swv->swv_id ."][omschrijving]") ? old("swv[". $swv->swv_id ."][omschrijving]") : $swv->swv_omschrijving }}" /></td>
-                            </tr>
-                        @endforeach
-                        <tr>
-                            <input type="hidden" name="newswv[-1][ss_id]" value="{{ $period->wplp_id }}" />
-                            <input type="hidden" name="newswv[-1][swv_id]" value="-1" />
-                            <td>{{ $workplace->wp_name }}<br />{{ "(". date('d-m-Y', strtotime($period->startdate)). " - " . date('d-m-Y', strtotime($period->enddate)). ")" }}</td>
-                            <td><input name="newswv[-1][value]" value="" /></td>
-                            <td><input name="newswv[-1][omschrijving]" value="" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" />
-                {!! Form::close() !!}
-            </div>
         </div>
         @endif
     </div>
