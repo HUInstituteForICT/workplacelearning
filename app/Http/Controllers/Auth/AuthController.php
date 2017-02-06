@@ -30,7 +30,7 @@ class AuthController extends Controller
             'email'         => 'required|email|max:255|unique:student',
             //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
             'password'      => 'required|min:8|confirmed',
-            'secret'        => 'required|in:ICTstage2016',
+            'secret'        => 'required|in:ICTstage2016,Stage2017',
             //'answer'        => 'required|min:3|max:30',
         ]);
     }
