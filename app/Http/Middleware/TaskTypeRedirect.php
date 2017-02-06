@@ -15,6 +15,14 @@ class TaskTypeRedirect {
      * @return mixed
      */
     public function handle(Request $request, Closure $next){
+        if(Auth::guest()) return redirect('login');
+        if($request->route()->getName() == "home" || $request->route()->getName() == "default"){
+            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
+                return redirect()->route('home-acting');
+            } else {
+                return redirect()->route('home-producing');
+            }
+        }
         if($request->route()->getName() == "process"){
             if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
                 return redirect()->route('process-acting');

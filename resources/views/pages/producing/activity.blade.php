@@ -62,7 +62,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="alert alert-notice">
-                        <span>{{ Lang::get('elements.alerts.notice') }}: </span>{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "https://werkplekleren.hu.nl/stageperiode/edit/0", array()), Lang::get('dashboard.nointernshipactive')) !!}
+                        <span>{{ Lang::get('elements.alerts.notice') }}: </span>{!! str_replace('%s', route('profile'), Lang::get('dashboard.nointernshipactive')) !!}
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
             </div>
         @endif
         <div class="row">
-            {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => URL::to('producing/create', array(), true))) !!}
+            {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => route('process-producing-create'))) !!}
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
                     <input class="form-control fit-bs" type="date" name="datum" value="{{ date('Y-m-d', strtotime("now")) }}" /><br/>
@@ -90,7 +90,7 @@
                         <option value="-1">- Niet Koppelen-</option>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != NULL)
                             @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getUnfinishedActivityProducing() as $w)
-                                <option value="{{ $w->wzh_id }}">{{ date('d-m', strtotime($w->wzh_datum)) ." - ".$w->wzh_omschrijving }}</option>
+                                <option value="{{ $w->lap_id }}">{{ date('d-m', strtotime($w->date)) ." - ".$w->description }}</option>
                             @endforeach
                         @endif
                     </select>

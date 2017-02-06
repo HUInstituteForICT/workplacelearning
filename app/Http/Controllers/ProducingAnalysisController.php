@@ -29,10 +29,10 @@ class ProducingAnalysisController extends Controller {
 
         if(($year != "all" && $month != "all")
             && (0 == preg_match('/^(20)([0-9]{2})$/', $year) || 0 == preg_match('/^([0-1]{1}[0-9]{1})$/', $month))
-        ) return redirect()->route('analyse-producing-choice');
+        ) return redirect()->route('analysis-producing-choice');
 
         $task_chains = $this->getTaskChainsByDate(25, $year, $month);
-        if(count($task_chains) == 0) return redirect()->route('analyse-producing-choice')->withErrors(['Je hebt geen activiteiten ingevuld voor deze maand.']);
+        if(count($task_chains) == 0) return redirect()->route('analysis-producing-choice')->withErrors(['Je hebt geen activiteiten ingevuld voor deze maand.']);
 
         // Analysis array
         $a = array();

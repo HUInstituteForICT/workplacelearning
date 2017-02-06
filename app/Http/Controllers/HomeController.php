@@ -11,12 +11,17 @@ use App\Http\Controllers\Controller;
 
 class HomeController extends Controller{
 
-    public function __construct(){
-        $this->middleware('auth');
-    }
-
     public function showHome(){
         return view('pages.home');
+    }
+
+    /* Placeholder Templates */
+    public function showProducingTemplate(){
+        return view('pages.producing.home');
+    }
+
+    public function showActingTemplate(){
+        return view('pages.acting.home');
     }
 
     public function showDefault(){

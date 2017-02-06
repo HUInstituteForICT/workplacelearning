@@ -26,8 +26,16 @@
             <div class="row">
                 <div class="col-lg-7">
                     <h1>{{ Lang::get('dashboard.title') }}</h1>
-                    <p>Welkom bij Werkplekleren Hogeschool Utrecht. Met dit system krijg je inzicht in je leerproces tijdens het werken in de beroepspraktijk, bijvoorbeeld tijdens je stage. Met dit inzicht kun je nog meer uit je stage halen en jezelf optimaal ontwikkelen!</p>
-                    <p>In het menu zie je een aantal tegels. Via de tegel Leerproces kun je je werkzaamheden invoeren. Via de tegel Analyse kun je verschillende inzichten krijgen over wat je geleerd hebt, over hoe je geleerd hebt en wat je nog moeilijk vindt. Via de tegel Voortgang kun je alle ingevoerde data terugvinden en een PDF downloaden met de weekstaten die je moet laten ondertekenen door je bedrijfsbegeleider.</p>
+                    <p>Welkom bij de Werkplekleren App van Hogeschool Utrecht. Met deze app krijg je inzicht in je leerproces tijdens het werken in de beroepspraktijk, bijvoorbeeld tijdens je stage. Met dit inzicht kun je nog meer uit je stage halen en jezelf optimaal ontwikkelen!
+
+                        <br /><br />In het menu zie je een aantal tegels.</p>
+                    <ul>
+                        <li>Via de tegel <b>Leerproces</b> kun je je werkzaamheden invoeren.</li>
+                        <li>Via de tegel <b>Voortgang</b> kun je alle ingevoerde data terugvinden. Ook kun je hier een PDF downloaden met de weekstaten die je moet laten ondertekenen door je bedrijfsbegeleider.</li>
+                        <li>Via de tegel <b>Analyse</b> kun je door verschillende analyses inzichten krijgen over wat je gedaan hebt, over hoe je geleerd hebt en wat je nog moeilijk vindt. Ook krijg je persoonlijke tips over acties die je kunt ondernemen om moeilijkheden te overwinnen en nog meer uit je stage te halen.</li>
+                        <li>Via de tegel <b>Deadlines</b> kun je in een handig overzicht belangrijke deadlines of afspraken bijhouden.</li>
+                        <li>Via de tegel <b>Profiel</b> kun je je stages beheren.</li>
+                    </ul>
                     <p>Veel succes en plezier tijdens jouw leren op de werkplek!</p>
                 </div>
             </div>

@@ -30,8 +30,6 @@ Route::group([
                 Route::post('/log',                                     'LogController@log');
 
                 /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
-                Route::get('/',                                         'HomeController@showHome');
-                Route::get('home',                                      'HomeController@showHome')->name('home');
 
                 // User Creation and modification
                 Route::get('profiel',                                   'ProfileController@show');
@@ -39,7 +37,7 @@ Route::group([
 
                 // Internships & Internship Periods
                 Route::get('stageperiode/edit/{id}',                    'WorkplaceLearningController@edit')->where('id', '[0-9]*');
-                Route::get('stageperiode/create',                       'WorkplaceLearningController@show')->name('workplacelearningperiod');
+                Route::get('stageperiode/create',                       'WorkplaceLearningController@show')->name('workplacelearningperiod-create');
                 Route::post('stageperiode/create',                      'WorkplaceLearningController@create');
                 Route::post('stageperiode/update/{id}',                 'WorkplaceLearningController@update')->where('id', '[0-9]*');
 
@@ -57,12 +55,15 @@ Route::group([
 
                 // Bugreport
                 Route::get('bugreport',                                 'HomeController@showBugReport')->name('bugreport');
-                Route::post('bugreport/create',                         'HomeController@createBugReport');
+                Route::post('bugreport/create',                         'HomeController@createBugReport')->name('bugreport-create');
 
 
                 Route::group([
                                 'middleware' => [ 'taskTypeRedirect' ],
                             ], function(){
+                                /* Add all middleware redirected urls here */
+                                Route::get('/',         'HomeController@showHome')->name('default');
+                                Route::get('home',      'HomeController@showHome')->name('home');
                                 Route::get('process',   'ActingActivityController@show')->name('process');
                                 Route::get('progress',  'ProducingActivityController@progress')->name('progress');
                                 Route::get('analysis',  'ProducingActivityController@show')->name('analysis');
@@ -73,11 +74,12 @@ Route::group([
                 Route::group([
                                 'prefix' => "/acting",
                             ], function(){
+                                Route::get('home',                              'HomeController@showActingTemplate')->name('home-acting');
                                 Route::get('process',                           'ActingActivityController@show')->name('process-acting');
                                 Route::post('process/create',                   'ActingActivityController@create')->name('process-acting-create');
                                 Route::post('process/update/{id}',              'ActingActivityController@update')->name('process-acting-update');
 
-                                Route::get('progress/{page}',                   'ActingActivityController@show')->where('page', '[1-9]{1}[0-9]*')->name('progress');
+                                Route::get('progress/{page}',                   'ActingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress-acting');
 
                                 /*
                                 * Disabled for now, analysis for acting is status: TODO
@@ -88,8 +90,7 @@ Route::group([
                                 //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
 
                                 // Report Creation
-                                Route::get('analysis',                          'ProducingAnalysisController@showChoiceScreen')->name('analysis-acting-choice');
-                                Route::get('analysis/{year}/{month}',           'ProducingAnalysisController@showDetail')->name('analysis-acting-detail');
+                                Route::get('analysis',                          'ActingAnalysisController@show')->name('analysis-acting-choice');
                             }
                 );
 
@@ -97,6 +98,7 @@ Route::group([
                 Route::group([
                                 'prefix' => "/producing",
                             ], function(){
+                                Route::get('home',                              'HomeController@showProducingTemplate')->name('home-producing');
                                 Route::get('process',                           'ProducingActivityController@show')->name('process-producing');
                                 Route::post('process/create',                   'ProducingActivityController@create')->name('process-producing-create');
                                 Route::post('process/update/{id}',              'ProducingActivityController@update')->name('process-producing-update');

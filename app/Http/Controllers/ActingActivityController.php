@@ -28,6 +28,10 @@ class ActingActivityController extends Controller {
             ->with('activities', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8));
     }
 
+    public function progress($pagenr){
+        return view('pages.acting.progress')->with('page', $pagenr);
+    }
+
     public function create(Request $req) {
         $a = new LearningActivityActing;
 

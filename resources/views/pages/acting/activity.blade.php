@@ -81,7 +81,7 @@
                 </div>
             </div>
         @endif
-        {{ Form::open(array('url' => '/acting/create', 'class' => 'form-horizontal')) }}
+        {{ Form::open(array('url' => route('process-acting-create'), 'class' => 'form-horizontal')) }}
             <div class="row well">
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
