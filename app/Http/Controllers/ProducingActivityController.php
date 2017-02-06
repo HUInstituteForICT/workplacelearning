@@ -51,14 +51,14 @@ class ProducingActivityController extends Controller{
 
         $v = Validator::make($r->all(), [
             'notfinished'               => 'required|regex:/^[0-9a-zA-Z()-_,. ]+$/',
-            'newnotfinished'            => 'required_if:notfinished,Anders|max:150|regex:/^[0-9a-zA-Z()-_,. ]+$/',
+            'newnotfinished'            => 'required_if:notfinished,Anders|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
             'help_asked'                => 'required|in:0,1,2',
-            'help_werkplek'             => 'required_unless:help_asked,0|max:150|regex:/^[0-9a-zA-Z()-_,. ]+$/',
+            'help_werkplek'             => 'required_unless:help_asked,0|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
             'initiatief'                => 'required|max:500|regex:/^[0-9a-zA-Z()-_,. ]+$/',
             'progress_satisfied'        => 'required|in:1,2',
             'vervolgstap_zelf'          => 'required|max:150|regex:/^[0-9a-zA-Z()-_,. ]+$/',
-            'ondersteuning_werkplek'    => 'required_unless:ondersteuningWerkplek,Geen|max:150|regex:/^[0-9a-zA-Z()-_,. ]+$/',
-            'ondersteuning_opleiding'   => 'required_unless:ondersteuningOpleiding,Geen|max:150|regex:/^[0-9a-zA-Z()-_,. ]+$/',
+            'ondersteuning_werkplek'    => 'required_unless:ondersteuningWerkplek,Geen|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
+            'ondersteuning_opleiding'   => 'required_unless:ondersteuningOpleiding,Geen|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
         ]);
         if($v->fails()){
             return redirect('feedback/'.$id)
@@ -85,7 +85,7 @@ class ProducingActivityController extends Controller{
 
         $v = Validator::make($r->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
-            'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
+            'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'"]+$/',
             'aantaluren'    => 'required|regex:/^[0-9]{1}[.]?[0-9]{0,2}$/',
             'resource'      => 'required|in:persoon,alleen,internet,boek,new',
             'moeilijkheid'  => 'required|exists:difficulty,difficulty_id',
@@ -111,10 +111,10 @@ class ProducingActivityController extends Controller{
         $v->sometimes('internetsource', 'required|url', function($input){
             return $input->resource == "internet";
         });
-        $v->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.-_!@%()]{1,250}$/', function($input){
+        $v->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()]{1,250}$/', function($input){
             return $input->resource == "book";
         });
-        $v->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.-_()]{1,250}$/', function($input){
+        $v->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()]{1,250}$/', function($input){
             return $input->resource == "new";
         });
 
