@@ -57,7 +57,7 @@ class WorkplaceLearningPeriod extends Model{
     }
 
     public function learningActivityActing() {
-        return $this->hasMany('App\learningActivityActing', 'wplp_id', 'wplp_id');
+        return $this->hasMany('App\LearningActivityActing', 'wplp_id', 'wplp_id');
     }
 
     public function getWorkplace(){
