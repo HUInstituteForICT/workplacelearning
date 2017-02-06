@@ -42,8 +42,8 @@ class ActingActivityController extends Controller {
             'new_rp'                => 'required_if:res_person,new|max:45|regex:/^[0-9a-zA-z]+$/',
             'new_rm'                => 'required_if:res_material,new|max:45|regex:/^[0-9a-zA-z]+$/',
             'learned'               => 'required|max:150|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
-            'support_wp'            => 'required|max:75|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
-            'support_ed'            => 'required|max:75|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
+            'support_wp'            => 'max:75|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
+            'support_ed'            => 'max:75|regex:/^[ 0-9a-zA-Z-_,.?!*&%#()\'"]+$/',
             'learning_goal'         => 'required|exists:learninggoal,learninggoal_id',
             'competence'            => 'required|exists:competence,competence_id'
         ]);
