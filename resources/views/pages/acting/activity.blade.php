@@ -88,7 +88,7 @@
                     <h4>Activiteit</h4>
                     <input class="form-control fit-bs" type="date" name="date" value="{{ (count($errors) > 0) ? old('date') : date('Y-m-d', strtotime("now")) }}" /><br/>
                     <h4>Situatie:</h4>
-                    <textarea class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('description') }}</textarea>
+                    <textarea class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/|\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('description') }}</textarea>
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Wanneer? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_when') }}"></i></h4>
@@ -103,7 +103,7 @@
                     @endforeach
                     <div>
                         <label><input type="radio" name="res_person" id="new_rp" value="new" {{ (old('res_person') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
-                        <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                        <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
                     </div>
                 </div>
                 <div class="col-md-2 from-group buttons">
@@ -114,15 +114,15 @@
                     @endforeach
                     <input type="text" name="res_material_detail" id="res_material_detail" placeholder="Beschrijving bron" value="{{ old('res_material_detail') }}" />
                     <label><input type="radio" name="res_material" id="new_rm" value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
-                    <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                    <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
                 </div>
                 <div class="col-md-2 from-group">
                     <h4>Wat heb je geleerd?<br />Wat is het gevolg? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="learned" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('learned') }}</textarea>
+                    <textarea class="form-control fit-bs" name="learned" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/|\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('learned') }}</textarea>
                     <h4>Wat heb je hierbij nodig van je werkplek? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_wp') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="support_wp" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_wp') }}</textarea>
+                    <textarea class="form-control fit-bs" name="support_wp" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/|\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_wp') }}</textarea>
                     <h4>Wat heb je hierbij nodig van de HU? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_ep') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="support_ed" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_ed') }}</textarea>
+                    <textarea class="form-control fit-bs" name="support_ed" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/|\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_ed') }}</textarea>
                 </div>
                 <div class="col-md-2 from-group">
                     <div>

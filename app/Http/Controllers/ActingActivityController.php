@@ -15,7 +15,7 @@ use Validator;
 class ActingActivityController extends Controller {
 
     public function show() {
-        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
+        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->merge(
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
