@@ -10,6 +10,7 @@
                 (function() {
                     $('#new-rp-hidden').hide();
                     $('#new-rm-hidden').hide();
+                    $('#res_material_detail').hide();
 
                     $('[name="res_person"]').click(function() {
                         if ($('#new_rp').is(':checked')) {
@@ -107,10 +108,10 @@
                 </div>
                 <div class="col-md-2 from-group buttons">
                     <h4>Met welke theorie? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_theory') }}"></i></h4>
+                    <label><input type="radio" name="res_material" id="rm_none" value="none" {{ (old('res_material') == 'none') ? 'checked' : 'checked' }}><span>Geen</span></label>
                     @foreach ($resMaterials as $key => $value)
-                        <label><input type="radio" name="res_material" value="{{ $value->rm_id }}" {{ (old('res_material') != null && old('res_material') == $value->rm_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->rm_label }}</span></label>
+                        <label><input type="radio" name="res_material" value="{{ $value->rm_id }}" {{ (old('res_material') != null && old('res_material') == $value->rm_id) ? "checked" : null }} /><span>{{ $value->rm_label }}</span></label>
                     @endforeach
-                    <label><input type="radio" name="res_material" id="rm_none" value="none" {{ (old('res_material') == 'none') ? 'checked' : null }}><span>Geen</span></label>
                     <input type="text" name="res_material_detail" id="res_material_detail" placeholder="Beschrijving bron" value="{{ old('res_material_detail') }}" />
                     <label><input type="radio" name="res_material" id="new_rm" value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
                     <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
