@@ -54,7 +54,7 @@ class EducationProgram extends Model{
     public function getResourcePersons() {
         return $this->resourcePerson()
             ->where('ep_id', '=', $this->ep_id)
-            ->where('wplp_id', '=', 'wplp_id')
+            ->where('wplp_id', '=', '0')
             ->get();
     }
 }
