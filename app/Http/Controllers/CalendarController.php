@@ -25,7 +25,7 @@ class CalendarController extends Controller{
            'dateDeadline'   => 'required|date|after:'.date('Y-m-d', strtotime("now")),
         ]);
         if($validator->fails()){
-            return redirect('deadline')
+            return redirect()->route('deadline')
                 ->withErrors($validator->errors())
                 ->withInput();
         }
@@ -36,7 +36,7 @@ class CalendarController extends Controller{
         $d->dl_datetime     = date('Y-m-d H:i:s', strtotime($r['dateDeadline']));
         $d->save();
         
-        return redirect('deadline')->with('success', "De deadline is opgeslagen.");
+        return redirect()->route('deadline')->with('success', "De deadline is opgeslagen.");
     }
 
     public function update(Request $r){
@@ -64,9 +64,9 @@ class CalendarController extends Controller{
             $d->delete();
             $msg = "De deadline is verwijderd uit het overzicht.";
         } else {
-            return redirect('deadline')->withErrors(['error', "Er is een onbekende fout opgetreden."]);
+            return redirect()->route('deadline')->withErrors(['error', "Er is een onbekende fout opgetreden."]);
         }
-        return redirect('deadline')->with('success', $msg);
+        return redirect()->route('deadline')->with('success', $msg);
     }
     public function __construct(){
         $this->middleware('auth');

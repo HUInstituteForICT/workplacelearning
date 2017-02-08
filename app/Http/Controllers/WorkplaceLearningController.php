@@ -30,7 +30,7 @@ class WorkplaceLearningController extends Controller{
     public function edit($id){
         $wplp = WorkplaceLearningPeriod::find($id);
         if (is_null($wplp) || $wplp->student_id != Auth::user()->student_id) {
-            return redirect('profiel')
+            return redirect()->route('profile')
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
         } else {
             return view('pages.internship')
@@ -60,7 +60,8 @@ class WorkplaceLearningController extends Controller{
         ]);
 
         if ($validator->fails()) {
-            return redirect('stageperiode/create')
+            return redirect()
+                ->route('workplacelearningperiod')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -108,7 +109,7 @@ class WorkplaceLearningController extends Controller{
             Auth::user()->setUserSetting('active_internship', $wplp->wplp_id);
         }
 
-        return redirect('profiel')->with('success', 'De wijzigingen zijn opgeslagen.');
+        return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
     }
 
     public function update(Request $r, $id){
@@ -130,7 +131,8 @@ class WorkplaceLearningController extends Controller{
         ]);
 
         if ($validator->fails()) {
-            return redirect('stageperiode/edit/'.$id)
+            return redirect()
+                ->route('workplacelearningperiod-edit', ["id" => $id])
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -138,7 +140,7 @@ class WorkplaceLearningController extends Controller{
         // Input is valid. Attempt to fetch the WPLP and validate it belongs to the user
         $wplp = WorkplaceLearningPeriod::find($id);
         if(is_null($wplp) || $wplp->student_id != Auth::user()->student_id){
-            return redirect('profiel')
+            return redirect()->route('profile')
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
         }
 
@@ -170,7 +172,7 @@ class WorkplaceLearningController extends Controller{
             Auth::user()->setUserSetting('active_internship', $wplp->wplp_id);
         }
 
-        return redirect('profiel')->with('success', 'De wijzigingen zijn opgeslagen.');
+        return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
     }
 
     public function updateCategories(Request $request, $id){
@@ -182,7 +184,7 @@ class WorkplaceLearningController extends Controller{
                 break;
             }
         }
-        if(!$t) return redirect('profiel'); // $id is invalid or does not belong to the student
+        if(!$t) return redirect()->route('profile'); // $id is invalid or does not belong to the student
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
         if(!empty($request['newcat']['0']['cg_label'])){
@@ -196,7 +198,8 @@ class WorkplaceLearningController extends Controller{
         ]);
         if($validator->fails()){
             // Noes. errors occured. Exit back to profile page with errors
-            return redirect('stageperiode/edit/'.$id)
+            return redirect()
+                ->route('workplacelearningperiod-edit', ["id" => $id])
                 ->withErrors($validator)
                 ->withInput();
         } else {
@@ -215,52 +218,7 @@ class WorkplaceLearningController extends Controller{
             return redirect()->route('workplacelearningperiod-edit', ["id" => $id])->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');
         }
     }
-/*
-    public function updateCooperations(Request $request, $id){
-        // Verify the given ID is valid and belongs to the student
-        $t = false;
-        foreach(Auth::user()->internshipperiods()->get() as $ip){
-            if($ip->stud_stid == $id){
-                $t = true;
-                break;
-            }
-        }
-        if(!$t) return redirect('profiel'); // $id is invalid or does not belong to the student
 
-        // Inject the new item into the request array for processing and validation if it is filled in by the user
-        if(!empty($request['newswv']['-1']['value']) && !empty($request['newswv']['-1']['omschrijving'])){
-            $request['swv'] = array_merge($request['swv'], $request['newswv']);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'swv.*.swv_id'          => 'required|digits_between:1,5',
-            'swv.*.ss_id'           => 'required|digits_between:1,5',
-            'swv.*.value'           => 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
-            'swv.*.omschrijving'    => 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
-        ]);
-        if($validator->fails()){
-            // Noes. errors occured. Exit back to profile page with errors
-            return redirect('profiel')
-                ->withErrors($validator)
-                ->withInput();
-        } else {
-            // All is well :)
-            foreach($request['swv'] as $swv){
-                // Either update or create a new row.
-                $s = Samenwerkingsverband::find($swv['swv_id']);
-                if(is_null($s)){
-                    $s                  = new Categorie;
-                    $s->ss_id           = $swv['ss_id'];
-                }
-                $s->swv_value           = $swv['value'];
-                $s->swv_omschrijving    = $swv['omschrijving'];
-                $s->save();
-            }
-            // Done, redirect back to profile page
-            return redirect('profiel');
-        }
-    }
-*/
     public function __construct(){
         $this->middleware('auth');
     }

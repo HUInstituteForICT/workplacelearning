@@ -30,7 +30,8 @@ class ProfileController extends Controller{
         ]);
 
         if ($validator->fails()) {
-            return redirect('profiel')
+            return redirect()
+                ->route('profile')
                 ->withErrors($validator)
                 ->withInput();
         } else {
@@ -41,8 +42,7 @@ class ProfileController extends Controller{
             $u->email       = $request->email;
             //$u->telefoon    = $request->phone;
             $u->save();
-
-            return redirect('profiel')->with('success', 'De wijzigingen zijn opgeslagen.');
+            return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
         }
     }
 

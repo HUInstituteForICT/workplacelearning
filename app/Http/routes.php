@@ -36,7 +36,7 @@ Route::group([
                 Route::post('profiel/update',                           'ProfileController@update');
 
                 // Internships & Internship Periods
-                Route::get('stageperiode/create',                       'WorkplaceLearningController@show')->name('workplacelearningperiod-create');
+                Route::get('stageperiode/create',                       'WorkplaceLearningController@show')->name('workplacelearningperiod');
                 Route::get('stageperiode/edit/{id}',                    'WorkplaceLearningController@edit')->name('workplacelearningperiod-edit')->where('id', '[0-9]*');
                 Route::post('stageperiode/create',                      'WorkplaceLearningController@create');
                 Route::post('stageperiode/update/{id}',                 'WorkplaceLearningController@update')->where('id', '[0-9]*');
