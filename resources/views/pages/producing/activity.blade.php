@@ -83,7 +83,7 @@
                     <input class="form-control fit-bs" type="date" name="datum" value="{{ date('Y-m-d', strtotime("now")) }}" /><br/>
 
                     <h5>Omschrijving:</h5>
-                    <textarea class="form-control fit-bs" name="omschrijving" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="omschrijving" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\/"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
 
                     <h5>Koppel aan vorige activiteit:</h5>
                     <select class="form-control fit-bs" name="previous_wzh" >
@@ -114,7 +114,7 @@
                     @endif
                     <div>
                         <label class="newcat"><input type="radio" name="category_id" value="new" /><span class="new" id="newcat">Anders<br />(Toevoegen)</span></label>
-                        <input id="category" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newcat" placeholder="Omschrijving" />
+                        <input id="category" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()/\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newcat" placeholder="Omschrijving" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
@@ -128,7 +128,7 @@
                             @endforeach */ ?>
                                 <option value="new">Nieuw/Anders</option>
                             </select>
-                            <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" placeholder="Omschrijving" />
+                            <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()/\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" placeholder="Omschrijving" />
                         @endif
                     </div>
                     <div id="solocontainer">

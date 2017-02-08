@@ -84,7 +84,7 @@ class ProducingActivityController extends Controller{
 
         $v = Validator::make($r->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
-            'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'"]+$/',
+            'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'\\\\\/"\s]+\s*$/',
             'aantaluren'    => 'required|regex:/^[0-9]{1}[.]?[0-9]{0,2}$/',
             'resource'      => 'required|in:persoon,alleen,internet,boek,new',
             'moeilijkheid'  => 'required|exists:difficulty,difficulty_id',
@@ -95,25 +95,26 @@ class ProducingActivityController extends Controller{
         $v->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function($input){
             return $input->previous_wzh != "-1";
         });
-        $v->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()]{1,50}$/', function($input){
+        $v->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input){
             return $input->category_id == "new";
         });
         $v->sometimes('category_id', 'required|exists:category,category_id', function($input){
             return $input->category_id != "new";
         });
-        $v->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()]{1,50}$/', function($input) {
+        $v->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input) {
             return ($input->personsource == "new" && $input->resource == "persoon");
         });
         $v->sometimes('personsource', 'required|exists:resourceperson,rp_id', function($input){
             return ($input->personsource != "new" && $input->resource == "persoon");
         });
-        $v->sometimes('internetsource', 'required|url', function($input){
+        //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
+        $v->sometimes('internetsource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
             return $input->resource == "internet";
         });
-        $v->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()]{1,250}$/', function($input){
+        $v->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
             return $input->resource == "book";
         });
-        $v->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()]{1,250}$/', function($input){
+        $v->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()\\\\\/]{1,250}$/', function($input){
             return $input->resource == "new";
         });
 
