@@ -172,6 +172,8 @@ return [
       "choice"              => "Choose a month to display",
       "showall"             => "Show all data",
     ],
-
+    "competences" => [
+      "competencedetails"  => "<a href=%s>Competences en Indicators</a>"
+    ],
 ];
 ?>

@@ -15,5 +15,5 @@ return [
     'acting_required_wp'    => 'Het kan zijn dat je ondersteuning nodig hebt van jouw werkplek om de volgende stap te zetten na dit leermoment. Beschrijf hier welke ondersteuning je graag zou ontvangen.',
     'acting_required_ep'    => 'Het kan zijn dat je ondersteuning nodig hebt vanuit de HU om de volgende stap te zetten na dit leermoment. Beschrijf hier welke ondersteuning je graag zou ontvangen.',
     'acting_learninggoal'   => 'Hier kun je dit leermoment koppelen aan een van je leervragen of een leermoment typeren als een ongepland leermoment.',
-    'acting_competence'     => 'Hier kun je dit leermoment koppelen aan een van de competenties van jouw opleiding. Je moet hier kiezen voor die competentie die het best past bij dit leermoment. In het leerwerkverslag kun je uiteraard nog andere competenties toevoegen. Voor een overzicht van de competenties, subschalen en indicatoren, zie [LINK]',
+    'acting_competence'     => 'Hier kun je dit leermoment koppelen aan een van de competenties van jouw opleiding. Je moet hier kiezen voor die competentie die het best past bij dit leermoment. In het leerwerkverslag kun je uiteraard nog andere competenties toevoegen. Voor een overzicht van de competenties, subschalen en indicatoren, zie de link hieronder.',
 ];

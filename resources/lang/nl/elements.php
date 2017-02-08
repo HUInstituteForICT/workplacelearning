@@ -170,5 +170,9 @@ return [
       "showall"             => "Toon alle gegevens",
     ],
 
+    "competences" => [
+      "competencedetails"  => "<a href=%s>Competenties en Indicatoren</a>"
+    ],
+
 ];
 ?>
