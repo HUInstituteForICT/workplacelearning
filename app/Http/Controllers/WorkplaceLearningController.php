@@ -212,7 +212,7 @@ class WorkplaceLearningController extends Controller{
                 $c->save();
             }
             // Done, redirect back to profile page
-            return redirect('stageperiode/edit/'.$id)->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');
+            return redirect()->route('workplacelearningperiod-edit', ["id" => $id])->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');
         }
     }
 /*

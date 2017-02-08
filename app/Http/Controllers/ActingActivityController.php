@@ -64,7 +64,7 @@ class ActingActivityController extends Controller {
         });
 
         if ($v->fails()) {
-            return redirect('acting')
+            return redirect()->route('process-acting')
                 ->withErrors($v)
                 ->withInput();
         }
@@ -101,8 +101,10 @@ class ActingActivityController extends Controller {
         $a->learninggoal_id = $req['learning_goal'];
         $a->save();
 
+
+
         $a->competence()->attach($req['competence']);
 
-        return redirect('acting')->with('success', 'De leeractiviteit is opgeslagen.');
+        return redirect()->route('process-acting')->with('success', 'De leeractiviteit is opgeslagen.');
     }
 }

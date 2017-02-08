@@ -47,7 +47,6 @@ class ProducingActivityController extends Controller{
         if($fb != null) {
             $wzh = LearningActivityProducing::find($fb->wzh_id);
         }
-        //if(strlen($fb->notfinished) > 0) return redirect('feedback/'.$id)->withErrors(['Je kan deze feedback niet meer aanpassen.']);
 
         $v = Validator::make($r->all(), [
             'notfinished'               => 'required|regex:/^[0-9a-zA-Z()-_,. ]+$/',
@@ -61,7 +60,7 @@ class ProducingActivityController extends Controller{
             'ondersteuning_opleiding'   => 'required_unless:ondersteuningOpleiding,Geen|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
         ]);
         if($v->fails()){
-            return redirect('feedback/'.$id)
+            return redirect()->route('producing-feedback', ["id" => $id])
                 ->withErrors($v)
                 ->withInput();
         } else {
@@ -74,14 +73,14 @@ class ProducingActivityController extends Controller{
             $fb->ondersteuning_werkplek     = (!isset($r['ondersteuningWerkplek'])) ? $r['ondersteuning_werkplek'] : "Geen";
             $fb->ondersteuning_opleiding    = (!isset($r['ondersteuningOpleiding'])) ? $r['ondersteuning_opleiding'] : "Geen";
             $fb->save();
-            return redirect()->route('feedback-producing-create')->with('success', 'De feedback is opgeslagen.');
+            return redirect()->route('feedback-producing')->with('success', 'De feedback is opgeslagen.');
         }
     }
 
     public function create(Request $r){
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
-            return redirect('profiel')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
 
         $v = Validator::make($r->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
@@ -120,7 +119,7 @@ class ProducingActivityController extends Controller{
 
         // Validate the input
         if ($v->fails()) {
-            return redirect()->route('process-producing-create')
+            return redirect()->route('process-producing')
                 ->withErrors($v)
                 ->withInput();
         } else {
@@ -162,33 +161,14 @@ class ProducingActivityController extends Controller{
                     break;
             }
 
-            // $w->rest_material_id   = $r['lerenmet'];
-            // switch($r['lerenmet']){
-            //     case "persoon":     $w->lerenmetdetail = ($r['rp_id'] == "new") ? $swv->rp_id : $r['rp_id'];
-            //     break;
-            //     case "internet":    $w->lerenmetdetail = $r['internetsource'];
-            //     break;
-            //     case "boek":        $w->lerenmetdetail = $r['booksource'];
-            //     break;
-            //     case "Anders":      $w->lerenmetdetail = $r['newlerenmet'];
-            //     break;
-            //     default:            $w->lerenmetdetail = "";
-            // }
 
             $w->category_id             = ($r['category_id'] == "new") ? $c->category_id : $r['category_id'];
             $w->difficulty_id           = $r['moeilijkheid'];
             $w->status_id               = $r['status'];
             $w->prev_lap_id             = ($r['previous_wzh'] != "-1") ? $r['previous_wzh'] : NULL;
-            // $w->display                 = ($r['status'] == 2) ? 1 : 0; // Only set this WZH to display if it is unfinished
             $w->date              = date_format(date_create(null, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
-            //$w->session_id              = $r->session()->getId();
             $w->save();
-            // // Update the previous WZH
-            // if($r['previous_wzh'] > 1){
-            //     $prev_lap_id = LearningActivityProducing::find($w->prev_lap_id);
-            //     //$prev_wzh->display = 0;
-            //     $prev_lap_id->save();
-            // }
+
 
             if(
                 ($w->difficulty_id == 2 || $w->difficulty_id == 3)
