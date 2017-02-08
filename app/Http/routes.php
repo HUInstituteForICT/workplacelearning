@@ -32,12 +32,12 @@ Route::group([
                 /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
 
                 // User Creation and modification
-                Route::get('profiel',                                   'ProfileController@show');
+                Route::get('profiel',                                   'ProfileController@show')->name('profile');
                 Route::post('profiel/update',                           'ProfileController@update');
 
                 // Internships & Internship Periods
-                Route::get('stageperiode/edit/{id}',                    'WorkplaceLearningController@edit')->where('id', '[0-9]*');
                 Route::get('stageperiode/create',                       'WorkplaceLearningController@show')->name('workplacelearningperiod-create');
+                Route::get('stageperiode/edit/{id}',                    'WorkplaceLearningController@edit')->name('workplacelearningperiod-edit')->where('id', '[0-9]*');
                 Route::post('stageperiode/create',                      'WorkplaceLearningController@create');
                 Route::post('stageperiode/update/{id}',                 'WorkplaceLearningController@update')->where('id', '[0-9]*');
 
