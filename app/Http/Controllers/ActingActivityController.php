@@ -39,8 +39,8 @@ class ActingActivityController extends Controller {
             'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
             'description'           => 'required|max:150|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"]+$/',
             'timeslot'              => 'required|exists:timeslot,timeslot_id',
-            'new_rp'                => 'required_if:res_person,new|max:45|regex:/^[ 0-9a-zA-z,.\/\\\\\']+$/',
-            'new_rm'                => 'required_if:res_material,new|max:45|regex:/^[ 0-9a-zA-z,.\/\\\\\']+$/',
+            'new_rp'                => 'required_if:res_person,new|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/',
+            'new_rm'                => 'required_if:res_material,new|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/',
             'learned'               => 'required|max:150|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"]+$/',
             'support_wp'            => 'max:75|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"]+$/',
             'support_ed'            => 'max:75|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"]+$/',
@@ -59,7 +59,7 @@ class ActingActivityController extends Controller {
             return $input->res_material == 1;
         });*/
         //temporarily disabled url validation for res_material_detail field
-        $v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-Z-_,.\/()]+$/', function($input) {
+        $v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function($input) {
             return $input->res_material >= 1;
         });
 
