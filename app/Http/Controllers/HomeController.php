@@ -25,7 +25,7 @@ class HomeController extends Controller{
     }
 
     public function showDefault(){
-        return redirect('home');
+        return redirect()->route('home');
     }
 
     public function showBugReport(){
@@ -39,7 +39,7 @@ class HomeController extends Controller{
         ]);
 
         if ($validator->fails()) {
-            return redirect('bugreport')
+            return redirect()->route('bugreport')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -47,7 +47,7 @@ class HomeController extends Controller{
         Mail::send(
             'templates.bugreport-email',
             [
-                'student_name'  => Auth::user()->getInitials()." ".Auth::user()->achternaam." (".Auth::user()->voornaam.")",
+                'student_name'  => Auth::user()->getInitials()." ".Auth::user()->lastname." (".Auth::user()->firstname.")",
                 'student_email' => Auth::user()->email,
                 'education'     => EducationProgram::find(Auth::user()->ep_id),
                 'subject'       => $r['onderwerp'],
