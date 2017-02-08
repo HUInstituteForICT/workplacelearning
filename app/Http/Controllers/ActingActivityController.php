@@ -37,13 +37,13 @@ class ActingActivityController extends Controller {
 
         $v = Validator::make($req->all(), [
             'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
-            'description'           => 'required|max:150|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'"]+$/',
+            'description'           => 'required|max:150|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"]+$/',
             'timeslot'              => 'required|exists:timeslot,timeslot_id',
-            'new_rp'                => 'required_if:res_person,new|max:45|regex:/^[ 0-9a-zA-z]+$/',
-            'new_rm'                => 'required_if:res_material,new|max:45|regex:/^[ 0-9a-zA-z]+$/',
-            'learned'               => 'required|max:150|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'"]+$/',
-            'support_wp'            => 'max:75|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'"]+$/',
-            'support_ed'            => 'max:75|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'"]+$/',
+            'new_rp'                => 'required_if:res_person,new|max:45|regex:/^[ 0-9a-zA-z,.\/\\\\\']+$/',
+            'new_rm'                => 'required_if:res_material,new|max:45|regex:/^[ 0-9a-zA-z,.\/\\\\\']+$/',
+            'learned'               => 'required|max:150|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"]+$/',
+            'support_wp'            => 'max:75|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"]+$/',
+            'support_ed'            => 'max:75|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"]+$/',
             'learning_goal'         => 'required|exists:learninggoal,learninggoal_id',
             'competence'            => 'required|exists:competence,competence_id'
         ]);
@@ -55,11 +55,12 @@ class ActingActivityController extends Controller {
         $v->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function($input) {
             return $input->res_material != 'new' && $input->res_material != 'none';
         });
-        $v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
+        /*$v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
             return $input->res_material == 1;
-        });
-        $v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[0-9a-zA-Z-_,.() ]+$/', function($input) {
-            return $input->res_material != 1;
+        });*/
+        //temporarily disabled url validation for res_material_detail field
+        $v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-Z-_,.\/()]+$/', function($input) {
+            return $input->res_material >= 1;
         });
 
         if ($v->fails()) {
