@@ -8,10 +8,12 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Difficulty;
 use App\Feedback;
 use App\ResourcePerson;
 use App\LearningActivityProducing;
 use App\Http\Requests;
+use App\Status;
 use phpDocumentor\Reflection\Types\This;
 use Validator;
 use Illuminate\Http\Request;
@@ -25,7 +27,9 @@ class ProducingActivityController extends Controller{
         );
 
         return view('pages.producing.activity')
-            ->with('learningWith', $resourcePersons);
+            ->with('learningWith', $resourcePersons)
+            ->with('difficulties', Difficulty::all())
+            ->with('statuses', Status::all());
     }
 
     public function feedback($id){
