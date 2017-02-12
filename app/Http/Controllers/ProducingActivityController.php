@@ -148,7 +148,6 @@ class ProducingActivityController extends Controller{
 
             $w = new LearningActivityProducing;
             $w->wplp_id            = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-            $w->date               = $r['datum'];
             $w->description        = $r['omschrijving'];
             $w->duration           = $r['aantaluren'];
 
@@ -171,7 +170,7 @@ class ProducingActivityController extends Controller{
             $w->difficulty_id           = $r['moeilijkheid'];
             $w->status_id               = $r['status'];
             $w->prev_lap_id             = ($r['previous_wzh'] != "-1") ? $r['previous_wzh'] : NULL;
-            $w->date              = date_format(date_create(null, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
+            $w->date                    = date_format(date_create($r->datum, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
             $w->save();
 
 

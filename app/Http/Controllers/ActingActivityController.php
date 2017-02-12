@@ -89,7 +89,7 @@ class ActingActivityController extends Controller {
         }
 
         $a->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-        $a->date = $req['date'];
+        $a->date = date_format(date_create($req->date, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
         $a->timeslot_id = $req['timeslot'];
         $a->situation = $req['description'];
         $a->lessonslearned = $req['learned'];

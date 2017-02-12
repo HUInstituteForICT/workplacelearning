@@ -86,7 +86,12 @@
             <div class="row well">
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
-                    <input class="form-control fit-bs" type="date" name="date" value="{{ (count($errors) > 0) ? old('date') : date('Y-m-d', strtotime("now")) }}" /><br/>
+                    <div class='input-group date fit-bs' id='date-deadline'>
+                        <input id="datum" name="date" type='text' class="form-control" value="{{ (!is_null(old('datum'))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y') }}"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
                     <h4>Situatie</h4>
                     <textarea class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,250}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('description') }}</textarea>
                 </div>
@@ -145,6 +150,19 @@
                     </div>
                 </div>
             </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#date-deadline').datetimepicker({
+                        locale: 'nl',
+                        format: 'DD-MM-YYYY',
+                        minDate: "{{ date('Y-m-d', strtotime("-1 week")) }}",
+                        maxDate: "{{ date('Y-m-d', strtotime("now")) }}",
+                        useCurrent: false,
+                    });
+                }).on('dp.change', function(e) {
+                    $('#datum').attr('value', moment(e.date).format("DD-MM-YYYY"));
+                });
+            </script>
         {{ Form::close() }}
         <div class="row">
             <table class="table blockTable col-md-12">

@@ -82,7 +82,7 @@
                     <h4>Activiteit</h4>
 
                     <div class='input-group date fit-bs' id='date-deadline'>
-                        <input name="datum" type='text' class="form-control" value="{{ (!is_null(old('datum'))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y') }}"/>
+                        <input id="datum" name="datum" type='text' class="form-control" value="{{ (!is_null(old('datum'))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y') }}"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -165,7 +165,7 @@
                     <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />
                 </div>
                 <script type="text/javascript">
-                    $(function () {
+                    $(document).ready(function () {
                         $('#date-deadline').datetimepicker({
                             locale: 'nl',
                             format: 'DD-MM-YYYY',
@@ -173,6 +173,8 @@
                             maxDate: "{{ date('Y-m-d', strtotime("now")) }}",
                             useCurrent: false,
                         });
+                    }).on('dp.change', function(e) {
+                        $('#datum').attr('value', moment(e.date).format("DD-MM-YYYY"));
                     });
                 </script>
             {{ Form::close() }}
