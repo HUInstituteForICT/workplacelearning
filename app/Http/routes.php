@@ -77,6 +77,7 @@ Route::group([
                                 Route::get('home',                              'HomeController@showActingTemplate')->name('home-acting');
                                 Route::get('process',                           'ActingActivityController@show')->name('process-acting');
                                 Route::post('process/create',                   'ActingActivityController@create')->name('process-acting-create');
+                                Route::get('process/edit/{id}',                 'ActingActivityController@edit')->name('process-acting-edit');
                                 Route::post('process/update/{id}',              'ActingActivityController@update')->name('process-acting-update');
 
                                 Route::get('progress/{page}',                   'ActingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress-acting');
@@ -119,7 +120,3 @@ Route::group([
 
         }
 );
-
-
-
-

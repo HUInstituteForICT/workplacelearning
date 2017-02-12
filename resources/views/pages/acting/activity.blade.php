@@ -158,6 +158,7 @@
                         <td>Leerpunten en vervolg</td>
                         <td>Leervraag</td>
                         <td>Competentie</td>
+                        <td></td>
                     </tr>
                 </thead>
                 @foreach ($activities as $key => $value)
@@ -169,7 +170,8 @@
                         <td>{{ $value->getResourceMaterial() }}</td>
                         <td>{{ $value->lessonslearned }}</td>
                         <td>{{ $value->getLearningGoal() }}</td>
-                        <td>{{ $value->getCompetencies() }}</td>
+                        <td>{{ $value->getCompetencies()->competence_label }}</td>
+                        <td><a href="{{route('process-acting-edit', ['id' => $value->laa_id]) }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></a></td>
                     </tr>
                 @endforeach
             </table>

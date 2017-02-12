@@ -66,6 +66,6 @@ class LearningActivityActing extends Model {
     }
 
     public function getCompetencies() {
-        return $this->competence()->first()->competence_label;
+        return $this->competence()->first();
     }
 }

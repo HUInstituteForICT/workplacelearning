@@ -55,7 +55,7 @@
                         <td>{{ \App\Timeslot::find($a->timeslot_id)->timeslot_text }}</td>
                         <td>{{ $a->lessonslearned }}</td>
                         <td>{{ $a->getLearningGoal() }}</td>
-                        <td>{{ $a->getCompetencies() }}</td>
+                        <td>{{ $a->getCompetencies()->competence_label }}</td>
                     </tr>
                 @endforeach
             @endif
