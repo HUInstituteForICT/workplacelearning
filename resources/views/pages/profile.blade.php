@@ -46,11 +46,12 @@
                 <div class="form-group">
                     {!! Form::label('email', Lang::get('elements.profile.labels.email'), array('class' => 'col-sm-3 control-label')) !!}
                     <div class="col-sm-6"><p class="form-control-static">{{ Auth::user()->email }}</p></div>
+                    <div class="col-sm-2"><input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" /></div>
                 </div>
                 <!-- <div class="form-group">
                     {!! Form::label('phone', Lang::get('elements.profile.labels.phone'), array('class' => 'col-sm-3 control-label')) !!}
                     <div class="col-sm-4">{!! Form::text('phone', Auth::user()->phonenr, array('placeholder' => Lang::get('elements.profile.placeholders.email'), 'class' => 'form-control')) !!}</div>
-                    <div class="col-sm-2"><input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" /></div>
+
                 </div> -->
                 {!! Form::close() !!}
             </div>
