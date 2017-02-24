@@ -35,11 +35,13 @@ Route::group([
                 Route::get('profiel',                                   'ProfileController@show')->name('profile');
                 Route::post('profiel/update',                           'ProfileController@update');
 
+                /*
                 // Internships & Internship Periods
                 Route::get('stageperiode/create',                       'WorkplaceLearningController@show')->name('workplacelearningperiod');
                 Route::get('stageperiode/edit/{id}',                    'WorkplaceLearningController@edit')->name('workplacelearningperiod-edit')->where('id', '[0-9]*');
                 Route::post('stageperiode/create',                      'WorkplaceLearningController@create');
                 Route::post('stageperiode/update/{id}',                 'WorkplaceLearningController@update')->where('id', '[0-9]*');
+                */
 
                 // Category updating
                 Route::post('categorie/update/{id}',                    'WorkplaceLearningController@updateCategories')->where('id', '[0-9]*');
@@ -67,6 +69,12 @@ Route::group([
                                 Route::get('process',   'ActingActivityController@show')->name('process');
                                 Route::get('progress',  'ProducingActivityController@progress')->name('progress');
                                 Route::get('analysis',  'ProducingActivityController@show')->name('analysis');
+                                Route::get('period',    'ProducingWorkplaceLearningController@show')->name('period');
+
+                                //Route::get('period/create',       'ProducingWorkplaceLearningController@show')->name('period');
+                                Route::get('period/edit/{id}',    'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
+                                //Route::post('period/create',      'ProducingWorkplaceLearningController@create');
+                                //Route::post('period/update/{id}', 'ProducingWorkplaceLearningController@update')->where('id', '[0-9]*');
                             }
                 );
 
@@ -81,6 +89,11 @@ Route::group([
 
                                 Route::get('progress/{page}',                   'ActingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress-acting');
 
+                                // Internships & Internship Periods
+                                Route::get('period/create',                       'ActingWorkplaceLearningController@show')->name('period-acting');
+                                Route::get('period/edit/{id}',                    'ActingWorkplaceLearningController@edit')->name('period-acting-edit')->where('id', '[0-9]*');
+                                Route::post('period/create',                      'ActingWorkplaceLearningController@create');
+                                Route::post('period/update/{id}',                 'ActingWorkplaceLearningController@update')->where('id', '[0-9]*');
                                 /*
                                 * Disabled for now, analysis for acting is status: TODO
                                 */
@@ -114,12 +127,14 @@ Route::group([
                                 // Feedback
                                 Route::get('feedback/{id}',                     'ProducingActivityController@feedback')->where('id', '[0-9]*')->name('feedback-producing');
                                 Route::post('feedback/update/{id}',             'ProducingActivityController@updateFeedback')->name('feedback-producing-update');
+
+                                // Internships & Internship Periods
+                                Route::get('period/create',                       'ProducingWorkplaceLearningController@show')->name('period-producing');
+                                Route::get('period/edit/{id}',                    'ProducingWorkplaceLearningController@edit')->name('period-producing-edit')->where('id', '[0-9]*');
+                                Route::post('period/create',                      'ProducingWorkplaceLearningController@create');
+                                Route::post('period/update/{id}',                 'ProducingWorkplaceLearningController@update')->where('id', '[0-9]*');
                             }
                 );
 
         }
 );
-
-
-
-

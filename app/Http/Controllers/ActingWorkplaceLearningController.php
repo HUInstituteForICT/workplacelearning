@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class WorkplaceLearningController extends Controller{
+class ActingWorkplaceLearningController extends Controller{
 
     public function show(){
         return view("pages.internship")

@@ -15,6 +15,7 @@ class TaskTypeRedirect {
      * @return mixed
      */
     public function handle(Request $request, Closure $next){
+
         if(Auth::guest()) return redirect('login');
         if($request->route()->getName() == "home" || $request->route()->getName() == "default"){
             if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
@@ -42,6 +43,20 @@ class TaskTypeRedirect {
                 return redirect()->route('progress-acting', ['page' => 1]);
             } else {
                 return redirect()->route('progress-producing', ['page' => 1]);
+            }
+        }
+        if($request->route()->getName() == "period"){
+            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
+                return redirect()->route('period-acting', ['page' => 1]);
+            } else {
+                return redirect()->route('period-producing', ['page' => 1]);
+            }
+        }
+        if($request->route()->getName() == "period-edit"){
+            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
+                return redirect()->route('period-acting-edit', ['page' => 1]);
+            } else {
+                return redirect()->route('period-producing-edit', ['page' => 1]);
             }
         }
         return $next($request);

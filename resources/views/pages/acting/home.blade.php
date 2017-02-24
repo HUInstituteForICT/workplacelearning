@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="alert alert-notice">
-                            <span>{{ Lang::get('elements.alerts.notice') }}: </span>{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "https://werkplekleren.hu.nl/stageperiode/edit/0", array()), Lang::get('dashboard.nointernshipactive')) !!}
+                            <span>{{ Lang::get('elements.alerts.notice') }}: </span>{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "https://werkplekleren.hu.nl/period/edit/0", array()), Lang::get('dashboard.nointernshipactive')) !!}
                         </div>
                     </div>
                 </div>

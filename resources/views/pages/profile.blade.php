@@ -93,7 +93,7 @@
                 <h3>{{ Lang::get('elements.profile.internships.profile.title') }}</h3>
             </div>
             <div class="col-md-1">
-                <a href="{{ url('/stageperiode/create') }}"><img style="float:right; margin-top:20px;" class="table-icon" src="{{ secure_asset('assets/img/icn-new.svg') }}" /></a>
+                <a href="{{ url('/period/create') }}"><img style="float:right; margin-top:20px;" class="table-icon" src="{{ secure_asset('assets/img/icn-new.svg') }}" /></a>
             </div>
             <table class="table blockTable col-md-12">
                 <thead class="blue_tile">
@@ -112,7 +112,7 @@
                 <tbody>
                 @foreach(Auth::user()->getWorkplaceLearningPeriods() as $wplp)
                     <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id == $wplp->wplp_id) ? "highlight" : "" }}">
-                        <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/stageperiode/edit/'.$wplp->wplp_id, array()) }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
+                        <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/period/edit/'.$wplp->wplp_id, array()) }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
                         <td>{{ $wplp->getWorkplace()->wp_name }}</td>
                         <td>{{ date('d-m-Y', strtotime($wplp->startdate)) }}</td>
                         <td>{{ date('d-m-Y', strtotime($wplp->enddate)) }}</td>
