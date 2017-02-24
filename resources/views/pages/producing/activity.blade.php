@@ -82,7 +82,7 @@
                     <h4>Activiteit</h4>
 
                     <div class='input-group date fit-bs' id='date-deadline'>
-                        <input id="datum" name="datum" type='text' class="form-control" value="{{ (!is_null(old('datum'))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y') }}"/>
+                        <input id="datum" name="datum" type='text' class="form-control" value="{{ (!is_null(old('datum')) && !in_array(date('w', strtotime(old('datum'))), array(0,6))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y', (in_array(date('w'), array(0,6)) ? strtotime("this friday") : strtotime("now"))) }}"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -169,7 +169,8 @@
                         $('#date-deadline').datetimepicker({
                             locale: 'nl',
                             format: 'DD-MM-YYYY',
-                            minDate: "{{ date('Y-m-d', strtotime("-1 week")) }}",
+                            daysOfWeekDisabled: [0,6],
+                            minDate: "{{ date('Y-m-d', strtotime("-3 week")) }}",
                             maxDate: "{{ date('Y-m-d', strtotime("now")) }}",
                             useCurrent: false,
                         });

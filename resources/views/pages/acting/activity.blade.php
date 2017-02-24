@@ -155,7 +155,7 @@
                     $('#date-deadline').datetimepicker({
                         locale: 'nl',
                         format: 'DD-MM-YYYY',
-                        minDate: "{{ date('Y-m-d', strtotime("-1 week")) }}",
+                        minDate: "{{ date('Y-m-d', strtotime("-3 week")) }}",
                         maxDate: "{{ date('Y-m-d', strtotime("now")) }}",
                         useCurrent: false,
                     });
