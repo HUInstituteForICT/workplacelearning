@@ -121,15 +121,13 @@
                     <h4>Werken/Leren Met <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_with') }}"></i></h4>
                     <div id="swvcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>Persoon</span></label>
-                        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
-                            <select id="rp_id" name="personsource" class="cond-hidden">
+                        <select id="rp_id" name="personsource" class="cond-hidden">
                             @foreach($learningWith as $res)
                                 <option value="{{ $res->rp_id }}">{{ $res->person_label }}</option>
                             @endforeach */ ?>
-                                <option value="new">Nieuw/Anders</option>
-                            </select>
-                            <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()/\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" placeholder="Omschrijving" />
-                        @endif
+                            <option value="new">Nieuw/Anders</option>
+                        </select>
+                        <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()/\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" placeholder="Omschrijving" />
                     </div>
                     <div id="solocontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="alleen" /><span>Alleen</span></label>
@@ -169,6 +167,7 @@
                     <td>Tijd (Uren)</td>
                     <td>Werken/leren met</td>
                     <td>Complexiteit</td>
+                    <td></td>
                 </tr>
                 </thead>
                 @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
@@ -179,6 +178,7 @@
                             <td>{{ $a->getDurationString() }}</td>
                             <td>{{ $a->getResourceDetail() }}</td>
                             <td>{{ $a->getDifficulty() }}</td>
+                            <td><a href="{{route('process-producing-edit', ['id' => $a->lap_id]) }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></a></td>
                         </tr>
                     @endforeach
                 @endif

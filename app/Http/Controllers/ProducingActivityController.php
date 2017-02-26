@@ -28,6 +28,28 @@ class ProducingActivityController extends Controller{
             ->with('learningWith', $resourcePersons);
     }
 
+    public function edit($id){
+        // Allow only to view this page if an internship exists.
+        if(Auth::user()->getCurrentWorkplace() == null)
+            return redirect()->route('profile');
+
+        $activity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
+
+        if (!$activity) {
+            return redirect()->route('process-acting')
+                ->withErrors('Helaas, er is geen activiteit gevonden.');
+        }
+
+        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
+                Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+        );
+
+        return view('pages.producing.activity-edit')
+            ->with('activity', $activity)
+            ->with('learningWith', $resourcePersons)
+            ->with('categories', Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories());
+    }
+
     public function feedback($id){
         $fb  = Feedback::find($id);
         if($fb != null) {
@@ -186,17 +208,11 @@ class ProducingActivityController extends Controller{
         }
     }
 
-    public function edit(Request $r){
+    public function update(Request $r, $id){
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplace() == null)
             return redirect()->route('profile');
-        return view('pages.producing.activity');
-    }
 
-    public function update(Request $r){
-        // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentWorkplace() == null)
-            return redirect()->route('profile');
-        return view('pages.producing.activity');
+        return redirect()->route('process-producing')->with('success', 'De leeractiviteit is aangepast.');
     }
 }

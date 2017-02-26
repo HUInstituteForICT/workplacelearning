@@ -62,8 +62,14 @@ class WorkplaceLearningPeriod extends Model{
 
     public function getLearningActivityActingById($id) {
         return $this->learningActivityActing()
-        ->where('laa_id', '=', $id)
-        ->first();
+            ->where('laa_id', '=', $id)
+            ->first();
+    }
+
+    public function getLearningActivityProducingById($id) {
+        return $this->learningActivityProducing()
+            ->where('lap_id', '=', $id)
+            ->first();
     }
 
     public function getWorkplace(){
