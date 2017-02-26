@@ -102,6 +102,7 @@ Route::group([
                                 Route::get('home',                              'HomeController@showProducingTemplate')->name('home-producing');
                                 Route::get('process',                           'ProducingActivityController@show')->name('process-producing');
                                 Route::post('process/create',                   'ProducingActivityController@create')->name('process-producing-create');
+                                Route::get('process/edit/{id}',                 'ProducingActivityController@edit')->name('process-producing-edit');
                                 Route::post('process/update/{id}',              'ProducingActivityController@update')->name('process-producing-update');
 
                                 // Progress
