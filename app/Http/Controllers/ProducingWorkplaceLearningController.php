@@ -36,7 +36,7 @@ class ProducingWorkplaceLearningController extends Controller{
             return view('pages.internship')
                 ->with('period', $wplp)
                 ->with("workplace", Workplace::find($wplp->wp_id))
-                ->with("categories", Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get())
+                ->with("categories", $wplp->categories()->get())
                 ->with("resource", new Collection);
         }
     }
