@@ -11,24 +11,6 @@
 @stop
 @section('content')
     <div class="container-fluid">
-        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() == NULL)
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-notice">
-                        <span>{{ Lang::get('elements.alerts.notice') }}: </span>{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "period/edit/0", array()), Lang::get('dashboard.nointernshipactive')) !!}
-                    </div>
-                </div>
-            </div>
-        @endif
-        @if(count($errors) > 0 || session()->has('success'))
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
-                    </div>
-                </div>
-            </div>
-        @endif
         <!-- Internship Info -->
         <div class="row">
             <div class="col-md-11">

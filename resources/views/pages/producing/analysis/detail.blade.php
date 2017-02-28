@@ -14,16 +14,6 @@
             });
         </script>
 
-        @if(count($errors) > 0 || session()->has('success'))
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
-                    </div>
-                </div>
-            </div>
-        @endif
-
         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
             <div class="row">
                 <div class="col-lg-12">

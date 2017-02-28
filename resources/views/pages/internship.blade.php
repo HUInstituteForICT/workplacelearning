@@ -19,16 +19,6 @@
                 <a href="{{ url('/profiel') }}">&lt;-  {{ Lang::get('elements.profile.internships.backtoprofile') }}</a>
             </div>
 
-            @if(count($errors) > 0 || session()->has('success'))
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                            <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
-                        </div>
-                    </div>
-                </div>
-            @endif
-
             {!! Form::open(array(
                 'url' => URL::to(((is_null($period->wplp_id)) ? 'stageperiode/create' : 'stageperiode/update'),
                 ((is_null($period->wplp_id)) ? array() : array("id" => $period->wplp_id)),

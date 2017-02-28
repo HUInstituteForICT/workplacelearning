@@ -58,24 +58,6 @@
                 </div>
             </div>
         </div>
-        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() == NULL)
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-notice">
-                        <span>{{ Lang::get('elements.alerts.notice') }}: </span>{!! str_replace('%s', route('profile'), Lang::get('dashboard.nointernshipactive')) !!}
-                    </div>
-                </div>
-            </div>
-        @endif
-        @if(count($errors) > 0 || session()->has('success'))
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
-                    </div>
-                </div>
-            </div>
-        @endif
         <div class="row">
             {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => route('process-producing-create'))) !!}
                 <div class="col-md-2 form-group">

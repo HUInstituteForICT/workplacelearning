@@ -13,15 +13,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.8.0/fullcalendar.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.8.0/fullcalendar.min.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.8.0/fullcalendar.print.css" media="print"/>
-    @if(count($errors) > 0 || session()->has('success'))
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                    <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
-                </div>
-            </div>
-        </div>
-    @endif
     <style>
         .fc-day-header{
             background:  #00A1E2 !important;
