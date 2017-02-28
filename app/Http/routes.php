@@ -22,7 +22,7 @@ Route::auth();
 Route::group([
         'before' => 'auth',
         'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => [ 'localizationRedirect' ],
+        'middleware' => [ 'localizationRedirect', 'usernotifications' ],
         ], function(){
                 // Register the Authentication Controller
 
@@ -70,6 +70,7 @@ Route::group([
                                 Route::get('progress',  'ProducingActivityController@progress')->name('progress');
                                 Route::get('analysis',  'ProducingActivityController@show')->name('analysis');
                                 Route::get('period',    'ProducingWorkplaceLearningController@show')->name('period');
+                                Route::get('period/create',    'ProducingWorkplaceLearningController@show')->name('period-create');
 
                                 //Route::get('period/create',       'ProducingWorkplaceLearningController@show')->name('period');
                                 Route::get('period/edit/{id}',    'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
@@ -92,7 +93,7 @@ Route::group([
                                 // Internships & Internship Periods
                                 Route::get('period/create',                       'ActingWorkplaceLearningController@show')->name('period-acting');
                                 Route::get('period/edit/{id}',                    'ActingWorkplaceLearningController@edit')->name('period-acting-edit')->where('id', '[0-9]*');
-                                Route::post('period/create',                      'ActingWorkplaceLearningController@create');
+                                Route::post('period/create',                      'ActingWorkplaceLearningController@create')->name('period-acting-create');
                                 Route::post('period/update/{id}',                 'ActingWorkplaceLearningController@update')->where('id', '[0-9]*');
                                 /*
                                 * Disabled for now, analysis for acting is status: TODO

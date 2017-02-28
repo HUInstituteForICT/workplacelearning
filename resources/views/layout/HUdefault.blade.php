@@ -25,6 +25,7 @@
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
+        @include('includes.notification')
         @yield('content')
     </div>
 

@@ -15,50 +15,61 @@ class TaskTypeRedirect {
      * @return mixed
      */
     public function handle(Request $request, Closure $next){
-
         if(Auth::guest()) return redirect('login');
-        if($request->route()->getName() == "home" || $request->route()->getName() == "default"){
-            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-                return redirect()->route('home-acting');
-            } else {
-                return redirect()->route('home-producing');
+
+        if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
+            switch($request->route()->getName()){
+                case "home":
+                case "default":
+                    return redirect()->route('home-acting');
+                    break;
+                case "process":
+                    return redirect()->route('process-acting');
+                    break;
+                case "analysis":
+                    return redirect()->route('analysis-acting-choice');
+                    break;
+                case "progress":
+                    return redirect()->route('progress-acting', ['page' => 1]);
+                    break;
+                case "period":
+                    return redirect()->route('period-acting');
+                    break;
+                case "period-create":
+                    return redirect()->route('period-acting-create');
+                    break;
+                case "period-edit":
+                    return redirect()->route('period-acting-edit', ['id' => $request->id]);
+                    break;
+            }
+        } else {
+            // Assume the user follows an EP of type 'Producing'
+            switch($request->route()->getName()){
+                case "home":
+                case "default":
+                    return redirect()->route('home-producing');
+                    break;
+                case "process":
+                    return redirect()->route('process-producing');
+                    break;
+                case "analysis":
+                    return redirect()->route('analysis-producing-choice');
+                    break;
+                case "progress":
+                    return redirect()->route('progress-producing', ['page' => 1]);
+                    break;
+                case "period":
+                    return redirect()->route('period-producing', ['id' => $request->id]);
+                    break;
+                case "period-create":
+                    return redirect()->route('period-producing-create');
+                    break;
+                case "period-edit":
+                    return redirect()->route('period-producing-edit', ['id' => $request->id]);
+                    break;
             }
         }
-        if($request->route()->getName() == "process"){
-            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-                return redirect()->route('process-acting');
-            } else {
-                return redirect()->route('process-producing');
-            }
-        }
-        if($request->route()->getName() == "analysis"){
-            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-                return redirect()->route('analysis-acting-choice');
-            } else {
-                return redirect()->route('analysis-producing-choice');
-            }
-        }
-        if($request->route()->getName() == "progress"){
-            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-                return redirect()->route('progress-acting', ['page' => 1]);
-            } else {
-                return redirect()->route('progress-producing', ['page' => 1]);
-            }
-        }
-        if($request->route()->getName() == "period"){
-            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-                return redirect()->route('period-acting', ['page' => 1]);
-            } else {
-                return redirect()->route('period-producing', ['page' => 1]);
-            }
-        }
-        if($request->route()->getName() == "period-edit"){
-            if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-                return redirect()->route('period-acting-edit', ['page' => 1]);
-            } else {
-                return redirect()->route('period-producing-edit', ['page' => 1]);
-            }
-        }
+
         return $next($request);
     }
 }

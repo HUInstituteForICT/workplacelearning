@@ -55,5 +55,6 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'taskTypeRedirect' => \App\Http\Middleware\TaskTypeRedirect::class,
+        'usernotifications' => \App\Http\Middleware\UserNotifications::class,
     ];
 }
