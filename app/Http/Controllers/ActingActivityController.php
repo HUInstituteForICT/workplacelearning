@@ -13,14 +13,12 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class ActingActivityController extends Controller {
-    public function __construct() {
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
-            return redirect()
-                ->route('profile')
-                ->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
-    }
 
     public function show() {
+        // Allow only to view this page if an internship exists.
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+
         $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->merge(
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
@@ -35,6 +33,10 @@ class ActingActivityController extends Controller {
     }
 
     public function edit($id) {
+        // Allow only to view this page if an internship exists.
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+
         $activity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityActingById($id);
 
         if (!$activity) {
@@ -60,6 +62,10 @@ class ActingActivityController extends Controller {
     }
 
     public function create(Request $req) {
+        // Allow only to view this page if an internship exists.
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+
         $a = new LearningActivityActing;
 
         $v = Validator::make($req->all(), [
@@ -134,6 +140,10 @@ class ActingActivityController extends Controller {
     }
 
     public function update(Request $req, $id) {
+        // Allow only to view this page if an internship exists.
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+
         $v = Validator::make($req->all(), [
             'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
             'description'           => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
