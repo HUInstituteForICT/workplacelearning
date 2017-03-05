@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProducingActivityController extends Controller {
 
-    public function _constructor() {
+    public function __construct() {
         if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
             return redirect()
                 ->route('profile')

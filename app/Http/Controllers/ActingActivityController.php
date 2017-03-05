@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class ActingActivityController extends Controller {
+    public function __construct() {
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+            return redirect()
+                ->route('profile')
+                ->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+    }
 
     public function show() {
         $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->merge(
