@@ -17,7 +17,14 @@ use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ProducingActivityController extends Controller{
+class ProducingActivityController extends Controller {
+
+    public function _constructor() {
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+            return redirect()
+                ->route('profile')
+                ->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+    }
 
     public function show(){
         $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
@@ -29,10 +36,6 @@ class ProducingActivityController extends Controller{
     }
 
     public function edit($id){
-        // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentWorkplace() == null)
-            return redirect()->route('profile');
-
         $activity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
 
         if (!$activity) {
@@ -100,10 +103,6 @@ class ProducingActivityController extends Controller{
     }
 
     public function create(Request $r){
-        // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
-            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
-
         $v = Validator::make($r->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
             'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'\\\\\/"\s]+\s*$/',
@@ -208,10 +207,76 @@ class ProducingActivityController extends Controller{
         }
     }
 
-    public function update(Request $r, $id){
-        // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentWorkplace() == null)
-            return redirect()->route('profile');
+    public function update(Request $req, $id){
+        $v = Validator::make($req->all(), [
+            'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
+            'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'\\\\\/"\s]+\s*$/',
+            'aantaluren'    => 'required|regex:/^[0-9]{1}[.]?[0-9]{0,2}$/',
+            'resource'      => 'required|in:persoon,alleen,internet,boek,new',
+            'moeilijkheid'  => 'required|exists:difficulty,difficulty_id',
+            'status'        => 'required|exists:status,status_id',
+        ]);
+
+        // Conditional Validators
+        // $v->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function($input){
+        //     return $input->previous_wzh != "-1";
+        // });
+        $v->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input){
+            return $input->category_id == "new";
+        });
+        $v->sometimes('category_id', 'required|exists:category,category_id', function($input){
+            return $input->category_id != "new";
+        });
+        $v->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input) {
+            return ($input->personsource == "new" && $input->resource == "persoon");
+        });
+        $v->sometimes('personsource', 'required|exists:resourceperson,rp_id', function($input){
+            return ($input->personsource != "new" && $input->resource == "persoon");
+        });
+        //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
+        $v->sometimes('internetsource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
+            return $input->resource == "internet";
+        });
+        $v->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
+            return $input->resource == "book";
+        });
+        $v->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()\\\\\/]{1,250}$/', function($input){
+            return $input->resource == "new";
+        });
+
+        if ($v->fails()) {
+            return redirect()->route('process-producing-edit', ['id' => $id])
+                ->withErrors($v)
+                ->withInput();
+        }
+
+        $a = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
+        $a->date = $req['datum'];
+        $a->description = $req['omschrijving'];
+        $a->duration = $req['aantaluren'];
+
+        switch($req['resource']) {
+            case 'persoon':
+                $a->res_person_id = $req['personsource'];
+                $a->res_material_id = null;
+                $a->res_material_detail = null;
+                break;
+            case 'internet':
+                $a->res_material_id = 1;
+                $a->res_material_detail = $req['internetsource'];
+                $a->res_person_id = null;
+                break;
+            case 'boek':
+                $a->res_material_id = 2;
+                $a->res_material_detail = $req['booksource'];
+                $a->res_person_id = null;
+                break;
+        }
+
+        $a->category_id = $req['category_id'];
+        $a->difficulty_id = $req['moeilijkheid'];
+        $a->status_id = $req['status'];
+        $a->save();
 
         return redirect()->route('process-producing')->with('success', 'De leeractiviteit is aangepast.');
     }
