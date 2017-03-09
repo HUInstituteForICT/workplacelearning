@@ -33,7 +33,7 @@
                 $("#cond-select-hidden").hide();
                 $("#category").hide();
                 $("#help-text").hide();
-                $(".expand-click :input[name=resource]:checked").click();
+                $(".expand-click :input[value='persoon']").click();
                 $("#newcat").click(function(){
                     $("#category").show();
                 });
@@ -58,27 +58,39 @@
                 </div>
             </div>
         </div>
+        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() == NULL)
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-notice">
+                        <span>{{ Lang::get('elements.alerts.notice') }}: </span>{!! str_replace('%s', route('profile'), Lang::get('dashboard.nointernshipactive')) !!}
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if(count($errors) > 0 || session()->has('success'))
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
+                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="row">
             {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => route('process-producing-create'))) !!}
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
-
-                    <div class='input-group date fit-bs' id='date-deadline'>
-                        <input id="datum" name="datum" type='text' class="form-control" value="{{ (!is_null(old('datum')) && !in_array(date('w', strtotime(old('datum'))), array(0,6))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y', (in_array(date('w'), array(0,6)) ? strtotime("this friday") : strtotime("now"))) }}"/>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
+                    <input class="form-control fit-bs" type="date" name="datum" value="{{ date('Y-m-d', strtotime("now")) }}" /><br/>
 
                     <h5>Omschrijving:</h5>
-                    <textarea class="form-control fit-bs" name="omschrijving" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\/"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('omschrijving') }}</textarea>
+                    <textarea class="form-control fit-bs" name="omschrijving" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\/"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
 
                     <h5>Koppel aan vorige activiteit:</h5>
                     <select class="form-control fit-bs" name="previous_wzh" >
                         <option value="-1">- Niet Koppelen-</option>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != NULL)
                             @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getUnfinishedActivityProducing() as $w)
-                                <option value="{{ $w->lap_id }}"{{ (old('previous_wzh') == $w->lap_id) ? " selected" : "" }}>{{ date('d-m', strtotime($w->date)) ." - ".$w->description }}</option>
+                                <option value="{{ $w->lap_id }}">{{ date('d-m', strtotime($w->date)) ." - ".$w->description }}</option>
                             @endforeach
                         @endif
                     </select>
@@ -86,80 +98,64 @@
                 </div>
                 <div class="col-md-2 form-group buttons numpad">
                     <h4>Uren</h4>
-                    <label><input type="radio" name="aantaluren" value="0.25"{{ (is_null(old('aantaluren')) || old('aantaluren') == "0.25") ? " checked" : "" }}><span>15 min.</span></label>
-                    <label><input type="radio" name="aantaluren" value="0.50"{{ (old('aantaluren') == "0.50") ? " checked" : "" }}><span>30 min.</span></label>
-                    <label><input type="radio" name="aantaluren" value="0.75"{{ (old('aantaluren') == "0.75") ? " checked" : "" }}><span>45 min.</span></label>
+                    <label><input type="radio" name="aantaluren" value="0.25" checked><span>15 min.</span></label>
+                    <label><input type="radio" name="aantaluren" value="0.50"><span>30 min.</span></label>
+                    <label><input type="radio" name="aantaluren" value="0.75"><span>45 min.</span></label>
                     @for($i = 1; $i <= 6; $i++)
-                        {!! "<label>". Form::radio('aantaluren', $i, (old('aantaluren')==$i)) ."<span>". $i ." ". Lang::choice('elements.tasks.hour', $i) ."</span></label>" !!}
+                        {!! "<label>". Form::radio('aantaluren', $i) ."<span>". $i ." ". Lang::choice('elements.tasks.hour', $i) ."</span></label>" !!}
                     @endfor
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Categorie <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories() as $cat)
-                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}"{{ ((is_null(old('category_id')) && $cat->category_id == 1) || old('category_id') == $cat->category_id) ? " checked" : "" }} /><span>{{ $cat->category_label }}</span></label>
+                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->category_id == 1) ? "checked" : "" }}/><span>{{ $cat->category_label }}</span></label>
                         @endforeach
                     @endif
                     <div>
-                        <label class="newcat"><input type="radio" name="category_id" value="new"{{ (old('category_id') == "new") ? " checked" : "" }} /><span class="new" id="newcat">Anders<br />(Toevoegen)</span></label>
+                        <label class="newcat"><input type="radio" name="category_id" value="new" /><span class="new" id="newcat">Anders<br />(Toevoegen)</span></label>
                         <input id="category" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()/\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newcat" placeholder="Omschrijving" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Werken/Leren Met <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_with') }}"></i></h4>
                     <div id="swvcontainer">
-                        <label class="expand-click"><input type="radio" name="resource" value="persoon"{{ (is_null(old('resource')) || old('resource') == "persoon") ? " checked" : "" }}/><span>Persoon</span></label>
-                        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
-                            <select id="rp_id" name="personsource" class="cond-hidden">
+                        <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>Persoon</span></label>
+                        <select id="rp_id" name="personsource" class="cond-hidden">
                             @foreach($learningWith as $res)
-                                <option value="{{ $res->rp_id }}"{{ (old('personsource') == $res->rp_id) ? " selected" : "" }}>{{ $res->person_label }}</option>
+                                <option value="{{ $res->rp_id }}">{{ $res->person_label }}</option>
                             @endforeach */ ?>
-                                <option value="new"{{ (old('personsource') == "new") ? " selected" : "" }}>Nieuw/Anders</option>
-                            </select>
-                            <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()/\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" value="{{ old('newswv') }}" placeholder="Omschrijving" />
-                        @endif
+                            <option value="new">Nieuw/Anders</option>
+                        </select>
+                        <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()/\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" placeholder="Omschrijving" />
                     </div>
                     <div id="solocontainer">
-                        <label class="expand-click"><input type="radio" name="resource" value="alleen"{{ (old('resource') == "alleen") ? " checked" : "" }}/><span>Alleen</span></label>
+                        <label class="expand-click"><input type="radio" name="resource" value="alleen" /><span>Alleen</span></label>
                     </div>
                     <div id="internetcontainer">
-                        <label class="expand-click"><input type="radio" name="resource" value="internet"{{ (old('resource') == "internet") ? " checked" : "" }}/><span>Internetbron</span></label>
-                        <input class="cond-hidden" type="text" name="internetsource" value="{{ old('internetsource') }}" placeholder="http://www.bron.domein/" />
+                        <label class="expand-click"><input type="radio" name="resource" value="internet" /><span>Internetbron</span></label>
+                        <input class="cond-hidden" type="text" name="internetsource" value="" placeholder="http://www.bron.domein/" />
                     </div>
                     <div id="boekcontainer">
-                        <label class="expand-click"><input type="radio" name="resource" value="boek"{{ (old('resource') == "boek") ? " checked" : "" }}/><span>Boek/Artikel</span></label>
-                        <input class="cond-hidden" type="text" name="booksource" value="{{ old('booksource') }}" placeholder="Naam Boek/Artikel" />
+                        <label class="expand-click"><input type="radio" name="resource" value="boek" /><span>Boek/Artikel</span></label>
+                        <input class="cond-hidden" type="text" name="booksource" value="" placeholder="Naam Boek/Artikel" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Status <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_status') }}"></i></h4>
-                    @foreach($statuses as $status)
-                        <label><input type="radio" name="status" value="{{ $status->status_id }}"{{ ((is_null(old('status')) && $status->status_id == 1) || old('status') == $status->status_id) ? " checked" : "" }}/><span>{{ $status->status_label }}</span></label>
-                    @endforeach
+                    <label><input type="radio" name="status" value="1" checked/><span>Afgerond</span></label>
+                    <label><input type="radio" name="status" value="2"/><span>Mee Bezig</span></label>
+                    <label><input type="radio" name="status" value="3"/><span>Overgedragen</span></label>
                 </div>
                 <div class="col-md-1 form-group buttons">
                     <h4>Moeilijkheidsgraad <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_difficulty') }}"></i></h4>
-                    @foreach($difficulties as $difficulty)
-                        <label><input type="radio" name="moeilijkheid" value="{{ $difficulty->difficulty_id }}"{{ ((is_null(old('moeilijkheid')) && $difficulty->difficulty_id == 1) || old('moeilijkheid') == $difficulty->difficulty_id) ? " checked" : "" }}/><span>{{ $difficulty->difficulty_label }}</span></label>
-                    @endforeach
+                    <label><input type="radio" name="moeilijkheid" value="1" checked/><span>Makkelijk</span></label>
+                    <label><input type="radio" name="moeilijkheid" value="2"/><span>Gemiddeld</span></label>
+                    <label><input type="radio" name="moeilijkheid" value="3"/><span>Moeilijk</span></label>
                 </div>
                 <div class="col-md-1 form-group buttons">
                     <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />
                 </div>
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        $('#date-deadline').datetimepicker({
-                            locale: 'nl',
-                            format: 'DD-MM-YYYY',
-                            daysOfWeekDisabled: [0,6],
-                            minDate: "{{ date('Y-m-d', strtotime("-3 week")) }}",
-                            maxDate: "{{ date('Y-m-d', strtotime("now")) }}",
-                            useCurrent: false,
-                        });
-                    }).on('dp.change', function(e) {
-                        $('#datum').attr('value', moment(e.date).format("DD-MM-YYYY"));
-                    });
-                </script>
             {{ Form::close() }}
         </div>
         <div class="row">
@@ -171,6 +167,7 @@
                     <td>Tijd (Uren)</td>
                     <td>Werken/leren met</td>
                     <td>Complexiteit</td>
+                    <td></td>
                 </tr>
                 </thead>
                 @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
@@ -181,6 +178,7 @@
                             <td>{{ $a->getDurationString() }}</td>
                             <td>{{ $a->getResourceDetail() }}</td>
                             <td>{{ $a->getDifficulty() }}</td>
+                            <td><a href="{{route('process-producing-edit', ['id' => $a->lap_id]) }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></a></td>
                         </tr>
                     @endforeach
                 @endif
