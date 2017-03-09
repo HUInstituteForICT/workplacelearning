@@ -35,47 +35,29 @@ Route::group([
                 Route::get('profiel',                                   'ProfileController@show')->name('profile');
                 Route::post('profiel/update',                           'ProfileController@update');
 
-                /*
-                // Internships & Internship Periods
-                Route::get('stageperiode/create',                       'WorkplaceLearningController@show')->name('workplacelearningperiod');
-                Route::get('stageperiode/edit/{id}',                    'WorkplaceLearningController@edit')->name('workplacelearningperiod-edit')->where('id', '[0-9]*');
-                Route::post('stageperiode/create',                      'WorkplaceLearningController@create');
-                Route::post('stageperiode/update/{id}',                 'WorkplaceLearningController@update')->where('id', '[0-9]*');
-                */
-
                 // Category updating
-                Route::post('categorie/update/{id}',                    'WorkplaceLearningController@updateCategories')->where('id', '[0-9]*');
+                Route::post('categorie/update/{id}',                    'ProducingWorkplaceLearningController@updateCategories')->name('categories-update')->where('id', '[0-9]*');
 
                 // Calendar Creation
                 Route::get('deadline',                                  'CalendarController@show')->name('deadline');
                 Route::post('deadline/create',                          'CalendarController@create')->name('deadline-create');
                 Route::post('deadline/update',                          'CalendarController@update')->name('deadline-update');
 
-                // acting activty
-                Route::get('acting',                                    'ActingActivityController@show')->name('leerproces-acting');
-                Route::post('acting/create',                            'ActingActivityController@create')->name('leerproces-acting-create');
-
                 // Bugreport
                 Route::get('bugreport',                                 'HomeController@showBugReport')->name('bugreport');
                 Route::post('bugreport/create',                         'HomeController@createBugReport')->name('bugreport-create');
-
 
                 Route::group([
                                 'middleware' => [ 'taskTypeRedirect' ],
                             ], function(){
                                 /* Add all middleware redirected urls here */
-                                Route::get('/',         'HomeController@showHome')->name('default');
-                                Route::get('home',      'HomeController@showHome')->name('home');
-                                Route::get('process',   'ActingActivityController@show')->name('process');
-                                Route::get('progress/{page}',  'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
-                                Route::get('analysis',  'ProducingActivityController@show')->name('analysis');
-                                Route::get('period',    'ProducingWorkplaceLearningController@show')->name('period');
-                                Route::get('period/create',    'ProducingWorkplaceLearningController@show')->name('period-create');
-
-                                //Route::get('period/create',       'ProducingWorkplaceLearningController@show')->name('period');
-                                Route::get('period/edit/{id}',    'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
-                                //Route::post('period/create',      'ProducingWorkplaceLearningController@create');
-                                //Route::post('period/update/{id}', 'ProducingWorkplaceLearningController@update')->where('id', '[0-9]*');
+                                Route::get('/',                 'HomeController@showHome')->name('default');
+                                Route::get('home',              'HomeController@showHome')->name('home');
+                                Route::get('process',           'ActingActivityController@show')->name('process');
+                                Route::get('progress/{page}',   'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
+                                Route::get('analysis',          'ProducingActivityController@show')->name('analysis');
+                                Route::get('period/create',     'ProducingWorkplaceLearningController@show')->name('period');
+                                Route::get('period/edit/{id}',  'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
                             }
                 );
 
@@ -95,12 +77,7 @@ Route::group([
                                 Route::get('period/create',                       'ActingWorkplaceLearningController@show')->name('period-acting');
                                 Route::get('period/edit/{id}',                    'ActingWorkplaceLearningController@edit')->name('period-acting-edit')->where('id', '[0-9]*');
                                 Route::post('period/create',                      'ActingWorkplaceLearningController@create')->name('period-acting-create');
-                                Route::post('period/update/{id}',                 'ActingWorkplaceLearningController@update')->where('id', '[0-9]*');
-                                /*
-                                * Disabled for now, analysis for acting is status: TODO
-                                */
-
-                                //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
+                                Route::post('period/update/{id}',                 'ActingWorkplaceLearningController@update')->name('period-acting-update')->where('id', '[0-9]*');
 
                                 // Report Creation
                                 Route::get('analysis',                          'ActingAnalysisController@show')->name('analysis-acting-choice');
@@ -132,8 +109,10 @@ Route::group([
                                 // Internships & Internship Periods
                                 Route::get('period/create',                       'ProducingWorkplaceLearningController@show')->name('period-producing');
                                 Route::get('period/edit/{id}',                    'ProducingWorkplaceLearningController@edit')->name('period-producing-edit')->where('id', '[0-9]*');
-                                Route::post('period/create',                      'ProducingWorkplaceLearningController@create');
-                                Route::post('period/update/{id}',                 'ProducingWorkplaceLearningController@update')->where('id', '[0-9]*');
+                                Route::post('period/create',                      'ProducingWorkplaceLearningController@create')->name('period-producing-create');
+                                Route::post('period/update/{id}',                 'ProducingWorkplaceLearningController@update')->name('period-producing-update')->where('id', '[0-9]*');
+
+                                //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
                             }
                 );
 

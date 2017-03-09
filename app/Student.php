@@ -115,7 +115,7 @@ class Student extends Authenticatable
     }
 
     public function getEducationProgramType() {
-        return $this->educationProgram()->educationprogramType()-first();
+        return $this->getEducationProgram()->educationprogramType()->first();
     }
 
     /* OVERRIDE IN ORDER TO DISABLE THE REMEMBER_ME TOKEN */

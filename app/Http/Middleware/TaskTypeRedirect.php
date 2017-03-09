@@ -35,9 +35,6 @@ class TaskTypeRedirect {
                 case "period":
                     return redirect()->route('period-acting');
                     break;
-                case "period-create":
-                    return redirect()->route('period-acting-create');
-                    break;
                 case "period-edit":
                     return redirect()->route('period-acting-edit', ['id' => $request->id]);
                     break;
@@ -59,10 +56,7 @@ class TaskTypeRedirect {
                     return redirect()->route('progress-producing', ['page' => $request->page]);
                     break;
                 case "period":
-                    return redirect()->route('period-producing', ['id' => $request->id]);
-                    break;
-                case "period-create":
-                    return redirect()->route('period-producing-create');
+                    return redirect()->route('period-producing');
                     break;
                 case "period-edit":
                     return redirect()->route('period-producing-edit', ['id' => $request->id]);

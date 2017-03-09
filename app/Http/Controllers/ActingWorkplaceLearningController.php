@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Auth;
 class ActingWorkplaceLearningController extends Controller{
 
     public function show(){
-        return view("pages.internship")
+        return view("pages.acting.internship")
                 ->with("period", new WorkplaceLearningPeriod)
                 ->with("workplace", new Workplace);
     }
@@ -33,10 +33,11 @@ class ActingWorkplaceLearningController extends Controller{
             return redirect()->route('profile')
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
         } else {
-            return view('pages.internship')
-                ->with('period', $wplp)
+            return view('pages.acting.internship')
+                ->with("period", $wplp)
                 ->with("workplace", Workplace::find($wplp->wp_id))
                 ->with("categories", $wplp->categories()->get())
+                ->with("")
                 ->with("resource", new Collection);
         }
     }
@@ -61,7 +62,7 @@ class ActingWorkplaceLearningController extends Controller{
 
         if ($validator->fails()) {
             return redirect()
-                ->route('workplacelearningperiod')
+                ->route('period-acting-create')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -132,7 +133,7 @@ class ActingWorkplaceLearningController extends Controller{
 
         if ($validator->fails()) {
             return redirect()
-                ->route('workplacelearningperiod-edit', ["id" => $id])
+                ->route('period-acting-edit', ["id" => $id])
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -199,7 +200,7 @@ class ActingWorkplaceLearningController extends Controller{
         if($validator->fails()){
             // Noes. errors occured. Exit back to profile page with errors
             return redirect()
-                ->route('workplacelearningperiod-edit', ["id" => $id])
+                ->route('period-acting-edit', ["id" => $id])
                 ->withErrors($validator)
                 ->withInput();
         } else {
@@ -215,7 +216,7 @@ class ActingWorkplaceLearningController extends Controller{
                 $c->save();
             }
             // Done, redirect back to profile page
-            return redirect()->route('workplacelearningperiod-edit', ["id" => $id])->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');
+            return redirect()->route('period-acting-edit', ["id" => $id])->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');
         }
     }
 

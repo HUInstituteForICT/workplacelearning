@@ -20,9 +20,7 @@
             </div>
 
             {!! Form::open(array(
-                'url' => URL::to(((is_null($period->wplp_id)) ? 'stageperiode/create' : 'stageperiode/update'),
-                ((is_null($period->wplp_id)) ? array() : array("id" => $period->wplp_id)),
-                true),
+                'url' => ((is_null($period->wplp_id)) ? route('period-acting-create') : route('period-acting-update', ['id' => $period->wplp_id])),
                 'data-toggle' => 'validator'))
              !!}
             <div class="col-md-5">
@@ -118,48 +116,5 @@
             </div>
             {!! Form::close() !!}
         </div>
-        @if(!is_null($workplace->wp_name))
-        <div class="row">
-            <!-- Categories -->
-            <div class="col-lg-5">
-                {!! Form::open(array('url' => URL::to('categorie/update', array('id'=>$period->wplp_id), true), 'class' => 'form form-horizontal well')) !!}
-                <h3>{{ Lang::get('elements.profile.categories.title') }}</h3>
-                <table class="table blockTable">
-                    <thead class="blue_tile">
-                    <tr>
-                        <th>{{ Lang::get('elements.profile.categories.internshipname') }}</th>
-                        <th>{{ Lang::get('elements.profile.categories.categoryname') }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($categories as $cat)
-                            <tr>
-                                <input type="hidden" name="cat[{{ $cat->category_id  }}][wplp_id]" value="{{ $cat->wplp_id }}" />
-                                <input type="hidden" name="cat[{{ $cat->category_id }}][cg_id]" value="{{ $cat->category_id }}" />
-                                <td>{{ $workplace->wp_name
-                            ." (". date('d-m-Y', strtotime($period->startdate))
-                            . " - " . date('d-m-Y', strtotime($period->enddate)). ")" }}</td>
-                                <td><input name="cat[{{ $cat->category_id }}][cg_label]"
-                                           value="{{
-                                        old("category[". $cat->category_id ."][cg_label]")
-                                        ? old("category[". $cat->category_id ."][cg_label]")
-                                        : $cat->category_label
-                                        }}"
-                                    /></td>
-                            </tr>
-                        @endforeach
-                        <tr>
-                            <input type="hidden" name="newcat[0][wplp_id]" value="{{ $period->wplp_id }}" />
-                            <input type="hidden" name="newcat[0][cg_id]" value="-1" />
-                            <td>{{ $workplace->wp_name }}<br />{{ "(". date('d-m-Y', strtotime($period->startdate)). " - " . date('d-m-Y', strtotime($period->enddate)). ")" }}</td>
-                            <td><input name="newcat[0][cg_label]" placeholder="{{ Lang::get('elements.profile.placeholders.categoryname') }}" value="{{ old('cat[0][cg_label]') }}" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" />
-                {!! Form::close() !!}
-            </div>
-        </div>
-        @endif
     </div>
 @stop

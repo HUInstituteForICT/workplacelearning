@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Auth;
 class ProducingWorkplaceLearningController extends Controller{
 
     public function show(){
-        return view("pages.internship")
+        return view("pages.producing.internship")
                 ->with("period", new WorkplaceLearningPeriod)
                 ->with("workplace", new Workplace);
     }
@@ -33,7 +33,7 @@ class ProducingWorkplaceLearningController extends Controller{
             return redirect()->route('profile')
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
         } else {
-            return view('pages.internship')
+            return view('pages.producing.internship')
                 ->with('period', $wplp)
                 ->with("workplace", Workplace::find($wplp->wp_id))
                 ->with("categories", $wplp->categories()->get())
@@ -61,7 +61,7 @@ class ProducingWorkplaceLearningController extends Controller{
 
         if ($validator->fails()) {
             return redirect()
-                ->route('workplacelearningperiod')
+                ->route('period-producing-create')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -118,7 +118,7 @@ class ProducingWorkplaceLearningController extends Controller{
 
         if ($validator->fails()) {
             return redirect()
-                ->route('period-edit', ["id" => $id])
+                ->route('period-producing-edit', ["id" => $id])
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -185,7 +185,7 @@ class ProducingWorkplaceLearningController extends Controller{
         if($validator->fails()){
             // Noes. errors occured. Exit back to profile page with errors
             return redirect()
-                ->route('period-edit', ["id" => $id])
+                ->route('period-producing-edit', ["id" => $id])
                 ->withErrors($validator)
                 ->withInput();
         } else {
@@ -201,7 +201,7 @@ class ProducingWorkplaceLearningController extends Controller{
                 $c->save();
             }
             // Done, redirect back to profile page
-            return redirect()->route('period-edit', ["id" => $id])->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');
+            return redirect()->route('period-producing-edit', ["id" => $id])->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');
         }
     }
 
