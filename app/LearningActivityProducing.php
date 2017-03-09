@@ -44,12 +44,20 @@ class LearningActivityProducing extends Model{
         return $this->hasOne('App\ResourceMaterial', 'rm_id', 'res_material_id');
     }
 
+    public function category(){
+        return $this->hasOne('App\Category', 'category_id', 'category_id');
+    }
+
     public function difficulty() {
         return $this->hasOne('App\Difficulty', 'difficulty_id', 'difficulty_id');
     }
 
     public function getDifficulty() {
         return $this->difficulty()->first()->difficulty_label;
+    }
+
+    public function getCategory(){
+        return $this->category()->first()->category_label;
     }
 
     public function getDurationString(){

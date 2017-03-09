@@ -61,10 +61,10 @@ class ProducingActivityController extends Controller {
     public function feedback($id){
         $fb  = Feedback::find($id);
         if($fb != null) {
-            $wzh = LearningActivityProducing::find($fb->wzh_id);
+            $lap = LearningActivityProducing::find($fb->learningactivity_id);
         }
-        return view('pages.feedback')
-            ->with('wzh', $wzh)
+        return view('pages.producing.feedback')
+            ->with('lap', $lap)
             ->with('fb', $fb);
     }
 
@@ -75,14 +75,17 @@ class ProducingActivityController extends Controller {
     public function updateFeedback(Request $r, $id){
         $fb  = Feedback::find($id); $wzh = null;
         if($fb != null) {
-            $wzh = LearningActivityProducing::find($fb->wzh_id);
+            $lap = LearningActivityProducing::find($fb->wzh_id);
+            if(is_null($lap) || $lap->wplp_id != Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id){
+                return redirect()->route('home')->withErrors(['Je hebt geen rechten om deze feedback te versturen']);
+            }
         }
 
         $v = Validator::make($r->all(), [
             'notfinished'               => 'required|regex:/^[0-9a-zA-Z()-_,. ]+$/',
             'newnotfinished'            => 'required_if:notfinished,Anders|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
-            'help_asked'                => 'required|in:0,1,2',
-            'help_werkplek'             => 'required_unless:help_asked,0|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
+            'support_requested'         => 'required|in:0,1,2',
+            'supported_provided_wp'    => 'required_unless:support_requested,0|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
             'initiatief'                => 'required|max:500|regex:/^[0-9a-zA-Z()-_,. ]+$/',
             'progress_satisfied'        => 'required|in:1,2',
             'vervolgstap_zelf'          => 'required|max:150|regex:/^[0-9a-zA-Z()-_,. ]+$/',
@@ -90,20 +93,20 @@ class ProducingActivityController extends Controller {
             'ondersteuning_opleiding'   => 'required_unless:ondersteuningOpleiding,Geen|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
         ]);
         if($v->fails()){
-            return redirect()->route('producing-feedback', ["id" => $id])
+            return redirect()->route('feedback-producing', ["id" => $id])
                 ->withErrors($v)
                 ->withInput();
         } else {
             $fb->notfinished                = ($r['notfinished'] == "Anders") ? $r['newnotfinished'] : $r['notfinished'];
-            $fb->help_asked                 = $r['help_asked'];
-            $fb->help_werkplek              = ($r['help_asked'] == 0) ? "Geen" : $r['help_werkplek'];
+            $fb->initiative                 = $r['initiatief'];
             $fb->progress_satisfied         = $r['progress_satisfied'];
-            $fb->initiatief                 = $r['initiatief'];
-            $fb->vervolgstap_zelf           = $r['vervolgstap_zelf'];
-            $fb->ondersteuning_werkplek     = (!isset($r['ondersteuningWerkplek'])) ? $r['ondersteuning_werkplek'] : "Geen";
-            $fb->ondersteuning_opleiding    = (!isset($r['ondersteuningOpleiding'])) ? $r['ondersteuning_opleiding'] : "Geen";
+            $fb->support_requested          = $r['support_requested'];
+            $fb->supported_provided_wp      = $r['supported_provided_wp'];
+            $fb->nextstep_self              = $r['vervolgstap_zelf'];
+            $fb->support_needed_wp          = (!isset($r['ondersteuningWerkplek'])) ? $r['ondersteuning_werkplek'] : "Geen";
+            $fb->support_needed_ed          = (!isset($r['ondersteuningOpleiding'])) ? $r['ondersteuning_opleiding'] : "Geen";
             $fb->save();
-            return redirect()->route('feedback-producing')->with('success', 'De feedback is opgeslagen.');
+            return redirect()->route('feedback-producing', ['id' => $id])->with('success', 'De feedback is opgeslagen.');
         }
     }
 
@@ -191,7 +194,6 @@ class ProducingActivityController extends Controller {
                     break;
             }
 
-
             $w->category_id             = ($r['category_id'] == "new") ? $c->category_id : $r['category_id'];
             $w->difficulty_id           = $r['moeilijkheid'];
             $w->status_id               = $r['status'];
@@ -199,17 +201,15 @@ class ProducingActivityController extends Controller {
             $w->date                    = date_format(date_create($r->datum, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
             $w->save();
 
-
             if(
                 ($w->difficulty_id == 2 || $w->difficulty_id == 3)
                 && ($w->status_id == 2)
             ){
                 // Create Feedback object and redirect
-                /*$fb = new Feedback;
+                $fb = new Feedback;
                 $fb->learningactivity_id = $w->lap_id;
                 $fb->save();
-                return redirect('feedback/'.$fb->fb_id)->with('success', 'De leeractiviteit is opgeslagen.');
-                */
+                return redirect()->route('feedback-producing', ['id' => $fb->fb_id])->with('notification', 'Je vond deze activiteit moeilijk. Kan je aangeven wat je lastig vond?');
             }
             return redirect()->route('process-producing')->with('success', 'De leeractiviteit is opgeslagen.');
         }
@@ -230,9 +230,6 @@ class ProducingActivityController extends Controller {
         ]);
 
         // Conditional Validators
-        // $v->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function($input){
-        //     return $input->previous_wzh != "-1";
-        // });
         $v->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input){
             return $input->category_id == "new";
         });

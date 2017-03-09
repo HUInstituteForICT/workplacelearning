@@ -20,23 +20,22 @@ class Feedback extends Model{
     // Default
     protected $fillable = [
         'fb_id',
-        'wzh_id',
+        'learningactivity_id',
         'notfinished',
-        'initiatief',
+        'initiative',
         'progress_satisfied',
-        'progress_satisfied_detail',
-        'help_asked',
-        'help_werkplek',    
-        'vervolgstap_zelf',
-        'ondersteuning_werkplek',
-        'ondersteuning_opleiding',
+        'support_requested',
+        'supported_provided_wp',
+        'nextstep_self',
+        'support_needed_wp',
+        'support_needed_ed',
     ];
 
     public function isSaved(){
         return (strlen($this->notfinished) > 0);
     }
 
-    public function werkzaamheid(){
-        return $this->belongsTo('App\Werkzaamheid');
+    public function learningactivityproducing(){
+        return $this->belongsTo('App\LearningActivityProducing');
     }
 }

@@ -28,6 +28,10 @@ class Category extends Model{
         return $this->belongsTo('App\WorkplaceLearningPeriod');
     }
 
+    public function learningactivitiesproducing(){
+        return $this->belongsTo('App\LearningActivityProducing');
+    }
+
     public function getCategoryLabel(){
         return $this->category_label;
     }
