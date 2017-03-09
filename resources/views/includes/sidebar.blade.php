@@ -30,7 +30,7 @@
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.profile') }}</div>
             </div>
         </a>
-        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/progress', array()) }}">
+        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/progress/1', array()) }}">
             <div class="tile white_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/Studievoortgang_blauw.svg', true) }}" />
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.settings') }}</div>

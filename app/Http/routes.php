@@ -67,7 +67,7 @@ Route::group([
                                 Route::get('/',         'HomeController@showHome')->name('default');
                                 Route::get('home',      'HomeController@showHome')->name('home');
                                 Route::get('process',   'ActingActivityController@show')->name('process');
-                                Route::get('progress',  'ProducingActivityController@progress')->name('progress');
+                                Route::get('progress/{page}',  'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
                                 Route::get('analysis',  'ProducingActivityController@show')->name('analysis');
                                 Route::get('period',    'ProducingWorkplaceLearningController@show')->name('period');
                                 Route::get('period/create',    'ProducingWorkplaceLearningController@show')->name('period-create');
@@ -100,8 +100,6 @@ Route::group([
                                 * Disabled for now, analysis for acting is status: TODO
                                 */
 
-                                // Progress
-                                //Route::get('progress/{page}',                   'ActingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
                                 //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
 
                                 // Report Creation

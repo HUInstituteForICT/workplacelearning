@@ -30,7 +30,7 @@ class TaskTypeRedirect {
                     return redirect()->route('analysis-acting-choice');
                     break;
                 case "progress":
-                    return redirect()->route('progress-acting', ['page' => 1]);
+                    return redirect()->route('progress-acting', ['page' => $request->page]);
                     break;
                 case "period":
                     return redirect()->route('period-acting');
@@ -56,7 +56,7 @@ class TaskTypeRedirect {
                     return redirect()->route('analysis-producing-choice');
                     break;
                 case "progress":
-                    return redirect()->route('progress-producing', ['page' => 1]);
+                    return redirect()->route('progress-producing', ['page' => $request->page]);
                     break;
                 case "period":
                     return redirect()->route('period-producing', ['id' => $request->id]);
