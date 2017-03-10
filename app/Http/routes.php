@@ -37,6 +37,8 @@ Route::group([
 
                 // Category updating
                 Route::post('categorie/update/{id}',                    'ProducingWorkplaceLearningController@updateCategories')->name('categories-update')->where('id', '[0-9]*');
+                // Learning Goal updating
+                Route::post('learninggoal/update/{id}',                 'ActingWorkplaceLearningController@updateLearningGoals')->name('learninggoals-update')->where('id', '[0-9]*');
 
                 // Calendar Creation
                 Route::get('deadline',                                  'CalendarController@show')->name('deadline');

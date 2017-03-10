@@ -23,7 +23,7 @@
                 'url' => ((is_null($period->wplp_id)) ? route('period-acting-create') : route('period-acting-update', ['id' => $period->wplp_id])),
                 'data-toggle' => 'validator'))
              !!}
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="form-horizontal well">
                     <h2>
                         {{ Lang::get('elements.profile.internships.current.title') }}
@@ -109,12 +109,45 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-7 well form-group">
+            <div class="col-md-6 well form-group">
                 <h2>{{ Lang::get('elements.profile.internships.current.titleassignment') }}</h2>
                 <textarea name="internshipAssignment" rows="19" class="form-control" minlength="15" maxlength="500" data-error="Dit veld moet minimaal 15 characters hebben en kan maximaal 500 characters bevatten. Alleen de volgende characters zijn toegestaan: [0-9a-zA-Z -_.,()]" required>{{ (old('internshipAssignment')) ? old('internshipAssignment') : $period->description }}</textarea>
                 <div class="help-block with-errors"></div>
             </div>
             {!! Form::close() !!}
         </div>
+    @if(!is_null($workplace->wp_name))
+        <div class="row">
+            <!-- Learning Goals -->
+            <div class="col-lg-6">
+                {!! Form::open(array('url' => route('learninggoals-update', ['id' => $period->wplp_id]), 'class' => 'form form-horizontal well')) !!}
+                <h3>{{ Lang::get('elements.profile.learninggoals.title') }}</h3>
+                <table class="table blockTable">
+                    <thead class="blue_tile">
+                    <tr>
+                        <th>{{ Lang::get('elements.profile.learninggoals.goalno') }}</th>
+                        <th>{{ Lang::get('elements.profile.learninggoals.goalname') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php $i = 1; ?>
+                    @foreach($learninggoals as $goal)
+                        <tr>
+                            <td>Leerdoel {{ $i }}</td>
+                            <td><input type="text" name="learninggoal_name[{{ $goal->learninggoal_id }}]" value="{{ (!is_null(old('learninggoal_name.'.$goal->learninggoal_id))) ? old('learninggoal_name.'.$goal->learninggoal_id) : $goal->learninggoal_label }}" /></td>
+                        </tr>
+                        <?php $i++; ?>
+                    @endforeach
+                    <tr>
+                        <td>Nieuw Leerdoel:</td>
+                        <td><input type="text" name="new_learninggoal_name" placeholder="{{ Lang::get('elements.profile.placeholders.learninggoalname') }}" value="{{ old('new_learninggoal_name') }}" /></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" />
+                {!! Form::close() !!}
+            </div>
+        </div>
+    @endif
     </div>
 @stop

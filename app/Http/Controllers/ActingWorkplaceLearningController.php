@@ -36,8 +36,7 @@ class ActingWorkplaceLearningController extends Controller{
             return view('pages.acting.internship')
                 ->with("period", $wplp)
                 ->with("workplace", Workplace::find($wplp->wp_id))
-                ->with("categories", $wplp->categories()->get())
-                ->with("")
+                ->with("learninggoals", $wplp->getLearningGoals())
                 ->with("resource", new Collection);
         }
     }
@@ -176,6 +175,50 @@ class ActingWorkplaceLearningController extends Controller{
         return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
     }
 
+    public function updateLearningGoals(Request $request, $id){
+        // Verify the given ID is valid and belongs to the student
+        $t = false;
+        foreach(Auth::user()->workplacelearningperiods()->get() as $ip){
+            if($ip->wplp_id == $id){
+                $t = true;
+                break;
+            }
+        }
+        if(!$t) return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel."); // $id is invalid or does not belong to the student
+
+        $validator = Validator::make($request->all(), [
+            'learninggoal_name.*'     => 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
+        ]);
+        $validator->sometimes('new_learninggoal_name', 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50', function($input){
+            return strlen($input->new_learninggoal_name) > 0;
+        });
+        if($validator->fails()){
+            // Noes. errors occured. Exit back to profile page with errors
+            return redirect()
+                ->route('period-acting-edit', ["id" => $id])
+                ->withErrors($validator)
+                ->withInput();
+        } else {
+            foreach($request['learninggoal_name'] as $lg_id => $name){
+                $lg = LearningGoal::find($lg_id);
+                if(is_null($lg)){
+                    $lg = new LearningGoal;
+                    $lg->wplp_id = $id;
+                }
+                $lg->learninggoal_label = $name;
+                $lg->save();
+            }
+            if(strlen($request['new_learninggoal_name']) > 0){
+                $lg = new LearningGoal;
+                $lg->learninggoal_label = $request['new_learninggoal_name'];
+                $lg->wplp_id = $id;
+                $lg->save();
+            }
+         }
+        // Done, redirect back to profile page
+        return redirect()->route('period-acting-edit', ["id" => $id])->with('success', 'De wijzigingen in jouw leerdoelen zijn opgeslagen.');
+    }
+
     public function updateCategories(Request $request, $id){
         // Verify the given ID is valid and belongs to the student
         $t = false;
@@ -185,7 +228,7 @@ class ActingWorkplaceLearningController extends Controller{
                 break;
             }
         }
-        if(!$t) return redirect()->route('profile'); // $id is invalid or does not belong to the student
+        if(!$t) return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel."); // $id is invalid or does not belong to the student
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
         if(!empty($request['newcat']['0']['cg_label'])){

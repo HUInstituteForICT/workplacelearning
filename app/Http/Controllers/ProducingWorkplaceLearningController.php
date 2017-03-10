@@ -170,7 +170,7 @@ class ProducingWorkplaceLearningController extends Controller{
                 break;
             }
         }
-        if(!$t) return redirect()->route('profile'); // $id is invalid or does not belong to the student
+        if(!$t) return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel."); // $id is invalid or does not belong to the student
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
         if(!empty($request['newcat']['0']['cg_label'])){

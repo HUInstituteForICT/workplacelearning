@@ -40,7 +40,7 @@ class WorkplaceLearningPeriod extends Model{
         return $this->hasMany('App\Category', 'wplp_id', 'wplp_id');
     }
 
-    public function learningGoal() {
+    public function learningGoals() {
         return $this->hasMany('App\LearningGoal', 'wplp_id', 'wplp_id');
     }
 
@@ -92,8 +92,7 @@ class WorkplaceLearningPeriod extends Model{
     }
 
     public function getLearningGoals() {
-        return $this->learningGoal()
-            ->orWhere('wplp_id', '=', '0')
+        return $this->learningGoals()
             ->orderBy('learninggoal_id', 'asc')
             ->get();
     }

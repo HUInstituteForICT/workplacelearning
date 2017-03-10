@@ -96,6 +96,7 @@ return [
             "categoryname"      => "Naam Nieuwe Categorie",
             "cooperationname"   => "Naam Nieuw Samenwerkingsverband",
             "cooperationdesc"   => "Omschrijving Nieuw Samenwerkingsverband",
+            "learninggoalname"  => "Naam nieuw Leerdoel",
         ],
         "internships"   => [
             "backtoprofile" => "Terug naar Profiel",
@@ -124,6 +125,11 @@ return [
             "title"             => "Categorieën",
             "internshipname"    => "Gekoppeld aan stage",
             "categoryname"      => "Naam Categorie",
+        ],
+        "learninggoals" => [
+            "title"             => "Leerdoelen",
+            "goalno"            => "Doel nr.",
+            "goalname"          => "Naam Leerdoel",
         ],
         "cooperations"   => [
             "title"             => "Samenwerkingsverbanden",

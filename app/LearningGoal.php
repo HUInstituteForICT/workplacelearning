@@ -15,7 +15,7 @@ class LearningGoal extends Model {
     // Default
     protected $fillable = [
         'learninggoal_id',
-        'learninggaol_label',
+        'learninggoal_label',
         'wplp_id'
     ];
 
