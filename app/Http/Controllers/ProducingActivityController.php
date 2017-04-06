@@ -59,29 +59,29 @@ class ProducingActivityController extends Controller {
     }
 
     public function feedback($id){
-        $fb  = Feedback::find($id);
-        if($fb != null) {
-            $lap = LearningActivityProducing::find($fb->learningactivity_id);
+        $feedback  = Feedback::find($id);
+        if($feedback != null) {
+            $learningActivityProducing = LearningActivityProducing::find($feedback->learningactivity_id);
         }
         return view('pages.producing.feedback')
-            ->with('lap', $lap)
-            ->with('fb', $fb);
+            ->with('lap', $learningActivityProducing)
+            ->with('fb', $feedback);
     }
 
-    public function progress($pagenr){
-        return view('pages.producing.progress')->with('page', $pagenr);
+    public function progress($pageNr){
+        return view('pages.producing.progress')->with('page', $pageNr);
     }
 
-    public function updateFeedback(Request $r, $id){
-        $fb  = Feedback::find($id); $wzh = null;
-        if($fb != null) {
-            $lap = LearningActivityProducing::find($fb->wzh_id);
-            if(is_null($lap) || $lap->wplp_id != Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id){
+    public function updateFeedback(Request $request, $id){
+        $feedback  = Feedback::find($id); $wzh = null;
+        if($feedback != null) {
+            $learningActivityProducing = LearningActivityProducing::find($feedback->wzh_id);
+            if(is_null($learningActivityProducing) || $learningActivityProducing->wplp_id != Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id){
                 return redirect()->route('home')->withErrors(['Je hebt geen rechten om deze feedback te versturen']);
             }
         }
 
-        $v = Validator::make($r->all(), [
+        $validator = Validator::make($request->all(), [
             'notfinished'               => 'required|regex:/^[0-9a-zA-Z()-_,. ]+$/',
             'newnotfinished'            => 'required_if:notfinished,Anders|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
             'support_requested'         => 'required|in:0,1,2',
@@ -92,30 +92,32 @@ class ProducingActivityController extends Controller {
             'ondersteuning_werkplek'    => 'required_unless:ondersteuningWerkplek,Geen|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
             'ondersteuning_opleiding'   => 'required_unless:ondersteuningOpleiding,Geen|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
         ]);
-        if($v->fails()){
+        if($validator->fails()){
             return redirect()->route('feedback-producing', ["id" => $id])
-                ->withErrors($v)
+                ->withErrors($validator)
                 ->withInput();
         } else {
-            $fb->notfinished                = ($r['notfinished'] == "Anders") ? $r['newnotfinished'] : $r['notfinished'];
-            $fb->initiative                 = $r['initiatief'];
-            $fb->progress_satisfied         = $r['progress_satisfied'];
-            $fb->support_requested          = $r['support_requested'];
-            $fb->supported_provided_wp      = $r['supported_provided_wp'];
-            $fb->nextstep_self              = $r['vervolgstap_zelf'];
-            $fb->support_needed_wp          = (!isset($r['ondersteuningWerkplek'])) ? $r['ondersteuning_werkplek'] : "Geen";
-            $fb->support_needed_ed          = (!isset($r['ondersteuningOpleiding'])) ? $r['ondersteuning_opleiding'] : "Geen";
-            $fb->save();
+
+            // Todo refactor with model->fill($request)
+            $feedback->notfinished                = ($request['notfinished'] == "Anders") ? $request['newnotfinished'] : $request['notfinished'];
+            $feedback->initiative                 = $request['initiatief'];
+            $feedback->progress_satisfied         = $request['progress_satisfied'];
+            $feedback->support_requested          = $request['support_requested'];
+            $feedback->supported_provided_wp      = $request['supported_provided_wp'];
+            $feedback->nextstep_self              = $request['vervolgstap_zelf'];
+            $feedback->support_needed_wp          = (!isset($request['ondersteuningWerkplek'])) ? $request['ondersteuning_werkplek'] : "Geen";
+            $feedback->support_needed_ed          = (!isset($request['ondersteuningOpleiding'])) ? $request['ondersteuning_opleiding'] : "Geen";
+            $feedback->save();
             return redirect()->route('feedback-producing', ['id' => $id])->with('success', 'De feedback is opgeslagen.');
         }
     }
 
-    public function create(Request $r){
+    public function create(Request $request){
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
 
-        $v = Validator::make($r->all(), [
+        $validator = Validator::make($request->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
             'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'\\\\\/"\s]+\s*$/',
             'aantaluren'    => 'required|regex:/^[0-9]{1}[.]?[0-9]{0,2}$/',
@@ -125,102 +127,103 @@ class ProducingActivityController extends Controller {
         ]);
 
         // Conditional Validators
-        $v->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function($input){
+        $validator->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function($input){
             return $input->previous_wzh != "-1";
         });
-        $v->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input){
+        $validator->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input){
             return $input->category_id == "new";
         });
-        $v->sometimes('category_id', 'required|exists:category,category_id', function($input){
+        $validator->sometimes('category_id', 'required|exists:category,category_id', function($input){
             return $input->category_id != "new";
         });
-        $v->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input) {
+        $validator->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input) {
             return ($input->personsource == "new" && $input->resource == "persoon");
         });
-        $v->sometimes('personsource', 'required|exists:resourceperson,rp_id', function($input){
+        $validator->sometimes('personsource', 'required|exists:resourceperson,rp_id', function($input){
             return ($input->personsource != "new" && $input->resource == "persoon");
         });
         //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
-        $v->sometimes('internetsource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
+        $validator->sometimes('internetsource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
             return $input->resource == "internet";
         });
-        $v->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
+        $validator->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
             return $input->resource == "book";
         });
-        $v->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()\\\\\/]{1,250}$/', function($input){
+        $validator->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()\\\\\/]{1,250}$/', function($input){
             return $input->resource == "new";
         });
 
         // Validate the input
-        if ($v->fails()) {
+        if ($validator->fails()) {
             return redirect()->route('process-producing')
-                ->withErrors($v)
+                ->withErrors($validator)
                 ->withInput();
         } else {
             // All ok.
-            if($r['resource'] == "new"){
-                $r['resource'] = "other";
+            if($request['resource'] == "new"){
+                $request['resource'] = "other";
             }
-            if($r['category_id'] == "new"){
-                $c                  = new Category;
-                $c->category_label  = $r['newcat'];
-                $c->wplp_id         = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-                $c->save();
+            if($request['category_id'] == "new"){
+                $category                  = new Category;
+                $category->category_label  = $request['newcat'];
+                $category->wplp_id         = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+                $category->save();
             }
-            if($r['personsource'] == "new"){
-                $p                = new ResourcePerson;
-                $p->person_label  = $r['newswv'];
-                $p->wplp_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-                $p->ep_id         = Auth::user()->getEducationProgram()->ep_id;
-                $p->save();
+            if($request['personsource'] == "new"){
+                $resourcePerson                = new ResourcePerson;
+                $resourcePerson->person_label  = $request['newswv'];
+                $resourcePerson->wplp_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+                $resourcePerson->ep_id         = Auth::user()->getEducationProgram()->ep_id;
+                $resourcePerson->save();
             }
 
-            $w = new LearningActivityProducing;
-            $w->wplp_id            = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-            $w->description        = $r['omschrijving'];
-            $w->duration           = $r['aantaluren'];
+            // Todo mass assign
+            $learningActivityProducing = new LearningActivityProducing;
+            $learningActivityProducing->wplp_id            = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+            $learningActivityProducing->description        = $request['omschrijving'];
+            $learningActivityProducing->duration           = $request['aantaluren'];
 
-            switch($r['resource']) {
+            switch($request['resource']) {
                 case 'persoon':
-                    $w->res_person_id = $r['personsource'] == 'new' ? $p->rp_id : $r['personsource'];
+                    $learningActivityProducing->res_person_id = $request['personsource'] == 'new' ? $resourcePerson->rp_id : $request['personsource'];
                     break;
                 case 'internet':
-                    $w->res_material_id = 1;
-                    $w->res_material_detail = $r['internetsource'];
+                    $learningActivityProducing->res_material_id = 1;
+                    $learningActivityProducing->res_material_detail = $request['internetsource'];
                     break;
                 case 'boek':
-                    $w->res_material_id = 2;
-                    $w->res_material_detail = $r['booksource'];
+                    $learningActivityProducing->res_material_id = 2;
+                    $learningActivityProducing->res_material_detail = $request['booksource'];
                     break;
             }
 
-            $w->category_id             = ($r['category_id'] == "new") ? $c->category_id : $r['category_id'];
-            $w->difficulty_id           = $r['moeilijkheid'];
-            $w->status_id               = $r['status'];
-            $w->prev_lap_id             = ($r['previous_wzh'] != "-1") ? $r['previous_wzh'] : NULL;
-            $w->date                    = date_format(date_create($r->datum, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
-            $w->save();
+            $learningActivityProducing->category_id             = ($request['category_id'] == "new") ? $category->category_id : $request['category_id'];
+            $learningActivityProducing->difficulty_id           = $request['moeilijkheid'];
+            $learningActivityProducing->status_id               = $request['status'];
+            $learningActivityProducing->prev_lap_id             = ($request['previous_wzh'] != "-1") ? $request['previous_wzh'] : NULL;
+            $learningActivityProducing->date                    = date_format(date_create($request->datum, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
+            $learningActivityProducing->save();
 
             if(
-                ($w->difficulty_id == 2 || $w->difficulty_id == 3)
-                && ($w->status_id == 2)
+                ($learningActivityProducing->difficulty_id == 2 || $learningActivityProducing->difficulty_id == 3)
+                && ($learningActivityProducing->status_id == 2)
             ){
                 // Create Feedback object and redirect
-                $fb = new Feedback;
-                $fb->learningactivity_id = $w->lap_id;
-                $fb->save();
-                return redirect()->route('feedback-producing', ['id' => $fb->fb_id])->with('notification', 'Je vond deze activiteit moeilijk. Kan je aangeven wat je lastig vond?');
+                $feedback = new Feedback;
+                $feedback->learningactivity_id = $learningActivityProducing->lap_id;
+                $feedback->save();
+                return redirect()->route('feedback-producing', ['id' => $feedback->fb_id])->with('notification', 'Je vond deze activiteit moeilijk. Kan je aangeven wat je lastig vond?');
             }
             return redirect()->route('process-producing')->with('success', 'De leeractiviteit is opgeslagen.');
         }
     }
 
-    public function update(Request $req, $id){
+    public function update(Request $request, $id){
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
 
-        $v = Validator::make($req->all(), [
+        $validator = Validator::make($request->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
             'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'\\\\\/"\s]+\s*$/',
             'aantaluren'    => 'required|regex:/^[0-9]{1}[.]?[0-9]{0,2}$/',
@@ -230,62 +233,64 @@ class ProducingActivityController extends Controller {
         ]);
 
         // Conditional Validators
-        $v->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input){
+        $validator->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input){
             return $input->category_id == "new";
         });
-        $v->sometimes('category_id', 'required|exists:category,category_id', function($input){
+        $validator->sometimes('category_id', 'required|exists:category,category_id', function($input){
             return $input->category_id != "new";
         });
-        $v->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input) {
+        $validator->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function($input) {
             return ($input->personsource == "new" && $input->resource == "persoon");
         });
-        $v->sometimes('personsource', 'required|exists:resourceperson,rp_id', function($input){
+        $validator->sometimes('personsource', 'required|exists:resourceperson,rp_id', function($input){
             return ($input->personsource != "new" && $input->resource == "persoon");
         });
         //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
-        $v->sometimes('internetsource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
+        $validator->sometimes('internetsource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
             return $input->resource == "internet";
         });
-        $v->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
+        $validator->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function($input){
             return $input->resource == "book";
         });
-        $v->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()\\\\\/]{1,250}$/', function($input){
+        $validator->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()\\\\\/]{1,250}$/', function($input){
             return $input->resource == "new";
         });
 
-        if ($v->fails()) {
+        if ($validator->fails()) {
             return redirect()->route('process-producing-edit', ['id' => $id])
-                ->withErrors($v)
+                ->withErrors($validator)
                 ->withInput();
         }
 
-        $a = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
-        $a->date = $req['datum'];
-        $a->description = $req['omschrijving'];
-        $a->duration = $req['aantaluren'];
+        // Todo refactor model->fill()
+        $learningActivityProducing = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
+        $learningActivityProducing->date = $request['datum'];
+        $learningActivityProducing->description = $request['omschrijving'];
+        $learningActivityProducing->duration = $request['aantaluren'];
 
-        switch($req['resource']) {
+        // Todo refactor extract method?
+        switch($request['resource']) {
             case 'persoon':
-                $a->res_person_id = $req['personsource'];
-                $a->res_material_id = null;
-                $a->res_material_detail = null;
+                $learningActivityProducing->res_person_id = $request['personsource'];
+                $learningActivityProducing->res_material_id = null;
+                $learningActivityProducing->res_material_detail = null;
                 break;
             case 'internet':
-                $a->res_material_id = 1;
-                $a->res_material_detail = $req['internetsource'];
-                $a->res_person_id = null;
+                $learningActivityProducing->res_material_id = 1;
+                $learningActivityProducing->res_material_detail = $request['internetsource'];
+                $learningActivityProducing->res_person_id = null;
                 break;
             case 'boek':
-                $a->res_material_id = 2;
-                $a->res_material_detail = $req['booksource'];
-                $a->res_person_id = null;
+                $learningActivityProducing->res_material_id = 2;
+                $learningActivityProducing->res_material_detail = $request['booksource'];
+                $learningActivityProducing->res_person_id = null;
                 break;
         }
 
-        $a->category_id = $req['category_id'];
-        $a->difficulty_id = $req['moeilijkheid'];
-        $a->status_id = $req['status'];
-        $a->save();
+        $learningActivityProducing->category_id = $request['category_id'];
+        $learningActivityProducing->difficulty_id = $request['moeilijkheid'];
+        $learningActivityProducing->status_id = $request['status'];
+        $learningActivityProducing->save();
 
         return redirect()->route('process-producing')->with('success', 'De leeractiviteit is aangepast.');
     }

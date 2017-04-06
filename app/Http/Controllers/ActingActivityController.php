@@ -61,14 +61,14 @@ class ActingActivityController extends Controller {
         return view('pages.acting.progress')->with('page', $pagenr);
     }
 
-    public function create(Request $req) {
+    public function create(Request $request) {
         // Allow only to view this page if an internship exists.
         if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
 
-        $a = new LearningActivityActing;
+        $activityActing = new LearningActivityActing;
 
-        $v = Validator::make($req->all(), [
+        $validator = Validator::make($request->all(), [
             'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
             'description'           => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
             'timeslot'              => 'required|exists:timeslot,timeslot_id',
@@ -82,59 +82,60 @@ class ActingActivityController extends Controller {
         ]);
 
         // Conditional validation
-        $v->sometimes('res_person', 'required|exists:resourceperson,rp_id', function($input) {
+        $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function($input) {
             return $input->res_person != 'new';
         });
-        $v->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function($input) {
+        $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function($input) {
             return $input->res_material != 'new' && $input->res_material != 'none';
         });
-        /*$v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
+        /*$validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
             return $input->res_material == 1;
         });*/
         //temporarily disabled url validation for res_material_detail field
-        $v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function($input) {
+        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function($input) {
             return $input->res_material >= 1;
         });
 
-        if ($v->fails()) {
+        if ($validator->fails()) {
             return redirect()->route('process-acting')
-                ->withErrors($v)
+                ->withErrors($validator)
                 ->withInput();
         }
 
-        if ($req['res_person'] == 'new') {
-            $p = new ResourcePerson;
-            $p->person_label = $req['new_rp'];
-            $p->ep_id = Auth::user()->getEducationProgram()->ep_id;
-            $p->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-            $p->save();
+        if ($request['res_person'] == 'new') {
+            $resourcePerson = new ResourcePerson;
+            $resourcePerson->person_label = $request['new_rp'];
+            $resourcePerson->ep_id = Auth::user()->getEducationProgram()->ep_id;
+            $resourcePerson->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+            $resourcePerson->save();
 
-            $req['res_person'] = $p->rp_id;
+            $request['res_person'] = $resourcePerson->rp_id;
         }
 
-        if ($req['res_material'] == 'new') {
-            $m = new ResourceMaterial;
-            $m->rm_label = $req['new_rm'];
-            $m->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-            $m->save();
+        if ($request['res_material'] == 'new') {
+            $resourceMaterial = new ResourceMaterial;
+            $resourceMaterial->rm_label = $request['new_rm'];
+            $resourceMaterial->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+            $resourceMaterial->save();
 
-            $req['res_material'] = $m->rm_id;
+            $request['res_material'] = $resourceMaterial->rm_id;
         }
 
-        $a->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-        $a->date = date_format(date_create($req->date, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
-        $a->timeslot_id = $req['timeslot'];
-        $a->situation = $req['description'];
-        $a->lessonslearned = $req['learned'];
-        $a->support_wp = $req['support_wp'];
-        $a->support_ed = $req['support_ed'];
-        $a->res_person_id = $req['res_person'];
-        ($req['res_material'] != 'none') ? $a->res_material_id = $req['res_material'] : null;
-        $a->res_material_detail = $req['res_material_detail'];
-        $a->learninggoal_id = $req['learning_goal'];
-        $a->save();
+        // Todo refactor into model->fill($request), all fillable
+        $activityActing->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+        $activityActing->date = date_format(date_create($request->date, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
+        $activityActing->timeslot_id = $request['timeslot'];
+        $activityActing->situation = $request['description'];
+        $activityActing->lessonslearned = $request['learned'];
+        $activityActing->support_wp = $request['support_wp'];
+        $activityActing->support_ed = $request['support_ed'];
+        $activityActing->res_person_id = $request['res_person'];
+        ($request['res_material'] != 'none') ? $activityActing->res_material_id = $request['res_material'] : null;
+        $activityActing->res_material_detail = $request['res_material_detail'];
+        $activityActing->learninggoal_id = $request['learning_goal'];
+        $activityActing->save();
 
-        $a->competence()->attach($req['competence']);
+        $activityActing->competence()->attach($request['competence']);
 
         return redirect()->route('process-acting')->with('success', 'De leeractiviteit is opgeslagen.');
     }
@@ -144,7 +145,7 @@ class ActingActivityController extends Controller {
         if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
 
-        $v = Validator::make($req->all(), [
+        $validator = Validator::make($req->all(), [
             'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
             'description'           => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
             'timeslot'              => 'required|exists:timeslot,timeslot_id',
@@ -158,40 +159,40 @@ class ActingActivityController extends Controller {
         ]);
 
         // Conditional validation
-        $v->sometimes('res_person', 'required|exists:resourceperson,rp_id', function($input) {
+        $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function($input) {
             return $input->res_person != 'new';
         });
-        $v->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function($input) {
+        $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function($input) {
             return $input->res_material != 'new' && $input->res_material != 'none';
         });
-        /*$v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
+        /*$validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
             return $input->res_material == 1;
         });*/
         //temporarily disabled url validation for res_material_detail field
-        $v->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function($input) {
+        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function($input) {
             return $input->res_material >= 1;
         });
 
-        if ($v->fails()) {
+        if ($validator->fails()) {
             return redirect()->route('process-acting-edit', ['id' => $id])
-                ->withErrors($v)
+                ->withErrors($validator)
                 ->withInput();
         }
 
-        $a = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityActingById($id);
-        $a->date = $req['date'];
-        $a->timeslot_id = $req['timeslot'];
-        $a->situation = $req['description'];
-        $a->lessonslearned = $req['learned'];
-        $a->support_wp = $req['support_wp'];
-        $a->support_ed = $req['support_ed'];
-        $a->res_person_id = $req['res_person'];
-        ($req['res_material'] != 'none') ? $a->res_material_id = $req['res_material'] : null;
-        $a->res_material_detail = $req['res_material_detail'];
-        $a->learninggoal_id = $req['learning_goal'];
-        $a->save();
+        $learningActivity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityActingById($id);
+        $learningActivity->date = $req['date'];
+        $learningActivity->timeslot_id = $req['timeslot'];
+        $learningActivity->situation = $req['description'];
+        $learningActivity->lessonslearned = $req['learned'];
+        $learningActivity->support_wp = $req['support_wp'];
+        $learningActivity->support_ed = $req['support_ed'];
+        $learningActivity->res_person_id = $req['res_person'];
+        ($req['res_material'] != 'none') ? $learningActivity->res_material_id = $req['res_material'] : null;
+        $learningActivity->res_material_detail = $req['res_material_detail'];
+        $learningActivity->learninggoal_id = $req['learning_goal'];
+        $learningActivity->save();
 
-        $a->competence()->sync([$req['competence']]);
+        $learningActivity->competence()->sync([$req['competence']]);
 
         return redirect()->route('process-acting')->with('success', 'De leeractiviteit is aangepast.');
     }

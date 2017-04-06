@@ -28,22 +28,22 @@ class ProducingWorkplaceLearningController extends Controller{
     }
 
     public function edit($id){
-        $wplp = WorkplaceLearningPeriod::find($id);
-        if (is_null($wplp) || $wplp->student_id != Auth::user()->student_id) {
+        $wplPeriod = WorkplaceLearningPeriod::find($id);
+        if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
         } else {
             return view('pages.producing.internship')
-                ->with('period', $wplp)
-                ->with("workplace", Workplace::find($wplp->wp_id))
-                ->with("categories", $wplp->categories()->get())
+                ->with('period', $wplPeriod)
+                ->with("workplace", Workplace::find($wplPeriod->wp_id))
+                ->with("categories", $wplPeriod->categories()->get())
                 ->with("resource", new Collection);
         }
     }
 
-    public function create(Request $r){
+    public function create(Request $request){
         // Validate the input
-        $validator = Validator::make($r->all(), [
+        $validator = Validator::make($request->all(), [
             'companyName'           => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
             'companyStreet'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:45|min:3',
             'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[ ]*[a-zA-Z]{0,4}$/|max:9|min:1', //
@@ -67,40 +67,42 @@ class ProducingWorkplaceLearningController extends Controller{
         }
 
         // Pass. Create the internship and period.
-        $wplp = new WorkplaceLearningPeriod;
-        $wp = new Workplace;
+        $wplPeriod = new WorkplaceLearningPeriod;
+        $workplace = new Workplace;
 
+        // Todo use mass assignment
         // Save the workplace first
-        $wp->wp_name        = $r['companyName'];
-        $wp->street         = $r['companyStreet'];
-        $wp->housenr        = $r['companyHousenr'];
-        $wp->postalcode     = $r['companyPostalcode'];
-        $wp->town           = $r['companyLocation'];
-        $wp->contact_name   = $r['contactPerson'];
-        $wp->contact_email  = $r['contactEmail'];
-        $wp->contact_phone  = $r['contactPhone'];
-        $wp->numberofemployees = 0;
-        $wp->save();
+        $workplace->wp_name        = $request['companyName'];
+        $workplace->street         = $request['companyStreet'];
+        $workplace->housenr        = $request['companyHousenr'];
+        $workplace->postalcode     = $request['companyPostalcode'];
+        $workplace->town           = $request['companyLocation'];
+        $workplace->contact_name   = $request['contactPerson'];
+        $workplace->contact_email  = $request['contactEmail'];
+        $workplace->contact_phone  = $request['contactPhone'];
+        $workplace->numberofemployees = 0;
+        $workplace->save();
 
-        $wplp->student_id   = Auth::user()->student_id;
-        $wplp->wp_id        = $wp->wp_id;
-        $wplp->startdate    = $r['startdate'];
-        $wplp->enddate      = $r['enddate'];
-        $wplp->nrofdays     = $r['numdays'];
-        $wplp->description  = $r['internshipAssignment'];
-        $wplp->save();
+        // Todo use mass assignment
+        $wplPeriod->student_id   = Auth::user()->student_id;
+        $wplPeriod->wp_id        = $workplace->wp_id;
+        $wplPeriod->startdate    = $request['startdate'];
+        $wplPeriod->enddate      = $request['enddate'];
+        $wplPeriod->nrofdays     = $request['numdays'];
+        $wplPeriod->description  = $request['internshipAssignment'];
+        $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if($r['isActive'] == 1){
-            Auth::user()->setUserSetting('active_internship', $wplp->wplp_id);
+        if($request['isActive'] == 1){
+            Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
         return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
     }
 
-    public function update(Request $r, $id){
+    public function update(Request $request, $id){
         // Validate the input
-        $validator = Validator::make($r->all(), [
+        $validator = Validator::make($request->all(), [
             'companyName'           => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
             'companyStreet'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:45|min:3',
             'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[a-zA-Z]{0,1}$/|max:4|min:1', //
@@ -124,38 +126,41 @@ class ProducingWorkplaceLearningController extends Controller{
         }
 
         // Input is valid. Attempt to fetch the WPLP and validate it belongs to the user
-        $wplp = WorkplaceLearningPeriod::find($id);
-        if(is_null($wplp) || $wplp->student_id != Auth::user()->student_id){
+        $wplPeriod = WorkplaceLearningPeriod::find($id);
+        if(is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id){
             return redirect()->route('profile')
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
         }
 
         // Succes. Also fetch the associated Workplace Eloquent object and update
-        $wp = Workplace::find($wplp->wp_id);
+        $workplace = Workplace::find($wplPeriod->wp_id);
 
+
+        // Todo use model->fill()
         // Save the workplace first
-        $wp->wp_name        = $r['companyName'];
-        $wp->street         = $r['companyStreet'];
-        $wp->housenr        = $r['companyHousenr'];
-        $wp->postalcode     = $r['companyPostalcode'];
-        $wp->town           = $r['companyLocation'];
-        $wp->contact_name   = $r['contactPerson'];
-        $wp->contact_email  = $r['contactEmail'];
-        $wp->contact_phone  = $r['contactPhone'];
-        $wp->numberofemployees = 0;
-        $wp->save();
+        $workplace->wp_name        = $request['companyName'];
+        $workplace->street         = $request['companyStreet'];
+        $workplace->housenr        = $request['companyHousenr'];
+        $workplace->postalcode     = $request['companyPostalcode'];
+        $workplace->town           = $request['companyLocation'];
+        $workplace->contact_name   = $request['contactPerson'];
+        $workplace->contact_email  = $request['contactEmail'];
+        $workplace->contact_phone  = $request['contactPhone'];
+        $workplace->numberofemployees = 0;
+        $workplace->save();
 
-        $wplp->student_id   = Auth::user()->student_id;
-        $wplp->wp_id        = $wp->wp_id;
-        $wplp->startdate    = $r['startdate'];
-        $wplp->enddate      = $r['enddate'];
-        $wplp->nrofdays     = $r['numdays'];
-        $wplp->description  = $r['internshipAssignment'];
-        $wplp->save();
+        // Todo use model->fill()
+        $wplPeriod->student_id   = Auth::user()->student_id;
+        $wplPeriod->wp_id        = $workplace->wp_id;
+        $wplPeriod->startdate    = $request['startdate'];
+        $wplPeriod->enddate      = $request['enddate'];
+        $wplPeriod->nrofdays     = $request['numdays'];
+        $wplPeriod->description  = $request['internshipAssignment'];
+        $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if($r['isActive'] == 1){
-            Auth::user()->setUserSetting('active_internship', $wplp->wplp_id);
+        if($request['isActive'] == 1){
+            Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
         return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
@@ -163,14 +168,14 @@ class ProducingWorkplaceLearningController extends Controller{
 
     public function updateCategories(Request $request, $id){
         // Verify the given ID is valid and belongs to the student
-        $t = false;
+        $belongsToStudent = false;
         foreach(Auth::user()->workplacelearningperiods()->get() as $ip){
             if($ip->wplp_id == $id){
-                $t = true;
+                $belongsToStudent = true;
                 break;
             }
         }
-        if(!$t) return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel."); // $id is invalid or does not belong to the student
+        if(!$belongsToStudent) return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel."); // $id is invalid or does not belong to the student
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
         if(!empty($request['newcat']['0']['cg_label'])){
@@ -192,13 +197,13 @@ class ProducingWorkplaceLearningController extends Controller{
             // All is well :)
             foreach($request['cat'] as $cat){
                 // Either update or create a new row.
-                $c = Category::find($cat['cg_id']);
-                if(is_null($c)){
-                    $c = new Category;
-                    $c->wplp_id = $cat['wplp_id'];
+                $category = Category::find($cat['cg_id']);
+                if(is_null($category)){
+                    $category = new Category;
+                    $category->wplp_id = $cat['wplp_id'];
                 }
-                $c->category_label = $cat['cg_label'];
-                $c->save();
+                $category->category_label = $cat['cg_label'];
+                $category->save();
             }
             // Done, redirect back to profile page
             return redirect()->route('period-producing-edit', ["id" => $id])->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');

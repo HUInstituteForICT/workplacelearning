@@ -32,8 +32,8 @@ class HomeController extends Controller{
         return view('pages.bugreport');
     }
 
-    public function createBugReport(Request $r){
-        $validator = Validator::make($r->all(), [
+    public function createBugReport(Request $request){
+        $validator = Validator::make($request->all(), [
             'onderwerp' => 'required|regex:/^[0-9a-zA-Z ()-?!%#@,.]*$/|max:40|min:3',
             'uitleg'    => 'required|regex:/^[0-9a-zA-Z ()-?!%#@,.]*$/|max:800|min:5',
         ]);
@@ -50,8 +50,8 @@ class HomeController extends Controller{
                 'student_name'  => Auth::user()->getInitials()." ".Auth::user()->lastname." (".Auth::user()->firstname.")",
                 'student_email' => Auth::user()->email,
                 'education'     => EducationProgram::find(Auth::user()->ep_id),
-                'subject'       => $r['onderwerp'],
-                'content'       => $r['uitleg'],
+                'subject'       => $request['onderwerp'],
+                'content'       => $request['uitleg'],
             ],
             function($message){
                 $message->subject('Tip/Bug ingezonden!');
