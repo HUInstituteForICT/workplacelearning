@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        {!! Form::open(array('id' => 'feedbackForm', 'url' => URL::to('producing/feedback/update/'.$fb->fb_id, array(), false) /*route('feedback-producing-update', ['id' => $fb->fb_id])*/)) !!}
+        {!! Form::open(array('id' => 'feedbackForm', 'url' => route('feedback-producing-update', ['id' => $fb->fb_id]))) !!}
         <div class="row">
             <div class="form-horizontal well" style="min-height: 370px;">
                 <h2>Terugblik</h2>
