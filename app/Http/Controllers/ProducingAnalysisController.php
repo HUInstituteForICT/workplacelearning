@@ -23,7 +23,7 @@ class ProducingAnalysisController extends Controller {
                 ->with('numdays', $this->getFullWorkingDays("all", "all"));
     }
 
-    public function showDetail(Request $r, $year, $month){
+    public function showDetail(Request $request, $year, $month){
         // If no data or not enough data, redirect to analysis choice page
         if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null) return redirect()->route('analyse-producing-choice')->with('error', 'Je hebt geen actieve stage ingesteld!');
 
@@ -35,21 +35,21 @@ class ProducingAnalysisController extends Controller {
         if(count($task_chains) == 0) return redirect()->route('analysis-producing-choice')->withErrors(['Je hebt geen activiteiten ingevuld voor deze maand.']);
 
         // Analysis array
-        $a = array();
-        $a['avg_difficulty']        = $this->getAverageDifficultyByDate($year, $month);
-        $a['num_difficult_lap']     = $this->getNumDifficultTasksByDate($year, $month);
-        $a['hours_difficult_lap']   = $this->getHoursDifficultTasksByDate($year, $month);
-        $a['most_occuring_category']= $this->getMostOccuringCategoryByDate($year, $month);
-        $a['category_difficulty']   = $this->getCategoryDifficultyByDate($year, $month);
-        $a['num_hours_alone']       = $this->getNumHoursAlone($year, $month);
-        $a['category_difficulty']   = $this->getCategoryDifficultyByDate($year, $month);
-        $a['num_hours']             = $this->getNumHoursByDate($year, $month);
-        $a['num_days']              = $this->getFullWorkingDays($year, $month);
-        $a['num_lap']               = $this->getNumTasksByDate($year, $month);
-        $a['num_hours_category']    = $this->getNumHoursCategory($year, $month);
+        $analysisData = array();
+        $analysisData['avg_difficulty']        = $this->getAverageDifficultyByDate($year, $month);
+        $analysisData['num_difficult_lap']     = $this->getNumDifficultTasksByDate($year, $month);
+        $analysisData['hours_difficult_lap']   = $this->getHoursDifficultTasksByDate($year, $month);
+        $analysisData['most_occuring_category']= $this->getMostOccuringCategoryByDate($year, $month);
+        $analysisData['category_difficulty']   = $this->getCategoryDifficultyByDate($year, $month);
+        $analysisData['num_hours_alone']       = $this->getNumHoursAlone($year, $month);
+        $analysisData['category_difficulty']   = $this->getCategoryDifficultyByDate($year, $month);
+        $analysisData['num_hours']             = $this->getNumHoursByDate($year, $month);
+        $analysisData['num_days']              = $this->getFullWorkingDays($year, $month);
+        $analysisData['num_lap']               = $this->getNumTasksByDate($year, $month);
+        $analysisData['num_hours_category']    = $this->getNumHoursCategory($year, $month);
 
         return view('pages.producing.analysis.detail')
-                ->with('analysis', $a)
+                ->with('analysis', $analysisData)
                 ->with('chains', $task_chains)
                 ->with('year', $year)
                 ->with('monthno', $month);
@@ -83,7 +83,7 @@ class ProducingAnalysisController extends Controller {
         return $collection;
     }
 
-    public function getTaskChainsByDate($amt = 50, $year, $month){
+    public function getTaskChainsByDate($amount = 50, $year, $month){
         // First, fetch the tasks that "start" the chain.
         $lap_start = LearningActivityProducing::where('prev_lap_id', NULL)
                         ->where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
@@ -91,7 +91,7 @@ class ProducingAnalysisController extends Controller {
                             $query->select('prev_lap_id')
                                     ->from('learningactivityproducing');
                         });*/ // Disabled for now, enable this to only show task chains and hide single tasks in the analysis.
-        $lap_start = $this->limitCollectionByDate($lap_start, $year, $month)->orderBy('date', 'desc')->take($amt)->get();
+        $lap_start = $this->limitCollectionByDate($lap_start, $year, $month)->orderBy('date', 'desc')->take($amount)->get();
 
         // Iterate over the array and add tasks that follow.
         $task_chains = array();
@@ -114,7 +114,7 @@ class ProducingAnalysisController extends Controller {
                                     ->whereNotNull('prev_lap_id');
                         });
 
-        $lap_end = $this->LimitCollectionByDate($lap_end, $year, $month)->orderBy('date', 'desc')->take($amt)->get();
+        $lap_end = $this->LimitCollectionByDate($lap_end, $year, $month)->orderBy('date', 'desc')->take($amount)->get();
         foreach($lap_end as $w){
             $arr_key = count($task_chains);
             $pw = $w->getPrevousLearningActivity();

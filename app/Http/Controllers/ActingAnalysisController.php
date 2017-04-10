@@ -13,9 +13,11 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class ActingAnalysisController extends Controller {
+class ActingAnalysisController extends Controller
+{
 
-    public function show(){
+    public function show()
+    {
         return view('pages.acting.analysis.choice');
     }
 }

@@ -31,7 +31,7 @@ class ProducingReportController extends Controller
         }
 
         // Render the HTML as a view
-        $fmt = new IntlDateFormatter(
+        $formatter = new IntlDateFormatter(
             (LaravelLocalization::getCurrentLocale() == "en") ? "en_US" : "nl_NL",
             IntlDateFormatter::GREGORIAN,
             IntlDateFormatter::NONE,
@@ -45,7 +45,7 @@ class ProducingReportController extends Controller
             ->with('stage',         Auth::user()->getCurrentWorkplace())
             ->with('stageperiode',  Auth::user()->getCurrentWorkplaceLearningPeriod())
             ->with('date_loop', date('d-m-Y', strtotime('monday this week', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate))))
-            ->with('datefmt', $fmt)
+            ->with('datefmt', $formatter)
             ->with('lap_array', $lap_array);
         $this->html = $view->render();
 

@@ -36,12 +36,13 @@ class ProfileController extends Controller{
                 ->withInput();
         } else {
             // All ok.
-            $u = User::find(Auth::user()->stud_id);
-            $u->voornaam    = $request->firstname;
-            $u->achternaam  = $request->lastname;
-            $u->email       = $request->email;
-            //$u->telefoon    = $request->phone;
-            $u->save();
+            // Todo why find user when already authenticated?
+            $user = User::find(Auth::user()->stud_id);
+            $user->voornaam    = $request->firstname;
+            $user->achternaam  = $request->lastname;
+            $user->email       = $request->email;
+            //$user->telefoon    = $request->phone;
+            $user->save();
             return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
         }
     }

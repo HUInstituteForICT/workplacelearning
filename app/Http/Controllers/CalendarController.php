@@ -19,8 +19,8 @@ class CalendarController extends Controller{
             ->with('deadlines', Auth::user()->deadlines()->orderBy('dl_datetime', 'asc')->get());
     }
 
-    public function create(Request $r){
-        $validator = Validator::make($r->all(), [
+    public function create(Request $request){
+        $validator = Validator::make($request->all(), [
            'nameDeadline'   => 'required|regex:/^[0-9a-zA-Z ()-]*$/|max:255|min:3',
            'dateDeadline'   => 'required|date|after:'.date('Y-m-d', strtotime("now")),
         ]);
@@ -30,17 +30,17 @@ class CalendarController extends Controller{
                 ->withInput();
         }
         
-        $d = new Deadline;
-        $d->student_id      = Auth::user()->student_id;
-        $d->dl_value        = $r['nameDeadline'];
-        $d->dl_datetime     = date('Y-m-d H:i:s', strtotime($r['dateDeadline']));
-        $d->save();
+        $deadline = new Deadline;
+        $deadline->student_id      = Auth::user()->student_id;
+        $deadline->dl_value        = $request['nameDeadline'];
+        $deadline->dl_datetime     = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
+        $deadline->save();
         
         return redirect()->route('deadline')->with('success', "De deadline is opgeslagen.");
     }
 
-    public function update(Request $r){
-        $validator = Validator::make($r->all(), [
+    public function update(Request $request){
+        $validator = Validator::make($request->all(), [
             'id'                => 'required|exists:deadline,dl_id',
             'action'            => 'required|in:submit,delete',
             'nameDeadline'      => 'required|regex:/^[0-9a-zA-Z ()-]*$/|max:255|min:3',
@@ -52,16 +52,16 @@ class CalendarController extends Controller{
                 ->withInput();
         }
 
-        $d = Deadline::find($r['id']);
-        if(is_null($d) || $d->student_id != Auth::user()->student_id){
+        $deadline = Deadline::find($request['id']);
+        if(is_null($deadline) || $deadline->student_id != Auth::user()->student_id){
             return redirect('deadline')->withErrors(['error', "Deze deadline bestaat niet, of je hebt geen rechten om deze te bewerken."]);
-        } elseif($r->input('action') === "submit"){
-            $d->dl_value        = $r['nameDeadline'];
-            $d->dl_datetime     = date('Y-m-d H:i:s', strtotime($r['dateDeadline']));
-            $d->save();
+        } elseif($request->input('action') === "submit"){
+            $deadline->dl_value        = $request['nameDeadline'];
+            $deadline->dl_datetime     = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
+            $deadline->save();
             $msg = "De deadline is aangepast.";
-        } elseif($r->input('action') === "delete"){
-            $d->delete();
+        } elseif($request->input('action') === "delete"){
+            $deadline->delete();
             $msg = "De deadline is verwijderd uit het overzicht.";
         } else {
             return redirect()->route('deadline')->withErrors(['error', "Er is een onbekende fout opgetreden."]);
