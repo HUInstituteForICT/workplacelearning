@@ -18,7 +18,7 @@ class UserNotifications {
     public function handle(Request $request, Closure $next){
         if(Auth::guest()) return redirect('login');
         if(Auth::user()->getCurrentWorkplaceLearningPeriod() == NULL){
-            $request->session()->flash('notification', str_replace('%s', route('period-create'), Lang::get('notifications.generic.nointernshipactive')));
+            $request->session()->flash('notification', str_replace('%s', route('period'), Lang::get('notifications.generic.nointernshipactive')));
         }
 
         return $next($request);
