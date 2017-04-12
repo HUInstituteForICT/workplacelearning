@@ -1,3 +1,11 @@
+
+
+## Config
+
+
+
+
+## Unsure value of this documentation. 
 In deze webfolder (/sites/werkplekleren.hu.nl/) bevinden zich 3 mappen.
 
 htdocs/   bevat de uitrol van 'Project Werkplekleren (25-08-2016)'
