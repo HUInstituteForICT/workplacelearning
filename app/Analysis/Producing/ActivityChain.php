@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App;
+namespace App\Analysis\Producing;
 
 
-class ProducingAnalysisChain
+class ActivityChain
 {
     private $chain;
 

@@ -1,8 +1,11 @@
 <?php
 
 
-namespace App;
+namespace App\Analysis\Producing;
 
+
+use App\Chart;
+use App\Statistics;
 
 class ProducingAnalysis
 {
@@ -22,7 +25,7 @@ class ProducingAnalysis
         $this->analysisCollector = $analysisCollector;
         $this->buildData($year, $month);
         $this->chains = $analysisCollector->getTaskChainsByDate(25, $year, $month);
-        $this->statistics = new ProducingAnalysisStatistics($this->analysisData);
+        $this->statistics = new Statistics($this->analysisData);
     }
 
     public function buildData($year, $month)
@@ -83,13 +86,13 @@ class ProducingAnalysis
     }
 
     /**
-     * @return ProducingAnalysisChain[]
+     * @return ActivityChain[]
      */
     public function chains()
     {
         if($this->producingAnalysisChains === null) {
             $this->producingAnalysisChains = array_map(function ($chain) {
-                return new ProducingAnalysisChain($chain);
+                return new ActivityChain($chain);
             }, $this->chains);
         }
         return $this->producingAnalysisChains;

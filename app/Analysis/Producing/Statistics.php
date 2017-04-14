@@ -4,7 +4,7 @@
 namespace App;
 
 
-class ProducingAnalysisStatistics
+class Statistics
 {
     private $analysisData;
 

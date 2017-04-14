@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App;
+namespace App\Analysis\Producing;
 
 
+use App\LearningActivityProducing;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 

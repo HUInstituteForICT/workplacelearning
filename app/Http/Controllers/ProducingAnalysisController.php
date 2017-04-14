@@ -9,8 +9,8 @@ namespace App\Http\Controllers;
 
 use App\Chart;
 use App\LearningActivityProducing;
-use App\ProducingAnalysis;
-use App\ProducingAnalysisCollector;
+use App\Analysis\Producing\ProducingAnalysis;
+use App\Analysis\Producing\ProducingAnalysisCollector;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
