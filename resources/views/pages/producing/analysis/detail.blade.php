@@ -207,18 +207,18 @@
                                                 <td>Feedback</td>
                                                 <td>Feedforward</td>
                                             </tr>
-                                            @foreach($chain->raw() as $lap)
+                                            @foreach($chain->raw() as $learningActProd)
                                                 <?php
-                                                $fb = $lap->getFeedback()
+                                                $feedback = $learningActProd->getFeedback()
                                                 ?>
                                                 <tr>
-                                                    <td>{{ date('d-m', strtotime($lap->date)) }}</td>
-                                                    <td>{{ $lap->description }}</td>
-                                                    <td>{{ ($fb != null) ? $lap->getDifficulty().": ".$fb->notfinished : $lap->getDifficulty() }}</td>
-                                                    <td>{{ $lap->getDurationString() }}</td>
-                                                    <td>{{ $lap->getResourceDetail() }}</td>
-                                                    <td>{!! ($fb != null) ? "Je was " . (($fb->progress_satisfied == 2) ? "tevreden" : "niet tevreden") . " met het verloop van deze activiteit (<a href='".URL::to("feedback-producing", array("id" => $fb->fb_id))."'>Detail</a>)." : "" !!}</td>
-                                                    <td>{{ ($fb != null) ? $fb->nextstep_self : "" }}</td>
+                                                    <td>{{ date('d-m', strtotime($learningActProd->date)) }}</td>
+                                                    <td>{{ $learningActProd->description }}</td>
+                                                    <td>{{ ($feedback != null) ? $learningActProd->getDifficulty().": ".$feedback->notfinished : $learningActProd->getDifficulty() }}</td>
+                                                    <td>{{ $learningActProd->getDurationString() }}</td>
+                                                    <td>{{ $learningActProd->getResourceDetail() }}</td>
+                                                    <td>{!! ($feedback != null) ? "Je was " . (($feedback->progress_satisfied == 2) ? "tevreden" : "niet tevreden") . " met het verloop van deze activiteit (<a href='".URL::to("feedback-producing", array("id" => $feedback->fb_id))."'>Detail</a>)." : "" !!}</td>
+                                                    <td>{{ ($feedback != null) ? $feedback->nextstep_self : "" }}</td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
