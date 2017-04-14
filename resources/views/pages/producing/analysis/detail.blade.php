@@ -42,9 +42,9 @@
                         var chart_hours = new Chart(canvasHours, {
                             type: 'pie',
                             data: {
-                                labels: [ @foreach($analysis['num_hours_category'] as $category) "{{ $category->name }}", @endforeach ],
+                                labels: {!! $charts['hours']->labels->toJson() !!},
                                 datasets: [{
-                                    data: [ @foreach($analysis['num_hours_category'] as $category) "{{ round($category->totalhours / $analysis['num_hours'] * 100) }}", @endforeach ],
+                                    data: {!! $charts['hours']->data->toJson() !!},
                                     backgroundColor: [
                                         'rgba(255,99,132,1)',
                                         'rgba(54, 162, 235, 1)',
@@ -102,14 +102,10 @@
                         var cat_chart = new Chart(canvas_categories, {
                             type: 'bar',
                             data: {
-                                labels: [ @foreach($analysis['category_difficulty'] as $category) "{{ $category->name }}", @endforeach ],
+                                labels: {!! $charts['categories']->labels->toJson() !!},
                                 datasets: [{
                                     label: 'Moeilijkheidsgraad op schaal van 1-10',
-                                    data: [
-                                        @foreach($analysis['category_difficulty'] as $category)
-                                                "{{ $category->difficulty }}",
-                                        @endforeach
-                                    ],
+                                    data: {!! $charts['categories']->data->toJson() !!},
                                     backgroundColor: [
                                     ],
                                     borderColor: [
