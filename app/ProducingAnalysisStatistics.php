@@ -11,7 +11,6 @@ class ProducingAnalysisStatistics
     public function __construct(array $analysisData)
     {
         $this->analysisData = $analysisData;
-        dump($analysisData);
     }
 
     public function averageDifficulty() {
