@@ -5,7 +5,6 @@ namespace App\Analysis\Producing;
 
 
 use App\Chart;
-use App\Statistics;
 
 class ProducingAnalysis
 {
@@ -82,7 +81,10 @@ class ProducingAnalysis
 
     public function statistic($name)
     {
-        return $this->statistics->$name();
+        if(method_exists($this->statistics, $name)) {
+            return $this->statistics->$name();
+        }
+        throw new \Exception("Method not found on " . Statistics::class);
     }
 
     /**

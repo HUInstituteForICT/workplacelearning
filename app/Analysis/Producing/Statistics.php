@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace App\Analysis\Producing;
 
 
 class Statistics

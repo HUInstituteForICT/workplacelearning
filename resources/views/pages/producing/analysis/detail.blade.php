@@ -151,7 +151,7 @@
                 </div>
             </div>
 
-            @if(count($chains) > 0)
+            @if(count($producingAnalysis->chains()) > 0)
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Detail</h2>

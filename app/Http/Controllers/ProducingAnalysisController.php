@@ -37,8 +37,7 @@ class ProducingAnalysisController extends Controller {
 
         $producingAnalysis = new ProducingAnalysis(new ProducingAnalysisCollector(), $year, $month);
 
-        $task_chains = $producingAnalysis->analysisCollector->getTaskChainsByDate(25, $year, $month);
-        if(count($task_chains) == 0) return redirect()->route('analysis-producing-choice')->withErrors(['Je hebt geen activiteiten ingevuld voor deze maand.']);
+        if(count($producingAnalysis->chains()) == 0) return redirect()->route('analysis-producing-choice')->withErrors(['Je hebt geen activiteiten ingevuld voor deze maand.']);
 
         // Analysis array
         $analysisData = $producingAnalysis->analysisData;
@@ -47,7 +46,6 @@ class ProducingAnalysisController extends Controller {
         return view('pages.producing.analysis.detail')
             ->with('producingAnalysis', $producingAnalysis)
             ->with('analysis', $analysisData)
-            ->with('chains', $task_chains)
             ->with('year', $year)
             ->with('monthno', $month);
     }
