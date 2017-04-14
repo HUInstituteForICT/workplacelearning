@@ -100,15 +100,20 @@ class Student extends Authenticatable
             ->get();
     }
 
+    /**
+     * @return null|WorkplaceLearningPeriod
+     */
     public function getCurrentWorkplaceLearningPeriod() {
         if (!$this->getUserSetting('active_internship')) return null;
         return $this->workplaceLearningPeriods()->where('wplp_id', '=', $this->getUserSetting('active_internship')->setting_value)->first();
     }
 
+
     public function getCurrentWorkplace() {
         if (($wplp = $this->getCurrentWorkplaceLearningPeriod()) == null) return null;
         return $this->workplaces()->where('workplace.wp_id', '=' , $wplp->wp_id)->first();
     }
+
 
     public function getEducationProgram() {
         return $this->educationProgram()->first();
