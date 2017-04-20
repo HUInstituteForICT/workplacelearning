@@ -6,6 +6,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Class Chart holds the data required for plotting the charts and provides easy access to the data
+ */
 class Chart
 {
 

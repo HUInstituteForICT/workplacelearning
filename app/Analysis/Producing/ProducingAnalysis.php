@@ -6,8 +6,15 @@ namespace App\Analysis\Producing;
 
 use App\Chart;
 
+/**
+ * Class ProducingAnalysis used for getting analysis info of a producing user's activities
+ * @package App\Analysis\Producing
+ */
 class ProducingAnalysis
 {
+    /**
+     * @var ProducingAnalysisCollector class for fetching analysis data
+     */
     public $analysisCollector;
     public $analysisData = [];
 
@@ -19,6 +26,7 @@ class ProducingAnalysis
     private $chains;
     private $producingAnalysisChains;
 
+
     public function __construct(ProducingAnalysisCollector $analysisCollector, $year, $month)
     {
         $this->analysisCollector = $analysisCollector;
@@ -27,6 +35,10 @@ class ProducingAnalysis
         $this->statistics = new Statistics($this->analysisData);
     }
 
+    /*
+     * Build the data that is necessary for the analysis
+     * Is based on earlier created functions, it merely wraps around those and provides access to the data
+     */
     public function buildData($year, $month)
     {
         $this->analysisData['avg_difficulty'] = $this->analysisCollector->getAverageDifficultyByDate($year, $month);
@@ -48,6 +60,10 @@ class ProducingAnalysis
         return $this->analysisData;
     }
 
+    /**
+     * @param null $chart a specific requested chart if passed, if none it returns all charts
+     * @return Chart[]|Chart returns the requested Chart(s)
+     */
     public function charts($chart = null)
     {
         if ($this->charts === null) {
@@ -79,6 +95,12 @@ class ProducingAnalysis
 
     }
 
+    /**
+     * Returns the value of the requested statistic
+     * @param $name string name of the method on the Statistic class
+     * @return mixed the statistic
+     * @throws \Exception if the statistic method is not found
+     */
     public function statistic($name)
     {
         if(method_exists($this->statistics, $name)) {
@@ -88,6 +110,7 @@ class ProducingAnalysis
     }
 
     /**
+     * Returns all activity chains of the user wrapped in ActivityChain objects
      * @return ActivityChain[]
      */
     public function chains()

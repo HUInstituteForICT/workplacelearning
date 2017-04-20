@@ -8,8 +8,19 @@ use App\LearningActivityProducing;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class ProducingAnalysisCollector gives access to raw data about user's activities
+ * @package App\Analysis\Producing
+ */
 class ProducingAnalysisCollector
 {
+    /**
+     * Get the hours the user spent working alone
+     *
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
     public function getNumHoursAlone($year, $month){
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->whereNull('res_person_id')
@@ -18,6 +29,13 @@ class ProducingAnalysisCollector
         return $this->limitCollectionByDate($lap_collection, $year, $month)->sum('duration');
     }
 
+    /**
+     * Get the number of difficult tasks of the user
+     *
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
     public function getNumDifficultTasksByDate($year, $month){
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->where('difficulty_id', 3);
@@ -25,6 +43,13 @@ class ProducingAnalysisCollector
         return $this->limitCollectionByDate($lap_collection, $year, $month)->count();
     }
 
+    /**
+     * Get the hours of difficult tasks of the user
+     *
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
     public function getHoursDifficultTasksByDate($year, $month){
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->where('difficulty_id', 3);
@@ -32,6 +57,14 @@ class ProducingAnalysisCollector
         return $this->limitCollectionByDate($lap_collection, $year, $month)->sum('duration');
     }
 
+    /**
+     * Limit a Collection from a certain date and +1 month
+     *
+     * @param $collection
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
     public function LimitCollectionByDate($collection, $year, $month){
         if($year != "all" && $month != "all"){
             $dtime = mktime(0,0,0,intval($month),1,intval($year));
@@ -42,6 +75,14 @@ class ProducingAnalysisCollector
         return $collection;
     }
 
+    /**
+     * Get all task chains of the user within a certain date range
+     *
+     * @param int $amount
+     * @param $year
+     * @param $month
+     * @return array
+     */
     public function getTaskChainsByDate($amount = 50, $year, $month){
         // First, fetch the tasks that "start" the chain.
         $lap_start = LearningActivityProducing::where('prev_lap_id', NULL)
@@ -90,6 +131,13 @@ class ProducingAnalysisCollector
         return $task_chains;
     }
 
+    /**
+     * Get the average difficulty of tasks by date
+     *
+     * @param $year
+     * @param $month
+     * @return float|int
+     */
     public function getAverageDifficultyByDate($year, $month){
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
         $lap_collection = $this->limitCollectionByDate($lap_collection, $year, $month);
@@ -97,6 +145,12 @@ class ProducingAnalysisCollector
         return ($lap_collection->count() == 0) ? 0 : ($lap_collection->sum('difficulty_id')/$lap_collection->count())*3.33;
     }
 
+    /**
+     * Get the category by difficulties filtered by date range
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
     public function getCategoryDifficultyByDate($year, $month){
         $result = DB::table('learningactivityproducing')
             ->select(DB::raw('category_label as name, (AVG(learningactivityproducing.difficulty_id)*3.33) as difficulty'))
@@ -108,6 +162,13 @@ class ProducingAnalysisCollector
         return $result;
     }
 
+    /**
+     * Get the most occurring category filtered by date range
+     *
+     * @param $year
+     * @param $month
+     * @return $this|mixed
+     */
     public function getMostOccuringCategoryByDate($year, $month){
         $result = DB::table('learningactivityproducing')
             ->select(DB::raw('category_label as name, COUNT(learningactivityproducing.category_id) AS count, SUM(duration) as aantaluren'))
@@ -120,12 +181,26 @@ class ProducingAnalysisCollector
         return $result;
     }
 
+    /**
+     * Get the number of hours of activities filtered by date range
+     *
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
     public function getNumHoursByDate($year, $month){
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
 
         return $this->limitCollectionByDate($lap_collection, $year, $month)->sum('duration');
     }
 
+    /**
+     * Get the amount of full working days (>7.5 hours)
+     *
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
     public function getFullWorkingDays($year, $month){
         // Retrieve the number of days the student worked at least 7.5 hours
         $result = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
@@ -135,12 +210,26 @@ class ProducingAnalysisCollector
         return $result->get()->count();
     }
 
+    /**
+     * Get the number of tasks filtered by date range
+     *
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
     public function getNumTasksByDate($year, $month){
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
 
         return $this->limitCollectionByDate($lap_collection, $year, $month)->count('duration');
     }
 
+    /**
+     * Get the number of hours in a category filtered by date range
+     *
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
     public function getNumHoursCategory($year, $month) {
         $result = DB::table('learningactivityproducing')
             ->select(DB::raw('category_label as name, SUM(duration) as totalhours'))
