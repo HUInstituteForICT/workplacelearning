@@ -13,6 +13,7 @@
                 <p>Als je een tip hebt voor een analyse die je hier graag zou willen zien, geef dit dan aan ons door via <a href="{{ route('bugreport') }}">deze pagina</a>.</p>
 
 
+                <h3>Chart timeslots</h3>
                 <canvas id="chart_timeslots"></canvas>
                 <script>
                     var canvas_timeslots = document.getElementById("chart_timeslots");
@@ -54,6 +55,7 @@
                     });
                 </script>
 
+                <h3>Chart leerdoelen</h3>
                 <canvas id="chart_learninggoals"></canvas>
                 <script>
                     var canvas_learninggoals = document.getElementById("chart_learninggoals");
@@ -95,6 +97,7 @@
                     });
                 </script>
 
+                <h3>Chart competenties</h3>
                 <canvas id="chart_competencies"></canvas>
                 <script>
                     var canvas_competencies = document.getElementById("chart_competencies");
@@ -136,6 +139,7 @@
                     });
                 </script>
 
+                <h3>Chart personen</h3>
                 <canvas id="chart_persons"></canvas>
                 <script>
                     var canvas_persons = document.getElementById('chart_persons');
@@ -172,6 +176,7 @@
                     });
                 </script>
 
+                <h3>Chart theorie</h3>
                 <canvas id="chart_materials"></canvas>
                 <script>
                     var canvas_materials = document.getElementById('chart_materials');
@@ -209,21 +214,21 @@
                 </script>
 
 
-                Meest voorkomende combinatie tijdslot & leervraag:
+                <strong>Meest voorkomende combinatie tijdslot & leervraag:</strong>
                 {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->timeslot->timeslot_text }} met
                 {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->learningGoal->learninggoal_label }},
                 {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage }}% van je activiteiten zijn met deze combinatie
 
                 <br/><br/>
 
-                Meest voorkomende combinatie tijdslot & competentie:
+                <strong>Meest voorkomende combinatie tijdslot & competentie:</strong>
                 {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->timeslot->timeslot_text }} met
                 {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->competence->competence_label }},
                 {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage }}% van je activiteiten zijn met deze combinatie
 
                 <br/><br/>
 
-                Meest voorkomende combinatie leerdoel & competentie:
+                <strong>Meest voorkomende combinatie leerdoel & competentie:</strong>
                 {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->learningGoal->learninggoal_label }} met
                 {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->competence->competence_label }},
                 {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage }}% van je activiteiten zijn met deze combinatie
