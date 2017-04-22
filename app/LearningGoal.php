@@ -24,6 +24,6 @@ class LearningGoal extends Model {
     }
 
     public function learningActivityActing() {
-        return $this->belongsTo('App\learningActivityActing', 'learngingoal_id', 'learninggoal_id');
+        return $this->belongsTo('App\learningActivityActing', 'learninggoal_id', 'learninggoal_id');
     }
 }

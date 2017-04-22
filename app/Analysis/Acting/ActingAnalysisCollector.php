@@ -2,14 +2,25 @@
 
 namespace App\Analysis\Acting;
 
+use App\ResourceMaterial;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use stdClass;
 
+/**
+ * Class ActingAnalysisCollector fetches data for the analysis, caches it in object
+ * @package App\Analysis\Acting
+ */
 class ActingAnalysisCollector
 {
     private $learningActivities;
     private $timeslots;
     private $learningGoals;
+    private $competencies;
+    private $resourcePersons;
+    /** @var $resourceMaterials Collection */
+    private $resourceMaterials;
+
 
     public function __construct()
     {
@@ -17,6 +28,8 @@ class ActingAnalysisCollector
     }
 
     /**
+     * Get all learning activities of the user
+     *
      * @return Collection
      */
     public function getLearningActivities() {
@@ -27,6 +40,8 @@ class ActingAnalysisCollector
     }
 
     /**
+     * Get all the timeslots of the user's education program
+     *
      * @return Collection
      */
     public function getTimeslots() {
@@ -36,10 +51,62 @@ class ActingAnalysisCollector
         return $this->timeslots;
     }
 
+    /**
+     * Get all the learning goals for the user's interning place
+     *
+     * @return Collection
+     */
     public function getLearningGoals() {
         if($this->learningGoals === null) {
             $this->learningGoals = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals();
         }
         return $this->learningGoals;
     }
+
+    /**
+     * Get all the competencies of the user's education program
+     *
+     * @return Collection
+     */
+    public function getCompetencies() {
+        if($this->competencies === null) {
+            $this->competencies = Auth::user()->getEducationProgram()->getCompetencies();
+        }
+        return $this->competencies;
+    }
+
+    /**
+     * Get all the resource persons of the user's education program & internship
+     *
+     * @return mixed
+     */
+    public function getResourcePersons() {
+        if($this->resourcePersons === null) {
+            $this->resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->merge(
+                Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+            );
+        }
+        return $this->resourcePersons;
+    }
+
+    /**
+     * Get all the resource materials of the user's internship
+     *
+     * @return mixed
+     */
+    public function getResourceMaterials() {
+        if($this->resourceMaterials === null) {
+            $this->resourceMaterials = Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials();
+
+            // "None" doesn't exist as a material, so stub it
+            $noneMaterial = new ResourceMaterial();
+            $noneMaterial->rm_id = null;
+            $noneMaterial->rm_label = "Geen";
+
+            $this->resourceMaterials->add($noneMaterial);
+        }
+
+        return $this->resourceMaterials;
+    }
+
 }
