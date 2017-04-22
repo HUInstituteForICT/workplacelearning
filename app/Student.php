@@ -109,16 +109,25 @@ class Student extends Authenticatable
     }
 
 
+    /**
+     * @return null|Workplace
+     */
     public function getCurrentWorkplace() {
         if (($wplp = $this->getCurrentWorkplaceLearningPeriod()) == null) return null;
         return $this->workplaces()->where('workplace.wp_id', '=' , $wplp->wp_id)->first();
     }
 
 
+    /**
+     * @return EducationProgram
+     */
     public function getEducationProgram() {
         return $this->educationProgram()->first();
     }
 
+    /**
+     * @return EducationProgramType
+     */
     public function getEducationProgramType() {
         return $this->getEducationProgram()->educationprogramType()->first();
     }

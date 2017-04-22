@@ -9,8 +9,12 @@
             <div class="col-lg-6">
                 <h1>Analyse</h1>
                 <p>Op deze pagina kun je binnenkort je ingevulde leermomenten analyseren.</p>
-                <p>Je kunt bijvoorbeeld kijken in welk lesuur je de meeste leermomenten hebt ervaren. Of met welke theorie of persoon je veel werkt en leert. Ook kun je bekijken hoe de verhouding is tussen geplande en ongeplande leermomenten. Tenslotte wordt het mogelijk om inzicht te krijgen in de voortgang die je boekt met het werken aan je leervragen.</p>
-                <p>Als je een tip hebt voor een analyse die je hier graag zou willen zien, geef dit dan aan ons door via <a href="{{ route('bugreport') }}">deze pagina</a>.</p>
+                <p>Je kunt bijvoorbeeld kijken in welk lesuur je de meeste leermomenten hebt ervaren. Of met welke
+                    theorie of persoon je veel werkt en leert. Ook kun je bekijken hoe de verhouding is tussen geplande
+                    en ongeplande leermomenten. Tenslotte wordt het mogelijk om inzicht te krijgen in de voortgang die
+                    je boekt met het werken aan je leervragen.</p>
+                <p>Als je een tip hebt voor een analyse die je hier graag zou willen zien, geef dit dan aan ons door via
+                    <a href="{{ route('bugreport') }}">deze pagina</a>.</p>
 
 
                 <h3>Chart timeslots</h3>
@@ -24,8 +28,7 @@
                             datasets: [{
                                 label: 'Percentage leermomenten per timeslot',
                                 data: {!! $actingAnalysis->charts('timeslot')->data->toJson() !!},
-                                backgroundColor: [
-                                ],
+                                backgroundColor: [],
                                 borderColor: [
                                     'rgba(255,99,132,1)',
                                     'rgba(54, 162, 235, 1)',
@@ -47,7 +50,7 @@
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        beginAtZero:true
+                                        beginAtZero: true
                                     }
                                 }]
                             }
@@ -66,8 +69,7 @@
                             datasets: [{
                                 label: 'Percentage leermomenten per leer doel',
                                 data: {!! $actingAnalysis->charts('learninggoal')->data->toJson() !!},
-                                backgroundColor: [
-                                ],
+                                backgroundColor: [],
                                 borderColor: [
                                     'rgba(255,99,132,1)',
                                     'rgba(54, 162, 235, 1)',
@@ -89,7 +91,7 @@
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        beginAtZero:true
+                                        beginAtZero: true
                                     }
                                 }]
                             }
@@ -108,8 +110,7 @@
                             datasets: [{
                                 label: 'Percentage leermomenten per leer doel',
                                 data: {!! $actingAnalysis->charts('competence')->data->toJson() !!},
-                                backgroundColor: [
-                                ],
+                                backgroundColor: [],
                                 borderColor: [
                                     'rgba(255,99,132,1)',
                                     'rgba(54, 162, 235, 1)',
@@ -131,7 +132,7 @@
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        beginAtZero:true
+                                        beginAtZero: true
                                     }
                                 }]
                             }
@@ -165,7 +166,7 @@
                                 enabled: true,
                                 mode: 'single',
                                 callbacks: {
-                                    label: function(tooltipItem, data) {
+                                    label: function (tooltipItem, data) {
                                         var tooltipLabel = data.labels[tooltipItem.index];
                                         var tooltipData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                         return tooltipLabel + ' ' + tooltipData + '%';
@@ -202,7 +203,7 @@
                                 enabled: true,
                                 mode: 'single',
                                 callbacks: {
-                                    label: function(tooltipItem, data) {
+                                    label: function (tooltipItem, data) {
                                         var tooltipLabel = data.labels[tooltipItem.index];
                                         var tooltipData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                         return tooltipLabel + ' ' + tooltipData + '%';
@@ -215,32 +216,74 @@
 
 
                 <strong>Meest voorkomende combinatie tijdslot & leervraag:</strong>
-                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->timeslot->timeslot_text }} met
-                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->learningGoal->learninggoal_label }},
-                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage }}% van je activiteiten zijn met deze combinatie
+                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->timeslot->timeslot_text }}
+                met
+                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->learningGoal->learninggoal_label }}
+                ,
+                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage }}% van je
+                activiteiten zijn met deze combinatie
 
                 <br/><br/>
 
                 <strong>Meest voorkomende combinatie tijdslot & competentie:</strong>
                 {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->timeslot->timeslot_text }} met
-                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->competence->competence_label }},
-                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage }}% van je activiteiten zijn met deze combinatie
+                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->competence->competence_label }}
+                ,
+                {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage }}% van je
+                activiteiten zijn met deze combinatie
 
                 <br/><br/>
 
                 <strong>Meest voorkomende combinatie leerdoel & competentie:</strong>
-                {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->learningGoal->learninggoal_label }} met
-                {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->competence->competence_label }},
-                {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage }}% van je activiteiten zijn met deze combinatie
+                {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->learningGoal->learninggoal_label }}
+                met
+                {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->competence->competence_label }}
+                ,
+                {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage }}% van je
+                activiteiten zijn met deze combinatie
 
                 <br/><br/>
 
 
+                <h3>Percentage leermomenten bij leervraag zonder theorie</h3>
                 @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals() as $learningGoal)
-                    @if($actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) > 50)
-                        Boven 50 %, gebruik theorie?
-                    @endif
-                    {{ $actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) }}
+                    <div>
+
+                        <strong>Leervraag:</strong> {{ $learningGoal->learninggoal_label }}<br/>
+                        <strong>Percentage:</strong> {{ $actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) }}
+                        %<br/>
+
+                        @if($actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) > 50)
+
+                            Bij {{ $actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) }}
+                            % van de leermomenten behorende bij {{ $learningGoal->learninggoal_label }}
+                            gebruik je geen theorie. Misschien weet je niet goed welke theorie je hier bij zou kunnen
+                            gebruiken? Je zou hier ondersteuning bij kunnen vragen aan je begeleider vanuit de HU of je
+                            werkplek.
+
+                        @endif
+                        <br/><br/>
+                    </div>
+
+
+                @endforeach
+
+                <h3>Percentage leermomenten in tijdslot hoger dan 30% tip</h3>
+                @foreach(Auth::user()->getEducationProgram()->getTimeslots() as $timeslot)
+                    <div>
+
+                        <strong>Tijdslot:</strong> {{ $timeslot->timeslot_text }}<br/>
+                        <strong>Percentage:</strong> {{ $actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) }}
+                        %<br/>
+
+                        @if($actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) > 30)
+                            {{ $actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) }}% van jouw
+                            leermomenten vinden plaats in tijdslot {{ $timeslot->timeslot_text }}. Dit is blijkbaar een
+                            moment van de dag waarop veel van jou gevraagd wordt. Bespreek dit eens met je begeleiders
+                            of een medestudent om samen na te gaan hoe dit komt.
+                        @endif
+                        <br/><br/>
+                    </div>
                 @endforeach
 
             </div>

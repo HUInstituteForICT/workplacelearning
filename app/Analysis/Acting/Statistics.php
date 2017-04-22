@@ -12,6 +12,12 @@ use App\ResourcePerson;
 use App\Timeslot;
 use stdClass;
 
+/**
+ * Class Statistics provides easy access to statistics of user's activities
+ * @package App\Analysis\Acting
+ *
+ * TODO: could be improved by caching statistics that are resource intensive (loops etc.)
+ */
 class Statistics
 {
     private $analysisCollector;
@@ -197,12 +203,11 @@ class Statistics
         // Nicer format
         $combo->percentage = round($combo->percentage * 100, 1);
 
-//        dump($combo);
-
         return $combo;
     }
 
     public function percentageLearningGoalWithoutMaterial(LearningGoal $learningGoal) {
+
         $activities = $learningGoal->learningActivityActing()->get();
         $noTheory = $activities->filter(function(LearningActivityActing $activity) {
             return $activity->resourceMaterial === null;
@@ -213,4 +218,6 @@ class Statistics
 
         return round(($noTheory->count() / $activities->count()) * 100, 1);
     }
+
+
 }

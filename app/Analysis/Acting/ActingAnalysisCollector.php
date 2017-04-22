@@ -18,14 +18,8 @@ class ActingAnalysisCollector
     private $learningGoals;
     private $competencies;
     private $resourcePersons;
-    /** @var $resourceMaterials Collection */
     private $resourceMaterials;
 
-
-    public function __construct()
-    {
-
-    }
 
     /**
      * Get all learning activities of the user

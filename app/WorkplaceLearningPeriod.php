@@ -7,6 +7,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class WorkplaceLearningPeriod extends Model{
@@ -105,12 +106,18 @@ class WorkplaceLearningPeriod extends Model{
         return ($this->getLastActivity(1000000, 0)->sum('duration'));
     }
 
+    /**
+     * @return Collection
+     */
     public function getResourcePersons() {
         return $this->resourcePerson()
             ->orderBy('rp_id', 'asc')
             ->get();
     }
 
+    /**
+     * @return Collection
+     */
     public function getResourceMaterials() {
         return $this->resourceMaterial()
             ->orWhere('wplp_id', '=', '0')
