@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Analysis;
 class AnalysisController extends Controller 
 {
 
@@ -12,7 +13,8 @@ class AnalysisController extends Controller
    */
   public function index()
   {
-    
+      $analyses = Analysis::all();
+      return view('pages.analyses.index', compact('analyses'));
   }
 
   /**
