@@ -9,6 +9,11 @@ class Analysis extends Model
 
     protected $table = 'analyses';
     public $timestamps = false;
-    protected $fillable = array('name', 'query');
+    protected $fillable = array('name', 'query', 'cache_duration');
+
+    public function charts()
+    {
+        return $this->hasMany('\AnalysisChart');
+    }
 
 }
