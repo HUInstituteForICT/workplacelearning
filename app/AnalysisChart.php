@@ -13,12 +13,12 @@ class AnalysisChart extends Model
 
     public function analyse()
     {
-        return $this->hasOne('\Analysis', 'analysis_id');
+        return $this->hasOne('App\Analysis', 'analysis_id');
     }
 
     public function type()
     {
-        return $this->hasOne('\AnalysisChart', 'type_id');
+        return $this->hasOne('App\AnalysisChart', 'type_id');
     }
 
 }

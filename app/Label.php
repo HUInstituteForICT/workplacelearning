@@ -13,7 +13,7 @@ class Label extends Model
 
     public function chart()
     {
-        return $this->hasOne('\AnalysisChart');
+        return $this->hasOne('App\AnalysisChart');
     }
 
 }

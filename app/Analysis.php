@@ -13,7 +13,7 @@ class Analysis extends Model
 
     public function charts()
     {
-        return $this->hasMany('\AnalysisChart');
+        return $this->hasMany('App\AnalysisChart');
     }
 
 }
