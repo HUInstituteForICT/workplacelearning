@@ -7,8 +7,10 @@
                 <h1>{{ Lang::get('analyses.title') }}</h1>
                 <p>Analyses:</p>
                 <ul>
-                    @foreach($analyses as $analysis):
-                    <li>{{ $analysis->name }}</li>
+                    @foreach($analyses as $analysis)
+                    <li>
+                        <a href="{{ route('analyses-show', $analysis->id) }}">{{ $analysis->name }}</a>
+                    </li>
                     @endforeach
                 </ul>
             </div>
