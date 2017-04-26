@@ -15,12 +15,15 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileController extends Controller{
-    public function show(){
+class ProfileController extends Controller
+{
+    public function show()
+    {
         return view('pages.profile');
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         // Validate the input
         $validator = Validator::make($request->all(), [
             'firstname'     => 'required|regex:/^[a-zA-Z -]*$/|max:255|min:3',
@@ -47,8 +50,8 @@ class ProfileController extends Controller{
         }
     }
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
-
 }

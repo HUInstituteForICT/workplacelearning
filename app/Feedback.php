@@ -9,7 +9,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Feedback extends Model{
+class Feedback extends Model
+{
     // Override the table used for the User Model
     protected $table = 'feedback';
     // Disable using created_at and updated_at columns
@@ -31,11 +32,13 @@ class Feedback extends Model{
         'support_needed_ed',
     ];
 
-    public function isSaved(){
+    public function isSaved()
+    {
         return (strlen($this->notfinished) > 0);
     }
 
-    public function learningactivityproducing(){
+    public function learningactivityproducing()
+    {
         return $this->belongsTo('App\LearningActivityProducing');
     }
 }

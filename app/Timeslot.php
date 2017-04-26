@@ -4,7 +4,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Timeslot extends Model {
+class Timeslot extends Model
+{
     // Override the table used for the User Model
     protected $table = 'timeslot';
     // Disable using created_at and updated_at columns
@@ -19,7 +20,8 @@ class Timeslot extends Model {
         'edprog_id'
     ];
 
-    public function educationProgram() {
+    public function educationProgram()
+    {
         return $this->belongsTo('App\EducationProgram');
     }
 }

@@ -9,7 +9,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EducationProgramType extends Model{
+class EducationProgramType extends Model
+{
     // Override the table used for the User Model
     protected $table = 'educationprogramtype';
     // Disable using created_at and updated_at columns
@@ -23,7 +24,8 @@ class EducationProgramType extends Model{
         'eptype_name',
     ];
 
-    public function educationprogram(){
+    public function educationprogram()
+    {
         return $this->belongsToMany('App\EducationProgram');
     }
 }

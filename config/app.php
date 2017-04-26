@@ -1,6 +1,8 @@
 <?php
 
 $config = [
+    'name' => 'HU Werkplekleren',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -150,11 +152,14 @@ $config = [
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Illuminate\Notifications\NotificationServiceProvider::class,
+
 
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
@@ -178,6 +183,7 @@ $config = [
         'Artisan'             => Illuminate\Support\Facades\Artisan::class,
         'Auth'                => Illuminate\Support\Facades\Auth::class,
         'Blade'               => Illuminate\Support\Facades\Blade::class,
+        'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache'               => Illuminate\Support\Facades\Cache::class,
         'Config'              => Illuminate\Support\Facades\Config::class,
         'Cookie'              => Illuminate\Support\Facades\Cookie::class,
@@ -194,6 +200,7 @@ $config = [
         'Lang'                => Illuminate\Support\Facades\Lang::class,
         'Log'                 => Illuminate\Support\Facades\Log::class,
         'Mail'                => Illuminate\Support\Facades\Mail::class,
+        'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password'            => Illuminate\Support\Facades\Password::class,
         'PDF'                 => Barryvdh\DomPDF\Facade::class,
         'Queue'               => Illuminate\Support\Facades\Queue::class,
@@ -220,3 +227,14 @@ if (env('APP_ENV') === 'local') {
 }
 
 return $config;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Name
+    |--------------------------------------------------------------------------
+    |
+    | This value is the name of your application. This value is used when the
+    | framework needs to place the application's name in a notification or
+    | any other location as required by the application or its packages.
+    */
+

@@ -25,8 +25,9 @@ class ProducingReportController extends Controller
     private $viewdata = [
     ];
 
-    public function export(Request $request){
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null || Auth::user()->getCurrentWorkplaceLearningPeriod()->getNumLoggedHours() == 0){
+    public function export(Request $request)
+    {
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null || Auth::user()->getCurrentWorkplaceLearningPeriod()->getNumLoggedHours() == 0) {
             return redirect()->route('progress-producing', ['page' => 1])->withErrors(['Je kan nog geen weekstaten exporteren. Je hebt geen actieve stage, of nog geen uren geregistreerd.']);
         }
 
@@ -35,15 +36,15 @@ class ProducingReportController extends Controller
             (LaravelLocalization::getCurrentLocale() == "en") ? "en_US" : "nl_NL",
             IntlDateFormatter::GREGORIAN,
             IntlDateFormatter::NONE,
-            NULL,
-            NULL,
+            null,
+            null,
             "EEE"
         );
         $lap_array = $this->getWerkzaamheden();
         $view = view('templates.weekstaten')
-            ->with('student',       Auth::user())
-            ->with('stage',         Auth::user()->getCurrentWorkplace())
-            ->with('stageperiode',  Auth::user()->getCurrentWorkplaceLearningPeriod())
+            ->with('student', Auth::user())
+            ->with('stage', Auth::user()->getCurrentWorkplace())
+            ->with('stageperiode', Auth::user()->getCurrentWorkplaceLearningPeriod())
             ->with('date_loop', date('d-m-Y', strtotime('monday this week', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate))))
             ->with('datefmt', $formatter)
             ->with('lap_array', $lap_array);
@@ -56,16 +57,18 @@ class ProducingReportController extends Controller
             " - ".Auth::user()->getCurrentWorkplace()->wp_name.".pdf");
     }
 
-    public function show(){
-        if(Auth::user()->getInternshipPeriods() != null){
+    public function show()
+    {
+        if (Auth::user()->getInternshipPeriods() != null) {
             return view('pages.report');
         }
         // The user cannot view this page as they do not have any interships
         return redirect()->route('home')->withErrors(['Je hebt geen actieve stage, en kan deze pagina niet inzien. Ga naar profiel om een stage toe te voegen of te activeren.']);
     }
 
-    private function getWerkzaamheden(){
-        $dataset = array();
+    private function getWerkzaamheden()
+    {
+        $dataset = [];
 
         $allWerkzaamheden = DB::table('learningactivityproducing')
             ->select(DB::raw("lap_id,
@@ -85,20 +88,20 @@ class ProducingReportController extends Controller
             ->orderBy('lap_id', 'asc')
             ->get();
 
-        foreach($allWerkzaamheden as $lap){
-
-            $dataset["".date('d-m-Y', strtotime($lap->date))][$lap->lap_id] = array(
+        foreach ($allWerkzaamheden as $lap) {
+            $dataset["".date('d-m-Y', strtotime($lap->date))][$lap->lap_id] = [
                 'date'          => $lap->date,
                 'duration'      => $lap->duration,
                 'description'   => $lap->description,
                 'difficulty'    => $lap->difficulty_label,
                 'status'        => $lap->status_label,
-            );
+            ];
         }
         return $dataset;
     }
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->pdf = App::make('dompdf.wrapper');
     }
 }
