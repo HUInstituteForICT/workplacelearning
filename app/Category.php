@@ -9,7 +9,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model{
+class Category extends Model
+{
     // Override the table used for the User Model
     protected $table = 'category';
     // Disable using created_at and updated_at columns
@@ -24,20 +25,23 @@ class Category extends Model{
         'wplp_id',
     ];
 
-    public function InternshipPeriods(){
+    public function InternshipPeriods()
+    {
         return $this->belongsTo('App\WorkplaceLearningPeriod');
     }
 
-    public function learningactivitiesproducing(){
+    public function learningactivitiesproducing()
+    {
         return $this->belongsTo('App\LearningActivityProducing');
     }
 
-    public function getCategoryLabel(){
+    public function getCategoryLabel()
+    {
         return $this->category_label;
     }
 
-    public function setCategoryLabel($label){
+    public function setCategoryLabel($label)
+    {
         $this->category_label = $label;
     }
-
 }

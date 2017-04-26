@@ -9,7 +9,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Deadline extends Model{
+class Deadline extends Model
+{
     // Override the table used for the User Model
     protected $table = 'deadline';
     // Disable using created_at and updated_at columns
@@ -25,7 +26,8 @@ class Deadline extends Model{
         'student_id',
     ];
 
-    public function User(){
+    public function User()
+    {
         return $this->belongsTo('App\Student');
     }
 }

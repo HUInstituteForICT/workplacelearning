@@ -6,7 +6,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TaskTypeRedirect {
+class TaskTypeRedirect
+{
     /**
      * Handle an incoming request.
      *
@@ -14,11 +15,14 @@ class TaskTypeRedirect {
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next){
-        if(Auth::guest()) return redirect('login');
+    public function handle(Request $request, Closure $next)
+    {
+        if (Auth::guest()) {
+            return redirect('login');
+        }
 
-        if(Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting"){
-            switch($request->route()->getName()){
+        if (Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting") {
+            switch ($request->route()->getName()) {
                 case "home":
                 case "default":
                     return redirect()->route('home-acting');
@@ -41,7 +45,7 @@ class TaskTypeRedirect {
             }
         } else {
             // Assume the user follows an EP of type 'Producing'
-            switch($request->route()->getName()){
+            switch ($request->route()->getName()) {
                 case "home":
                 case "default":
                     return redirect()->route('home-producing');

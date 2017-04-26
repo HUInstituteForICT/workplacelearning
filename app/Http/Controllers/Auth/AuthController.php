@@ -16,11 +16,13 @@ class AuthController extends Controller
 
     protected $redirectTo = '/home';
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
-    protected function validator(array $data){
+    protected function validator(array $data)
+    {
         return Validator::make($data, [
             'studentnr'     => 'required|digits:7|unique:student',
             'firstname'     => 'required|max:255|min:3',
@@ -35,7 +37,8 @@ class AuthController extends Controller
         ]);
     }
 
-    protected function create(array $data){
+    protected function create(array $data)
+    {
         return Student::create([
             'studentnr'         => $data['studentnr'],
             'firstname'         => $data['firstname'],
@@ -52,7 +55,8 @@ class AuthController extends Controller
     }
 
 
-    public function showRegistrationForm(){
+    public function showRegistrationForm()
+    {
         // Retrieve all educationprogram data from DB and pass on to view
         $programs = EducationProgram::all();
 

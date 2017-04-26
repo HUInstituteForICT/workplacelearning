@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\InternshipPeriod;
 
-class Workplace extends Model{
+class Workplace extends Model
+{
     // Override the table used for the User Model
     protected $table = 'workplace';
     // Disable using created_at and updated_at columns
@@ -34,8 +35,8 @@ class Workplace extends Model{
     ];
 
 
-    public function internshipperiod(){
+    public function internshipperiod()
+    {
         return $this->hasMany('App\WorkplaceLearningPeriod', 'wp_id', 'wp_id');
     }
-
 }

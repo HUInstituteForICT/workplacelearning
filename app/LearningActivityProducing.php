@@ -4,7 +4,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class LearningActivityProducing extends Model{
+class LearningActivityProducing extends Model
+{
     // Override the table used for the User Model
     protected $table = 'learningactivityproducing';
     // Disable using created_at and updated_at columns
@@ -28,48 +29,62 @@ class LearningActivityProducing extends Model{
         'status_id'
     ];
 
-    public function workplaceLearningPeriod(){
+    public function workplaceLearningPeriod()
+    {
         return $this->belongsTo('App\WorkplaceLearningPeriod', 'wplp_id', 'wplp_id');
     }
 
-    public function feedback(){
+    public function feedback()
+    {
         return $this->hasOne('App\Feedback');
     }
 
-    public function resourcePerson() {
+    public function resourcePerson()
+    {
         return $this->hasOne('App\ResourcePerson', 'rp_id', 'res_person_id');
     }
 
-    public function resourceMaterial() {
+    public function resourceMaterial()
+    {
         return $this->hasOne('App\ResourceMaterial', 'rm_id', 'res_material_id');
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->hasOne('App\Category', 'category_id', 'category_id');
     }
 
-    public function difficulty() {
+    public function difficulty()
+    {
         return $this->hasOne('App\Difficulty', 'difficulty_id', 'difficulty_id');
     }
 
-    public function getDifficulty() {
+    public function getDifficulty()
+    {
         return $this->difficulty()->first()->difficulty_label;
     }
 
-    public function getCategory(){
+    public function getCategory()
+    {
         return $this->category()->first()->category_label;
     }
 
-    public function getDurationString(){
-        switch($this->duration){
-            case 0.25: return "15 min";
-            case 0.5 : return "30 min";
-            case 0.75: return "45 min";
-            default: return $this->duration." uur";
+    public function getDurationString()
+    {
+        switch ($this->duration) {
+            case 0.25:
+                return "15 min";
+            case 0.5:
+                return "30 min";
+            case 0.75:
+                return "45 min";
+            default:
+                return $this->duration." uur";
         }
     }
 
-    public function getResourceDetail() {
+    public function getResourceDetail()
+    {
         if ($this->res_material_id) {
             return $this->resourceMaterial()
                 ->first()
@@ -81,25 +96,30 @@ class LearningActivityProducing extends Model{
         }
     }
 
-    public function getPrevousLearningActivity(){
+    public function getPrevousLearningActivity()
+    {
         return LearningActivityProducing::where('lap_id', $this->prev_lap_id)->first();
     }
 
-    public function getNextLearningActivity(){
+    public function getNextLearningActivity()
+    {
         return LearningActivityProducing::where('prev_lap_id', $this->lap_id)->first();
     }
 
-    public function getStatus(){
+    public function getStatus()
+    {
         $st = DB::table("status")->where('status_id', $this->status_id)->first();
         return $st->status_label;
     }
 
-    public function getFeedback(){
+    public function getFeedback()
+    {
         return Feedback::where('learningactivity_id', $this->lap_id)->first();
     }
 
     // Note: DND, object comparison
-    public function __toString() {
+    public function __toString()
+    {
         return $this->lap_id;
     }
 }

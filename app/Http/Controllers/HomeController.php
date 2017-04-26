@@ -9,30 +9,37 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Http\Controllers\Controller;
 
-class HomeController extends Controller{
+class HomeController extends Controller
+{
 
-    public function showHome(){
+    public function showHome()
+    {
         return view('pages.home');
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate(){
+    public function showProducingTemplate()
+    {
         return view('pages.producing.home');
     }
 
-    public function showActingTemplate(){
+    public function showActingTemplate()
+    {
         return view('pages.acting.home');
     }
 
-    public function showDefault(){
+    public function showDefault()
+    {
         return redirect()->route('home');
     }
 
-    public function showBugReport(){
+    public function showBugReport()
+    {
         return view('pages.bugreport');
     }
 
-    public function createBugReport(Request $request){
+    public function createBugReport(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'onderwerp' => 'required|regex:/^[0-9a-zA-Z ()-?!%#@,.]*$/|max:40|min:3',
             'uitleg'    => 'required|regex:/^[0-9a-zA-Z ()-?!%#@,.]*$/|max:800|min:5',
@@ -53,7 +60,7 @@ class HomeController extends Controller{
                 'subject'       => $request['onderwerp'],
                 'content'       => $request['uitleg'],
             ],
-            function($message){
+            function ($message) {
                 $message->subject('Tip/Bug ingezonden!');
                 $message->from('debug@werkplekleren.hu.nl', 'Werkplekleren @ Hogeschool Utrecht');
                 $message->to('max.cassee@hu.nl');
@@ -64,5 +71,4 @@ class HomeController extends Controller{
         );
         return redirect()->route('home')->with('success', 'Bedankt voor je bijdrage! Je krijgt per email een reactie terug.');
     }
-    
 }

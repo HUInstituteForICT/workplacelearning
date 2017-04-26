@@ -3,7 +3,6 @@
 
 namespace App\Analysis\Producing;
 
-
 use App\Chart;
 
 /**
@@ -43,15 +42,23 @@ class ProducingAnalysis
     {
         $this->analysisData['avg_difficulty'] = $this->analysisCollector->getAverageDifficultyByDate($year, $month);
         $this->analysisData['num_difficult_lap'] = $this->analysisCollector->getNumDifficultTasksByDate($year, $month);
-        $this->analysisData['hours_difficult_lap'] = $this->analysisCollector->getHoursDifficultTasksByDate($year,
-            $month);
-        $this->analysisData['most_occuring_category'] = $this->analysisCollector->getMostOccuringCategoryByDate($year,
-            $month);
-        $this->analysisData['category_difficulty'] = $this->analysisCollector->getCategoryDifficultyByDate($year,
-            $month);
+        $this->analysisData['hours_difficult_lap'] = $this->analysisCollector->getHoursDifficultTasksByDate(
+            $year,
+            $month
+        );
+        $this->analysisData['most_occuring_category'] = $this->analysisCollector->getMostOccuringCategoryByDate(
+            $year,
+            $month
+        );
+        $this->analysisData['category_difficulty'] = $this->analysisCollector->getCategoryDifficultyByDate(
+            $year,
+            $month
+        );
         $this->analysisData['num_hours_alone'] = $this->analysisCollector->getNumHoursAlone($year, $month);
-        $this->analysisData['category_difficulty'] = $this->analysisCollector->getCategoryDifficultyByDate($year,
-            $month);
+        $this->analysisData['category_difficulty'] = $this->analysisCollector->getCategoryDifficultyByDate(
+            $year,
+            $month
+        );
         $this->analysisData['num_hours'] = $this->analysisCollector->getNumHoursByDate($year, $month);
         $this->analysisData['num_days'] = $this->analysisCollector->getFullWorkingDays($year, $month);
         $this->analysisData['num_lap'] = $this->analysisCollector->getNumTasksByDate($year, $month);
@@ -92,7 +99,6 @@ class ProducingAnalysis
         } else {
             return $this->charts[$chart];
         }
-
     }
 
     /**
@@ -103,7 +109,7 @@ class ProducingAnalysis
      */
     public function statistic($name)
     {
-        if(method_exists($this->statistics, $name)) {
+        if (method_exists($this->statistics, $name)) {
             return $this->statistics->$name();
         }
         throw new \Exception("Method not found on " . Statistics::class);
@@ -115,13 +121,11 @@ class ProducingAnalysis
      */
     public function chains()
     {
-        if($this->producingAnalysisChains === null) {
+        if ($this->producingAnalysisChains === null) {
             $this->producingAnalysisChains = array_map(function ($chain) {
                 return new ActivityChain($chain);
             }, $this->chains);
         }
         return $this->producingAnalysisChains;
     }
-
-
 }

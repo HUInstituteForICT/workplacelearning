@@ -3,7 +3,6 @@
 
 namespace App\Analysis\Producing;
 
-
 use App\LearningActivityProducing;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +20,8 @@ class ProducingAnalysisCollector
      * @param $month
      * @return mixed
      */
-    public function getNumHoursAlone($year, $month){
+    public function getNumHoursAlone($year, $month)
+    {
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->whereNull('res_person_id')
             ->whereNull('res_material_id');
@@ -36,7 +36,8 @@ class ProducingAnalysisCollector
      * @param $month
      * @return mixed
      */
-    public function getNumDifficultTasksByDate($year, $month){
+    public function getNumDifficultTasksByDate($year, $month)
+    {
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->where('difficulty_id', 3);
 
@@ -50,7 +51,8 @@ class ProducingAnalysisCollector
      * @param $month
      * @return mixed
      */
-    public function getHoursDifficultTasksByDate($year, $month){
+    public function getHoursDifficultTasksByDate($year, $month)
+    {
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->where('difficulty_id', 3);
 
@@ -65,9 +67,10 @@ class ProducingAnalysisCollector
      * @param $month
      * @return mixed
      */
-    public function LimitCollectionByDate($collection, $year, $month){
-        if($year != "all" && $month != "all"){
-            $dtime = mktime(0,0,0,intval($month),1,intval($year));
+    public function LimitCollectionByDate($collection, $year, $month)
+    {
+        if ($year != "all" && $month != "all") {
+            $dtime = mktime(0, 0, 0, intval($month), 1, intval($year));
             $collection->whereDate('date', '>=', date('Y-m-d', $dtime))
                 ->whereDate('date', '<=', date('Y-m-d', strtotime("+1 month", $dtime)));
         }
@@ -83,9 +86,10 @@ class ProducingAnalysisCollector
      * @param $month
      * @return array
      */
-    public function getTaskChainsByDate($amount = 50, $year, $month){
+    public function getTaskChainsByDate($amount = 50, $year, $month)
+    {
         // First, fetch the tasks that "start" the chain.
-        $lap_start = LearningActivityProducing::where('prev_lap_id', NULL)
+        $lap_start = LearningActivityProducing::where('prev_lap_id', null)
             ->where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
         /*->whereIn('lap_id', function($query){
             $query->select('prev_lap_id')
@@ -95,13 +99,15 @@ class ProducingAnalysisCollector
 
         // Iterate over the array and add tasks that follow.
         $task_chains = array();
-        foreach($lap_start as $w){
+        foreach ($lap_start as $w) {
             $arr_key = count($task_chains);
             $nw = $w->getNextLearningActivity();
             $task_chains[$arr_key][] = $w;
-            if(is_null($nw)) continue;
+            if (is_null($nw)) {
+                continue;
+            }
             $task_chains[$arr_key][] = $nw;
-            while(($nw = $nw->getNextLearningActivity()) != NULL){
+            while (($nw = $nw->getNextLearningActivity()) != null) {
                 $task_chains[$arr_key][] = $nw;
             }
         }
@@ -115,13 +121,15 @@ class ProducingAnalysisCollector
             });
 
         $lap_end = $this->LimitCollectionByDate($lap_end, $year, $month)->orderBy('date', 'desc')->take($amount)->get();
-        foreach($lap_end as $w){
+        foreach ($lap_end as $w) {
             $arr_key = count($task_chains);
             $pw = $w->getPrevousLearningActivity();
             $task_chains[$arr_key][] = $w;
-            if(is_null($pw)) continue;
+            if (is_null($pw)) {
+                continue;
+            }
             array_unshift($task_chains[$arr_key], $pw);
-            while(($pw = $pw->getPrevousLearningActivity()) != NULL){
+            while (($pw = $pw->getPrevousLearningActivity()) != null) {
                 array_unshift($task_chains[$arr_key], $pw);
             }
         }
@@ -138,7 +146,8 @@ class ProducingAnalysisCollector
      * @param $month
      * @return float|int
      */
-    public function getAverageDifficultyByDate($year, $month){
+    public function getAverageDifficultyByDate($year, $month)
+    {
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
         $lap_collection = $this->limitCollectionByDate($lap_collection, $year, $month);
 
@@ -151,7 +160,8 @@ class ProducingAnalysisCollector
      * @param $month
      * @return mixed
      */
-    public function getCategoryDifficultyByDate($year, $month){
+    public function getCategoryDifficultyByDate($year, $month)
+    {
         $result = DB::table('learningactivityproducing')
             ->select(DB::raw('category_label as name, (AVG(learningactivityproducing.difficulty_id)*3.33) as difficulty'))
             ->join('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
@@ -169,12 +179,16 @@ class ProducingAnalysisCollector
      * @param $month
      * @return $this|mixed
      */
-    public function getMostOccuringCategoryByDate($year, $month){
+    public function getMostOccuringCategoryByDate($year, $month)
+    {
         $result = DB::table('learningactivityproducing')
             ->select(DB::raw('category_label as name, COUNT(learningactivityproducing.category_id) AS count, SUM(duration) as aantaluren'))
             ->join('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
-            ->where('learningactivityproducing.wplp_id', '=',
-                Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
+            ->where(
+                'learningactivityproducing.wplp_id',
+                '=',
+                Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id
+            );
         $result = $this->LimitCollectionByDate($result, $year, $month);
         $result = $result->groupBy('learningactivityproducing.category_id')->orderBy('count', 'desc')->first();
 
@@ -188,7 +202,8 @@ class ProducingAnalysisCollector
      * @param $month
      * @return mixed
      */
-    public function getNumHoursByDate($year, $month){
+    public function getNumHoursByDate($year, $month)
+    {
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
 
         return $this->limitCollectionByDate($lap_collection, $year, $month)->sum('duration');
@@ -201,7 +216,8 @@ class ProducingAnalysisCollector
      * @param $month
      * @return mixed
      */
-    public function getFullWorkingDays($year, $month){
+    public function getFullWorkingDays($year, $month)
+    {
         // Retrieve the number of days the student worked at least 7.5 hours
         $result = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->groupBy('date')
@@ -217,7 +233,8 @@ class ProducingAnalysisCollector
      * @param $month
      * @return mixed
      */
-    public function getNumTasksByDate($year, $month){
+    public function getNumTasksByDate($year, $month)
+    {
         $lap_collection = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
 
         return $this->limitCollectionByDate($lap_collection, $year, $month)->count('duration');
@@ -230,12 +247,16 @@ class ProducingAnalysisCollector
      * @param $month
      * @return mixed
      */
-    public function getNumHoursCategory($year, $month) {
+    public function getNumHoursCategory($year, $month)
+    {
         $result = DB::table('learningactivityproducing')
             ->select(DB::raw('category_label as name, SUM(duration) as totalhours'))
             ->join('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
-            ->where('learningactivityproducing.wplp_id', '=',
-                Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
+            ->where(
+                'learningactivityproducing.wplp_id',
+                '=',
+                Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id
+            );
         $result = $this->LimitCollectionByDate($result, $year, $month);
 
         return $result->groupBy('learningactivityproducing.category_id')->get();

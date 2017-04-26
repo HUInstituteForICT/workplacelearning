@@ -4,7 +4,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Competence extends Model {
+class Competence extends Model
+{
     // Override the table used for the User Model
     protected $table = 'competence';
     // Disable using created_at and updated_at columns
@@ -19,11 +20,13 @@ class Competence extends Model {
         'educationprogram_id'
     ];
 
-    public function educationProgram() {
+    public function educationProgram()
+    {
         return $this->belongsTo('App\EducationProgram', 'ep_id', 'educationprogram_id');
     }
 
-    public function learningActivityActing() {
+    public function learningActivityActing()
+    {
         return $this->belongsToMany('App\LearningActivityActing', 'activityforcompetence', 'competence_id');
     }
 }

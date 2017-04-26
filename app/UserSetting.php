@@ -9,7 +9,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserSetting extends Model{
+class UserSetting extends Model
+{
     // Override the table used for the User Model
     protected $table = 'usersetting';
     // Disable using created_at and updated_at columns
@@ -25,8 +26,8 @@ class UserSetting extends Model{
         'setting_value',
     ];
 
-    public function student(){
+    public function student()
+    {
         return $this->belongsTo('App\Student');
     }
-
 }

@@ -19,15 +19,18 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class ProducingWorkplaceLearningController extends Controller{
+class ProducingWorkplaceLearningController extends Controller
+{
 
-    public function show(){
+    public function show()
+    {
         return view("pages.producing.internship")
                 ->with("period", new WorkplaceLearningPeriod)
                 ->with("workplace", new Workplace);
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $wplPeriod = WorkplaceLearningPeriod::find($id);
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
@@ -41,7 +44,8 @@ class ProducingWorkplaceLearningController extends Controller{
         }
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         // Validate the input
         $validator = Validator::make($request->all(), [
             'companyName'           => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
@@ -93,14 +97,15 @@ class ProducingWorkplaceLearningController extends Controller{
         $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if($request['isActive'] == 1){
+        if ($request['isActive'] == 1) {
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
         return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         // Validate the input
         $validator = Validator::make($request->all(), [
             'companyName'           => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
@@ -127,7 +132,7 @@ class ProducingWorkplaceLearningController extends Controller{
 
         // Input is valid. Attempt to fetch the WPLP and validate it belongs to the user
         $wplPeriod = WorkplaceLearningPeriod::find($id);
-        if(is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id){
+        if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
                 ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
         }
@@ -159,27 +164,30 @@ class ProducingWorkplaceLearningController extends Controller{
         $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if($request['isActive'] == 1){
+        if ($request['isActive'] == 1) {
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
         return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
     }
 
-    public function updateCategories(Request $request, $id){
+    public function updateCategories(Request $request, $id)
+    {
         // Verify the given ID is valid and belongs to the student
         $belongsToStudent = false;
-        foreach(Auth::user()->workplacelearningperiods()->get() as $ip){
-            if($ip->wplp_id == $id){
+        foreach (Auth::user()->workplacelearningperiods()->get() as $ip) {
+            if ($ip->wplp_id == $id) {
                 $belongsToStudent = true;
                 break;
             }
         }
-        if(!$belongsToStudent) return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel."); // $id is invalid or does not belong to the student
+        if (!$belongsToStudent) {
+            return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel."); // $id is invalid or does not belong to the student
+        }
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
-        if(!empty($request['newcat']['0']['cg_label'])){
-           $request['cat'] = array_merge(((is_array($request['cat'])) ? $request['cat'] : array()), $request['newcat']);
+        if (!empty($request['newcat']['0']['cg_label'])) {
+            $request['cat'] = array_merge(((is_array($request['cat'])) ? $request['cat'] : array()), $request['newcat']);
         }
 
         $validator = Validator::make($request->all(), [
@@ -187,7 +195,7 @@ class ProducingWorkplaceLearningController extends Controller{
             'cat.*.cg_id'       => 'required|digits_between:1,5',
             'cat.*.cg_label'    => 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             // Noes. errors occured. Exit back to profile page with errors
             return redirect()
                 ->route('period-producing-edit', ["id" => $id])
@@ -195,10 +203,10 @@ class ProducingWorkplaceLearningController extends Controller{
                 ->withInput();
         } else {
             // All is well :)
-            foreach($request['cat'] as $cat){
+            foreach ($request['cat'] as $cat) {
                 // Either update or create a new row.
                 $category = Category::find($cat['cg_id']);
-                if(is_null($category)){
+                if (is_null($category)) {
                     $category = new Category;
                     $category->wplp_id = $cat['wplp_id'];
                 }
@@ -210,7 +218,8 @@ class ProducingWorkplaceLearningController extends Controller{
         }
     }
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 }
