@@ -68,7 +68,7 @@ class ProducingReportController extends Controller
 
     private function getWerkzaamheden()
     {
-        $dataset = array();
+        $dataset = [];
 
         $allWerkzaamheden = DB::table('learningactivityproducing')
             ->select(DB::raw("lap_id,
@@ -89,13 +89,13 @@ class ProducingReportController extends Controller
             ->get();
 
         foreach ($allWerkzaamheden as $lap) {
-            $dataset["".date('d-m-Y', strtotime($lap->date))][$lap->lap_id] = array(
+            $dataset["".date('d-m-Y', strtotime($lap->date))][$lap->lap_id] = [
                 'date'          => $lap->date,
                 'duration'      => $lap->duration,
                 'description'   => $lap->description,
                 'difficulty'    => $lap->difficulty_label,
                 'status'        => $lap->status_label,
-            );
+            ];
         }
         return $dataset;
     }

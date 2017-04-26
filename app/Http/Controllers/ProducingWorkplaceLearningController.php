@@ -187,7 +187,7 @@ class ProducingWorkplaceLearningController extends Controller
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
         if (!empty($request['newcat']['0']['cg_label'])) {
-            $request['cat'] = array_merge(((is_array($request['cat'])) ? $request['cat'] : array()), $request['newcat']);
+            $request['cat'] = array_merge(((is_array($request['cat'])) ? $request['cat'] : []), $request['newcat']);
         }
 
         $validator = Validator::make($request->all(), [

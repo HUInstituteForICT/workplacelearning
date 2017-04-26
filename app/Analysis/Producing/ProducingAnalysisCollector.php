@@ -98,7 +98,7 @@ class ProducingAnalysisCollector
         $lap_start = $this->limitCollectionByDate($lap_start, $year, $month)->orderBy('date', 'desc')->take($amount)->get();
 
         // Iterate over the array and add tasks that follow.
-        $task_chains = array();
+        $task_chains = [];
         foreach ($lap_start as $w) {
             $arr_key = count($task_chains);
             $nw = $w->getNextLearningActivity();

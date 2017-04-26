@@ -65,11 +65,11 @@ class Student extends Authenticatable
     {
         $setting = $this->getUserSetting($label);
         if (!$setting) {
-            $setting = UserSetting::create(array(
+            $setting = UserSetting::create([
                 'student_id'    => $this->student_id,
                 'setting_label'  => $label,
                 'setting_value' => $value,
-            ));
+            ]);
         } else {
             $setting->setting_value = $value;
             $setting->save();
