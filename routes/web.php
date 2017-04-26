@@ -15,6 +15,7 @@
 */
 
 Auth::routes();
+Route::get('/logout', 'Auth\LoginController@logout');
 
 //Route::auth();
 
@@ -28,7 +29,6 @@ Route::group([
                 // Register the Authentication Controller
 
                 // Catch the stat registration post
-                Route::get('/logout', 'Auth\LoginController@getLogout');
 
                 Route::post('/log', 'LogController@log');
 
