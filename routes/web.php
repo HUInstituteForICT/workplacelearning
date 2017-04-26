@@ -14,8 +14,9 @@
 
 */
 
+Auth::routes();
 
-Route::auth();
+//Route::auth();
 
 // Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
 // Note: The localisation is saved in a session state.
@@ -27,6 +28,8 @@ Route::group([
                 // Register the Authentication Controller
 
                 // Catch the stat registration post
+                Route::get('/logout', 'Auth\LoginController@getLogout');
+
                 Route::post('/log', 'LogController@log');
 
                 /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/

@@ -48,9 +48,16 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'studentnr'     => 'required|digits:7|unique:student',
+            'firstname'     => 'required|max:255|min:3',
+            'lastname'      => 'required|max:255|min:3',
+            'gender'        => 'required|in:male,female',
+            //'birthdate'     => 'required|date|before:'.date("Y-m-d", strtotime('-17 years')),
+            'email'         => 'required|email|max:255|unique:student',
+            //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
+            'password'      => 'required|min:8|confirmed',
+            'secret'        => 'required|in:ICTstage2016,Stage2017',
+            //'answer'        => 'required|min:3|max:30',
         ]);
     }
 
@@ -62,10 +69,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+        return Student::create([
+            'studentnr'         => $data['studentnr'],
+            'firstname'         => $data['firstname'],
+            'lastname'          => $data['lastname'],
+            'ep_id'             => $data['education'],
+            'pw_hash'           => bcrypt($data['password']),
+            'gender'            => strtoupper(substr($data['gender'], 0, 1)),
+            //'birthdate'        => $data['birthdate'],     // Deprecated
+            'email'             => $data['email'],
+            //'phonenr'          => $data['phone'],         // Deprecated
+            'registrationdate'  => date('Y-m-d H:i:s'),
+            //'answer'            => $data['answer'],       // Deprecated
         ]);
     }
 }

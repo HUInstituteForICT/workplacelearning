@@ -100,7 +100,7 @@ class WorkplaceLearningPeriod extends Model
     public function getCategories()
     {
         return $this->categories()
-            ->orWhere('wplp_id', '=', '0')
+            ->where('wplp_id', '=', '0')
             ->orderBy('category_id', 'asc')
             ->get();
     }
@@ -132,7 +132,7 @@ class WorkplaceLearningPeriod extends Model
     public function getResourceMaterials()
     {
         return $this->resourceMaterial()
-            ->orWhere('wplp_id', '=', '0')
+            ->where('wplp_id', '=', '0')
             ->orderBy('rm_id', 'asc')
             ->get();
     }

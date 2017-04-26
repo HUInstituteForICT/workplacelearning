@@ -1,6 +1,8 @@
 <?php
 
 $config = [
+    'name' => 'HU Werkplekleren',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -138,7 +140,6 @@ $config = [
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
         Illuminate\Hashing\HashServiceProvider::class,
         Illuminate\Mail\MailServiceProvider::class,
-        Illuminate\Notifications\NotificationServiceProvider::class,
         Illuminate\Pagination\PaginationServiceProvider::class,
         Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
@@ -151,6 +152,8 @@ $config = [
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Illuminate\Notifications\NotificationServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -235,4 +238,3 @@ return $config;
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'My Application',
