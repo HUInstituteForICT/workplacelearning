@@ -31,32 +31,32 @@ class LearningActivityProducing extends Model
 
     public function workplaceLearningPeriod()
     {
-        return $this->belongsTo('App\WorkplaceLearningPeriod', 'wplp_id', 'wplp_id');
+        return $this->belongsTo(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
     public function feedback()
     {
-        return $this->hasOne('App\Feedback');
+        return $this->hasOne(\App\Feedback::class);
     }
 
     public function resourcePerson()
     {
-        return $this->hasOne('App\ResourcePerson', 'rp_id', 'res_person_id');
+        return $this->hasOne(\App\ResourcePerson::class, 'rp_id', 'res_person_id');
     }
 
     public function resourceMaterial()
     {
-        return $this->hasOne('App\ResourceMaterial', 'rm_id', 'res_material_id');
+        return $this->hasOne(\App\ResourceMaterial::class, 'rm_id', 'res_material_id');
     }
 
     public function category()
     {
-        return $this->hasOne('App\Category', 'category_id', 'category_id');
+        return $this->hasOne(\App\Category::class, 'category_id', 'category_id');
     }
 
     public function difficulty()
     {
-        return $this->hasOne('App\Difficulty', 'difficulty_id', 'difficulty_id');
+        return $this->hasOne(\App\Difficulty::class, 'difficulty_id', 'difficulty_id');
     }
 
     public function getDifficulty()

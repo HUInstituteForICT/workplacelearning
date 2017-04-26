@@ -26,27 +26,27 @@ class EducationProgram extends Model
 
     public function educationprogramType()
     {
-        return $this->hasOne('App\EducationProgramType', 'eptype_id', 'eptype_id');
+        return $this->hasOne(\App\EducationProgramType::class, 'eptype_id', 'eptype_id');
     }
 
     public function student()
     {
-        return $this->belongsToMany('App\Student', 'ep_id', 'ep_id');
+        return $this->belongsToMany(\App\Student::class, 'ep_id', 'ep_id');
     }
 
     public function competence()
     {
-        return $this->hasMany('App\Competence', 'educationprogram_id', 'ep_id');
+        return $this->hasMany(\App\Competence::class, 'educationprogram_id', 'ep_id');
     }
 
     public function timeslot()
     {
-        return $this->hasMany('App\Timeslot', 'edprog_id', 'ep_id');
+        return $this->hasMany(\App\Timeslot::class, 'edprog_id', 'ep_id');
     }
 
     public function resourcePerson()
     {
-        return $this->hasMany('App\ResourcePerson', 'ep_id', 'ep_id');
+        return $this->hasMany(\App\ResourcePerson::class, 'ep_id', 'ep_id');
     }
 
     public function getCompetencies()

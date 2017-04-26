@@ -51,6 +51,8 @@ class HomeController extends Controller
                 ->withInput();
         }
 
+        /**
+
         Mail::send(
             'templates.bugreport-email',
             [
@@ -69,6 +71,7 @@ class HomeController extends Controller
                 $message->replyTo(Auth::user()->email);
             }
         );
+         */
         return redirect()->route('home')->with('success', 'Bedankt voor je bijdrage! Je krijgt per email een reactie terug.');
     }
 }

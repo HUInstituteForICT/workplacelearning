@@ -21,11 +21,11 @@ class ResourceMaterial extends Model
 
     public function workplaceLearningPeriod()
     {
-        return $this->belongsTo('App\WorkplaceLearningPeriod');
+        return $this->belongsTo(\App\WorkplaceLearningPeriod::class);
     }
 
     public function learningActivityProducing()
     {
-        return $this->belongsTo('App\LearningActivityProducing');
+        return $this->belongsTo(\App\LearningActivityProducing::class);
     }
 }

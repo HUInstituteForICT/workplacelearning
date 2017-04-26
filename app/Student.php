@@ -79,27 +79,27 @@ class Student extends Authenticatable
 
     public function educationProgram()
     {
-        return $this->hasOne('App\EducationProgram', 'ep_id', 'ep_id');
+        return $this->hasOne(\App\EducationProgram::class, 'ep_id', 'ep_id');
     }
 
     public function deadlines()
     {
-        return $this->hasMany('App\Deadline', 'student_id', 'student_id');
+        return $this->hasMany(\App\Deadline::class, 'student_id', 'student_id');
     }
 
     public function usersettings()
     {
-        return $this->hasMany('App\UserSetting', 'student_id', 'student_id');
+        return $this->hasMany(\App\UserSetting::class, 'student_id', 'student_id');
     }
 
     public function workplaceLearningPeriods()
     {
-        return $this->hasMany('App\WorkplaceLearningPeriod', 'student_id', 'student_id');
+        return $this->hasMany(\App\WorkplaceLearningPeriod::class, 'student_id', 'student_id');
     }
 
     public function workplaces()
     {
-        return $this->belongsToMany('App\Workplace', 'workplacelearningperiod', 'student_id', 'wp_id');
+        return $this->belongsToMany(\App\Workplace::class, 'workplacelearningperiod', 'student_id', 'wp_id');
     }
 
     public function getWorkplaceLearningPeriods()

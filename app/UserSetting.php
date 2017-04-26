@@ -28,6 +28,6 @@ class UserSetting extends Model
 
     public function student()
     {
-        return $this->belongsTo('App\Student');
+        return $this->belongsTo(\App\Student::class);
     }
 }

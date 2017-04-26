@@ -31,42 +31,42 @@ class WorkplaceLearningPeriod extends Model
 
     public function student()
     {
-        return $this->belongsTo('App\Student', 'student_id', 'student_id');
+        return $this->belongsTo(\App\Student::class, 'student_id', 'student_id');
     }
 
     public function workplace()
     {
-        return $this->hasOne('App\Workplace', 'wp_id', 'wp_id');
+        return $this->hasOne(\App\Workplace::class, 'wp_id', 'wp_id');
     }
 
     public function categories()
     {
-        return $this->hasMany('App\Category', 'wplp_id', 'wplp_id');
+        return $this->hasMany(\App\Category::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningGoals()
     {
-        return $this->hasMany('App\LearningGoal', 'wplp_id', 'wplp_id');
+        return $this->hasMany(\App\LearningGoal::class, 'wplp_id', 'wplp_id');
     }
 
     public function resourcePerson()
     {
-        return $this->hasOne('App\ResourcePerson', 'wplp_id', 'wplp_id');
+        return $this->hasOne(\App\ResourcePerson::class, 'wplp_id', 'wplp_id');
     }
 
     public function resourceMaterial()
     {
-        return $this->hasOne('App\ResourceMaterial', 'wplp_id', 'wplp_id');
+        return $this->hasOne(\App\ResourceMaterial::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityProducing()
     {
-        return $this->hasMany('App\LearningActivityProducing', 'wplp_id', 'wplp_id');
+        return $this->hasMany(\App\LearningActivityProducing::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityActing()
     {
-        return $this->hasMany('App\LearningActivityActing', 'wplp_id', 'wplp_id');
+        return $this->hasMany(\App\LearningActivityActing::class, 'wplp_id', 'wplp_id');
     }
 
     public function getLearningActivityActingById($id)
@@ -100,7 +100,7 @@ class WorkplaceLearningPeriod extends Model
     public function getCategories()
     {
         return $this->categories()
-            ->where('wplp_id', '=', '0')
+            ->orWhere('wplp_id', '=', '0')
             ->orderBy('category_id', 'asc')
             ->get();
     }
@@ -132,7 +132,7 @@ class WorkplaceLearningPeriod extends Model
     public function getResourceMaterials()
     {
         return $this->resourceMaterial()
-            ->where('wplp_id', '=', '0')
+            ->orWhere('wplp_id', '=', '0')
             ->orderBy('rm_id', 'asc')
             ->get();
     }
