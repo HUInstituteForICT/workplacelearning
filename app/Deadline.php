@@ -28,6 +28,6 @@ class Deadline extends Model
 
     public function User()
     {
-        return $this->belongsTo('App\Student');
+        return $this->belongsTo(\App\Student::class);
     }
 }

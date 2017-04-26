@@ -22,6 +22,6 @@ class Timeslot extends Model
 
     public function educationProgram()
     {
-        return $this->belongsTo('App\EducationProgram');
+        return $this->belongsTo(\App\EducationProgram::class);
     }
 }

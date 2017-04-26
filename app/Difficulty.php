@@ -20,6 +20,6 @@ class Difficulty extends Model
 
     public function learningActivityProducing()
     {
-        $this->belongsTo('App\LearningActivityProducing');
+        $this->belongsTo(\App\LearningActivityProducing::class);
     }
 }

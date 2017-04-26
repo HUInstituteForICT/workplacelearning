@@ -22,11 +22,11 @@ class Competence extends Model
 
     public function educationProgram()
     {
-        return $this->belongsTo('App\EducationProgram', 'ep_id', 'educationprogram_id');
+        return $this->belongsTo(\App\EducationProgram::class, 'ep_id', 'educationprogram_id');
     }
 
     public function learningActivityActing()
     {
-        return $this->belongsToMany('App\LearningActivityActing', 'activityforcompetence', 'competence_id');
+        return $this->belongsToMany(\App\LearningActivityActing::class, 'activityforcompetence', 'competence_id');
     }
 }

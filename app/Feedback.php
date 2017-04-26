@@ -39,6 +39,6 @@ class Feedback extends Model
 
     public function learningactivityproducing()
     {
-        return $this->belongsTo('App\LearningActivityProducing');
+        return $this->belongsTo(\App\LearningActivityProducing::class);
     }
 }

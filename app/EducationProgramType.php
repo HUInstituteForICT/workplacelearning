@@ -26,6 +26,6 @@ class EducationProgramType extends Model
 
     public function educationprogram()
     {
-        return $this->belongsToMany('App\EducationProgram');
+        return $this->belongsToMany(\App\EducationProgram::class);
     }
 }

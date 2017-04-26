@@ -37,6 +37,6 @@ class Workplace extends Model
 
     public function internshipperiod()
     {
-        return $this->hasMany('App\WorkplaceLearningPeriod', 'wp_id', 'wp_id');
+        return $this->hasMany(\App\WorkplaceLearningPeriod::class, 'wp_id', 'wp_id');
     }
 }
