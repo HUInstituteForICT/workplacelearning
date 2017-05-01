@@ -18,10 +18,26 @@
                     </div>
                     <div class="form-group">
                         <label for="cache_duration" class="col-sm-2 control-label">
-                            Cache for <i>X</i> seconds
+                            Cache for <i>X</i>
                         </label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" id="cache_duration" name="cache_duration" placeholder="Cache for X seconds" required="required" value="{{ old('cache_duration') }}">
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" id="cache_duration" name="cache_duration"
+                                   placeholder="Cache for X" required="required"
+                                   value="{{ old('cache_duration') }}">
+                        </div>
+
+                        <div class="col-sm-2">
+
+                            <select class="form-control" name="type_time" id="type_time" required="required" title="Time type">
+                                <option></option>
+                                <option value="seconds">Seconds</option>
+                                <option value="minutes">Minutes</option>
+                                <option value="hours">Hours</option>
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months">Months</option>
+                                <option value="years">Years</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
