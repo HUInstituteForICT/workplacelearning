@@ -73,7 +73,7 @@ class AnalysisController extends Controller
         $analysis = $this->analysis->findOrFail($id);
         $analysis_result = null;
 
-//        if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
+        if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
             $analysis->refresh();
         $analysis_result = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
 
