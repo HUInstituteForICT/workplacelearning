@@ -124,7 +124,14 @@ class AnalysisController extends Controller
      */
     public function destroy($id)
     {
+        $analysis = $this->analysis->findOrFail($id);
+        if (!$analysis->delete())
+            return redirect()
+                ->back()
+                ->withErrors(['error', "Failed to remove the analysis from the database."]);
 
+        return redirect()->route('analyses-index')
+            ->with('sucess', 'Analysis has been removed from the database');
     }
 
 }

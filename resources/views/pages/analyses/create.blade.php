@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-12">
                 <h1>{{ Lang::get('analyses.title') }}</h1>
                 <form action="{{ route('analyses-store') }}" class="form-horizontal" accept-charset="UTF-8"
                       method="post">
@@ -27,8 +27,8 @@
                         </div>
 
                         <div class="col-sm-2">
-
-                            <select class="form-control" name="type_time" id="type_time" required="required" title="Time type">
+                            <select class="form-control" name="type_time" id="type_time" required="required"
+                                    title="Time type">
                                 <option></option>
                                 <option value="seconds">Seconds</option>
                                 <option value="minutes">Minutes</option>
