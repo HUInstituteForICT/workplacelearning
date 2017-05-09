@@ -53,6 +53,20 @@ return [
             'engine' => null,
         ],
 
+        'dashboard' => [
+            'driver' => 'mysql',
+            'host' => env('DASHBOARD_HOST', 'localhost'),
+            'port' => env('DASHBOARD_PORT', '3306'),
+            'database' => env('DASHBOARD_DATABASE', 'wpl'),
+            'username' => env('DASHBOARD_USERNAME', 'root'),
+            'password' => env('DASHBOARD_PASSWORD', 'blablabla'),
+            'charset' => 'utf8',
+            'collation' => 'utf8_general_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', 'localhost'),

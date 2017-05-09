@@ -78,7 +78,7 @@ class Analysis extends Model
     {
         $data = null;
         try {
-            $data = \DB::select($this->query);
+            $data = \DB::connection('dashboard')->select($this->query);
         } catch (\Exception $e) {
             $data = [
                 'error' => $e->getMessage()
