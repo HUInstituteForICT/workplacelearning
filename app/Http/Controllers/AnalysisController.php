@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Analysis;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class AnalysisController extends Controller
 {
@@ -80,6 +80,33 @@ class AnalysisController extends Controller
         return view('pages.analyses.show', compact('analysis', 'analysis_result'));
     }
 
+    public function export($id)
+    {
+        $analysis = $this->analysis->findOrFail($id);
+        $data = null;
+
+        if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
+            $analysis->refresh();
+        $data = \Cache::get(Analysis::CACHE_KEY . $analysis->id, function () use ($analysis) {
+            return $analysis->execute();
+        });
+
+        if (isset($data['error']) && $data === null)
+            return abort(404);
+
+        $d = \Excel::create('Analyse data', function ($excel) use ($data) {
+
+            $excel->sheet('New sheet', function ($sheet) use ($data) {
+
+                $sheet->loadView('pages.analyses.export', compact('data'));
+
+            });
+
+        });
+
+        return $d->export('csv');
+    }
+
     /**
      * Expire a cached analys
      *
@@ -91,7 +118,7 @@ class AnalysisController extends Controller
         $data = $request->all();
         $analysis = $this->analysis->findOrFail($data['id']);
         $analysis->refresh();
-        return redirect()->back()->with('sucess', 'Query has been removed from the cache');
+        return redirect()->back()->with('success', 'Query has been removed from the cache');
     }
 
     /**
@@ -102,17 +129,54 @@ class AnalysisController extends Controller
      */
     public function edit($id)
     {
+        $analysis = $this->analysis->findOrFail($id);
+        $analysis_result = null;
 
+        if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
+            $analysis->refresh();
+        $analysis_result = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
+
+        return view('pages.analyses.edit', compact('analysis', 'analysis_result'));
     }
 
     /**
      * Update the specified resource in storage.
      *
+     * @param Request $request
      * @param  int $id
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'name' => 'required',
+            'query' => 'required',
+            'cache_duration' => 'required',
+            'type_time' => 'required'
+        ]);
+
+        $analysis = $this->analysis->findOrFail($id);
+
+        $name = Input::get('name');
+        $query = Input::get('query');
+        $cache_duration = Input::get('cache_duration');
+        $type_time = Input::get('type_time');
+
+        if (!$analysis->update(array(
+            'name' => $name,
+            'query' => $query,
+            'cache_duration' => $cache_duration,
+            'type_time' => $type_time
+        )))
+        {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['The analysis has not been updated']);
+        }
+
+        return redirect()->action('AnalysisController@show', [$analysis['id']])
+            ->with('success', 'The analysis has been updated');
 
     }
 
@@ -131,7 +195,7 @@ class AnalysisController extends Controller
                 ->withErrors(['error', "Failed to remove the analysis from the database."]);
 
         return redirect()->route('analyses-index')
-            ->with('sucess', 'Analysis has been removed from the database');
+            ->with('success', 'Analysis has been removed from the database');
     }
 
 }
