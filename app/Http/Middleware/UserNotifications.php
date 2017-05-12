@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 
-class UserNotifications {
+class UserNotifications
+{
     /**
      * Handle an incoming request.
      *
@@ -15,9 +16,12 @@ class UserNotifications {
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next){
-        if(Auth::guest()) return redirect('login');
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == NULL){
+    public function handle(Request $request, Closure $next)
+    {
+        if (Auth::guest()) {
+            return redirect('login');
+        }
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
             $request->session()->flash('notification', str_replace('%s', route('period'), Lang::get('notifications.generic.nointernshipactive')));
         }
 

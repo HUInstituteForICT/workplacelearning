@@ -9,7 +9,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ResourcePerson extends Model{
+class ResourcePerson extends Model
+{
     // Override the table used for the User Model
     protected $table = 'resourceperson';
     // Disable using created_at and updated_at columns
@@ -25,15 +26,18 @@ class ResourcePerson extends Model{
         'wplp_id'
     ];
 
-    public function workplaceLearningPeriod(){
-        return $this->belongsTo('App\WorkplaceLearningPeriod');
+    public function workplaceLearningPeriod()
+    {
+        return $this->belongsTo(\App\WorkplaceLearningPeriod::class);
     }
 
-    public function learningActivityProducing() {
-        return $this->belongsTo('App\LearningActivityProducing');
+    public function learningActivityProducing()
+    {
+        return $this->belongsTo(\App\LearningActivityProducing::class);
     }
 
-    public function educationProgram() {
-        return $this->belongsTo('App\EducationProgram');
+    public function educationProgram()
+    {
+        return $this->belongsTo(\App\EducationProgram::class);
     }
 }
