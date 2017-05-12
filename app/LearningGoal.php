@@ -25,8 +25,7 @@ class LearningGoal extends Model
         return $this->hasOne(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningActivityActing()
-    {
-        return $this->belongsTo('App\learningActivityActing', 'learngingoal_id', 'learninggoal_id');
+    public function learningActivityActing() {
+        return $this->belongsTo('App\learningActivityActing', 'learninggoal_id', 'learninggoal_id');
     }
 }
