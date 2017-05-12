@@ -28,7 +28,7 @@ class LearningActivityExportBuilderTest extends TestCase
         $competenceObject = new \StdClass;
         $competenceObject->competence_label = "Interpersoonlijk";
         $mock->shouldReceive('getCompetencies')->times(1)->andReturn($competenceObject);
-
+        $mock->shouldReceive('getAttribute')->with('laa_id')->andReturn('1');
         return $mock;
     }
 
@@ -54,7 +54,8 @@ class LearningActivityExportBuilderTest extends TestCase
             "resourceMaterial" => "Geen",
             "lessonsLearned" => "a lot",
             "learningGoal" => "Leervraag 1",
-            "competency" => "Interpersoonlijk"
+            "competency" => "Interpersoonlijk",
+            "url" => route('process-acting-edit', ["id" => 1])
         ];
 
         foreach($mapping as $field => $value) {
