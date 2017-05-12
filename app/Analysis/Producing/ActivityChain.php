@@ -65,7 +65,8 @@ class ActivityChain
      * Get the status text of an activity chain
      * @return mixed
      */
-    public function statusText() {
+    public function statusText()
+    {
         return end($this->chain)->getStatus();
     }
 
@@ -73,8 +74,9 @@ class ActivityChain
      * Check if the activity chain has more than one activity
      * @return bool
      */
-    public function hasDetail() {
-        if(reset($this->chain) != end($this->chain)) {
+    public function hasDetail()
+    {
+        if (reset($this->chain) != end($this->chain)) {
             return true;
         } else {
             return false;
@@ -85,7 +87,8 @@ class ActivityChain
      * Get the first activity of the chain
      * @return mixed
      */
-    public function first() {
+    public function first()
+    {
         return reset($this->chain);
     }
 
@@ -93,7 +96,8 @@ class ActivityChain
      * Get the last activity of the chain
      * @return mixed
      */
-    public function last() {
+    public function last()
+    {
         return end($this->chain);
     }
 
@@ -101,7 +105,8 @@ class ActivityChain
      * Get the amount of activities in the chain
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         return count($this->chain);
     }
 

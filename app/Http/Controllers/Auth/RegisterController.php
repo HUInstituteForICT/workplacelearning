@@ -3,24 +3,50 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Student;
-use App\EducationProgram;
 use Validator;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
-class AuthController extends Controller
+class RegisterController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Register Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles the registration of new users as well as their
+    | validation and creation. By default this controller uses a trait to
+    | provide this functionality without requiring any additional code.
+    |
+    */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use RegistersUsers;
 
+    /**
+     * Where to redirect users after login / registration.
+     *
+     * @var string
+     */
     protected $redirectTo = '/home';
 
-    public function __construct(){
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest');
     }
 
-    protected function validator(array $data){
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
         return Validator::make($data, [
             'studentnr'     => 'required|digits:7|unique:student',
             'firstname'     => 'required|max:255|min:3',
@@ -35,7 +61,14 @@ class AuthController extends Controller
         ]);
     }
 
-    protected function create(array $data){
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return Student
+     */
+    protected function create(array $data)
+    {
         return Student::create([
             'studentnr'         => $data['studentnr'],
             'firstname'         => $data['firstname'],
@@ -49,17 +82,5 @@ class AuthController extends Controller
             'registrationdate'  => date('Y-m-d H:i:s'),
             //'answer'            => $data['answer'],       // Deprecated
         ]);
-    }
-
-
-    public function showRegistrationForm(){
-        // Retrieve all educationprogram data from DB and pass on to view
-        $programs = EducationProgram::all();
-
-        if (property_exists($this, 'registerView')) {
-            return view($this->registerView);
-        }
-
-        return view('auth.register')->with('educationprograms', $programs);
     }
 }

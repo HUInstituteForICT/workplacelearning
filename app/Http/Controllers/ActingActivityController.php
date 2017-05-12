@@ -12,15 +12,18 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
-class ActingActivityController extends Controller {
+class ActingActivityController extends Controller
+{
 
-    public function show() {
+    public function show()
+    {
         // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+        }
 
         $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->merge(
-                Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
         return view('pages.acting.activity')
@@ -32,10 +35,12 @@ class ActingActivityController extends Controller {
             ->with('activities', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8));
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+        }
 
         $activity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityActingById($id);
 
@@ -45,7 +50,7 @@ class ActingActivityController extends Controller {
         }
 
         $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->merge(
-                Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
         return view('pages.acting.activity-edit')
@@ -57,14 +62,17 @@ class ActingActivityController extends Controller {
             ->with('competencies', Auth::user()->getEducationProgram()->getCompetencies());
     }
 
-    public function progress($pagenr){
+    public function progress($pagenr)
+    {
         return view('pages.acting.progress')->with('page', $pagenr);
     }
 
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+        }
 
         $activityActing = new LearningActivityActing;
 
@@ -82,17 +90,17 @@ class ActingActivityController extends Controller {
         ]);
 
         // Conditional validation
-        $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function($input) {
+        $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function ($input) {
             return $input->res_person != 'new';
         });
-        $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function($input) {
+        $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function ($input) {
             return $input->res_material != 'new' && $input->res_material != 'none';
         });
         /*$validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
             return $input->res_material == 1;
         });*/
         //temporarily disabled url validation for res_material_detail field
-        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function($input) {
+        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function ($input) {
             return $input->res_material >= 1;
         });
 
@@ -140,10 +148,12 @@ class ActingActivityController extends Controller {
         return redirect()->route('process-acting')->with('success', 'De leeractiviteit is opgeslagen.');
     }
 
-    public function update(Request $req, $id) {
+    public function update(Request $req, $id)
+    {
         // Allow only to view this page if an internship exists.
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod() == null)
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+        }
 
         $validator = Validator::make($req->all(), [
             'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
@@ -159,17 +169,17 @@ class ActingActivityController extends Controller {
         ]);
 
         // Conditional validation
-        $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function($input) {
+        $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function ($input) {
             return $input->res_person != 'new';
         });
-        $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function($input) {
+        $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function ($input) {
             return $input->res_material != 'new' && $input->res_material != 'none';
         });
         /*$validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
             return $input->res_material == 1;
         });*/
         //temporarily disabled url validation for res_material_detail field
-        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function($input) {
+        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function ($input) {
             return $input->res_material >= 1;
         });
 

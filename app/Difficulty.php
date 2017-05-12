@@ -3,7 +3,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Difficulty extends Model {
+class Difficulty extends Model
+{
     // Override the table used for the User Model
     protected $table = 'difficulty';
     // Disable using created_at and updated_doat columns
@@ -17,7 +18,8 @@ class Difficulty extends Model {
         'difficulty_label'
     ];
 
-    public function learningActivityProducing() {
-        $this->belongsTo('App\LearningActivityProducing');
+    public function learningActivityProducing()
+    {
+        $this->belongsTo(\App\LearningActivityProducing::class);
     }
 }

@@ -207,10 +207,13 @@ class ActingWorkplaceLearningController extends Controller
         $validator = Validator::make($request->all(), [
             'learninggoal_name.*' => 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
         ]);
-        $validator->sometimes('new_learninggoal_name', 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
+        $validator->sometimes(
+            'new_learninggoal_name',
+            'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
             function ($input) {
                 return strlen($input->new_learninggoal_name) > 0;
-            });
+            }
+        );
         if ($validator->fails()) {
             // Noes. errors occured. Exit back to profile page with errors
             return redirect()
@@ -236,8 +239,10 @@ class ActingWorkplaceLearningController extends Controller
         }
 
         // Done, redirect back to profile page
-        return redirect()->route('period-acting-edit', ["id" => $id])->with('success',
-            'De wijzigingen in jouw leerdoelen zijn opgeslagen.');
+        return redirect()->route('period-acting-edit', ["id" => $id])->with(
+            'success',
+            'De wijzigingen in jouw leerdoelen zijn opgeslagen.'
+        );
     }
 
     public function updateCategories(Request $request, $id)
@@ -284,8 +289,10 @@ class ActingWorkplaceLearningController extends Controller
             }
 
             // Done, redirect back to profile page
-            return redirect()->route('period-acting-edit', ["id" => $id])->with('succes',
-                'De wijzigingen in jouw categoriën zijn opgeslagen.');
+            return redirect()->route('period-acting-edit', ["id" => $id])->with(
+                'succes',
+                'De wijzigingen in jouw categoriën zijn opgeslagen.'
+            );
         }
     }
 
