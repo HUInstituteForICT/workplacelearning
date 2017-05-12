@@ -56,7 +56,7 @@ class LearningActivityExportBuilderTest extends TestCase
             "resourceMaterial" => "Geen",
             "lessonsLearned" => "a lot",
             "learningGoal" => "Leervraag 1",
-            "competency" => "Interpersoonlijk",
+            "competence" => "Interpersoonlijk",
             "url" => route('process-acting-edit', ["id" => 1])
         ];
 

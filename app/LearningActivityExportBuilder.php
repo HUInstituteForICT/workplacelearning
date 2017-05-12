@@ -31,7 +31,7 @@ class LearningActivityExportBuilder
                 "resourceMaterial" => $activity->getResourceMaterial(),
                 "lessonsLearned" => $activity->lessonslearned,
                 "learningGoal" => $activity->getLearningGoal(),
-                "competency" => $activity->getCompetencies()->competence_label,
+                "competence" => $activity->getCompetencies()->competence_label,
                 "url" => route('process-acting-edit', ['id' => $activity->laa_id])
             ];
         });
