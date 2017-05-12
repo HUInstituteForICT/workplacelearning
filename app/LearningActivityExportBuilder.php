@@ -23,6 +23,7 @@ class LearningActivityExportBuilder
         $jsonArray = [];
         $this->learningActivityActingCollection->each(function(LearningActivityActing $activity) use (&$jsonArray) {
             $jsonArray[] = [
+                "id" => $activity->laa_id,
                 "date" => $activity->date,
                 "situation" => $activity->situation,
                 "timeslot" => $activity->getTimeslot(),

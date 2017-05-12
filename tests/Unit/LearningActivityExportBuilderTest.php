@@ -16,6 +16,7 @@ class LearningActivityExportBuilderTest extends TestCase
 
         $mock = \Mockery::mock(LearningActivityActing::class);
 //        $mock->date = '12-12';
+        $mock->shouldReceive('getAttribute')->with('id')->andReturn('1');
         $mock->shouldReceive('getAttribute')->with('date')->andReturn('12-12');
         $mock->shouldReceive('getAttribute')->with('situation')->andReturn('pressure');
 //        $mock->situation = "pressure";
@@ -47,6 +48,7 @@ class LearningActivityExportBuilderTest extends TestCase
         $decoded = json_decode($json);
 
         $mapping = [
+            "id" => 1,
             "date" => "12-12",
             "situation" => "pressure",
             "timeslot" => "1e lesuur",
