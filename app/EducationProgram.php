@@ -9,7 +9,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EducationProgram extends Model{
+class EducationProgram extends Model
+{
     // Override the table used for the User Model
     protected $table = 'educationprogram';
     // Disable using created_at and updated_at columns
@@ -23,35 +24,43 @@ class EducationProgram extends Model{
         'ep_name',
     ];
 
-    public function educationprogramType(){
-        return $this->hasOne('App\EducationProgramType', 'eptype_id', 'eptype_id');
+    public function educationprogramType()
+    {
+        return $this->hasOne(\App\EducationProgramType::class, 'eptype_id', 'eptype_id');
     }
 
-    public function student(){
-        return $this->belongsToMany('App\Student', 'ep_id', 'ep_id');
+    public function student()
+    {
+        return $this->belongsToMany(\App\Student::class, 'ep_id', 'ep_id');
     }
 
-    public function competence() {
-        return $this->hasMany('App\Competence', 'educationprogram_id', 'ep_id');
+    public function competence()
+    {
+        return $this->hasMany(\App\Competence::class, 'educationprogram_id', 'ep_id');
     }
 
-    public function timeslot() {
-        return $this->hasMany('App\Timeslot', 'edprog_id', 'ep_id');
+    public function timeslot()
+    {
+        return $this->hasMany(\App\Timeslot::class, 'edprog_id', 'ep_id');
     }
 
-    public function resourcePerson() {
-        return $this->hasMany('App\ResourcePerson', 'ep_id', 'ep_id');
+    public function resourcePerson()
+    {
+        return $this->hasMany(\App\ResourcePerson::class, 'ep_id', 'ep_id');
     }
 
-    public function getCompetencies() {
+    public function getCompetencies()
+    {
         return $this->competence()->get();
     }
 
-    public function getTimeslots() {
+    public function getTimeslots()
+    {
         return $this->timeslot()->get();
     }
 
-    public function getResourcePersons() {
+    public function getResourcePersons()
+    {
         return $this->resourcePerson()
             ->where('ep_id', '=', $this->ep_id)
             ->where('wplp_id', '=', '0')

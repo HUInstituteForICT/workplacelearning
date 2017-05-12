@@ -9,7 +9,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model{
+class Status extends Model
+{
     // Override the table used for the User Model
     protected $table = 'status';
     // Disable using created_at and updated_at columns
@@ -23,7 +24,8 @@ class Status extends Model{
         'status_label',
     ];
 
-    public function learningActivityProducing() {
-        $this->belongsTo('App\LearningActivityProducing');
+    public function learningActivityProducing()
+    {
+        $this->belongsTo(\App\LearningActivityProducing::class);
     }
 }
