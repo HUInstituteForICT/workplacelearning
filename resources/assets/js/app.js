@@ -6,14 +6,15 @@
 
 require('./bootstrap');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import React from "react";
+import DOM from "react-dom";
 
-Vue.component('example', require('./components/Example.vue'));
+import ActivityActingProcessTable from "./components/ActivityActingProcessTable/table";
 
-const app = new Vue({
-    el: '#app'
-});
+DOM.render(<ActivityActingProcessTable />, document.getElementById('actingActivityProcessTable'));
+
+
+// DOM.render(
+// <HelloMessage name="John" />,
+//     document.getElementById('wrapper')
+// );

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\LearningActivityExportBuilder;
 use App\WorkplaceLearningPeriod;
 use App\LearningActivityActing;
 use App\ResourcePerson;
@@ -26,13 +27,22 @@ class ActingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
+        $activitiesJson = (new LearningActivityExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
+                ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
+                ->take(50)
+                ->get())
+        )->getJson();
+
+
+
         return view('pages.acting.activity')
             ->with('timeslots', Auth::user()->getEducationProgram()->getTimeslots())
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
             ->with('learningGoals', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
             ->with('competencies', Auth::user()->getEducationProgram()->getCompetencies())
-            ->with('activities', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8));
+            ->with('activities', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8))
+            ->with('activitiesJson', $activitiesJson);
     }
 
     public function edit($id)
