@@ -18,7 +18,7 @@ export default class Row extends React.Component {
             <td>{activity.lessonsLearned}</td>
             <td>{activity.learningGoal}</td>
             <td>{activity.competence}</td>
-            <td><a href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"></i></a></td>
+            <td><a href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a></td>
         </tr>
     }
 

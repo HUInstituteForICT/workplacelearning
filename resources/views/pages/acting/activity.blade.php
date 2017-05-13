@@ -159,7 +159,8 @@
             <script>
                 window.activities = {!! $activitiesJson !!};
             </script>
-            <div id="actingActivityProcessTable"></div>
+
+            <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>
 
         </div>
     </div>
