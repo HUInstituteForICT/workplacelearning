@@ -12,6 +12,7 @@
     "babel-preset-react": "^6.24.1",
     "cross-env": "^3.2.3",
     "laravel-mix": "^0.8.3",
+    "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   }

@@ -30,6 +30,9 @@ h5 {
   font-family: 'HusansNormal';
   text-transform: uppercase;
 }
+a {
+  cursor: pointer;
+}
 #login-logo-container {
   margin: auto;
   margin-bottom: 10px;

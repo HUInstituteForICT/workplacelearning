@@ -28,6 +28,6 @@ Directory         /sites/werkplekleren.hu.nl/htdocs
 
 ## JS / ReactJS compiling
 1. use NPM or yarn to install dependencies.
-2. use `npm run dev` to compile once or `npm run watch`
+2. use `npm run dev` to compile once or `npm run watch`, on production use `npm run production`
 
 
