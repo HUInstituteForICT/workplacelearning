@@ -87,21 +87,16 @@ class AnalysisController extends Controller
 
         if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
             $analysis->refresh();
-        $data = \Cache::get(Analysis::CACHE_KEY . $analysis->id, function () use ($analysis) {
-            return $analysis->execute();
-        });
+
+        $data = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
 
         if (isset($data['error']) && $data === null)
             return abort(404);
 
         $d = \Excel::create('Analyse data', function ($excel) use ($data) {
-
             $excel->sheet('New sheet', function ($sheet) use ($data) {
-
                 $sheet->loadView('pages.analyses.export', compact('data'));
-
             });
-
         });
 
         return $d->export('csv');
@@ -167,8 +162,8 @@ class AnalysisController extends Controller
             'query' => $query,
             'cache_duration' => $cache_duration,
             'type_time' => $type_time
-        )))
-        {
+        ))
+        ) {
             return redirect()
                 ->back()
                 ->withInput()

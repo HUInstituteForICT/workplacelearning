@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer id
  * @property string name Analysis name
  * @property string query SQL query
- * @property string time_type cache time type
  * @property integer cache_duration Duration in given time type
+ * @property string type_time
+ * @property string time_type
  */
 class Analysis extends Model
 {
@@ -24,6 +25,12 @@ class Analysis extends Model
         return $this->hasMany('App\AnalysisChart');
     }
 
+    // Who named this? It now works both ways.
+    public function getTimeTypeAttribute($value)
+    {
+        return $this->type_time;
+    }
+
     /**
      * Refresh the cached data, if any
      */
@@ -32,39 +39,37 @@ class Analysis extends Model
         if (\Cache::has(Analysis::CACHE_KEY . $this->id))
             \Cache::forget(Analysis::CACHE_KEY . $this->id);
 
-        $type = $this->time_type;
-        $expiry = null;
         $now = Carbon::now();
+        $expiry = $now->copy();
 
-        switch ($type){
-            case "seconds":
-                $expiry = $now->addSeconds($this->cache_duration);
+        switch ($this->time_type) {
+            case 'seconds':
+                $expiry->addSeconds($this->cache_duration);
                 break;
-            case "minutes":
-                $expiry = $now->addMinutes($this->cache_duration);
+            case 'minutes':
+                $expiry->addMinutes($this->cache_duration);
                 break;
-            case "hours":
-                $expiry = $now->addHours($this->cache_duration);
+            case 'hours':
+                $expiry->addHours($this->cache_duration);
                 break;
-            case "days":
-                $expiry = $now->addDays($this->cache_duration);
+            case 'days':
+                $expiry->addDays($this->cache_duration);
                 break;
-            case "weeks":
-                $expiry = $now->addWeeks($this->cache_duration);
+            case 'weeks':
+                $expiry->addWeeks($this->cache_duration);
                 break;
-            case "months":
-                $expiry = $now->addMonths($this->cache_duration);
+            case 'months':
+                $expiry->addMonths($this->cache_duration);
                 break;
-            case "years":
-                $expiry = $now->addYears($this->cache_duration);
+            case 'years':
+                $expiry->addYears($this->cache_duration);
                 break;
             default:
-                $expiry = $now->addSeconds($this->cache_duration);
+                $expiry->addSeconds($this->cache_duration);
                 break;
         }
 
-
-        \Cache::put(Analysis::CACHE_KEY . $this->id, [
+        \Cache::put(self::CACHE_KEY . $this->id, [
             'id' => $this->id,
             'data' => $this->execute()
         ], $expiry);
