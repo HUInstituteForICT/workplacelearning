@@ -42,7 +42,7 @@ export default class ActingActivityProcessExporter {
         let a         = document.createElement('a');
         a.href        = 'data:attachment/csv,' +  encodeURIComponent(this.outputData);
         a.target      = '_blank';
-        a.download    = 'myFile.csv';
+        a.download    = 'export.csv';
         document.body.appendChild(a);
         a.click();
     }
