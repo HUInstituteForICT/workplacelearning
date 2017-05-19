@@ -16,14 +16,6 @@
                 <p>Als je een tip hebt voor een analyse die je hier graag zou willen zien, geef dit dan aan ons door via
                     <a href="{{ route('bugreport') }}">deze pagina</a>.</p>
 
-
-                @if($actingAnalysis->analysisCollector->getLearningActivities()->count() === 0)
-                    <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                        {{-- TODO Lang::get gebruiken of mooiere error --}}
-                        <span>Error</span> Je hebt nog geen items om te analyseren
-                    </div>
-                @else
-
                     <h3>Chart timeslots</h3>
                     <canvas id="chart_timeslots"></canvas>
                     <script>
@@ -297,7 +289,6 @@
                             <br/><br/>
                         </div>
                     @endforeach
-                @endif
             </div>
         </div>
     </div>
