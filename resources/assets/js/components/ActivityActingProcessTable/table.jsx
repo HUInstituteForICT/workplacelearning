@@ -2,6 +2,7 @@ import React from "react";
 import Row from "./row";
 import FilterRule from "./filterRule";
 import _ from "lodash";
+import ActingActivityProcessExporter from "../../services/ActingActivityProcessExporter";
 
 export default class ActivityActingProcessTable extends React.Component {
 
@@ -9,10 +10,13 @@ export default class ActivityActingProcessTable extends React.Component {
         super(props);
         this.state = {
             activities: window.activities,
-            filters: this.buildFilter(window.activities)
+            filters: this.buildFilter(window.activities),
+            exports: ["csv", "txt"],
+            selectedExport: "txt"
         };
 
         this.updateFilter = this.updateFilter.bind(this);
+        this.exportHandler = this.exportHandler.bind(this);
     }
 
     // Build filter rules from the provided activity data
@@ -104,6 +108,11 @@ export default class ActivityActingProcessTable extends React.Component {
     }
 
 
+    exportHandler() {
+        let exporter = new ActingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
+    }
+
+
     render() {
         let filteredActivities = this.filterActivities(this.state.activities);
         return <div>
@@ -142,6 +151,17 @@ export default class ActivityActingProcessTable extends React.Component {
 
             </div>
 
+            <div className="export">
+
+                <label>Export naar&nbsp;
+                    <select onChange={e => {this.setState({selectedExport: e.target.value})}} defaultValue={this.state.selectedExport}>
+                        {this.state.exports.map(type => {
+                            return <option key={type} value={type}>{type}</option>
+                        })}
+                    </select>
+                </label>
+                <button onClick={this.exportHandler}>export</button>
+            </div>
 
             <table className="table blockTable">
                 <thead className="blue_tile">
