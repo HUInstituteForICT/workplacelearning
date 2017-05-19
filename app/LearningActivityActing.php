@@ -36,8 +36,7 @@ class LearningActivityActing extends Model
 
     public function competence()
     {
-        return $this->belongsToMany(\App\Competence::class, 'activityforcompetence', 'learningactivity_id');
-    }
+        return $this->belongsToMany(\App\Competence::class, 'activityforcompetence', 'learningactivity_id', 'competence_id');    }
 
     public function timeslot()
     {
