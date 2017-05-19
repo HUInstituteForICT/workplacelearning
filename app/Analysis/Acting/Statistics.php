@@ -40,7 +40,11 @@ class Statistics
                 return $activity->timeslot->timeslot_id === $timeslot->timeslot_id;
             });
 
-        return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count())*100, 1);
+        if($this->analysisCollector->getLearningActivities()->count() > 0) {
+            return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count())*100, 1);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -56,7 +60,11 @@ class Statistics
                 return $activity->learningGoal->learninggoal_id === $learningGoal->learninggoal_id;
             });
 
-        return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
+        if($this->analysisCollector->getLearningActivities()->count() > 0) {
+            return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -71,8 +79,11 @@ class Statistics
             function (LearningActivityActing $activity) use ($competence) {
                 return $activity->getCompetencies()->competence_id === $competence->competence_id;
             });
-
-        return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
+        if( $this->analysisCollector->getLearningActivities()->count() > 0) {
+            return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -87,8 +98,11 @@ class Statistics
             function (LearningActivityActing $activity) use ($person) {
                 return $activity->resourcePerson->rp_id === $person->rp_id;
             });
-
-        return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
+        if($this->analysisCollector->getLearningActivities()->count() > 0) {
+            return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -107,7 +121,11 @@ class Statistics
                 return $activity->resourceMaterial->rm_id === $material->rm_id;
             });
 
-        return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
+        if($this->analysisCollector->getLearningActivities()->count() > 0) {
+            return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
+        } else {
+            return 0;
+        }
     }
 
 
@@ -131,7 +149,11 @@ class Statistics
                 $activity !== $matchingActivity);
             });
             // Determine percentage of total
-            $percentage = ($matchingActivities->count() / $this->analysisCollector->getLearningActivities()->count());
+            if($this->analysisCollector->getLearningActivities()->count() > 0) {
+                $percentage = ($matchingActivities->count() / $this->analysisCollector->getLearningActivities()->count());
+            } else {
+                $percentage = 0;
+            }
             // Update combo->percentage if it's higher
             if($percentage > $combo->percentage) {
                 $combo->percentage = $percentage;
@@ -161,7 +183,11 @@ class Statistics
                     $activity !== $matchingActivity);
             });
             // Determine percentage of total
-            $percentage = ($matchingActivities->count() / $this->analysisCollector->getLearningActivities()->count());
+            if($this->analysisCollector->getLearningActivities()->count() > 0) {
+                $percentage = ($matchingActivities->count() / $this->analysisCollector->getLearningActivities()->count());
+            } else {
+                $percentage = 0;
+            }
             // Update combo->percentage if it's higher
             if($percentage > $combo->percentage) {
                 $combo->percentage = $percentage;
@@ -191,7 +217,11 @@ class Statistics
                     $activity !== $matchingActivity);
             });
             // Determine percentage of total
-            $percentage = ($matchingActivities->count() / $this->analysisCollector->getLearningActivities()->count());
+            if($this->analysisCollector->getLearningActivities()->count() > 0) {
+                $percentage = ($matchingActivities->count() / $this->analysisCollector->getLearningActivities()->count());
+            } else {
+                $percentage = 0;
+            }
             // Update combo->percentage if it's higher
             if($percentage > $combo->percentage) {
                 $combo->percentage = $percentage;
@@ -216,7 +246,11 @@ class Statistics
             return 0;
         }
 
-        return round(($noTheory->count() / $activities->count()) * 100, 1);
+        if($activities->count() > 0) {
+            return round(($noTheory->count() / $activities->count()) * 100, 1);
+        } else {
+            return 0;
+        }
     }
 
 
