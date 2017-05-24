@@ -32,12 +32,24 @@ class Analysis extends Model
     }
 
     /**
+     * Get cached data if any
+     * @param $value
+     * @return mixed
+     */
+    public function getDataAttribute($value)
+    {
+        if (!\Cache::has(self::CACHE_KEY . $this->id))
+            $this->refresh();
+        return \Cache::get(self::CACHE_KEY . $this->id);
+    }
+
+    /**
      * Refresh the cached data, if any
      */
     public function refresh()
     {
-        if (\Cache::has(Analysis::CACHE_KEY . $this->id))
-            \Cache::forget(Analysis::CACHE_KEY . $this->id);
+        if (\Cache::has(self::CACHE_KEY . $this->id))
+            \Cache::forget(self::CACHE_KEY . $this->id);
 
         $now = Carbon::now();
         $expiry = $now->copy();

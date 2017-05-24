@@ -9,11 +9,11 @@ class Label extends Model
 
     protected $table = 'labels';
     public $timestamps = false;
-    protected $fillable = array('name');
+    protected $fillable = array('name', 'type', 'chart_id'); // chart_id should not be here
 
     public function chart()
     {
-        return $this->hasOne('App\AnalysisChart');
+        return $this->belongsTo('App\AnalysisChart');
     }
 
 }
