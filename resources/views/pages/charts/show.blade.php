@@ -21,7 +21,7 @@
         var myChart = new Chart(ctx, {
           type: '{{ $chart->type->slug }}', // ideally have the type itself poop something nice out?
           data: {
-            labels: ['{{ $chart->x_label->name }}'],
+            labels: ['{{ $chart->analysis->data['data'][0]->{$chart->x_label->name} }}'],
             datasets: [{
               label: '{{ $chart->label }}',
               backgroundColor: [
