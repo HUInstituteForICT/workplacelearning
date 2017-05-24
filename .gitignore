@@ -21,3 +21,6 @@ ehthumbs.db
 .AppleDouble
 .LSOverride
 /vendor/
+
+# caddy webserver
+Caddyfile
