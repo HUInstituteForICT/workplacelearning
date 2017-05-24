@@ -1,0 +1,28 @@
+FROM php:7.1.1-fpm
+
+# Install PHP extensions
+
+RUN apt-get update && apt-get install -y libmcrypt-dev mysql-client libicu-dev nano && docker-php-ext-install mcrypt pdo_mysql intl
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
+# COPY ./xdebug.ini /usr/local/etc/php/conf.d/
+
+
+# Config xDebug
+ENV XDEBUGINI_PATH=/usr/local/etc/php/conf.d/xdebug.ini
+RUN echo "zend_extension="`find /usr/local/lib/php/extensions/ -iname 'xdebug.so'` > $XDEBUGINI_PATH
+COPY ./xdebug.ini /tmp/xdebug.ini
+RUN cat /tmp/xdebug.ini >> $XDEBUGINI_PATH
+RUN echo "xdebug.remote_host="$XDEBUG_CONFIG >> $XDEBUGINI_PATH
+
+# Config mailcatcher
+RUN apt-get install -y ssmtp && \
+    echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/sendmail.ini && \
+    echo "mailhub=mail:25\nUseTLS=NO\nFromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
+
+# Enable PHP error log to docker log
+RUN echo "php_admin_value[error_log] = /dev/stderr" >> /usr/local/etc/php-fpm.conf
+
+WORKDIR /var/www
+

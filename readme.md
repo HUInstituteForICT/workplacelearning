@@ -19,3 +19,7 @@ tmp/      bevat copies van beide
 
 DocumentRoot      /sites/werkplekleren.hu.nl/htdocs/public
 Directory         /sites/werkplekleren.hu.nl/htdocs
+
+
+### Docker
+Edit the `host_lan_ip` in `docker-compose.yml` to reflect your local IP address to use xdebug

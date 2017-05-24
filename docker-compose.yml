@@ -1,0 +1,57 @@
+version: '3'
+services:
+  nginx:
+    container_name: wpl_web
+    build:
+      context: ./docker/config/
+      dockerfile: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - .:/var/www
+    links:
+        - php
+
+  php:
+    container_name: wpl_php
+    build:
+      context: ./docker/config/
+      dockerfile: php
+    volumes:
+      - .:/var/www
+    environment:
+          XDEBUG_CONFIG: "${host_lan_ip}"
+          PHP_IDE_CONFIG: "serverName=wpl"
+    links:
+      - mailcatcher
+
+  database:
+    container_name: wpl_db
+    image: mysql:5.7
+    volumes:
+      - ./docker/database:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+
+  mailcatcher:
+    container_name: wpl_mailcatcher
+    image: helder/mailcatcher
+    ports:
+      - "1025:1025"
+      - "1081:80"
+
+  phpmyadmin:
+    container_name: wpl_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    links:
+      - database:db
+
+
