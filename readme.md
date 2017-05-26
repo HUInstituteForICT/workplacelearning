@@ -21,6 +21,15 @@ DocumentRoot      /sites/werkplekleren.hu.nl/htdocs/public
 Directory         /sites/werkplekleren.hu.nl/htdocs
 
 
+## Laravel errors
+`Laravel default locale is not in the supportedLocales array.`
+./vendor/mcamara/laravel-localization/src/config/config.php => uncomment 'nl' entry in array
+
+
+## JS / ReactJS compiling
+1. use NPM or yarn to install dependencies.
+2. use `npm run dev` to compile once or `npm run watch`, on production use `npm run production`
+
 ### Docker
 Edit the `host_lan_ip` in `docker-compose.yml` to reflect your local IP address to use xdebug
 

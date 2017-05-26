@@ -1,19 +1,25 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * include Vue and Vue Resource. This gives a great starting point for
- * building robust, powerful web applications using Vue and Laravel.
- */
 
-require('./bootstrap');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import "./bootstrap";
 
-Vue.component('example', require('./components/Example.vue'));
+import React from "react";
+import DOM from "react-dom";
 
-const app = new Vue({
-    el: '#app'
+// Import components
+import ActivityActingProcessTable from "./components/ActivityActingProcessTable/table";
+
+
+
+const Apps = {
+    ActivityActingProcessTable
+};
+
+// Automatically mount if one of the above declared Apps exist in the DOM
+document.querySelectorAll('.__reactRoot').forEach((element) => {
+    let App = Apps[element.id];
+    if(!App) return;
+
+    let props = Object.assign({}, element.dataset);
+
+    DOM.render(<App {...props} />, element);
 });

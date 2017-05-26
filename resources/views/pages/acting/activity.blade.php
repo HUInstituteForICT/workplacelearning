@@ -156,34 +156,13 @@
             </script>
         {{ Form::close() }}
         <div class="row">
-            <table class="table blockTable col-md-12">
-                <thead class="blue_tile">
-                    <tr>
-                        <td>Datum</td>
-                        <td>Situatie</td>
-                        <td>Wanneer?</td>
-                        <td>Met wie?</td>
-                        <td>Theorie</td>
-                        <td>Leerpunten en vervolg</td>
-                        <td>Leervraag</td>
-                        <td>Competentie</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                @foreach ($activities as $key => $value)
-                    <tr>
-                        <td>{{ date('d-m', strtotime($value->date)) }}</td>
-                        <td>{{ $value->situation }}</td>
-                        <td>{{ $value->getTimeslot() }}</td>
-                        <td>{{ $value->getResourcePerson() }}</td>
-                        <td>{{ $value->getResourceMaterial() }}</td>
-                        <td>{{ $value->lessonslearned }}</td>
-                        <td>{{ $value->getLearningGoal() }}</td>
-                        <td>{{ $value->getCompetencies()->competence_label }}</td>
-                        <td><a href="{{route('process-acting-edit', ['id' => $value->laa_id]) }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></a></td>
-                    </tr>
-                @endforeach
-            </table>
+            <script>
+                window.activities = {!! $activitiesJson !!};
+                window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
+            </script>
+
+            <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>
+
         </div>
     </div>
 @stop
