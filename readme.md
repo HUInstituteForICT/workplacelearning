@@ -30,4 +30,16 @@ Directory         /sites/werkplekleren.hu.nl/htdocs
 1. use NPM or yarn to install dependencies.
 2. use `npm run dev` to compile once or `npm run watch`, on production use `npm run production`
 
+### Docker
+Edit the `host_lan_ip` in `docker-compose.yml` to reflect your local IP address to use xdebug
+
+Webserver is available at `localhost:80`  
+Database clients like mysql workbench can access the DB at `localhost:3306`  
+PHPMyAdmin is available at `localhost:8080`  
+Mailcatcher is available at `localhost:1080`  
+  
+Run with `docker-compose up -d`  
+Access a container with `docker exec -it CONTAINER_NAME bash`  
+  
+When using PHPStorm don't forget to add a server with the name `wpl` and set correct path mappings
 
