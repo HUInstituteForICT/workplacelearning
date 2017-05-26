@@ -14,10 +14,14 @@ export default class ActingActivityProcessExporter {
 
         // Build headers and filter unwanted
         let headers = Object.keys(this.activities[0]);
+
+
         let unwantedColumns = ["id", "url"];
         unwantedColumns.forEach(column => {headers.splice(headers.indexOf(column), 1)});
 
-        this.output(headers.join(",") + "\n");
+
+        let translatedHeaders = headers.map(header => {return exportTranslatedFieldMapping[header]});
+        this.output(translatedHeaders.join(",") + "\n");
 
         this.activities.forEach((activity, index) => {
             let values = headers.map(header => {

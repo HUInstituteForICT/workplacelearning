@@ -5,6 +5,7 @@ namespace App;
 
 
 use Illuminate\Support\Collection;
+use Illuminate\Translation\Translator;
 
 class LearningActivityExportBuilder
 {
@@ -37,5 +38,20 @@ class LearningActivityExportBuilder
         });
 
         return json_encode($jsonArray);
+    }
+
+    public function getFieldLanguageMapping(Translator $translator) {
+        $mapping = [];
+         collect([
+            'date',
+            'situation',
+            'timeslot',
+            'resourcePerson',
+            'resourceMaterial',
+            'lessonsLearned',
+            'learningGoal',
+            'competence'
+        ])->each(function($field) use(&$mapping, $translator) { $mapping[$field] = $translator->get('process_export.' . $field); });
+         return $mapping;
     }
 }

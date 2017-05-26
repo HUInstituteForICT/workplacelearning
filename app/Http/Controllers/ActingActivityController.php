@@ -27,13 +27,14 @@ class ActingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
-        $activitiesJson = (new LearningActivityExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
-                ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
-                ->take(50)
-                ->get())
-        )->getJson();
+        $exportBuilder = new LearningActivityExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
+            ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
+            ->take(50)
+            ->get());
 
+        $activitiesJson = $exportBuilder->getJson();
 
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
         return view('pages.acting.activity')
             ->with('timeslots', Auth::user()->getEducationProgram()->getTimeslots())
@@ -42,7 +43,8 @@ class ActingActivityController extends Controller
             ->with('learningGoals', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
             ->with('competencies', Auth::user()->getEducationProgram()->getCompetencies())
             ->with('activities', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8))
-            ->with('activitiesJson', $activitiesJson);
+            ->with('activitiesJson', $activitiesJson)
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping));
     }
 
     public function edit($id)

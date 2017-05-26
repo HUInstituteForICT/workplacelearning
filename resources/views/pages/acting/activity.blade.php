@@ -158,6 +158,7 @@
         <div class="row">
             <script>
                 window.activities = {!! $activitiesJson !!};
+                window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
             </script>
 
             <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>
