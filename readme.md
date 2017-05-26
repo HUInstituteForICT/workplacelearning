@@ -23,3 +23,8 @@ Directory         /sites/werkplekleren.hu.nl/htdocs
 
 ### Docker
 Edit the `host_lan_ip` in `docker-compose.yml` to reflect your local IP address to use xdebug
+
+Webserver is available at `localhost:80`  
+Database clients like mysql workbench can access the DB at `localhost:3306`  
+PHPMyAdmin is available at `localhost:8080`  
+Mailcatcher is available at `localhost:1080`
