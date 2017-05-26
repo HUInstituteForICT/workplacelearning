@@ -79,6 +79,7 @@ class RegisterController extends Controller
             //'birthdate'        => $data['birthdate'],     // Deprecated
             'email'             => $data['email'],
             //'phonenr'          => $data['phone'],         // Deprecated
+            'userlevel' => 0,
             'registrationdate'  => date('Y-m-d H:i:s'),
             //'answer'            => $data['answer'],       // Deprecated
         ]);
