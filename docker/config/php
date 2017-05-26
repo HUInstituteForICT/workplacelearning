@@ -19,7 +19,7 @@ RUN echo "xdebug.remote_host="$XDEBUG_CONFIG >> $XDEBUGINI_PATH
 # Config mailcatcher
 RUN apt-get install -y ssmtp && \
     echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/sendmail.ini && \
-    echo "mailhub=mail:25\nUseTLS=NO\nFromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
+    echo "mailhub=mailcatcher:25\nUseTLS=NO\nFromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
 # Enable PHP error log to docker log
 RUN echo "php_admin_value[error_log] = /dev/stderr" >> /usr/local/etc/php-fpm.conf
