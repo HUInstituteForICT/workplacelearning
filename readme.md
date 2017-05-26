@@ -31,3 +31,6 @@ Mailcatcher is available at `localhost:1080`
   
 Run with `docker-compose up -d`  
 Access a container with `docker exec -it CONTAINER_NAME bash`  
+  
+When using PHPStorm don't forget to add a server with the name `wpl` and set correct path mappings
+
