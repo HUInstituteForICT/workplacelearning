@@ -2,13 +2,27 @@
 <head></head>
 <body>
 <p>
-    <b>Naam Student:</b> {{ $student_name }}<br />
-    <b>Opleiding:</b> {{ $education->ep_name }}<br />
-    <b>Email:</b> {{ $student_email }}<br />
-    --------<br />
-    <b>Betreft:</b> {{ $subject }}<br />
-    <b>Detail:</b>
-</p>
+        <table>
+        <tbody>
+        <tr>
+                <td><strong>Naam student:</strong></td>
+                <td>{{ $student_name }}</td>
+        </tr>
+        <tr>
+                <td><strong>Opleiding</strong></td>
+                <td>{{ $education->ep_name }}</td>
+        </tr>
+        <tr>
+                <td><strong>Email:</strong></td>
+                <td>{{ $student_email }}</td>
+        </tr>
+        <tr>
+                <td><strong>Betreft:</strong></td>
+                <td>{{ $subject }}</td>
+        </tr>
+        </tbody>
+</table>
+<h4>Detail:</h4>
 <p>
     {{ $content }}
 </p>

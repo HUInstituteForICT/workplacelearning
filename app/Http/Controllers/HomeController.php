@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\EducationProgram;
+use App\Mail\FeedbackGiven;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -38,7 +38,7 @@ class HomeController extends Controller
         return view('pages.bugreport');
     }
 
-    public function createBugReport(Request $request)
+    public function createBugReport(Request $request, Mailer $mailer)
     {
         $validator = Validator::make($request->all(), [
             'onderwerp' => 'required|regex:/^[0-9a-zA-Z ()-?!%#@,.]*$/|max:40|min:3',
@@ -51,27 +51,11 @@ class HomeController extends Controller
                 ->withInput();
         }
 
-        /**
+        $user = Auth::user();
 
-        Mail::send(
-            'templates.bugreport-email',
-            [
-                'student_name'  => Auth::user()->getInitials()." ".Auth::user()->lastname." (".Auth::user()->firstname.")",
-                'student_email' => Auth::user()->email,
-                'education'     => EducationProgram::find(Auth::user()->ep_id),
-                'subject'       => $request['onderwerp'],
-                'content'       => $request['uitleg'],
-            ],
-            function ($message) {
-                $message->subject('Tip/Bug ingezonden!');
-                $message->from('debug@werkplekleren.hu.nl', 'Werkplekleren @ Hogeschool Utrecht');
-                $message->to('max.cassee@hu.nl');
-                $message->cc('esther.vanderstappen@hu.nl');
-                $message->cc('dylan.vangils@student.hu.nl');
-                $message->replyTo(Auth::user()->email);
-            }
-        );
-         */
+
+        $mailer->to($user->email)->send(new FeedbackGiven($request, $user));
+
         return redirect()->route('home')->with('success', 'Bedankt voor je bijdrage! Je krijgt per email een reactie terug.');
     }
 }
