@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export default class ActingActivityProcessExporter {
 
     constructor(type, activities) {
@@ -15,17 +17,19 @@ export default class ActingActivityProcessExporter {
         // Build headers and filter unwanted
         let headers = Object.keys(this.activities[0]);
 
-
         let unwantedColumns = ["id", "url"];
-        unwantedColumns.forEach(column => {headers.splice(headers.indexOf(column), 1)});
+        unwantedColumns.forEach(column => {
+            headers.splice(headers.indexOf(column), 1)
+        });
 
-
-        let translatedHeaders = headers.map(header => {return exportTranslatedFieldMapping[header]});
+        let translatedHeaders = headers.map(header => {
+            return exportTranslatedFieldMapping[header]
+        });
         this.output(translatedHeaders.join(",") + "\n");
 
         this.activities.forEach((activity, index) => {
             let values = headers.map(header => {
-                if(unwantedColumns.indexOf(header) !== -1) return;
+                if (unwantedColumns.indexOf(header) !== -1) return;
                 return activity[header];
             });
             let dataString = values.join(",");
@@ -35,7 +39,28 @@ export default class ActingActivityProcessExporter {
     }
 
     txt() {
+// Build headers and filter unwanted
+        let headers = Object.keys(this.activities[0]);
 
+        let unwantedColumns = ["id", "url"];
+        unwantedColumns.forEach(column => {
+            headers.splice(headers.indexOf(column), 1)
+        });
+
+        let translatedHeaders = headers.map(header => {
+            return _.capitalize(exportTranslatedFieldMapping[header]);
+        });
+        this.output(translatedHeaders.join(" | ") + "\n");
+
+        this.activities.forEach((activity, index) => {
+            let values = headers.map(header => {
+                if (unwantedColumns.indexOf(header) !== -1) return;
+                return activity[header];
+            });
+            let dataString = values.join(" | ");
+            this.output(index < this.activities.length ? dataString + "\n" : dataString);
+
+        });
     }
 
     output(str) {
@@ -43,10 +68,10 @@ export default class ActingActivityProcessExporter {
     }
 
     download() {
-        let a         = document.createElement('a');
-        a.href        = 'data:attachment/csv,' +  encodeURIComponent(this.outputData);
-        a.target      = '_blank';
-        a.download    = 'export.csv';
+        let a = document.createElement('a');
+        a.href = 'data:attachment/' + this.type + ',' + encodeURIComponent(this.outputData);
+        a.target = '_blank';
+        a.download = 'export.' + this.type;
         document.body.appendChild(a);
         a.click();
     }

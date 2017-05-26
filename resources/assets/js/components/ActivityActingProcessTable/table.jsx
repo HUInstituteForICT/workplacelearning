@@ -12,7 +12,7 @@ export default class ActivityActingProcessTable extends React.Component {
             activities: window.activities,
             filters: this.buildFilter(window.activities),
             exports: ["csv", "txt"],
-            selectedExport: "txt"
+            selectedExport: "csv"
         };
 
         this.updateFilter = this.updateFilter.bind(this);
@@ -109,7 +109,7 @@ export default class ActivityActingProcessTable extends React.Component {
 
 
     exportHandler() {
-        let exporter = new ActingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
+        new ActingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
     }
 
 
@@ -151,7 +151,7 @@ export default class ActivityActingProcessTable extends React.Component {
 
             </div>
 
-            <div className="export">
+            <div className="export" style={{paddingBottom:"15px"}}>
 
                 <label>Export naar&nbsp;
                     <select onChange={e => {this.setState({selectedExport: e.target.value})}} defaultValue={this.state.selectedExport}>
@@ -159,8 +159,8 @@ export default class ActivityActingProcessTable extends React.Component {
                             return <option key={type} value={type}>{type}</option>
                         })}
                     </select>
-                </label>
-                <button onClick={this.exportHandler}>export</button>
+                </label> &nbsp;
+                <button className="btn btn-info" onClick={this.exportHandler}>exporteer</button>
             </div>
 
             <table className="table blockTable">
