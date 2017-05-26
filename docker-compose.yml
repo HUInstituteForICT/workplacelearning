@@ -44,7 +44,7 @@ services:
     image: helder/mailcatcher
     ports:
       - "1025:1025"
-      - "1081:80"
+      - "1080:80"
 
   phpmyadmin:
     container_name: wpl_phpmyadmin
