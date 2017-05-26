@@ -19,3 +19,18 @@ tmp/      bevat copies van beide
 
 DocumentRoot      /sites/werkplekleren.hu.nl/htdocs/public
 Directory         /sites/werkplekleren.hu.nl/htdocs
+
+
+### Docker
+Edit the `host_lan_ip` in `docker-compose.yml` to reflect your local IP address to use xdebug
+
+Webserver is available at `localhost:80`  
+Database clients like mysql workbench can access the DB at `localhost:3306`  
+PHPMyAdmin is available at `localhost:8080`  
+Mailcatcher is available at `localhost:1080`  
+  
+Run with `docker-compose up -d`  
+Access a container with `docker exec -it CONTAINER_NAME bash`  
+  
+When using PHPStorm don't forget to add a server with the name `wpl` and set correct path mappings
+
