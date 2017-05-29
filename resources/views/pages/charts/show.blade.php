@@ -10,11 +10,19 @@
                     <div class="col-sm-6">
                         <canvas id="myChart"></canvas>
                     </div>
+                    <div class="col-sm-6">
+                        <form action="{{ route('analyses-expire') }}" method="post" accept-charset="UTF-8">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="id" value="{{ $chart->analysis->id }}">
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">Refresh</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    {{--<script src="/js/chartjs/Chart.bundle.min.js"></script>--}}
     <script>
       (function () {
         var ctx = $('#myChart')
@@ -22,7 +30,7 @@
           type: '{{ $chart->type->slug }}', // ideally have the type itself poop something nice out?
           data: {
             labels: [<?php
-                $items = array_map(function ($key) use ($chart){
+                $items = array_map(function ($key) use ($chart) {
                     return "'" . $key->{$chart->x_label->name} . "'";
                 }, $chart->analysis->data['data']);
                 echo join(', ', $items);
@@ -43,15 +51,15 @@
                       }, $chart->analysis->data['data']);
                       echo join(', ', $x_items);
                  ?>]
-            }],
-            options: {
-              scales: {
-                yAxes: [{
-                  ticks: {
-                    beginAtZero:true
-                  }
-                }]
-              }
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero:true
+                }
+              }]
             }
           }
         })
