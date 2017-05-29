@@ -21,7 +21,12 @@
         var myChart = new Chart(ctx, {
           type: '{{ $chart->type->slug }}', // ideally have the type itself poop something nice out?
           data: {
-            labels: ['{{ $chart->analysis->data['data'][0]->{$chart->x_label->name} }}'],
+            labels: [<?php
+                $items = array_map(function ($key) use ($chart){
+                    return "'" . $key->{$chart->x_label->name} . "'";
+                }, $chart->analysis->data['data']);
+                echo join(', ', $items);
+                ?>],
             datasets: [{
               label: '{{ $chart->label }}',
               backgroundColor: [
@@ -33,10 +38,10 @@
                 'rgba(255, 159, 64, 1)'
               ],
               data: [<?php
-                      $items = array_map(function ($key) use ($chart){
+                      $x_items = array_map(function ($key) use ($chart){
                           return $key->{$chart->y_label->name};
                       }, $chart->analysis->data['data']);
-                      echo join(',', $items);
+                      echo join(', ', $x_items);
                  ?>]
             }],
             options: {
