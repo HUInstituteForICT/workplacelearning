@@ -32,9 +32,12 @@
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
               ],
-              data: [
-                  {{ $chart->analysis->data['data'][0]->{$chart->y_label->name} }}
-              ]
+              data: [<?php
+                      $items = array_map(function ($key) use ($chart){
+                          return $key->{$chart->y_label->name};
+                      }, $chart->analysis->data['data']);
+                      echo join(',', $items);
+                 ?>]
             }],
             options: {
               scales: {
