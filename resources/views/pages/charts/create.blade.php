@@ -29,7 +29,8 @@
                     </div>
                     <div class="form-group">
                         <label for="type_id" class="col-sm-2 control-label">Type</label>
-                        <div class="col-sm-10"><select class="form-control" id="type_id" name="type_id">
+                        <div class="col-sm-10">
+                            <select class="form-control" id="type_id" name="type_id" required="required">
                                 <option></option>
                                 @foreach($types as $type)
                                     <option value="{{ $type->id }}">{{ $type->name }}</option>

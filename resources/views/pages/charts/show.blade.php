@@ -27,7 +27,7 @@
       (function () {
         var ctx = $('#myChart')
         var myChart = new Chart(ctx, {
-          type: '{{ $chart->type->slug }}', // ideally have the type itself poop something nice out?
+          type: '{{ $chart->type->slug }}', // ideally have the type itself make something nice out?
           data: {
             labels: [<?php
                 $items = array_map(function ($key) use ($chart) {
