@@ -43,3 +43,18 @@ Access a container with `docker exec -it CONTAINER_NAME bash`
   
 When using PHPStorm don't forget to add a server with the name `wpl` and set correct path mappings
 
+#### Database migrations
+**note: running this on a database already in use will reset it to this default state**
+##### First time  
+Using the migrations you will receive a complete up-to-date database with a default state. 
+This default state includes things as categories, resource material etc.  
+
+To create the default state run `php artisan migrate:refresh --seed`  
+**if using docker run**`docker exec wpl_php php artisan migrate:refresh --seed`
+
+##### Other times
+To update your database run `php artisan migrate`  
+**if using docker run**`docker exec wpl_php php artisan migrate`
+
+
+
