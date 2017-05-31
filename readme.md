@@ -13,6 +13,8 @@ These instructions will help setup the development environment using docker
 
 ### Installing
 
+**note:** tools like composer &amp; npm are used in the PHP container. If these tools are available locally already you can also install through there.
+
 First clone the repository
 ```
 git clone git@github.com:HuInstituteForICT/workplacelearning.git
@@ -45,6 +47,23 @@ Create the database schema by running the migrations with
 docker-compose run php php artisan migrate:refresh --seed
 ```
 
+Updating the database later on can be done by simply running
+```
+docker-compose run php php artisan migrate
+```
+
+Install should be finished  
+You can now reach the following services:  
+
+| Service       | Location      | 
+| ------------- |:-------------:|
+| Webserver     | localhost     |
+| DB client     | localhost:3306|
+| PhpMyAdmin    | localhost:8080|
+| Mailcatcher   | localhost:1080|
+
+
+
 #### Compiling assets
 Javascript and CSS should be compiled before first use and after every asset update.
 This can be done using Laravel Mix.
@@ -58,6 +77,10 @@ Or if NPM is available on host machine use `npm install`
 Now you can compile assets with
 ```
 docker exec -it wpl_php npm run dev
+```
+To keep compiling on changes
+``` 
+docker exec -it wpl_php npm run watch
 ```
 
 #### Xdebug
@@ -86,42 +109,6 @@ Alternatively you can execute it in the PHP container by running:
 ```
 docker-compose run php php ./vendor/bin/phpunit
 ```
-
-
-
-
-
-
-
-## JS / ReactJS compiling
-1. use NPM or yarn to install dependencies.
-2. use `npm run dev` to compile once or `npm run watch`, on production use `npm run production`
-
-### Docker
-Edit the `host_lan_ip` in `docker-compose.yml` to reflect your local IP address to use xdebug
-
-Webserver is available at `localhost:80`  
-Database clients like mysql workbench can access the DB at `localhost:3306`  
-PHPMyAdmin is available at `localhost:8080`  
-Mailcatcher is available at `localhost:1080`  
-  
-Run with `docker-compose up -d`  
-Access a container with `docker exec -it CONTAINER_NAME bash`  
-  
-When using PHPStorm don't forget to add a server with the name `wpl` and set correct path mappings
-
-#### Database migrations
-**note: running this on a database already in use will reset it to this default state**
-##### First time  
-Using the migrations you will receive a complete up-to-date database with a default state. 
-This default state includes things as categories, resource material etc.  
-
-To create the default state run `php artisan migrate:refresh --seed`  
-**if using docker run**`docker exec wpl_php php artisan migrate:refresh --seed`
-
-##### Other times
-To update your database run `php artisan migrate`  
-**if using docker run**`docker exec wpl_php php artisan migrate`
 
 
 
