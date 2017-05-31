@@ -2,11 +2,14 @@ FROM nginx
 
 ADD ./nginx.conf /etc/nginx/conf.d/default.conf
 
+RUN apt-get update && apt-get install openssl -y
+
+
 RUN mkdir /etc/nginx/ssl
 
 RUN openssl req -new -x509 -days 3652 -nodes -newkey rsa:2048 \
       -out /etc/nginx/ssl/nginx.crt \
       -keyout /etc/nginx/ssl/nginx.key \
-      -subj "/C=NL/ST=Some-State/L=/O=IT/CN=localhost"
+      -subj "/C=NL/ST=Some-State/L=Utrecht/O=IT/CN=localhost"
 
 WORKDIR /var/www
