@@ -115,7 +115,7 @@ class Student extends Authenticatable
      *
      *
      */
-    public function getCurrentWorkplaceLearningPeriod() : WorkplaceLearningPeriod
+    public function getCurrentWorkplaceLearningPeriod()
     {
         if (!$this->getUserSetting('active_internship')) {
             return null;

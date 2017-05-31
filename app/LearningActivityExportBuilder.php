@@ -19,7 +19,7 @@ class LearningActivityExportBuilder
 
 
 
-    public function getJson() : string
+    public function getJson()
     {
         $jsonArray = [];
         $this->learningActivityActingCollection->each(function(LearningActivityActing $activity) use (&$jsonArray) {
