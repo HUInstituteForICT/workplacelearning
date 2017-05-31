@@ -21,7 +21,7 @@ services:
     volumes:
       - .:/var/www
     environment:
-          XDEBUG_CONFIG: "${host_lan_ip}"
+          XDEBUG_CONFIG: "remote_host=${host_lan_ip}"
           PHP_IDE_CONFIG: "serverName=wpl"
     links:
       - mailcatcher
