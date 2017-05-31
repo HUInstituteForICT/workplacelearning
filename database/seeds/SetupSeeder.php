@@ -72,7 +72,6 @@ INSERT INTO `resourceperson` (`rp_id`, `person_label`, `ep_id`, `wplp_id`) VALUE
 (2, 'Collega', 1, 0),
 (3, 'Specialist', 1, 0),
 (4, 'Medestagiair/Student', 1, 0),
-(15, 'test', 1, 1),
 (16, 'Stagebegeleider', 2, 0),
 (17, 'Medestudent', 2, 0),
 (18, 'Alleen', 2, 0),
