@@ -160,7 +160,7 @@ export default class ActivityActingProcessTable extends React.Component {
                         })}
                     </select>
                 </label> &nbsp;
-                <button className="btn btn-info" onClick={this.exportHandler}>exporteer</button>
+                <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0}>exporteer</button>
             </div>
 
             <table className="table blockTable">
