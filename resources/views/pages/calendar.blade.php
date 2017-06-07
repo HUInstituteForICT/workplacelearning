@@ -71,7 +71,7 @@
     </script>
     <div id='calendar'></div>
     <div id="newCalendarEvent" style="display: true;">
-    {!! Form::open(array('id' => 'eventForm', 'class' => 'form-inline col-md-12 well', 'url' => URL::to('deadline/create', array(), true))) !!}
+    {!! Form::open(array('id' => 'eventForm', 'class' => 'form-inline col-md-12 well', 'url' => route('deadline-create'))) !!}
         <input type="hidden" id="idDeadline" name="id" value="0" />
         <div class="col-sm-3 col-md-3">
         <div class="form-group">
