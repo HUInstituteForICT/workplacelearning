@@ -98,8 +98,24 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+
+        'res_person'   => [
+            "required" => 'Het "met wie?" veld is vereist.',
+            "exists"   => 'Deze "met wie?" bestaat niet.',
+        ],
+        "new_rp"       => [
+            "required" => 'De omschrijving bij het "met wie?" veld is vereist.',
+            "max"      => 'De omschrijving bij het "met wie?" veld mag maximaal 45 tekens lang zijn.',
+            "regex"    => 'De omschrijving bij het "met wie?" veld heeft een verkeerd formaat.',
+        ],
+        'res_material' => [
+            "required" => 'Het "met welke theorie?" veld is vereist.',
+            "exists"   => 'Deze "met welke theorie?" bestaat niet.',
+        ],
+        'new_rm'       => [
+            "required" => 'De omschrijving bij het "met welke theorie?" veld is vereist.',
+            "max"      => 'De omschrijving bij het "met welke theorie?" veld mag maximaal 45 tekens lang zijn.',
+            "regex"    => 'De omschrijving bij het "met welke theorie?" veld heeft een verkeerd formaat.',
         ],
     ],
 

@@ -98,26 +98,6 @@ class ActingActivityController extends Controller
                 'support_ed'    => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
                 'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
                 'competence'    => 'required|exists:competence,competence_id',
-            ],
-            [
-                'res_person' => [
-                    "required" => 'Het "met wie?" veld is vereist.',
-                    "exists" => 'Deze "met wie?" bestaat niet.',
-                ],
-                "new_rp" => [
-                    "required" => 'De omschrijving bij het "met wie?" veld is vereist.',
-                    "max" => 'De omschrijving bij het "met wie?" veld mag maximaal 45 tekens lang zijn.',
-                    "regex" => 'De omschrijving bij het "met wie?" veld heeft een verkeerd formaat.',
-                ],
-                'res_material' => [
-                    "required" => 'Het "met wie?" veld is vereist.',
-                    "exists" => 'Deze "met wie?" bestaat niet.',
-                ],
-                "new_rm" => [
-                    "required" => 'De omschrijving bij het "met wie?" veld is vereist.',
-                    "max" => 'De omschrijving bij het "met wie?" veld mag maximaal 45 tekens lang zijn.',
-                    "regex" => 'De omschrijving bij het "met wie?" veld heeft een verkeerd formaat.',
-                ]
             ]);
 
         // Conditional validation

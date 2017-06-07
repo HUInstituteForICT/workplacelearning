@@ -96,8 +96,23 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'res_person'   => [
+            "required" => 'The "with whom?" field is required.',
+            "exists"   => 'This "with whom?" does not exist.',
+        ],
+        "new_rp"       => [
+            "required" => 'The description for the "with whom?" field is required.',
+            "max"      => 'The description for the "with whom?" field can only be 45 characters long.',
+            "regex"    => 'The description for the "with whom?" field has an invalid format.',
+        ],
+        'res_material' => [
+            "required" => 'The "with which theory?" field is required.',
+            "exists"   => 'This "with which theory?" does not exist.',
+        ],
+        'new_rm'       => [
+            "required" => 'The description for the "with which theory?" field is required.',
+            "max"      => 'The description for the "with which theory?" field  can only be 45 characters long.',
+            "regex"    => 'The description for the "with which theory?" field  has an invalid format.',
         ],
     ],
 
