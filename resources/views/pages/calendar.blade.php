@@ -54,7 +54,7 @@
                 eventTextColor:'#FFFFFF',
                 eventClick: function(calEvent, jsEvent, view) {
                     $('.fc-newEvent-button').trigger('click');
-                    $('#eventForm').attr('action', '{{ URL::to('deadline/update', array(), true) }}');
+                    $('#eventForm').attr('action', '{{ route('deadline-update') }}');
                     $('#idDeadline').val(calEvent.id);
                     $('#nameDeadline').val(calEvent.title);
                     $('input[name="dateDeadline"]').val(calEvent.start.local().format('DD-MM-YYYY HH:mm'));
