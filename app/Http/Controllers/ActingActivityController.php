@@ -88,23 +88,51 @@ class ActingActivityController extends Controller
 
         $activityActing = new LearningActivityActing;
 
-        $validator = Validator::make($request->all(), [
-            'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
-            'description'           => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-            'timeslot'              => 'required|exists:timeslot,timeslot_id',
-            'new_rp'                => 'required_if:res_person,new|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/',
-            'new_rm'                => 'required_if:res_material,new|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/',
-            'learned'               => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-            'support_wp'            => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-            'support_ed'            => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-            'learning_goal'         => 'required|exists:learninggoal,learninggoal_id',
-            'competence'            => 'required|exists:competence,competence_id'
-        ]);
+        $validator = Validator::make($request->all(),
+            [
+                'date'          => 'required|date|before:' . date('d-m-Y', strtotime('tomorrow')),
+                'description'   => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
+                'timeslot'      => 'required|exists:timeslot,timeslot_id',
+                'learned'       => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
+                'support_wp'    => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
+                'support_ed'    => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
+                'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
+                'competence'    => 'required|exists:competence,competence_id',
+            ],
+            [
+                'res_person' => [
+                    "required" => 'Het "met wie?" veld is vereist.',
+                    "exists" => 'Deze "met wie?" bestaat niet.',
+                ],
+                "new_rp" => [
+                    "required" => 'De omschrijving bij het "met wie?" veld is vereist.',
+                    "max" => 'De omschrijving bij het "met wie?" veld mag maximaal 45 tekens lang zijn.',
+                    "regex" => 'De omschrijving bij het "met wie?" veld heeft een verkeerd formaat.',
+                ],
+                'res_material' => [
+                    "required" => 'Het "met wie?" veld is vereist.',
+                    "exists" => 'Deze "met wie?" bestaat niet.',
+                ],
+                "new_rm" => [
+                    "required" => 'De omschrijving bij het "met wie?" veld is vereist.',
+                    "max" => 'De omschrijving bij het "met wie?" veld mag maximaal 45 tekens lang zijn.',
+                    "regex" => 'De omschrijving bij het "met wie?" veld heeft een verkeerd formaat.',
+                ]
+            ]);
 
         // Conditional validation
         $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function ($input) {
             return $input->res_person != 'new';
         });
+
+        $validator->sometimes('new_rp', 'required|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/', function ($input) {
+            return $input->res_person === 'new';
+        });
+
+        $validator->sometimes('new_rm', 'required|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/', function ($input) {
+            return $input->res_material === 'new';
+        });
+
         $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function ($input) {
             return $input->res_material != 'new' && $input->res_material != 'none';
         });
