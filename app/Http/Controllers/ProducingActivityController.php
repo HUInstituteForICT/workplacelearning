@@ -234,6 +234,7 @@ class ProducingActivityController extends Controller
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
         }
 
+        // TODO shouldn't these fields be in English?
         $validator = Validator::make($request->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
             'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'\\\\\/"\s]+\s*$/',

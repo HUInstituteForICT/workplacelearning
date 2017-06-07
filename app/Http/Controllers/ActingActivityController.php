@@ -90,12 +90,12 @@ class ActingActivityController extends Controller
 
         $validator = Validator::make($request->all(),
             [
-                'date'          => 'required|date|before:' . date('d-m-Y', strtotime('tomorrow')),
+                'date'          => 'required|date|before:' . date('d-m-Y', strtotime('tomorrow')), // TODO Date validation not working
                 'description'   => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
                 'timeslot'      => 'required|exists:timeslot,timeslot_id',
                 'learned'       => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-                'support_wp'    => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-                'support_ed'    => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
+                'support_wp'    => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/', // TODO better regex, allow empty?
+                'support_ed'    => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/', // TODO better regex, allow empty?
                 'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
                 'competence'    => 'required|exists:competence,competence_id',
             ]);
@@ -217,7 +217,7 @@ class ActingActivityController extends Controller
         $learningActivity->support_wp = $req['support_wp'];
         $learningActivity->support_ed = $req['support_ed'];
         $learningActivity->res_person_id = $req['res_person'];
-        ($req['res_material'] != 'none') ? $learningActivity->res_material_id = $req['res_material'] : null;
+        $learningActivity->res_material_id = ($req['res_material'] != 'none') ?  $req['res_material'] : null;
         $learningActivity->res_material_detail = $req['res_material_detail'];
         $learningActivity->learninggoal_id = $req['learning_goal'];
         $learningActivity->save();

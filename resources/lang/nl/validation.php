@@ -99,23 +99,32 @@ return [
 
     'custom' => [
 
-        'res_person'   => [
-            "required" => 'Het "met wie?" veld is vereist.',
+        'res_person'          => [
+            "required" => 'Het "met wie?" veld is verplicht.',
             "exists"   => 'Deze "met wie?" bestaat niet.',
         ],
-        "new_rp"       => [
-            "required" => 'De omschrijving bij het "met wie?" veld is vereist.',
+        "new_rp"              => [
+            "required" => 'De omschrijving bij het "met wie?" veld is verplicht.',
             "max"      => 'De omschrijving bij het "met wie?" veld mag maximaal 45 tekens lang zijn.',
             "regex"    => 'De omschrijving bij het "met wie?" veld heeft een verkeerd formaat.',
         ],
-        'res_material' => [
-            "required" => 'Het "met welke theorie?" veld is vereist.',
+        'res_material'        => [
+            "required" => 'Het "met welke theorie?" veld is verplicht.',
             "exists"   => 'Deze "met welke theorie?" bestaat niet.',
         ],
-        'new_rm'       => [
-            "required" => 'De omschrijving bij het "met welke theorie?" veld is vereist.',
+        'new_rm'              => [
+            "required" => 'De omschrijving bij het "met welke theorie?" veld is verplicht.',
             "max"      => 'De omschrijving bij het "met welke theorie?" veld mag maximaal 45 tekens lang zijn.',
             "regex"    => 'De omschrijving bij het "met welke theorie?" veld heeft een verkeerd formaat.',
+        ],
+        "competence"          => [
+            "exists" => "De geselecteerde :attribute is ongeldig",
+        ],
+        "learning_goal"       => [
+            "exists" => "De geselecteerde :attribute is ongeldig",
+        ],
+        "res_material_detail" => [
+            "required_unless" => "Het :attribute veld is verplicht.",
         ],
     ],
 
@@ -130,5 +139,33 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        "learned"              => '"wat heb je geleerd?"',
+        "description"          => "situatie",
+        "support_wp"           => '"wat heb je hierbij nodig van je werkplek?"',
+        "support_ed"           => '"wat heb je hierbij nodig van de HU?"',
+        "learning_goal"        => 'leervraag',
+        "competence"           => "competentie",
+        "date"                 => "datum",
+        "res_material_detail"  => "theoriebron",
+        "timeslot"             => "tijdslot",
+        "companyName"          => "bedrijfsnaam",
+        'companyStreet'        => 'straat',
+        'companyHousenr'       => 'nummer',
+        'companyPostalcode'    => 'postcode',
+        'companyLocation'      => 'locatie',
+        'contactPerson'        => 'contactpersoon',
+        'contactPhone'         => 'telefoonnummer',
+        'contactEmail'         => 'emailadres',
+        'numdays'              => 'aantal dagen',
+        'startdate'            => 'geplande startdatum',
+        'enddate'              => 'geplande einddatum',
+        'internshipAssignment' => 'stageopdracht',
+        'isActive'             => 'huidige stage',
+        'nameDeadline'         => 'deadline omschrijving',
+        'dateDeadline'         => 'deadline datum',
+        'firstname'            => 'voornaam',
+        'lastname'             => 'achternaam',
+        'email'                => 'email address'
+    ],
 ];
