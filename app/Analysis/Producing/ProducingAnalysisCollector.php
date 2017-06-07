@@ -4,6 +4,7 @@
 namespace App\Analysis\Producing;
 
 use App\LearningActivityProducing;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -158,7 +159,7 @@ class ProducingAnalysisCollector
      * Get the category by difficulties filtered by date range
      * @param $year
      * @param $month
-     * @return mixed
+     * @return Collection
      */
     public function getCategoryDifficultyByDate($year, $month)
     {
@@ -219,11 +220,14 @@ class ProducingAnalysisCollector
     public function getFullWorkingDays($year, $month)
     {
         // Retrieve the number of days the student worked at least 7.5 hours
-        $result = LearningActivityProducing::where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
+        $result = LearningActivityProducing::selectRaw("COUNT(*) as days")->where('wplp_id',
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->groupBy('date')
-            ->havingRaw('SUM(duration)>=7.5');
+            ->havingRaw('SUM(duration)>=7.5')
+            ->get()
+            ->count();
 
-        return $result->get()->count();
+        return $result;
     }
 
     /**
@@ -245,7 +249,7 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     * @return mixed
+     * @return Collection
      */
     public function getNumHoursCategory($year, $month)
     {
