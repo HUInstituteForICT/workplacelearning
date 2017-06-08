@@ -193,7 +193,7 @@
                             </tr>
 
 
-                            @if($chain->count() > 1)
+                            @if($chain->count() >= 1)
                                 <tr class="odd-row" id="detail-{{ $chain->first()->lap_id }}" style="display:none;" >
                                     <td colspan="5">
                                         <table class="table blockTable col-md-12">

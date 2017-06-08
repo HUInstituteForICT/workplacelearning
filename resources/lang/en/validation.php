@@ -96,8 +96,32 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'res_person'   => [
+            "required" => 'The "with whom?" field is required.',
+            "exists"   => 'This "with whom?" does not exist.',
+        ],
+        "new_rp"       => [
+            "required" => 'The description for the "with whom?" field is required.',
+            "max"      => 'The description for the "with whom?" field can only be 45 characters long.',
+            "regex"    => 'The description for the "with whom?" field has an invalid format.',
+        ],
+        'res_material'        => [
+            "required" => 'The "with which theory?" field is required.',
+            "exists"   => 'This "with which theory?" does not exist.',
+        ],
+        'new_rm'              => [
+            "required" => 'The description for the "with which theory?" field is required.',
+            "max"      => 'The description for the "with which theory?" field  can only be 45 characters long.',
+            "regex"    => 'The description for the "with which theory?" field  has an invalid format.',
+        ],
+        "competence"          => [
+            "exists" => "The selected :attribute is invalid",
+        ],
+        "learning_goal"       => [
+            "exists" => "The selected :attribute is invalid",
+        ],
+        "res_material_detail" => [
+            "required_unless" => "The :attribute field is required.",
         ],
     ],
 
@@ -112,6 +136,35 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        "learned"              => '"what did you learn?"',
+        "description"          => "situation",
+        "support_wp"           => '"what do you need from your workplace?"',
+        "support_ed"           => '"what do you need from the HU?"',
+        "learning_goal"        => 'learning goal',
+        "competence"           => "competence",
+        "date"                 => "date",
+        "res_material_detail"  => "theory source",
+        "timeslot"             => "timeslot",
+        "companyName"          => "company name",
+        'companyStreet'        => 'street',
+        'companyHousenr'       => 'house number',
+        'companyPostalcode'    => 'postal code',
+        'companyLocation'      => 'location',
+        'contactPerson'        => 'contact person',
+        'contactPhone'         => 'phone number',
+        'contactEmail'         => 'email address',
+        'numdays'              => 'number of days',
+        'startdate'            => 'planned start date',
+        'enddate'              => 'planned end date',
+        'internshipAssignment' => 'internship assignment',
+        'isActive'             => 'current internship',
+        'nameDeadline'         => 'deadline description',
+        'dateDeadline'         => 'deadline date',
+        'firstname'            => 'first name',
+        'lastname'             => 'last name',
+        'email'                => 'email address',
+
+    ],
 
 ];
