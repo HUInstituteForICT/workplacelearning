@@ -51,7 +51,7 @@ class ProducingWorkplaceLearningController extends Controller
             'companyName'           => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
             'companyStreet'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:45|min:3',
             'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[ ]*[a-zA-Z]{0,4}$/|max:9|min:1', //
-            'companyPostalcode'     => 'required|regex:/^[0-9a-zA-Z]*$/|max:10|min:3', //TODO: Fix Regex to proper intl format
+            'companyPostalcode'     => 'required|postalcode',
             'companyLocation'       => 'required|regex:/^[0-9a-zA-Z ()\-]*$/|max:255|min:3',
             'contactPerson'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
             'contactPhone'          => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
@@ -111,7 +111,7 @@ class ProducingWorkplaceLearningController extends Controller
             'companyName'           => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
             'companyStreet'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:45|min:3',
             'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[a-zA-Z]{0,1}$/|max:4|min:1', //
-            'companyPostalcode'     => 'required|regex:/^[0-9a-zA-Z]*$/|max:10|min:6', //TODO: Fix Regex to proper intl format
+            'companyPostalcode'     => 'required|postalcode',
             'companyLocation'       => 'required|regex:/^[0-9a-zA-Z ()\-]*$/|max:255|min:3',
             'contactPerson'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
             'contactPhone'          => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
