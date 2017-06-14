@@ -47,7 +47,7 @@
               ],
               data: [<?php
                       $x_items = array_map(function ($key) use ($chart){
-                          return $key->{$chart->y_label->name};
+                          return "'" . $key->{$chart->y_label->name} . "'";
                       }, $chart->analysis->data['data']);
                       echo join(', ', $x_items);
                  ?>]
