@@ -6,10 +6,8 @@ use App\Analysis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
-class AnalysisController extends Controller
+class AnalyticsController extends Controller
 {
-
-    private $CACHE_KEY = 'analysis';
     private $analysis;
 
     /**
@@ -30,7 +28,7 @@ class AnalysisController extends Controller
     public function index()
     {
         $analyses = $this->analysis->all();
-        return view('pages.analyses.index', compact('analyses'));
+        return view('pages.analytics.index', compact('analyses'));
     }
 
     /**
@@ -40,7 +38,7 @@ class AnalysisController extends Controller
      */
     public function create()
     {
-        return view('pages.analyses.create');
+        return view('pages.analytics.create');
     }
 
     /**
@@ -59,7 +57,7 @@ class AnalysisController extends Controller
                 ->back()
                 ->withErrors(['error', "Failed to save the analysis to the database."]);
 
-        return redirect()->route('analyses-show', $analysis->id)->with('success', 'The analysis has been created.');
+        return redirect()->route('analytics-show', $analysis->id)->with('success', 'The analysis has been created.');
     }
 
     /**
@@ -77,7 +75,7 @@ class AnalysisController extends Controller
             $analysis->refresh();
         $analysis_result = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
 
-        return view('pages.analyses.show', compact('analysis', 'analysis_result'));
+        return view('pages.analytics.show', compact('analysis', 'analysis_result'));
     }
 
     public function export($id)
@@ -95,7 +93,7 @@ class AnalysisController extends Controller
 
         $d = \Excel::create('Analyse data', function ($excel) use ($data) {
             $excel->sheet('New sheet', function ($sheet) use ($data) {
-                $sheet->loadView('pages.analyses.export', compact('data'));
+                $sheet->loadView('pages.analytics.export', compact('data'));
             });
         });
 
@@ -131,7 +129,7 @@ class AnalysisController extends Controller
             $analysis->refresh();
         $analysis_result = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
 
-        return view('pages.analyses.edit', compact('analysis', 'analysis_result'));
+        return view('pages.analytics.edit', compact('analysis', 'analysis_result'));
     }
 
     /**
@@ -189,7 +187,7 @@ class AnalysisController extends Controller
                 ->back()
                 ->withErrors(['error', "Failed to remove the analysis from the database."]);
 
-        return redirect()->route('analyses-index')
+        return redirect()->route('analytics-index')
             ->with('success', 'Analysis has been removed from the database');
     }
 

@@ -8,7 +8,7 @@ use App\ChartType;
 use App\Label;
 use Illuminate\Http\Request;
 
-class AnalysisChartController extends Controller
+class AnalyticsChartController extends Controller
 {
     private $chart;
     private $chartType;

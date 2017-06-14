@@ -1,21 +1,19 @@
 @extends('layout.HUdefault')
-@section('title', 'Analyses - Show')
+@section('title', 'Analyses - New')
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1>{{ Lang::get('analyses.title') }}: {{ $analysis->name }}</h1>
-                <h4>Note that the query will be cached again if you edit the analysis</h4>
-                <form action="{{ route('analyses-update', $analysis->id) }}" class="form-horizontal" accept-charset="UTF-8"
+                <h1>{{ Lang::get('analyses.title') }}</h1>
+                <form action="{{ route('analytics-store') }}" class="form-horizontal" accept-charset="UTF-8"
                       method="post">
                     {{ csrf_field() }}
-                    {{ method_field('put') }}
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Name"
                                    required="required"
-                                   value="{{ old('name', $analysis->name) }}">
+                                   value="{{ old('name') }}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -25,18 +23,20 @@
                         <div class="col-sm-6">
                             <input type="number" class="form-control" id="cache_duration" name="cache_duration"
                                    placeholder="Cache for X" required="required"
-                                   value="{{ old('cache_duration', $analysis->cache_duration) }}">
+                                   value="{{ old('cache_duration') }}">
                         </div>
+
                         <div class="col-sm-4">
                             <select class="form-control" name="type_time" id="type_time" required="required"
                                     title="Time type">
-                                <option value="seconds" <?= ($analysis->type_time === 'seconds') ? 'selected' : '' ?>>seconds</option>
-                                <option value="minutes" <?= ($analysis->type_time === 'minutes') ? 'selected' : '' ?>>minutes</option>
-                                <option value="hours" <?= ($analysis->type_time === 'hours') ? 'selected' : '' ?>>hours</option>
-                                <option value="days" <?= ($analysis->type_time === 'days') ? 'selected' : '' ?>>days</option>
-                                <option value="weeks" <?= ($analysis->type_time === 'weeks') ? 'selected' : '' ?>>weeks</option>
-                                <option value="months" <?= ($analysis->type_time === 'months') ? 'selected' : '' ?>>months</option>
-                                <option value="years" <?= ($analysis->type_time === 'years') ? 'selected' : '' ?>>years</option>
+                                <option></option>
+                                <option value="seconds">Seconds</option>
+                                <option value="minutes">Minutes</option>
+                                <option value="hours">Hours</option>
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months">Months</option>
+                                <option value="years">Years</option>
                             </select>
                         </div>
                     </div>
@@ -44,12 +44,12 @@
                         <label for="query" class="col-sm-2 control-label">Query</label>
                         <div class="col-sm-10">
                             <textarea name="query" id="query" cols="30" rows="10" placeholder="Query"
-                                      class="form-control" required="required">{{ old('query', $analysis->query) }}</textarea>
+                                      class="form-control" required="required">{{ old('query') }}</textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
                         </div>
                     </div>
                 </form>

@@ -11,7 +11,7 @@
                         <canvas id="myChart"></canvas>
                     </div>
                     <div class="col-sm-6">
-                        <form action="{{ route('analyses-expire') }}" method="post" accept-charset="UTF-8">
+                        <form action="{{ route('analytics-expire') }}" method="post" accept-charset="UTF-8">
                             {{ csrf_field() }}
                             <input type="hidden" name="id" value="{{ $chart->analysis->id }}">
                             <div class="form-group">

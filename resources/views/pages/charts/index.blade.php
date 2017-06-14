@@ -8,7 +8,7 @@
                 <ul>
                     @forelse($analyses as $analysis)
                         <li>
-                            <a href="{{ route('analyses-show', $analysis->id) }}">{{ $analysis->name }}</a>
+                            <a href="{{ route('analytics-show', $analysis->id) }}">{{ $analysis->name }}</a>
                             @forelse($analysis->charts as $chart)
                                 <ul>
                                     <li>
