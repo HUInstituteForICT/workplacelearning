@@ -94,8 +94,8 @@ class ActingActivityController extends Controller
                 'description'   => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
                 'timeslot'      => 'required|exists:timeslot,timeslot_id',
                 'learned'       => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-                'support_wp'    => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/', // TODO better regex, allow empty?
-                'support_ed'    => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/', // TODO better regex, allow empty?
+                'support_wp'    => 'max:125',
+                'support_ed'    => 'max:125',
                 'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
                 'competence'    => 'required|exists:competence,competence_id',
             ]);
