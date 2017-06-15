@@ -217,7 +217,7 @@
                                                     <td>{{ ($feedback != null) ? $learningActProd->getDifficulty().": ".$feedback->notfinished : $learningActProd->getDifficulty() }}</td>
                                                     <td>{{ $learningActProd->getDurationString() }}</td>
                                                     <td>{{ $learningActProd->getResourceDetail() }}</td>
-                                                    <td>{!! ($feedback != null) ? "Je was " . (($feedback->progress_satisfied == 2) ? "tevreden" : "niet tevreden") . " met het verloop van deze activiteit (<a href='".URL::to("feedback-producing", array("id" => $feedback->fb_id))."'>Detail</a>)." : "" !!}</td>
+                                                    <td>{!! ($feedback != null) ? "Je was " . (($feedback->progress_satisfied == 2) ? "tevreden" : "niet tevreden") . " met het verloop van deze activiteit (<a href='".route("feedback-producing", array("id" => $feedback->fb_id))."'>Detail</a>)." : "" !!}</td>
                                                     <td>{{ ($feedback != null) ? $feedback->nextstep_self : "" }}</td>
                                                 </tr>
                                             @endforeach
