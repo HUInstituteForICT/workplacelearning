@@ -12,7 +12,6 @@
                 @empty
                     <h3>No analyses are found</h3>
                     <p>Do you want to create one?</p>
-                    <a href="{{ route('analytics-create') }}" class="btn btn-primary">Create2</a>
                 @endforelse
             </div>
         </div>

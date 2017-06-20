@@ -25,6 +25,7 @@
                         </li>
                     @endforelse
                 </ul>
+                <a href="{{ route('dashboard.charts.create') }}" class="btn btn-primary">Create</a>
             </div>
         </div>
     </div>
