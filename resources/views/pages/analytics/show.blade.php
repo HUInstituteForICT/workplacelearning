@@ -5,6 +5,48 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1>{{ Lang::get('analyses.title') }}</h1>
+
+                <div class="row">
+                    <div class="btn-group btn-group-justified">
+                        <div class="btn-group">
+                            <form action="{{ route('analytics-edit', $analysis->id) }}" method="get" accept-charset="UTF-8">
+                                <input type="hidden" name="id" value="{{ $analysis->id }}">
+                                <div class="form-group">
+                                    <button class="btn btn-info" type="submit">Edit analysis</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="btn-group">
+                            <form action="{{ route('analytics-expire') }}" method="post" accept-charset="UTF-8">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="id" value="{{ $analysis->id }}">
+                                <div class="form-group">
+                                    <button class="btn btn-warning" type="submit">Expire data</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="btn-group">
+                            <form action="{{ route('analytics-destroy', $analysis->id) }}" method="post" accept-charset="UTF-8"
+                                  id="frmDelete">
+                                {{ csrf_field() }}
+                                {{ method_field('delete') }}
+                                <input type="hidden" name="id" value="{{ $analysis->id }}">
+                                <div class="form-group">
+                                    <button class="btn btn-danger" type="submit">Delete analysis</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="btn-group">
+                            <form action="{{ route('analytics-export', $analysis->id) }}" method="get" accept-charset="UTF-8">
+                                <div class="form-group">
+                                    <button class="btn btn-success" type="submit">Export to CSV</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
                 <dl>
 
                     <dt>Name</dt>
@@ -28,46 +70,6 @@
                 </dl>
             </div>
         </div>
-        <div class="row">
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <form action="{{ route('analytics-edit', $analysis->id) }}" method="get" accept-charset="UTF-8">
-                        <input type="hidden" name="id" value="{{ $analysis->id }}">
-                        <div class="form-group">
-                            <button class="btn btn-info" type="submit">Edit analysis</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="btn-group">
-                    <form action="{{ route('analytics-expire') }}" method="post" accept-charset="UTF-8">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="id" value="{{ $analysis->id }}">
-                        <div class="form-group">
-                            <button class="btn btn-warning" type="submit">Expire data</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="btn-group">
-                    <form action="{{ route('analytics-destroy', $analysis->id) }}" method="post" accept-charset="UTF-8"
-                          id="frmDelete">
-                        {{ csrf_field() }}
-                        {{ method_field('delete') }}
-                        <input type="hidden" name="id" value="{{ $analysis->id }}">
-                        <div class="form-group">
-                            <button class="btn btn-danger" type="submit">Delete analysis</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="btn-group">
-                    <form action="{{ route('analytics-export', $analysis->id) }}" method="get" accept-charset="UTF-8">
-                        <div class="form-group">
-                            <button class="btn btn-success" type="submit">Export to CSV</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-lg-12">

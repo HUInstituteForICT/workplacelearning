@@ -172,8 +172,8 @@ class AnalyticsController extends Controller
                 ->withInput()
                 ->withErrors(['The analysis has not been updated']);
         }
-
-        return redirect()->action('AnalysisController@show', [$analysis['id']])
+        $analysis->refresh();
+        return redirect()->action('AnalyticsController@show', [$analysis['id']])
             ->with('success', 'The analysis has been updated');
 
     }
