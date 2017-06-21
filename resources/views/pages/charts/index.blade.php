@@ -13,6 +13,15 @@
                                 <ul>
                                     <li>
                                         <a href="{{ route('dashboard.charts.show', $chart->id) }}">{{ $chart->label }}</a>
+                                        <form action="{{ route('dashboard.charts.destroy', $chart->id) }}"
+                                              class="frmDelete"
+                                              style="display: inline-block;" method="post" accept-charset="UTF-8">
+                                            {{ csrf_field() }}
+                                            {{ method_field('delete') }}
+                                            [
+                                            <button class="btn-link">delete</button>
+                                            ]
+                                        </form>
                                     </li>
                                 </ul>
                         </li>
@@ -29,4 +38,14 @@
             </div>
         </div>
     </div>
+    <script>
+      (function () {
+        $('.frmDelete').on('submit', function (e) {
+          if (!confirm('Are you sure?')) {
+            e.preventDefault()
+            return false
+          }
+        })
+      })()
+    </script>
 @stop

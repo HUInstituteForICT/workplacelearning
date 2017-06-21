@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Analysis;
 use App\AnalysisChart;
 use App\ChartType;
+use App\DashboardChart;
 use App\Label;
 use Illuminate\Http\Request;
 
@@ -13,12 +14,14 @@ class AnalyticsChartController extends Controller
     private $chart;
     private $chartType;
     private $analysis;
+    private $dchart;
 
-    public function __construct(AnalysisChart $chart, Analysis $analysis, ChartType $chartType)
+    public function __construct(AnalysisChart $chart, Analysis $analysis, ChartType $chartType, DashboardChart $dchart)
     {
         $this->chart = $chart;
         $this->chartType = $chartType;
         $this->analysis = $analysis;
+        $this->dchart = $dchart;
     }
 
     /**
@@ -141,7 +144,18 @@ class AnalyticsChartController extends Controller
      */
     public function destroy($id)
     {
+        $chart = $this->chart->findOrFail($id);
+        \DB::transaction(function () use ($chart) {
+            if (!$chart->delete())
+                return redirect()
+                    ->back()
+                    ->withErrors(['error', "Failed to remove the chart from the database."]);
+            $this->dchart->where('chart_id', $chart->id)
+                ->delete();
+        });
 
+        return redirect()->route('dashboard.charts.index')
+            ->with('success', 'Chart has been removed from the database');
     }
 
 }
