@@ -20,11 +20,6 @@ class AnalyticsController extends Controller
         $this->analysis = $analysis;
     }
 
-    public function dashboard()
-    {
-        return view('pages.analytics.dashboard');
-    }
-
     /**
      * Display a listing of the resource.
      *
