@@ -12,9 +12,9 @@ class FixPermissionsGrant extends Migration
      */
     public function up()
     {
-        \DB::select("REVOKE SELECT ON `learningactivityproducing` TO 'wpldashboard'@'%';");
-        \DB::select("REVOKE SELECT ON `learningactivityacting` TO 'wpldashboard'@'%';");
-        \DB::select("REVOKE SELECT ON `accesslog` TO 'wpldashboard'@'%';");
+        \DB::select("REVOKE SELECT ON `learningactivityproducing` FROM 'wpldashboard'@'%';");
+        \DB::select("REVOKE SELECT ON `learningactivityacting` FROM 'wpldashboard'@'%';");
+        \DB::select("REVOKE SELECT ON `accesslog` FROM 'wpldashboard'@'%';");
     }
 
     /**
