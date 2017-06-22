@@ -9,7 +9,7 @@
                       class="form-horizontal">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <label for="position" class="col-sm-2 control-label">Name</label>
+                        <label for="position" class="col-sm-2 control-label">Position</label>
                         <div class="col-sm-10">
                             <input type="number" class="form-control" id="position" name="position"
                                    placeholder="Position"

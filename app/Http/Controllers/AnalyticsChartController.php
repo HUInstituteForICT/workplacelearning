@@ -56,6 +56,10 @@ class AnalyticsChartController extends Controller
     public function create_step_2(Request $request)
     {
         $data = $request->all();
+        $this->validate($request, [
+            'analysis_id' => 'required|numeric',
+            'type_id' => 'required|numeric'
+        ]);
         $analysis = $this->analysis->findOrFail($data['analysis_id']);
         $type = $this->chartType->findOrFail($data['type_id']);
         $name = $data['name'];
