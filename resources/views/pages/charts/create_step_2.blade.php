@@ -8,6 +8,7 @@
                 <form action="{{ route('charts.store') }}" class="form-horizontal" accept-charset="UTF-8"
                       method="post">
                     {{ csrf_field() }}
+                    @if(count((array)$analysis->data['data']) > 0)
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
@@ -62,6 +63,14 @@
                             <button type="submit" class="btn btn-primary">Create</button>
                         </div>
                     </div>
+                    @else
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Error</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">Cannot create a chart, there is no data. <a href="{{ route('analytics-show', $analysis->id) }}">Change the query</a> or <a href="javascript:void(0)" onclick="window.history.go(-1)">go back</a>.</p>
+                        </div>
+                    </div>
+                    @endif
                 </form>
             </div>
         </div>
