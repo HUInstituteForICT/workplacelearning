@@ -12,8 +12,8 @@
                             @forelse($analysis->charts as $chart)
                                 <ul>
                                     <li>
-                                        <a href="{{ route('dashboard.charts.show', $chart->id) }}">{{ $chart->label }}</a>
-                                        <form action="{{ route('dashboard.charts.destroy', $chart->id) }}"
+                                        <a href="{{ route('charts.show', $chart->id) }}">{{ $chart->label }}</a>
+                                        <form action="{{ route('charts.destroy', $chart->id) }}"
                                               class="frmDelete"
                                               style="display: inline-block;" method="post" accept-charset="UTF-8">
                                             {{ csrf_field() }}
@@ -30,11 +30,11 @@
                     @empty
                         <li>
                             <p>There are no charts.</p>
-                            <a href="{{ route('dashboard.charts.create') }}" class="btn btn-primary">Create one</a>
+                            <a href="{{ route('charts.create') }}" class="btn btn-primary">Create one</a>
                         </li>
                     @endforelse
                 </ul>
-                <a href="{{ route('dashboard.charts.create') }}" class="btn btn-primary">Create</a>
+                <a href="{{ route('charts.create') }}" class="btn btn-primary">Create</a>
             </div>
         </div>
     </div>

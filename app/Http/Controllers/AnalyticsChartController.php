@@ -101,7 +101,7 @@ class AnalyticsChartController extends Controller
                 ->withErrors(['The chart has not been created']);
         }
 
-        return redirect()->route('dashboard.charts.show', $chart->id)
+        return redirect()->route('charts.show', $chart->id)
             ->with('success', 'The chart has been created');
     }
 
@@ -158,7 +158,7 @@ class AnalyticsChartController extends Controller
                 ->delete();
         });
 
-        return redirect()->route('dashboard.charts.index')
+        return redirect()->route('charts.index')
             ->with('success', 'Chart has been removed from the database');
     }
 

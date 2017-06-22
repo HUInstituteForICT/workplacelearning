@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1>{{ Lang::get('charts.title') }}</h1>
-                <form action="{{ route('dashboard.charts.create_step_2') }}" class="form-horizontal" accept-charset="UTF-8"
+                <form action="{{ route('charts.create_step_2') }}" class="form-horizontal" accept-charset="UTF-8"
                       method="post">
                     {{ csrf_field() }}
                     <div class="form-group">
