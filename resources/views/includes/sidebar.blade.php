@@ -48,7 +48,7 @@
                 <div class="nav-title">Analytics</div>
             </div>
         </a>
-        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, route('dashboard.charts.index'), array()) }}">
+        <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, route('charts.index'), array()) }}">
             <div class="tile blue_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/cursus_wit.svg', true) }}" />
                 <div class="nav-title">Analytics Charts</div>
