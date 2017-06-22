@@ -9,12 +9,7 @@
                 <div class="row">
                     <div class="btn-group btn-group-justified">
                         <div class="btn-group">
-                            <form action="{{ route('analytics-edit', $analysis->id) }}" method="get" accept-charset="UTF-8">
-                                <input type="hidden" name="id" value="{{ $analysis->id }}">
-                                <div class="form-group">
-                                    <button class="btn btn-info" type="submit">Edit analysis</button>
-                                </div>
-                            </form>
+                            <a href="{{ route('analytics-edit', $analysis->id) }}" class="btn btn-info"></a>
                         </div>
                         <div class="btn-group">
                             <form action="{{ route('analytics-expire') }}" method="post" accept-charset="UTF-8">
@@ -37,11 +32,7 @@
                             </form>
                         </div>
                         <div class="btn-group">
-                            <form action="{{ route('analytics-export', $analysis->id) }}" method="get" accept-charset="UTF-8">
-                                <div class="form-group">
-                                    <button class="btn btn-success" type="submit">Export to CSV</button>
-                                </div>
-                            </form>
+                            <a href="{{ route('analytics-export', $analysis->id) }}" class="btn btn-sucess">Export to CSV</a>
                         </div>
                     </div>
                 </div>
