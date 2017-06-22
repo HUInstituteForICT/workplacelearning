@@ -8,7 +8,7 @@ class DashboardChart extends Model
 {
 
     protected $table = 'dashboard_charts';
-    protected $fillable = array('label');
+    protected $fillable = array('label', 'position');
 
     public function chart()
     {
