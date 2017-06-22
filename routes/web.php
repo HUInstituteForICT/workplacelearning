@@ -71,7 +71,7 @@ Route::group([
                     Route::get('/export/{id}', 'AnalyticsController@export')->name('analytics-export');
                     Route::delete('/destroy/{id}',    'AnalyticsController@destroy')->name('analytics-destroy');
                     Route::resource('charts', 'AnalyticsChartController');
-                    Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('dashboard.charts.create_step_2');
+                    Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
                 });
 
                 Route::group([
