@@ -30,7 +30,6 @@
                     @empty
                         <li>
                             <p>There are no charts.</p>
-                            <a href="{{ route('charts.create') }}" class="btn btn-primary">Create one</a>
                         </li>
                     @endforelse
                 </ul>

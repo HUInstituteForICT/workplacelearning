@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         $this->call(SetupSeeder::class);
+        $this->call(seed_charttypes::class);
     }
 }
