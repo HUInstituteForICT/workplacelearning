@@ -33,6 +33,14 @@ class Statistics
     }
 
     /**
+     * @return float percentage of hours the user found easy
+     */
+    public function percentageEasyHours()
+    {
+        return round(($this->analysisData['hours_difficult_lap']/$this->analysisData['num_hours'])*100, 1);
+    }
+
+    /**
      * @return float percentage of hours the user found difficult
      */
     public function percentageDifficultHours()
@@ -46,5 +54,20 @@ class Statistics
     public function percentageAloneHours()
     {
         return round(($this->analysisData['num_hours_alone']/$this->analysisData['num_hours'])*100, 1);
+    }
+
+    /**
+    * @return name of the most difficult category
+    */
+    public function mostDifficultCategoryName() {
+        return $this->analysisData['category_difficulty'][0]->name;
+    }
+
+    /**
+    * @return float persentage of most difficult category
+    */
+    public function persentageMostDifficultCategory()
+    {
+        return round($this->analysisData['category_difficulty'][0]->difficulty * 10, 1);
     }
 }

@@ -41,7 +41,11 @@ class ProducingAnalysis
     public function buildData($year, $month)
     {
         $this->analysisData['avg_difficulty'] = $this->analysisCollector->getAverageDifficultyByDate($year, $month);
+        $this->analysisData['num_easy_lap'] = $this->analysisCollector->getNumEasyTasksByDate($year, $month);
+        $this->analysisData['num_average_lap'] = $this->analysisCollector->getNumAverageTasksByDate($year, $month);
         $this->analysisData['num_difficult_lap'] = $this->analysisCollector->getNumDifficultTasksByDate($year, $month);
+        $this->analysisData['hours_easy_lap'] = $this->analysisCollector->getHoursEasyTasksByDate($year, $month);
+        $this->analysisData['hours_average_lap'] = $this->analysisCollector->getHoursAverageTasksByDate($year, $month);
         $this->analysisData['hours_difficult_lap'] = $this->analysisCollector->getHoursDifficultTasksByDate(
             $year,
             $month
@@ -55,11 +59,14 @@ class ProducingAnalysis
             $year,
             $month
         )->toArray();
+        // $this->analysisData['person_difficulty'] = $this->analysisCollector->getResourcePersonDifficultyByDate(
+        //     $year, 
+        //     $month
+        // )[0];
         $this->analysisData['num_hours'] = $this->analysisCollector->getNumHoursByDate($year, $month);
         $this->analysisData['num_days'] = $this->analysisCollector->getFullWorkingDays($year, $month);
         $this->analysisData['num_lap'] = $this->analysisCollector->getNumTasksByDate($year, $month);
         $this->analysisData['num_hours_category'] = $this->analysisCollector->getNumHoursCategory($year, $month)->toArray();
-
         return $this->analysisData;
     }
 
