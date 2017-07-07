@@ -20,7 +20,7 @@ class ActingAnalysisController extends Controller
 
     public function show()
     {
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count() === 0)
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null || Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count() === 0)
             return redirect()->route('home-acting')
                     ->withErrors(['Helaas, wij kunnen geen analyse uitvoeren als er nog geen activiteiten zijn ingevoerd.']);
 

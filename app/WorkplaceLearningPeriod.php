@@ -154,7 +154,7 @@ class WorkplaceLearningPeriod extends Model
                 return $this->getLastActivityActing($count, $offset);
                 break;
             default:
-                return null;
+                return collect([]);
         }
     }
 
@@ -170,11 +170,12 @@ class WorkplaceLearningPeriod extends Model
 
     private function getLastActivityActing($count, $offset = 0)
     {
-        return $this->LearningActivityActing()
+        $x = $this->LearningActivityActing()
             ->orderBy('date', 'desc')
             ->orderBy('laa_id', 'desc')
             ->skip($offset)
             ->take($count)
             ->get();
+        return $x;
     }
 }
