@@ -29,6 +29,14 @@ class LearningActivityProducing extends Model
         'status_id'
     ];
 
+    public function previousLearningActivityProducing() {
+        return $this->hasOne(LearningActivityProducing::class, 'prev_lap_id', 'lap_id');
+    }
+
+    public function nextLearningActivityProducing() {
+        return $this->belongsTo(LearningActivityProducing::class, 'lap_id', 'prev_lap_id');
+    }
+
     public function workplaceLearningPeriod()
     {
         return $this->belongsTo(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');

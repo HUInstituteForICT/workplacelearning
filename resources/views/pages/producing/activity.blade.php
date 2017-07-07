@@ -87,7 +87,10 @@
                         <option value="-1">- Niet Koppelen-</option>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != NULL)
                             @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getUnfinishedActivityProducing() as $w)
+                                @if($w->nextLearningActivityProducing === null)
+                                    {{-- Only allow to chain activity if it hasn't been chained yet --}}
                                 <option value="{{ $w->lap_id }}">{{ date('d-m', strtotime($w->date)) ." - ".$w->description }}</option>
+                                @endif
                             @endforeach
                         @endif
                     </select>
@@ -167,6 +170,7 @@
                     <td></td>
                 </tr>
                 </thead>
+                <tbody>
                 @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
                     @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8) as $a)
                         <tr>
