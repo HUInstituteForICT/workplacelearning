@@ -56,6 +56,14 @@ class Statistics
         return round(($this->analysisData['num_hours_alone']/$this->analysisData['num_hours'])*100, 1);
     }
 
+    public function persentageAveragePersonDifficulty() {
+        return round(($this->analysisData['person_difficulty']->difficult_activities/$this->analysisData['num_total_lap'])* 100, 1);
+    }
+
+    public function averagePersonDifficultyName() {
+        return $this->analysisData['person_difficulty']->name;
+    }
+
     /**
     * @return name of the most difficult category
     */

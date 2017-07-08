@@ -59,7 +59,7 @@ class ProducingAnalysisController extends Controller
 
         // Get the raw data of the analysis, used in the view
         $analysisData = $producingAnalysis->analysisData;
- 
+
         return view('pages.producing.analysis.detail')
             ->with('producingAnalysis', $producingAnalysis)
             ->with('analysis', $analysisData)
