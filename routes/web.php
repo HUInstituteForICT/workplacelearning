@@ -14,10 +14,27 @@
 
 */
 
+use App\Http\Middleware\CheckUserLevel;
+
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 
 //Route::auth();
+
+
+// API ROUTES - NOTE: NO LOCALIZATION AS IT WILL BREAK THE REQUEST DUE TO REDIRECTS
+Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix' => '/education-programs/api'],
+    function () {
+
+        // "API" for edu programs routes
+        Route::get('education-programs', 'EducationProgramsController@getEducationalPrograms');
+        Route::post('education-program/{program}/entity', 'EducationProgramsController@createEntity');
+        Route::post('education-program/entity/{entity}/delete', 'EducationProgramsController@deleteEntity');
+        Route::get('editable-education-program/{program}', 'EducationProgramsController@getEditableProgram');
+
+
+    }
+);
 
 // Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
 // Note: The localisation is saved in a session state.
@@ -26,7 +43,12 @@ Route::group([
         'prefix' => LaravelLocalization::setLocale(),
         'middleware' => [ 'localizationRedirect', 'usernotifications' ],
         ], function () {
-                // Register the Authentication Controller
+
+    Route::group(['middleware' => CheckUserLevel::class], function () {
+        Route::get('/education-programs', 'EducationProgramsController@index')
+            ->name('education-programs');
+    });
+
 
                 // Catch the stat registration post
 

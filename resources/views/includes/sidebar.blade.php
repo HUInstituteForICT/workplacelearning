@@ -36,4 +36,12 @@
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.settings') }}</div>
             </div>
         </a>
+        @if(Auth::user()->getUserLevel() === 1)
+            <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/education-programs', array()) }}">
+                <div class="tile blue_tile">
+                    <img class="icon" src="{{ URL::asset('assets/img/nieuws_wit.svg', true) }}" />
+                    <div class="nav-title">{{ Lang::get('elements.sidebar.labels.educationprograms') }}</div>
+                </div>
+            </a>
+        @endif
     </div>

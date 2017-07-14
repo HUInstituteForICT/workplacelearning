@@ -19,6 +19,7 @@ return [
         "calendar"      => "Deadlines",
         "profile"       => "Profiel",
         "settings"      => "Voortgang",
+        "educationprograms" => "Onderwijsprogramma's",
         "logout"        => "Uitloggen",
       ],
     ],

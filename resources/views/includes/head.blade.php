@@ -32,3 +32,4 @@
         <script src="//use.fontawesome.com/ed94d838ea.js"></script>
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{{ secure_asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ secure_asset('css/animations.css') }}">
