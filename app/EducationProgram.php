@@ -20,7 +20,6 @@ class EducationProgram extends Model
 
     // Default
     protected $fillable = [
-        'ep_id',
         'ep_name',
     ];
 
