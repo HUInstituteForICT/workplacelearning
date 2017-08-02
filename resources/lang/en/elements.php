@@ -174,7 +174,7 @@ return [
       "showall"             => "Show all data",
     ],
     "competences" => [
-      "competencedetails"  => "<a href=%s>Competences en Indicators</a>"
+      "competencedetails"  => "Competences en Indicators"
     ],
 ];
 ?>

@@ -178,7 +178,7 @@ return [
     ],
 
     "competences" => [
-      "competencedetails"  => "<a href=%s>Competenties en Indicatoren</a>"
+      "competencedetails"  => "Competenties en Indicatoren"
     ],
 
 ];

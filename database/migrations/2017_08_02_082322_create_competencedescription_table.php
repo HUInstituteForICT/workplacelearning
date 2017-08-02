@@ -15,7 +15,6 @@ class CreateCompetencedescriptionTable extends Migration
     {
         Schema::create('competence_descriptions', function(Blueprint $table) {
             $table->increments('id');
-            $table->binary('data');
             $table->integer('education_program_id')->unique();
         });
     }

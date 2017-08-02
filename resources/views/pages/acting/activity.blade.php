@@ -134,7 +134,7 @@
                                 <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : null }}>{{ $value->competence_label }}</option>
                             @endforeach
                         </select>
-                        <h5>{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "/assets/pdf/CompetentiesLerarenopleiding.pdf", array()), Lang::get('elements.competences.competencedetails')) !!}</h5>
+                        <h5><a href="{{ $competenceDescription->download_url }}">{{ Lang::get('elements.competences.competencedetails') }}</a></h5>
                     </div>
                     <div>
                         <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />

@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 
+use App\CompetenceDescription;
 use App\EducationProgram;
 use App\EducationProgramsService;
 use App\Http\Requests\EducationProgram\CreateCompetenceDescriptionRequest;
@@ -11,9 +12,6 @@ use App\Http\Requests\EducationProgram\CreateEntityRequest;
 use App\Http\Requests\EducationProgram\DeleteEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateRequest;
-use App\Http\Requests\EducationProgramCreateEntityRequest;
-use App\Http\Requests\EducationProgramDeleteEntityRequest;
-use App\Http\Requests\EducationProgramUpdateRequest;
 use Illuminate\Database\Eloquent\Model;
 
 class EducationProgramsController extends Controller
@@ -89,6 +87,9 @@ class EducationProgramsController extends Controller
 
     public function createCompetenceDescription(EducationProgram $program, CreateCompetenceDescriptionRequest $request)
     {
+        $competenceDescription = $this->programsService->handleUploadedCompetenceDescription($program,
+            $request->get('file'));
 
+        return response()->json(["status" => "success", "competence_description" => $competenceDescription]);
     }
 }

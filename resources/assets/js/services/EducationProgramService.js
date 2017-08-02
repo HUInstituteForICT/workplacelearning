@@ -49,4 +49,12 @@ export default class EducationProgramService {
                 console.log("EducationPrograms update service error: " + error);
             })
     }
+
+    static uploadCompetenceDescription(programId, fileData, callback) {
+        axios.post(base + 'education-program/' + programId + '/competence-description', {file: fileData})
+            .then(callback)
+            .catch(error => {
+                console.log("Unable to upload competence description: " + error)
+            });
+    }
 }

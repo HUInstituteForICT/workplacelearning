@@ -6,6 +6,7 @@ namespace App;
 
 use Dompdf\Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class EducationProgramsService
 {
@@ -108,8 +109,20 @@ class EducationProgramsService
         return $entity;
     }
 
+    /**
+     * @param EducationProgram $program
+     * @param $fileData
+     * @return CompetenceDescription the created competence description
+     */
     public function handleUploadedCompetenceDescription(EducationProgram $program, $fileData) {
+        if($program->competenceDescription === null) {
+            $program->competenceDescription()->save(new CompetenceDescription());
+        }
+        $competenceDescription = $program->competenceDescription()->first();
 
+        Storage::disk('local')->put($competenceDescription->file_name, base64_decode(substr($fileData, 28)));
+
+        return $competenceDescription;
     }
 
 

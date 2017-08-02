@@ -10,7 +10,14 @@ export default class EditActingProgram extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {loading: false, ep_name: '', competence: [], competenceFileUrl: '', timeslot: [], resource_person:[]};
+        this.state = {
+            loading: false,
+            ep_name: '',
+            competence: [],
+            competence_description: {id: null, has_data: false},
+            timeslot: [],
+            resource_person: []
+        };
 
         this.autoUpdaterTimeout = null;
 
@@ -18,6 +25,7 @@ export default class EditActingProgram extends React.Component {
         this.removeFromStateArray = this.removeFromStateArray.bind(this);
         this.onEntityCreated = this.onEntityCreated.bind(this);
         this.onEntityUpdatedName = this.onEntityUpdatedName.bind(this);
+        this.onDrop = this.onDrop.bind(this);
     }
 
     componentDidMount() {
@@ -35,13 +43,18 @@ export default class EditActingProgram extends React.Component {
             this.setState({loading: true});
 
             EducationProgramService.getEditableEducationProgram(response => {
+                // Make sure it won't mess up default state
+                if (response.data.competence_description == null) {
+                    delete response.data.competence_description;
+                    console.log(response.data);
+                }
                 this.setState(response.data);
                 this.setState({loading: false});
             }, nextProps.id);
         }
     }
 
-    // On education program name change
+    // On education program name change, update request fires 500ms after last keystroke
     programOnNameChange(element) {
         clearTimeout(this.autoUpdaterTimeout);
         this.setState({
@@ -60,7 +73,6 @@ export default class EditActingProgram extends React.Component {
 
     // On removing competence/timeslot/resourceperson from list
     removeFromStateArray(id, type) {
-
         // Magic
         EducationProgramService.deleteEntity(EntityTypes[type], id, response => {
             const index = this.getEntityIndex(id, type);
@@ -93,6 +105,20 @@ export default class EditActingProgram extends React.Component {
         } else if(type === EntityTypes.resourcePerson) {
             this.setState(prevState => ({resource_person: update(prevState.resource_person, {$push: [entity]})}))
         }
+    }
+
+    // On dropping file in dropzone
+    onDrop(files) {
+        let reader = new FileReader();
+        reader.addEventListener("load", () => {
+            // Upload to server
+            EducationProgramService.uploadCompetenceDescription(this.props.id, reader.result,
+                response => {
+                    this.setState({competence_description: response.data.competence_description});
+                });
+        }, false);
+        // Read file
+        reader.readAsDataURL(files[0]);
     }
 
     render() {
@@ -133,10 +159,17 @@ export default class EditActingProgram extends React.Component {
                     <div>
                         <span>
                             Current description:
+                            &nbsp;
+                            {this.state.competence_description !== null && this.state.competence_description.has_data &&
+                            <a href={this.state.competence_description['download-url']}>download</a>
+                            }
+                            {(this.state.competence_description === null || !this.state.competence_description.has_data ) &&
+                            <span>none</span>
+                            }
                         </span>
-                        <Dropzone accept="application/pdf">
+                        <Dropzone className="dropzone" accept="application/pdf" multiple={false} onDrop={this.onDrop} >
                             <p>
-                                Click or drop file to upload the competence description for this education program
+                                Click or drop file to upload the competence description
                             </p>
                         </Dropzone>
                     </div>

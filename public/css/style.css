@@ -393,3 +393,21 @@ a.nav-tile:focus {
     margin-right: 0;
   }
 }
+.dropzone {
+  width: 75%;
+  height: 100px;
+  text-align: center;
+  line-height: 100px;
+  cursor: pointer;
+  border: 2px dashed #666666;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  transition: all 0.5s;
+}
+.dropzone:hover {
+  background-color: #00A1E2;
+  color: white;
+  transition: all 0.5s;
+}
