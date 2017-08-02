@@ -483,4 +483,56 @@ a.nav-tile {
   }
 }
 
+.defaultButton {
+  display: block;
+  width: 150px;
+  min-height:34px;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: @hu-blue;
+  font-size: 14px;
+  padding: 9px;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    background-color: @hu-red;
+    color: white;
+  }
+  &.red {
+    background-color: @hu-red;
+    &:hover {
+      background-color: darken(@hu-red, 20%)
+    }
+  }
+  &.list {
+    margin: 15px;
+  }
+  //&.list-large {
+  //  margin: 40px;
+  //  transition: all 0.5s;
+  //}
+  &.fill {
+    width:100%;
+  }
+  &.add {
+    background-color: @hu-green;
+    &:hover {
+      background-color: darken(@hu-green, 20%)
+    }
+  }
+  &.inline {
+    display: inline-block;
+    margin: 10px 10px;
+  }
+}
+
+.buttonListItem {
+  margin: 15px 10px 15px 30px;
+  transition: all 0.5s;
+  &.expand {
+    margin: 25px 10px 25px 75px;
+    transition:all 0.5s;
+  }
+}
+
 

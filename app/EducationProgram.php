@@ -27,6 +27,10 @@ class EducationProgram extends Model
         return $this->hasOne(CompetenceDescription::class, 'education_program_id', 'ep_id');
     }
 
+    public function category() {
+        return $this->hasMany(Category::class, 'ep_id', 'ep_id');
+    }
+
     public function educationprogramType()
     {
         return $this->hasOne(\App\EducationProgramType::class, 'eptype_id', 'eptype_id');

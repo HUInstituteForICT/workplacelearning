@@ -25,6 +25,10 @@ class Category extends Model
         'wplp_id',
     ];
 
+    public function educationProgram() {
+        return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
+    }
+
     public function InternshipPeriods()
     {
         return $this->belongsTo(\App\WorkplaceLearningPeriod::class);

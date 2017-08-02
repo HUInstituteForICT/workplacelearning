@@ -19,6 +19,12 @@ export default class EducationProgramService {
             })
     }
 
+    static createEducationProgram(data, callback) {
+        axios.post(base + 'education-program', data)
+            .then(callback)
+            .catch(error => {console.log("Unable to create education program: " + error)});
+    }
+
     static createEntity(programId, type, value, callback) {
         axios.post(base + 'education-program/' + programId + '/entity', {
             type: type,

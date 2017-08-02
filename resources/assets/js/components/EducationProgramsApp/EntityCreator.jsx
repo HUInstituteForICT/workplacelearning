@@ -5,7 +5,8 @@ export const EntityTypes = {
     competence: 1,
     timeslot: 2,
     resourcePerson: 3,
-    resource_person: 3 // because of inconsistent design necessary
+    resource_person: 3, // because of inconsistent design necessary
+    category: 4
 };
 
 export class EntityCreator extends React.Component {
@@ -16,6 +17,7 @@ export class EntityCreator extends React.Component {
 
         this.onFieldChange = this.onFieldChange.bind(this);
         this.onCreateEntityClick = this.onCreateEntityClick.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
     }
 
     onFieldChange(element) {
@@ -34,18 +36,27 @@ export class EntityCreator extends React.Component {
         );
     }
 
+    onKeyPress(event) {
+        if(event.key === 'Enter') {
+            this.onCreateEntityClick();
+        }
+    }
+
     render() {
         return <div className="row">
             <div className="col-md-6">
                 <div className="form-group">
 
-                    <input className="form-control" type="text" placeholder="name" onChange={this.onFieldChange}
+                    <input onKeyPress={this.onKeyPress} className="form-control" type="text" placeholder="Name of item to add" onChange={this.onFieldChange}
                            value={this.state.fieldValue}/>
                     <br/>
-                    <button className="btn" onClick={this.onCreateEntityClick}>Add</button>
+                    <span className="defaultButton add" onClick={this.onCreateEntityClick}>Add</span>
 
                 </div>
+                <hr/>
             </div>
+
+
         </div>
     }
 

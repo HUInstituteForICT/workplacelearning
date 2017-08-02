@@ -14,6 +14,7 @@ export default class EntityListEntry extends React.Component {
         this.toEdit = this.toEdit.bind(this);
         this.save = this.save.bind(this);
         this.onChangeFieldValue = this.onChangeFieldValue.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
     }
 
     toEdit() {
@@ -39,22 +40,40 @@ export default class EntityListEntry extends React.Component {
         this.setState({fieldValue: element.target.value});
     }
 
+    onKeyPress(event) {
+        if (event.key === 'Enter') {
+            this.save();
+        }
+    }
+
     render() {
-        if (this.state.loading) return <div className="smallLoader"> </div>;
 
         // Render edit field
         if (this.state.editMode) {
-            return <span>
-                <input type="text" className="form-control" style={{width: '50%', display: 'inline-block'}} value={this.state.fieldValue} onChange={this.onChangeFieldValue}/>
-                &nbsp;<a onClick={this.save}>save</a>
-            </span>
+            return <div className="buttonListItem expand">
+                {this.state.loading && <div className="loader"/>}
+                {!this.state.loading && <div>
+                    <input onKeyPress={this.onKeyPress} type="text" className="form-control"
+                           style={{display: 'inline-block', width: 'auto'}} value={this.state.fieldValue}
+                           onChange={this.onChangeFieldValue}/>
+
+                    <span className="defaultButton inline" onClick={this.save}>
+                    save
+                    </span>
+                    <span className="defaultButton inline red"
+                          onClick={() => this.props.onRemoveClick(this.props.id, this.props.type)}>
+                    delete
+                    </span>
+                </div>}
+            </div>
         }
 
         // Render the default show field
-        return <span>
-            <a onClick={() => this.props.onRemoveClick(this.props.id, this.props.type)}>x</a> - {this.props.label} - <a
-            onClick={this.toEdit}>edit</a>
-        </span>
+        return <div className="buttonListItem">
+            <span className="defaultButton" onClick={this.toEdit}>
+                {this.props.label}
+            </span>
+        </div>
     }
 
 

@@ -1,11 +1,11 @@
 import * as React from "react";
 import EducationProgramService from "../../services/EducationProgramService";
-import update from 'immutability-helper';
-import {EntityTypes, EntityCreator} from "./EntityCreator";
+import {EntityCreator, EntityTypes} from "./EntityCreator";
 import EntityListEntry from "./EntityListEntry";
-import Dropzone from "react-dropzone";
+import update from 'immutability-helper';
 
-export default class EditActingProgram extends React.Component {
+
+export default class editProducingProgram extends React.Component {
 
     constructor(props) {
         super(props);
@@ -13,10 +13,8 @@ export default class EditActingProgram extends React.Component {
         this.state = {
             loading: false,
             ep_name: '',
-            competence: [],
-            competence_description: {id: null, has_data: false},
-            timeslot: [],
-            resource_person: []
+            resource_person: [],
+            category: []
         };
 
         this.autoUpdaterTimeout = null;
@@ -25,7 +23,6 @@ export default class EditActingProgram extends React.Component {
         this.removeFromStateArray = this.removeFromStateArray.bind(this);
         this.onEntityCreated = this.onEntityCreated.bind(this);
         this.onEntityUpdatedName = this.onEntityUpdatedName.bind(this);
-        this.onDrop = this.onDrop.bind(this);
     }
 
     componentDidMount() {
@@ -43,6 +40,7 @@ export default class EditActingProgram extends React.Component {
             this.setState({loading: true});
 
             EducationProgramService.getEditableEducationProgram(response => {
+
                 this.setState(response.data);
                 this.setState({loading: false});
             }, nextProps.id);
@@ -100,22 +98,11 @@ export default class EditActingProgram extends React.Component {
             this.setState(prevState => ({timeslot: update(prevState.timeslot, {$push: [entity]})}))
         } else if(type === EntityTypes.resourcePerson) {
             this.setState(prevState => ({resource_person: update(prevState.resource_person, {$push: [entity]})}))
+        } else if(type === EntityTypes.category) {
+            this.setState(prevState => ({category: update(prevState.category, {$push:[entity]})}));
         }
     }
 
-    // On dropping file in dropzone
-    onDrop(files) {
-        let reader = new FileReader();
-        reader.addEventListener("load", () => {
-            // Upload to server
-            EducationProgramService.uploadCompetenceDescription(this.props.id, reader.result,
-                response => {
-                    this.setState({competence_description: response.data.competence_description});
-                });
-        }, false);
-        // Read file
-        reader.readAsDataURL(files[0]);
-    }
 
     render() {
         if (this.state.loading) return <div className="loader">Loading...</div>;
@@ -132,69 +119,29 @@ export default class EditActingProgram extends React.Component {
                 </div>
             </div>
 
-            <hr/>
+
 
             <div>
-                <h4>Competencies</h4>
+                <h4>Categories</h4>
                 <div className="form-group">
-
-                        {program.competence.map(competence => {
-                            return <div key={competence.competence_id}>
-                                <EntityListEntry type="competence"
-                                                 id={competence.competence_id}
-                                                 label={competence.competence_label}
-                                                 onRemoveClick={this.removeFromStateArray}
-                                                 onEntityUpdatedName={this.onEntityUpdatedName}
-                                />
-                            </div>
-                        })}
-
-                    <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.competence}
-                                   programId={this.props.id}/>
-
-
-                    <h5>Competence description</h5>
-                    <div>
-                        <span>
-                            Current description:
-                            &nbsp;
-                            {this.state.competence_description !== null && this.state.competence_description.has_data &&
-                            <a href={this.state.competence_description['download-url']}>download</a>
-                            }
-                            {(this.state.competence_description === null || !this.state.competence_description.has_data ) &&
-                            <span>none</span>
-                            }
-                        </span>
-                        <Dropzone className="dropzone" accept="application/pdf" multiple={false} onDrop={this.onDrop} >
-                            <p>
-                                Click or drop file to upload the competence description
-                            </p>
-                        </Dropzone>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <h4>Timeslots</h4>
-                <div className="form-group">
-
-                        {program.timeslot.map(timeslot => {
-                            return <div key={timeslot.timeslot_id}>
-                                <EntityListEntry type="timeslot"
-                                                 id={timeslot.timeslot_id}
-                                                 label={timeslot.timeslot_text}
+                        {program.category.map(category=> {
+                            return <div key={category.category_id}>
+                                <EntityListEntry type="category"
+                                                 id={category.category_id}
+                                                 label={category.category_label}
                                                  onRemoveClick={this.removeFromStateArray}
                                                  onEntityUpdatedName={this.onEntityUpdatedName}
 
                                 />
+
                             </div>
                         })}
-
-                    <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.timeslot}
+                    <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.category}
                                    programId={this.props.id}/>
 
                 </div>
             </div>
+
 
             <div>
                 <h4>Resource Persons</h4>
@@ -211,12 +158,13 @@ export default class EditActingProgram extends React.Component {
 
                             </div>
                         })}
-
                     <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.resourcePerson}
                                    programId={this.props.id}/>
 
                 </div>
             </div>
+
+
         </div>;
     }
 

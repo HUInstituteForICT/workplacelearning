@@ -411,3 +411,49 @@ a.nav-tile:focus {
   color: white;
   transition: all 0.5s;
 }
+.defaultButton {
+  display: block;
+  width: 150px;
+  min-height: 34px;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: #00A1E2;
+  font-size: 14px;
+  padding: 9px;
+  text-align: center;
+  cursor: pointer;
+}
+.defaultButton:hover {
+  background-color: #e72e2a;
+  color: white;
+}
+.defaultButton.red {
+  background-color: #e72e2a;
+}
+.defaultButton.red:hover {
+  background-color: #9a1411;
+}
+.defaultButton.list {
+  margin: 15px;
+}
+.defaultButton.fill {
+  width: 100%;
+}
+.defaultButton.add {
+  background-color: #6aea7a;
+}
+.defaultButton.add:hover {
+  background-color: #1dd134;
+}
+.defaultButton.inline {
+  display: inline-block;
+  margin: 10px 10px;
+}
+.buttonListItem {
+  margin: 15px 10px 15px 30px;
+  transition: all 0.5s;
+}
+.buttonListItem.expand {
+  margin: 25px 10px 25px 75px;
+  transition: all 0.5s;
+}

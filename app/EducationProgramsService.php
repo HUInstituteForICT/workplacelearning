@@ -14,6 +14,7 @@ class EducationProgramsService
         "competence"     => 1,
         "timeslot"       => 2,
         "resourcePerson" => 3,
+        "category"       => 4,
     ];
 
     // Mapping necessary due to inconsistent naming of model properties
@@ -21,6 +22,7 @@ class EducationProgramsService
         1 => "competence_label",
         2 => "timeslot_text",
         3 => "person_label",
+        4 => "category_label",
     ];
 
     /**
@@ -38,6 +40,8 @@ class EducationProgramsService
             $entity = Timeslot::find($entityId);
         } elseif ($type === 3) {
             $entity = ResourcePerson::find($entityId);
+        } elseif ($type === 4) {
+            $entity = Category::find($entityId);
         }
         if ($entity instanceof Model) {
             return $entity;
@@ -61,7 +65,9 @@ class EducationProgramsService
             $result = $program->timeslot()->save(new Timeslot(["timeslot_text" => $value]));
         } elseif ($type === 3) {
             $result = $program->resourcePerson()->save(new ResourcePerson(["person_label" => $value, "wplp_id" => 0]));
-        };
+        } elseif ($type === 4) {
+            $result = $program->category()->save(new Category(["category_label" => $value, "wplp_id" => 0]));
+        }
 
         return $result;
 
@@ -123,6 +129,21 @@ class EducationProgramsService
         Storage::disk('local')->put($competenceDescription->file_name, base64_decode(substr($fileData, 28)));
 
         return $competenceDescription;
+    }
+
+    /**
+     * @param $data array contains name and type for the education program
+     * @return EducationProgram
+     * @throws \Exception if unable to create
+     */
+    public function createEducationProgram(array $data)
+    {
+        $program = EducationProgram::create($data);
+        if (!$program instanceof Model) {
+            throw new \Exception("Unable to create Educationprogram with {$data['name']}");
+        }
+
+        return $program;
     }
 
 

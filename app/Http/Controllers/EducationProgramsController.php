@@ -8,6 +8,7 @@ use App\CompetenceDescription;
 use App\EducationProgram;
 use App\EducationProgramsService;
 use App\Http\Requests\EducationProgram\CreateCompetenceDescriptionRequest;
+use App\Http\Requests\EducationProgram\CreateEducationProgramRequest;
 use App\Http\Requests\EducationProgram\CreateEntityRequest;
 use App\Http\Requests\EducationProgram\DeleteEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateEntityRequest;
@@ -28,18 +29,33 @@ class EducationProgramsController extends Controller
         return view('pages.education-programs');
     }
 
-    public function getEducationalPrograms()
+    public function getEducationPrograms()
     {
         return EducationProgram::all();
+    }
+
+    public function createEducationProgram(CreateEducationProgramRequest $request) {
+        $program = $this->programsService->createEducationProgram($request->all());
+        return response()->json(["status" => "success", "program" => $program]);
     }
 
     public function getEditableProgram(EducationProgram $program)
     {
 
-        $program->competence;
-        $program->timeslot;
+        if($program->eptype_id === 1) {
+            $program->competence;
+            $program->timeslot;
+            $program->competenceDescription;
+        } elseif ($program->eptype_id === 2) {
+            $program->category = $program->category()->get()->filter(function($category, $key) {
+                /** $category Category */
+                return $category->wplp_id === 0;
+            });
+
+        }
+
         $program->resourcePerson;
-        $program->competenceDescription;
+
 
         return response()->json($program);
 
