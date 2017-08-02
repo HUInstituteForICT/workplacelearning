@@ -20,7 +20,7 @@ class EducationProgram extends Model
 
     // Default
     protected $fillable = [
-        'ep_name',
+        'ep_name', 'eptype_id'
     ];
 
     public function competenceDescription() {
