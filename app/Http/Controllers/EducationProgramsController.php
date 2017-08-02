@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\EducationProgram;
 use App\EducationProgramsService;
+use App\Http\Requests\EducationProgram\CreateCompetenceDescriptionRequest;
 use App\Http\Requests\EducationProgram\CreateEntityRequest;
 use App\Http\Requests\EducationProgram\DeleteEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateEntityRequest;
@@ -40,6 +41,7 @@ class EducationProgramsController extends Controller
         $program->competence;
         $program->timeslot;
         $program->resourcePerson;
+        $program->competenceDescription;
 
         return response()->json($program);
 
@@ -83,5 +85,10 @@ class EducationProgramsController extends Controller
         }
 
         return response()->json(["status" => "success", "program" => $program]);
+    }
+
+    public function createCompetenceDescription(EducationProgram $program, CreateCompetenceDescriptionRequest $request)
+    {
+
     }
 }

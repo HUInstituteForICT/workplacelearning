@@ -15,6 +15,7 @@ class EducationProgramsService
         "resourcePerson" => 3,
     ];
 
+    // Mapping necessary due to inconsistent naming of model properties
     const nameToEntityNameMapping = [
         1 => "competence_label",
         2 => "timeslot_text",
@@ -22,9 +23,10 @@ class EducationProgramsService
     ];
 
     /**
-     * @param $entityId int
-     * @param $type int
-     * @return null|Model
+     * @param $entityId int ID of the entity
+     * @param $type int type of the entity
+     * @return Model|null the found entity or null if it doesn't exist
+     * @throws \Exception
      */
     private function getEntity($entityId, $type)
     {
@@ -43,6 +45,12 @@ class EducationProgramsService
         }
     }
 
+    /**
+     * @param $type int type of the entity
+     * @param $value string value of the entity (often name)
+     * @param EducationProgram $program
+     * @return false|Model|null
+     */
     public function createEntity($type, $value, EducationProgram $program)
     {
         $result = null;
@@ -58,6 +66,11 @@ class EducationProgramsService
 
     }
 
+    /**
+     * @param $entityId int ID of the entity to delete
+     * @param $type int Typ eof the entity
+     * @return bool|null if the delete was successful
+     */
     public function deleteEntity($entityId, $type)
     {
         $entity = $this->getEntity($entityId, $type);
@@ -65,6 +78,11 @@ class EducationProgramsService
         return $entity->delete();
     }
 
+    /**
+     * @param EducationProgram $program
+     * @param array $data data to save
+     * @return bool if the program has been saved
+     */
     public function updateProgram(EducationProgram $program, array $data)
     {
         return $program->update($data);
@@ -78,7 +96,6 @@ class EducationProgramsService
      */
     public function updateEntity($entityId, array $data)
     {
-        // Mapping necessary due to inconsistent naming of model properties
 
 
         $entity = $this->getEntity($entityId, $data['type']);
@@ -89,6 +106,10 @@ class EducationProgramsService
         }
 
         return $entity;
+    }
+
+    public function handleUploadedCompetenceDescription(EducationProgram $program, $fileData) {
+
     }
 
 

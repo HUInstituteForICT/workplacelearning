@@ -3,13 +3,14 @@ import EducationProgramService from "../../services/EducationProgramService";
 import update from 'immutability-helper';
 import {EntityTypes, EntityCreator} from "./EntityCreator";
 import EntityListEntry from "./EntityListEntry";
+import Dropzone from "react-dropzone";
 
 export default class EditActingProgram extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {loading: false, ep_name: '', competence: [], timeslot: [], resource_person:[]};
+        this.state = {loading: false, ep_name: '', competence: [], competenceFileUrl: '', timeslot: [], resource_person:[]};
 
         this.autoUpdaterTimeout = null;
 
@@ -69,6 +70,8 @@ export default class EditActingProgram extends React.Component {
         })
     }
 
+    // Get the index of the entity with ID and type
+    // Type defines which array in the state
     getEntityIndex(id, type) {
         return this.state[type].findIndex(entity => entity[type + '_id'] === parseInt(id));
     }
@@ -125,6 +128,18 @@ export default class EditActingProgram extends React.Component {
                     <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.competence}
                                    programId={this.props.id}/>
 
+
+                    <h5>Competence description</h5>
+                    <div>
+                        <span>
+                            Current description:
+                        </span>
+                        <Dropzone accept="application/pdf">
+                            <p>
+                                Click or drop file to upload the competence description for this education program
+                            </p>
+                        </Dropzone>
+                    </div>
                 </div>
             </div>
 

@@ -23,6 +23,10 @@ class EducationProgram extends Model
         'ep_name',
     ];
 
+    public function competenceDescription() {
+        return $this->hasOne(CompetenceDescription::class, 'education_program_id', 'ep_id');
+    }
+
     public function educationprogramType()
     {
         return $this->hasOne(\App\EducationProgramType::class, 'eptype_id', 'eptype_id');

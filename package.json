@@ -18,8 +18,8 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "immutability-helper": "^2.2.3"
-
   },
   "dependencies": {
+    "react-dropzone": "^3.13.4"
   }
 }
