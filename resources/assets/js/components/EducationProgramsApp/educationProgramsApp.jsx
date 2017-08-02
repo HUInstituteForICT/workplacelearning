@@ -1,6 +1,8 @@
 import * as React from "react";
 import EducationProgramService from "../../services/EducationProgramService";
 import EditActingProgram from "./editActingProgram";
+import update from 'immutability-helper';
+
 
 export default class educationProgramsApp extends React.Component {
 
@@ -12,6 +14,8 @@ export default class educationProgramsApp extends React.Component {
             programs: [],
             selectedProgramId: null
         }
+
+        this.updateProgramName = this.updateProgramName.bind(this);
     }
 
     componentDidMount() {
@@ -48,12 +52,28 @@ export default class educationProgramsApp extends React.Component {
         </div>;
     }
 
+    /**
+     * Update the name shown in the list, called by a child component
+     * @param id
+     * @param name
+     */
+    updateProgramName(id, name) {
+        let index = this.state.programs.map(function (program) {
+            return program.ep_id;
+        }).indexOf(id);
+        this.setState({programs: update(this.state.programs, {[index]: {ep_name: {$set: name}}})});
+    }
+
+    /**
+     * Render the edit form of a single program
+     * @returns {XML}
+     */
     renderEditForm() {
         if(this.state.selectedProgramId === null) {
             return <h5>None selected</h5>
         }
 
-        return <EditActingProgram id={this.state.selectedProgramId}/>
+        return <EditActingProgram id={this.state.selectedProgramId} programOnNameChange={this.updateProgramName}/>
 
     }
 

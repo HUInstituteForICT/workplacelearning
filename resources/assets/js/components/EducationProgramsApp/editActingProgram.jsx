@@ -1,6 +1,8 @@
 import * as React from "react";
 import EducationProgramService from "../../services/EducationProgramService";
 import update from 'immutability-helper';
+import {EntityTypes, EntityCreator} from "./EntityCreator";
+import EntityListEntry from "./EntityListEntry";
 
 export default class EditActingProgram extends React.Component {
 
@@ -9,9 +11,12 @@ export default class EditActingProgram extends React.Component {
 
         this.state = {loading: false, ep_name: '', competence: [], timeslot: [], resource_person:[]};
 
-        this.programOnChange = this.programOnChange.bind(this);
+        this.autoUpdaterTimeout = null;
+
+        this.programOnNameChange = this.programOnNameChange.bind(this);
         this.removeFromStateArray = this.removeFromStateArray.bind(this);
         this.onEntityCreated = this.onEntityCreated.bind(this);
+        this.onEntityUpdatedName = this.onEntityUpdatedName.bind(this);
     }
 
     componentDidMount() {
@@ -36,23 +41,44 @@ export default class EditActingProgram extends React.Component {
     }
 
     // On education program name change
-    programOnChange(element) {
+    programOnNameChange(element) {
+        clearTimeout(this.autoUpdaterTimeout);
         this.setState({
             [element.target.getAttribute('name')]: element.target.value
         });
+
+        this.autoUpdaterTimeout = setTimeout(() => {
+            EducationProgramService.updateName(this.props.id, {ep_name: this.state.ep_name}, response => {
+                this.props.programOnNameChange(this.props.id, response.data.program.ep_name);
+            })
+        }, 500)
+
+
+
     }
 
     // On removing competence/timeslot/resourceperson from list
-    removeFromStateArray(element) {
-        const id = element.target.getAttribute('data-id');
-        const type = element.target.getAttribute('data-type') === 'resourcePerson' ? 'resource_person' : element.target.getAttribute('data-type');
+    removeFromStateArray(id, type) {
 
+        // Magic
         EducationProgramService.deleteEntity(EntityTypes[type], id, response => {
-            const index = this.state[type].findIndex(entity => entity[type + '_id'] === parseInt(id));
+            const index = this.getEntityIndex(id, type);
             this.setState(prevState => ({
                 [type]: update(prevState[type], {$splice: [[index, 1]]})
             }));
         })
+    }
+
+    getEntityIndex(id, type) {
+        return this.state[type].findIndex(entity => entity[type + '_id'] === parseInt(id));
+    }
+
+    // Update the entity in the parent array
+    onEntityUpdatedName(id, type, name, mappedNameField) {
+        const index = this.getEntityIndex(id, type);
+        this.setState(prevState => ({
+            [type]: update(prevState[type], {[index]: {[mappedNameField]: {$set: name}}})
+        }));
     }
 
     // When the user adds a new entity
@@ -76,7 +102,7 @@ export default class EditActingProgram extends React.Component {
                     <label>
                         Education program name
                         <input type="text" className="form-control" name="ep_name" value={program.ep_name}
-                               onChange={this.programOnChange}/>
+                               onChange={this.programOnNameChange}/>
                     </label>
                 </div>
             </div>
@@ -87,8 +113,12 @@ export default class EditActingProgram extends React.Component {
                     <ul>
                         {program.competence.map(competence => {
                             return <li key={competence.competence_id}>
-                                <a data-type="competence" data-id={competence.competence_id}
-                                   onClick={this.removeFromStateArray}>x</a> - {competence.competence_label}
+                                <EntityListEntry type="competence"
+                                                 id={competence.competence_id}
+                                                 label={competence.competence_label}
+                                                 onRemoveClick={this.removeFromStateArray}
+                                                 onEntityUpdatedName={this.onEntityUpdatedName}
+                                />
                             </li>
                         })}
                     </ul>
@@ -104,8 +134,13 @@ export default class EditActingProgram extends React.Component {
                     <ul>
                         {program.timeslot.map(timeslot => {
                             return <li key={timeslot.timeslot_id}>
-                                <a data-type="timeslot" data-id={timeslot.timeslot_id}
-                                   onClick={this.removeFromStateArray}>x</a> - {timeslot.timeslot_text}
+                                <EntityListEntry type="timeslot"
+                                                 id={timeslot.timeslot_id}
+                                                 label={timeslot.timeslot_text}
+                                                 onRemoveClick={this.removeFromStateArray}
+                                                 onEntityUpdatedName={this.onEntityUpdatedName}
+
+                                />
                             </li>
                         })}
                     </ul>
@@ -121,8 +156,14 @@ export default class EditActingProgram extends React.Component {
                     <ul>
                         {program.resource_person.map(resourcePerson => {
                             return <li key={resourcePerson.rp_id}>
-                                <a data-type="resourcePerson" data-id={resourcePerson.rp_id}
-                                   onClick={this.removeFromStateArray}>x</a> - {resourcePerson.person_label}
+                                <EntityListEntry type="resource_person"
+                                                 id={resourcePerson.rp_id}
+                                                 label={resourcePerson.person_label}
+                                                 onRemoveClick={this.removeFromStateArray}
+                                                 onEntityUpdatedName={this.onEntityUpdatedName}
+
+                                />
+
                             </li>
                         })}
                     </ul>
@@ -134,55 +175,5 @@ export default class EditActingProgram extends React.Component {
         </div>;
     }
 
-
-}
-
-const EntityTypes = {
-    competence: 1,
-    timeslot: 2,
-    resourcePerson: 3,
-    resource_person: 3 // because of inconsistent design necessary
-};
-
-class EntityCreator extends React.Component {
-
-
-    constructor(props) {
-        super(props);
-        this.state = {fieldValue: ''};
-
-        this.onFieldChange = this.onFieldChange.bind(this);
-        this.onCreateEntityClick = this.onCreateEntityClick.bind(this);
-    }
-
-    onFieldChange(element) {
-        this.setState({fieldValue: element.target.value});
-    }
-
-    onCreateEntityClick() {
-        EducationProgramService.createEntity(
-            this.props.programId,
-            this.props.type,
-            this.state.fieldValue,
-            response => {
-                this.props.onEntityCreated(this.props.type, response.data.entity)
-            }
-        );
-    }
-
-    render() {
-        return <div className="row">
-            <div className="col-md-6">
-                <div className="form-group">
-
-                    <input className="form-control" type="text" placeholder="name" onChange={this.onFieldChange}
-                           value={this.state.fieldValue}/>
-                    <br/>
-                    <button className="btn" onClick={this.onCreateEntityClick}>Add</button>
-
-                </div>
-            </div>
-        </div>
-    }
 
 }

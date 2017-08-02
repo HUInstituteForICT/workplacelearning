@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\EducationProgram;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EducationProgramDeleteEntityRequest extends FormRequest
+class CreateEntityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class EducationProgramDeleteEntityRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|numeric'
+            "type" => "required|numeric",
+            "value" => "required"
         ];
     }
 }

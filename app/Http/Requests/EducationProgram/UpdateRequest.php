@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
-
+namespace App\Http\Requests\EducationProgram;
 use Illuminate\Foundation\Http\FormRequest;
 
-class EducationProgramCreateEntityRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +23,7 @@ class EducationProgramCreateEntityRequest extends FormRequest
     public function rules()
     {
         return [
-            "type" => "required|numeric",
-            "value" => "required"
+            'ep_name' => 'required'
         ];
     }
 }

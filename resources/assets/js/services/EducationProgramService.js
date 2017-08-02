@@ -37,4 +37,16 @@ export default class EducationProgramService {
                 console.log("EducationPrograms delete entity service error: " + error);
             })
     }
+
+    static updateEntity(id, data, callback) {
+        axios.put(base + 'education-program/entity/' + id , data).then(callback);
+    }
+
+    static updateName(id, data, callback) {
+        axios.put(base + 'education-program/' + id, data)
+            .then(callback)
+            .catch(error => {
+                console.log("EducationPrograms update service error: " + error);
+            })
+    }
 }

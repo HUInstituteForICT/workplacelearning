@@ -22,7 +22,7 @@ Route::get('/logout', 'Auth\LoginController@logout');
 //Route::auth();
 
 
-// API ROUTES - NOTE: NO LOCALIZATION AS IT WILL BREAK THE REQUEST DUE TO REDIRECTS
+// API ROUTES - NOTE: NO LOCALIZATION AS IT WILL BREAK THE REQUEST DUE TO REDIRECTS (urls without a specified language get redirected, breaks POST requests to GET)
 Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix' => '/education-programs/api'],
     function () {
 
@@ -30,6 +30,8 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
         Route::get('education-programs', 'EducationProgramsController@getEducationalPrograms');
         Route::post('education-program/{program}/entity', 'EducationProgramsController@createEntity');
         Route::post('education-program/entity/{entity}/delete', 'EducationProgramsController@deleteEntity');
+        Route::put('education-program/entity/{entity}', 'EducationProgramsController@updateEntity');
+        Route::put('education-program/{program}', 'EducationProgramsController@updateProgram');
         Route::get('editable-education-program/{program}', 'EducationProgramsController@getEditableProgram');
 
 
