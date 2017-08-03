@@ -465,11 +465,16 @@ a.nav-tile {
 
 
 .dropzone {
-  width: 75%;
-  height: 100px;
+  width: 100%;
+  height: 75px;
   text-align: center;
-  line-height: 100px;
   cursor:pointer;
+  display: flex;
+  flex-direction: column;
+  /* now centers things in X,Y axis */
+  align-items: center;
+  justify-content: center;
+
   border: 2px dashed rgb(102, 102, 102);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -485,7 +490,7 @@ a.nav-tile {
 
 .defaultButton {
   display: block;
-  width: 150px;
+  width: 100%;
   min-height:34px;
   border-radius: 4px;
   color: #ffffff;
@@ -505,12 +510,10 @@ a.nav-tile {
     }
   }
   &.list {
-    margin: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
-  //&.list-large {
-  //  margin: 40px;
-  //  transition: all 0.5s;
-  //}
+
   &.fill {
     width:100%;
   }
@@ -521,16 +524,19 @@ a.nav-tile {
     }
   }
   &.inline {
-    display: inline-block;
+    display: inline;
     margin: 10px 10px;
   }
 }
 
 .buttonListItem {
-  margin: 15px 10px 15px 30px;
+  margin: 15px 0px 0px 0px;
   transition: all 0.5s;
+  .defaultButton {
+    width: 100%;
+  }
   &.expand {
-    margin: 25px 10px 25px 75px;
+    margin: 15px 10px 15px 25px;
     transition:all 0.5s;
   }
 }

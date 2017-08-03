@@ -120,11 +120,11 @@ export default class editProducingProgram extends React.Component {
             </div>
 
 
-
-            <div>
-                <h4>Categories</h4>
-                <div className="form-group">
-                        {program.category.map(category=> {
+            <div className="row">
+                <div className="col-md-4">
+                    <h4>Categories</h4>
+                    <div className="form-group">
+                        {program.category.map(category => {
                             return <div key={category.category_id}>
                                 <EntityListEntry type="category"
                                                  id={category.category_id}
@@ -136,16 +136,16 @@ export default class editProducingProgram extends React.Component {
 
                             </div>
                         })}
-                    <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.category}
-                                   programId={this.props.id}/>
+                        <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.category}
+                                       programId={this.props.id}/>
 
+                    </div>
                 </div>
-            </div>
 
 
-            <div>
-                <h4>Resource Persons</h4>
-                <div className="form-group">
+                <div className="col-md-4">
+                    <h4>Resource Persons</h4>
+                    <div className="form-group">
                         {program.resource_person.map(resourcePerson => {
                             return <div key={resourcePerson.rp_id}>
                                 <EntityListEntry type="resource_person"
@@ -158,9 +158,10 @@ export default class editProducingProgram extends React.Component {
 
                             </div>
                         })}
-                    <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.resourcePerson}
-                                   programId={this.props.id}/>
+                        <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.resourcePerson}
+                                       programId={this.props.id}/>
 
+                    </div>
                 </div>
             </div>
 

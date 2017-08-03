@@ -48,22 +48,28 @@ export default class EntityListEntry extends React.Component {
 
     render() {
 
+        let styleBtn = {
+            margin: '5px 0px',
+            display: 'block'
+        };
+
         // Render edit field
         if (this.state.editMode) {
             return <div className="buttonListItem expand">
                 {this.state.loading && <div className="loader"/>}
-                {!this.state.loading && <div>
-                    <input onKeyPress={this.onKeyPress} type="text" className="form-control"
-                           style={{display: 'inline-block', width: 'auto'}} value={this.state.fieldValue}
-                           onChange={this.onChangeFieldValue}/>
+                {!this.state.loading && <div className="">
 
-                    <span className="defaultButton inline" onClick={this.save}>
-                    save
-                    </span>
-                    <span className="defaultButton inline red"
+                    <input onKeyPress={this.onKeyPress} type="text" className="form-control"
+                           style={{display: 'inline-block', width: '100%'}} value={this.state.fieldValue}
+                           onChange={this.onChangeFieldValue}/>
+                    <br/>
+                    <span className="defaultButton" style={styleBtn} onClick={this.save}>
+                        Save
+                        </span>
+                    <span className="defaultButton red" style={styleBtn}
                           onClick={() => this.props.onRemoveClick(this.props.id, this.props.type)}>
-                    delete
-                    </span>
+                        Delete
+                        </span>
                 </div>}
             </div>
         }

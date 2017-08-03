@@ -43,8 +43,7 @@ export class EntityCreator extends React.Component {
     }
 
     render() {
-        return <div className="row">
-            <div className="col-md-6">
+        return <div style={{marginTop: '25px'}}>
                 <div className="form-group">
 
                     <input onKeyPress={this.onKeyPress} className="form-control" type="text" placeholder="Name of item to add" onChange={this.onFieldChange}
@@ -54,7 +53,6 @@ export class EntityCreator extends React.Component {
 
                 </div>
                 <hr/>
-            </div>
 
 
         </div>

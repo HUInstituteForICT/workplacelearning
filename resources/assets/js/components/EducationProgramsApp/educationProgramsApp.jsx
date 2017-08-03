@@ -69,7 +69,7 @@ export default class educationProgramsApp extends React.Component {
 
         return <div>
             <div className="row">
-                <div className="col-md-3">
+                <div className="col-md-2">
                     <h4>Education Program</h4>
                     <p>Manage and create education programs</p>
                         {this.state.programs.map(program => {
@@ -83,7 +83,7 @@ export default class educationProgramsApp extends React.Component {
 
                 </div>
 
-                <div className="col-md-8 col-md-offset-1">
+                <div className="col-md-10 ">
                     {this.renderEditForm()}
                 </div>
             </div>
@@ -99,6 +99,7 @@ export default class educationProgramsApp extends React.Component {
             <div className="form-group">
 
                 <input className="form-control" type="text" value={this.state.newProgramName}
+                       placeholder="Program name"
                        onChange={e => this.setState({newProgramName: e.target.value})}/>
                 <br/>
                 <select value={this.state.newProgramType}

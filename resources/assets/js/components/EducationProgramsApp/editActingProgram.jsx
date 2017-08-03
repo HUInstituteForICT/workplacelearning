@@ -15,6 +15,7 @@ export default class EditActingProgram extends React.Component {
             ep_name: '',
             competence: [],
             competence_description: {id: null, has_data: false},
+            uploadedText: '',
             timeslot: [],
             resource_person: []
         };
@@ -110,7 +111,8 @@ export default class EditActingProgram extends React.Component {
             // Upload to server
             EducationProgramService.uploadCompetenceDescription(this.props.id, reader.result,
                 response => {
-                    this.setState({competence_description: response.data.competence_description});
+                    this.setState({competence_description: response.data.competence_description, uploadedText: ' - successfully uploaded file'});
+                    setTimeout(() => this.setState({uploadedText: ''}), 2500);
                 });
         }, false);
         // Read file
@@ -134,9 +136,10 @@ export default class EditActingProgram extends React.Component {
 
             <hr/>
 
-            <div>
-                <h4>Competencies</h4>
-                <div className="form-group">
+            <div className="row">
+                <div className="col-md-4">
+                    <h4>Competencies</h4>
+                    <div className="form-group">
 
                         {program.competence.map(competence => {
                             return <div key={competence.competence_id}>
@@ -149,12 +152,12 @@ export default class EditActingProgram extends React.Component {
                             </div>
                         })}
 
-                    <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.competence}
-                                   programId={this.props.id}/>
+                        <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.competence}
+                                       programId={this.props.id}/>
 
 
-                    <h5>Competence description</h5>
-                    <div>
+                        <h5>Competence description</h5>
+                        <div>
                         <span>
                             Current description:
                             &nbsp;
@@ -164,19 +167,21 @@ export default class EditActingProgram extends React.Component {
                             {(this.state.competence_description === null || !this.state.competence_description.has_data ) &&
                             <span>none</span>
                             }
+                            {this.state.uploadedText}
                         </span>
-                        <Dropzone className="dropzone" accept="application/pdf" multiple={false} onDrop={this.onDrop} >
-                            <p>
-                                Click or drop file to upload the competence description
-                            </p>
-                        </Dropzone>
+                            <Dropzone className="dropzone" accept="application/pdf" multiple={false}
+                                      onDrop={this.onDrop}>
+                                <span>
+                                    Click or drop file to upload the competence description
+                                </span>
+                            </Dropzone>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div>
-                <h4>Timeslots</h4>
-                <div className="form-group">
+                <div className="col-md-4">
+                    <h4>Timeslots</h4>
+                    <div className="form-group">
 
                         {program.timeslot.map(timeslot => {
                             return <div key={timeslot.timeslot_id}>
@@ -190,15 +195,15 @@ export default class EditActingProgram extends React.Component {
                             </div>
                         })}
 
-                    <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.timeslot}
-                                   programId={this.props.id}/>
+                        <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.timeslot}
+                                       programId={this.props.id}/>
 
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <h4>Resource Persons</h4>
-                <div className="form-group">
+                <div className="col-md-4">
+                    <h4>Resource Persons</h4>
+                    <div className="form-group">
                         {program.resource_person.map(resourcePerson => {
                             return <div key={resourcePerson.rp_id}>
                                 <EntityListEntry type="resource_person"
@@ -212,11 +217,14 @@ export default class EditActingProgram extends React.Component {
                             </div>
                         })}
 
-                    <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.resourcePerson}
-                                   programId={this.props.id}/>
+                        <EntityCreator onEntityCreated={this.onEntityCreated} type={EntityTypes.resourcePerson}
+                                       programId={this.props.id}/>
 
+                    </div>
                 </div>
             </div>
+
+
         </div>;
     }
 
