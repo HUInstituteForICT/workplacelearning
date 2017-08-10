@@ -146,11 +146,13 @@ class WorkplaceLearningPeriod extends Model
 
     public function getLastActivity($count, $offset = 0)
     {
-        switch ($this->student()->first()->ep_id) {
-            case 1:
+        /** @var Student $student */
+        $student = $this->student()->first();
+        switch ($student->getEducationProgram()->eptype_id) {
+            case 2:
                 return $this->getLastActivityProducing($count, $offset);
                 break;
-            case 2:
+            case 1:
                 return $this->getLastActivityActing($count, $offset);
                 break;
             default:
