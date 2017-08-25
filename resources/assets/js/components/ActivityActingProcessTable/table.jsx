@@ -163,6 +163,7 @@ export default class ActivityActingProcessTable extends React.Component {
                 <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0}>exporteer</button>
             </div>
 
+            <div className="table-responsive">
             <table className="table blockTable">
                 <thead className="blue_tile">
                 <tr>
@@ -183,6 +184,7 @@ export default class ActivityActingProcessTable extends React.Component {
                 })}
                 </tbody>
             </table>
+            </div>
         </div>
     }
 
