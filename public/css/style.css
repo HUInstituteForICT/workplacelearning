@@ -393,3 +393,7 @@ a.nav-tile:focus {
     margin-right: 0;
   }
 }
+.activityExport td i {
+  color: #00A1E2;
+  cursor: pointer;
+}

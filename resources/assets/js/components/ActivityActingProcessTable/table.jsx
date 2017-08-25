@@ -167,6 +167,7 @@ export default class ActivityActingProcessTable extends React.Component {
             <table className="table blockTable">
                 <thead className="blue_tile">
                 <tr>
+                    <td></td>
                     <td>Datum</td>
                     <td>Situatie</td>
                     <td>Wanneer?</td>
@@ -182,6 +183,7 @@ export default class ActivityActingProcessTable extends React.Component {
                 {filteredActivities.map((activity) => {
                     return <Row key={activity.id} activity={activity}/>
                 })}
+
                 </tbody>
             </table>
             </div>
