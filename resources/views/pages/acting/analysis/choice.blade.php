@@ -107,7 +107,7 @@
                             data: {
                                 labels: {!! $actingAnalysis->charts('competence')->labels->toJson() !!},
                                 datasets: [{
-                                    label: 'Percentage leermomenten per leer doel',
+                                    label: 'Percentage leermomenten per leerdoel',
                                     data: {!! $actingAnalysis->charts('competence')->data->toJson() !!},
                                     backgroundColor: [],
                                     borderColor: [
