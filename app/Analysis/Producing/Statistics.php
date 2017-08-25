@@ -60,13 +60,19 @@ class Statistics
     *   @return float persentage of average person difficulty
     */
     public function persentageAveragePersonDifficulty() {
+        if($this->analysisData['person_difficulty'] === null) {
+            return 0;
+        }
         return round(($this->analysisData['person_difficulty']->difficult_activities/$this->analysisData['num_total_lap'])* 100, 1);
     }
 
     /**
-    *   @return name of person where the activities are the easiest
+    *   @return string name of person where the activities are the easiest
     */
     public function averagePersonDifficultyName() {
+        if($this->analysisData['person_difficulty'] === null) {
+            return '';
+        }
         return $this->analysisData['person_difficulty']->name;
     }
 

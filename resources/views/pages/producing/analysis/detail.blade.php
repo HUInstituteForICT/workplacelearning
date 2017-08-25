@@ -156,7 +156,7 @@
                         Je zou dit met je begeleider kunnen bespreken hoe je bij je werk in deze categorie ondersteund kunt worden. 
                         Misschien kun je vanuit de werkplek tips krijgen voor literatuur of personen die je hier verder mee kunnen helpen.</p>
                     @endif
-                    @if($producingAnalysis->statistic('persentageAveragePersonDifficulty') < 20)
+                    @if($producingAnalysis->statistic('persentageAveragePersonDifficulty') < 20 && $producingAnalysis->statistic('persentageAveragePersonDifficulty') > 0)
                         <p>Wanneer jij samenwerk met {{ $producingAnalysis->statistic('averagePersonDifficultyName') }}, vind je jouw werk het makkelijkst. Ga eens voor jezelf na hoe deze persoon jou helpt, 
                         waardoor je meer kunt bereiken. En bedank deze persoon eens voor zijn of haar ondersteuning ;-)</p>
                     @endif

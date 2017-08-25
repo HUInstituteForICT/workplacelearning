@@ -60,10 +60,14 @@ class ProducingAnalysis
             $year,
             $month
         )->toArray();
+
         $this->analysisData['person_difficulty'] = $this->analysisCollector->getResourcePersonDifficultyByDate(
             $year, 
             $month
-        )[0];
+        )->first();
+
+
+        if($this->analysisData)
         $this->analysisData['num_hours'] = $this->analysisCollector->getNumHoursByDate($year, $month);
         $this->analysisData['num_days'] = $this->analysisCollector->getFullWorkingDays($year, $month);
         $this->analysisData['num_lap'] = $this->analysisCollector->getNumTasksByDate($year, $month);
