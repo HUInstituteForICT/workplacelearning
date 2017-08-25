@@ -47,19 +47,16 @@ export default class ActingActivityProcessExporter {
             headers.splice(headers.indexOf(column), 1)
         });
 
-        let translatedHeaders = headers.map(header => {
-            return _.capitalize(exportTranslatedFieldMapping[header]);
-        });
-        this.output(translatedHeaders.join(" | ") + "\n");
-
         this.activities.forEach((activity, index) => {
-            let values = headers.map(header => {
+            let lines = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
-                return activity[header];
+                if(header === 'situation' || header === 'lessonsLearned') {
+                    return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" + activity[header] + " \n";
+                }
+                return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header];
             });
-            let dataString = values.join(" | ");
-            this.output(index < this.activities.length ? dataString + "\n" : dataString);
-
+            let dataString = lines.join("\n");
+            this.output(index < this.activities.length ? dataString + "\n______________\n\n" : dataString);
         });
     }
 
