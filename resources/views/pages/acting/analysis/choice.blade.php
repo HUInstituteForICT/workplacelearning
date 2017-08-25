@@ -176,43 +176,6 @@
                         });
                     </script>
 
-                    <h3>Chart theorie</h3>
-                    <canvas id="chart_materials"></canvas>
-                    <script>
-                        var canvas_materials = document.getElementById('chart_materials');
-                        var chart_materials = new Chart(canvas_materials, {
-                            type: 'pie',
-                            data: {
-                                labels: {!! $actingAnalysis->charts('material')->labels->toJson() !!},
-                                datasets: [{
-                                    data: {!! $actingAnalysis->charts('material')->data->toJson() !!},
-                                    backgroundColor: [
-                                        'rgba(255,99,132,1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)'
-                                    ],
-                                    hoverBackgroundColor: []
-                                }]
-                            },
-                            options: {
-                                tooltips: {
-                                    enabled: true,
-                                    mode: 'single',
-                                    callbacks: {
-                                        label: function (tooltipItem, data) {
-                                            var tooltipLabel = data.labels[tooltipItem.index];
-                                            var tooltipData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                                            return tooltipLabel + ' ' + tooltipData + '%';
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    </script>
-
 
                     <strong>Meest voorkomende combinatie tijdslot & leervraag:</strong>
                     {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->timeslot->timeslot_text }}

@@ -40,10 +40,11 @@ class ActingAnalysis
                 $this->analysisCollector->getResourcePersons()->map(function($person){return $person->person_label;}),
                 $this->analysisCollector->getResourcePersons()->map(function($person){return $this->statistic('percentageActivityWithResourcePerson', $person);})
             ),
-            "material" => new Chart(
+            // Not used currently, might be reinstated later on?
+            /*"material" => new Chart(
                 $this->analysisCollector->getResourceMaterials()->map(function($material){return $material->rm_label;}),
                 $this->analysisCollector->getResourceMaterials()->map(function($material){return $this->statistic('percentageActivityWithTheory', $material);})
-            )
+            )*/
         ];
     }
 
