@@ -126,6 +126,7 @@ export default class ActivityActingProcessTable extends React.Component {
                                                activated={this.state.filters.timeslot.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
+                    <div style={{clear: 'both'}}/>
                 </div>
 
                 <div className="learningGoal col-md-4">
@@ -137,6 +138,7 @@ export default class ActivityActingProcessTable extends React.Component {
                                                activated={this.state.filters.learningGoal.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
+                    <div style={{clear: 'both'}}/>
                 </div>
                 <div className="competence col-md-4">
                     <h4>Competentie</h4>
@@ -147,10 +149,11 @@ export default class ActivityActingProcessTable extends React.Component {
                                                activated={this.state.filters.competence.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
+                    <div style={{clear: 'both'}}/>
                 </div>
 
             </div>
-
+            <br/>
             <div className="export" style={{paddingBottom:"15px"}}>
 
                 <label>Export naar&nbsp;
