@@ -464,6 +464,7 @@ a.nav-tile {
 }
 
 
+
 .activityExport {
   td {
     i {
@@ -472,3 +473,81 @@ a.nav-tile {
     }
   }
 }
+
+.dropzone {
+  width: 100%;
+  height: 75px;
+  text-align: center;
+  cursor:pointer;
+  display: flex;
+  flex-direction: column;
+  /* now centers things in X,Y axis */
+  align-items: center;
+  justify-content: center;
+
+  border: 2px dashed rgb(102, 102, 102);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  transition:all 0.5s;
+  &:hover {
+    background-color: @hu-blue;
+    color: white;
+    transition:all 0.5s;
+  }
+}
+
+.defaultButton {
+  display: block;
+  width: 100%;
+  min-height:34px;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: @hu-blue;
+  font-size: 14px;
+  padding: 9px;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    background-color: @hu-red;
+    color: white;
+  }
+  &.red {
+    background-color: @hu-red;
+    &:hover {
+      background-color: darken(@hu-red, 20%)
+    }
+  }
+  &.list {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  &.fill {
+    width:100%;
+  }
+  &.add {
+    background-color: @hu-green;
+    &:hover {
+      background-color: darken(@hu-green, 20%)
+    }
+  }
+  &.inline {
+    display: inline;
+    margin: 10px 10px;
+  }
+}
+
+.buttonListItem {
+  margin: 15px 0px 0px 0px;
+  transition: all 0.5s;
+  .defaultButton {
+    width: 100%;
+  }
+  &.expand {
+    margin: 15px 10px 15px 25px;
+    transition:all 0.5s;
+  }
+}
+

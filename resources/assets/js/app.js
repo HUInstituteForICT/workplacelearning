@@ -7,11 +7,13 @@ import DOM from "react-dom";
 
 // Import components
 import ActivityActingProcessTable from "./components/ActivityActingProcessTable/table";
+import EducationProgramsApp from "./components/EducationProgramsApp/educationProgramsApp";
 
 
 
 const Apps = {
-    ActivityActingProcessTable
+    ActivityActingProcessTable,
+    EducationProgramsApp
 };
 
 // Automatically mount if one of the above declared Apps exist in the DOM

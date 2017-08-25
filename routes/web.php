@@ -14,10 +14,34 @@
 
 */
 
+use App\Http\Middleware\CheckUserLevel;
+
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 
 //Route::auth();
+
+
+// API ROUTES - NOTE: NO LOCALIZATION AS IT WILL BREAK THE REQUEST DUE TO REDIRECTS (urls without a specified language get redirected, breaks POST requests to GET)
+Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix' => '/education-programs/api'],
+    function () {
+
+        // "API" for edu programs routes
+        Route::get('education-programs', 'EducationProgramsController@getEducationPrograms');
+        Route::post('education-program', 'EducationProgramsController@createEducationProgram');
+        Route::post('education-program/{program}/entity', 'EducationProgramsController@createEntity');
+        Route::post('education-program/entity/{entity}/delete', 'EducationProgramsController@deleteEntity');
+        Route::put('education-program/entity/{entity}', 'EducationProgramsController@updateEntity');
+        Route::put('education-program/{program}', 'EducationProgramsController@updateProgram');
+        Route::get('education-program/{program}/competence-description/remove',
+            'EducationProgramsController@removeCompetenceDescription');
+        Route::post('education-program/{program}/competence-description',
+            'EducationProgramsController@createCompetenceDescription');
+        Route::get('editable-education-program/{program}', 'EducationProgramsController@getEditableProgram');
+
+
+    }
+);
 
 // Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
 // Note: The localisation is saved in a session state.
@@ -26,7 +50,12 @@ Route::group([
         'prefix' => LaravelLocalization::setLocale(),
         'middleware' => [ 'localizationRedirect', 'usernotifications' ],
         ], function () {
-                // Register the Authentication Controller
+
+    Route::group(['middleware' => CheckUserLevel::class], function () {
+        Route::get('/education-programs', 'EducationProgramsController@index')
+            ->name('education-programs');
+    });
+
 
                 // Catch the stat registration post
 
@@ -85,7 +114,15 @@ Route::group([
 
                                 // Report Creation
                                 Route::get('analysis', 'ActingAnalysisController@show')->name('analysis-acting-choice');
-                            });
+
+                    // Download competence description
+                    Route::get('competence-description/{competenceDescription}',
+                        function (\App\CompetenceDescription $competenceDescription) {
+                            return response()->download(storage_path('app/' . $competenceDescription->file_name),
+                                "competence-description.pdf");
+                        })->name('competence-description');
+
+                });
 
                 /* EP Type: Producing */
                 Route::group([
