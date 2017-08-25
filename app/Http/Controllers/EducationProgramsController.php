@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Competence;
 use App\CompetenceDescription;
 use App\EducationProgram;
 use App\EducationProgramsService;
@@ -14,6 +15,7 @@ use App\Http\Requests\EducationProgram\DeleteEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateRequest;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class EducationProgramsController extends Controller
 {
@@ -103,9 +105,22 @@ class EducationProgramsController extends Controller
 
     public function createCompetenceDescription(EducationProgram $program, CreateCompetenceDescriptionRequest $request)
     {
+        return response('', 413);
         $competenceDescription = $this->programsService->handleUploadedCompetenceDescription($program,
             $request->get('file'));
 
         return response()->json(["status" => "success", "competence_description" => $competenceDescription]);
+    }
+
+    public function removeCompetenceDescription(EducationProgram $program) {
+        /** @var CompetenceDescription $competenceDescription */
+        $competenceDescription = $program->competenceDescription;
+        if($competenceDescription !== null) {
+            Storage::disk('local')->delete($competenceDescription->file_name);
+            $competenceDescription->delete();
+        }
+
+        return response()->json(["status" => "success"]);
+
     }
 }

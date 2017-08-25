@@ -1,7 +1,7 @@
 import * as React from "react";
 import EducationProgramService from "../../services/EducationProgramService";
 import update from 'immutability-helper';
-import {EntityTypes, EntityCreator} from "./EntityCreator";
+import {EntityCreator, EntityTypes} from "./EntityCreator";
 import EntityListEntry from "./EntityListEntry";
 import Dropzone from "react-dropzone";
 
@@ -64,7 +64,6 @@ export default class EditActingProgram extends React.Component {
         }, 500)
 
 
-
     }
 
     // On removing competence/timeslot/resourceperson from list
@@ -99,7 +98,7 @@ export default class EditActingProgram extends React.Component {
             this.setState(prevState => ({competence: update(prevState.competence, {$push: [entity]})}))
         } else if (type === EntityTypes.timeslot) {
             this.setState(prevState => ({timeslot: update(prevState.timeslot, {$push: [entity]})}))
-        } else if(type === EntityTypes.resourcePerson) {
+        } else if (type === EntityTypes.resourcePerson) {
             this.setState(prevState => ({resource_person: update(prevState.resource_person, {$push: [entity]})}))
         }
     }
@@ -109,10 +108,21 @@ export default class EditActingProgram extends React.Component {
         let reader = new FileReader();
         reader.addEventListener("load", () => {
             // Upload to server
+            this.setState({uploadedText: ' - uploading...'});
+
             EducationProgramService.uploadCompetenceDescription(this.props.id, reader.result,
                 response => {
-                    this.setState({competence_description: response.data.competence_description, uploadedText: ' - successfully uploaded file'});
-                    setTimeout(() => this.setState({uploadedText: ''}), 2500);
+                    this.setState({
+                        competence_description: response.data.competence_description,
+                        uploadedText: ' - successfully uploaded file'
+                    });
+                    setTimeout(() => this.setState({uploadedText: ''}), 4000);
+                }, error => {
+                    if(error.response.status === 413) {
+                        this.setState({uploadedText: ' - the file was too large, try to make it smaller'});
+                    } else {
+                        this.setState({uploadedText: ' - error occurred while uploading, try again later'});
+                    }
                 });
         }, false);
         // Read file
@@ -162,7 +172,17 @@ export default class EditActingProgram extends React.Component {
                             Current description:
                             &nbsp;
                             {this.state.competence_description !== null && this.state.competence_description.has_data &&
-                            <a href={this.state.competence_description['download-url']}>download</a>
+                            <span>
+                                <a href={this.state.competence_description['download-url']}>download</a>
+                                &nbsp;-&nbsp;
+                                <a onClick={() => {
+                                    EducationProgramService.removeCompetenceDescription(this.props.id, () => {
+                                        this.setState({competence_description: null})
+                                    });
+                                }}>
+                                remove
+                                </a>
+                            </span>
                             }
                             {(this.state.competence_description === null || !this.state.competence_description.has_data ) &&
                             <span>none</span>

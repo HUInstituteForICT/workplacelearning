@@ -56,11 +56,20 @@ export default class EducationProgramService {
             })
     }
 
-    static uploadCompetenceDescription(programId, fileData, callback) {
+    static uploadCompetenceDescription(programId, fileData, callback, onError) {
         axios.post(base + 'education-program/' + programId + '/competence-description', {file: fileData})
             .then(callback)
             .catch(error => {
-                console.log("Unable to upload competence description: " + error)
+                console.log("Unable to upload competence description: " + error);
+                onError(error);
+            });
+    }
+
+    static removeCompetenceDescription(programId, callback) {
+        axios.get(base + 'education-program/' + programId + '/competence-description/remove')
+            .then(callback)
+            .catch(error=> {
+                console.log("Unable to upload competence description: " + error);
             });
     }
 }

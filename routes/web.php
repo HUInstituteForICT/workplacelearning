@@ -33,6 +33,8 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
         Route::post('education-program/entity/{entity}/delete', 'EducationProgramsController@deleteEntity');
         Route::put('education-program/entity/{entity}', 'EducationProgramsController@updateEntity');
         Route::put('education-program/{program}', 'EducationProgramsController@updateProgram');
+        Route::get('education-program/{program}/competence-description/remove',
+            'EducationProgramsController@removeCompetenceDescription');
         Route::post('education-program/{program}/competence-description',
             'EducationProgramsController@createCompetenceDescription');
         Route::get('editable-education-program/{program}', 'EducationProgramsController@getEditableProgram');
