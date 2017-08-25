@@ -19,6 +19,7 @@ return [
         "calendar"      => "Deadlines",
         "profile"       => "Profiel",
         "settings"      => "Voortgang",
+        "educationprograms" => "Onderwijsprogramma's",
         "logout"        => "Uitloggen",
       ],
     ],
@@ -177,7 +178,7 @@ return [
     ],
 
     "competences" => [
-      "competencedetails"  => "<a href=%s>Competenties en Indicatoren</a>"
+      "competencedetails"  => "Competenties en Indicatoren"
     ],
 
 ];

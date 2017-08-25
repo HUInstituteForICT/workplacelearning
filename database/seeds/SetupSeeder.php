@@ -30,13 +30,13 @@ class SetupSeeder extends Seeder
             // Execute the SQL queries to create a "default state" of this application
             collect([
                 "
-INSERT INTO `category` (`category_id`, `category_label`, `wplp_id`) VALUES
-(1, 'Onderzoek doen', 0),
-(2, 'Programmeren', 0),
-(3, 'Testen', 0),
-(4, 'Documenteren', 0),
-(5, 'Overleg', 0),
-(6, 'School', 0);
+INSERT INTO `category` (`category_id`, `category_label`, `wplp_id`, `ep_id`) VALUES
+(1, 'Onderzoek doen', 0, 1),
+(2, 'Programmeren', 0, 1),
+(3, 'Testen', 0, 1),
+(4, 'Documenteren', 0, 1),
+(5, 'Overleg', 0, 1),
+(6, 'School', 0, 1);
 ",
 
                 "                

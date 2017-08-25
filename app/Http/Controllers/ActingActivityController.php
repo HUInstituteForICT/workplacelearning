@@ -37,6 +37,7 @@ class ActingActivityController extends Controller
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
         return view('pages.acting.activity')
+            ->with('competenceDescription', Auth::user()->getEducationProgram()->competenceDescription)
             ->with('timeslots', Auth::user()->getEducationProgram()->getTimeslots())
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())

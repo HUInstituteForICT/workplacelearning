@@ -20,9 +20,16 @@ class EducationProgram extends Model
 
     // Default
     protected $fillable = [
-        'ep_id',
-        'ep_name',
+        'ep_name', 'eptype_id'
     ];
+
+    public function competenceDescription() {
+        return $this->hasOne(CompetenceDescription::class, 'education_program_id', 'ep_id');
+    }
+
+    public function category() {
+        return $this->hasMany(Category::class, 'ep_id', 'ep_id');
+    }
 
     public function educationprogramType()
     {
