@@ -92,11 +92,11 @@ class ActingActivityController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'date'          => 'required|date|before:' . date('d-m-Y', strtotime('tomorrow')), // TODO Date validation not working
-                'description'   => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
+                'description'   => 'required|max:1000|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
                 'timeslot'      => 'required|exists:timeslot,timeslot_id',
-                'learned'       => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-                'support_wp'    => 'max:125',
-                'support_ed'    => 'max:125',
+                'learned'       => 'required|max:1000|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
+                'support_wp'    => 'max:500',
+                'support_ed'    => 'max:500',
                 'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
                 'competence'    => 'required|exists:competence,competence_id',
             ]);

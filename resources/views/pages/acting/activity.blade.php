@@ -84,7 +84,11 @@
                         </span>
                     </div>
                     <h4>Situatie</h4>
-                    <textarea class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,250}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="16" cols="19">{{ old('description') }}</textarea>
+                    <div>
+                        <textarea id="description" class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" maxlength="1000" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/]{3,1000}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="16" cols="19">{{ old('description') }}</textarea>
+                        <a data-target-text="#description" data-target-title="{{ ucfirst(trans('process_export.situation')) }}" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+                    </div>
+
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Wanneer? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_when') }}"></i></h4>
@@ -113,12 +117,22 @@
                     <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z,./\\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
                 </div>
                 <div class="col-md-2 form-group">
-                    <h4>Wat heb je geleerd?<br />Wat is het vervolg? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="learned" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,250}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('learned') }}</textarea>
-                    <h4>Wat heb je hierbij nodig van je werkplek? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_wp') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="support_wp" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,125}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_wp') }}</textarea>
-                    <h4>Wat heb je hierbij nodig van de HU? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_ep') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="support_ed" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,125}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_ed') }}</textarea>
+                    <div>
+                        <h4>Wat heb je geleerd?<br />Wat is het vervolg? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
+                        <textarea id="learned" class="form-control fit-bs" name="learned" required oninput="this.setCustomValidity('')" maxlength="1000" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/]{3,3}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('learned') }}</textarea>
+                        <a data-target-text="#learned" data-target-title="Wat heb je geleerd?" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+                    </div>
+                    <div>
+                        <h4>Wat heb je hierbij nodig van je werkplek? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_wp') }}"></i></h4>
+                        <textarea id="support_wp" max-length="500" class="form-control fit-bs" name="support_wp" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/]{3,500}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_wp') }}</textarea>
+                        <a data-target-text="#support_wp" data-target-title="Wat heb je hierbij nodig van je werkplek?" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+                    </div>
+                    <div>
+                        <h4>Wat heb je hierbij nodig van de HU? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_ep') }}"></i></h4>
+                        <textarea id="support_ed" maxlength="500" class="form-control fit-bs" name="support_ed" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/]{3,500}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_ed') }}</textarea>
+                        <a data-target-text="#support_ed" data-target-title="Wat heb je hierbij nodig van de HU?" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+
+                    </div>
                 </div>
                 <div class="col-md-2 form-group">
                     <div>
@@ -166,7 +180,52 @@
             </script>
 
             <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>
-
         </div>
+
+        {{-- Modal used for enlarging fields --}}
+        <div class="modal fade" id="enlargedModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm"  role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <textarea rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
+                        <a type="button" class="btn btn-primary" id="enlargedTextareaSave">Bevestigen</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <script>
+            var enlargedModal = $('#enlargedModal');
+            var title = $('.modal-title');
+            var textarea = $(enlargedModal).find('textarea');
+            var returnTarget = undefined;
+            $('.canBeEnlarged').click(function() {
+                $(enlargedModal).modal('toggle');
+                var returnTargetId = $(this).data('target-text');
+
+                returnTarget = $(this).parent().find('' + returnTargetId);
+                $(textarea).attr('maxlength', $(returnTarget).attr('maxlength'));
+                $(textarea).val($(returnTarget).val());
+                $(title).text($(this).data('target-title'));
+                $(textarea).focus();
+            });
+            $('#enlargedTextareaSave').click(function() {
+                if(returnTarget === undefined) return;
+
+                $(returnTarget).val($(textarea).val());
+                $(enlargedModal).modal('hide')
+            });
+        </script>
     </div>
 @stop

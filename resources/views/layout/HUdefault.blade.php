@@ -32,7 +32,7 @@
     <!-- /#wrapper -->
 </div>
 <div id="footer">
-    <p>&copy; 2016 - HU University of applied Sciences | Icons courtesy of <a href="http://famfamfam.com">FamFamFam.com</a></p>
+    <p>&copy; {{ date('Y') }} - HU University of Applied Sciences | Icons courtesy of <a href="http://famfamfam.com">FamFamFam.com</a></p>
     <script>
         $("#menu-toggle").click(function(e) {
             e.preventDefault();

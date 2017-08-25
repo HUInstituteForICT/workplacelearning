@@ -126,6 +126,7 @@ export default class ActivityActingProcessTable extends React.Component {
                                                activated={this.state.filters.timeslot.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
+                    <div style={{clear: 'both'}}/>
                 </div>
 
                 <div className="learningGoal col-md-4">
@@ -137,6 +138,7 @@ export default class ActivityActingProcessTable extends React.Component {
                                                activated={this.state.filters.learningGoal.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
+                    <div style={{clear: 'both'}}/>
                 </div>
                 <div className="competence col-md-4">
                     <h4>Competentie</h4>
@@ -147,10 +149,11 @@ export default class ActivityActingProcessTable extends React.Component {
                                                activated={this.state.filters.competence.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
+                    <div style={{clear: 'both'}}/>
                 </div>
 
             </div>
-
+            <br/>
             <div className="export" style={{paddingBottom:"15px"}}>
 
                 <label>Export naar&nbsp;
@@ -163,9 +166,11 @@ export default class ActivityActingProcessTable extends React.Component {
                 <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0}>exporteer</button>
             </div>
 
+            <div className="table-responsive">
             <table className="table blockTable">
                 <thead className="blue_tile">
                 <tr>
+                    <td></td>
                     <td>Datum</td>
                     <td>Situatie</td>
                     <td>Wanneer?</td>
@@ -181,8 +186,10 @@ export default class ActivityActingProcessTable extends React.Component {
                 {filteredActivities.map((activity) => {
                     return <Row key={activity.id} activity={activity}/>
                 })}
+
                 </tbody>
             </table>
+            </div>
         </div>
     }
 
