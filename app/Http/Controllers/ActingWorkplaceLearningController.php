@@ -221,15 +221,18 @@ class ActingWorkplaceLearningController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         } else {
-            foreach ($request['learninggoal_name'] as $lg_id => $name) {
-                $learningGoal = LearningGoal::find($lg_id);
-                if (is_null($learningGoal)) {
-                    $learningGoal = new LearningGoal;
-                    $learningGoal->wplp_id = $id;
+            if(isset($request['learninggoal_name'])) {
+                foreach ($request['learninggoal_name'] as $lg_id => $name) {
+                    $learningGoal = LearningGoal::find($lg_id);
+                    if (is_null($learningGoal)) {
+                        $learningGoal = new LearningGoal;
+                        $learningGoal->wplp_id = $id;
+                    }
+                    $learningGoal->learninggoal_label = $name;
+                    $learningGoal->save();
                 }
-                $learningGoal->learninggoal_label = $name;
-                $learningGoal->save();
             }
+
             if (strlen($request['new_learninggoal_name']) > 0) {
                 $learningGoal = new LearningGoal;
                 $learningGoal->learninggoal_label = $request['new_learninggoal_name'];
