@@ -213,7 +213,7 @@ export default class EditActingProgram extends React.Component {
                 </div>
 
                 <div className="col-md-4">
-                    <h4>Timeslots</h4>
+                    <h4>Categories</h4>
                     <div className="form-group">
 
                         {program.timeslot.map(timeslot => {

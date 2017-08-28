@@ -119,7 +119,7 @@ export default class ActivityActingProcessTable extends React.Component {
             <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> Filters</h3>
             <div className="filters row" style={{display:"none"}}>
                 <div className="timeslot col-md-4">
-                    <h4>Tijdslot</h4>
+                    <h4>Categorie</h4>
                     <div className="buttons">
                         {this.state.filters.timeslot.rules.map(rule => {
                             return <FilterRule key={rule} type="timeslot" onClickHandler={this.updateFilter} rule={rule}
@@ -173,7 +173,7 @@ export default class ActivityActingProcessTable extends React.Component {
                     <td></td>
                     <td>Datum</td>
                     <td>Situatie</td>
-                    <td>Wanneer?</td>
+                    <td>Categorie</td>
                     <td>Met wie?</td>
                     <td>Theorie</td>
                     <td>Leerpunten en vervolg</td>

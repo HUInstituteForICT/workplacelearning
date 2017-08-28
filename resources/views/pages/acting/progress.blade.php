@@ -23,7 +23,7 @@
                 <tr>
                     <td>Datum</td>
                     <td>Situatie</td>
-                    <td>Wanneer?</td>
+                    <td>Categorie</td>
                     <td>Wat heb je geleerd?</td>
                     <td>Leervraag</td>
                     <td>Competentie</td>

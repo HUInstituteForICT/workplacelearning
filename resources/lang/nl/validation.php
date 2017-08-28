@@ -148,7 +148,7 @@ return [
         "competence"           => "competentie",
         "date"                 => "datum",
         "res_material_detail"  => "theoriebron",
-        "timeslot"             => "tijdslot",
+        "timeslot"             => "categorie",
         "companyName"          => "bedrijfsnaam",
         'companyStreet'        => 'straat',
         'companyHousenr'       => 'nummer',

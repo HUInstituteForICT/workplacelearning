@@ -32,7 +32,7 @@
                 <p>Als je een tip hebt voor een analyse die je hier graag zou willen zien, geef dit dan aan ons door via
                     <a href="{{ route('bugreport') }}">deze pagina</a>.</p>
 
-                <h3>Grafiek timeslots</h3>
+                <h3>Grafiek categorieën</h3>
                 <canvas id="chart_timeslots"></canvas>
                 <script>
                     var canvas_timeslots = document.getElementById("chart_timeslots");
@@ -173,7 +173,7 @@
                     <h3>Meest voorkomende combinaties</h3>
 
                     @if($actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage > 0)
-                        <strong>Tijdslot & leervraag:</strong>
+                        <strong>Categorie & leervraag:</strong>
                         {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->timeslot->timeslot_text }}
                         met
                         {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->learningGoal->learninggoal_label }}
@@ -185,7 +185,7 @@
                     @endif
 
                     @if($actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage > 0)
-                        <strong>Tijdslot & competentie:</strong>
+                        <strong>Categorie & competentie:</strong>
                         {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->timeslot->timeslot_text }}
                         met
                         {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->competence->competence_label }}
