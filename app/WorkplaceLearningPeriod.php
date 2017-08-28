@@ -52,12 +52,17 @@ class WorkplaceLearningPeriod extends Model
 
     public function resourcePerson()
     {
-        return $this->hasOne(\App\ResourcePerson::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(ResourcePerson::class, 'wplp_id', 'wplp_id');
+    }
+
+    public function timeslot()
+    {
+        return $this->hasMany(Timeslot::class, 'wplp_id', 'wplp_id');
     }
 
     public function resourceMaterial()
     {
-        return $this->hasOne(\App\ResourceMaterial::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(\App\ResourceMaterial::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityProducing()
@@ -131,6 +136,15 @@ class WorkplaceLearningPeriod extends Model
         return $this->resourcePerson()
             ->orderBy('rp_id', 'asc')
             ->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getTimeslots()
+    {
+        return $this->timeslot()->orderBy('timeslot_id', 'asc')->get();
+
     }
 
     /**

@@ -46,7 +46,7 @@ class EducationProgramsController extends Controller
 
         if($program->eptype_id === 1) {
             $program->competence;
-            $program->timeslot;
+            $program->timeslot = $program->getTimeslots();
             $program->competenceDescription;
         } elseif ($program->eptype_id === 2) {
             $program->category = $program->category()->get()->filter(function($category, $key) {
@@ -55,8 +55,7 @@ class EducationProgramsController extends Controller
             });
 
         }
-
-        $program->resourcePerson;
+        $program->resource_person = $program->getResourcePersons();
 
 
         return response()->json($program);
@@ -105,7 +104,6 @@ class EducationProgramsController extends Controller
 
     public function createCompetenceDescription(EducationProgram $program, CreateCompetenceDescriptionRequest $request)
     {
-        return response('', 413);
         $competenceDescription = $this->programsService->handleUploadedCompetenceDescription($program,
             $request->get('file'));
 

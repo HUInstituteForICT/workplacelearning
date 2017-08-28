@@ -62,7 +62,7 @@ class EducationProgramsService
         if ($type === 1) {
             $result = $program->competence()->save(new Competence(["competence_label" => $value]));
         } elseif ($type === 2) {
-            $result = $program->timeslot()->save(new Timeslot(["timeslot_text" => $value]));
+            $result = $program->timeslot()->save(new Timeslot(["timeslot_text" => $value, "wplp_id" => 0]));
         } elseif ($type === 3) {
             $result = $program->resourcePerson()->save(new ResourcePerson(["person_label" => $value, "wplp_id" => 0]));
         } elseif ($type === 4) {

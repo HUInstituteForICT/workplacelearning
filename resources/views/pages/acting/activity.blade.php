@@ -10,6 +10,7 @@
                 (function() {
                     $('#new-rp-hidden').hide();
                     $('#new-rm-hidden').hide();
+                    $('#new-timeslot-hidden').hide();
                     $('#res_material_detail').hide();
 
                     $('[name="res_person"]').click(function() {
@@ -32,6 +33,14 @@
                         } else {
                             $('#res_material_detail').show();
                         }
+                    });
+                    $('[name="timeslot"]').click(function() {
+                        if ($('#new_timeslot').is(':checked')) {
+                            $('#new-timeslot-hidden').show();
+                        } else {
+                            $('#new-timeslot-hidden').hide();
+                        }
+
                     });
                 })();
 
@@ -95,6 +104,10 @@
                     @foreach ($timeslots as $key => $value)
                         <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ (old('timeslot') != null && old('timeslot') == $value->timeslot_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->timeslot_text }}</span></label>
                     @endforeach
+                    <div>
+                        <label><input type="radio" name="timeslot" id="new_timeslot" value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
+                        <input id="new-timeslot-hidden" type="text" name="new_timeslot" value="{{ old('new-timeslot-hidden') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z,./\\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                    </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Met wie? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_with') }}"></i></h4>
@@ -184,7 +197,7 @@
 
         {{-- Modal used for enlarging fields --}}
         <div class="modal fade" id="enlargedModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm"  role="document">
+            <div class="modal-dialog"  role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
