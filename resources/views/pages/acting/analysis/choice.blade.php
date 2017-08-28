@@ -223,8 +223,8 @@
 
                     @if($actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) > 50)
                         <strong>Tip {{ $tipCounter }}</strong>: <br/>
-                        Bij {{ $actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) }}
-                        % van de leermomenten behorende bij {{ $learningGoal->learninggoal_label }}
+                        Bij {{ $actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) }}%
+                        van de leermomenten behorende bij {{ $learningGoal->learninggoal_label }}
                         gebruik je geen theorie. Misschien weet je niet goed welke theorie je hier bij zou
                         kunnen
                         gebruiken? Je zou hier ondersteuning bij kunnen vragen aan je begeleider vanuit de HU of
