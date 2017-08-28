@@ -26,7 +26,7 @@ class EditTimeslotTable extends Migration
      */
     public function down()
     {
-        Schema::table('feedback', function (Blueprint $table) {
+        Schema::table('timeslot', function (Blueprint $table) {
             $table->dropForeign("fk_Timeslot_Wplp1");
             $table->dropColumn('wplp_id');
         });
