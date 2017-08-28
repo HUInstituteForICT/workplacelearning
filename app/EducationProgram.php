@@ -7,6 +7,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class EducationProgram extends Model
@@ -61,11 +62,17 @@ class EducationProgram extends Model
         return $this->competence()->get();
     }
 
+    /**
+     * @return Collection
+     */
     public function getTimeslots()
     {
         return $this->timeslot()->get();
     }
 
+    /**
+     * @return Collection
+     */
     public function getResourcePersons()
     {
         return $this->resourcePerson()
