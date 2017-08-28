@@ -243,7 +243,7 @@
                     @if($actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) >= 30)
                         <strong>Tip {{ $tipCounter }}</strong>: <br/>
                         {{ $actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) }}% van jouw
-                        leermomenten vinden plaats in tijdslot {{ $timeslot->timeslot_text }}. Dit is blijkbaar
+                        leermomenten vinden plaats tijdens {{ $timeslot->timeslot_text }}. Dit is blijkbaar
                         een
                         moment van de dag waarop veel van jou gevraagd wordt. Bespreek dit eens met je
                         begeleiders

@@ -49,8 +49,7 @@ class EducationProgram extends Model
 
     public function timeslot()
     {
-        return $this->hasMany(\App\Timeslot::class, 'edprog_id', 'ep_id')
-            ->where('wplp_id', '=', 0);
+        return $this->hasMany(\App\Timeslot::class, 'edprog_id', 'ep_id');
     }
 
     public function resourcePerson()
@@ -68,7 +67,8 @@ class EducationProgram extends Model
      */
     public function getTimeslots()
     {
-        return $this->timeslot()->get();
+        return $this->timeslot()
+            ->where('wplp_id', '=', 0)->get();
     }
 
     /**
