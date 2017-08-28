@@ -24,6 +24,10 @@ class EducationProgram extends Model
         'ep_name', 'eptype_id'
     ];
 
+    protected $casts = [
+        'eptype_id' => 'int',
+    ];
+
     public function competenceDescription() {
         return $this->hasOne(CompetenceDescription::class, 'education_program_id', 'ep_id');
     }

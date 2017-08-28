@@ -124,9 +124,11 @@ export default class educationProgramsApp extends React.Component {
 
         if (program.eptype_id === 1) {
             return <EditActingProgram id={this.state.selectedProgramId} programOnNameChange={this.updateProgramName}/>
-        } else {
+        } else if(program.eptype_id === 2) {
             return <EditProducingProgram id={this.state.selectedProgramId}
                                          programOnNameChange={this.updateProgramName}/>
+        } else {
+            throw "Unknown education program type id :" + program.eptype_id;
         }
 
 
