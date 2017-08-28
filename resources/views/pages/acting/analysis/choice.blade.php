@@ -3,6 +3,31 @@
     Analyse
 @stop
 @section('content')
+    <script>
+        let lastColor = null;
+        function getChartColor() {
+            const colors = [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ];
+            let color = null;
+            do {
+                color = colors[Math.floor(Math.random() * colors.length)]
+            } while (color === lastColor);
+            lastColor = color;
+            return color;
+        };
+    </script>
 
     <div class="container-fluid">
         <div class="row">
@@ -27,18 +52,10 @@
                                 data: {!! $actingAnalysis->charts('timeslot')->data->toJson() !!},
                                 backgroundColor: [],
                                 borderColor: [
-                                    'rgba(255,99,132,1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)',
-                                    'rgba(255,99,132,1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
+                                    @foreach($actingAnalysis->charts('timeslot')->labels as $label)
+                                    {{ "getChartColor(),"}}
+                                    @endforeach
+
                                 ],
                                 borderWidth: 1
                             }]
@@ -68,18 +85,9 @@
                                 data: {!! $actingAnalysis->charts('learninggoal')->data->toJson() !!},
                                 backgroundColor: [],
                                 borderColor: [
-                                    'rgba(255,99,132,1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)',
-                                    'rgba(255,99,132,1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
+                                    @foreach($actingAnalysis->charts('learninggoal')->labels as $label)
+                                    {{ "getChartColor(),"}}
+                                    @endforeach
                                 ],
                                 borderWidth: 1
                             }]
@@ -109,18 +117,9 @@
                                 data: {!! $actingAnalysis->charts('competence')->data->toJson() !!},
                                 backgroundColor: [],
                                 borderColor: [
-                                    'rgba(255,99,132,1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)',
-                                    'rgba(255,99,132,1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
+                                    @foreach($actingAnalysis->charts('competence')->labels as $label)
+                                    {{ "getChartColor(),"}}
+                                    @endforeach
                                 ],
                                 borderWidth: 1
                             }]
@@ -148,12 +147,9 @@
                             datasets: [{
                                 data: {!! $actingAnalysis->charts('person')->data->toJson() !!},
                                 backgroundColor: [
-                                    'rgba(255,99,132,1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
+                                    @foreach($actingAnalysis->charts('person')->labels as $label)
+                                    {{ "getChartColor(),"}}
+                                    @endforeach
                                 ],
                                 hoverBackgroundColor: []
                             }]
@@ -250,9 +246,8 @@
                 @endforeach
 
                 {{--Percentage leermomenten in tijdslot hoger dan 30% tip--}}
-                @foreach(Auth::user()->getEducationProgram()->getTimeslots() as $timeslot)
-
-                    @if($actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) > 30)
+                @foreach(Auth::user()->getEducationProgram()->getTimeslots()->merge(Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()) as $timeslot)
+                    @if($actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) >= 30)
                         <strong>Tip {{ $tipCounter }}</strong>: <br/>
                         {{ $actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) }}% van jouw
                         leermomenten vinden plaats in tijdslot {{ $timeslot->timeslot_text }}. Dit is blijkbaar
@@ -268,4 +263,5 @@
             </div>
         </div>
     </div>
+
 @stop
