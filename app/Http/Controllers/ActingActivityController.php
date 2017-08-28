@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\LearningActivityExportBuilder;
+use App\Timeslot;
 use App\WorkplaceLearningPeriod;
 use App\LearningActivityActing;
 use App\ResourcePerson;
@@ -27,6 +28,10 @@ class ActingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
+        $timeslots = Auth::user()->getEducationProgram()->getTimeslots()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
+        );
+
         $exportBuilder = new LearningActivityExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
             ->take(50)
@@ -38,7 +43,7 @@ class ActingActivityController extends Controller
 
         return view('pages.acting.activity')
             ->with('competenceDescription', Auth::user()->getEducationProgram()->competenceDescription)
-            ->with('timeslots', Auth::user()->getEducationProgram()->getTimeslots())
+            ->with('timeslots', $timeslots)
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
             ->with('learningGoals', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
@@ -66,9 +71,13 @@ class ActingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
+        $timeslots = Auth::user()->getEducationProgram()->getTimeslots()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
+        );
+
         return view('pages.acting.activity-edit')
             ->with('activity', $activity)
-            ->with('timeslots', Auth::user()->getEducationProgram()->getTimeslots())
+            ->with('timeslots', $timeslots)
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
             ->with('learningGoals', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
@@ -93,7 +102,6 @@ class ActingActivityController extends Controller
             [
                 'date'          => 'required|date|before:' . date('d-m-Y', strtotime('tomorrow')), // TODO Date validation not working
                 'description'   => 'required|max:1000|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-                'timeslot'      => 'required|exists:timeslot,timeslot_id',
                 'learned'       => 'required|max:1000|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
                 'support_wp'    => 'max:500',
                 'support_ed'    => 'max:500',
@@ -105,18 +113,23 @@ class ActingActivityController extends Controller
         $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function ($input) {
             return $input->res_person != 'new';
         });
+        $validator->sometimes('timeslot', 'required|exists:timeslot,timeslot_id', function($input) {
+            return $input->timeslot != 'new';
+        });
+        $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function ($input) {
+            return $input->res_material != 'new' && $input->res_material != 'none';
+        });
 
         $validator->sometimes('new_rp', 'required|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/', function ($input) {
             return $input->res_person === 'new';
         });
-
+        $validator->sometimes('new_timeslot', 'required|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/', function ($input) {
+            return $input->timeslot === 'new';
+        });
         $validator->sometimes('new_rm', 'required|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/', function ($input) {
             return $input->res_material === 'new';
         });
 
-        $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function ($input) {
-            return $input->res_material != 'new' && $input->res_material != 'none';
-        });
         /*$validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
             return $input->res_material == 1;
         });*/
@@ -148,6 +161,16 @@ class ActingActivityController extends Controller
             $resourceMaterial->save();
 
             $request['res_material'] = $resourceMaterial->rm_id;
+        }
+
+        if($request['timeslot'] == 'new') {
+            $timeslot = new Timeslot;
+            $timeslot->timeslot_text = $request['new_timeslot'];
+            $timeslot->edprog_id = Auth::user()->getEducationProgram()->ep_id;
+            $timeslot->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+            $timeslot->save();
+
+            $request['timeslot'] = $timeslot->timeslot_id;
         }
 
         // Todo refactor into model->fill($request), all fillable
