@@ -40,7 +40,9 @@ class ActingAnalysisCollector
      */
     public function getTimeslots() {
         if($this->timeslots === null) {
-            $this->timeslots = Auth::user()->getEducationProgram()->getTimeslots();
+            $this->timeslots = Auth::user()->getEducationProgram()->getTimeslots()->merge(
+                Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
+            );
         }
         return $this->timeslots;
     }

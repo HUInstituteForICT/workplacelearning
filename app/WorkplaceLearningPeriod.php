@@ -138,6 +138,9 @@ class WorkplaceLearningPeriod extends Model
             ->get();
     }
 
+    /**
+     * @return Collection
+     */
     public function getTimeslots()
     {
         return $this->timeslot()->orderBy('timeslot_id', 'asc')->get();
