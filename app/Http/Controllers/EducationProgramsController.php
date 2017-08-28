@@ -105,7 +105,6 @@ class EducationProgramsController extends Controller
 
     public function createCompetenceDescription(EducationProgram $program, CreateCompetenceDescriptionRequest $request)
     {
-        return response('', 413);
         $competenceDescription = $this->programsService->handleUploadedCompetenceDescription($program,
             $request->get('file'));
 
