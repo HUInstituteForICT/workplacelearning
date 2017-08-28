@@ -29,6 +29,7 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
         // "API" for edu programs routes
         Route::get('education-programs', 'EducationProgramsController@getEducationPrograms');
         Route::post('education-program', 'EducationProgramsController@createEducationProgram');
+
         Route::post('education-program/{program}/entity', 'EducationProgramsController@createEntity');
         Route::post('education-program/entity/{entity}/delete', 'EducationProgramsController@deleteEntity');
         Route::put('education-program/entity/{entity}', 'EducationProgramsController@updateEntity');
@@ -39,6 +40,7 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
             'EducationProgramsController@createCompetenceDescription');
         Route::get('editable-education-program/{program}', 'EducationProgramsController@getEditableProgram');
 
+        Route::get('education-program/{program}/disable', 'EducationProgramsController@toggleDisabled');
 
     }
 );

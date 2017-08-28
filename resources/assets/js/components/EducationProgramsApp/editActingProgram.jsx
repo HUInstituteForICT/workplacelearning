@@ -17,7 +17,8 @@ export default class EditActingProgram extends React.Component {
             competence_description: {id: null, has_data: false},
             uploadedText: '',
             timeslot: [],
-            resource_person: []
+            resource_person: [],
+            disabled: false,
         };
 
         this.autoUpdaterTimeout = null;
@@ -118,7 +119,7 @@ export default class EditActingProgram extends React.Component {
                     });
                     setTimeout(() => this.setState({uploadedText: ''}), 4000);
                 }, error => {
-                    if(error.response.status === 413) {
+                    if (error.response.status === 413) {
                         this.setState({uploadedText: ' - the file was too large, try to make it smaller'});
                     } else {
                         this.setState({uploadedText: ' - error occurred while uploading, try again later'});
@@ -127,6 +128,14 @@ export default class EditActingProgram extends React.Component {
         }, false);
         // Read file
         reader.readAsDataURL(files[0]);
+    }
+
+    onClickToggleDisableProgram(id) {
+        EducationProgramService.toggleDisable(id, response => {
+            if (response.data.status === "success") {
+                this.setState({disabled: response.data.disabled});
+            }
+        })
     }
 
     render() {
@@ -142,6 +151,10 @@ export default class EditActingProgram extends React.Component {
                                onChange={this.programOnNameChange}/>
                     </label>
                 </div>
+                <a onClick={() => this.onClickToggleDisableProgram(this.props.id)}>
+                    {program.disabled ? "Enable program for new students" : "Disable program for new students"}
+                </a>
+
             </div>
 
             <hr/>

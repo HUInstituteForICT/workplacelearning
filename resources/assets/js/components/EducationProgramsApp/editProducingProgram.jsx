@@ -103,6 +103,13 @@ export default class editProducingProgram extends React.Component {
         }
     }
 
+    onClickToggleDisableProgram(id) {
+        EducationProgramService.toggleDisable(id, response => {
+            if (response.data.status === "success") {
+                this.setState({disabled: response.data.disabled});
+            }
+        })
+    }
 
     render() {
         if (this.state.loading) return <div className="loader">Loading...</div>;
@@ -117,8 +124,13 @@ export default class editProducingProgram extends React.Component {
                                onChange={this.programOnNameChange}/>
                     </label>
                 </div>
+
+                <a onClick={() => this.onClickToggleDisableProgram(this.props.id)}>
+                    {program.disabled ? "Enable program for new students" : "Disable program for new students"}
+                </a>
             </div>
 
+            <hr/>
 
             <div className="row">
                 <div className="col-md-4">

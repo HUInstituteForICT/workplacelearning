@@ -115,7 +115,7 @@
 
                                     <div class="col-md-6">
                                         <select name="education">
-                                          @foreach(\App\EducationProgram::all() as $program)
+                                          @foreach(\App\EducationProgram::where('disabled', '=', 0)->get() as $program)
                                                 <option value="{{ $program->ep_id }}" {{ (old('education') == $program->ep_id) ? 'selected' : null }}> {{ $program->ep_name }}</option>
                                           @endforeach
                                         </select>

@@ -41,6 +41,14 @@ class EducationProgramsController extends Controller
         return response()->json(["status" => "success", "program" => $program]);
     }
 
+    public function toggleDisabled(EducationProgram $program)
+    {
+        $program->disabled = !$program->disabled;
+        $program->save();
+
+        return response()->json(["status" => "success", "disabled" => $program->disabled]);
+    }
+
     public function getEditableProgram(EducationProgram $program)
     {
 

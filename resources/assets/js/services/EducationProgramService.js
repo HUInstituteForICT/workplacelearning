@@ -72,4 +72,10 @@ export default class EducationProgramService {
                 console.log("Unable to upload competence description: " + error);
             });
     }
+
+    static toggleDisable(id, callback) {
+        axios.get(base + 'education-program/' + id + '/disable')
+            .then(callback)
+            .catch(error => {console.log("Unable to toggle disabled state of program: " + error)});
+    }
 }

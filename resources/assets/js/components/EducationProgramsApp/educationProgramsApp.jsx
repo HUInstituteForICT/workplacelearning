@@ -26,7 +26,7 @@ export default class educationProgramsApp extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({loading:true});
+        this.setState({loading: true});
 
         EducationProgramService.getEducationPrograms(response => {
             this.setState({programs: response.data, loading: false})
@@ -64,21 +64,22 @@ export default class educationProgramsApp extends React.Component {
             });
     }
 
+
     render() {
-        if(this.state.loading) return <div className="loader">Loading...</div>;
+        if (this.state.loading) return <div className="loader">Loading...</div>;
 
         return <div>
             <div className="row">
                 <div className="col-md-2">
                     <h4>Education Program</h4>
                     <p>Manage and create education programs</p>
-                        {this.state.programs.map(program => {
-                            return <span className="defaultButton list" key={program.ep_id}
-                                      onClick={() => this.setState({selectedProgramId: program.ep_id})}>{program.ep_name}
+                    {this.state.programs.map(program => {
+                        return <span className="defaultButton list" key={program.ep_id}
+                                     onClick={() => this.setState({selectedProgramId: program.ep_id})}>{program.ep_name}
                             </span>;
-                        })}
+                    })}
 
-                        <hr/>
+                    <hr/>
                     {this.renderCreateForm()}
 
                 </div>
@@ -123,10 +124,15 @@ export default class educationProgramsApp extends React.Component {
         let program = this.state.programs[index];
 
         if (program.eptype_id === 1) {
-            return <EditActingProgram id={this.state.selectedProgramId} programOnNameChange={this.updateProgramName}/>
-        } else if(program.eptype_id === 2) {
+            return <EditActingProgram id={this.state.selectedProgramId}
+                                      programOnNameChange={this.updateProgramName}
+
+            />
+        } else if (program.eptype_id === 2) {
             return <EditProducingProgram id={this.state.selectedProgramId}
-                                         programOnNameChange={this.updateProgramName}/>
+                                         programOnNameChange={this.updateProgramName}
+
+            />
         } else {
             throw "Unknown education program type id :" + program.eptype_id;
         }
