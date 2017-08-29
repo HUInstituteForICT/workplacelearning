@@ -73,7 +73,7 @@
                     <ol>
                         <li>Kies een datum waarop het leermoment plaatsvond. De datum mag niet in de toekomst liggen.</li>
                         <li>Vul een omschrijving in van de situatie waarin het leermoment plaatsvond.</li>
-                        <li>Geef aan op welk moment van de dag het leermoment plaatsvond.</li>
+                        <li>Geef aan in welke categorie het leermoment valt (dit kan bijvoorbeeld een specifieke klas zijn of een specifieke patiënt). Je kunt hier zelf categorieën toevoegen, maar als je te veel categorieën gebruikt, zal het snel verwarrend worden. Denk dus goed na welke categorieën voor jou waardevol zijn om bijvoorbeeld analyses op uit te voeren of voor exporteren naar je stageverslag.</li>
                         <li>Geef aan met wie je dit leermoment meemaakte of dat je het alleen hebt ervaren.</li>
                         <li>Geef aan welke theorie je gebruikte tijdens dit leermoment. Geef het type bron en een beschrijving op.</li>
                         <li>Geef dan aan wat je precies geleerd hebt van dit moment en wat de volgende stap voor jou gaat zijn. Daarnaast kun je nog aangeven wat je eventueel voor ondersteuning daarbij nodig hebt van je stageplek of van de HU (let op: dit wordt niet doorgegeven aan de betreffende personen, maar wel opgeslagen in het systeem, dus je kunt het later wel weer terugvinden).</li>
