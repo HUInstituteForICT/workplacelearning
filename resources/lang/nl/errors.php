@@ -17,8 +17,8 @@ return [
             'message'   => 'Er heeft een interne server error plaatsgevonden. (Error code: 500)',
         ],
         '503' => [
-            'title'     => 'Service Onbeschikbaar',
-            'message'   => 'De service die u heeft verzocht is tijdelijk onbeschikbaar. Probeer het op een later tijdstip nog een keer. (Error code: 503)',
+            'title'     => 'In onderhoud',
+            'message'   => 'Deze website ondergaat momenteel onderhoud, kom later terug.',
         ],
     ],
     'returnhome' => 'Terug naar Dashboard',
