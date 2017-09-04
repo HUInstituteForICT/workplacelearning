@@ -49,7 +49,7 @@ class ProducingActivityController extends Controller
         $activity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
 
         if (!$activity) {
-            return redirect()->route('process-acting')
+            return redirect()->route('process-producing')
                 ->withErrors('Helaas, er is geen activiteit gevonden.');
         }
 
