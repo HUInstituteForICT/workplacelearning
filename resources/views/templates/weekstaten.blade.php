@@ -89,7 +89,7 @@
                         </td>
                     </tr>
                     <?php
-                    $days_this_week += ($hrs > 7.5) ? 1 : 0;
+                    $days_this_week += ($hrs >= 7.5) ? 1 : 0;
                     $date_loop = date('d-m-Y', strtotime("+1 day", strtotime($date_loop)));
                     ?>
                 @endfor
