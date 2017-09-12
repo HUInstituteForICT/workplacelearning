@@ -128,8 +128,8 @@ class ProducingActivityController extends Controller
             $feedback->support_needed_ed = (!isset($request['ondersteuningOpleiding'])) ? $request['ondersteuning_opleiding'] : "Geen";
             $feedback->save();
 
-            return redirect()->route('feedback-producing', ['id' => $id])->with('success',
-                'De feedback is opgeslagen.');
+            return redirect()->route('process-producing')->with('success',
+                'Zowel de activiteit als de feedback zijn opgeslagen.');
         }
     }
 

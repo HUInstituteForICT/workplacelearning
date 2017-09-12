@@ -181,7 +181,6 @@ class ProducingAnalysisCollector
         });*/ // Disabled for now, enable this to only show task chains and hide single tasks in the analysis.
         $lap_start = $this->limitCollectionByDate($lap_start, $year, $month)->orderBy('date',
             'desc')->take($amount)->get();
-        dump($lap_start);
 
         // Iterate over the array and add tasks that follow.
         $task_chains = [];
