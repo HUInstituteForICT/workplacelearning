@@ -174,12 +174,14 @@ class ProducingAnalysisCollector
         // First, fetch the tasks that "start" the chain.
         $lap_start = LearningActivityProducing::where('prev_lap_id', null)
             ->where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
+
         /*->whereIn('lap_id', function($query){
             $query->select('prev_lap_id')
                     ->from('learningactivityproducing');
         });*/ // Disabled for now, enable this to only show task chains and hide single tasks in the analysis.
         $lap_start = $this->limitCollectionByDate($lap_start, $year, $month)->orderBy('date',
             'desc')->take($amount)->get();
+        dump($lap_start);
 
         // Iterate over the array and add tasks that follow.
         $task_chains = [];

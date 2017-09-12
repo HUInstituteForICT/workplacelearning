@@ -9,7 +9,8 @@
                 @endif
                 @if(count($errors) > 0 || session()->has('success'))
                     <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
+                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}
+                            : </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
                     </div>
                 @endif
             </div>
