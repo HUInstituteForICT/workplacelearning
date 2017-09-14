@@ -94,7 +94,7 @@
                     </div>
                     <h4>Situatie</h4>
                     <div>
-                        <textarea id="description" class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" maxlength="1000" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/]{3,1000}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="16" cols="19">{{ old('description') }}</textarea>
+                        <textarea id="description" class="form-control fit-bs" name="description" required  maxlength="1000" rows="16" cols="19">{{ old('description') }}</textarea>
                         <a data-target-text="#description" data-target-title="{{ ucfirst(trans('process_export.situation')) }}" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
                     </div>
 
@@ -106,7 +106,7 @@
                     @endforeach
                     <div>
                         <label><input type="radio" name="timeslot" id="new_timeslot" value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
-                        <input id="new-timeslot-hidden" type="text" name="new_timeslot" value="{{ old('new-timeslot-hidden') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z,./\\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                        <input id="new-timeslot-hidden" type="text" name="new_timeslot" value="{{ old('new-timeslot-hidden') }}" placeholder="Omschrijving"  maxlength="50"/>
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
@@ -116,7 +116,7 @@
                     @endforeach
                     <div>
                         <label><input type="radio" name="res_person" id="new_rp" value="new" {{ (old('res_person') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
-                        <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z,./\\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                        <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}" placeholder="Omschrijving" maxlength="50" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
@@ -127,22 +127,22 @@
                     @endforeach
                     <input type="text" name="res_material_detail" id="res_material_detail" placeholder="Beschrijving bron" value="{{ old('res_material_detail') }}" />
                     <label><input type="radio" name="res_material" id="new_rm" value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
-                    <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z,./\\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                    <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="Omschrijving" maxlength="50"/>
                 </div>
                 <div class="col-md-2 form-group">
                     <div>
                         <h4>Wat heb je geleerd?<br />Wat is het vervolg? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                        <textarea id="learned" class="form-control fit-bs" name="learned" required oninput="this.setCustomValidity('')" maxlength="1000" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/]{3,3}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('learned') }}</textarea>
+                        <textarea id="learned" class="form-control fit-bs" name="learned" required maxlength="1000" rows="5" cols="19">{{ old('learned') }}</textarea>
                         <a data-target-text="#learned" data-target-title="Wat heb je geleerd?" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
                     </div>
                     <div>
                         <h4>Wat heb je hierbij nodig van je werkplek? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_wp') }}"></i></h4>
-                        <textarea id="support_wp" max-length="500" class="form-control fit-bs" name="support_wp" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/]{3,500}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_wp') }}</textarea>
+                        <textarea id="support_wp" max-length="500" class="form-control fit-bs" name="support_wp" rows="5" cols="19">{{ old('support_wp') }}</textarea>
                         <a data-target-text="#support_wp" data-target-title="Wat heb je hierbij nodig van je werkplek?" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
                     </div>
                     <div>
                         <h4>Wat heb je hierbij nodig van de HU? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_ep') }}"></i></h4>
-                        <textarea id="support_ed" maxlength="500" class="form-control fit-bs" name="support_ed" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/]{3,500}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_ed') }}</textarea>
+                        <textarea id="support_ed" maxlength="500" class="form-control fit-bs" name="support_ed" rows="5" cols="19">{{ old('support_ed') }}</textarea>
                         <a data-target-text="#support_ed" data-target-title="Wat heb je hierbij nodig van de HU?" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
 
                     </div>

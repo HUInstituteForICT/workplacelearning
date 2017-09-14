@@ -24,7 +24,7 @@ class CalendarController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-           'nameDeadline'   => 'required|regex:/^[0-9a-zA-Z ()-]*$/|max:255|min:3',
+           'nameDeadline'   => 'required|max:255|min:3',
            'dateDeadline'   => 'required|date|after:'.date('Y-m-d', strtotime("now")),
         ]);
         if ($validator->fails()) {
@@ -47,7 +47,7 @@ class CalendarController extends Controller
         $validator = Validator::make($request->all(), [
             'id'                => 'required|exists:deadline,dl_id',
             'action'            => 'required|in:submit,delete',
-            'nameDeadline'      => 'required|regex:/^[0-9a-zA-Z ()-]*$/|max:255|min:3',
+            'nameDeadline'      => 'required|max:255|min:3',
             'dateDeadline'      => 'required|date_format:d-m-Y H:i'
         ]);
         if ($validator->fails()) {

@@ -56,7 +56,7 @@
                     ($fb->isSaved() && $fb->notfinished == "Anders") ? "checked" : ""
                     }}/><span class="new">Anders (Toevoegen)</span></label>
                     <input {!! ($fb->isSaved()) ? "disabled " : "" !!}class="cond-hidden" type="text" name="newnotfinished" placeholder="Omschrijving"
-                           oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z()-_,. ]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.')"
+                           maxlength="80"
                             {!!
                             ($fb->isSaved() && $fb->notfinished != "Geen/Weinig Ervaring" && $fb->notfinished != "Geen Hulpbron beschikbaar" && $fb->notfinished != "Tijdgebrek") ? "value=\"".$fb->notfinished."\" disabled" : ""
                             !!} />
@@ -71,8 +71,7 @@
                 <div id="expand-toggle" class="col-md-3 form-group">
                     <h4>Welke hulp heb je gekregen van je werkplek?</h4>
                     <textarea class="form-control fit-bs" {!! ($fb->isSaved()) ? "disabled " : "" !!}name="supported_provided_wp"
-                              oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z()-_,. ]{3,150}"
-                              oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.')"
+                              maxlength="150"
                               placeholder="Bijvoorbeeld: Een collega heeft mij een aangeraden om een boek na te slaan." rows="8" cols="40">{{ ($fb->isSaved()) ? $fb->supported_provided_wp : "" }}</textarea>
                 </div>
                 <div class="col-md-2 form-group buttons">
@@ -83,8 +82,7 @@
                 <div class="col-md-3 form-group">
                     <h4>Welk eigen initiatief heb je genomen?</h4>
                     <textarea class="form-control fit-bs" {!! ($fb->isSaved()) ? "disabled " : "" !!}name="initiatief"
-                              oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z()-_,. ]{3,150}"
-                              oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z()-_,.')"
+                              maxlength="150"
                               placeholder="Leg in je eigen woorden uit wat je hebt gedaan om verder te komen" rows="8" cols="40" >{{ ($fb->isSaved()) ? $fb->initiative : "" }}</textarea>
                 </div>
             </div>
@@ -96,15 +94,13 @@
                 <div class="col-sm-4 form-group">
                     <h4>Welke vervolgstap wil je zelf nemen?</h4>
                     <textarea class="form-control fit-bs" {!! ($fb->isSaved()) ? "disabled " : "" !!}name="vervolgstap_zelf"
-                              oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z()-_,. ]{3,150}"
-                              oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z()-_,.')"
+                              maxlength="150"
                               placeholder="Welke persoon/bron kun je raadplegen?" rows="8" cols="40">{{ ($fb->isSaved()) ? $fb->nextstep_self : "" }}</textarea>
                 </div>
                 <div class="col-sm-4 form-group">
                     <h4>Welke ondersteuning heb je daarbij nodig van je werkplek?</h4>
                     <textarea class="form-control fit-bs" {!! ($fb->isSaved()) ? "disabled " : "" !!}name="ondersteuning_werkplek"
-                              oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z()-_,. ]{3,150}"
-                              oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z()-_,.')"
+                              maxlength="150"
                               placeholder="Bijvoorbeeld: Een collega vragen om mee te kijken." rows="8" cols="40">{{ ($fb->isSaved()) ? $fb->support_needed_wp : "" }}</textarea>
                     <br /><input type="checkbox" name="ondersteuningWerkplek" value="Geen" {{ ($fb->isSaved() && $fb->support_needed_wp == "Geen") ? "checked" : "" }}/> Ik heb geen ondersteuning nodig van mijn werkplek
                     <br style="clear: both;" />
@@ -112,8 +108,7 @@
                 <div class="col-sm-4 form-group">
                     <h4>Welke ondersteuning heb je nodig vanuit je opleiding?</h4>
                     <textarea class="form-control fit-bs" {!! ($fb->isSaved()) ? "disabled " : "" !!}name="ondersteuning_opleiding"
-                              oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z-_,. ]{3,150}"
-                              oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.')"
+                              maxlength="150"
                               placeholder="Bijvoorbeeld: Contact leggen met mijn vakdocent/stagebegeleider." rows="8" cols="40">{{ ($fb->isSaved()) ? $fb->support_needed_ed : "" }}</textarea>
                     <br /><input type="checkbox" name="ondersteuningOpleiding" value="Geen" {{ ($fb->isSaved() && $fb->support_needed_ed == "Geen") ? "checked" : "" }}/> Ik heb geen ondersteuning nodig van mijn opleiding
                     <br style="clear: both;" />

@@ -26,10 +26,9 @@ class ProfileController extends Controller
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'firstname'     => 'required|regex:/^[a-zA-Z -]*$/|max:255|min:3',
-            'lastname'      => 'required|regex:/^[a-zA-Z -]*$/|max:255|min:3',
+            'firstname'     => 'required|max:255|min:3',
+            'lastname'      => 'required|max:255|min:3',
             'email'         => 'required|email|max:255|unique:students,email,'.$request->stud_id.',stud_id',
-            //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
         ]);
 
         if ($validator->fails()) {
