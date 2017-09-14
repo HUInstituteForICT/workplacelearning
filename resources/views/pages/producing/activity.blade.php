@@ -158,6 +158,17 @@
                 </div>
             {{ Form::close() }}
         </div>
+
+        <div class="row">
+            <script>
+                window.activities = {!! $activitiesJson !!};
+                window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
+            </script>
+
+            <div id="ActivityProducingProcessTable" class="__reactRoot col-md-12"></div>
+        </div>
+
+
         <div class="row">
             <table class="table blockTable col-md-12">
                 <thead class="blue_tile">

@@ -1,7 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\LearningActivityExportBuilder;
+use App\LearningActivityActingExportBuilder;
+use App\LearningActivityProducingExportBuilder;
 use App\Timeslot;
 use App\WorkplaceLearningPeriod;
 use App\LearningActivityActing;
@@ -32,9 +33,8 @@ class ActingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
         );
 
-        $exportBuilder = new LearningActivityExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
+        $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
-            ->take(50)
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();

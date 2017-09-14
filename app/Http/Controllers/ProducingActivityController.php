@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Difficulty;
 use App\Feedback;
+use App\LearningActivityProducingExportBuilder;
 use App\ResourcePerson;
 use App\LearningActivityProducing;
 use App\Http\Requests;
@@ -33,10 +34,20 @@ class ProducingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
+        $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
+            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
+            ->get());
+
+        $activitiesJson = $exportBuilder->getJson();
+
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
+
         return view('pages.producing.activity')
             ->with('learningWith', $resourcePersons)
             ->with('difficulties', Difficulty::all())
-            ->with('statuses', Status::all());
+            ->with('statuses', Status::all())
+            ->with('activitiesJson', $activitiesJson)
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping));
     }
 
     public function edit($id)

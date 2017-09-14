@@ -29,6 +29,7 @@
                     <td>Tijd (Uren)</td>
                     <td>Werken/leren met</td>
                     <td>Complexiteit</td>
+                    <td></td>
                 </tr>
             </thead>
             @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
@@ -39,6 +40,7 @@
                     <td>{{ $a->getDurationString() }}</td>
                     <td>{{ ucwords($a->description) . (($a->getResourceDetail() != null) ? ": ".$a->getResourceDetail() : "") }}</td>
                     <td>{{ $a->getDifficulty() }}</td>
+                    <td><a href="{{route('process-producing-edit', ['id' => $a->lap_id]) }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></a></td>
                 </tr>
                 @endforeach
             @endif
