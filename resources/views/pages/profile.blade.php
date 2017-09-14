@@ -14,8 +14,9 @@
         <div class="row">
             <!-- Profile Info -->
             <div class="col-md-6">
-                {!! Form::open(array('url' => URL::to('profiel/update', array(), true), 'class' => 'form-horizontal well')) !!}
-                {!! Form::hidden('stud_id', Auth::user()->stud_id) !!}
+
+                {!! Form::open(array('url' => LaravelLocalization::getLocalizedURL(null, URL::to('profiel/update'), array(), true), 'class' => 'form-horizontal well')) !!}
+                {!! Form::hidden('student_id', Auth::user()->student_id) !!}
                 <h2>{{ Lang::get('elements.profile.title') }}</h2>
                 <div class="form-group">
                     {!! Form::label('studentnr', Lang::get('elements.profile.labels.studentnr'), array('class' => 'col-sm-3 control-label')) !!}
@@ -35,7 +36,8 @@
                 </div> -->
                 <div class="form-group">
                     {!! Form::label('email', Lang::get('elements.profile.labels.email'), array('class' => 'col-sm-3 control-label')) !!}
-                    <div class="col-sm-6"><p class="form-control-static">{{ Auth::user()->email }}</p></div>
+                    {{--<div class="col-sm-6"><p class="form-control-static">{{ Auth::user()->email }}</p></div>--}}
+                    <div class="col-sm-6">{!! Form::email('email', Auth::user()->email, array('placeholder' => Lang::get('elements.profile.placeholders.email'), 'class' => 'form-control')) !!}</div>
                     <div class="col-sm-2"><input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" /></div>
                 </div>
                 <!-- <div class="form-group">
