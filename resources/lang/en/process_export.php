@@ -9,6 +9,8 @@ return [
     'resourceMaterial' => 'theory',
     'lessonsLearned' => 'lessons learned',
     'learningGoal' => 'learning goal',
+    "supportWp" => "support werkplek",
+    "supportEd" => "support Hogeschool Utrecht",
     'competence' => 'competence'
 ];
 
