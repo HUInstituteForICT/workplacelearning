@@ -174,6 +174,7 @@ class ProducingAnalysisCollector
         // First, fetch the tasks that "start" the chain.
         $lap_start = LearningActivityProducing::where('prev_lap_id', null)
             ->where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
+
         /*->whereIn('lap_id', function($query){
             $query->select('prev_lap_id')
                     ->from('learningactivityproducing');

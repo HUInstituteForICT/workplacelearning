@@ -51,7 +51,7 @@ class HomeController extends Controller
                 ->withInput();
         }
 
-        $mailer->to('max.cassee@hu.nl')->send(new FeedbackGiven($request, Auth::user()));
+        $mailer->send(new FeedbackGiven($request, Auth::user()));
 
         return redirect()->route('home')->with('success', 'Bedankt voor je bijdrage! Je krijgt per email een reactie terug.');
     }
