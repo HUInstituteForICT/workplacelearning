@@ -41,8 +41,8 @@ class HomeController extends Controller
     public function createBugReport(Request $request, Mailer $mailer)
     {
         $validator = Validator::make($request->all(), [
-            'onderwerp' => 'required|regex:/^[0-9a-zA-Z ()-?!%#@,.]*$/|max:40|min:3',
-            'uitleg'    => 'required|regex:/^[0-9a-zA-Z ()-?!%#@,.]*$/|max:800|min:5',
+            'onderwerp' => 'required|max:40|min:3',
+            'uitleg'    => 'required|max:800|min:5',
         ]);
 
         if ($validator->fails()) {

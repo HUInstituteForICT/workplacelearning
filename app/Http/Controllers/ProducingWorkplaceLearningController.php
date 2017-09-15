@@ -48,18 +48,18 @@ class ProducingWorkplaceLearningController extends Controller
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'companyName'           => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
-            'companyStreet'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:45|min:3',
-            'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[ ]*[a-zA-Z]{0,4}$/|max:9|min:1', //
+            'companyName'           => 'required|max:255|min:3',
+            'companyStreet'         => 'required|max:45|min:3',
+            'companyHousenr'        => 'required|max:9|min:1', //
             'companyPostalcode'     => 'required|postalcode',
-            'companyLocation'       => 'required|regex:/^[0-9a-zA-Z ()\-]*$/|max:255|min:3',
-            'contactPerson'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
-            'contactPhone'          => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
+            'companyLocation'       => 'required|max:255|min:3',
+            'contactPerson'         => 'required|max:255|min:3',
+            'contactPhone'          => 'required',
             'contactEmail'          => 'required|email|max:255',
             'numdays'               => 'required|integer|min:1',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
-            'internshipAssignment'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'\s"]*\s*$/|min:15|max:500',
+            'internshipAssignment'  => 'required|min:15|max:500',
             'isActive'              => 'sometimes|required|in:1,0'
         ]);
 
@@ -108,18 +108,18 @@ class ProducingWorkplaceLearningController extends Controller
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'companyName'           => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
-            'companyStreet'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:45|min:3',
-            'companyHousenr'        => 'required|regex:/^[0-9]{1,5}[a-zA-Z]{0,1}$/|max:4|min:1', //
+            'companyName'           => 'required|max:255|min:3',
+            'companyStreet'         => 'required|max:45|min:3',
+            'companyHousenr'        => 'required|max:4|min:1', //
             'companyPostalcode'     => 'required|postalcode',
-            'companyLocation'       => 'required|regex:/^[0-9a-zA-Z ()\-]*$/|max:255|min:3',
-            'contactPerson'         => 'required|regex:/^[0-9a-zA-Z ()\-,.]*$/|max:255|min:3',
-            'contactPhone'          => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
+            'companyLocation'       => 'required|max:255|min:3',
+            'contactPerson'         => 'required|max:255|min:3',
+            'contactPhone'          => 'required|',
             'contactEmail'          => 'required|email|max:255',
             'numdays'               => 'required|integer|min:1',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
-            'internshipAssignment'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'\s"]*\s*$/|min:15|max:500',
+            'internshipAssignment'  => 'required|min:15|max:500',
             'isActive'              => 'sometimes|required|in:1,0'
         ]);
 
@@ -193,7 +193,7 @@ class ProducingWorkplaceLearningController extends Controller
         $validator = Validator::make($request->all(), [
             'cat.*.wplp_id'       => 'required|digits_between:1,5',
             'cat.*.cg_id'       => 'required|digits_between:1,5',
-            'cat.*.cg_label'    => 'required|regex:/^[a-zA-Z0-9_() ]*$/|min:3|max:50',
+            'cat.*.cg_label'    => 'required|min:3|max:50',
         ]);
         if ($validator->fails()) {
             // Noes. errors occured. Exit back to profile page with errors

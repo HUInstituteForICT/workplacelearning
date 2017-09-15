@@ -121,20 +121,21 @@ class ProducingActivityController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            'notfinished'             => 'required',
-            'support_requested'       => 'required|in:0,1,2',
-            'supported_provided_wp'   => 'required_unless:support_requested,0|max:150',
-            'initiatief'              => 'required|max:500',
-            'progress_satisfied'      => 'required|in:1,2',
-            'vervolgstap_zelf'        => 'required|max:150',
-            'ondersteuning_werkplek'  => 'required_unless:ondersteuningWerkplek,Geen|max:150',
-            'ondersteuning_opleiding' => 'required_unless:ondersteuningOpleiding,Geen|max:150',
-        ],
-            $messages);
+            'notfinished'               => 'required',
+            'support_requested'         => 'required|in:0,1,2',
+            'supported_provided_wp'     => 'required_unless:support_requested,0|max:150',
+            'initiatief'                => 'required|max:500',
+            'progress_satisfied'        => 'required|in:1,2',
+            'vervolgstap_zelf'          => 'required|max:150',
+            'ondersteuning_werkplek'    => 'required_unless:ondersteuningWerkplek,Geen|max:150',
+            'ondersteuning_opleiding'   => 'required_unless:ondersteuningOpleiding,Geen|max:150',
+        ]);
+
 
         $validator->sometimes("newnotfinished", "required|max:150", function ($input) {
             return $input->notfinished === "Anders";
         });
+
 
         if ($validator->fails()) {
             return redirect()->route('feedback-producing', ["id" => $id])
@@ -165,25 +166,25 @@ class ProducingActivityController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'datum'        => 'required|date|before:' . date('Y-m-d', strtotime('tomorrow')),
-            'omschrijving' => 'required',
-            'aantaluren'   => 'required',
-            'resource'     => 'required|in:persoon,alleen,internet,boek,new',
-            'moeilijkheid' => 'required|exists:difficulty,difficulty_id',
-            'status'       => 'required|exists:status,status_id',
+            'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
+            'omschrijving'  => 'required',
+            'aantaluren'    => 'required',
+            'resource'      => 'required|in:persoon,alleen,internet,boek,new',
+            'moeilijkheid'  => 'required|exists:difficulty,difficulty_id',
+            'status'        => 'required|exists:status,status_id',
         ]);
 
         // Conditional Validators
         $validator->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function ($input) {
             return $input->previous_wzh != "-1";
         });
-        $validator->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function ($input) {
+        $validator->sometimes('newcat', 'sometimes|max:50', function ($input) {
             return $input->category_id == "new";
         });
         $validator->sometimes('category_id', 'required|exists:category,category_id', function ($input) {
             return $input->category_id != "new";
         });
-        $validator->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function ($input) {
+        $validator->sometimes('newswv', 'required|max:50', function ($input) {
             return ($input->personsource == "new" && $input->resource == "persoon");
         });
         $validator->sometimes('personsource', 'required|exists:resourceperson,rp_id', function ($input) {
@@ -282,7 +283,8 @@ class ProducingActivityController extends Controller
         ]);
 
         // Conditional Validators
-        $validator->sometimes('newcat', 'sometimes|max:150', function ($input) {
+        $validator->sometimes('newcat', 'sometimes|max:50', function ($input) {
+
             return $input->category_id == "new";
         });
         $validator->sometimes('category_id', 'required|exists:category,category_id', function ($input) {
@@ -295,7 +297,8 @@ class ProducingActivityController extends Controller
             return ($input->personsource != "new" && $input->resource == "persoon");
         });
         //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
-        $validator->sometimes('internetsource', 'required|max:250', function ($input) {
+
+        $validator->sometimes('internetsource', 'required|url|max:250', function ($input) {
             return $input->resource == "internet";
         });
         $validator->sometimes('booksource', 'required|max:250', function ($input) {

@@ -54,12 +54,9 @@ class RegisterController extends Controller
             'firstname'     => 'required|max:255|min:3',
             'lastname'      => 'required|max:255|min:3',
             'gender'        => 'required|in:male,female',
-            //'birthdate'     => 'required|date|before:'.date("Y-m-d", strtotime('-17 years')),
             'email'         => 'required|email|max:255|unique:student',
-            //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
             'password'      => 'required|min:8|confirmed',
             'secret'        => 'required|in:ICTstage2016,Stage2017',
-            //'answer'        => 'required|min:3|max:30',
         ]);
     }
 

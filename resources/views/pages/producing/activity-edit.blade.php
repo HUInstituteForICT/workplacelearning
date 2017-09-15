@@ -54,7 +54,7 @@
                     <h4>Activiteit</h4>
                     <input class="form-control fit-bs" type="date" name="datum" value="{{ (count($errors) > 0) ? old('datum') : $activity->date }}" /><br/>
                     <h5>Omschrijving:</h5>
-                    <textarea class="form-control fit-bs" name="omschrijving" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\/"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ (count($errors) > 0) ? old('omschrijving') : $activity->description }}</textarea>
+                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="80" rows="5" cols="19">{{ (count($errors) > 0) ? old('omschrijving') : $activity->description }}</textarea>
                 </div>
                 <div class="col-md-2 form-group buttons numpad">
                     <h4>Uren</h4>

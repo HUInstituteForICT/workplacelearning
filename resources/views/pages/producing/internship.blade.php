@@ -38,57 +38,57 @@
                     <div class="form-group">
                         {!! Form::label('companyname', Lang::get('elements.profile.internships.companyname'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
-                            <input name="companyName" pattern="[a-zA-Z0-9 ,.()-]{3,255}" type="text" class="form-control" placeholder="{{Lang::get('elements.profile.internships.companyname')}}" value="{{ (is_null($workplace->wp_name)) ? old("companyName") : $workplace->wp_name }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ,.()-" required />
+                            <input name="companyName" maxlength="255" type="text" class="form-control" placeholder="{{Lang::get('elements.profile.internships.companyname')}}" value="{{ (is_null($workplace->wp_name)) ? old("companyName") : $workplace->wp_name }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('companyStreet', Lang::get('elements.profile.internships.companystreet'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-6">
-                            <input name="companyStreet" pattern="[0-9a-zA-Z ()-,.]{3,45}" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companystreet') }}" value="{{ (is_null($workplace->street)) ? old("companyStreet") : $workplace->street }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()-,." required />
+                            <input name="companyStreet" maxlength="45" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companystreet') }}" value="{{ (is_null($workplace->street)) ? old("companyStreet") : $workplace->street }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="col-sm-2">
-                            <input name="companyHousenr" pattern="[0-9]{1,5}[ ]*[a-zA-Z]{0,4}" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companyhousenr') }}" value="{{ (is_null($workplace->housenr)) ? old("companyHousenr") : $workplace->housenr }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z" required />
+                            <input name="companyHousenr" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companyhousenr') }}" value="{{ (is_null($workplace->housenr)) ? old("companyHousenr") : $workplace->housenr }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('companyPostalcode', Lang::get('elements.profile.internships.companylocation'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-3">
-                            <input name="companyPostalcode" pattern="[a-zA-Z0-9 ()-]{3,255}" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companypostalcode') }}" value="{{ (is_null($workplace->postalcode)) ? old("companyPostalcode") : $workplace->postalcode }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()-" required />
+                            <input name="companyPostalcode" maxlength="255" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companypostalcode') }}" value="{{ (is_null($workplace->postalcode)) ? old("companyPostalcode") : $workplace->postalcode }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="col-sm-5">
-                            <input name="companyLocation" pattern="[a-zA-Z0-9 ()-]{3,255}" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companylocation') }}" value="{{ (is_null($workplace->town)) ? old("companyLocation") : $workplace->town }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()-" required />
+                            <input name="companyLocation" maxlength="255" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companylocation') }}" value="{{ (is_null($workplace->town)) ? old("companyLocation") : $workplace->town }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactperson', Lang::get('elements.profile.internships.contactperson'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
-                            <input name="contactPerson" type="text" pattern="[a-zA-Z .,()-]{3,255}" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.contactperson') }}" value="{{ (is_null($workplace->contact_name)) ? old("contactPerson") : $workplace->contact_name }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} a-zA-Z .,()-" required />
+                            <input name="contactPerson" maxlength="255" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.contactperson') }}" value="{{ (is_null($workplace->contact_name)) ? old("contactPerson") : $workplace->contact_name }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactphone', Lang::get('elements.profile.internships.contactphone'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
-                            <input name="contactPhone" type="text" pattern="[0-9]{2,3}-?[0-9]{7,8}" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.contactphone') }}" value="{{ (is_null($workplace->contact_phone)) ? old("contactPhone") : $workplace->contact_phone }}" data-error="{{ Lang::get('elements.general.mayonlycontain') }} XX(X)(-)XXXXXXX(X)" required />
+                            <input name="contactPhone" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.contactphone') }}" value="{{ (is_null($workplace->contact_phone)) ? old("contactPhone") : $workplace->contact_phone }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactemail', Lang::get('elements.profile.internships.contactemail'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
-                            <input name="contactEmail" type="email" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.contactemail') }}" value="{{ (is_null($workplace->contact_email)) ? old("contactEmail") : $workplace->contact_email }}" data-error="Geen geldig e-mail address." required />
+                            <input name="contactEmail" type="email" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.contactemail') }}" value="{{ (is_null($workplace->contact_email)) ? old("contactEmail") : $workplace->contact_email }}"  required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('numdays', Lang::get('elements.profile.internships.numdays'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
-                            <input name="numdays" type="number" pattern="[0-9]{1,5}" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.numdays') }}" value="{{ (is_null($period->nrofdays)) ? old("numdays") : $period->nrofdays }}" data-error="Dit veld is verplicht."  required />
+                            <input name="numdays" type="number" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.numdays') }}" value="{{ (is_null($period->nrofdays)) ? old("numdays") : $period->nrofdays }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
