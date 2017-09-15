@@ -169,7 +169,7 @@
         </div>
 
 
-        <div class="row">
+        {{--<div class="row">
             <table class="table blockTable col-md-12">
                 <thead class="blue_tile">
                 <tr>
@@ -196,7 +196,7 @@
                 @endif
                 </tbody>
             </table>
-        </div>
+        </div>--}}
     </div>
     <script type="text/javascript">
         $(document).ready(function () {

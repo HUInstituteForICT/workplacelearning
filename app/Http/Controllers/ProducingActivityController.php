@@ -36,6 +36,7 @@ class ProducingActivityController extends Controller
 
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
+            ->take(20)
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
@@ -87,7 +88,18 @@ class ProducingActivityController extends Controller
 
     public function progress($pageNr)
     {
-        return view('pages.producing.progress')->with('page', $pageNr);
+        $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
+            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
+            ->get());
+
+        $activitiesJson = $exportBuilder->getJson();
+
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
+
+        return view('pages.producing.progress')
+            ->with("activitiesJson", $activitiesJson)
+            ->with("exportTranslatedFieldMapping", json_encode($exportTranslatedFieldMapping))
+            ->with('page', $pageNr);
     }
 
     public function updateFeedback(Request $request, $id)

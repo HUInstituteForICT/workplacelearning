@@ -24,6 +24,8 @@ export default class ActivityProducingProcessTable extends React.Component {
         let filters = {
             duration: {rules: [], selectedRules: []},
             resourceDetail: {rules: [], selectedRules: []},
+            category: {rules: [], selectedRules: []},
+            difficulty: {rules: [], selectedRules: []}
         };
 
 
@@ -40,11 +42,24 @@ export default class ActivityProducingProcessTable extends React.Component {
                 filters.resourceDetail.rules.push(resourceDetail);
             }
 
+            let category = activity.category;
+            if (filters.category.rules.indexOf(category) === -1) {
+                filters.category.rules.push(category);
+            }
+
+            let difficulty = activity.difficulty;
+            if (filters.difficulty.rules.indexOf(difficulty) === -1) {
+                filters.difficulty.rules.push(difficulty);
+            }
+
 
         });
 
         filters.duration.rules.sort();
         filters.resourceDetail.rules.sort();
+        filters.category.rules.sort();
+        filters.difficulty.rules.sort();
+
 
         return filters;
     }
@@ -86,6 +101,22 @@ export default class ActivityProducingProcessTable extends React.Component {
 
                 return this.state.filters.resourceDetail.selectedRules.indexOf(activity.resourceDetail) > -1;
             })
+            // Filter for category
+            .filter((activity) => {
+                if (this.state.filters.category.selectedRules.length === 0) {
+                    return true;
+                }
+
+                return this.state.filters.category.selectedRules.indexOf(activity.category) > -1;
+            })
+            // Filter for difficulty
+            .filter((activity) => {
+                if (this.state.filters.difficulty.selectedRules.length === 0) {
+                    return true;
+                }
+
+                return this.state.filters.difficulty.selectedRules.indexOf(activity.difficulty) > -1;
+            })
     }
 
 
@@ -99,7 +130,7 @@ export default class ActivityProducingProcessTable extends React.Component {
         return <div>
             <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> Filters</h3>
             <div className="filters row" style={{display:"none"}}>
-                <div className="duration col-md-4">
+                <div className="duration col-md-3">
                     <h4>Tijd</h4>
                     <div className="buttons">
                         {this.state.filters.duration.rules.map(rule => {
@@ -110,13 +141,35 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <div style={{clear: 'both'}}/>
                 </div>
 
-                <div className="resourceDetail col-md-4">
+                <div className="resourceDetail col-md-3">
                     <h4>Hulpbron</h4>
                     <div className="buttons">
                         {this.state.filters.resourceDetail.rules.map(rule => {
                             return <FilterRule key={rule} type="resourceDetail" onClickHandler={this.updateFilter}
                                                rule={rule}
                                                activated={this.state.filters.resourceDetail.selectedRules.indexOf(rule) > -1}/>
+                        })}
+                    </div>
+                    <div style={{clear: 'both'}}/>
+                </div>
+
+                <div className="duration col-md-3">
+                    <h4>Categorie</h4>
+                    <div className="buttons">
+                        {this.state.filters.category.rules.map(rule => {
+                            return <FilterRule key={rule} type="category" onClickHandler={this.updateFilter} rule={rule}
+                                               activated={this.state.filters.category.selectedRules.indexOf(rule) > -1}/>
+                        })}
+                    </div>
+                    <div style={{clear: 'both'}}/>
+                </div>
+
+                <div className="duration col-md-3">
+                    <h4>Complexiteit</h4>
+                    <div className="buttons">
+                        {this.state.filters.difficulty.rules.map(rule => {
+                            return <FilterRule key={rule} type="difficulty" onClickHandler={this.updateFilter} rule={rule}
+                                               activated={this.state.filters.difficulty.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
                     <div style={{clear: 'both'}}/>
