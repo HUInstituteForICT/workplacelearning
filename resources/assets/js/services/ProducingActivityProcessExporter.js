@@ -1,4 +1,5 @@
 import _ from "lodash";
+import * as axios from "axios";
 
 export default class ProducingActivityProcessExporter {
 
@@ -8,8 +9,6 @@ export default class ProducingActivityProcessExporter {
 
         this.outputData = '';
 
-        this[type]();
-        this.download();
     }
 
     csv() {
@@ -58,6 +57,14 @@ export default class ProducingActivityProcessExporter {
             let dataString = lines.join("\n");
             this.output(index < this.activities.length ? dataString + "\n______________\n\n" : dataString);
         });
+    }
+
+    mail(email, callback) {
+        this.txt();
+
+        axios.post('/activity-export-mail', {txt: this.outputData, email})
+            .then(callback)
+            .catch(callback);
     }
 
     output(str) {
