@@ -16,5 +16,7 @@ return [
     "category"         => "category",
     "difficulty"       => "complexity",
     "status"           => "status",
+    "supportWp" => "support werkplek",
+    "supportEd" => "support Hogeschool Utrecht",
 ];
 

@@ -44,7 +44,7 @@ class LearningActivityProducing extends Model
 
     public function feedback()
     {
-        return $this->hasOne(\App\Feedback::class);
+        return $this->hasOne(\App\Feedback::class, 'learningactivity_id', 'lap_id');
     }
 
     public function resourcePerson()

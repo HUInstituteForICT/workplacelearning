@@ -76,6 +76,7 @@ class ActivityChain
      */
     public function hasDetail()
     {
+        return true;
         if (reset($this->chain) != end($this->chain)) {
             return true;
         } else {

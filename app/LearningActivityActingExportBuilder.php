@@ -32,6 +32,8 @@ class LearningActivityActingExportBuilder
                 "resourceMaterial" => $activity->getResourceMaterial(),
                 "lessonsLearned" => $activity->lessonslearned,
                 "learningGoal" => $activity->getLearningGoal(),
+                "supportWp" => $activity->support_wp !== null ? $activity->support_wp : "",
+                "supportEd" => $activity->support_ed !== null ? $activity->support_ed : "",
                 "competence" => $activity->getCompetencies()->competence_label,
                 "url" => route('process-acting-edit', ['id' => $activity->laa_id])
             ];
@@ -50,6 +52,8 @@ class LearningActivityActingExportBuilder
             'resourceMaterial',
             'lessonsLearned',
             'learningGoal',
+            "supportWp",
+            "supportEd",
             'competence'
         ])->each(function($field) use(&$mapping, $translator) { $mapping[$field] = $translator->get('process_export.' . $field); });
          return $mapping;
