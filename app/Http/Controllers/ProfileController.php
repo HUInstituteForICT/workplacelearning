@@ -8,8 +8,10 @@
 namespace App\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
+use App\Student;
+use Illuminate\Foundation\Auth\User;
 use IntlDateFormatter;
-use App\User;
+
 use \Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -28,7 +30,7 @@ class ProfileController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname'     => 'required|regex:/^[a-zA-Z -]*$/|max:255|min:3',
             'lastname'      => 'required|regex:/^[a-zA-Z -]*$/|max:255|min:3',
-            'email'         => 'required|email|max:255|unique:students,email,'.$request->stud_id.',stud_id',
+            'email'         => 'required|email|max:255|unique:student,email,'.$request->student_id.',student_id',
             //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
         ]);
 
@@ -40,9 +42,9 @@ class ProfileController extends Controller
         } else {
             // All ok.
             // Todo why find user when already authenticated?
-            $user = User::find(Auth::user()->stud_id);
-            $user->voornaam    = $request->firstname;
-            $user->achternaam  = $request->lastname;
+            $user = Student::find(Auth::user()->student_id);
+            $user->firstname    = $request->firstname;
+            $user->lastname  = $request->lastname;
             $user->email       = $request->email;
             //$user->telefoon    = $request->phone;
             $user->save();

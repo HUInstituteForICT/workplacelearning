@@ -1,6 +1,7 @@
 import _ from "lodash";
+import * as axios from "axios";
 
-export default class ActingActivityProcessExporter {
+export default class ProducingActivityProcessExporter {
 
     constructor(type, activities) {
         this.type = type;
@@ -37,7 +38,7 @@ export default class ActingActivityProcessExporter {
     }
 
     txt() {
-// Build headers and filter unwanted
+        // Build headers and filter unwanted
         let headers = Object.keys(this.activities[0]);
 
         let unwantedColumns = ["id", "url"];
@@ -48,7 +49,7 @@ export default class ActingActivityProcessExporter {
         this.activities.forEach((activity, index) => {
             let lines = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
-                if(header === 'situation' || header === 'lessonsLearned') {
+                if(header === 'description') {
                     return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" + activity[header] + " \n";
                 }
                 return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header];

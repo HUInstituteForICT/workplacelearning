@@ -7,7 +7,7 @@ namespace App;
 use Illuminate\Support\Collection;
 use Illuminate\Translation\Translator;
 
-class LearningActivityExportBuilder
+class LearningActivityActingExportBuilder
 {
 
     private $learningActivityActingCollection;

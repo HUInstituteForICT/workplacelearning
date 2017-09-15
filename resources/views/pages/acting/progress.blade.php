@@ -17,7 +17,16 @@
                 <h3>Leermomenten</h3>
             </div>
         </div>
-        <div clas="row">
+
+        <div class="row">
+            <script>
+                window.activities = {!! $activitiesJson !!};
+                window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
+            </script>
+
+            <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>
+        </div>
+        {{--<div clas="row">
         <table class="table blockTable col-md-12">
             <thead class="blue_tile">
                 <tr>
@@ -56,6 +65,6 @@
                     @endif
                 </div>
             </div>
-        @endif
+        @endif--}}
     </div>
 @stop

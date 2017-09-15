@@ -1,7 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\LearningActivityExportBuilder;
+use App\LearningActivityActingExportBuilder;
+use App\LearningActivityProducingExportBuilder;
 use App\Timeslot;
 use App\WorkplaceLearningPeriod;
 use App\LearningActivityActing;
@@ -32,9 +33,9 @@ class ActingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
         );
 
-        $exportBuilder = new LearningActivityExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
+        $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
-            ->take(50)
+            ->take(8)
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
@@ -86,7 +87,18 @@ class ActingActivityController extends Controller
 
     public function progress($pagenr)
     {
-        return view('pages.acting.progress')->with('page', $pagenr);
+        $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
+            ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
+            ->get());
+
+        $activitiesJson = $exportBuilder->getJson();
+
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
+
+        return view('pages.acting.progress')
+            ->with('activitiesJson', $activitiesJson)
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
+            ->with('page', $pagenr);
     }
 
     public function create(Request $request)

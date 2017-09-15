@@ -8,11 +8,13 @@ import DOM from "react-dom";
 // Import components
 import ActivityActingProcessTable from "./components/ActivityActingProcessTable/table";
 import EducationProgramsApp from "./components/EducationProgramsApp/educationProgramsApp";
+import ActivityProducingProcessTable from "./components/ActivityProducingProcessTable/table";
 
 
 
 const Apps = {
     ActivityActingProcessTable,
+    ActivityProducingProcessTable,
     EducationProgramsApp
 };
 

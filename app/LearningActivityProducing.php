@@ -114,6 +114,10 @@ class LearningActivityProducing extends Model
         return LearningActivityProducing::where('prev_lap_id', $this->lap_id)->first();
     }
 
+    public function status() {
+        return $this->hasOne(Status::class, 'status_id', 'status_id');
+    }
+
     public function getStatus()
     {
         $st = DB::table("status")->where('status_id', $this->status_id)->first();
