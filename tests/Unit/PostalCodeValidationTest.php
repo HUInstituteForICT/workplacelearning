@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\LearningActivityActing;
-use App\LearningActivityExportBuilder;
+use App\LearningActivityProducingExportBuilder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

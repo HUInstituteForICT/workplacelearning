@@ -7,7 +7,7 @@ use App\EducationProgram;
 use App\EducationProgramsService;
 use App\EducationProgramType;
 use App\LearningActivityActing;
-use App\LearningActivityExportBuilder;
+use App\LearningActivityProducingExportBuilder;
 use App\ResourcePerson;
 use App\Timeslot;
 use Tests\TestCase;

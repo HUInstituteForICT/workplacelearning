@@ -20,7 +20,15 @@
                 <a class="btn btn-info" role="button" target="_blank" href="{{ route('report-producing-export') }}">Export</a>
             </div>
         </div>
-        <div clas="row">
+        <div class="row">
+            <script>
+                window.activities = {!! $activitiesJson !!};
+                window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
+            </script>
+
+            <div id="ActivityProducingProcessTable" class="__reactRoot col-md-12"></div>
+        </div>
+        {{--<div class="row">
         <table class="table blockTable col-md-12">
             <thead class="blue_tile">
                 <tr>
@@ -29,6 +37,7 @@
                     <td>Tijd (Uren)</td>
                     <td>Werken/leren met</td>
                     <td>Complexiteit</td>
+                    <td></td>
                 </tr>
             </thead>
             @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
@@ -39,6 +48,7 @@
                     <td>{{ $a->getDurationString() }}</td>
                     <td>{{ ucwords($a->description) . (($a->getResourceDetail() != null) ? ": ".$a->getResourceDetail() : "") }}</td>
                     <td>{{ $a->getDifficulty() }}</td>
+                    <td><a href="{{route('process-producing-edit', ['id' => $a->lap_id]) }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></a></td>
                 </tr>
                 @endforeach
             @endif
@@ -57,6 +67,6 @@
                     @endif
                 </div>
             </div>
-        @endif
+        @endif--}}
     </div>
 @stop

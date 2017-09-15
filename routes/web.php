@@ -45,6 +45,10 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
     }
 );
 
+Route::group(['before' => 'auth'], function() {
+    Route::post('/activity-export-mail', 'ActivityExportController@exportMail');
+});
+
 // Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
 // Note: The localisation is saved in a session state.
 Route::group([
