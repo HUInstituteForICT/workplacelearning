@@ -30,7 +30,7 @@ class ProfileController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname'     => 'required|max:255|min:3',
             'lastname'      => 'required|max:255|min:3',
-            'email'         => 'required|email|max:255|unique:students,email,'.$request->student_id.',student_id',
+            'email'         => 'required|email|max:255|unique:student,email,'.$request->student_id.',student_id',
         ]);
 
         if ($validator->fails()) {
