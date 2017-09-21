@@ -37,12 +37,7 @@
             </div>
         </a>
         @if(Auth::user()->getUserLevel() === 1)
-            <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/education-programs', array()) }}">
-                <div class="tile blue_tile">
-                    <img class="icon" src="{{ URL::asset('assets/img/nieuws_wit.svg', true) }}" />
-                    <div class="nav-title" style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.educationprograms') }}</div>
-                </div>
-            </a>
+
 
         <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, route('dashboard.index'), array()) }}">
             <div class="tile blue_tile">
@@ -62,5 +57,12 @@
                 <div class="nav-title">Analytics Charts</div>
             </div>
         </a>
+
+            <a class="nav-tile" href="{{ LaravelLocalization::GetLocalizedURL(null, '/education-programs', array()) }}">
+                <div class="tile white_tile">
+                    <img class="icon" src="{{ URL::asset('assets/img/nieuws_blauw.svg', true) }}" />
+                    <div class="nav-title" style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.educationprograms') }}</div>
+                </div>
+            </a>
         @endif
     </div>

@@ -19,13 +19,13 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="chart_id" class="col-sm-2 control-label">Graph</label>
+                        <label for="chart_id" class="col-sm-2 control-label">Chart</label>
 
                         <div class="col-sm-10">
                             <select class="form-control"
                                     name="chart_id"
                                     id="chart_id"
-                                    title="Graph"
+                                    title="Chart"
                                     required="required">
                                 <option></option>
                                 @foreach($analyses as $analysis)

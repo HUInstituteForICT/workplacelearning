@@ -28,11 +28,7 @@ class EditLAA extends Migration
      */
     public function down()
     {
-        Schema::table('feedback', function (Blueprint $table) {
-            $table->string('situation', 250)->change();
-            $table->string('lessonslearned', 250)->change();
-            $table->string('support_wp', 125)->nullable()->change();
-            $table->string('support_ed', 125)->nullable()->change();
+        Schema::table('learningactivityacting', function (Blueprint $table) {
         });
     }
 }

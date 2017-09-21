@@ -25,7 +25,7 @@ class EducationProgramEditDisableable extends Migration
      */
     public function down()
     {
-        Schema::table('timeslot', function (Blueprint $table) {
+        Schema::table('educationprogram', function (Blueprint $table) {
             $table->dropColumn('disabled');
         });
     }
