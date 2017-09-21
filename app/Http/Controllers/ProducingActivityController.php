@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Difficulty;
 use App\Feedback;
+use App\LearningActivityProducingExportBuilder;
 use App\ResourcePerson;
 use App\LearningActivityProducing;
 use App\Http\Requests;
@@ -33,10 +34,21 @@ class ProducingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
+        $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
+            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
+            ->take(8)
+            ->get());
+
+        $activitiesJson = $exportBuilder->getJson();
+
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
+
         return view('pages.producing.activity')
             ->with('learningWith', $resourcePersons)
             ->with('difficulties', Difficulty::all())
-            ->with('statuses', Status::all());
+            ->with('statuses', Status::all())
+            ->with('activitiesJson', $activitiesJson)
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping));
     }
 
     public function edit($id)
@@ -49,7 +61,7 @@ class ProducingActivityController extends Controller
         $activity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
 
         if (!$activity) {
-            return redirect()->route('process-acting')
+            return redirect()->route('process-producing')
                 ->withErrors('Helaas, er is geen activiteit gevonden.');
         }
 
@@ -65,10 +77,11 @@ class ProducingActivityController extends Controller
 
     public function feedback($id)
     {
-        $feedback  = Feedback::find($id);
+        $feedback = Feedback::find($id);
         if ($feedback != null) {
             $learningActivityProducing = LearningActivityProducing::find($feedback->learningactivity_id);
         }
+
         return view('pages.producing.feedback')
             ->with('lap', $learningActivityProducing)
             ->with('fb', $feedback);
@@ -76,47 +89,72 @@ class ProducingActivityController extends Controller
 
     public function progress($pageNr)
     {
-        return view('pages.producing.progress')->with('page', $pageNr);
+        $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
+            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
+            ->get());
+
+        $activitiesJson = $exportBuilder->getJson();
+
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
+
+        return view('pages.producing.progress')
+            ->with("activitiesJson", $activitiesJson)
+            ->with("exportTranslatedFieldMapping", json_encode($exportTranslatedFieldMapping))
+            ->with('page', $pageNr);
     }
 
     public function updateFeedback(Request $request, $id)
     {
-        $feedback  = Feedback::find($id);
+        $feedback = Feedback::find($id);
         $wzh = null;
         if ($feedback != null) {
-            $learningActivityProducing = LearningActivityProducing::find($feedback->wzh_id);
+            $learningActivityProducing = LearningActivityProducing::find($feedback->learningactivity_id);
             if (is_null($learningActivityProducing) || $learningActivityProducing->wplp_id != Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id) {
                 return redirect()->route('home')->withErrors(['Je hebt geen rechten om deze feedback te versturen']);
             }
         }
 
+        $messages = [
+            "newnotfinished" => "De omschrijving is verplicht en mag maximaal 150 tekens zijn",
+            "ondersteuning_werkplek.required_unless" => "Omschrijving van de ondersteuning van de werkplek is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben",
+            "ondersteuning_opleiding.required_unless" => "Omschrijving van de ondersteuning van de opleiding is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben"
+        ];
+
         $validator = Validator::make($request->all(), [
-            'notfinished'               => 'required|regex:/^[0-9a-zA-Z()-_,. ]+$/',
-            'newnotfinished'            => 'required_if:notfinished,Anders|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
+            'notfinished'               => 'required',
             'support_requested'         => 'required|in:0,1,2',
-            'supported_provided_wp'    => 'required_unless:support_requested,0|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
-            'initiatief'                => 'required|max:500|regex:/^[0-9a-zA-Z()-_,. ]+$/',
+            'supported_provided_wp'     => 'required_unless:support_requested,0|max:150',
+            'initiatief'                => 'required|max:500',
             'progress_satisfied'        => 'required|in:1,2',
-            'vervolgstap_zelf'          => 'required|max:150|regex:/^[0-9a-zA-Z()-_,. ]+$/',
-            'ondersteuning_werkplek'    => 'required_unless:ondersteuningWerkplek,Geen|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
-            'ondersteuning_opleiding'   => 'required_unless:ondersteuningOpleiding,Geen|max:150|regex:/^[0-9a-zA-Z()\-_,. ]+$/',
+            'vervolgstap_zelf'          => 'required|max:150',
+            'ondersteuning_werkplek'    => 'required_unless:ondersteuningWerkplek,Geen|max:150',
+            'ondersteuning_opleiding'   => 'required_unless:ondersteuningOpleiding,Geen|max:150',
         ]);
+
+
+        $validator->sometimes("newnotfinished", "required|max:150", function ($input) {
+            return $input->notfinished === "Anders";
+        });
+
+
         if ($validator->fails()) {
             return redirect()->route('feedback-producing', ["id" => $id])
                 ->withErrors($validator)
                 ->withInput();
         } else {
             // Todo refactor with model->fill($request)
-            $feedback->notfinished                = ($request['notfinished'] == "Anders") ? $request['newnotfinished'] : $request['notfinished'];
-            $feedback->initiative                 = $request['initiatief'];
-            $feedback->progress_satisfied         = $request['progress_satisfied'];
-            $feedback->support_requested          = $request['support_requested'];
-            $feedback->supported_provided_wp      = $request['supported_provided_wp'];
-            $feedback->nextstep_self              = $request['vervolgstap_zelf'];
-            $feedback->support_needed_wp          = (!isset($request['ondersteuningWerkplek'])) ? $request['ondersteuning_werkplek'] : "Geen";
-            $feedback->support_needed_ed          = (!isset($request['ondersteuningOpleiding'])) ? $request['ondersteuning_opleiding'] : "Geen";
+            $feedback->notfinished = ($request['notfinished'] == "Anders") ? $request['newnotfinished'] : $request['notfinished'];
+            $feedback->initiative = $request['initiatief'];
+            $feedback->progress_satisfied = $request['progress_satisfied'];
+            $feedback->support_requested = $request['support_requested'];
+            $feedback->supported_provided_wp = $request['supported_provided_wp'];
+            $feedback->nextstep_self = $request['vervolgstap_zelf'];
+            $feedback->support_needed_wp = (!isset($request['ondersteuningWerkplek'])) ? $request['ondersteuning_werkplek'] : "Geen";
+            $feedback->support_needed_ed = (!isset($request['ondersteuningOpleiding'])) ? $request['ondersteuning_opleiding'] : "Geen";
             $feedback->save();
-            return redirect()->route('feedback-producing', ['id' => $id])->with('success', 'De feedback is opgeslagen.');
+
+            return redirect()->route('process-producing')->with('success',
+                'Zowel de activiteit als de feedback zijn opgeslagen.');
         }
     }
 
@@ -129,8 +167,8 @@ class ProducingActivityController extends Controller
 
         $validator = Validator::make($request->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
-            'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'\\\\\/"\s]+\s*$/',
-            'aantaluren'    => 'required|regex:/^[0-9]{1}[.]?[0-9]{0,2}$/',
+            'omschrijving'  => 'required',
+            'aantaluren'    => 'required',
             'resource'      => 'required|in:persoon,alleen,internet,boek,new',
             'moeilijkheid'  => 'required|exists:difficulty,difficulty_id',
             'status'        => 'required|exists:status,status_id',
@@ -140,26 +178,26 @@ class ProducingActivityController extends Controller
         $validator->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function ($input) {
             return $input->previous_wzh != "-1";
         });
-        $validator->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function ($input) {
+        $validator->sometimes('newcat', 'sometimes|max:50', function ($input) {
             return $input->category_id == "new";
         });
         $validator->sometimes('category_id', 'required|exists:category,category_id', function ($input) {
             return $input->category_id != "new";
         });
-        $validator->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function ($input) {
+        $validator->sometimes('newswv', 'required|max:50', function ($input) {
             return ($input->personsource == "new" && $input->resource == "persoon");
         });
         $validator->sometimes('personsource', 'required|exists:resourceperson,rp_id', function ($input) {
             return ($input->personsource != "new" && $input->resource == "persoon");
         });
         //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
-        $validator->sometimes('internetsource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function ($input) {
+        $validator->sometimes('internetsource', 'required|max:250', function ($input) {
             return $input->resource == "internet";
         });
-        $validator->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function ($input) {
+        $validator->sometimes('booksource', 'required|max:250', function ($input) {
             return $input->resource == "book";
         });
-        $validator->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()\\\\\/]{1,250}$/', function ($input) {
+        $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
             return $input->resource == "new";
         });
 
@@ -237,34 +275,36 @@ class ProducingActivityController extends Controller
         // TODO shouldn't these fields be in English?
         $validator = Validator::make($request->all(), [
             'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
-            'omschrijving'  => 'required|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\'\\\\\/"\s]+\s*$/',
-            'aantaluren'    => 'required|regex:/^[0-9]{1}[.]?[0-9]{0,2}$/',
+            'omschrijving'  => 'required',
+            'aantaluren'    => 'required',
             'resource'      => 'required|in:persoon,alleen,internet,boek,new',
             'moeilijkheid'  => 'required|exists:difficulty,difficulty_id',
             'status'        => 'required|exists:status,status_id',
         ]);
 
         // Conditional Validators
-        $validator->sometimes('newcat', 'sometimes|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function ($input) {
+        $validator->sometimes('newcat', 'sometimes|max:50', function ($input) {
+
             return $input->category_id == "new";
         });
         $validator->sometimes('category_id', 'required|exists:category,category_id', function ($input) {
             return $input->category_id != "new";
         });
-        $validator->sometimes('newswv', 'required|regex:/^[0-9a-zA-Z ()\\\\\/]{1,50}$/', function ($input) {
+        $validator->sometimes('newswv', 'required|max:50', function ($input) {
             return ($input->personsource == "new" && $input->resource == "persoon");
         });
         $validator->sometimes('personsource', 'required|exists:resourceperson,rp_id', function ($input) {
             return ($input->personsource != "new" && $input->resource == "persoon");
         });
         //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
-        $validator->sometimes('internetsource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function ($input) {
+
+        $validator->sometimes('internetsource', 'required|url|max:250', function ($input) {
             return $input->resource == "internet";
         });
-        $validator->sometimes('booksource', 'required|regex:/^[0-9a-zA-Z ,.\-_!@%()\\\\\/]{1,250}$/', function ($input) {
+        $validator->sometimes('booksource', 'required|max:250', function ($input) {
             return $input->resource == "book";
         });
-        $validator->sometimes('newlerenmet', 'required|regex:/^[0-9a-zA-Z ,.\-_()\\\\\/]{1,250}$/', function ($input) {
+        $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
             return $input->resource == "new";
         });
 

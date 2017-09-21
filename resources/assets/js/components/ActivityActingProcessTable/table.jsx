@@ -11,8 +11,10 @@ export default class ActivityActingProcessTable extends React.Component {
         this.state = {
             activities: window.activities,
             filters: this.buildFilter(window.activities),
-            exports: ["csv", "txt"],
-            selectedExport: "csv"
+            exports: ["csv", "txt", "email"],
+            selectedExport: "csv",
+            email: "",
+            emailAlert: null
         };
 
         this.updateFilter = this.updateFilter.bind(this);
@@ -109,7 +111,24 @@ export default class ActivityActingProcessTable extends React.Component {
 
 
     exportHandler() {
-        new ActingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
+        const exporter = new ActingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
+
+        if(this.state.selectedExport !== 'email') {
+            exporter[this.state.selectedExport]();
+            exporter.download();
+        } else {
+            this.setState({emailAlert: undefined});
+            exporter.mail(this.state.email, response => {
+                if(response.hasOwnProperty("data") && response.data.status === "success") {
+                    this.setState({email: "", emailAlert: true});
+                } else {
+                    this.setState({email: "", emailAlert: false});
+                }
+                setTimeout(() => this.setState({emailAlert: null}), 3000);
+
+
+            });
+        }
     }
 
 
@@ -119,13 +138,14 @@ export default class ActivityActingProcessTable extends React.Component {
             <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> Filters</h3>
             <div className="filters row" style={{display:"none"}}>
                 <div className="timeslot col-md-4">
-                    <h4>Tijdslot</h4>
+                    <h4>Categorie</h4>
                     <div className="buttons">
                         {this.state.filters.timeslot.rules.map(rule => {
                             return <FilterRule key={rule} type="timeslot" onClickHandler={this.updateFilter} rule={rule}
                                                activated={this.state.filters.timeslot.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
+                    <div style={{clear: 'both'}}/>
                 </div>
 
                 <div className="learningGoal col-md-4">
@@ -137,6 +157,7 @@ export default class ActivityActingProcessTable extends React.Component {
                                                activated={this.state.filters.learningGoal.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
+                    <div style={{clear: 'both'}}/>
                 </div>
                 <div className="competence col-md-4">
                     <h4>Competentie</h4>
@@ -147,10 +168,11 @@ export default class ActivityActingProcessTable extends React.Component {
                                                activated={this.state.filters.competence.selectedRules.indexOf(rule) > -1}/>
                         })}
                     </div>
+                    <div style={{clear: 'both'}}/>
                 </div>
 
             </div>
-
+            <br/>
             <div className="export" style={{paddingBottom:"15px"}}>
 
                 <label>Export naar&nbsp;
@@ -160,15 +182,36 @@ export default class ActivityActingProcessTable extends React.Component {
                         })}
                     </select>
                 </label> &nbsp;
-                <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0}>exporteer</button>
+                <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) )}>exporteer</button>
+                <br/>
+                {this.state.selectedExport === 'email' &&
+                <div style={{maxWidth: "400px"}}>
+                    <label>Mailen naar: <input type="email" className="form-control" onChange={e => this.setState({email: e.target.value})} value={this.state.email} /></label>
+                    {
+                        this.state.emailAlert === undefined &&
+                        <div className="alert alert-info" role="alert">Bezig met verzenden</div>
+                    }
+                    {
+                        this.state.emailAlert === true &&
+                        <div className="alert alert-success" role="alert">De email is succesvol verzonden</div>
+                    }
+                    {
+                        this.state.emailAlert === false &&
+                        <div className="alert alert-danger" role="alert">Er is iets misgegaan bij het verzenden van de email, probeer het later nog eens</div>
+                    }
+                </div>
+                }
+
             </div>
 
+            <div className="table-responsive">
             <table className="table blockTable">
                 <thead className="blue_tile">
                 <tr>
+                    <td></td>
                     <td>Datum</td>
                     <td>Situatie</td>
-                    <td>Wanneer?</td>
+                    <td>Categorie</td>
                     <td>Met wie?</td>
                     <td>Theorie</td>
                     <td>Leerpunten en vervolg</td>
@@ -181,8 +224,10 @@ export default class ActivityActingProcessTable extends React.Component {
                 {filteredActivities.map((activity) => {
                     return <Row key={activity.id} activity={activity}/>
                 })}
+
                 </tbody>
             </table>
+            </div>
         </div>
     }
 

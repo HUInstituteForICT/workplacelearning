@@ -10,6 +10,7 @@
                 (function() {
                     $('#new-rp-hidden').hide();
                     $('#new-rm-hidden').hide();
+                    $('#new-timeslot-hidden').hide();
                     $('#res_material_detail').hide();
 
                     $('[name="res_person"]').click(function() {
@@ -32,6 +33,14 @@
                         } else {
                             $('#res_material_detail').show();
                         }
+                    });
+                    $('[name="timeslot"]').click(function() {
+                        if ($('#new_timeslot').is(':checked')) {
+                            $('#new-timeslot-hidden').show();
+                        } else {
+                            $('#new-timeslot-hidden').hide();
+                        }
+
                     });
                 })();
 
@@ -64,7 +73,7 @@
                     <ol>
                         <li>Kies een datum waarop het leermoment plaatsvond. De datum mag niet in de toekomst liggen.</li>
                         <li>Vul een omschrijving in van de situatie waarin het leermoment plaatsvond.</li>
-                        <li>Geef aan op welk moment van de dag het leermoment plaatsvond.</li>
+                        <li>Geef aan in welke categorie het leermoment valt (dit kan bijvoorbeeld een specifieke klas zijn of een specifieke patiënt). Je kunt hier zelf categorieën toevoegen, maar als je te veel categorieën gebruikt, zal het snel verwarrend worden. Denk dus goed na welke categorieën voor jou waardevol zijn om bijvoorbeeld analyses op uit te voeren of voor exporteren naar je stageverslag.</li>
                         <li>Geef aan met wie je dit leermoment meemaakte of dat je het alleen hebt ervaren.</li>
                         <li>Geef aan welke theorie je gebruikte tijdens dit leermoment. Geef het type bron en een beschrijving op.</li>
                         <li>Geef dan aan wat je precies geleerd hebt van dit moment en wat de volgende stap voor jou gaat zijn. Daarnaast kun je nog aangeven wat je eventueel voor ondersteuning daarbij nodig hebt van je stageplek of van de HU (let op: dit wordt niet doorgegeven aan de betreffende personen, maar wel opgeslagen in het systeem, dus je kunt het later wel weer terugvinden).</li>
@@ -78,31 +87,39 @@
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
                     <div class='input-group date fit-bs' id='date-deadline'>
-                        <input id="datum" name="date" type='text' class="form-control" value="{{ (!is_null(old('datum'))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y') }}"/>
+                        <input style="z-index:1;" id="datum" name="date" type='text' class="form-control" value="{{ (!is_null(old('datum'))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y') }}"/>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                     <h4>Situatie</h4>
-                    <textarea class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,250}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="16" cols="19">{{ old('description') }}</textarea>
+                    <div>
+                        <textarea id="description" class="form-control fit-bs" name="description" required  maxlength="1000" rows="16" cols="19">{{ old('description') }}</textarea>
+                        <a data-target-text="#description" data-target-title="{{ ucfirst(trans('process_export.situation')) }}" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+                    </div>
+
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Wanneer? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_when') }}"></i></h4>
+                    <h4>Categorie <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_when') }}"></i></h4>
                     @foreach ($timeslots as $key => $value)
                         <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ (old('timeslot') != null && old('timeslot') == $value->timeslot_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->timeslot_text }}</span></label>
                     @endforeach
+                    <div>
+                        <label><input type="radio" name="timeslot" id="new_timeslot" value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
+                        <input id="new-timeslot-hidden" type="text" name="new_timeslot" value="{{ old('new-timeslot-hidden') }}" placeholder="Omschrijving"  maxlength="50"/>
+                    </div>
                 </div>
-                <div class="col-md-2 from-group buttons">
+                <div class="col-md-2 form-group buttons">
                     <h4>Met wie? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_with') }}"></i></h4>
                     @foreach ($resPersons as $key => $value)
                         <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->person_label }}</span></label>
                     @endforeach
                     <div>
                         <label><input type="radio" name="res_person" id="new_rp" value="new" {{ (old('res_person') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
-                        <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z,./\\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                        <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}" placeholder="Omschrijving" maxlength="50" />
                     </div>
                 </div>
-                <div class="col-md-2 from-group buttons">
+                <div class="col-md-2 form-group buttons">
                     <h4>Met welke theorie? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_theory') }}"></i></h4>
                     <label><input type="radio" name="res_material" id="rm_none" value="none" {{ (old('res_material') == 'none') ? 'checked' : 'checked' }}><span>Geen</span></label>
                     @foreach ($resMaterials as $key => $value)
@@ -110,17 +127,27 @@
                     @endforeach
                     <input type="text" name="res_material_detail" id="res_material_detail" placeholder="Beschrijving bron" value="{{ old('res_material_detail') }}" />
                     <label><input type="radio" name="res_material" id="new_rm" value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
-                    <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="Omschrijving" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z,./\\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z')" />
+                    <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="Omschrijving" maxlength="50"/>
                 </div>
-                <div class="col-md-2 from-group">
-                    <h4>Wat heb je geleerd?<br />Wat is het vervolg? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="learned" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,250}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('learned') }}</textarea>
-                    <h4>Wat heb je hierbij nodig van je werkplek? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_wp') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="support_wp" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,125}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_wp') }}</textarea>
-                    <h4>Wat heb je hierbij nodig van de HU? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_ep') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="support_ed" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,125}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ old('support_ed') }}</textarea>
+                <div class="col-md-2 form-group">
+                    <div>
+                        <h4>Wat heb je geleerd?<br />Wat is het vervolg? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
+                        <textarea id="learned" class="form-control fit-bs" name="learned" required maxlength="1000" rows="5" cols="19">{{ old('learned') }}</textarea>
+                        <a data-target-text="#learned" data-target-title="Wat heb je geleerd?" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+                    </div>
+                    <div>
+                        <h4>Wat heb je hierbij nodig van je werkplek? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_wp') }}"></i></h4>
+                        <textarea id="support_wp" max-length="500" class="form-control fit-bs" name="support_wp" rows="5" cols="19">{{ old('support_wp') }}</textarea>
+                        <a data-target-text="#support_wp" data-target-title="Wat heb je hierbij nodig van je werkplek?" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+                    </div>
+                    <div>
+                        <h4>Wat heb je hierbij nodig van de HU? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_ep') }}"></i></h4>
+                        <textarea id="support_ed" maxlength="500" class="form-control fit-bs" name="support_ed" rows="5" cols="19">{{ old('support_ed') }}</textarea>
+                        <a data-target-text="#support_ed" data-target-title="Wat heb je hierbij nodig van de HU?" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+
+                    </div>
                 </div>
-                <div class="col-md-2 from-group">
+                <div class="col-md-2 form-group">
                     <div>
                         <h4>Leervraag <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learninggoal') }}"></i></h4>
                         <select name="learning_goal" class="form-control fit-bs">
@@ -134,7 +161,11 @@
                                 <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : null }}>{{ $value->competence_label }}</option>
                             @endforeach
                         </select>
-                        <h5>{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "/assets/pdf/CompetentiesLerarenopleiding.pdf", array()), Lang::get('elements.competences.competencedetails')) !!}</h5>
+                        @if($competenceDescription !== null)
+                            <h5>
+                                <a href="{{ $competenceDescription->download_url }}">{{ Lang::get('elements.competences.competencedetails') }}</a>
+                            </h5>
+                        @endif
                     </div>
                     <div>
                         <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />
@@ -162,7 +193,52 @@
             </script>
 
             <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>
-
         </div>
+
+        {{-- Modal used for enlarging fields --}}
+        <div class="modal fade" id="enlargedModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog"  role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <textarea rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
+                        <a type="button" class="btn btn-primary" id="enlargedTextareaSave">Bevestigen</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <script>
+            var enlargedModal = $('#enlargedModal');
+            var title = $('.modal-title');
+            var textarea = $(enlargedModal).find('textarea');
+            var returnTarget = undefined;
+            $('.canBeEnlarged').click(function() {
+                $(enlargedModal).modal('toggle');
+                var returnTargetId = $(this).data('target-text');
+
+                returnTarget = $(this).parent().find('' + returnTargetId);
+                $(textarea).attr('maxlength', $(returnTarget).attr('maxlength'));
+                $(textarea).val($(returnTarget).val());
+                $(title).text($(this).data('target-title'));
+                $(textarea).focus();
+            });
+            $('#enlargedTextareaSave').click(function() {
+                if(returnTarget === undefined) return;
+
+                $(returnTarget).val($(textarea).val());
+                $(enlargedModal).modal('hide')
+            });
+        </script>
     </div>
 @stop

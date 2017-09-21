@@ -110,10 +110,8 @@ class Student extends Authenticatable
             ->get();
     }
 
-
-    /*
-     *
-     *
+    /**
+     * @return null|WorkplaceLearningPeriod
      */
     public function getCurrentWorkplaceLearningPeriod()
     {
@@ -131,6 +129,9 @@ class Student extends Authenticatable
         return $this->workplaces()->where('workplace.wp_id', '=', $wplp->wp_id)->first();
     }
 
+    /**
+     * @return EducationProgram
+     */
     public function getEducationProgram()
     {
         return $this->educationProgram()->first();

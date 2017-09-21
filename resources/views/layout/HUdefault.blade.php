@@ -32,7 +32,7 @@
     <!-- /#wrapper -->
 </div>
 <div id="footer">
-    <p>&copy; 2016 - HU University of applied Sciences | Icons courtesy of <a href="http://famfamfam.com">FamFamFam.com</a></p>
+    <p>&copy; {{ date('Y') }} - HU University of Applied Sciences | Icons courtesy of <a href="http://famfamfam.com">FamFamFam.com</a></p>
     <script>
         $("#menu-toggle").click(function(e) {
             e.preventDefault();
@@ -41,6 +41,6 @@
     </script>
 </div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
-<script src="{{ secure_asset('/js/app.js') }}"></script>
+<script src="{{ mix('/js/app.js') }}"></script>
 </body>
 </html>

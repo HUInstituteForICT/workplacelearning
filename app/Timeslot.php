@@ -17,7 +17,8 @@ class Timeslot extends Model
     protected $fillable = [
         'timeslot_id',
         'timeslot_text',
-        'edprog_id'
+        'edprog_id',
+        'wplp_id',
     ];
 
     public function educationProgram()

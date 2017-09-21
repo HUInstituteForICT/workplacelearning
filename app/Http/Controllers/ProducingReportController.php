@@ -8,6 +8,7 @@
 namespace App\Http\Controllers;
 
 use App\LearningActivityProducing;
+use App\LearningActivityProducingExportBuilder;
 use IntlDateFormatter;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -60,8 +61,11 @@ class ProducingReportController extends Controller
     public function show()
     {
         if (Auth::user()->getInternshipPeriods() != null) {
+
             return view('pages.report');
         }
+
+
         // The user cannot view this page as they do not have any interships
         return redirect()->route('home')->withErrors(['Je hebt geen actieve stage, en kan deze pagina niet inzien. Ga naar profiel om een stage toe te voegen of te activeren.']);
     }

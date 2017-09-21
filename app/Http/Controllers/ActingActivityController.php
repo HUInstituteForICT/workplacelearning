@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\LearningActivityExportBuilder;
+use App\LearningActivityActingExportBuilder;
+use App\LearningActivityProducingExportBuilder;
+use App\Timeslot;
 use App\WorkplaceLearningPeriod;
 use App\LearningActivityActing;
 use App\ResourcePerson;
@@ -27,9 +29,13 @@ class ActingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
-        $exportBuilder = new LearningActivityExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
+        $timeslots = Auth::user()->getEducationProgram()->getTimeslots()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
+        );
+
+        $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
-            ->take(50)
+            ->take(8)
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
@@ -37,7 +43,8 @@ class ActingActivityController extends Controller
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
         return view('pages.acting.activity')
-            ->with('timeslots', Auth::user()->getEducationProgram()->getTimeslots())
+            ->with('competenceDescription', Auth::user()->getEducationProgram()->competenceDescription)
+            ->with('timeslots', $timeslots)
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
             ->with('learningGoals', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
@@ -65,9 +72,13 @@ class ActingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
+        $timeslots = Auth::user()->getEducationProgram()->getTimeslots()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
+        );
+
         return view('pages.acting.activity-edit')
             ->with('activity', $activity)
-            ->with('timeslots', Auth::user()->getEducationProgram()->getTimeslots())
+            ->with('timeslots', $timeslots)
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
             ->with('learningGoals', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
@@ -76,7 +87,18 @@ class ActingActivityController extends Controller
 
     public function progress($pagenr)
     {
-        return view('pages.acting.progress')->with('page', $pagenr);
+        $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
+            ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
+            ->get());
+
+        $activitiesJson = $exportBuilder->getJson();
+
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
+
+        return view('pages.acting.progress')
+            ->with('activitiesJson', $activitiesJson)
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
+            ->with('page', $pagenr);
     }
 
     public function create(Request $request)
@@ -91,11 +113,10 @@ class ActingActivityController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'date'          => 'required|date|before:' . date('d-m-Y', strtotime('tomorrow')), // TODO Date validation not working
-                'description'   => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-                'timeslot'      => 'required|exists:timeslot,timeslot_id',
-                'learned'       => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-                'support_wp'    => 'max:125',
-                'support_ed'    => 'max:125',
+                'description'   => 'required|max:1000',
+                'learned'       => 'required|max:1000',
+                'support_wp'    => 'max:500',
+                'support_ed'    => 'max:500',
                 'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
                 'competence'    => 'required|exists:competence,competence_id',
             ]);
@@ -104,23 +125,28 @@ class ActingActivityController extends Controller
         $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function ($input) {
             return $input->res_person != 'new';
         });
-
-        $validator->sometimes('new_rp', 'required|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/', function ($input) {
-            return $input->res_person === 'new';
+        $validator->sometimes('timeslot', 'required|exists:timeslot,timeslot_id', function($input) {
+            return $input->timeslot != 'new';
         });
-
-        $validator->sometimes('new_rm', 'required|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/', function ($input) {
-            return $input->res_material === 'new';
-        });
-
         $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function ($input) {
             return $input->res_material != 'new' && $input->res_material != 'none';
         });
+
+        $validator->sometimes('new_rp', 'required|max:45', function ($input) {
+            return $input->res_person === 'new';
+        });
+        $validator->sometimes('new_timeslot', 'required|max:45', function ($input) {
+            return $input->timeslot === 'new';
+        });
+        $validator->sometimes('new_rm', 'required|max:45', function ($input) {
+            return $input->res_material === 'new';
+        });
+
         /*$validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
             return $input->res_material == 1;
         });*/
         //temporarily disabled url validation for res_material_detail field
-        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function ($input) {
+        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75', function ($input) {
             return $input->res_material >= 1;
         });
 
@@ -147,6 +173,16 @@ class ActingActivityController extends Controller
             $resourceMaterial->save();
 
             $request['res_material'] = $resourceMaterial->rm_id;
+        }
+
+        if($request['timeslot'] == 'new') {
+            $timeslot = new Timeslot;
+            $timeslot->timeslot_text = $request['new_timeslot'];
+            $timeslot->edprog_id = Auth::user()->getEducationProgram()->ep_id;
+            $timeslot->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+            $timeslot->save();
+
+            $request['timeslot'] = $timeslot->timeslot_id;
         }
 
         // Todo refactor into model->fill($request), all fillable
@@ -177,13 +213,13 @@ class ActingActivityController extends Controller
 
         $validator = Validator::make($req->all(), [
             'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
-            'description'           => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
+            'description'           => 'required|max:250',
             'timeslot'              => 'required|exists:timeslot,timeslot_id',
-            'new_rp'                => 'required_if:res_person,new|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/',
-            'new_rm'                => 'required_if:res_material,new|max:45|regex:/^[ 0-9a-zA-z(),.\/\\\\\']+$/',
-            'learned'               => 'required|max:250|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-            'support_wp'            => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
-            'support_ed'            => 'max:125|regex:/^[ 0-9a-zA-Z\-_,.?!*&%#()\/\\\\\'"\s]+\s*$/',
+            'new_rp'                => 'required_if:res_person,new|max:45|',
+            'new_rm'                => 'required_if:res_material,new|max:45',
+            'learned'               => 'required|max:250',
+            'support_wp'            => 'max:125',
+            'support_ed'            => 'max:125',
             'learning_goal'         => 'required|exists:learninggoal,learninggoal_id',
             'competence'            => 'required|exists:competence,competence_id'
         ]);
@@ -199,7 +235,7 @@ class ActingActivityController extends Controller
             return $input->res_material == 1;
         });*/
         //temporarily disabled url validation for res_material_detail field
-        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|regex:/^[ 0-9a-zA-z,.()\/\\\\\']+$/', function ($input) {
+        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75', function ($input) {
             return $input->res_material >= 1;
         });
 

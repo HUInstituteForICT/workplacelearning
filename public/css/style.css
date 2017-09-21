@@ -45,7 +45,8 @@ a {
   top: 0;
   left: 0;
   z-index: 2;
-  box-shadow: 0px -2px 15px #888888;
+  -webkit-box-shadow: 0px -2px 15px #888888;
+          box-shadow: 0px -2px 15px #888888;
   margin: 0;
   background: #ffffff;
   border-bottom: 1px solid #CFCFCF;
@@ -107,6 +108,7 @@ a {
   padding-left: 0;
   z-index: 0;
   margin-top: 60px;
+  -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
 #wrapper.toggled {
@@ -127,6 +129,7 @@ a {
   margin-left: -330px;
   overflow-y: auto;
   background: #E2E2E2;
+  -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
 #page-content-wrapper {
@@ -204,7 +207,8 @@ a.nav-tile:focus {
   margin: 0;
   padding: 0;
   z-index: 2;
-  box-shadow: 0px -2px 15px #888888;
+  -webkit-box-shadow: 0px -2px 15px #888888;
+          box-shadow: 0px -2px 15px #888888;
   background: #ffffff;
   border-top: 1px solid #CFCFCF;
   text-align: center;
@@ -392,4 +396,93 @@ a.nav-tile:focus {
   #wrapper.toggled #page-content-wrapper {
     margin-right: 0;
   }
+}
+.activityExport td i {
+  color: #00A1E2;
+  cursor: pointer;
+}
+.dropzone {
+  width: 100%;
+  height: 75px;
+  text-align: center;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  /* now centers things in X,Y axis */
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 2px dashed #666666;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.dropzone:hover {
+  background-color: #00A1E2;
+  color: white;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.defaultButton {
+  display: block;
+  width: 100%;
+  min-height: 34px;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: #00A1E2;
+  font-size: 14px;
+  padding: 9px;
+  text-align: center;
+  cursor: pointer;
+}
+.defaultButton:hover {
+  background-color: #e72e2a;
+  color: white;
+}
+.defaultButton.red {
+  background-color: #e72e2a;
+}
+.defaultButton.red:hover {
+  background-color: #9a1411;
+}
+.defaultButton.list {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.defaultButton.fill {
+  width: 100%;
+}
+.defaultButton.add {
+  background-color: #6aea7a;
+}
+.defaultButton.add:hover {
+  background-color: #1dd134;
+}
+.defaultButton.inline {
+  display: inline;
+  margin: 10px 10px;
+}
+.buttonListItem {
+  margin: 15px 0px 0px 0px;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.buttonListItem .defaultButton {
+  width: 100%;
+}
+.buttonListItem.expand {
+  margin: 15px 10px 15px 25px;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
 }

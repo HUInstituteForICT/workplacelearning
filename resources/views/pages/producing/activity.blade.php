@@ -80,14 +80,17 @@
                     </div>
 
                     <h5>Omschrijving:</h5>
-                    <textarea class="form-control fit-bs" name="omschrijving" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'\/"]{3,80}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="80" rows="5" cols="19"></textarea>
 
                     <h5>Koppel aan vorige activiteit:</h5>
                     <select class="form-control fit-bs" name="previous_wzh" >
                         <option value="-1">- Niet Koppelen-</option>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != NULL)
                             @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getUnfinishedActivityProducing() as $w)
+                                @if($w->nextLearningActivityProducing === null)
+                                    {{-- Only allow to chain activity if it hasn't been chained yet --}}
                                 <option value="{{ $w->lap_id }}">{{ date('d-m', strtotime($w->date)) ." - ".$w->description }}</option>
+                                @endif
                             @endforeach
                         @endif
                     </select>
@@ -111,7 +114,7 @@
                     @endif
                     <div>
                         <label class="newcat"><input type="radio" name="category_id" value="new" /><span class="new" id="newcat">Anders<br />(Toevoegen)</span></label>
-                        <input id="category" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()/\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newcat" placeholder="Omschrijving" />
+                        <input id="category" type="text" maxlength="50" name="newcat" placeholder="Omschrijving" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
@@ -124,7 +127,7 @@
                             @endforeach */ ?>
                             <option value="new">Nieuw/Anders</option>
                         </select>
-                        <input id="cond-select-hidden" type="text" oninput="this.setCustomValidity('')" pattern="[0-9a-zA-Z ()/\]{1,50}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z ()')" name="newswv" placeholder="Omschrijving" />
+                        <input id="cond-select-hidden" type="text" maxlength="50" name="newswv" placeholder="Omschrijving" />
                     </div>
                     <div id="solocontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="alleen" /><span>Alleen</span></label>
@@ -155,7 +158,18 @@
                 </div>
             {{ Form::close() }}
         </div>
+
         <div class="row">
+            <script>
+                window.activities = {!! $activitiesJson !!};
+                window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
+            </script>
+
+            <div id="ActivityProducingProcessTable" class="__reactRoot col-md-12"></div>
+        </div>
+
+
+        {{--<div class="row">
             <table class="table blockTable col-md-12">
                 <thead class="blue_tile">
                 <tr>
@@ -167,6 +181,7 @@
                     <td></td>
                 </tr>
                 </thead>
+                <tbody>
                 @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
                     @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8) as $a)
                         <tr>
@@ -181,7 +196,7 @@
                 @endif
                 </tbody>
             </table>
-        </div>
+        </div>--}}
     </div>
     <script type="text/javascript">
         $(document).ready(function () {

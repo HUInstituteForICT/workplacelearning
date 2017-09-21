@@ -96,14 +96,6 @@
                                     class="form-control-static">{{ $producingAnalysis->statistic('percentageAloneHours') }}
                                 % van de activiteiten voerde je Alleen uit</p></div>
                     </div>
-
-                    @if($producingAnalysis->statistic('percentageAloneHours') > 75 && $producingAnalysis->statistic('percentageDifficultTasks') > 50)
-                        <p>Tip: Je hebt {{ $producingAnalysis->statistic('percentageAloneHours') }}% van de tijd Alleen
-                            gewerkt, en je vond {{ $producingAnalysis->statistic('percentageDifficultTasks') }}% van dit
-                            zelfstandige werk Moeilijk. Je zou met je bedrijfsbegeleider kunnen bespreken op welke
-                            manier je er samen voor kunt zorgen dat je eerder hulp of ondersteuning krijgt bij moeilijke
-                            werkzaamheden.</p>
-                    @endif
                     {!! Form::close() !!}
                     <canvas id="chart_categories"></canvas>
 
@@ -148,6 +140,26 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2>Tips</h2>
+                    @if($producingAnalysis->statistic('percentageAloneHours') > 75 && $producingAnalysis->statistic('percentageDifficultTasks') > 50)
+                        <p>Je hebt {{ $producingAnalysis->statistic('percentageAloneHours') }}% van de tijd Alleen
+                        gewerkt, en je vond {{ $producingAnalysis->statistic('percentageDifficultTasks') }}% van dit
+                        zelfstandige werk Moeilijk. Je zou met je bedrijfsbegeleider kunnen bespreken op welke
+                        manier je er samen voor kunt zorgen dat je eerder hulp of ondersteuning krijgt bij moeilijke
+                        werkzaamheden.</p>
+                    @endif
+                    @if($producingAnalysis->statistic('percentageEasyHours') > 65)
+                        <p>Je vindt maar liefst {{ $producingAnalysis->statistic('percentageAloneHours') }}% van je werk Makkelijk! Het lijkt erop dat je meer in je mars hebt. 
+                        Je zou je bedrijfsbegeleider om meer uitdaging of een complexere opdracht kunnen vragen.</p>
+                    @endif
+                    @if($producingAnalysis->statistic('persentageMostDifficultCategory') > 75)
+                        <p>Je vindt {{ $producingAnalysis->statistic('mostDifficultCategoryName') }} de moeilijkste categorie in jouw werk. Van alle activiteiten in deze categorie vind je {{ $producingAnalysis->statistic('persentageMostDifficultCategory') }}% Moeilijk. 
+                        Je zou dit met je begeleider kunnen bespreken hoe je bij je werk in deze categorie ondersteund kunt worden. 
+                        Misschien kun je vanuit de werkplek tips krijgen voor literatuur of personen die je hier verder mee kunnen helpen.</p>
+                    @endif
+                    @if($producingAnalysis->statistic('persentageAveragePersonDifficulty') < 20 && $producingAnalysis->statistic('persentageAveragePersonDifficulty') > 0)
+                        <p>Wanneer jij samenwerk met {{ $producingAnalysis->statistic('averagePersonDifficultyName') }}, vind je jouw werk het makkelijkst. Ga eens voor jezelf na hoe deze persoon jou helpt, 
+                        waardoor je meer kunt bereiken. En bedank deze persoon eens voor zijn of haar ondersteuning ;-)</p>
+                    @endif
                 </div>
             </div>
 
@@ -209,15 +221,16 @@
                                             </tr>
                                             @foreach($chain->raw() as $learningActProd)
                                                 <?php
-                                                $feedback = $learningActProd->getFeedback()
+                                                $feedback = $learningActProd->feedback;
+
                                                 ?>
                                                 <tr>
-                                                    <td>{{ date('d-m', strtotime($learningActProd->date)) }}</td>
+                                                    <td>{{ date('d-m', strtotime($learningActProd->date)) }}<br/><br/></td>
                                                     <td>{{ $learningActProd->description }}</td>
                                                     <td>{{ ($feedback != null) ? $learningActProd->getDifficulty().": ".$feedback->notfinished : $learningActProd->getDifficulty() }}</td>
                                                     <td>{{ $learningActProd->getDurationString() }}</td>
                                                     <td>{{ $learningActProd->getResourceDetail() }}</td>
-                                                    <td>{!! ($feedback != null) ? "Je was " . (($feedback->progress_satisfied == 2) ? "tevreden" : "niet tevreden") . " met het verloop van deze activiteit (<a href='".route("feedback-producing", array("id" => $feedback->fb_id))."'>Detail</a>)." : "" !!}</td>
+                                                    <td>{!! ($feedback != null) ? "Je was " . (($feedback->progress_satisfied == 2) ? "tevreden" : "niet tevreden") . " met het verloop van deze activiteit (<a href='".route("feedback-producing", array("id" => $feedback->fb_id))."'>Detail</a>)." : "Geen" !!}</td>
                                                     <td>{{ ($feedback != null) ? $feedback->nextstep_self : "" }}</td>
                                                 </tr>
                                             @endforeach

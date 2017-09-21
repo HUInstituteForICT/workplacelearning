@@ -14,5 +14,8 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
         $this->call(SetupSeeder::class);
         $this->call(seed_charttypes::class);
+        if(class_exists(AccountSeeder::class)) {
+            $this->call(AccountSeeder::class);
+        }
     }
 }

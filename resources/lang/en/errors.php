@@ -16,8 +16,8 @@ return [
             'message'   => 'An Internal server error occured. (Error code: 500)',
         ],
         '503' => [
-            'title'     => 'Service unavailable',
-            'message'   => 'The service you requested is temporarily unavailable. Please try refreshing this page at a later time. (Error code: 503)',
+            'title'     => 'Maintenance',
+            'message'   => 'This website is currently undergoing maintenance, come back later.',
         ],
     ],
     'returnhome' => 'Back to Dashboard',

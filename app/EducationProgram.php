@@ -7,6 +7,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class EducationProgram extends Model
@@ -20,9 +21,20 @@ class EducationProgram extends Model
 
     // Default
     protected $fillable = [
-        'ep_id',
-        'ep_name',
+        'ep_name', 'eptype_id'
     ];
+
+    protected $casts = [
+        'eptype_id' => 'int',
+    ];
+
+    public function competenceDescription() {
+        return $this->hasOne(CompetenceDescription::class, 'education_program_id', 'ep_id');
+    }
+
+    public function category() {
+        return $this->hasMany(Category::class, 'ep_id', 'ep_id');
+    }
 
     public function educationprogramType()
     {
@@ -54,11 +66,18 @@ class EducationProgram extends Model
         return $this->competence()->get();
     }
 
+    /**
+     * @return Collection
+     */
     public function getTimeslots()
     {
-        return $this->timeslot()->get();
+        return $this->timeslot()
+            ->where('wplp_id', '=', 0)->get();
     }
 
+    /**
+     * @return Collection
+     */
     public function getResourcePersons()
     {
         return $this->resourcePerson()

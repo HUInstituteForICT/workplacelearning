@@ -27,10 +27,10 @@
                     <h4>Activiteit</h4>
                     <input class="form-control fit-bs" type="date" name="date" value="{{ (count($errors) > 0) ? old('date') : $activity->date }}" /><br/>
                     <h4>Situatie</h4>
-                    <textarea class="form-control fit-bs" name="description" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,250}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ (count($errors) > 0) ? old('description') : $activity->situation }}</textarea>
+                    <textarea class="form-control fit-bs" name="description" required rows="5" cols="19">{{ (count($errors) > 0) ? old('description') : $activity->situation }}</textarea>
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Wanneer? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_when') }}"></i></h4>
+                    <h4>Categorie <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_when') }}"></i></h4>
                     @foreach ($timeslots as $key => $value)
                         <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ (old('timeslot') == $value->timeslot_id) ? 'checked' : ($activity->timeslot_id == $value->timeslot_id) ? 'checked' : null }} /><span>{{ $value->timeslot_text }}</span></label>
                     @endforeach
@@ -51,11 +51,11 @@
                 </div>
                 <div class="col-md-2 from-group">
                     <h4>Wat heb je geleerd?<br />Wat is het vervolg? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="learned" required oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,250}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ (count($errors) > 0) ? old('learned') : $activity->lessonslearned }}</textarea>
+                    <textarea class="form-control fit-bs" name="learned" required rows="5" cols="19">{{ (count($errors) > 0) ? old('learned') : $activity->lessonslearned }}</textarea>
                     <h4>Wat heb je hierbij nodig van je werkplek? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_wp') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="support_wp" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,125}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ (count($errors) > 0) ? old('support_wp') : $activity->support_wp }}</textarea>
+                    <textarea class="form-control fit-bs" name="support_wp" rows="5" cols="19">{{ (count($errors) > 0) ? old('support_wp') : $activity->support_wp }}</textarea>
                     <h4>Wat heb je hierbij nodig van de HU? <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_required_ep') }}"></i></h4>
-                    <textarea class="form-control fit-bs" name="support_ed" oninput="this.setCustomValidity('')" pattern="[ 0-9a-zA-Z-_,.?!*&%#()'/\"]{3,125}" oninvalid="this.setCustomValidity('{{ Lang::get('elements.general.mayonlycontain') }} 0-9a-zA-Z-_,.?!*&%#()'\"')" rows="5" cols="19">{{ (count($errors) > 0) ? old('support_ed') : $activity->support_ed }}</textarea>
+                    <textarea class="form-control fit-bs" name="support_ed" rows="5" cols="19">{{ (count($errors) > 0) ? old('support_ed') : $activity->support_ed }}</textarea>
                 </div>
                 <div class="col-md-2 from-group">
                     <div>

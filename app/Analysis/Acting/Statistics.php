@@ -140,6 +140,7 @@ class Statistics
         $combo->percentage = 0;
         $combo->learningGoal = null;
 
+
         // Loop over all the activities
         $this->analysisCollector->getLearningActivities()->each(function(LearningActivityActing $activity) use($combo) {
             // Find all activities with matching learning goal & timeslot
@@ -155,10 +156,11 @@ class Statistics
                 $percentage = 0;
             }
             // Update combo->percentage if it's higher
-            if($percentage > $combo->percentage) {
+            if($percentage >= $combo->percentage) {
                 $combo->percentage = $percentage;
                 $combo->timeslot = $activity->timeslot;
                 $combo->learningGoal = $activity->learningGoal;
+
             }
         });
 
@@ -189,7 +191,7 @@ class Statistics
                 $percentage = 0;
             }
             // Update combo->percentage if it's higher
-            if($percentage > $combo->percentage) {
+            if($percentage >= $combo->percentage) {
                 $combo->percentage = $percentage;
                 $combo->timeslot = $activity->timeslot;
                 $combo->competence = $activity->getCompetencies();
@@ -223,7 +225,7 @@ class Statistics
                 $percentage = 0;
             }
             // Update combo->percentage if it's higher
-            if($percentage > $combo->percentage) {
+            if($percentage >= $combo->percentage) {
                 $combo->percentage = $percentage;
                 $combo->learningGoal = $activity->learningGoal;
                 $combo->competence = $activity->getCompetencies();

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\EducationProgram;
 use App\Student;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -52,12 +54,9 @@ class RegisterController extends Controller
             'firstname'     => 'required|max:255|min:3',
             'lastname'      => 'required|max:255|min:3',
             'gender'        => 'required|in:male,female',
-            //'birthdate'     => 'required|date|before:'.date("Y-m-d", strtotime('-17 years')),
             'email'         => 'required|email|max:255|unique:student',
-            //'phone'         => 'required|regex:/^[0-9]{2,3}-?[0-9]{7,8}$/',
             'password'      => 'required|min:8|confirmed',
             'secret'        => 'required|in:ICTstage2016,Stage2017',
-            //'answer'        => 'required|min:3|max:30',
         ]);
     }
 
@@ -69,6 +68,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $educationProgram = EducationProgram::find($data['education']);
+        if($educationProgram->disabled) {
+            throw new InvalidParameterException();
+        }
+
         return Student::create([
             'studentnr'         => $data['studentnr'],
             'firstname'         => $data['firstname'],

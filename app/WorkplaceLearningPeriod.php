@@ -52,12 +52,17 @@ class WorkplaceLearningPeriod extends Model
 
     public function resourcePerson()
     {
-        return $this->hasOne(\App\ResourcePerson::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(ResourcePerson::class, 'wplp_id', 'wplp_id');
+    }
+
+    public function timeslot()
+    {
+        return $this->hasMany(Timeslot::class, 'wplp_id', 'wplp_id');
     }
 
     public function resourceMaterial()
     {
-        return $this->hasOne(\App\ResourceMaterial::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(\App\ResourceMaterial::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityProducing()
@@ -136,6 +141,15 @@ class WorkplaceLearningPeriod extends Model
     /**
      * @return Collection
      */
+    public function getTimeslots()
+    {
+        return $this->timeslot()->orderBy('timeslot_id', 'asc')->get();
+
+    }
+
+    /**
+     * @return Collection
+     */
     public function getResourceMaterials()
     {
         return $this->resourceMaterial()
@@ -146,15 +160,17 @@ class WorkplaceLearningPeriod extends Model
 
     public function getLastActivity($count, $offset = 0)
     {
-        switch ($this->student()->first()->ep_id) {
-            case 1:
+        /** @var Student $student */
+        $student = $this->student()->first();
+        switch ($student->getEducationProgram()->eptype_id) {
+            case 2:
                 return $this->getLastActivityProducing($count, $offset);
                 break;
-            case 2:
+            case 1:
                 return $this->getLastActivityActing($count, $offset);
                 break;
             default:
-                return null;
+                return collect([]);
         }
     }
 
@@ -170,11 +186,12 @@ class WorkplaceLearningPeriod extends Model
 
     private function getLastActivityActing($count, $offset = 0)
     {
-        return $this->LearningActivityActing()
+        $x = $this->LearningActivityActing()
             ->orderBy('date', 'desc')
             ->orderBy('laa_id', 'desc')
             ->skip($offset)
             ->take($count)
             ->get();
+        return $x;
     }
 }
