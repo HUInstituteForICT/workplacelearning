@@ -127,6 +127,7 @@
                     <tr>
                         <th>{{ Lang::get('elements.profile.learninggoals.goalno') }}</th>
                         <th>{{ Lang::get('elements.profile.learninggoals.goalname') }}</th>
+                        <th>{{ Lang::get('elements.profile.learninggoals.description') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -135,12 +136,14 @@
                         <tr>
                             <td>Leerdoel {{ $i }}</td>
                             <td><input type="text" name="learninggoal_name[{{ $goal->learninggoal_id }}]" value="{{ (!is_null(old('learninggoal_name.'.$goal->learninggoal_id))) ? old('learninggoal_name.'.$goal->learninggoal_id) : $goal->learninggoal_label }}" /></td>
+                            <td><textarea class="form-control name="learninggoal_description[{{ $goal->learninggoal_id }}]">{{ (!is_null(old('learninggoal_description.'.$goal->learninggoal_id))) ? old('learninggoal_description.'.$goal->learninggoal_id) : $goal->description }}</textarea></td>
                         </tr>
                         <?php $i++; ?>
                     @endforeach
                     <tr>
                         <td>Nieuw Leerdoel:</td>
                         <td><input type="text" name="new_learninggoal_name" placeholder="{{ Lang::get('elements.profile.placeholders.learninggoalname') }}" value="{{ old('new_learninggoal_name') }}" /></td>
+                        <td><textarea class="form-control" name="new_learninggoal_description" placeholder="{{ Lang::get('elements.profile.placeholders.learninggoaldescription') }}">{{ old('new_learninggoal_description') }}</textarea></td>
                     </tr>
                     </tbody>
                 </table>

@@ -20,6 +20,12 @@ class LearningGoal extends Model
         'wplp_id'
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        $this->description = ''; // text fields in mysql can't have default value, seems like a proper fix
+        parent::__construct($attributes);
+    }
+
     public function workplaceLearningPeriod()
     {
         return $this->hasOne(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
