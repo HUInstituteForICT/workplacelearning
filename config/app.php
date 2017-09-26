@@ -147,7 +147,6 @@ $config = [
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
-        Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
@@ -225,10 +224,14 @@ $config = [
 ];
 
 
-if (env('APP_ENV') === 'local') {
+if (env('APP_ENV') === 'local' || env('APP_ENV') === 'dev') {
     $config['providers'][] = Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class;
     $config['providers'][] = Barryvdh\TranslationManager\ManagerServiceProvider::class;
+    $config['providers'][] = Barryvdh\TranslationManager\TranslationServiceProvider::class;
 
+
+} else {
+    $config['providers'][] = Illuminate\Translation\TranslationServiceProvider::class;
 }
 
 return $config;
