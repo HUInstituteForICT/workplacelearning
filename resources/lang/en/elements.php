@@ -19,7 +19,7 @@ return [
             "calendar" => "Deadlines",
             "profile" => "Profile",
             "settings" => "Progress",
-            "educationprograms" => "Education Programs",
+            "educationprograms" => "Programs",
             "logout" => "Log Out",
         ],
     ],

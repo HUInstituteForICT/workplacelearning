@@ -175,7 +175,7 @@ a.nav-tile:focus {
 .tile {
   width: 100px;
   height: 100px;
-  margin: 5px;
+  margin: 10px 5px;
   float: left;
 }
 .tile img.icon {

@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class EducationProgramEditDisableable extends Migration
+class AddTypeColumnToLabelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +12,8 @@ class EducationProgramEditDisableable extends Migration
      */
     public function up()
     {
-        Schema::table('educationprogram', function (Blueprint $table) {
-            $table->boolean('disabled')->default(false);
+        Schema::table('labels', function (Blueprint $table) {
+            $table->string('type');
         });
     }
 
@@ -25,8 +24,8 @@ class EducationProgramEditDisableable extends Migration
      */
     public function down()
     {
-        Schema::table('educationprogram', function (Blueprint $table) {
-            $table->dropColumn('disabled');
+        Schema::table('labels', function (Blueprint $table) {
+            $table->dropColumn('type');
         });
     }
 }

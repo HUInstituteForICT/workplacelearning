@@ -104,6 +104,40 @@ Route::group([
         Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id',
             '[0-9]*');
     });
+                // Dashboard
+                Route::group(['prefix' => '/dashboard'], function () {
+                    Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
+                    Route::get('/add', 'AnalyticsDashboardController@add')->name('dashboard.add');
+                    Route::post('/add', 'AnalyticsDashboardController@store')->name('dashboard.save');
+                    Route::post('/move/{id}/{oldpos}/{newpos}', 'AnalyticsDashboardController@move')->name('dashboard.move');
+                    Route::delete('/delete/{id}', 'AnalyticsDashboardController@destroy')->name('dashboard.delete');
+
+
+                    Route::get('/analytics', 'AnalyticsController@index')->name('analytics-index');
+                    Route::get('/analytics/view/{id}', 'AnalyticsController@show')->name('analytics-show');
+                    Route::get('/create', 'AnalyticsController@create')->name('analytics-create');
+                    Route::get('/edit/{id}', 'AnalyticsController@edit')->name('analytics-edit');
+                    Route::put('/update/{id}', 'AnalyticsController@update')->name('analytics-update');
+                    Route::post('/create', 'AnalyticsController@store')->name('analytics-store');
+                    Route::post('/expire', 'AnalyticsController@expire')->name('analytics-expire');
+                    Route::get('/export/{id}', 'AnalyticsController@export')->name('analytics-export');
+                    Route::delete('/destroy/{id}',    'AnalyticsController@destroy')->name('analytics-destroy');
+                    Route::resource('charts', 'AnalyticsChartController');
+                    Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
+                });
+
+                Route::group([
+                                'middleware' => [ 'taskTypeRedirect' ],
+                            ], function () {
+                                /* Add all middleware redirected urls here */
+                                Route::get('/', 'HomeController@showHome')->name('default');
+                                Route::get('home', 'HomeController@showHome')->name('home');
+                                Route::get('process', 'ActingActivityController@show')->name('process');
+                                Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
+                                Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
+                                Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
+                                Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
+                            });
 
     /* EP Type: Acting */
     Route::group([
