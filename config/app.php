@@ -227,6 +227,8 @@ $config = [
 
 if (env('APP_ENV') === 'local') {
     $config['providers'][] = Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class;
+    $config['providers'][] = Barryvdh\TranslationManager\ManagerServiceProvider::class;
+
 }
 
 return $config;
