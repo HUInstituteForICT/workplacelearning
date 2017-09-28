@@ -23,7 +23,8 @@ class ResourcePerson extends Model
         'rp_id',
         'person_label',
         'ep_id',
-        'wplp_id'
+        'wplp_id',
+        'cohort_id'
     ];
 
     public function cohort() {

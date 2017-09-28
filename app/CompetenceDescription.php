@@ -16,7 +16,8 @@ class CompetenceDescription extends Model
 
     public $timestamps = false;
 
-    protected $appends = ['has_data', 'download-url'];
+    protected $appends = ['has_data', 'download-url',
+        'cohort_id'];
 
     public function cohort() {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');

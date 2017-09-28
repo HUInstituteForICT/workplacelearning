@@ -23,6 +23,7 @@ class Category extends Model
         'category_id',
         'category_label',
         'wplp_id',
+        'cohort_id'
     ];
 
     public function cohort() {

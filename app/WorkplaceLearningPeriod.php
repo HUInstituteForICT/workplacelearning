@@ -28,6 +28,7 @@ class WorkplaceLearningPeriod extends Model
         'enddate',
         'nrofdays',
         'description',
+        'cohort_id'
     ];
 
     public function cohort() {

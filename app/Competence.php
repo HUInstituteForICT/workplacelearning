@@ -17,7 +17,8 @@ class Competence extends Model
     protected $fillable = [
         'competence_id',
         'competence_label',
-        'educationprogram_id'
+        'educationprogram_id',
+        'cohort_id'
     ];
 
     public function cohort() {
