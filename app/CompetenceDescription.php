@@ -18,6 +18,10 @@ class CompetenceDescription extends Model
 
     protected $appends = ['has_data', 'download-url'];
 
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
+
     /**
      * @return bool whether this description exists and has data
      */

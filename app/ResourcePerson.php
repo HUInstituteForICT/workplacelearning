@@ -26,6 +26,10 @@ class ResourcePerson extends Model
         'wplp_id'
     ];
 
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
+
     public function workplaceLearningPeriod()
     {
         return $this->belongsTo(\App\WorkplaceLearningPeriod::class);

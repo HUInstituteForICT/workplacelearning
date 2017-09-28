@@ -30,6 +30,10 @@ class WorkplaceLearningPeriod extends Model
         'description',
     ];
 
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
+
     public function student()
     {
         return $this->belongsTo(\App\Student::class, 'student_id', 'student_id');

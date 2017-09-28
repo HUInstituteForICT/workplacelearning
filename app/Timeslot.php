@@ -21,6 +21,10 @@ class Timeslot extends Model
         'wplp_id',
     ];
 
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
+
     public function educationProgram()
     {
         return $this->belongsTo(\App\EducationProgram::class);
