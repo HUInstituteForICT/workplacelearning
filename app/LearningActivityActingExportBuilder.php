@@ -32,6 +32,7 @@ class LearningActivityActingExportBuilder
                 "resourceMaterial" => $activity->getResourceMaterial(),
                 "lessonsLearned" => $activity->lessonslearned,
                 "learningGoal" => $activity->getLearningGoal(),
+                "learningGoalDescription" => $activity->learningGoal->description,
                 "supportWp" => $activity->support_wp !== null ? $activity->support_wp : "",
                 "supportEd" => $activity->support_ed !== null ? $activity->support_ed : "",
                 "competence" => $activity->getCompetencies()->competence_label,
@@ -52,6 +53,7 @@ class LearningActivityActingExportBuilder
             'resourceMaterial',
             'lessonsLearned',
             'learningGoal',
+            'learningGoalDescription',
             "supportWp",
             "supportEd",
             'competence'

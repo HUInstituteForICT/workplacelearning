@@ -101,6 +101,7 @@ class ActingWorkplaceLearningController extends Controller
         // Create unplanned learning as default learning goal
         $learningGoal = new LearningGoal;
         $learningGoal->learninggoal_label = "Ongepland leermoment";
+        $learningGoal->description = "Een ongepland leermoment";
         $learningGoal->wplp_id = $wplPeriod->wplp_id;
         $learningGoal->save();
 
@@ -108,6 +109,7 @@ class ActingWorkplaceLearningController extends Controller
         for ($i = 1; $i < 4; $i++) {
             $learningGoal = new LearningGoal;
             $learningGoal->learninggoal_label = sprintf('Leervraag %s', $i);
+            $learningGoal->description = sprintf('Omschrijving van leervraag %s', $i);
             $learningGoal->wplp_id = $wplPeriod->wplp_id;
             $learningGoal->save();
         }
@@ -204,6 +206,7 @@ class ActingWorkplaceLearningController extends Controller
 
         $validator = Validator::make($request->all(), [
             'learninggoal_name.*' => 'required|min:3|max:50',
+            'learninggoal_description.*' => 'required|min:3, max:1000',
         ]);
         $validator->sometimes(
             'new_learninggoal_name',
@@ -212,8 +215,17 @@ class ActingWorkplaceLearningController extends Controller
                 return strlen($input->new_learninggoal_name) > 0;
             }
         );
+
+        $validator->sometimes(
+            'new_learninggoal_description',
+            'required|min:3|max:1000',
+            function ($input) {
+                return strlen($input->new_learninggoal_name) > 0;
+            }
+        );
+
         if ($validator->fails()) {
-            // Noes. errors occured. Exit back to profile page with errors
+            // Noes. errors occurred. Exit back to profile page with errors
             return redirect()
                 ->route('period-acting-edit', ["id" => $id])
                 ->withErrors($validator)
@@ -222,11 +234,13 @@ class ActingWorkplaceLearningController extends Controller
             if(isset($request['learninggoal_name'])) {
                 foreach ($request['learninggoal_name'] as $lg_id => $name) {
                     $learningGoal = LearningGoal::find($lg_id);
+                    $description = $request['learninggoal_description'][$lg_id];
                     if (is_null($learningGoal)) {
                         $learningGoal = new LearningGoal;
                         $learningGoal->wplp_id = $id;
                     }
                     $learningGoal->learninggoal_label = $name;
+                    $learningGoal->description = $description;
                     $learningGoal->save();
                 }
             }
@@ -234,6 +248,7 @@ class ActingWorkplaceLearningController extends Controller
             if (strlen($request['new_learninggoal_name']) > 0) {
                 $learningGoal = new LearningGoal;
                 $learningGoal->learninggoal_label = $request['new_learninggoal_name'];
+                $learningGoal->description = $request['new_learninggoal_description'];
                 $learningGoal->wplp_id = $id;
                 $learningGoal->save();
             }

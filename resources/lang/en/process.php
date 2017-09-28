@@ -1,5 +1,5 @@
 <?php
 
-return [
-    "enlarge" => "Enlarge field"
-];
+return array (
+  'enlarge' => 'Enlarge field',
+);
