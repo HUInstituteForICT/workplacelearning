@@ -21,27 +21,27 @@ class Cohort extends Model
         return $this->hasMany(Competence::class, 'cohort_id', 'id');
     }
 
-    public function CompetenceDescription()
+    public function competenceDescription()
     {
         return $this->hasOne(CompetenceDescription::class, 'cohort_id', 'id');
     }
 
-    public function EducationProgram()
+    public function educationProgram()
     {
         return $this->belongsTo(EducationProgram::class, "ep_id", "ep_id");
     }
 
-    public function ResourcePerson()
+    public function resourcePersons()
     {
         return $this->hasMany(ResourcePerson::class, 'cohort_id', 'id');
     }
 
-    public function Timeslot()
+    public function timeslots()
     {
         return $this->hasMany(Timeslot::class, 'cohort_id', 'id');
     }
 
-    public function WorkplaceLearningPeriod()
+    public function workplaceLearningPeriods()
     {
         return $this->hasMany(WorkplaceLearningPeriod::class, 'cohort_id', 'id');
     }

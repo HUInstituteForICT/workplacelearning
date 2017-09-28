@@ -30,7 +30,7 @@ class ProducingActivityController extends Controller
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
         }
 
-        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
+        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
@@ -65,7 +65,7 @@ class ProducingActivityController extends Controller
                 ->withErrors('Helaas, er is geen activiteit gevonden.');
         }
 
-        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
+        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
@@ -221,7 +221,7 @@ class ProducingActivityController extends Controller
                 $resourcePerson                = new ResourcePerson;
                 $resourcePerson->person_label  = $request['newswv'];
                 $resourcePerson->wplp_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-                $resourcePerson->ep_id         = Auth::user()->getEducationProgram()->ep_id;
+                $resourcePerson->ep_id         = Auth::user()->getEducationProgram()->ep_id; //deprecated, not necessary, bound to wplp..?
                 $resourcePerson->save();
             }
 

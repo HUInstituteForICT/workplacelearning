@@ -25,11 +25,11 @@ class ActingActivityController extends Controller
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
         }
 
-        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->merge(
+        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
-        $timeslots = Auth::user()->getEducationProgram()->getTimeslots()->merge(
+        $timeslots = Auth::user()->currentCohort()->timeslots()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
         );
 
@@ -43,12 +43,12 @@ class ActingActivityController extends Controller
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
         return view('pages.acting.activity')
-            ->with('competenceDescription', Auth::user()->getEducationProgram()->competenceDescription)
+            ->with('competenceDescription', Auth::user()->currentCohort()->competenceDescription)
             ->with('timeslots', $timeslots)
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
             ->with('learningGoals', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
-            ->with('competencies', Auth::user()->getEducationProgram()->getCompetencies())
+            ->with('competencies', Auth::user()->currentCohort()->competencies()->get())
             ->with('activities', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8))
             ->with('activitiesJson', $activitiesJson)
             ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping));
@@ -68,11 +68,11 @@ class ActingActivityController extends Controller
                 ->withErrors('Helaas, er is geen activiteit gevonden.');
         }
 
-        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->merge(
+        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
-        $timeslots = Auth::user()->getEducationProgram()->getTimeslots()->merge(
+        $timeslots = Auth::user()->currentCohort()->timeslots()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
         );
 
@@ -82,7 +82,7 @@ class ActingActivityController extends Controller
             ->with('resPersons', $resourcePersons)
             ->with('resMaterials', Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
             ->with('learningGoals', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
-            ->with('competencies', Auth::user()->getEducationProgram()->getCompetencies());
+            ->with('competencies', Auth::user()->currentCohort()->competencies()->get());
     }
 
     public function progress($pagenr)
@@ -159,7 +159,7 @@ class ActingActivityController extends Controller
         if ($request['res_person'] == 'new') {
             $resourcePerson = new ResourcePerson;
             $resourcePerson->person_label = $request['new_rp'];
-            $resourcePerson->ep_id = Auth::user()->getEducationProgram()->ep_id;
+            $resourcePerson->ep_id = Auth::user()->getEducationProgram()->ep_id; //deprecated, bound to wplp?
             $resourcePerson->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
             $resourcePerson->save();
 
@@ -178,7 +178,7 @@ class ActingActivityController extends Controller
         if($request['timeslot'] == 'new') {
             $timeslot = new Timeslot;
             $timeslot->timeslot_text = $request['new_timeslot'];
-            $timeslot->edprog_id = Auth::user()->getEducationProgram()->ep_id;
+            $timeslot->edprog_id = Auth::user()->getEducationProgram()->ep_id; //deprecated, bound to wplp?
             $timeslot->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
             $timeslot->save();
 

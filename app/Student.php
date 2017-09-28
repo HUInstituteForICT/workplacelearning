@@ -142,6 +142,9 @@ class Student extends Authenticatable
         return $this->getEducationProgram()->educationprogramType()->first();
     }
 
+    /**
+     * @return Cohort
+     */
     public function currentCohort()
     {
         return $this->getCurrentWorkplaceLearningPeriod()->cohort;
