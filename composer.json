@@ -21,7 +21,8 @@
         "phpunit/phpunit": "~5.7",
         "mcamara/laravel-localization": "1.2.*",
         "barryvdh/laravel-ide-helper": "^2.3",
-        "barryvdh/laravel-dompdf": "^0.8.0"
+        "barryvdh/laravel-dompdf": "^0.8.0",
+        "barryvdh/laravel-translation-manager": "0.2.x"
     },
     "autoload": {
         "classmap": [
