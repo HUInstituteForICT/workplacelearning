@@ -24,7 +24,7 @@ class CreateEntityRequest extends FormRequest
     public function rules()
     {
         return [
-            "type" => "required|numeric",
+            "type" => "required",
             "value" => "required"
         ];
     }

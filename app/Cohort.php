@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cohort extends Model
 {
@@ -11,9 +12,12 @@ class Cohort extends Model
     public $timestamps = false;
 
 
+    /**
+     * @return HasMany
+     */
     public function categories()
     {
-        return $this->hasMany(Category::class, 'cohort_id', 'id');
+        return tap($this->hasMany(Category::class, 'cohort_id', 'id'))->where('wplp_id', '0');
     }
 
     public function competencies()
@@ -33,7 +37,8 @@ class Cohort extends Model
 
     public function resourcePersons()
     {
-        return $this->hasMany(ResourcePerson::class, 'cohort_id', 'id');
+        // Tap so we can apply the where clause but still return the relationship
+        return tap($this->hasMany(ResourcePerson::class, 'cohort_id', 'id'))->where('wplp_id', '0');
     }
 
     public function timeslots()

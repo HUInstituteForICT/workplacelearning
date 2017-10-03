@@ -19,10 +19,10 @@ class EducationProgramsService
 
     // Mapping necessary due to inconsistent naming of model properties
     const nameToEntityNameMapping = [
-        1 => "competence_label",
-        2 => "timeslot_text",
-        3 => "person_label",
-        4 => "category_label",
+        "competence" => "competence_label",
+        "timeslot" => "timeslot_text",
+        "resourcePerson" => "person_label",
+        "category" => "category_label",
     ];
 
     /**
@@ -34,13 +34,13 @@ class EducationProgramsService
     private function getEntity($entityId, $type)
     {
         $entity = null;
-        if ($type === 1) {
+        if ($type === "competence") {
             $entity = Competence::find($entityId);
-        } elseif ($type === 2) {
+        } elseif ($type === "timeslot") {
             $entity = Timeslot::find($entityId);
-        } elseif ($type === 3) {
+        } elseif ($type === "resourcePerson") {
             $entity = ResourcePerson::find($entityId);
-        } elseif ($type === 4) {
+        } elseif ($type === "category") {
             $entity = Category::find($entityId);
         }
         if ($entity instanceof Model) {
@@ -53,20 +53,21 @@ class EducationProgramsService
     /**
      * @param $type int type of the entity
      * @param $value string value of the entity (often name)
-     * @param EducationProgram $program
+     * @param EducationProgram $cohort
      * @return false|Model|null
      */
-    public function createEntity($type, $value, EducationProgram $program)
+    public function createEntity($type, $value, Cohort $cohort)
     {
+        $cohort->refresh();
         $result = null;
-        if ($type === 1) {
-            $result = $program->competence()->save(new Competence(["competence_label" => $value]));
-        } elseif ($type === 2) {
-            $result = $program->timeslot()->save(new Timeslot(["timeslot_text" => $value, "wplp_id" => 0]));
-        } elseif ($type === 3) {
-            $result = $program->resourcePerson()->save(new ResourcePerson(["person_label" => $value, "wplp_id" => 0]));
-        } elseif ($type === 4) {
-            $result = $program->category()->save(new Category(["category_label" => $value, "wplp_id" => 0]));
+        if ($type === "competence") {
+            $result = $cohort->competencies()->save(new Competence(["competence_label" => $value]));
+        } elseif ($type === "timeslot") {
+            $result = $cohort->timeslots()->save(new Timeslot(["timeslot_text" => $value, "wplp_id" => 0]));
+        } elseif ($type === "resourcePerson") {
+            $result = $cohort->resourcePersons()->save(new ResourcePerson(["person_label" => $value, "wplp_id" => 0]));
+        } elseif ($type === "category") {
+            $result = $cohort->categories()->save(new Category(["category_label" => $value, "wplp_id" => 0]));
         }
 
         return $result;
@@ -116,15 +117,15 @@ class EducationProgramsService
     }
 
     /**
-     * @param EducationProgram $program
+     * @param EducationProgram $cohort
      * @param $fileData
      * @return CompetenceDescription the created competence description
      */
-    public function handleUploadedCompetenceDescription(EducationProgram $program, $fileData) {
-        if($program->competenceDescription === null) {
-            $program->competenceDescription()->save(new CompetenceDescription());
+    public function handleUploadedCompetenceDescription(Cohort $cohort, $fileData) {
+        if($cohort->competenceDescription === null) {
+            $cohort->competenceDescription()->save(new CompetenceDescription());
         }
-        $competenceDescription = $program->competenceDescription()->first();
+        $competenceDescription = $cohort->competenceDescription()->first();
 
         Storage::disk('local')->put($competenceDescription->file_name, base64_decode(substr($fileData, 28)));
 

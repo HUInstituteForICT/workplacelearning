@@ -18,16 +18,11 @@ class CreateCohortsTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('ep_id')->nullable();
-            $table->integer('wplp_id')->nullable();
+            $table->boolean('disabled')->default(false);
 
             $table->foreign('ep_id', 'fk_Cohorts_EducationProgram')
                 ->references('ep_id')
                 ->on('educationprogram')
-                ->onUpdate('NO ACTION')->onDelete('NO ACTION');
-
-            $table->foreign('wplp_id', 'fk_Cohorts_Wplp')
-                ->references('wplp_id')
-                ->on('workplacelearningperiod')
                 ->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }

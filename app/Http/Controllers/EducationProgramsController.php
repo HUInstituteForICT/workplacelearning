@@ -4,7 +4,7 @@
 namespace App\Http\Controllers;
 
 
-use App\Competence;
+use App\Cohort;
 use App\CompetenceDescription;
 use App\EducationProgram;
 use App\EducationProgramsService;
@@ -15,7 +15,10 @@ use App\Http\Requests\EducationProgram\DeleteEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateRequest;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Request;
 
 class EducationProgramsController extends Controller
 {
@@ -41,6 +44,56 @@ class EducationProgramsController extends Controller
         return response()->json(["status" => "success", "program" => $program]);
     }
 
+    public function createCohort(EducationProgram $program)
+    {
+        $cohort = new Cohort();
+        $cohort->name = "New cohort";
+        $cohort->description = "...";
+        $cohort->ep_id = $program->ep_id;
+        $cohort->save();
+
+        return response()->json($cohort);
+    }
+
+    public function updateCohort(Cohort $cohort, Request $request)
+    {
+        $cohort->name = $request->get('name');
+        $cohort->description = $request->get('description');
+        $cohort->save();
+
+        return response()->json($cohort);
+    }
+
+    public function getCohort(Cohort $cohort)
+    {
+        $cohort->load(['competencies', 'timeslots', 'competenceDescription', 'categories', 'resourcePersons'])->get();
+
+        $cohort->canBeDeleted = $cohort->workplaceLearningPeriods()->count() === 0;
+
+        return response()->json($cohort);
+    }
+
+    public function deleteCohort(Cohort $cohort)
+    {
+        if ($cohort->workplaceLearningPeriods()->count() > 0) {
+            return response()->json(["status"  => "error",
+                                     "message" => \Lang::trans("This cohort has associated workplace learning periods and cannot be deleted"),
+            ], 405);
+        }
+
+        $cohort->delete();
+
+        return response()->json(["status" => "success"]);
+    }
+
+    public function toggleDisabledCohort(Cohort $cohort)
+    {
+        $cohort->disabled = !$cohort->disabled;
+        $cohort->save();
+
+        return response()->json(["status" => "success", "disabled" => $cohort->disabled]);
+    }
+
     public function toggleDisabled(EducationProgram $program)
     {
         $program->disabled = !$program->disabled;
@@ -52,28 +105,47 @@ class EducationProgramsController extends Controller
     public function getEditableProgram(EducationProgram $program)
     {
 
-        if($program->eptype_id === 1) {
-            $program->competence;
-            $program->timeslot = $program->getTimeslots();
-            $program->competenceDescription;
-        } elseif ($program->eptype_id === 2) {
-            $program->category = $program->category()->get()->filter(function($category, $key) {
-                /** $category Category */
-                return $category->wplp_id === 0;
-            });
+        // Fetch cohorts
+        $program->cohorts = $program->cohorts()->with([
+            'competencies',
+            'timeslots',
+            'competenceDescription',
+            'categories',
+            'resourcePersons',
+        ])->get();
 
-        }
-        $program->resource_person = $program->getResourcePersons();
+        $program->canBeDeleted = $program->cohorts->count() === 0;
 
 
         return response()->json($program);
 
     }
 
-    public function createEntity(EducationProgram $program, CreateEntityRequest $request)
+    public function deleteEducationProgram(EducationProgram $program)
     {
-        $result = $this->programsService->createEntity((int)$request->get('type'), (string)$request->get('value'),
-            $program);
+        if ($program->cohorts()->count() > 0) {
+            return response()->json(["status"  => "error",
+                                     "message" => \Lang::trans("This program has cohorts and therefore cannot be deleted"),
+            ], 405);
+        }
+        $program->delete();
+
+        return response()->json(["status" => "success"]);
+    }
+
+
+    /**
+     * Create an entity that belongs to a cohort (competence, category etc)
+     *
+     * @param Cohort $cohort
+     * @param CreateEntityRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function createEntity(Cohort $cohort, CreateEntityRequest $request)
+    {
+        $result = $this->programsService->createEntity($request->get('type'), (string)$request->get('value'),
+            $cohort);
 
         if ($result instanceof Model) {
             return response()->json(["status" => "success", "entity" => $result->toArray()]);
@@ -82,14 +154,30 @@ class EducationProgramsController extends Controller
         }
     }
 
+    /**
+     * Delete an entity that belongs to a cohort
+     *
+     * @param DeleteEntityRequest $request
+     * @param $entityId
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function deleteEntity(DeleteEntityRequest $request, $entityId)
     {
-        if ($this->programsService->deleteEntity($entityId, (int)$request->get('type'))) {
-            return response()->json(["status" => "success"]);
-        } else {
-            throw new \Exception("Unable to delete entity {$entityId}");
+        try {
+            $this->programsService->deleteEntity($entityId, $request->get('type'));
+        } catch (QueryException $exception) {
+            if (Str::contains($exception->getMessage(), "foreign key constraint fails")) {
+                return response()->json([
+                    "status"  => "error",
+                    "message" => \Lang::trans("This entity is referenced by other entities and cannot be deleted without harming the integrity of student activities."),
+                ], 422);
+            }
+        } catch (\Exception $exception) {
+            return response()->json(["status" => "error", "message" => "Unable to delete entity {$entityId}"], 422);
         }
 
+        return response()->json(["status" => "success"]);
     }
 
     public function updateEntity(UpdateEntityRequest $request, $entityId)
@@ -110,17 +198,18 @@ class EducationProgramsController extends Controller
         return response()->json(["status" => "success", "program" => $program]);
     }
 
-    public function createCompetenceDescription(EducationProgram $program, CreateCompetenceDescriptionRequest $request)
+    public function createCompetenceDescription(Cohort $cohort, CreateCompetenceDescriptionRequest $request)
     {
-        $competenceDescription = $this->programsService->handleUploadedCompetenceDescription($program,
+        $competenceDescription = $this->programsService->handleUploadedCompetenceDescription($cohort,
             $request->get('file'));
 
         return response()->json(["status" => "success", "competence_description" => $competenceDescription]);
     }
 
-    public function removeCompetenceDescription(EducationProgram $program) {
+    public function removeCompetenceDescription(Cohort $cohort)
+    {
         /** @var CompetenceDescription $competenceDescription */
-        $competenceDescription = $program->competenceDescription;
+        $competenceDescription = $cohort->competenceDescription;
         if($competenceDescription !== null) {
             Storage::disk('local')->delete($competenceDescription->file_name);
             $competenceDescription->delete();

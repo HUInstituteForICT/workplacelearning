@@ -108,14 +108,6 @@ class WorkplaceLearningPeriod extends Model
             ->get();
     }
 
-    public function getCategories()
-    {
-        return $this->categories()
-            ->orWhere('wplp_id', '=', '0')
-            ->orderBy('category_id', 'asc')
-            ->get();
-    }
-
     public function getLearningGoals()
     {
         return $this->learningGoals()

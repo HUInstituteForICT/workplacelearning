@@ -42,12 +42,16 @@ class AddCohortIdToModels extends Migration
     {
         if (!Schema::hasColumn('category', 'cohort_id')) {
             Schema::table('category', function (Blueprint $table) {
+
+                $table->integer('ep_id')->nullable()->change();
+
                 $table->unsignedInteger("cohort_id")->nullable()->default(null);
                 $table->foreign("cohort_id", "Fk_Category_Cohort")
                     ->references('id')->on('cohorts')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 
 
             });
+
         }
 
         $categories = Category::whereNotNull('ep_id')->whereNull('cohort_id')->with('educationProgram')->get();
@@ -68,6 +72,7 @@ class AddCohortIdToModels extends Migration
         if (!Schema::hasColumn('competence', 'cohort_id')) {
 
             Schema::table('competence', function (Blueprint $table) {
+                $table->integer('educationprogram_id')->nullable()->change();
                 $table->unsignedInteger("cohort_id")->nullable()->default(null);
                 $table->foreign("cohort_id", "Fk_Cohort_Competence")
                     ->references('id')->on('cohorts')->onUpdate('NO ACTION')->onDelete('NO ACTION');
@@ -94,6 +99,7 @@ class AddCohortIdToModels extends Migration
         if (!Schema::hasColumn('competence_descriptions', 'cohort_id')) {
 
             Schema::table('competence_descriptions', function (Blueprint $table) {
+                $table->integer('education_program_id')->nullable()->change();
                 $table->unsignedInteger("cohort_id")->nullable()->default(null);
                 $table->foreign("cohort_id", "Fk_Cohort_CompetenceDescriptions")
                     ->references('id')->on('cohorts')->onUpdate('NO ACTION')->onDelete('NO ACTION');
@@ -119,6 +125,7 @@ class AddCohortIdToModels extends Migration
     {
         if (!Schema::hasColumn('resourceperson', 'cohort_id')) {
             Schema::table('resourceperson', function (Blueprint $table) {
+                $table->integer('ep_id')->nullable()->change();
                 $table->unsignedInteger("cohort_id")->nullable()->default(null);
                 $table->foreign("cohort_id", "Fk_Cohort_ResourcePerson")
                     ->references('id')->on('cohorts')->onUpdate('NO ACTION')->onDelete('NO ACTION');
@@ -141,7 +148,9 @@ class AddCohortIdToModels extends Migration
     private function timeslot()
     {
         if (!Schema::hasColumn('timeslot', 'cohort_id')) {
+
             Schema::table('timeslot', function (Blueprint $table) {
+                $table->integer('edprog_id')->nullable()->change();
                 $table->unsignedInteger("cohort_id")->nullable()->default(null);
                 $table->foreign("cohort_id", "Fk_Cohort_Timeslot")
                     ->references('id')->on('cohorts')->onUpdate('NO ACTION')->onDelete('NO ACTION');

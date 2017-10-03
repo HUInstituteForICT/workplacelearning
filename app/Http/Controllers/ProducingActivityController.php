@@ -34,6 +34,10 @@ class ProducingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
+        $categories = Auth::user()->currentCohort()->categories()->get()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
+        );
+
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->take(8)
@@ -43,8 +47,11 @@ class ProducingActivityController extends Controller
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
+
+
         return view('pages.producing.activity')
             ->with('learningWith', $resourcePersons)
+            ->with('categories', $categories)
             ->with('difficulties', Difficulty::all())
             ->with('statuses', Status::all())
             ->with('activitiesJson', $activitiesJson)
@@ -69,10 +76,14 @@ class ProducingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
+        $categories = Auth::user()->currentCohort()->categories()->get()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
+        );
+
         return view('pages.producing.activity-edit')
             ->with('activity', $activity)
             ->with('learningWith', $resourcePersons)
-            ->with('categories', Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories());
+            ->with('categories', $categories);
     }
 
     public function feedback($id)
