@@ -11,7 +11,7 @@ class CompetenceDescription extends Model
 {
 
     public function educationProgram() {
-        return $this->belongsTo(EducationProgram::class, 'ep_id', 'education_program_id');
+        return $this->belongsTo(EducationProgram::class, 'education_program_id', 'ep_id');
     }
 
     public $timestamps = false;

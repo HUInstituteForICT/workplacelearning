@@ -43,6 +43,6 @@ class ResourcePerson extends Model
 
     public function educationProgram()
     {
-        return $this->belongsTo(\App\EducationProgram::class);
+        return $this->belongsTo(\App\EducationProgram::class, 'ep_id', 'ep_id');
     }
 }

@@ -107,7 +107,8 @@ class AddCohortIdToModels extends Migration
 
             });
 
-            $competenceDescription = CompetenceDescription::whereNotNull('education_program_id')->whereNull('cohort_id')->with('educationProgram')->get();
+            $competenceDescription = CompetenceDescription::whereNotNull('education_program_id')->whereNull('cohort_id')->get();
+            $competenceDescription->load('educationProgram');
             $competenceDescription->each(function (CompetenceDescription $competenceDescription) {
                 if (!isset($this->epToCohortMapping[$competenceDescription->education_program_id])) {
                     $cohort = tap(new Cohort(["name"  => $competenceDescription->educationProgram->ep_name,
@@ -172,6 +173,8 @@ class AddCohortIdToModels extends Migration
 
     private function wplp()
     {
+        DB::raw("UPDATE workplacelearningperiod SET startdate = '2017-01-01' WHERE startdate = '0000-00-00';");
+        DB::raw("UPDATE workplacelearningperiod SET enddate = '2017-01-01' WHERE enddate = '0000-00-00';");
         if (!Schema::hasColumn('workplacelearningperiod', 'cohort_id')) {
             Schema::table('workplacelearningperiod', function (Blueprint $table) {
                 $table->unsignedInteger("cohort_id")->nullable()->default(null);
