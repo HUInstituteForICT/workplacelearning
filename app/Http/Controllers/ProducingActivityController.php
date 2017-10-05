@@ -37,6 +37,7 @@ class ProducingActivityController extends Controller
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->take(8)
+            ->orderBy('laa_id', 'DESC')
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
