@@ -10,15 +10,14 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Difficulty;
 use App\Feedback;
+use App\Http\Requests;
+use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
 use App\ResourcePerson;
-use App\LearningActivityProducing;
-use App\Http\Requests;
 use App\Status;
-use phpDocumentor\Reflection\Types\This;
-use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class ProducingActivityController extends Controller
 {
@@ -201,6 +200,10 @@ class ProducingActivityController extends Controller
             return $input->resource == "new";
         });
 
+        $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
+            return $input->aantaluren === "x";
+        });
+
         // Validate the input
         if ($validator->fails()) {
             return redirect()->route('process-producing')
@@ -229,7 +232,8 @@ class ProducingActivityController extends Controller
             $learningActivityProducing = new LearningActivityProducing;
             $learningActivityProducing->wplp_id            = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
             $learningActivityProducing->description        = $request['omschrijving'];
-            $learningActivityProducing->duration           = $request['aantaluren'];
+            $learningActivityProducing->duration = $request['aantaluren'] !== "x" ? $request['aantaluren'] : (round(((int)$request['aantaluren_custom']) / 60,
+                2));
 
             switch ($request['resource']) {
                 case 'persoon':
@@ -308,6 +312,10 @@ class ProducingActivityController extends Controller
             return $input->resource == "new";
         });
 
+        $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
+            return $input->aantaluren === "x";
+        });
+
         if ($validator->fails()) {
             return redirect()->route('process-producing-edit', ['id' => $id])
                 ->withErrors($validator)
@@ -318,7 +326,9 @@ class ProducingActivityController extends Controller
         $learningActivityProducing = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
         $learningActivityProducing->date = $request['datum'];
         $learningActivityProducing->description = $request['omschrijving'];
-        $learningActivityProducing->duration = $request['aantaluren'];
+        $learningActivityProducing->duration = $request['aantaluren'] !== "x" ? $request['aantaluren'] : (round(((int)$request['aantaluren_custom']) / 60,
+            2));
+
 
         // Todo refactor extract method?
         switch ($request['resource']) {

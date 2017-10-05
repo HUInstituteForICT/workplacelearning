@@ -7,6 +7,11 @@
         <script>
             $(document).ready(function() {
                 // Tooltips
+                $('#custom_hours_container').hide();
+                $("#hours_custom").click(function () {
+                    $('#custom_hours_container').show();
+                });
+
                 (function() {
                     $('[data-toggle="tooltip"]').tooltip();
                 })();
@@ -58,12 +63,39 @@
                 </div>
                 <div class="col-md-2 form-group buttons numpad">
                     <h4>Uren</h4>
-                    <label><input type="radio" name="aantaluren" value="0.25" {{ (old('aantaluren') == 0.25) ? 'checked' : ($activity->duration == 0.25) ? 'checked' : null }}><span>15 min.</span></label>
-                    <label><input type="radio" name="aantaluren" value="0.50" {{ (old('aantaluren') == 0.50) ? 'checked' : ($activity->duration == 0.50) ? 'checked' : null }}><span>30 min.</span></label>
-                    <label><input type="radio" name="aantaluren" value="0.75" {{ (old('aantaluren') == 0.75) ? 'checked' : ($activity->duration == 0.75) ? 'checked' : null }}><span>45 min.</span></label>
+                    <label><input type="radio" name="aantaluren"
+                                  value="0.25" {{ (old('aantaluren') === 0.25) ? ('checked') : ($activity->duration === 0.25) ? 'checked' : null }}><span>15 min.</span></label>
+                    <label><input type="radio" name="aantaluren"
+                                  value="0.50" {{ (old('aantaluren') === 0.50) ? 'checked' : ($activity->duration === 0.50) ? 'checked' : null }}><span>30 min.</span></label>
+                    <label><input type="radio" name="aantaluren"
+                                  value="0.75" {{ (old('aantaluren') === 0.75) ? 'checked' : ($activity->duration === 0.75) ? 'checked' : null }}><span>45 min.</span></label>
                     @for($i = 1; $i <= 6; $i++)
-                        <label><input type="radio" name = "aantaluren" value="{{ $i }}" {{ (old('aantaluren') == $i) ? 'checked' : ($activity->duration == $i) ? 'checked' : null }}><span>{{ $i . ' ' . Lang::choice('elements.tasks.hour', $i) }}</span></label>
+                        <label><input type="radio" name="aantaluren"
+                                      value="{{ $i }}" {{ (old('aantaluren') === $i) ? 'checked' : ($activity->duration === $i) ? 'checked' : null }}><span>{{ $i . ' ' . Lang::choice('elements.tasks.hour', $i) }}</span></label>
                     @endfor
+
+                    <div class="custom">
+                        <label id="hours_custom"><input type="radio" name="aantaluren" value="x"
+                                                        @if(!in_array($activity->duration, [0.25, 0.50, 0.75, 1, 2, 3, 4, 5, 6])) checked @endif/><span>Anders</span></label>
+                        <br/>
+                        <div id="custom_hours_container">
+                            @if(!in_array($activity->duration, [0.25, 0.50, 0.75, 1, 2, 3, 4, 5, 6]))
+                                <input class="form-control" type="number" step="1" min="1" max="300"
+                                       name="aantaluren_custom" value="{{ round($activity->duration*60) }}">minuten
+                                <script>
+                                    (function () {
+                                        setTimeout(function () {
+                                            $('#custom_hours_container').show();
+                                        }, 500)
+                                    })()
+                                </script>
+                            @else
+                                <input class="form-control" type="number" step="1" min="1" max="300"
+                                       name="aantaluren_custom" value="5">minuten
+                            @endif
+                        </div>
+                    </div>
+
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>Categorie <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
