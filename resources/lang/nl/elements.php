@@ -127,6 +127,7 @@ return array (
       'contactperson' => 'Contactpersoon',
       'contactphone' => 'Telefoonnummer',
       'contactemail' => 'Emailadres',
+        'cohort' => 'Cohort'
     ),
     'categories' => 
     array (
