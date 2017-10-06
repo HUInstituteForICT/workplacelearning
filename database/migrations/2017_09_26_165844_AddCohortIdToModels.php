@@ -133,7 +133,7 @@ class AddCohortIdToModels extends Migration
             });
         }
 
-        $resourcePerson = ResourcePerson::whereNotNull('ep_id')->whereNull('cohort_id')->with('educationProgram')->get();
+        $resourcePerson = ResourcePerson::whereNotNull('ep_id')->where('wplp_id', '0')->whereNull('cohort_id')->with('educationProgram')->get();
         $resourcePerson->each(function (ResourcePerson $resourcePerson) {
             if (!isset($this->epToCohortMapping[$resourcePerson->ep_id])) {
                 $cohort = tap(new Cohort(["name"  => $resourcePerson->educationProgram->ep_name,
