@@ -54,7 +54,7 @@ class AddCohortIdToModels extends Migration
 
         }
 
-        $categories = Category::whereNotNull('ep_id')->whereNull('cohort_id')->with('educationProgram')->get();
+        $categories = Category::whereNotNull('ep_id')->where('wplp_id', '0')->whereNull('cohort_id')->with('educationProgram')->get();
         $categories->each(function (Category $category) {
             if (!isset($this->epToCohortMapping[$category->ep_id])) {
                 $cohort = tap(new Cohort(["name"  => $category->educationProgram->ep_name,
