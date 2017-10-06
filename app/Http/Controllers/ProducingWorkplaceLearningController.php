@@ -10,10 +10,12 @@ namespace app\Http\Controllers;
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 
 use App\Category;
+use App\Cohort;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use App\LearningGoal;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -62,7 +64,9 @@ class ProducingWorkplaceLearningController extends Controller
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
             'internshipAssignment'  => 'required|min:15|max:500',
-            'isActive'              => 'sometimes|required|in:1,0'
+            'isActive'              => 'sometimes|required|in:1,0',
+            "cohort"               => "required|exists:cohorts,id",
+
         ]);
 
         if ($validator->fails()) {
@@ -70,6 +74,12 @@ class ProducingWorkplaceLearningController extends Controller
                 ->route('period-producing-create')
                 ->withErrors($validator)
                 ->withInput();
+        }
+
+        $cohort = Cohort::find($request['cohort']);
+
+        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+            throw new InvalidArgumentException("Unknown cohort");
         }
 
         // Pass. Create the internship and period.
@@ -96,6 +106,7 @@ class ProducingWorkplaceLearningController extends Controller
         $wplPeriod->enddate      = $request['enddate'];
         $wplPeriod->nrofdays     = $request['numdays'];
         $wplPeriod->description  = $request['internshipAssignment'];
+        $wplPeriod->cohort()->associate($cohort);
         $wplPeriod->save();
 
         // Set the user setting to the current Internship ID

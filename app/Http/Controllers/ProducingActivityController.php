@@ -29,6 +29,8 @@ class ProducingActivityController extends Controller
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
         }
 
+        $x = Auth::user();
+        $y = Auth::user()->getCurrentWorkplaceLearningPeriod();
         $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
