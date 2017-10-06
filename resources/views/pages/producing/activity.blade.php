@@ -13,6 +13,7 @@
     <div class="container-fluid">
         <script>
             $(document).ready(function() {
+                $('#custom_hours_container').hide();
                 $("#rp_id").on('change', function(){
                     if($(this).val() == "new" && $(this).is(":visible")){
                         $("#cond-select-hidden").show();
@@ -25,6 +26,9 @@
                     $(this).siblings().show();
                     $("#cond-select-hidden").hide();
                     $("#rp_id").trigger("change");
+                });
+                $("#hours_custom").click(function() {
+                    $('#custom_hours_container').show();
                 });
                 $("#help-click").click(function(){
                     $('#help-text').slideToggle('slow');
@@ -104,7 +108,13 @@
                     @for($i = 1; $i <= 6; $i++)
                         {!! "<label>". Form::radio('aantaluren', $i) ."<span>". $i ." ". Lang::choice('elements.tasks.hour', $i) ."</span></label>" !!}
                     @endfor
+                    <div class="custom">
+                        <label id="hours_custom"><input type="radio" name="aantaluren" value="x" /><span>Anders</span></label>
+                        <br/>
+                        <div id="custom_hours_container"><input class="form-control" type="number" step="1" min="1" max="300" name="aantaluren_custom" value="5">minuten</div>
+                    </div>
                 </div>
+
                 <div class="col-md-2 form-group buttons">
                     <h4>Categorie <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
