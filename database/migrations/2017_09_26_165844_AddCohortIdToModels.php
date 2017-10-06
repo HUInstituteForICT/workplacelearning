@@ -158,7 +158,7 @@ class AddCohortIdToModels extends Migration
             });
         }
 
-        $timeslot = Timeslot::whereNotNull('edprog_id')->whereNull('cohort_id')->with('educationProgram')->get();
+        $timeslot = Timeslot::whereNotNull('edprog_id')->where('wplp_id', '0')->whereNull('cohort_id')->with('educationProgram')->get();
         $timeslot->each(function (Timeslot $timeslot) {
             if (!isset($this->epToCohortMapping[$timeslot->edprog_id])) {
                 $cohort = tap(new Cohort(["name"  => $timeslot->educationProgram->ep_name,
