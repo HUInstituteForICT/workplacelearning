@@ -26,7 +26,8 @@ class ProducingWorkplaceLearningController extends Controller
     {
         return view("pages.producing.internship")
                 ->with("period", new WorkplaceLearningPeriod)
-                ->with("workplace", new Workplace);
+                ->with("workplace", new Workplace)
+            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
     }
 
     public function edit($id)
@@ -40,7 +41,8 @@ class ProducingWorkplaceLearningController extends Controller
                 ->with('period', $wplPeriod)
                 ->with("workplace", Workplace::find($wplPeriod->wp_id))
                 ->with("categories", $wplPeriod->categories()->get())
-                ->with("resource", new Collection);
+                ->with("resource", new Collection)
+                ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
         }
     }
 
