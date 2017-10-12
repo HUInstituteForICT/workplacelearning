@@ -23,8 +23,13 @@ class ResourcePerson extends Model
         'rp_id',
         'person_label',
         'ep_id',
-        'wplp_id'
+        'wplp_id',
+        'cohort_id'
     ];
+
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
 
     public function workplaceLearningPeriod()
     {
@@ -38,6 +43,6 @@ class ResourcePerson extends Model
 
     public function educationProgram()
     {
-        return $this->belongsTo(\App\EducationProgram::class);
+        return $this->belongsTo(\App\EducationProgram::class, 'ep_id', 'ep_id');
     }
 }

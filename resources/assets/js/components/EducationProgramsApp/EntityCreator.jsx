@@ -2,11 +2,11 @@ import * as React from "react";
 import EducationProgramService from "../../services/EducationProgramService";
 
 export const EntityTypes = {
-    competence: 1,
-    timeslot: 2,
-    resourcePerson: 3,
-    resource_person: 3, // because of inconsistent design necessary
-    category: 4
+    competence: "competencies",
+    timeslot: "timeslots",
+    resourcePerson: "resourcePersons",
+    resource_person: "resourcePersons", // because of inconsistent design necessary
+    category: "categories"
 };
 
 export class EntityCreator extends React.Component {
@@ -26,7 +26,7 @@ export class EntityCreator extends React.Component {
 
     onCreateEntityClick() {
         EducationProgramService.createEntity(
-            this.props.programId,
+            this.props.cohortId,
             this.props.type,
             this.state.fieldValue,
             response => {

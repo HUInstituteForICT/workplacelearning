@@ -27,7 +27,7 @@ export default class EntityListEntry extends React.Component {
     save() {
         this.setState({loading: true});
 
-        EducationProgramService.updateEntity(this.props.id, {type: EntityTypes[this.props.type], name: this.state.fieldValue},
+        EducationProgramService.updateEntity(this.props.id, {type: this.props.type, name: this.state.fieldValue},
             response => {
                 this.props.onEntityUpdatedName(this.props.id, this.props.type, this.state.fieldValue, response.data.mappedNameField);
                 this.setState({loading:false, editMode:false});

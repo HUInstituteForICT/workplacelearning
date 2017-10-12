@@ -28,7 +28,12 @@ class WorkplaceLearningPeriod extends Model
         'enddate',
         'nrofdays',
         'description',
+        'cohort_id'
     ];
+
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
 
     public function student()
     {
@@ -100,14 +105,6 @@ class WorkplaceLearningPeriod extends Model
             ->where('status_id', '=', '2')
             ->orderBy('date', 'asc')
             ->orderBy('lap_id', 'desc')
-            ->get();
-    }
-
-    public function getCategories()
-    {
-        return $this->categories()
-            ->orWhere('wplp_id', '=', '0')
-            ->orderBy('category_id', 'asc')
             ->get();
     }
 

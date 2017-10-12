@@ -239,7 +239,7 @@
                 @endforeach
 
                 {{--Percentage leermomenten in tijdslot hoger dan 30% tip--}}
-                @foreach(Auth::user()->getEducationProgram()->getTimeslots()->merge(Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()) as $timeslot)
+                @foreach(Auth::user()->currentCohort()->timeslots()->get()->merge(Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()) as $timeslot)
                     @if($actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) >= 30)
                         <strong>Tip {{ $tipCounter }}</strong>: <br/>
                         {{ $actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) }}% van jouw

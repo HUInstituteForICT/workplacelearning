@@ -10,15 +10,14 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Difficulty;
 use App\Feedback;
+use App\Http\Requests;
+use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
 use App\ResourcePerson;
-use App\LearningActivityProducing;
-use App\Http\Requests;
 use App\Status;
-use phpDocumentor\Reflection\Types\This;
-use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class ProducingActivityController extends Controller
 {
@@ -30,21 +29,31 @@ class ProducingActivityController extends Controller
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
         }
 
-        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
+        $x = Auth::user();
+        $y = Auth::user()->getCurrentWorkplaceLearningPeriod();
+        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+        );
+
+        $categories = Auth::user()->currentCohort()->categories()->get()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
         );
 
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->take(8)
+            ->orderBy('lap_id', 'DESC')
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
+
+
         return view('pages.producing.activity')
             ->with('learningWith', $resourcePersons)
+            ->with('categories', $categories)
             ->with('difficulties', Difficulty::all())
             ->with('statuses', Status::all())
             ->with('activitiesJson', $activitiesJson)
@@ -65,14 +74,18 @@ class ProducingActivityController extends Controller
                 ->withErrors('Helaas, er is geen activiteit gevonden.');
         }
 
-        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
+        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+        );
+
+        $categories = Auth::user()->currentCohort()->categories()->get()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
         );
 
         return view('pages.producing.activity-edit')
             ->with('activity', $activity)
             ->with('learningWith', $resourcePersons)
-            ->with('categories', Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories());
+            ->with('categories', $categories);
     }
 
     public function feedback($id)
@@ -201,6 +214,10 @@ class ProducingActivityController extends Controller
             return $input->resource == "new";
         });
 
+        $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
+            return $input->aantaluren === "x";
+        });
+
         // Validate the input
         if ($validator->fails()) {
             return redirect()->route('process-producing')
@@ -221,7 +238,7 @@ class ProducingActivityController extends Controller
                 $resourcePerson                = new ResourcePerson;
                 $resourcePerson->person_label  = $request['newswv'];
                 $resourcePerson->wplp_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-                $resourcePerson->ep_id         = Auth::user()->getEducationProgram()->ep_id;
+                $resourcePerson->ep_id         = Auth::user()->getEducationProgram()->ep_id; //deprecated, not necessary, bound to wplp..?
                 $resourcePerson->save();
             }
 
@@ -229,7 +246,8 @@ class ProducingActivityController extends Controller
             $learningActivityProducing = new LearningActivityProducing;
             $learningActivityProducing->wplp_id            = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
             $learningActivityProducing->description        = $request['omschrijving'];
-            $learningActivityProducing->duration           = $request['aantaluren'];
+            $learningActivityProducing->duration = $request['aantaluren'] !== "x" ? $request['aantaluren'] : (round(((int)$request['aantaluren_custom']) / 60,
+                2));
 
             switch ($request['resource']) {
                 case 'persoon':
@@ -308,6 +326,10 @@ class ProducingActivityController extends Controller
             return $input->resource == "new";
         });
 
+        $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
+            return $input->aantaluren === "x";
+        });
+
         if ($validator->fails()) {
             return redirect()->route('process-producing-edit', ['id' => $id])
                 ->withErrors($validator)
@@ -318,7 +340,9 @@ class ProducingActivityController extends Controller
         $learningActivityProducing = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
         $learningActivityProducing->date = $request['datum'];
         $learningActivityProducing->description = $request['omschrijving'];
-        $learningActivityProducing->duration = $request['aantaluren'];
+        $learningActivityProducing->duration = $request['aantaluren'] !== "x" ? $request['aantaluren'] : (round(((int)$request['aantaluren_custom']) / 60,
+            2));
+
 
         // Todo refactor extract method?
         switch ($request['resource']) {

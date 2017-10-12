@@ -11,12 +11,16 @@ class CompetenceDescription extends Model
 {
 
     public function educationProgram() {
-        return $this->belongsTo(EducationProgram::class, 'ep_id', 'education_program_id');
+        return $this->belongsTo(EducationProgram::class, 'education_program_id', 'ep_id');
     }
 
     public $timestamps = false;
 
     protected $appends = ['has_data', 'download-url'];
+
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
 
     /**
      * @return bool whether this description exists and has data

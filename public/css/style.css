@@ -175,7 +175,7 @@ a.nav-tile:focus {
 .tile {
   width: 100px;
   height: 100px;
-  margin: 5px;
+  margin: 10px 5px;
   float: left;
 }
 .tile img.icon {
@@ -345,7 +345,17 @@ a.nav-tile:focus {
   max-width: 200px;
 }
 .numpad label span {
-  width: 40px !important;
+  width: 40px;
+  max-width: 100px;
+}
+.numpad .custom label span {
+  width: 140px;
+  max-width: 140px;
+}
+.numpad .custom input {
+  margin-left: 15px;
+  display: inline-block;
+  width: 30%;
 }
 .fit-bs {
   max-width: 85%;

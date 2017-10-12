@@ -1,5 +1,5 @@
 <?php
 
-return [
-    "enlarge" => "Vergroot tekstveld"
-];
+return array (
+  'enlarge' => 'Vergroot tekstveld',
+);

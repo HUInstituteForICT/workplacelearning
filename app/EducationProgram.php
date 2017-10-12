@@ -85,4 +85,8 @@ class EducationProgram extends Model
             ->where('wplp_id', '=', '0')
             ->get();
     }
+
+    public function cohorts() {
+        return $this->hasMany(Cohort::class, 'ep_id', 'ep_id');
+    }
 }

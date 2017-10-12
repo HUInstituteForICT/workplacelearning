@@ -10,9 +10,11 @@ namespace app\Http\Controllers;
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 
 use App\Category;
+use App\Cohort;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use App\LearningGoal;
+use http\Exception\InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Validator;
 use Illuminate\Http\Request;
@@ -26,7 +28,8 @@ class ActingWorkplaceLearningController extends Controller
     {
         return view("pages.acting.internship")
             ->with("period", new WorkplaceLearningPeriod)
-            ->with("workplace", new Workplace);
+            ->with("workplace", new Workplace)
+            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
     }
 
     public function edit($id)
@@ -40,7 +43,8 @@ class ActingWorkplaceLearningController extends Controller
                 ->with("period", $wplPeriod)
                 ->with("workplace", Workplace::find($wplPeriod->wp_id))
                 ->with("learninggoals", $wplPeriod->getLearningGoals())
-                ->with("resource", new Collection);
+                ->with("resource", new Collection)
+                ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
         }
     }
 
@@ -62,6 +66,8 @@ class ActingWorkplaceLearningController extends Controller
             'enddate'              => 'required|date|after:startdate',
             'internshipAssignment' => 'required|min:15|max:500',
             'isActive'             => 'sometimes|required|in:1,0',
+            "cohort"               => "required|exists:cohorts,id",
+
         ]);
 
         if ($validator->fails()) {
@@ -69,6 +75,12 @@ class ActingWorkplaceLearningController extends Controller
                 ->route('period-acting-create')
                 ->withErrors($validator)
                 ->withInput();
+        }
+
+        $cohort = Cohort::find($request['cohort']);
+
+        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+            throw new InvalidArgumentException("Unknown cohort");
         }
 
         // Pass. Create the internship and period.
@@ -96,11 +108,13 @@ class ActingWorkplaceLearningController extends Controller
         $wplPeriod->enddate = $request['enddate'];
         $wplPeriod->nrofdays = $request['numdays'];
         $wplPeriod->description = $request['internshipAssignment'];
+        $wplPeriod->cohort()->associate($cohort);
         $wplPeriod->save();
 
         // Create unplanned learning as default learning goal
         $learningGoal = new LearningGoal;
         $learningGoal->learninggoal_label = "Ongepland leermoment";
+        $learningGoal->description = "Een ongepland leermoment";
         $learningGoal->wplp_id = $wplPeriod->wplp_id;
         $learningGoal->save();
 
@@ -108,6 +122,7 @@ class ActingWorkplaceLearningController extends Controller
         for ($i = 1; $i < 4; $i++) {
             $learningGoal = new LearningGoal;
             $learningGoal->learninggoal_label = sprintf('Leervraag %s', $i);
+            $learningGoal->description = sprintf('Omschrijving van leervraag %s', $i);
             $learningGoal->wplp_id = $wplPeriod->wplp_id;
             $learningGoal->save();
         }
@@ -204,6 +219,7 @@ class ActingWorkplaceLearningController extends Controller
 
         $validator = Validator::make($request->all(), [
             'learninggoal_name.*' => 'required|min:3|max:50',
+            'learninggoal_description.*' => 'required|min:3, max:1000',
         ]);
         $validator->sometimes(
             'new_learninggoal_name',
@@ -212,8 +228,17 @@ class ActingWorkplaceLearningController extends Controller
                 return strlen($input->new_learninggoal_name) > 0;
             }
         );
+
+        $validator->sometimes(
+            'new_learninggoal_description',
+            'required|min:3|max:1000',
+            function ($input) {
+                return strlen($input->new_learninggoal_name) > 0;
+            }
+        );
+
         if ($validator->fails()) {
-            // Noes. errors occured. Exit back to profile page with errors
+            // Noes. errors occurred. Exit back to profile page with errors
             return redirect()
                 ->route('period-acting-edit', ["id" => $id])
                 ->withErrors($validator)
@@ -222,11 +247,13 @@ class ActingWorkplaceLearningController extends Controller
             if(isset($request['learninggoal_name'])) {
                 foreach ($request['learninggoal_name'] as $lg_id => $name) {
                     $learningGoal = LearningGoal::find($lg_id);
+                    $description = $request['learninggoal_description'][$lg_id];
                     if (is_null($learningGoal)) {
                         $learningGoal = new LearningGoal;
                         $learningGoal->wplp_id = $id;
                     }
                     $learningGoal->learninggoal_label = $name;
+                    $learningGoal->description = $description;
                     $learningGoal->save();
                 }
             }
@@ -234,6 +261,7 @@ class ActingWorkplaceLearningController extends Controller
             if (strlen($request['new_learninggoal_name']) > 0) {
                 $learningGoal = new LearningGoal;
                 $learningGoal->learninggoal_label = $request['new_learninggoal_name'];
+                $learningGoal->description = $request['new_learninggoal_description'];
                 $learningGoal->wplp_id = $id;
                 $learningGoal->save();
             }

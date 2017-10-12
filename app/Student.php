@@ -142,6 +142,14 @@ class Student extends Authenticatable
         return $this->getEducationProgram()->educationprogramType()->first();
     }
 
+    /**
+     * @return Cohort
+     */
+    public function currentCohort()
+    {
+        return $this->getCurrentWorkplaceLearningPeriod()->cohort;
+    }
+
     /* OVERRIDE IN ORDER TO DISABLE THE REMEMBER_ME TOKEN */
     public function getRememberToken()
     {

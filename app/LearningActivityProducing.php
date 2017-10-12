@@ -86,6 +86,8 @@ class LearningActivityProducing extends Model
                 return "30 min";
             case 0.75:
                 return "45 min";
+            case ($this->duration < 1):
+                return round($this->duration * 60) . " min";
             default:
                 return $this->duration." uur";
         }

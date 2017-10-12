@@ -17,12 +17,17 @@ class Competence extends Model
     protected $fillable = [
         'competence_id',
         'competence_label',
-        'educationprogram_id'
+        'educationprogram_id',
+        'cohort_id'
     ];
+
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
 
     public function educationProgram()
     {
-        return $this->belongsTo(\App\EducationProgram::class, 'ep_id', 'educationprogram_id');
+        return $this->belongsTo(\App\EducationProgram::class, 'educationprogram_id', 'ep_id');
     }
 
     public function learningActivityActing()

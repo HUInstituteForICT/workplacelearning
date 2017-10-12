@@ -1,7 +1,6 @@
 import * as React from "react";
 import EducationProgramService from "../../services/EducationProgramService";
-import EditActingProgram from "./editActingProgram";
-import EditProducingProgram from "./editProducingProgram";
+import EditProgram from "./EditProgram";
 import update from 'immutability-helper';
 
 
@@ -64,6 +63,17 @@ export default class educationProgramsApp extends React.Component {
             });
     }
 
+    onDeleteEducationProgram(id) {
+        const index = this.state.programs.findIndex(program => parseInt(program.ep_id) === parseInt(id));
+        if(index < 0) {
+            throw "Unknown program id " + id;
+        } else {
+            this.setState({selectedProgramId: null});
+            this.setState({programs: update(this.state.programs, {$splice: [[index, 1]]})});
+        }
+
+    }
+
 
     render() {
         if (this.state.loading) return <div className="loader">Loading...</div>;
@@ -119,25 +129,12 @@ export default class educationProgramsApp extends React.Component {
         if (this.state.selectedProgramId === null) {
             return <h5>None selected</h5>
         }
-        const index = this.state.programs.findIndex(program => (program.ep_id === this.state.selectedProgramId));
 
-        let program = this.state.programs[index];
+        return <EditProgram id={this.state.selectedProgramId}
+                                  programOnNameChange={this.updateProgramName}
+                            onDelete={this.onDeleteEducationProgram.bind(this)}
 
-        if (program.eptype_id === 1) {
-            return <EditActingProgram id={this.state.selectedProgramId}
-                                      programOnNameChange={this.updateProgramName}
-
-            />
-        } else if (program.eptype_id === 2) {
-            return <EditProducingProgram id={this.state.selectedProgramId}
-                                         programOnNameChange={this.updateProgramName}
-
-            />
-        } else {
-            throw "Unknown education program type id :" + program.eptype_id;
-        }
-
-
+        />;
     }
 
 }
