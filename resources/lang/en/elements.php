@@ -127,6 +127,7 @@ return array (
       'contactperson' => 'Contact',
       'contactphone' => 'Phone Number',
       'contactemail' => 'Email Address',
+        'cohort' => 'Cohort'
     ),
     'categories' => 
     array (

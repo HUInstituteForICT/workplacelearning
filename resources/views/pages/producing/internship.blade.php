@@ -103,6 +103,24 @@
                         <div class="col-sm-6">
                             <input name="enddate" type="date" class="form-control" min="{{ date("Y-m-d", strtotime("now")) }}" value="{{ date("Y-m-d", (($period->enddate) ? strtotime($period->enddate) : strtotime("tomorrow"))) }}">
                         </div>
+
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('cohort', Lang::get('elements.profile.internships.cohort'), array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-6">
+                            <select @if($period->cohort !== null) readonly="true" @endif class="form-control" name="cohort">
+                                @foreach($cohorts as $cohort)
+
+                                    @if(is_null($period->cohort))
+                                        <option @if(old('cohort') == $cohort->id) selected @endif value="{{ $cohort->id }}">{{ $cohort->name }}</option>
+                                    @else
+                                        <option @if($period->cohort->id == $cohort->id) selected @endif value="{{ $cohort->id }}">{{ $cohort->name }}</option>
+                                    @endif
+
+
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="col-sm-2">
                             <input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" />
                         </div>

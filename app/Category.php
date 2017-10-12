@@ -23,7 +23,12 @@ class Category extends Model
         'category_id',
         'category_label',
         'wplp_id',
+        'cohort_id'
     ];
+
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
 
     public function educationProgram() {
         return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');

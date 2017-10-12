@@ -43284,6 +43284,837 @@ var ActivityProducingProcessTable = function (_React$Component) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/EducationProgramsApp/Cohorts.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__ = __webpack_require__("./resources/assets/js/services/EducationProgramService.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_immutability_helper__ = __webpack_require__("./node_modules/immutability-helper/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_immutability_helper__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EditableEntities__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EditableEntities.jsx");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+var Cohorts = function (_React$Component) {
+    _inherits(Cohorts, _React$Component);
+
+    function Cohorts(props) {
+        _classCallCheck(this, Cohorts);
+
+        var _this = _possibleConstructorReturn(this, (Cohorts.__proto__ || Object.getPrototypeOf(Cohorts)).call(this));
+
+        _this.state = Object.assign({}, props, { selectedCohortId: null, loading: false });
+
+        _this.autoUpdaterTimeout = null;
+        return _this;
+    }
+
+    _createClass(Cohorts, [{
+        key: "cohortIndex",
+        value: function cohortIndex(id) {
+            return this.state.cohorts.findIndex(function (cohort) {
+                return parseInt(cohort.id) === parseInt(id);
+            });
+        }
+    }, {
+        key: "updateCohort",
+        value: function updateCohort() {
+            var _this2 = this;
+
+            clearTimeout(this.autoUpdaterTimeout);
+
+            this.autoUpdaterTimeout = setTimeout(function () {
+                __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].updateCohort(_this2.state.selectedCohortId, _this2.state.cohorts[_this2.cohortIndex(_this2.state.selectedCohortId)], function () {});
+            }, 500);
+        }
+    }, {
+        key: "loadCohort",
+        value: function loadCohort(id) {
+            var _this3 = this;
+
+            this.setState({ loading: true });
+            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].loadCohort(id, function (response) {
+                var index = _this3.cohortIndex(id);
+                if (index >= 0) {
+                    _this3.setState({ cohorts: __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(_this3.state.cohorts, _defineProperty({}, index, { $set: response.data })) });
+                } else {
+                    _this3.setState({ cohorts: __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(_this3.state.cohorts, { $push: [response.data] }) });
+                }
+                _this3.setState({ loading: false });
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this4 = this;
+
+            var selectedCohort = this.state.cohorts[this.cohortIndex(this.state.selectedCohortId)];
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "h3",
+                    null,
+                    "Cohorts"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "a",
+                    { onClick: function onClick() {
+                            return __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].createCohort(_this4.props.programId, function (response) {
+                                var cohorts = _this4.state.cohorts.slice();
+                                cohorts.push(response.data);
+                                _this4.setState({ cohorts: cohorts });
+                            });
+                        } },
+                    "Add cohort"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "row" },
+                    this.state.cohorts.map(function (cohort) {
+                        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { className: "col-md-4", key: cohort.id },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "span",
+                                { className: "defaultButton list",
+                                    onClick: function onClick() {
+                                        return _this4.setState({ loading: true, selectedCohortId: cohort.id }, function () {
+                                            return _this4.loadCohort(cohort.id);
+                                        });
+                                    } },
+                                cohort.name
+                            )
+                        );
+                    })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null),
+                this.state.selectedCohortId !== null && this.state.loading === false && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "h4",
+                        null,
+                        "Cohort details"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "row" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { className: "col-md-6" },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "div",
+                                { className: "form-group" },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "label",
+                                    null,
+                                    "Cohort name",
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "text", className: "form-control", value: selectedCohort.name,
+                                        onChange: function onChange(e) {
+                                            _this4.setState({
+                                                cohorts: __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(_this4.state.cohorts, _defineProperty({}, _this4.cohortIndex(selectedCohort.id), { name: { $set: e.target.value } }))
+
+                                            });
+                                            _this4.updateCohort();
+                                        } })
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { className: "col-md-6" },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "div",
+                                { className: "form-group" },
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "label",
+                                    null,
+                                    "Cohort description",
+                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "text", className: "form-control", value: selectedCohort.description,
+                                        onChange: function onChange(e) {
+                                            _this4.setState({
+                                                cohorts: __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(_this4.state.cohorts, _defineProperty({}, _this4.cohortIndex(selectedCohort.id), { description: { $set: e.target.value } }))
+                                            });
+                                            _this4.updateCohort();
+                                        } })
+                                )
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "row" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { className: "col-md-3" },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "a",
+                                { onClick: function onClick() {
+                                        return __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].toggleDisableCohort(selectedCohort.id, function (response) {
+                                            if (response.data.status === "success") {
+                                                var index = _this4.cohortIndex(selectedCohort.id);
+                                                _this4.setState({ cohorts: __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(_this4.state.cohorts, _defineProperty({}, index, { disabled: { $set: response.data.disabled } })) });
+                                            }
+                                        });
+                                    } },
+                                selectedCohort.disabled ? "Enable cohort for new workplace learning periods" : "Disable program for new workplace learning periods"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { className: "col-md-3" },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "a",
+                                { disabled: selectedCohort.canBeDeleted, onClick: function onClick() {
+                                        if (selectedCohort.canBeDeleted) {
+                                            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].deleteCohort(selectedCohort.id, function (response) {
+                                                if (response.data.status === "success") {
+                                                    var index = _this4.cohortIndex(selectedCohort.id);
+                                                    _this4.setState({ selectedCohortId: null });
+                                                    _this4.setState({ cohorts: __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(_this4.state.cohorts, { $splice: [[index, 1]] }) });
+                                                }
+                                            });
+                                        }
+                                    } },
+                                selectedCohort.canBeDeleted ? "Delete cohort" : "Cohort has workplace learning periods, therefore it cannot be deleted"
+                            )
+                        )
+                    ),
+                    this.props.programType === 1 && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EditableEntities__["b" /* Competence */], { competencies: selectedCohort.competencies,
+                            competence_description: selectedCohort.competence_description,
+                            programId: this.props.programId, cohortId: this.state.selectedCohortId
+                        }),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EditableEntities__["d" /* Timeslot */], { timeslots: selectedCohort.timeslots,
+                            programId: this.props.programId, cohortId: this.state.selectedCohortId
+                        }),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EditableEntities__["c" /* ResourcePerson */], { resourcePersons: selectedCohort.resource_persons,
+                            programId: this.props.programId, cohortId: this.state.selectedCohortId
+                        })
+                    ),
+                    this.props.programType === 2 && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EditableEntities__["a" /* Category */], { categories: selectedCohort.categories,
+                            programId: this.props.programId, cohortId: this.state.selectedCohortId
+                        }),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EditableEntities__["c" /* ResourcePerson */], { resourcePersons: selectedCohort.resource_persons,
+                            programId: this.props.programId, cohortId: this.state.selectedCohortId
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Cohorts;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Cohorts);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/EducationProgramsApp/EditProgram.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__ = __webpack_require__("./resources/assets/js/services/EducationProgramService.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_immutability_helper__ = __webpack_require__("./node_modules/immutability-helper/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_immutability_helper__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EntityCreator__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EntityCreator.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__EntityListEntry__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EntityListEntry.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dropzone__ = __webpack_require__("./node_modules/react-dropzone/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dropzone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_dropzone__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__EditableEntities__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EditableEntities.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Cohorts__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/Cohorts.jsx");
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+
+
+
+var EditProgram = function (_React$Component) {
+    _inherits(EditProgram, _React$Component);
+
+    function EditProgram(props) {
+        _classCallCheck(this, EditProgram);
+
+        var _this = _possibleConstructorReturn(this, (EditProgram.__proto__ || Object.getPrototypeOf(EditProgram)).call(this, props));
+
+        _this.state = {
+            loading: true,
+            ep_name: '',
+            disabled: false,
+            cohorts: []
+        };
+
+        _this.autoUpdaterTimeout = null;
+
+        _this.programOnNameChange = _this.programOnNameChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(EditProgram, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.setState({ loading: true });
+            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].getEditableEducationProgram(function (response) {
+                _this2.setState(response.data);
+                _this2.setState({ loading: false });
+            }, this.props.id);
+        }
+
+        // Update component when the ID changes, fired by parent
+
+    }, {
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(nextProps) {
+            var _this3 = this;
+
+            if (nextProps.id !== this.props.id) {
+                this.setState({ loading: true });
+
+                __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].getEditableEducationProgram(function (response) {
+                    _this3.setState(response.data);
+                    _this3.setState({ loading: false });
+                }, nextProps.id);
+            }
+        }
+
+        // On education program name change, update request fires 500ms after last keystroke
+
+    }, {
+        key: "programOnNameChange",
+        value: function programOnNameChange(element) {
+            var _this4 = this;
+
+            clearTimeout(this.autoUpdaterTimeout);
+            this.setState(_defineProperty({}, element.target.getAttribute('name'), element.target.value));
+
+            this.autoUpdaterTimeout = setTimeout(function () {
+                __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].updateName(_this4.props.id, { ep_name: _this4.state.ep_name }, function (response) {
+                    _this4.props.programOnNameChange(_this4.props.id, response.data.program.ep_name);
+                });
+            }, 500);
+        }
+    }, {
+        key: "onClickToggleDisableProgram",
+        value: function onClickToggleDisableProgram(id) {
+            var _this5 = this;
+
+            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].toggleDisable(id, function (response) {
+                if (response.data.status === "success") {
+                    _this5.setState({ disabled: response.data.disabled });
+                }
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this6 = this;
+
+            if (this.state.loading) return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                { className: "loader" },
+                "Loading..."
+            );
+            var program = this.state;
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "h4",
+                        null,
+                        "Program details"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "form-group" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "label",
+                            null,
+                            "Education program name",
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "text", className: "form-control", name: "ep_name", value: program.ep_name,
+                                onChange: this.programOnNameChange })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "row" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { className: "col-md-3" },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "a",
+                                { onClick: function onClick() {
+                                        return _this6.onClickToggleDisableProgram(_this6.props.id);
+                                    } },
+                                program.disabled ? "Enable program for new students" : "Disable program for new students"
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { className: "col-md-3" },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "a",
+                                { disabled: program.canBeDeleted, onClick: function onClick() {
+                                        if (program.canBeDeleted) {
+                                            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].deleteEducationProgram(program.ep_id, function (response) {
+                                                if (response.data.status === "success") {
+                                                    _this6.props.onDelete(program.ep_id);
+                                                }
+                                            });
+                                        }
+                                    } },
+                                program.canBeDeleted ? "Delete program" : "Program has cohorts, therefore it cannot be deleted"
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7__Cohorts__["a" /* default */], { programId: program.ep_id, cohorts: program.cohorts, programType: program.eptype_id })
+            );
+        }
+    }]);
+
+    return EditProgram;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (EditProgram);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/EducationProgramsApp/EditableEntities.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Competence; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return Timeslot; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ResourcePerson; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Category; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EntityCreator__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EntityCreator.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EducationProgramService__ = __webpack_require__("./resources/assets/js/services/EducationProgramService.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EntityListEntry__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EntityListEntry.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_dropzone__ = __webpack_require__("./node_modules/react-dropzone/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_dropzone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_dropzone__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_immutability_helper__ = __webpack_require__("./node_modules/immutability-helper/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_immutability_helper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_immutability_helper__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+
+var Entity = function (_React$Component) {
+    _inherits(Entity, _React$Component);
+
+    function Entity(props) {
+        _classCallCheck(this, Entity);
+
+        return _possibleConstructorReturn(this, (Entity.__proto__ || Object.getPrototypeOf(Entity)).call(this, props));
+    }
+
+    _createClass(Entity, [{
+        key: "removeFromStateArray",
+        value: function removeFromStateArray(id, type) {
+            var _this2 = this;
+
+            // Magic
+            __WEBPACK_IMPORTED_MODULE_2__services_EducationProgramService__["a" /* default */].deleteEntity(type, id, function (response) {
+                var index = _this2.getEntityIndex(id, type);
+                _this2.setState(function (prevState) {
+                    return _defineProperty({}, __WEBPACK_IMPORTED_MODULE_1__EntityCreator__["b" /* EntityTypes */][type], __WEBPACK_IMPORTED_MODULE_5_immutability_helper___default()(prevState[__WEBPACK_IMPORTED_MODULE_1__EntityCreator__["b" /* EntityTypes */][type]], { $splice: [[index, 1]] }));
+                });
+            });
+        }
+
+        // Get the index of the entity with ID and type
+        // Type defines which array in the state
+
+    }, {
+        key: "getEntityIndex",
+        value: function getEntityIndex(id, type) {
+            var idPropertyName = type === 'resourcePerson' ? 'rp' : type;
+            return this.state[__WEBPACK_IMPORTED_MODULE_1__EntityCreator__["b" /* EntityTypes */][type]].findIndex(function (entity) {
+                return entity[idPropertyName + '_id'] === parseInt(id);
+            });
+        }
+
+        // Update the entity in the parent array
+
+    }, {
+        key: "onEntityUpdatedName",
+        value: function onEntityUpdatedName(id, type, name, mappedNameField) {
+            var index = this.getEntityIndex(id, type);
+            this.setState(function (prevState) {
+                return _defineProperty({}, __WEBPACK_IMPORTED_MODULE_1__EntityCreator__["b" /* EntityTypes */][type], __WEBPACK_IMPORTED_MODULE_5_immutability_helper___default()(prevState[__WEBPACK_IMPORTED_MODULE_1__EntityCreator__["b" /* EntityTypes */][type]], _defineProperty({}, index, _defineProperty({}, mappedNameField, { $set: name }))));
+            });
+        }
+
+        // When the user adds a new entity
+
+    }, {
+        key: "onEntityCreated",
+        value: function onEntityCreated(type, entity) {
+            if (type === "competence") {
+                this.setState(function (prevState) {
+                    return { competencies: __WEBPACK_IMPORTED_MODULE_5_immutability_helper___default()(prevState.competencies, { $push: [entity] }) };
+                });
+            } else if (type === "timeslot") {
+                this.setState(function (prevState) {
+                    return { timeslots: __WEBPACK_IMPORTED_MODULE_5_immutability_helper___default()(prevState.timeslots, { $push: [entity] }) };
+                });
+            } else if (type === "resourcePerson") {
+                this.setState(function (prevState) {
+                    return { resourcePersons: __WEBPACK_IMPORTED_MODULE_5_immutability_helper___default()(prevState.resourcePersons, { $push: [entity] }) };
+                });
+            } else if (type === "category") {
+                this.setState(function (prevState) {
+                    return { categories: __WEBPACK_IMPORTED_MODULE_5_immutability_helper___default()(prevState.categories, { $push: [entity] }) };
+                });
+            }
+        }
+    }]);
+
+    return Entity;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+var Competence = function (_Entity) {
+    _inherits(Competence, _Entity);
+
+    function Competence(props) {
+        _classCallCheck(this, Competence);
+
+        var _this3 = _possibleConstructorReturn(this, (Competence.__proto__ || Object.getPrototypeOf(Competence)).call(this, props));
+
+        _this3.state = Object.assign({}, props, { uploadedText: '' });
+        return _this3;
+    }
+
+    // On dropping file in dropzone
+
+
+    _createClass(Competence, [{
+        key: "onDrop",
+        value: function onDrop(files) {
+            var _this4 = this;
+
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                // Upload to server
+                _this4.setState({ uploadedText: ' - uploading...' });
+
+                __WEBPACK_IMPORTED_MODULE_2__services_EducationProgramService__["a" /* default */].uploadCompetenceDescription(_this4.props.cohortId, reader.result, function (response) {
+                    _this4.setState({
+                        competence_description: response.data.competence_description,
+                        uploadedText: ' - successfully uploaded file'
+                    });
+                    setTimeout(function () {
+                        return _this4.setState({ uploadedText: '' });
+                    }, 4000);
+                }, function (error) {
+                    if (error.response.status === 413) {
+                        _this4.setState({ uploadedText: ' - the file was too large, try to make it smaller' });
+                    } else {
+                        _this4.setState({ uploadedText: ' - error occurred while uploading, try again later' });
+                    }
+                });
+            }, false);
+            // Read file
+            reader.readAsDataURL(files[0]);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this5 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                { className: "col-md-4" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "h4",
+                    null,
+                    "Competencies"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "form-group" },
+                    this.state.competencies.map(function (competence) {
+                        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { key: competence.competence_id },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EntityListEntry__["a" /* default */], { type: "competence",
+                                id: competence.competence_id,
+                                label: competence.competence_label,
+                                onRemoveClick: _this5.removeFromStateArray.bind(_this5),
+                                onEntityUpdatedName: _this5.onEntityUpdatedName.bind(_this5)
+                            })
+                        );
+                    }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__EntityCreator__["a" /* EntityCreator */], { onEntityCreated: this.onEntityCreated.bind(this), type: "competence",
+                        cohortId: this.props.cohortId }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "h5",
+                        null,
+                        "Competence description"
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "span",
+                            null,
+                            "Current description: \xA0",
+                            this.state.competence_description !== null && this.state.competence_description.has_data && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "span",
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "a",
+                                    { href: this.state.competence_description['download-url'] },
+                                    "download"
+                                ),
+                                "\xA0-\xA0",
+                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "a",
+                                    { onClick: function onClick() {
+                                            __WEBPACK_IMPORTED_MODULE_2__services_EducationProgramService__["a" /* default */].removeCompetenceDescription(_this5.props.programId, function () {
+                                                _this5.setState({ competence_description: null });
+                                            });
+                                        } },
+                                    "remove"
+                                )
+                            ),
+                            (this.state.competence_description === null || !this.state.competence_description.has_data) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "span",
+                                null,
+                                "none"
+                            ),
+                            this.state.uploadedText
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            __WEBPACK_IMPORTED_MODULE_4_react_dropzone___default.a,
+                            { className: "dropzone", accept: "application/pdf", multiple: false,
+                                onDrop: this.onDrop.bind(this) },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "span",
+                                null,
+                                "Click or drop file to upload the competence description"
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Competence;
+}(Entity);
+
+var Timeslot = function (_Entity2) {
+    _inherits(Timeslot, _Entity2);
+
+    function Timeslot(props) {
+        _classCallCheck(this, Timeslot);
+
+        var _this6 = _possibleConstructorReturn(this, (Timeslot.__proto__ || Object.getPrototypeOf(Timeslot)).call(this, props));
+
+        _this6.state = Object.assign({}, props);
+        return _this6;
+    }
+
+    _createClass(Timeslot, [{
+        key: "render",
+        value: function render() {
+            var _this7 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                { className: "col-md-4" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "h4",
+                    null,
+                    "Categories"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "form-group" },
+                    this.state.timeslots.map(function (timeslot) {
+                        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { key: timeslot.timeslot_id },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EntityListEntry__["a" /* default */], { type: "timeslot",
+                                id: timeslot.timeslot_id,
+                                label: timeslot.timeslot_text,
+                                onRemoveClick: _this7.removeFromStateArray.bind(_this7),
+                                onEntityUpdatedName: _this7.onEntityUpdatedName.bind(_this7)
+                            })
+                        );
+                    }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__EntityCreator__["a" /* EntityCreator */], { onEntityCreated: this.onEntityCreated.bind(this), type: "timeslot",
+                        cohortId: this.props.cohortId })
+                )
+            );
+        }
+    }]);
+
+    return Timeslot;
+}(Entity);
+
+var ResourcePerson = function (_Entity3) {
+    _inherits(ResourcePerson, _Entity3);
+
+    function ResourcePerson(props) {
+        _classCallCheck(this, ResourcePerson);
+
+        var _this8 = _possibleConstructorReturn(this, (ResourcePerson.__proto__ || Object.getPrototypeOf(ResourcePerson)).call(this, props));
+
+        _this8.state = Object.assign({}, props);
+        return _this8;
+    }
+
+    _createClass(ResourcePerson, [{
+        key: "render",
+        value: function render() {
+            var _this9 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                { className: "col-md-4" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "h4",
+                    null,
+                    "Resource Persons"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "form-group" },
+                    this.state.resourcePersons.map(function (resourcePerson) {
+                        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { key: resourcePerson.rp_id },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EntityListEntry__["a" /* default */], { type: "resourcePerson",
+                                id: resourcePerson.rp_id,
+                                label: resourcePerson.person_label,
+                                onRemoveClick: _this9.removeFromStateArray.bind(_this9),
+                                onEntityUpdatedName: _this9.onEntityUpdatedName.bind(_this9)
+                            })
+                        );
+                    }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__EntityCreator__["a" /* EntityCreator */], { onEntityCreated: this.onEntityCreated.bind(this), type: "resourcePerson",
+                        cohortId: this.props.cohortId })
+                )
+            );
+        }
+    }]);
+
+    return ResourcePerson;
+}(Entity);
+
+var Category = function (_Entity4) {
+    _inherits(Category, _Entity4);
+
+    function Category(props) {
+        _classCallCheck(this, Category);
+
+        var _this10 = _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).call(this, props));
+
+        _this10.state = Object.assign({}, props);
+        return _this10;
+    }
+
+    _createClass(Category, [{
+        key: "render",
+        value: function render() {
+            var _this11 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                { className: "col-md-4" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "h4",
+                    null,
+                    "Categories"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "form-group" },
+                    this.state.categories.map(function (category) {
+                        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            { key: category.category_id },
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EntityListEntry__["a" /* default */], { type: "category",
+                                id: category.category_id,
+                                label: category.category_label,
+                                onRemoveClick: _this11.removeFromStateArray.bind(_this11),
+                                onEntityUpdatedName: _this11.onEntityUpdatedName.bind(_this11)
+                            })
+                        );
+                    }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__EntityCreator__["a" /* EntityCreator */], { onEntityCreated: this.onEntityCreated.bind(this), type: "category",
+                        cohortId: this.props.cohortId })
+                )
+            );
+        }
+    }]);
+
+    return Category;
+}(Entity);
+
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/EducationProgramsApp/EntityCreator.jsx":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -43305,11 +44136,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var EntityTypes = {
-    competence: 1,
-    timeslot: 2,
-    resourcePerson: 3,
-    resource_person: 3, // because of inconsistent design necessary
-    category: 4
+    competence: "competencies",
+    timeslot: "timeslots",
+    resourcePerson: "resourcePersons",
+    resource_person: "resourcePersons", // because of inconsistent design necessary
+    category: "categories"
 };
 
 var EntityCreator = function (_React$Component) {
@@ -43338,7 +44169,7 @@ var EntityCreator = function (_React$Component) {
         value: function onCreateEntityClick() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].createEntity(this.props.programId, this.props.type, this.state.fieldValue, function (response) {
+            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].createEntity(this.props.cohortId, this.props.type, this.state.fieldValue, function (response) {
                 _this2.props.onEntityCreated(_this2.props.type, response.data.entity);
                 _this2.setState({ fieldValue: '' });
             });
@@ -43433,7 +44264,7 @@ var EntityListEntry = function (_React$Component) {
 
             this.setState({ loading: true });
 
-            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].updateEntity(this.props.id, { type: __WEBPACK_IMPORTED_MODULE_2__EntityCreator__["b" /* EntityTypes */][this.props.type], name: this.state.fieldValue }, function (response) {
+            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].updateEntity(this.props.id, { type: this.props.type, name: this.state.fieldValue }, function (response) {
                 _this2.props.onEntityUpdatedName(_this2.props.id, _this2.props.type, _this2.state.fieldValue, response.data.mappedNameField);
                 _this2.setState({ loading: false, editMode: false });
             });
@@ -43510,685 +44341,6 @@ var EntityListEntry = function (_React$Component) {
 
 /***/ }),
 
-/***/ "./resources/assets/js/components/EducationProgramsApp/editActingProgram.jsx":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__ = __webpack_require__("./resources/assets/js/services/EducationProgramService.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_immutability_helper__ = __webpack_require__("./node_modules/immutability-helper/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_immutability_helper__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EntityCreator__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EntityCreator.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__EntityListEntry__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EntityListEntry.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dropzone__ = __webpack_require__("./node_modules/react-dropzone/dist/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_dropzone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_dropzone__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-
-
-
-
-var EditActingProgram = function (_React$Component) {
-    _inherits(EditActingProgram, _React$Component);
-
-    function EditActingProgram(props) {
-        _classCallCheck(this, EditActingProgram);
-
-        var _this = _possibleConstructorReturn(this, (EditActingProgram.__proto__ || Object.getPrototypeOf(EditActingProgram)).call(this, props));
-
-        _this.state = {
-            loading: false,
-            ep_name: '',
-            competence: [],
-            competence_description: { id: null, has_data: false },
-            uploadedText: '',
-            timeslot: [],
-            resource_person: [],
-            disabled: false
-        };
-
-        _this.autoUpdaterTimeout = null;
-
-        _this.programOnNameChange = _this.programOnNameChange.bind(_this);
-        _this.removeFromStateArray = _this.removeFromStateArray.bind(_this);
-        _this.onEntityCreated = _this.onEntityCreated.bind(_this);
-        _this.onEntityUpdatedName = _this.onEntityUpdatedName.bind(_this);
-        _this.onDrop = _this.onDrop.bind(_this);
-        return _this;
-    }
-
-    _createClass(EditActingProgram, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            this.setState({ loading: true });
-            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].getEditableEducationProgram(function (response) {
-                _this2.setState(response.data);
-                _this2.setState({ loading: false });
-            }, this.props.id);
-        }
-
-        // Update component when the ID changes, fired by parent
-
-    }, {
-        key: "componentWillReceiveProps",
-        value: function componentWillReceiveProps(nextProps) {
-            var _this3 = this;
-
-            if (nextProps.id !== this.props.id) {
-                this.setState({ loading: true });
-
-                __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].getEditableEducationProgram(function (response) {
-                    _this3.setState(response.data);
-                    _this3.setState({ loading: false });
-                }, nextProps.id);
-            }
-        }
-
-        // On education program name change, update request fires 500ms after last keystroke
-
-    }, {
-        key: "programOnNameChange",
-        value: function programOnNameChange(element) {
-            var _this4 = this;
-
-            clearTimeout(this.autoUpdaterTimeout);
-            this.setState(_defineProperty({}, element.target.getAttribute('name'), element.target.value));
-
-            this.autoUpdaterTimeout = setTimeout(function () {
-                __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].updateName(_this4.props.id, { ep_name: _this4.state.ep_name }, function (response) {
-                    _this4.props.programOnNameChange(_this4.props.id, response.data.program.ep_name);
-                });
-            }, 500);
-        }
-
-        // On removing competence/timeslot/resourceperson from list
-
-    }, {
-        key: "removeFromStateArray",
-        value: function removeFromStateArray(id, type) {
-            var _this5 = this;
-
-            // Magic
-            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].deleteEntity(__WEBPACK_IMPORTED_MODULE_3__EntityCreator__["b" /* EntityTypes */][type], id, function (response) {
-                var index = _this5.getEntityIndex(id, type);
-                _this5.setState(function (prevState) {
-                    return _defineProperty({}, type, __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(prevState[type], { $splice: [[index, 1]] }));
-                });
-            });
-        }
-
-        // Get the index of the entity with ID and type
-        // Type defines which array in the state
-
-    }, {
-        key: "getEntityIndex",
-        value: function getEntityIndex(id, type) {
-            var idPropertyName = type === 'resource_person' ? 'rp' : type;
-            return this.state[type].findIndex(function (entity) {
-                return entity[idPropertyName + '_id'] === parseInt(id);
-            });
-        }
-
-        // Update the entity in the parent array
-
-    }, {
-        key: "onEntityUpdatedName",
-        value: function onEntityUpdatedName(id, type, name, mappedNameField) {
-            var index = this.getEntityIndex(id, type);
-            this.setState(function (prevState) {
-                return _defineProperty({}, type, __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(prevState[type], _defineProperty({}, index, _defineProperty({}, mappedNameField, { $set: name }))));
-            });
-        }
-
-        // When the user adds a new entity
-
-    }, {
-        key: "onEntityCreated",
-        value: function onEntityCreated(type, entity) {
-            if (type === __WEBPACK_IMPORTED_MODULE_3__EntityCreator__["b" /* EntityTypes */].competence) {
-                this.setState(function (prevState) {
-                    return { competence: __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(prevState.competence, { $push: [entity] }) };
-                });
-            } else if (type === __WEBPACK_IMPORTED_MODULE_3__EntityCreator__["b" /* EntityTypes */].timeslot) {
-                this.setState(function (prevState) {
-                    return { timeslot: __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(prevState.timeslot, { $push: [entity] }) };
-                });
-            } else if (type === __WEBPACK_IMPORTED_MODULE_3__EntityCreator__["b" /* EntityTypes */].resourcePerson) {
-                this.setState(function (prevState) {
-                    return { resource_person: __WEBPACK_IMPORTED_MODULE_2_immutability_helper___default()(prevState.resource_person, { $push: [entity] }) };
-                });
-            }
-        }
-
-        // On dropping file in dropzone
-
-    }, {
-        key: "onDrop",
-        value: function onDrop(files) {
-            var _this6 = this;
-
-            var reader = new FileReader();
-            reader.addEventListener("load", function () {
-                // Upload to server
-                _this6.setState({ uploadedText: ' - uploading...' });
-
-                __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].uploadCompetenceDescription(_this6.props.id, reader.result, function (response) {
-                    _this6.setState({
-                        competence_description: response.data.competence_description,
-                        uploadedText: ' - successfully uploaded file'
-                    });
-                    setTimeout(function () {
-                        return _this6.setState({ uploadedText: '' });
-                    }, 4000);
-                }, function (error) {
-                    if (error.response.status === 413) {
-                        _this6.setState({ uploadedText: ' - the file was too large, try to make it smaller' });
-                    } else {
-                        _this6.setState({ uploadedText: ' - error occurred while uploading, try again later' });
-                    }
-                });
-            }, false);
-            // Read file
-            reader.readAsDataURL(files[0]);
-        }
-    }, {
-        key: "onClickToggleDisableProgram",
-        value: function onClickToggleDisableProgram(id) {
-            var _this7 = this;
-
-            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].toggleDisable(id, function (response) {
-                if (response.data.status === "success") {
-                    _this7.setState({ disabled: response.data.disabled });
-                }
-            });
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            var _this8 = this;
-
-            if (this.state.loading) return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                "div",
-                { className: "loader" },
-                "Loading..."
-            );
-            var program = this.state;
-            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                "div",
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                    "div",
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "h4",
-                        null,
-                        "Program details"
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "div",
-                        { className: "form-group" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "label",
-                            null,
-                            "Education program name",
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "text", className: "form-control", name: "ep_name", value: program.ep_name,
-                                onChange: this.programOnNameChange })
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "a",
-                        { onClick: function onClick() {
-                                return _this8.onClickToggleDisableProgram(_this8.props.id);
-                            } },
-                        program.disabled ? "Enable program for new students" : "Disable program for new students"
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                    "div",
-                    { className: "row" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "div",
-                        { className: "col-md-4" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "h4",
-                            null,
-                            "Competencies"
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "div",
-                            { className: "form-group" },
-                            program.competence.map(function (competence) {
-                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                    "div",
-                                    { key: competence.competence_id },
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__EntityListEntry__["a" /* default */], { type: "competence",
-                                        id: competence.competence_id,
-                                        label: competence.competence_label,
-                                        onRemoveClick: _this8.removeFromStateArray,
-                                        onEntityUpdatedName: _this8.onEntityUpdatedName
-                                    })
-                                );
-                            }),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EntityCreator__["a" /* EntityCreator */], { onEntityCreated: this.onEntityCreated, type: __WEBPACK_IMPORTED_MODULE_3__EntityCreator__["b" /* EntityTypes */].competence,
-                                programId: this.props.id }),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                "h5",
-                                null,
-                                "Competence description"
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                "div",
-                                null,
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                    "span",
-                                    null,
-                                    "Current description: \xA0",
-                                    this.state.competence_description !== null && this.state.competence_description.has_data && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                        "span",
-                                        null,
-                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                            "a",
-                                            { href: this.state.competence_description['download-url'] },
-                                            "download"
-                                        ),
-                                        "\xA0-\xA0",
-                                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                            "a",
-                                            { onClick: function onClick() {
-                                                    __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].removeCompetenceDescription(_this8.props.id, function () {
-                                                        _this8.setState({ competence_description: null });
-                                                    });
-                                                } },
-                                            "remove"
-                                        )
-                                    ),
-                                    (this.state.competence_description === null || !this.state.competence_description.has_data) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                        "span",
-                                        null,
-                                        "none"
-                                    ),
-                                    this.state.uploadedText
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                    __WEBPACK_IMPORTED_MODULE_5_react_dropzone___default.a,
-                                    { className: "dropzone", accept: "application/pdf", multiple: false,
-                                        onDrop: this.onDrop },
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                        "span",
-                                        null,
-                                        "Click or drop file to upload the competence description"
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "div",
-                        { className: "col-md-4" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "h4",
-                            null,
-                            "Categories"
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "div",
-                            { className: "form-group" },
-                            program.timeslot.map(function (timeslot) {
-                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                    "div",
-                                    { key: timeslot.timeslot_id },
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__EntityListEntry__["a" /* default */], { type: "timeslot",
-                                        id: timeslot.timeslot_id,
-                                        label: timeslot.timeslot_text,
-                                        onRemoveClick: _this8.removeFromStateArray,
-                                        onEntityUpdatedName: _this8.onEntityUpdatedName
-
-                                    })
-                                );
-                            }),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EntityCreator__["a" /* EntityCreator */], { onEntityCreated: this.onEntityCreated, type: __WEBPACK_IMPORTED_MODULE_3__EntityCreator__["b" /* EntityTypes */].timeslot,
-                                programId: this.props.id })
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "div",
-                        { className: "col-md-4" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "h4",
-                            null,
-                            "Resource Persons"
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "div",
-                            { className: "form-group" },
-                            program.resource_person.map(function (resourcePerson) {
-                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                    "div",
-                                    { key: resourcePerson.rp_id },
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__EntityListEntry__["a" /* default */], { type: "resource_person",
-                                        id: resourcePerson.rp_id,
-                                        label: resourcePerson.person_label,
-                                        onRemoveClick: _this8.removeFromStateArray,
-                                        onEntityUpdatedName: _this8.onEntityUpdatedName
-
-                                    })
-                                );
-                            }),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EntityCreator__["a" /* EntityCreator */], { onEntityCreated: this.onEntityCreated, type: __WEBPACK_IMPORTED_MODULE_3__EntityCreator__["b" /* EntityTypes */].resourcePerson,
-                                programId: this.props.id })
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return EditActingProgram;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (EditActingProgram);
-
-/***/ }),
-
-/***/ "./resources/assets/js/components/EducationProgramsApp/editProducingProgram.jsx":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__ = __webpack_require__("./resources/assets/js/services/EducationProgramService.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__EntityCreator__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EntityCreator.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__EntityListEntry__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EntityListEntry.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_immutability_helper__ = __webpack_require__("./node_modules/immutability-helper/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_immutability_helper__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-
-
-
-var editProducingProgram = function (_React$Component) {
-    _inherits(editProducingProgram, _React$Component);
-
-    function editProducingProgram(props) {
-        _classCallCheck(this, editProducingProgram);
-
-        var _this = _possibleConstructorReturn(this, (editProducingProgram.__proto__ || Object.getPrototypeOf(editProducingProgram)).call(this, props));
-
-        _this.state = {
-            loading: false,
-            ep_name: '',
-            resource_person: [],
-            category: []
-        };
-
-        _this.autoUpdaterTimeout = null;
-
-        _this.programOnNameChange = _this.programOnNameChange.bind(_this);
-        _this.removeFromStateArray = _this.removeFromStateArray.bind(_this);
-        _this.onEntityCreated = _this.onEntityCreated.bind(_this);
-        _this.onEntityUpdatedName = _this.onEntityUpdatedName.bind(_this);
-        return _this;
-    }
-
-    _createClass(editProducingProgram, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            this.setState({ loading: true });
-            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].getEditableEducationProgram(function (response) {
-                _this2.setState(response.data);
-                _this2.setState({ loading: false });
-            }, this.props.id);
-        }
-
-        // Update component when the ID changes, fired by parent
-
-    }, {
-        key: "componentWillReceiveProps",
-        value: function componentWillReceiveProps(nextProps) {
-            var _this3 = this;
-
-            if (nextProps.id !== this.props.id) {
-                this.setState({ loading: true });
-
-                __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].getEditableEducationProgram(function (response) {
-
-                    _this3.setState(response.data);
-                    _this3.setState({ loading: false });
-                }, nextProps.id);
-            }
-        }
-
-        // On education program name change, update request fires 500ms after last keystroke
-
-    }, {
-        key: "programOnNameChange",
-        value: function programOnNameChange(element) {
-            var _this4 = this;
-
-            clearTimeout(this.autoUpdaterTimeout);
-            this.setState(_defineProperty({}, element.target.getAttribute('name'), element.target.value));
-
-            this.autoUpdaterTimeout = setTimeout(function () {
-                __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].updateName(_this4.props.id, { ep_name: _this4.state.ep_name }, function (response) {
-                    _this4.props.programOnNameChange(_this4.props.id, response.data.program.ep_name);
-                });
-            }, 500);
-        }
-
-        // On removing competence/timeslot/resourceperson from list
-
-    }, {
-        key: "removeFromStateArray",
-        value: function removeFromStateArray(id, type) {
-            var _this5 = this;
-
-            // Magic
-            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].deleteEntity(__WEBPACK_IMPORTED_MODULE_2__EntityCreator__["b" /* EntityTypes */][type], id, function (response) {
-                var index = _this5.getEntityIndex(id, type);
-                _this5.setState(function (prevState) {
-                    return _defineProperty({}, type, __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default()(prevState[type], { $splice: [[index, 1]] }));
-                });
-            });
-        }
-
-        // Get the index of the entity with ID and type
-        // Type defines which array in the state
-
-    }, {
-        key: "getEntityIndex",
-        value: function getEntityIndex(id, type) {
-            var idPropertyName = type === 'resource_person' ? 'rp' : type;
-            return this.state[type].findIndex(function (entity) {
-                return entity[idPropertyName + '_id'] === parseInt(id);
-            });
-        }
-
-        // Update the entity in the parent array
-
-    }, {
-        key: "onEntityUpdatedName",
-        value: function onEntityUpdatedName(id, type, name, mappedNameField) {
-            var index = this.getEntityIndex(id, type);
-            this.setState(function (prevState) {
-                return _defineProperty({}, type, __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default()(prevState[type], _defineProperty({}, index, _defineProperty({}, mappedNameField, { $set: name }))));
-            });
-        }
-
-        // When the user adds a new entity
-
-    }, {
-        key: "onEntityCreated",
-        value: function onEntityCreated(type, entity) {
-            if (type === __WEBPACK_IMPORTED_MODULE_2__EntityCreator__["b" /* EntityTypes */].competence) {
-                this.setState(function (prevState) {
-                    return { competence: __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default()(prevState.competence, { $push: [entity] }) };
-                });
-            } else if (type === __WEBPACK_IMPORTED_MODULE_2__EntityCreator__["b" /* EntityTypes */].timeslot) {
-                this.setState(function (prevState) {
-                    return { timeslot: __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default()(prevState.timeslot, { $push: [entity] }) };
-                });
-            } else if (type === __WEBPACK_IMPORTED_MODULE_2__EntityCreator__["b" /* EntityTypes */].resourcePerson) {
-                this.setState(function (prevState) {
-                    return { resource_person: __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default()(prevState.resource_person, { $push: [entity] }) };
-                });
-            } else if (type === __WEBPACK_IMPORTED_MODULE_2__EntityCreator__["b" /* EntityTypes */].category) {
-                this.setState(function (prevState) {
-                    return { category: __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default()(prevState.category, { $push: [entity] }) };
-                });
-            }
-        }
-    }, {
-        key: "onClickToggleDisableProgram",
-        value: function onClickToggleDisableProgram(id) {
-            var _this6 = this;
-
-            __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__["a" /* default */].toggleDisable(id, function (response) {
-                if (response.data.status === "success") {
-                    _this6.setState({ disabled: response.data.disabled });
-                }
-            });
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            var _this7 = this;
-
-            if (this.state.loading) return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                "div",
-                { className: "loader" },
-                "Loading..."
-            );
-            var program = this.state;
-            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                "div",
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                    "div",
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "h4",
-                        null,
-                        "Program details"
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "div",
-                        { className: "form-group" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "label",
-                            null,
-                            "Education program name",
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "text", className: "form-control", name: "ep_name", value: program.ep_name,
-                                onChange: this.programOnNameChange })
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "a",
-                        { onClick: function onClick() {
-                                return _this7.onClickToggleDisableProgram(_this7.props.id);
-                            } },
-                        program.disabled ? "Enable program for new students" : "Disable program for new students"
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                    "div",
-                    { className: "row" },
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "div",
-                        { className: "col-md-4" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "h4",
-                            null,
-                            "Categories"
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "div",
-                            { className: "form-group" },
-                            program.category.map(function (category) {
-                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                    "div",
-                                    { key: category.category_id },
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EntityListEntry__["a" /* default */], { type: "category",
-                                        id: category.category_id,
-                                        label: category.category_label,
-                                        onRemoveClick: _this7.removeFromStateArray,
-                                        onEntityUpdatedName: _this7.onEntityUpdatedName
-
-                                    })
-                                );
-                            }),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__EntityCreator__["a" /* EntityCreator */], { onEntityCreated: this.onEntityCreated, type: __WEBPACK_IMPORTED_MODULE_2__EntityCreator__["b" /* EntityTypes */].category,
-                                programId: this.props.id })
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                        "div",
-                        { className: "col-md-4" },
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "h4",
-                            null,
-                            "Resource Persons"
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                            "div",
-                            { className: "form-group" },
-                            program.resource_person.map(function (resourcePerson) {
-                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
-                                    "div",
-                                    { key: resourcePerson.rp_id },
-                                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__EntityListEntry__["a" /* default */], { type: "resource_person",
-                                        id: resourcePerson.rp_id,
-                                        label: resourcePerson.person_label,
-                                        onRemoveClick: _this7.removeFromStateArray,
-                                        onEntityUpdatedName: _this7.onEntityUpdatedName
-
-                                    })
-                                );
-                            }),
-                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__EntityCreator__["a" /* EntityCreator */], { onEntityCreated: this.onEntityCreated, type: __WEBPACK_IMPORTED_MODULE_2__EntityCreator__["b" /* EntityTypes */].resourcePerson,
-                                programId: this.props.id })
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return editProducingProgram;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (editProducingProgram);
-
-/***/ }),
-
 /***/ "./resources/assets/js/components/EducationProgramsApp/educationProgramsApp.jsx":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -44196,10 +44348,9 @@ var editProducingProgram = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EducationProgramService__ = __webpack_require__("./resources/assets/js/services/EducationProgramService.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__editActingProgram__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/editActingProgram.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__editProducingProgram__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/editProducingProgram.jsx");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_immutability_helper__ = __webpack_require__("./node_modules/immutability-helper/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_immutability_helper__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__EditProgram__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/EditProgram.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_immutability_helper__ = __webpack_require__("./node_modules/immutability-helper/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_immutability_helper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_immutability_helper__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -44209,7 +44360,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -44264,7 +44414,7 @@ var educationProgramsApp = function (_React$Component) {
             var index = this.state.programs.map(function (program) {
                 return program.ep_id;
             }).indexOf(id);
-            this.setState({ programs: __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default()(this.state.programs, _defineProperty({}, index, { ep_name: { $set: name } })) });
+            this.setState({ programs: __WEBPACK_IMPORTED_MODULE_3_immutability_helper___default()(this.state.programs, _defineProperty({}, index, { ep_name: { $set: name } })) });
         }
     }, {
         key: "onChangeEducationProgramType",
@@ -44284,9 +44434,22 @@ var educationProgramsApp = function (_React$Component) {
                 _this3.setState({
                     newProgramName: '',
                     newProgramLoading: false,
-                    programs: __WEBPACK_IMPORTED_MODULE_4_immutability_helper___default()(_this3.state.programs, { $push: [response.data.program] })
+                    programs: __WEBPACK_IMPORTED_MODULE_3_immutability_helper___default()(_this3.state.programs, { $push: [response.data.program] })
                 });
             });
+        }
+    }, {
+        key: "onDeleteEducationProgram",
+        value: function onDeleteEducationProgram(id) {
+            var index = this.state.programs.findIndex(function (program) {
+                return parseInt(program.ep_id) === parseInt(id);
+            });
+            if (index < 0) {
+                throw "Unknown program id " + id;
+            } else {
+                this.setState({ selectedProgramId: null });
+                this.setState({ programs: __WEBPACK_IMPORTED_MODULE_3_immutability_helper___default()(this.state.programs, { $splice: [[index, 1]] }) });
+            }
         }
     }, {
         key: "render",
@@ -44394,7 +44557,6 @@ var educationProgramsApp = function (_React$Component) {
     }, {
         key: "renderEditForm",
         value: function renderEditForm() {
-            var _this6 = this;
 
             if (this.state.selectedProgramId === null) {
                 return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
@@ -44403,25 +44565,12 @@ var educationProgramsApp = function (_React$Component) {
                     "None selected"
                 );
             }
-            var index = this.state.programs.findIndex(function (program) {
-                return program.ep_id === _this6.state.selectedProgramId;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__EditProgram__["a" /* default */], { id: this.state.selectedProgramId,
+                programOnNameChange: this.updateProgramName,
+                onDelete: this.onDeleteEducationProgram.bind(this)
+
             });
-
-            var program = this.state.programs[index];
-
-            if (program.eptype_id === 1) {
-                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__editActingProgram__["a" /* default */], { id: this.state.selectedProgramId,
-                    programOnNameChange: this.updateProgramName
-
-                });
-            } else if (program.eptype_id === 2) {
-                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__editProducingProgram__["a" /* default */], { id: this.state.selectedProgramId,
-                    programOnNameChange: this.updateProgramName
-
-                });
-            } else {
-                throw "Unknown education program type id :" + program.eptype_id;
-            }
         }
     }]);
 
@@ -44574,6 +44723,16 @@ var EducationProgramService = function () {
             });
         }
     }, {
+        key: 'deleteEducationProgram',
+        value: function deleteEducationProgram(id, callback) {
+            axios.delete(base + 'education-program/' + id).then(callback).catch(function (error) {
+                console.error(error);
+                if (error.response.data.status === "error" && error.response.data.hasOwnProperty("message")) {
+                    alert(error.response.data.message);
+                }
+            });
+        }
+    }, {
         key: 'createEntity',
         value: function createEntity(programId, type, value, callback) {
             axios.post(base + 'education-program/' + programId + '/entity', {
@@ -44586,8 +44745,10 @@ var EducationProgramService = function () {
     }, {
         key: 'deleteEntity',
         value: function deleteEntity(type, id, callback) {
-            axios.post(base + 'education-program/entity/' + id + '/delete', { type: type }).then(callback).catch(function (error) {
-                console.log("EducationPrograms delete entity service error: " + error);
+            axios.post(base + 'cohort/entity/' + id + '/delete', { type: type }).then(callback).catch(function (error) {
+                if (error.response.data.status === "error" && error.response.data.hasOwnProperty("message")) {
+                    alert(error.response.data.message);
+                }
             });
         }
     }, {
@@ -44604,16 +44765,16 @@ var EducationProgramService = function () {
         }
     }, {
         key: 'uploadCompetenceDescription',
-        value: function uploadCompetenceDescription(programId, fileData, callback, onError) {
-            axios.post(base + 'education-program/' + programId + '/competence-description', { file: fileData }).then(callback).catch(function (error) {
+        value: function uploadCompetenceDescription(cohortId, fileData, callback, onError) {
+            axios.post(base + 'education-program/cohort/' + cohortId + '/competence-description', { file: fileData }).then(callback).catch(function (error) {
                 console.log("Unable to upload competence description: " + error);
                 onError(error);
             });
         }
     }, {
         key: 'removeCompetenceDescription',
-        value: function removeCompetenceDescription(programId, callback) {
-            axios.get(base + 'education-program/' + programId + '/competence-description/remove').then(callback).catch(function (error) {
+        value: function removeCompetenceDescription(cohortId, callback) {
+            axios.get(base + 'education-program/cohort/' + cohortId + '/competence-description/remove').then(callback).catch(function (error) {
                 console.log("Unable to upload competence description: " + error);
             });
         }
@@ -44622,6 +44783,38 @@ var EducationProgramService = function () {
         value: function toggleDisable(id, callback) {
             axios.get(base + 'education-program/' + id + '/disable').then(callback).catch(function (error) {
                 console.log("Unable to toggle disabled state of program: " + error);
+            });
+        }
+    }, {
+        key: 'createCohort',
+        value: function createCohort(programId, callback) {
+            axios.post(base + 'education-program/' + programId + '/cohort/create').then(callback);
+        }
+    }, {
+        key: 'updateCohort',
+        value: function updateCohort(id, cohort, callback) {
+            axios.put(base + 'education-program/cohort/' + id + '/update', cohort).then(callback);
+        }
+    }, {
+        key: 'loadCohort',
+        value: function loadCohort(id, callback) {
+            axios.get(base + 'education-program/cohort/' + id).then(callback);
+        }
+    }, {
+        key: 'deleteCohort',
+        value: function deleteCohort(id, callback) {
+            axios.delete(base + 'education-program/cohort/' + id).then(callback).catch(function (error) {
+                console.error(error);
+                if (error.response.data.status === "error" && error.response.data.hasOwnProperty("message")) {
+                    alert(error.response.data.message);
+                }
+            });
+        }
+    }, {
+        key: 'toggleDisableCohort',
+        value: function toggleDisableCohort(id, callback) {
+            axios.get(base + 'education-program/cohort/' + id + '/disable').then(callback).catch(function (error) {
+                console.log("Unable to toggle disabled state of cohort: " + error);
             });
         }
     }]);

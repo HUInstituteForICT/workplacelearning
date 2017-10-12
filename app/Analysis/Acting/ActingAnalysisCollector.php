@@ -40,7 +40,7 @@ class ActingAnalysisCollector
      */
     public function getTimeslots() {
         if($this->timeslots === null) {
-            $this->timeslots = Auth::user()->getEducationProgram()->getTimeslots()->merge(
+            $this->timeslots = Auth::user()->currentCohort()->timeslots()->get()->merge(
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()
             );
         }
@@ -66,7 +66,7 @@ class ActingAnalysisCollector
      */
     public function getCompetencies() {
         if($this->competencies === null) {
-            $this->competencies = Auth::user()->getEducationProgram()->getCompetencies();
+            $this->competencies = Auth::user()->currentCohort()->competencies()->get();
         }
         return $this->competencies;
     }
@@ -78,7 +78,7 @@ class ActingAnalysisCollector
      */
     public function getResourcePersons() {
         if($this->resourcePersons === null) {
-            $this->resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->merge(
+            $this->resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
             );
         }

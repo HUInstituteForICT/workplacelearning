@@ -61,9 +61,9 @@ return [
 
         'dashboard' => [
             'driver' => 'mysql',
-            'host' => env('DASHBOARD_HOST', 'localhost'),
-            'port' => env('DASHBOARD_PORT', '3306'),
-            'database' => env('DASHBOARD_DATABASE', 'wpl'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'wpl'),
             'username' => env('DASHBOARD_USERNAME', 'root'),
             'password' => env('DASHBOARD_PASSWORD', 'blablabla'),
             'charset' => 'utf8',

@@ -19,7 +19,12 @@ class Timeslot extends Model
         'timeslot_text',
         'edprog_id',
         'wplp_id',
+        'cohort_id'
     ];
+
+    public function cohort() {
+        return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
+    }
 
     public function educationProgram()
     {

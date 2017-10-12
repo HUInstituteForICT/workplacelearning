@@ -118,7 +118,7 @@
                 <div class="col-md-2 form-group buttons">
                     <h4>Categorie <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
-                        @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories() as $cat)
+                        @foreach($categories as $cat)
                             <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->category_id == 1) ? "checked" : "" }}/><span>{{ $cat->category_label }}</span></label>
                         @endforeach
                     @endif

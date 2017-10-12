@@ -10,9 +10,11 @@ namespace app\Http\Controllers;
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 
 use App\Category;
+use App\Cohort;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use App\LearningGoal;
+use http\Exception\InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Validator;
 use Illuminate\Http\Request;
@@ -26,7 +28,8 @@ class ActingWorkplaceLearningController extends Controller
     {
         return view("pages.acting.internship")
             ->with("period", new WorkplaceLearningPeriod)
-            ->with("workplace", new Workplace);
+            ->with("workplace", new Workplace)
+            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
     }
 
     public function edit($id)
@@ -40,7 +43,8 @@ class ActingWorkplaceLearningController extends Controller
                 ->with("period", $wplPeriod)
                 ->with("workplace", Workplace::find($wplPeriod->wp_id))
                 ->with("learninggoals", $wplPeriod->getLearningGoals())
-                ->with("resource", new Collection);
+                ->with("resource", new Collection)
+                ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
         }
     }
 
@@ -62,6 +66,8 @@ class ActingWorkplaceLearningController extends Controller
             'enddate'              => 'required|date|after:startdate',
             'internshipAssignment' => 'required|min:15|max:500',
             'isActive'             => 'sometimes|required|in:1,0',
+            "cohort"               => "required|exists:cohorts,id",
+
         ]);
 
         if ($validator->fails()) {
@@ -69,6 +75,12 @@ class ActingWorkplaceLearningController extends Controller
                 ->route('period-acting-create')
                 ->withErrors($validator)
                 ->withInput();
+        }
+
+        $cohort = Cohort::find($request['cohort']);
+
+        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+            throw new InvalidArgumentException("Unknown cohort");
         }
 
         // Pass. Create the internship and period.
@@ -96,6 +108,7 @@ class ActingWorkplaceLearningController extends Controller
         $wplPeriod->enddate = $request['enddate'];
         $wplPeriod->nrofdays = $request['numdays'];
         $wplPeriod->description = $request['internshipAssignment'];
+        $wplPeriod->cohort()->associate($cohort);
         $wplPeriod->save();
 
         // Create unplanned learning as default learning goal

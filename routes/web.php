@@ -29,14 +29,24 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
         // "API" for edu programs routes
         Route::get('education-programs', 'EducationProgramsController@getEducationPrograms');
         Route::post('education-program', 'EducationProgramsController@createEducationProgram');
+        Route::delete('education-program/{program}', 'EducationProgramsController@deleteEducationProgram');
 
-        Route::post('education-program/{program}/entity', 'EducationProgramsController@createEntity');
-        Route::post('education-program/entity/{entity}/delete', 'EducationProgramsController@deleteEntity');
+
+        Route::post('education-program/{program}/cohort/create', 'EducationProgramsController@createCohort');
+        Route::put('education-program/cohort/{cohort}/update', 'EducationProgramsController@updateCohort');
+        Route::get('education-program/cohort/{cohort}', 'EducationProgramsController@getCohort');
+        Route::delete('education-program/cohort/{cohort}', 'EducationProgramsController@deleteCohort');
+        Route::get('education-program/cohort/{cohort}/disable', 'EducationProgramsController@toggleDisabledCohort');
+
+        Route::post('education-program/{cohort}/entity', 'EducationProgramsController@createEntity');
+        Route::post('cohort/entity/{entity}/delete', 'EducationProgramsController@deleteEntity');
+
+
         Route::put('education-program/entity/{entity}', 'EducationProgramsController@updateEntity');
         Route::put('education-program/{program}', 'EducationProgramsController@updateProgram');
-        Route::get('education-program/{program}/competence-description/remove',
+        Route::get('education-program/cohort/{cohort}/competence-description/remove',
             'EducationProgramsController@removeCompetenceDescription');
-        Route::post('education-program/{program}/competence-description',
+        Route::post('education-program/cohort/{cohort}/competence-description',
             'EducationProgramsController@createCompetenceDescription');
         Route::get('editable-education-program/{program}', 'EducationProgramsController@getEditableProgram');
 

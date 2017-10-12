@@ -29,8 +29,14 @@ class ProducingActivityController extends Controller
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
         }
 
-        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
+        $x = Auth::user();
+        $y = Auth::user()->getCurrentWorkplaceLearningPeriod();
+        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+        );
+
+        $categories = Auth::user()->currentCohort()->categories()->get()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
         );
 
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
@@ -43,8 +49,11 @@ class ProducingActivityController extends Controller
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
+
+
         return view('pages.producing.activity')
             ->with('learningWith', $resourcePersons)
+            ->with('categories', $categories)
             ->with('difficulties', Difficulty::all())
             ->with('statuses', Status::all())
             ->with('activitiesJson', $activitiesJson)
@@ -65,14 +74,18 @@ class ProducingActivityController extends Controller
                 ->withErrors('Helaas, er is geen activiteit gevonden.');
         }
 
-        $resourcePersons = Auth::user()->getEducationProgram()->getResourcePersons()->union(
+        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+        );
+
+        $categories = Auth::user()->currentCohort()->categories()->get()->merge(
+            Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
         );
 
         return view('pages.producing.activity-edit')
             ->with('activity', $activity)
             ->with('learningWith', $resourcePersons)
-            ->with('categories', Auth::user()->getCurrentWorkplaceLearningPeriod()->getCategories());
+            ->with('categories', $categories);
     }
 
     public function feedback($id)
@@ -225,7 +238,7 @@ class ProducingActivityController extends Controller
                 $resourcePerson                = new ResourcePerson;
                 $resourcePerson->person_label  = $request['newswv'];
                 $resourcePerson->wplp_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-                $resourcePerson->ep_id         = Auth::user()->getEducationProgram()->ep_id;
+                $resourcePerson->ep_id         = Auth::user()->getEducationProgram()->ep_id; //deprecated, not necessary, bound to wplp..?
                 $resourcePerson->save();
             }
 
