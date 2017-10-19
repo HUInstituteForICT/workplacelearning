@@ -56,7 +56,7 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 );
 
 Route::group(['before' => 'auth'], function() {
-    Route::post('/activity-export-mail', 'ActivityExportController@exportMail');
+    Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
     // Catch the stat registration post
     Route::post('/log', 'LogController@log');
 });
