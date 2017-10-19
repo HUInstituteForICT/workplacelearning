@@ -2,5 +2,6 @@
 
 return array (
   'enlarge' => 'Vergroot tekstveld',
-    'evidence' => "Bewijsstuk"
+    'evidence' => "Bewijsstuk",
+    "remove" => "verwijderen"
 );

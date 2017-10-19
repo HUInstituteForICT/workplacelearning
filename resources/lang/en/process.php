@@ -2,5 +2,6 @@
 
 return array (
   'enlarge' => 'Enlarge field',
-    "evidence" => "Evidence"
+    "evidence" => "Evidence",
+    "remove" => "remove"
 );
