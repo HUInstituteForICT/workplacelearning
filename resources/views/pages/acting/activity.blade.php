@@ -82,7 +82,7 @@
                 </div>
             </div>
         </div>
-        {{ Form::open(array('url' => route('process-acting-create'), 'class' => 'form-horizontal')) }}
+        {{ Form::open(array('url' => route('process-acting-create'), 'class' => 'form-horizontal', "files" => true)) }}
             <div class="row well">
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
@@ -166,6 +166,10 @@
                                 <a href="{{ $competenceDescription->download_url }}">{{ Lang::get('elements.competences.competencedetails') }}</a>
                             </h5>
                         @endif
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <h4>{{ Lang::get('process.evidence') }}</h4>
+                        <input type="file" name="evidence"/>
                     </div>
                     <div>
                         <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />
