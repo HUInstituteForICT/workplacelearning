@@ -217,6 +217,7 @@ export default class ActivityActingProcessTable extends React.Component {
                     <td>Leerpunten en vervolg</td>
                     <td>Leervraag</td>
                     <td>Competentie</td>
+                    <td>Bewijsstuk</td>
                     <td>{/* Edit URL, no table header */}</td>
                 </tr>
                 </thead>
