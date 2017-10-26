@@ -21,7 +21,7 @@
                 </div>
             </div>
         @endif
-        {{ Form::open(array('url' => route('process-acting-update', ['id' => $activity->laa_id]), 'class' => 'form-horizontal')) }}
+        {{ Form::open(array('url' => route('process-acting-update', ['id' => $activity->laa_id]), 'class' => 'form-horizontal', "files" => true)) }}
             <div class="row well">
                 <div class="col-md-2 form-group">
                     <h4>Activiteit</h4>
@@ -72,6 +72,15 @@
                             @endforeach
                         </select>
                         <h5>{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "/assets/pdf/CompetentiesLerarenopleiding.pdf", array()), Lang::get('elements.competences.competencedetails')) !!}</h5>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <h4>{{ Lang::get('process.evidence') }}</h4>
+                        @if($activity->evidence_disk_filename !== null)
+                        <a href="{{ route('evidence-download', ["learningActivity" => $activity->laa_id, "diskFileName" => $activity->evidence_disk_filename]) }}">download</a>
+                            -
+                            <a href={{ route('evidence-remove', ["learningActivity" => $activity->laa_id]) }}>{{Lang::get('process.remove')}}</a>
+                        @endif
+                        <input type="file" name="evidence"/>
                     </div>
                     <div>
                         <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />

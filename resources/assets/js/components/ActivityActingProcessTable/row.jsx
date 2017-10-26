@@ -50,6 +50,7 @@ export default class Row extends React.Component {
             </td>
             <td>{activity.learningGoal}</td>
             <td>{activity.competence}</td>
+            <td>{activity.evidence !== null && <a href={activity.evidence}>download</a>}</td>
             <td><a href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a></td>
         </tr>
     }

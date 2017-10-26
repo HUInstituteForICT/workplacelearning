@@ -1,18 +1,17 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\LearningActivityActingExportBuilder;
-use App\LearningActivityProducingExportBuilder;
-use App\Timeslot;
-use App\WorkplaceLearningPeriod;
 use App\LearningActivityActing;
-use App\ResourcePerson;
+use App\LearningActivityActingExportBuilder;
 use App\ResourceMaterial;
-
-use Illuminate\Support\Collection;
+use App\ResourcePerson;
+use App\Timeslot;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Validator;
 
 class ActingActivityController extends Controller
@@ -120,6 +119,7 @@ class ActingActivityController extends Controller
                 'support_ed'    => 'max:500',
                 'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
                 'competence'    => 'required|exists:competence,competence_id',
+                'evidence' => "file|max:2000000"
             ]);
 
         // Conditional validation
@@ -186,6 +186,18 @@ class ActingActivityController extends Controller
             $request['timeslot'] = $timeslot->timeslot_id;
         }
 
+        if($request->hasFile('evidence')) {
+            $evidence = $request->file('evidence');
+            $diskFileName = Uuid::uuid4();
+            if(!$evidence->storeAs("activity-evidence", $diskFileName)) {
+                throw new UploadException("Unable to upload file");
+            }
+            $activityActing->evidence_filename = $evidence->getClientOriginalName();
+            $activityActing->evidence_disk_filename = $diskFileName;
+            $activityActing->evidence_mime = $evidence->getClientMimeType();
+        }
+
+
         // Todo refactor into model->fill($request), all fillable
         $activityActing->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
         $activityActing->date = date_format(date_create($request->date, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
@@ -247,6 +259,22 @@ class ActingActivityController extends Controller
         }
 
         $learningActivity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityActingById($id);
+
+        if ($req->hasFile('evidence')) {
+            $evidence = $req->file('evidence');
+            $diskFileName = Uuid::uuid4();
+            if (!$evidence->storeAs("activity-evidence", $diskFileName)) {
+                throw new UploadException("Unable to upload file");
+            }
+            if ($learningActivity->evidence_disk_filename !== null && Storage::exists("activity-evidence/{$learningActivity->evidence_disk_filename}")) {
+                Storage::delete("activity-evidence/{$learningActivity->evidence_disk_filename}");
+            }
+
+            $learningActivity->evidence_filename = $evidence->getClientOriginalName();
+            $learningActivity->evidence_disk_filename = $diskFileName;
+            $learningActivity->evidence_mime = $evidence->getClientMimeType();
+        }
+
         $learningActivity->date = $req['date'];
         $learningActivity->timeslot_id = $req['timeslot'];
         $learningActivity->situation = $req['description'];

@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * @property integer id
@@ -95,7 +96,11 @@ class Analysis extends Model
     {
         $data = null;
         try {
-            $data = \DB::connection('dashboard')->select($this->query);
+            $query = $this->query;
+            if (Str::contains($query, "wplp_id") && !Str::contains($query, "is_in_analytics")) {
+                $query = Str::replaceFirst("WHERE", "WHERE is_in_analytics = 1 AND", $query);
+            }
+            $data = \DB::connection('dashboard')->select($query);
         } catch (\Exception $e) {
             $data = [
                 'error' => $e->getMessage()

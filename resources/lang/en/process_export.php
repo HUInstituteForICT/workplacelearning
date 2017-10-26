@@ -18,4 +18,5 @@ return array (
   'supportWp' => 'support werkplek',
   'supportEd' => 'support Hogeschool Utrecht',
   'learningGoalDescription' => 'learning goal description',
+    'evidence' => 'bewijsstuk'
 );

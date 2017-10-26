@@ -36,7 +36,9 @@ class LearningActivityActingExportBuilder
                 "supportWp" => $activity->support_wp !== null ? $activity->support_wp : "",
                 "supportEd" => $activity->support_ed !== null ? $activity->support_ed : "",
                 "competence" => $activity->getCompetencies()->competence_label,
-                "url" => route('process-acting-edit', ['id' => $activity->laa_id])
+                "url" => route('process-acting-edit', ['id' => $activity->laa_id]),
+                "evidence" => $activity->evidence_filename === null ? null :
+                    route('evidence-download', ["id" => $activity->laa_id, "diskFileName" => $activity->evidence_disk_filename])
             ];
         });
 
@@ -54,9 +56,11 @@ class LearningActivityActingExportBuilder
             'lessonsLearned',
             'learningGoal',
             'learningGoalDescription',
-            "supportWp",
-            "supportEd",
-            'competence'
+            'supportWp',
+            'supportEd',
+            'competence',
+             'evidence'
+
         ])->each(function($field) use(&$mapping, $translator) { $mapping[$field] = $translator->get('process_export.' . $field); });
          return $mapping;
     }

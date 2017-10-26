@@ -56,7 +56,7 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 );
 
 Route::group(['before' => 'auth'], function() {
-    Route::post('/activity-export-mail', 'ActivityExportController@exportMail');
+    Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
     // Catch the stat registration post
     Route::post('/log', 'LogController@log');
 });
@@ -180,6 +180,35 @@ Route::group([
                     "competence-description.pdf");
             })->name('competence-description');
 
+
+
+        Route::get('evidence/{learningActivity}/remove', function (\App\LearningActivityActing $learningActivity) {
+            if($learningActivity->workplaceLearningPeriod->student->student_id != Auth::user()->student_id) {
+                throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+            }
+
+            if(Storage::exists("activity-evidence/{$learningActivity->evidence_disk_filename}")) {
+                Storage::delete("activity-evidence/{$learningActivity->evidence_disk_filename}");
+                $learningActivity->evidence_filename = null;
+                $learningActivity->evidence_disk_filename = null;
+                $learningActivity->evidence_mime = null;
+                $learningActivity->save();
+            }
+
+            return redirect()->route('process-acting-edit', ["id" => $learningActivity->laa_id]);
+
+
+        })->name('evidence-remove');
+
+        Route::get('evidence/{learningActivity}/{diskFileName}',
+            function (\App\LearningActivityActing $learningActivity, $diskFileName) {
+                if ($learningActivity->evidence_disk_filename !== $diskFileName) {
+                    throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+                }
+
+                return response()->download(storage_path('app/activity-evidence/' . $learningActivity->evidence_disk_filename),
+                    $learningActivity->evidence_filename);
+            })->name('evidence-download');
     });
 
     /* EP Type: Producing */

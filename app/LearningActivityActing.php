@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -78,5 +79,10 @@ class LearningActivityActing extends Model
     public function getCompetencies()
     {
         return $this->competence()->first();
+    }
+
+    public function workplaceLearningPeriod()
+    {
+        return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 }
