@@ -4,6 +4,7 @@
 namespace App;
 
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Translation\Translator;
 
@@ -25,7 +26,7 @@ class LearningActivityActingExportBuilder
         $this->learningActivityActingCollection->each(function(LearningActivityActing $activity) use (&$jsonArray) {
             $jsonArray[] = [
                 "id" => $activity->laa_id,
-                "date" => $activity->date,
+                "date" => Carbon::createFromFormat("Y-m-d", $activity->date)->format("d-m-Y"),
                 "situation" => $activity->situation,
                 "timeslot" => $activity->getTimeslot(),
                 "resourcePerson" => $activity->getResourcePerson(),
@@ -37,7 +38,7 @@ class LearningActivityActingExportBuilder
                 "supportEd" => $activity->support_ed !== null ? $activity->support_ed : "",
                 "competence" => $activity->getCompetencies()->competence_label,
                 "url" => route('process-acting-edit', ['id' => $activity->laa_id]),
-                "evidence" => $activity->evidence_filename === null ? null :
+                "evidence" => $activity->evidence_filename === null ? "-" :
                     route('evidence-download', ["id" => $activity->laa_id, "diskFileName" => $activity->evidence_disk_filename])
             ];
         });

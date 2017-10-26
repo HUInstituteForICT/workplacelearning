@@ -4,6 +4,7 @@
 namespace App;
 
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Translation\Translator;
 
@@ -25,7 +26,7 @@ class LearningActivityProducingExportBuilder
         $this->learningActivityProducingCollection->each(function(LearningActivityProducing $activity) use (&$jsonArray) {
             $jsonArray[] = [
                 "id" => $activity->lap_id,
-                "date" => $activity->date,
+                "date" => Carbon::createFromFormat("Y-m-d", $activity->date)->format("d-m-Y"),
                 "duration" => $activity->getDurationString(),
                 "description" => $activity->description,
                 "resourceDetail" => $activity->getResourceDetail(),

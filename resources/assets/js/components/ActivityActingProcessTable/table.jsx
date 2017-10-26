@@ -3,18 +3,32 @@ import Row from "./row";
 import FilterRule from "./filterRule";
 import _ from "lodash";
 import ActingActivityProcessExporter from "../../services/ActingActivityProcessExporter";
+import moment from "moment";
+import DatePicker from "react-datepicker";
 
 export default class ActivityActingProcessTable extends React.Component {
 
     constructor(props) {
         super(props);
+        let earliestDate = moment(), latestDate = moment();
+        window.activities.forEach(activity => {
+            if(moment(activity.date, "DD-MM-YYYY") < earliestDate || earliestDate === undefined) {
+                earliestDate = moment(activity.date, "DD-MM-YYYY");
+            }
+            if(moment(activity.date, "DD-MM-YYYY") > latestDate || latestDate === undefined) {
+                latestDate = moment(activity.date, "DD-MM-YYYY");
+            }
+        });
+
         this.state = {
             activities: window.activities,
             filters: this.buildFilter(window.activities),
             exports: ["csv", "txt", "email"],
             selectedExport: "csv",
             email: "",
-            emailAlert: null
+            emailAlert: null,
+            startDate: earliestDate,
+            endDate: latestDate,
         };
 
         this.updateFilter = this.updateFilter.bind(this);
@@ -106,7 +120,10 @@ export default class ActivityActingProcessTable extends React.Component {
                 }
 
                 return this.state.filters.competence.selectedRules.indexOf(activity.competence) > -1;
-            });
+            })
+            .filter((activity) => {
+                return moment(activity.date, "DD-MM-YYYY").isSameOrAfter(this.state.startDate) && moment(activity.date, "DD-MM-YYYY").isSameOrBefore(this.state.endDate)
+            })
     }
 
 
@@ -137,6 +154,17 @@ export default class ActivityActingProcessTable extends React.Component {
         return <div>
             <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> Filters</h3>
             <div className="filters row" style={{display:"none"}}>
+                <div className="date col-md-3">
+                    <h4>Datum</h4>
+                    <div>
+                        <strong>Startdatum:</strong>
+                        <DatePicker selected={this.state.startDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({startDate: date})} />
+                        <br/>
+                        <strong>Einddatum:</strong>
+                        <DatePicker selected={this.state.endDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({endDate: date})} />
+                    </div>
+                    <div style={{clear: 'both'}}/>
+                </div>
                 <div className="timeslot col-md-4">
                     <h4>Categorie</h4>
                     <div className="buttons">
