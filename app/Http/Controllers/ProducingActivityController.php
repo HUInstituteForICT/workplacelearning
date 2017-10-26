@@ -17,6 +17,7 @@ use App\ResourcePerson;
 use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 use Validator;
 
 class ProducingActivityController extends Controller
@@ -25,7 +26,7 @@ class ProducingActivityController extends Controller
     public function show()
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
         }
 
@@ -102,6 +103,10 @@ class ProducingActivityController extends Controller
 
     public function progress($pageNr)
     {
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+            return redirect()->route('profile')->withErrors([Lang::get("notifications.generic.nointernshipprogress")]);
+        }
+
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->get());

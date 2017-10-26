@@ -20,7 +20,7 @@ class ActingActivityController extends Controller
     public function show()
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
             return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
         }
 
@@ -87,6 +87,10 @@ class ActingActivityController extends Controller
 
     public function progress($pagenr)
     {
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+            return redirect()->route('profile')->withErrors([Lang::get("notifications.generic.nointernshipprogress")]);
+        }
+
         $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
             ->get());
