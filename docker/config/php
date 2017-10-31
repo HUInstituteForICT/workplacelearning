@@ -2,7 +2,7 @@ FROM php:7.1.1-fpm
 
 # Install PHP extensions
 
-RUN apt-get update && apt-get install -y libmcrypt-dev mysql-client libicu-dev nano libpng-dev git unzip && docker-php-ext-install mcrypt pdo_mysql intl gd
+RUN apt-get update && apt-get install -y libmcrypt-dev mysql-client libicu-dev nano libpng-dev git unzip && docker-php-ext-install mcrypt pdo_mysql intl gd zip
 RUN pecl install xdebug
 
 # COPY ./xdebug.ini /usr/local/etc/php/conf.d/

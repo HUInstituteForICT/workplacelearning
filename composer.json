@@ -12,7 +12,8 @@
         "laravel/framework": "5.4.*",
         "laravelcollective/html": "5.4.*",
         "laravel/tinker": "~1.0",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "phpoffice/phpword": "dev-develop"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

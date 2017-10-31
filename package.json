@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "moment": "^2.19.1",
-    "react-datepicker": "^0.57.0"
+    "react-datepicker": "^0.57.0",
+    "react-file-download": "^0.3.5"
   }
 }
