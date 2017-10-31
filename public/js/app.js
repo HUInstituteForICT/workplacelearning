@@ -60289,7 +60289,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
         _this.state = {
             activities: window.activities,
             filters: _this.buildFilter(window.activities),
-            exports: ["csv", "txt", "email"],
+            exports: ["csv", "txt", "email", "word"],
             selectedExport: "txt",
             email: "",
             emailAlert: null,
@@ -60413,10 +60413,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
 
             var exporter = new __WEBPACK_IMPORTED_MODULE_4__services_ProducingActivityProcessExporter__["a" /* default */](this.state.selectedExport, this.filterActivities(this.state.activities));
 
-            if (this.state.selectedExport !== 'email') {
-                exporter[this.state.selectedExport]();
-                exporter.download();
-            } else {
+            if (this.state.selectedExport === "email") {
                 this.setState({ emailAlert: undefined });
                 exporter.mail(this.state.email, function (response) {
                     if (response.hasOwnProperty("data") && response.data.status === "success") {
@@ -60428,6 +60425,16 @@ var ActivityProducingProcessTable = function (_React$Component) {
                         return _this3.setState({ emailAlert: null });
                     }, 3000);
                 });
+            } else if (this.state.selectedExport === "word") {
+                exporter.txt();
+                var exportText = exporter.outputData;
+                axios.post('/activity-export-doc', { exportText: exportText }).then(function (response) {
+                    console.log(response);
+                    window.location.href = response.data.download;
+                });
+            } else {
+                exporter[this.state.selectedExport]();
+                exporter.download();
             }
         }
     }, {
