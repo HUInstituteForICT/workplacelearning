@@ -8,7 +8,7 @@
 
 @extends('layout.HUdefault')
 @section('title')
-    Stage
+    {{ Lang::get('general.internship') }}
 @stop
 @section('content')
     <div class="container-fluid">
@@ -128,7 +128,7 @@
             </div>
             <div class="col-md-6 well form-group">
                 <h2>{{ Lang::get('elements.profile.internships.current.titleassignment') }}</h2>
-                <textarea name="internshipAssignment" rows="19" class="form-control" minlength="15" maxlength="500" data-error="Dit veld moet minimaal 15 characters hebben en kan maximaal 500 characters bevatten." required>{{ (old('internshipAssignment')) ? old('internshipAssignment') : $period->description }}</textarea>
+                <textarea name="internshipAssignment" rows="19" class="form-control" minlength="15" maxlength="500" data-error="{{ Lang::get('elements.profile.labels.internship-assignment-error') }}" required>{{ (old('internshipAssignment')) ? old('internshipAssignment') : $period->description }}</textarea>
                 <div class="help-block with-errors"></div>
             </div>
             {!! Form::close() !!}
@@ -151,14 +151,14 @@
                     <?php $i = 1; ?>
                     @foreach($learninggoals as $goal)
                         <tr>
-                            <td>Leerdoel {{ $i }}</td>
+                            <td>{{ Lang::get('general.learninggoal') }} {{ $i }}</td>
                             <td><input type="text" name="learninggoal_name[{{ $goal->learninggoal_id }}]" value="{{ (!is_null(old('learninggoal_name.'.$goal->learninggoal_id))) ? old('learninggoal_name.'.$goal->learninggoal_id) : $goal->learninggoal_label }}" /></td>
                             <td><textarea class="form-control" name="learninggoal_description[{{ $goal->learninggoal_id }}]">{{ (!is_null(old('learninggoal_description.'.$goal->learninggoal_id))) ? old('learninggoal_description.'.$goal->learninggoal_id) : $goal->description }}</textarea></td>
                         </tr>
                         <?php $i++; ?>
                     @endforeach
                     <tr>
-                        <td>Nieuw Leerdoel:</td>
+                        <td>{{ Lang::get('new') }} {{ Lang::get('general.learninggoal') }}:</td>
                         <td><input type="text" name="new_learninggoal_name" placeholder="{{ Lang::get('elements.profile.placeholders.learninggoalname') }}" value="{{ old('new_learninggoal_name') }}" /></td>
                         <td><textarea class="form-control" name="new_learninggoal_description" placeholder="{{ Lang::get('elements.profile.placeholders.learninggoaldescription') }}">{{ old('new_learninggoal_description') }}</textarea></td>
                     </tr>

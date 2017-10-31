@@ -20,4 +20,5 @@ return array (
     ),
   ),
   'returnhome' => 'Terug naar Dashboard',
+    'occurred' => "Er heeft een fout opgetreden"
 );

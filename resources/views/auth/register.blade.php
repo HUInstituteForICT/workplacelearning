@@ -154,7 +154,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group text-center">
-                                    <a href="{{ url('/login') }}">Back to Login</a>
+                                    <a href="{{ url('/login') }}">{{ Lang::get('auth.to_login') }}</a>
                                 </div>
                             </form>
                         </div>

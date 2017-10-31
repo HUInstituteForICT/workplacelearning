@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
+                <div class="panel-heading">{{ Lang::get('passwords.reset') }}</div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -24,7 +24,7 @@
                         <input type="hidden" name="token" value="{{ $token }}">
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                            <label for="email" class="col-md-4 control-label">{{ Lang::get('elements.profile.labels.email') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Nieuw Wachtwoord</label>
+                            <label for="password" class="col-md-4 control-label">{{ Lang::get('passwords.new') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control" name="password" required>
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label">Bevestig wachtwoord</label>
+                            <label for="password-confirm" class="col-md-4 control-label">{{ Lang::get('passwords.confirm') }}</label>
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
 
@@ -67,7 +67,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Reset Wachtwoord
+                                    {{ Lang::get('passwords.reset') }}
                                 </button>
                             </div>
                         </div>

@@ -87,6 +87,7 @@ return array (
         2 => 'Hoe heet(te) je eerste huisdier?',
         3 => 'Wat is je lievelingskleur?',
       ),
+      'internship-assignment-error' => 'Dit veld moet minimaal 15 characters hebben en kan maximaal 500 characters bevatten.',
     ),
     'placeholders' => 
     array (
@@ -127,7 +128,7 @@ return array (
       'contactperson' => 'Contactpersoon',
       'contactphone' => 'Telefoonnummer',
       'contactemail' => 'Emailadres',
-        'cohort' => 'Cohort'
+      'cohort' => 'Cohort',
     ),
     'categories' => 
     array (

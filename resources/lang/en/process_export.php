@@ -18,5 +18,13 @@ return array (
   'supportWp' => 'support werkplek',
   'supportEd' => 'support Hogeschool Utrecht',
   'learningGoalDescription' => 'learning goal description',
-    'evidence' => 'bewijsstuk'
+  'evidence' => 'bewijsstuk',
+  'text-mail' => 'Good day,
+
+Student :name has sent you a few learning moments from the internship app https://www.werkplekleren.hu.nl.
+
+Below this email you will find the text of these learning moments.
+
+Kind regards,
+Hogeschool Utrecht - werkplekleren.hu.nl',
 );

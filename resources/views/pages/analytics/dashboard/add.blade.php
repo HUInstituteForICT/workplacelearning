@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Dashboard</h1>
+                <h1>{{ Lang::get('dashboard.title') }}</h1>
                 <form action="{{ route('dashboard.save') }}" method="post" accept-charset="UTF-8"
                       class="form-horizontal">
                     {{ csrf_field() }}
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="chart_id" class="col-sm-2 control-label">Chart</label>
+                        <label for="chart_id" class="col-sm-2 control-label">{{ Lang::get('dashboard.chart') }}</label>
 
                         <div class="col-sm-10">
                             <select class="form-control"
@@ -41,7 +41,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-10 col-sm-offset-2">
-                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="submit" class="btn btn-primary">{{ Lang::get('dashboard.add') }}</button>
                         </div>
                     </div>
                 </form>

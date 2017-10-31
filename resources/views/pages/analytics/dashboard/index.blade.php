@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Dashboard</h1>
+                <h1>{{ Lang::get('dashboard.title') }}</h1>
                 @forelse($charts as $key => $chart)
                     <div class="col-sm-6">
                         <div class="panel panel-default">
@@ -35,9 +35,9 @@
                         <a href="{{ route('dashboard.add') }}" class="btn btn-primary" title="Add a chart">+</a>
                     @endif
                 @empty
-                    <p>Your dashboard is empty. Want to change this?</p>
+                    <p>{{ Lang::get('dashboard.empty') }}</p>
                     <p>
-                        <a href="{{ route('dashboard.add') }}" class="btn btn-primary">Add a chart</a>
+                        <a href="{{ route('dashboard.add') }}" class="btn btn-primary">{{ Lang::get('add-chart') }}</a>
                     </p>
                 @endforelse
             </div>
@@ -46,7 +46,7 @@
     <script>
     (function () {
       $('.frmDelete').on('submit', function (e) {
-        if (!confirm('Are you sure?')) {
+        if (!confirm('{{ Lang::get('dashboard.warning') }}')) {
           e.preventDefault()
           return false
         }
