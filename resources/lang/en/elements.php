@@ -87,6 +87,7 @@ return array (
         2 => 'What is or was the name of your first pet?',
         3 => 'What is your favorite color?',
       ),
+      'internship-assignment-error' => 'This field should at least contain 15 characters and can have a maximum of 500.',
     ),
     'placeholders' => 
     array (
@@ -127,7 +128,7 @@ return array (
       'contactperson' => 'Contact',
       'contactphone' => 'Phone Number',
       'contactemail' => 'Email Address',
-        'cohort' => 'Cohort'
+      'cohort' => 'Cohort',
     ),
     'categories' => 
     array (
