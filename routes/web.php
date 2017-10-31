@@ -226,7 +226,7 @@ Route::group([
         // Progress
         Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page',
             '[1-9]{1}[0-9]*')->name('progress-producing');
-        Route::get('report/export', 'ProducingReportController@export')->name('report-producing-export');
+        Route::get('report/export', 'ProducingReportController@wordExport')->name('report-producing-export');
 
         // Report Creation
         Route::get('analysis', 'ProducingAnalysisController@showChoiceScreen')->name('analysis-producing-choice');
