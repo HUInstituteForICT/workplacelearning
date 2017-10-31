@@ -25,7 +25,7 @@ export default class ActivityProducingProcessTable extends React.Component {
         this.state = {
             activities: window.activities,
             filters: this.buildFilter(window.activities),
-            exports: ["csv", "txt", "email"],
+            exports: ["csv", "txt", "email", "word"],
             selectedExport: "txt",
             email: "",
             emailAlert: null,
@@ -144,10 +144,7 @@ export default class ActivityProducingProcessTable extends React.Component {
     exportHandler() {
         const exporter = new ProducingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
 
-        if(this.state.selectedExport !== 'email') {
-            exporter[this.state.selectedExport]();
-            exporter.download();
-        } else {
+        if(this.state.selectedExport === "email") {
             this.setState({emailAlert: undefined});
             exporter.mail(this.state.email, response => {
                 if(response.hasOwnProperty("data") && response.data.status === "success") {
@@ -159,6 +156,17 @@ export default class ActivityProducingProcessTable extends React.Component {
 
 
             });
+        } else if(this.state.selectedExport === "word") {
+            exporter.txt();
+            const exportText = exporter.outputData;
+            axios.post('/activity-export-doc', {exportText})
+                .then(response => {
+                    console.log(response);
+                    window.location.href = response.data.download;
+                });
+        } else {
+            exporter[this.state.selectedExport]();
+            exporter.download();
         }
     }
 

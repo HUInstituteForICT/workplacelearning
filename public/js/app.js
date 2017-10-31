@@ -55881,6 +55881,43 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
+/***/ "./node_modules/react-file-download/file-download.js":
+/***/ (function(module, exports) {
+
+module.exports = function(data, filename, mime) {
+    var blob = new Blob([data], {type: mime || 'application/octet-stream'});
+    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+        // IE workaround for "HTML7007: One or more blob URLs were 
+        // revoked by closing the blob for which they were created. 
+        // These URLs will no longer resolve as the data backing 
+        // the URL has been freed."
+        window.navigator.msSaveBlob(blob, filename);
+    }
+    else {
+        var blobURL = window.URL.createObjectURL(blob);
+        var tempLink = document.createElement('a');
+        tempLink.style.display = 'none';
+        tempLink.href = blobURL;
+        tempLink.setAttribute('download', filename); 
+        
+        // Safari thinks _blank anchor are pop ups. We only want to set _blank
+        // target if the browser does not support the HTML5 download attribute.
+        // This allows you to download files in desktop safari if pop up blocking 
+        // is enabled.
+        if (typeof tempLink.download === 'undefined') {
+            tempLink.setAttribute('target', '_blank');
+        }
+        
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
+        window.URL.revokeObjectURL(blobURL);
+    }
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/react-onclickoutside/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -59593,6 +59630,8 @@ var Row = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_datepicker__ = __webpack_require__("./node_modules/react-datepicker/dist/react-datepicker.min.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_datepicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_datepicker__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_file_download__ = __webpack_require__("./node_modules/react-file-download/file-download.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_file_download___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_file_download__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -59600,6 +59639,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -59631,7 +59671,7 @@ var ActivityActingProcessTable = function (_React$Component) {
         _this.state = {
             activities: window.activities,
             filters: _this.buildFilter(window.activities),
-            exports: ["csv", "txt", "email"],
+            exports: ["csv", "txt", "email", "word"],
             selectedExport: "csv",
             email: "",
             emailAlert: null,
@@ -59744,10 +59784,7 @@ var ActivityActingProcessTable = function (_React$Component) {
 
             var exporter = new __WEBPACK_IMPORTED_MODULE_4__services_ActingActivityProcessExporter__["a" /* default */](this.state.selectedExport, this.filterActivities(this.state.activities));
 
-            if (this.state.selectedExport !== 'email') {
-                exporter[this.state.selectedExport]();
-                exporter.download();
-            } else {
+            if (this.state.selectedExport === "email") {
                 this.setState({ emailAlert: undefined });
                 exporter.mail(this.state.email, function (response) {
                     if (response.hasOwnProperty("data") && response.data.status === "success") {
@@ -59759,6 +59796,16 @@ var ActivityActingProcessTable = function (_React$Component) {
                         return _this3.setState({ emailAlert: null });
                     }, 3000);
                 });
+            } else if (this.state.selectedExport === "word") {
+                exporter.txt();
+                var exportText = exporter.outputData;
+                axios.post('/activity-export-doc', { exportText: exportText }).then(function (response) {
+                    console.log(response);
+                    window.location.href = response.data.download;
+                });
+            } else {
+                exporter[this.state.selectedExport]();
+                exporter.download();
             }
         }
     }, {
@@ -60242,7 +60289,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
         _this.state = {
             activities: window.activities,
             filters: _this.buildFilter(window.activities),
-            exports: ["csv", "txt", "email"],
+            exports: ["csv", "txt", "email", "word"],
             selectedExport: "txt",
             email: "",
             emailAlert: null,
@@ -60366,10 +60413,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
 
             var exporter = new __WEBPACK_IMPORTED_MODULE_4__services_ProducingActivityProcessExporter__["a" /* default */](this.state.selectedExport, this.filterActivities(this.state.activities));
 
-            if (this.state.selectedExport !== 'email') {
-                exporter[this.state.selectedExport]();
-                exporter.download();
-            } else {
+            if (this.state.selectedExport === "email") {
                 this.setState({ emailAlert: undefined });
                 exporter.mail(this.state.email, function (response) {
                     if (response.hasOwnProperty("data") && response.data.status === "success") {
@@ -60381,6 +60425,16 @@ var ActivityProducingProcessTable = function (_React$Component) {
                         return _this3.setState({ emailAlert: null });
                     }, 3000);
                 });
+            } else if (this.state.selectedExport === "word") {
+                exporter.txt();
+                var exportText = exporter.outputData;
+                axios.post('/activity-export-doc', { exportText: exportText }).then(function (response) {
+                    console.log(response);
+                    window.location.href = response.data.download;
+                });
+            } else {
+                exporter[this.state.selectedExport]();
+                exporter.download();
             }
         }
     }, {

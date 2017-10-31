@@ -5,6 +5,7 @@ import _ from "lodash";
 import ActingActivityProcessExporter from "../../services/ActingActivityProcessExporter";
 import moment from "moment";
 import DatePicker from "react-datepicker";
+import FileDownload from "react-file-download";
 
 export default class ActivityActingProcessTable extends React.Component {
 
@@ -23,7 +24,7 @@ export default class ActivityActingProcessTable extends React.Component {
         this.state = {
             activities: window.activities,
             filters: this.buildFilter(window.activities),
-            exports: ["csv", "txt", "email"],
+            exports: ["csv", "txt", "email", "word"],
             selectedExport: "csv",
             email: "",
             emailAlert: null,
@@ -130,10 +131,8 @@ export default class ActivityActingProcessTable extends React.Component {
     exportHandler() {
         const exporter = new ActingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
 
-        if(this.state.selectedExport !== 'email') {
-            exporter[this.state.selectedExport]();
-            exporter.download();
-        } else {
+
+        if(this.state.selectedExport === "email") {
             this.setState({emailAlert: undefined});
             exporter.mail(this.state.email, response => {
                 if(response.hasOwnProperty("data") && response.data.status === "success") {
@@ -145,6 +144,17 @@ export default class ActivityActingProcessTable extends React.Component {
 
 
             });
+        } else if(this.state.selectedExport === "word") {
+            exporter.txt();
+            const exportText = exporter.outputData;
+            axios.post('/activity-export-doc', {exportText})
+                .then(response => {
+                console.log(response);
+                window.location.href = response.data.download;
+            });
+        } else {
+            exporter[this.state.selectedExport]();
+            exporter.download();
         }
     }
 
