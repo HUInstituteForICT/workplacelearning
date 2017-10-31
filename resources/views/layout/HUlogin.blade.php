@@ -17,7 +17,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <title>@yield('title') - Werkplekleren</title>
+    <title>@yield('title') - {{ Lang::get('general.werkplekleren') }}</title>
     <style>
         .main{
             margin-top: 70px;

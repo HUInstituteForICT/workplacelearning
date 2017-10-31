@@ -1,0 +1,33 @@
+<?php
+
+return array (
+    'werkplekleren' => "Werkplekleren",
+    "with" => "met",
+    "close" => "Sluiten",
+    "confirm" => "Bevestigen",
+    "edit" => "Wijzigen",
+    "download" => "Download",
+    "save" => "Opslaan",
+    "internship" => "Stage",
+    "learninggoal" => "Leerdoel",
+    "new" => "Nieuw",
+    "learningmoments" => "Leermomenten",
+    "create" => "Aanmaken",
+    "label" => "Label",
+    "or" => "of",
+    "go-back" => "teruggaan",
+    "refresh" => "Verversen",
+    "yes" => "Ja",
+    "no" => "Nee",
+    "weekstates" => "Weekstaten",
+    "export" => "Exporteer",
+    "bugreport" => "Bug melding",
+    "tipsbugs" => "Tips/Bugs",
+    "tips-text" => "Heb je een tip hoe we deze site kunnen verbeteren, of heb je iets gevonden wat niet werkt? Laat het ons weten!",
+    "tips-what" => "Wat wil je doorgeven?",
+    "tips-example" => "Bijvoorbeeld: Ik zou graag een andere rapportage terugzien op de analyse pagina. Kan deze worden toegevoegd?",
+    "send" => "Verstuur",
+    "calendar" => "Kalender",
+    "program" => "Opleiding",
+    "subject" => "Betreft"
+);

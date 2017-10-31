@@ -9,20 +9,20 @@
                       method="post">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">Name</label>
+                        <label for="name" class="col-sm-2 control-label">{{ Lang::get('dashboard.name') }}</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Name"
+                            <input type="text" class="form-control" id="name" name="name" placeholder="{{ Lang::get('dashboard.name') }}"
                                    required="required"
                                    value="{{ old('name') }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="cache_duration" class="col-sm-2 control-label">
-                            Cache for <i>X</i>
+                            {{ Lang::get('dashboard.cache-for') }} <i>X</i>
                         </label>
                         <div class="col-sm-6">
                             <input type="number" class="form-control" id="cache_duration" name="cache_duration"
-                                   placeholder="Cache for X" required="required"
+                                   placeholder="{{ Lang::get('dashboard.cache-for') }} X" required="required"
                                    value="{{ old('cache_duration') }}">
                         </div>
 
@@ -30,13 +30,13 @@
                             <select class="form-control" name="type_time" id="type_time" required="required"
                                     title="Time type">
                                 <option></option>
-                                <option value="seconds">Seconds</option>
-                                <option value="minutes">Minutes</option>
-                                <option value="hours">Hours</option>
-                                <option value="days">Days</option>
-                                <option value="weeks">Weeks</option>
-                                <option value="months">Months</option>
-                                <option value="years">Years</option>
+                                <option value="seconds">{{ Lang::get('dashboard.seconds') }}</option>
+                                <option value="minutes">{{ Lang::get('dashboard.minutes') }}</option>
+                                <option value="hours">{{ Lang::get('dashboard.hour') }}</option>
+                                <option value="days">{{ Lang::get('dashboard.days') }}</option>
+                                <option value="weeks">{{ Lang::get('dashboard.weeks') }}</option>
+                                <option value="months">{{ Lang::get('dashboard.months') }}</option>
+                                <option value="years">{{ Lang::get('dashboard.years') }}</option>
                             </select>
                         </div>
                     </div>
@@ -49,18 +49,13 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="submit" class="btn btn-primary">{{ Lang::get('dashboard.add') }}</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-12">
-                <a href="{{ route('bugreport') }}"><img src="{{ secure_asset('assets/img/bug_add.png') }}" width="16px"
-                                                        height="16px"/> Heb je tips of vragen? Geef ze aan ons door!</a>
-            </div>
-        </div>
+
     </div>
 @stop

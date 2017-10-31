@@ -1,6 +1,6 @@
 @extends('layout.HUdefault')
 @section('title')
-    Detail Page
+    {{ Lang::get('analysis.detail') }}
 @stop
 @section('content')
 

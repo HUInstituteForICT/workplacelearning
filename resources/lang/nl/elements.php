@@ -81,6 +81,7 @@ return array (
       'birthdate' => 'Geboortedatum',
       'password' => 'Wachtwoord',
       'password_repeat' => 'Wachtwoord (Bevestiging)',
+      'internship-assignment-error' => "Dit veld moet minimaal 15 characters hebben en kan maximaal 500 characters bevatten.",
       'secretquestion' => 
       array (
         1 => 'Waar ben je geboren?',

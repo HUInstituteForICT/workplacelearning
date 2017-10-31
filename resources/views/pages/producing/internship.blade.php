@@ -8,7 +8,7 @@
 
 @extends('layout.HUdefault')
 @section('title')
-    Stage
+    {{ Lang::get('general.internship') }}
 @stop
 @section('content')
     <div class="container-fluid">
@@ -129,7 +129,7 @@
             </div>
             <div class="col-md-7 well form-group">
                 <h2>{{ Lang::get('elements.profile.internships.current.titleassignment') }}</h2>
-                <textarea name="internshipAssignment" rows="19" class="form-control" minlength="15" maxlength="500" data-error="Dit veld moet minimaal 15 characters hebben en kan maximaal 500 characters bevatten. Alleen de volgende characters zijn toegestaan: [0-9a-zA-Z -_.,()]" required>{{ (old('internshipAssignment')) ? old('internshipAssignment') : $period->description }}</textarea>
+                <textarea name="internshipAssignment" rows="19" class="form-control" minlength="15" maxlength="500" data-error="{{ Lang::get('elements.profile.labels.internship-assignment-error') }}" required>{{ (old('internshipAssignment')) ? old('internshipAssignment') : $period->description }}</textarea>
                 <div class="help-block with-errors"></div>
             </div>
             {!! Form::close() !!}

@@ -7,7 +7,7 @@
 ?>
 @extends('layout.HUdefault')
 @section('title')
-   Profiel: {{ Auth::user()->voornaam ." ". Auth::user()->achternaam }}
+   {{ Lang::get('home.profile') }}: {{ Auth::user()->voornaam ." ". Auth::user()->achternaam }}
 @stop
 @section('content')
     <div class="container-fluid">

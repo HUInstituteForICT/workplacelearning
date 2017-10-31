@@ -1,15 +1,15 @@
 <html>
 <head>
-    <title>Wachtwoord reset link</title>
+    <title>{{ Lang::get('passwords.password-reset-link') }}</title>
 </head>
 <body>
 <p>
-    Beste Student,<br /><br />
+    {{ Lang::get('passwords.dear-student') }},<br /><br />
 
-    Je krijgt deze email omdat je aan hebt gegeven dat je je wachtwoord bent vergeten voor de website werkplekleren.hu.nl.<br /><br />
+    {{ Lang::get('passwords.reset-link-why') }} werkplekleren.hu.nl.<br /><br />
 
-    Je kan een nieuw wachtwoord instellen met de volgende link: <a href="{{ URL::to('/password/reset', array('token'=>$token), true) }}" target="_blank">Reset wachtwoord</a>.
+    {{ Lang::get('passwords.reset-link-how') }}: <a href="{{ URL::to('/password/reset', array('token'=>$token), true) }}" target="_blank">{{ Lang::get('passwords.reset_password') }}</a>.
 </p>
-<p>Heb je geen nieuw wachtwoord aangevraagd? dan kan je deze email als niet verzonden beschouwen.</p>
+<p>{{ Lang::get('passwords.reset-not-me') }}</p>
 </body>
 </html>

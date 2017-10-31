@@ -19,7 +19,7 @@
                                             {{ csrf_field() }}
                                             {{ method_field('delete') }}
                                             [
-                                            <button class="btn-link">delete</button>
+                                            <button class="btn-link">{{ Lang::get('dashboard.delete') }}</button>
                                             ]
                                         </form>
                                     </li>
@@ -29,18 +29,18 @@
                     @endforelse
                     @empty
                         <li>
-                            <p>There are no charts.</p>
+                            <p>{{ Lang::get('dashboard.no-charts') }}</p>
                         </li>
                     @endforelse
                 </ul>
-                <a href="{{ route('charts.create') }}" class="btn btn-primary">Create</a>
+                <a href="{{ route('charts.create') }}" class="btn btn-primary">{{ Lang::get('general.create') }}</a>
             </div>
         </div>
     </div>
     <script>
       (function () {
         $('.frmDelete').on('submit', function (e) {
-          if (!confirm('Are you sure?')) {
+          if (!confirm('{{Lang::get('dashboard.warning')}}')) {
             e.preventDefault()
             return false
           }

@@ -7,17 +7,17 @@
 ?>
 @extends('layout.HUdefault')
 @section('title')
-    Voortgang
+    {{ Lang::get('home.progress') }}
 @stop
 @section('content')
     <div class="container-fluid">
         <!-- Internship Info -->
         <div class="row">
             <div class="col-md-11">
-                <h3>Weekstaten</h3>
+                <h3>{{ Lang::get('general.weekstates') }}</h3>
             </div>
             <div class="col-md-1">
-                <a class="btn btn-info" role="button" target="_blank" href="{{ route('report-producing-export') }}">Export</a>
+                <a class="btn btn-info" role="button" target="_blank" href="{{ route('report-producing-export') }}">{{ Lang::get('general.export') }}</a>
             </div>
         </div>
         <div class="row">

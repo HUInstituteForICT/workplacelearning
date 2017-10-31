@@ -15,7 +15,7 @@
                             {{ csrf_field() }}
                             <input type="hidden" name="id" value="{{ $chart->analysis->id }}">
                             <div class="form-group">
-                                <button class="btn btn-primary" type="submit">Refresh</button>
+                                <button class="btn btn-primary" type="submit">{{ Lang::get('general.refresh') }}</button>
                             </div>
                         </form>
                     </div>

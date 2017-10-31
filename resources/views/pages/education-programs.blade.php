@@ -1,6 +1,6 @@
 @extends('layout.HUdefault')
 @section('title')
-    Activiteiten
+    {{ Lang::get('activity.activities') }}
 @stop
 @section('content')
         <div class="row">

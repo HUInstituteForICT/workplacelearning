@@ -7,7 +7,7 @@
 ?>
 @extends('layout.HUdefault')
 @section('title')
-    Kalender
+    {{ Lang::get('general.calendar') }}
 @stop
 @section('content')
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.8.0/fullcalendar.min.js"></script>

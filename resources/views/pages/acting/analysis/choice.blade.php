@@ -29,10 +29,10 @@
                 <p>{{ trans('analysis.acting.description') }}</p>
 
 
-                <p>Als je een tip hebt voor een analyse die je hier graag zou willen zien, geef dit dan aan ons door via
-                    <a href="{{ route('bugreport') }}">deze pagina</a>.</p>
+                <p>{{ Lang::get('general.tip_request') }}
+                    <a href="{{ route('bugreport') }}">{{ Lang::get('general.this_page') }}</a>.</p>
 
-                <h3>Grafiek categorieën</h3>
+                <h3>{{ Lang::get('analysis.graphs.categories') }}</h3>
                 <canvas id="chart_timeslots"></canvas>
                 <script>
                     var canvas_timeslots = document.getElementById("chart_timeslots");
@@ -65,7 +65,7 @@
                     });
                 </script>
 
-                <h3>Grafiek leerdoelen</h3>
+                <h3>{{ Lang::get('analysis.graphs.learninggoals') }}</h3>
                 <canvas id="chart_learninggoals"></canvas>
                 <script>
                     var canvas_learninggoals = document.getElementById("chart_learninggoals");
@@ -97,7 +97,7 @@
                     });
                 </script>
 
-                <h3>Grafiek competenties</h3>
+                <h3>{{ Lang::get('analysis.graphs.competencies') }}</h3>
                 <canvas id="chart_competencies"></canvas>
                 <script>
                     var canvas_competencies = document.getElementById("chart_competencies");
@@ -129,7 +129,7 @@
                     });
                 </script>
 
-                <h3>Grafiek personen</h3>
+                <h3>{{ Lang::get('analysis.graphs.persons') }}</h3>
                 <canvas id="chart_persons"></canvas>
                 <script>
                     var canvas_persons = document.getElementById('chart_persons');
@@ -170,42 +170,41 @@
                     $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage > 0 ||
                     $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage > 0
                 )
-                    <h3>Meest voorkomende combinaties</h3>
+                    <h3>{{ Lang::get('analysis.statistics.most_occurring_combo') }}</h3>
 
                     @if($actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage > 0)
-                        <strong>Categorie & leervraag:</strong>
+                        <strong>{{ Lang::get('analysis.category-learninggoal') }}:</strong>
                         {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->timeslot->timeslot_text }}
-                        met
+                        {{ Lang::get('general.with') }}
                         {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->learningGoal->learninggoal_label }}
                         ,
-                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage }}% van je
-                        activiteiten zijn met deze combinatie
+                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage }}
+                        {{ Lang::get('analysis.activities-with-this-combo') }}
 
                         <br/><br/>
                     @endif
 
                     @if($actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage > 0)
-                        <strong>Categorie & competentie:</strong>
+                        <strong>{{ Lang::get('analysis.category-competence') }}:</strong>
                         {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->timeslot->timeslot_text }}
-                        met
+                        {{ Lang::get('with') }}
                         {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->competence->competence_label }}
                         ,
-                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage }}% van je
-                        activiteiten zijn met deze combinatie
+                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage }}
+                        {{ Lang::get('analysis.activities-with-this-combo') }}
 
                         <br/><br/>
                     @endif
 
 
                     @if($actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage > 0)
-                        <strong>Leerdoel & competentie:</strong>
+                        <strong>{{ Lang::get('analysis.learninggoal-competence') }}:</strong>
                         {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->learningGoal->learninggoal_label }}
-                        met
+                        {{ Lang::get('with') }}
                         {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->competence->competence_label }}
                         ,
-                        {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage }}% van
-                        je
-                        activiteiten zijn met deze combinatie
+                        {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage }}
+                        {{ Lang::get('analysis.activities-with-this-combo') }}
 
                         <br/><br/>
                     @endif
@@ -222,14 +221,9 @@
 
 
                     @if($actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) > 50)
-                        <strong>Tip {{ $tipCounter }}</strong>: <br/>
-                        Bij {{ $actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) }}%
-                        van de leermomenten behorende bij {{ $learningGoal->learninggoal_label }}
-                        gebruik je geen theorie. Misschien weet je niet goed welke theorie je hier bij zou
-                        kunnen
-                        gebruiken? Je zou hier ondersteuning bij kunnen vragen aan je begeleider vanuit de HU of
-                        je
-                        werkplek.
+                        <strong>{{ Lang::get('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
+
+                        {{ Lang::get('analysis.tips.learninggoal-material', ["percentage" => $actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal), "label" => $learningGoal->learninggoal_label]) }}
                         <br/><br/>
 
                         <?php $tipCounter++ ?>
@@ -241,13 +235,9 @@
                 {{--Percentage leermomenten in tijdslot hoger dan 30% tip--}}
                 @foreach(Auth::user()->currentCohort()->timeslots()->get()->merge(Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()) as $timeslot)
                     @if($actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) >= 30)
-                        <strong>Tip {{ $tipCounter }}</strong>: <br/>
-                        {{ $actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) }}% van jouw
-                        leermomenten vallen in de categorie {{ $timeslot->timeslot_text }}. Dit is blijkbaar
-                        een
-                        categorie waarin veel van jou gevraagd wordt. Bespreek dit eens met je
-                        begeleiders
-                        of een medestudent om samen na te gaan hoe dit komt.
+                        <strong>{{ Lang::get('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
+
+                        {{ Lang::get('analysis.tips.activities-timeslot', ["percentage" => $actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot), "label" => $timeslot->timeslot_text]) }}
                         <br/><br/>
                         <?php $tipCounter++ ?>
                     @endif
