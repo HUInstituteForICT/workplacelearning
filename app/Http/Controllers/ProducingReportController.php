@@ -13,6 +13,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 use IntlDateFormatter;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use PhpOffice\PhpWord\PhpWord;
@@ -35,19 +36,19 @@ class ProducingReportController extends Controller
 
         $w = new PhpWord();
         $page = $w->addSection();
-        $page->addText("In te vullen door de stagiair", $bold);
-        $page->addText("Naam Stagiair: {$student->firstname} {$student->lastname} \t\t Stageverlenende organisatie: {$wp->wp_name}");
-        $page->addText("Studentnummer: {$student->studentnr} \t\t Adres: {$wp->street} {$wp->housenr}, {$wp->postalcode}, {$wp->town}");
-        $page->addText("\n\nTotaal aantal dagen stage gelopen: \t");
-        $page->addText("Stagedocent: \t");
+        $page->addText(Lang::get('process_export.wordexport.by-intern'), $bold);
+        $page->addText(Lang::get('process_export.wordexport.intern-name').": {$student->firstname} {$student->lastname} \t\t ".Lang::get('process_export.wordexport.organisation').": {$wp->wp_name}");
+        $page->addText(Lang::get('process_export.wordexport.studentnr').": {$student->studentnr} \t\t ".Lang::get('process_export.wordexport.address').": {$wp->street} {$wp->housenr}, {$wp->postalcode}, {$wp->town}");
+        $page->addText("\n\n".Lang::get('process_export.wordexport.total-days').": \t");
+        $page->addText(Lang::get('process_export.wordexport.mentor').": \t");
 
-        $page->addText("\n\nIn te vullen door stageplek", $bold);
+        $page->addText("\n\n" . Lang::get('process_export.wordexport.by-workplace'), $bold);
         $date = Carbon::now();
-        $page->addText("Naam: {$wp->contact_name} \t\t Datum: {$date->format('d-m-Y')}");
-        $page->addText("\nBevestiging, namens het bedrijf, dat het aantal dagen dat stage is gelopen, hierboven naar waarheid is ingevuld.");
-        $page->addText("\n\nHandtekening:");
+        $page->addText(Lang::get('process_export.wordexport.name').": {$wp->contact_name} \t\t ".Lang::get('process_export.wordexport.date').": {$date->format('d-m-Y')}");
+        $page->addText("\n".Lang::get('process_export.wordexport.confirmation'));
+        $page->addText("\n\n".Lang::get('process_export.wordexport.signature').":");
 
-        $page->addText("\n\nOpmerkingen van de stageverlenende organisatie:\n\n\n\n\n");
+        $page->addText("\n\n" .Lang::get('process_export.wordexport.remarks').":\n\n\n\n\n");
 
         $activityPage = $page;
 
@@ -76,9 +77,9 @@ class ProducingReportController extends Controller
         while (strtotime($date_loop) < strtotime($wplp->enddate) && strtotime($date_loop) < time()) {
             $table = $activityPage->addTable('table');
             $table->addRow();
-            $table->addCell(2000)->addText("Week " . date('W' , strtotime($date_loop)), $bold);
-            $table->addCell(2000)->addText("Datum", $bold);
-            $table->addCell(8000)->addText("Werkzaamheden", $bold);
+            $table->addCell(2000)->addText(Lang::get('process_export.wordexport.week')." " . date('W' , strtotime($date_loop)), $bold);
+            $table->addCell(2000)->addText(Lang::get('process_export.wordexport.date'), $bold);
+            $table->addCell(8000)->addText(Lang::get('process_export.wordexport.activities'), $bold);
             $weekno = 1;
 
             $days_this_week = 0;
@@ -95,15 +96,15 @@ class ProducingReportController extends Controller
                         $table->addCell(8000)->addText("- {$lap['description']}");
                     }
                 } else {
-                    $table->addCell(8000)->addText("Absent");
+                    $table->addCell(8000)->addText(Lang::get('process_export.wordexport.absent'));
                 }
 
                 $days_this_week += ($hrs >= 7.5) ? 1 : 0;
                 $date_loop = date('d-m-Y', strtotime("+1 day", strtotime($date_loop)));
             }
-            $activityPage->addText("Aantal dagen gewerkt (7,5 uur of meer): " . ($days_this_week . (($days_this_week == 1) ? " dag" : " dagen")));
-            $activityPage->addText("Reden eventuele absentie: \n\n");
-            $activityPage->addText("Opmerkingen: \n\n\n\n");
+            $activityPage->addText(Lang::get('process_export.wordexport.days-worked').": " . ($days_this_week . (($days_this_week == 1) ? " ".Lang::get('process_export.wordexport.day') : " ".Lang::get('process_export.wordexport.days'))));
+            $activityPage->addText(Lang::get('process_export.wordexport.absence-reason').": \n\n");
+            $activityPage->addText(Lang::get('process_export.wordexport.remarks-week').": \n\n\n\n");
 
             $date_loop = date('d-m-Y', strtotime("+2 days", strtotime($date_loop)));
 

@@ -100,4 +100,7 @@ return array (
     ),
   ),
   'transfered' => 'Overgedragen',
+    "saved-successfully" => 'De leeractiviteit is opgeslagen.',
+
+    "feedback-activity-saved" => 'Zowel de activiteit als de feedback zijn opgeslagen.'
 );

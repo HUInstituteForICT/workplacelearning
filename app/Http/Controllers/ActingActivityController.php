@@ -9,6 +9,7 @@ use App\Timeslot;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
@@ -21,7 +22,7 @@ class ActingActivityController extends Controller
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
-            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
         $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
@@ -58,14 +59,14 @@ class ActingActivityController extends Controller
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
         $activity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityActingById($id);
 
         if (!$activity) {
             return redirect()->route('process-acting')
-                ->withErrors('Helaas, er is geen activiteit gevonden.');
+                ->withErrors(Lang::get('errors.no-activity-found'));
         }
 
         $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
@@ -109,7 +110,7 @@ class ActingActivityController extends Controller
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
         $activityActing = new LearningActivityActing;
@@ -218,14 +219,14 @@ class ActingActivityController extends Controller
 
         $activityActing->competence()->attach($request['competence']);
 
-        return redirect()->route('process-acting')->with('success', 'De leeractiviteit is opgeslagen.');
+        return redirect()->route('process-acting')->with('success', Lang::get('activity.saved-successfully'));
     }
 
     public function update(Request $req, $id)
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
         $validator = Validator::make($req->all(), [
@@ -293,6 +294,6 @@ class ActingActivityController extends Controller
 
         $learningActivity->competence()->sync([$req['competence']]);
 
-        return redirect()->route('process-acting')->with('success', 'De leeractiviteit is aangepast.');
+        return redirect()->route('process-acting')->with('success', Lang::get('activity.saved-successfully'));
     }
 }

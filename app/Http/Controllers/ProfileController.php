@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 use App\Student;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Lang;
 use IntlDateFormatter;
 
 use \Validator;
@@ -47,7 +48,7 @@ class ProfileController extends Controller
             $user->email       = $request->email;
             //$user->telefoon    = $request->phone;
             $user->save();
-            return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
+            return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
         }
     }
 

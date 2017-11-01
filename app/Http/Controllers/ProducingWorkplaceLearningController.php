@@ -15,6 +15,7 @@ use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use App\LearningGoal;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
 use InvalidArgumentException;
 use Validator;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class ProducingWorkplaceLearningController extends Controller
         $wplPeriod = WorkplaceLearningPeriod::find($id);
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
-                ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
+                ->with('error', Lang::get('general.profile-permission'));
         } else {
             return view('pages.producing.internship')
                 ->with('period', $wplPeriod)
@@ -114,7 +115,7 @@ class ProducingWorkplaceLearningController extends Controller
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
-        return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
+        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
     public function update(Request $request, $id)
@@ -147,7 +148,7 @@ class ProducingWorkplaceLearningController extends Controller
         $wplPeriod = WorkplaceLearningPeriod::find($id);
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
-                ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
+                ->with('error', Lang::get('general.profile-permission'));
         }
 
         // Succes. Also fetch the associated Workplace Eloquent object and update
@@ -181,7 +182,7 @@ class ProducingWorkplaceLearningController extends Controller
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
-        return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
+        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
     public function updateCategories(Request $request, $id)
@@ -195,7 +196,7 @@ class ProducingWorkplaceLearningController extends Controller
             }
         }
         if (!$belongsToStudent) {
-            return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel."); // $id is invalid or does not belong to the student
+            return redirect()->route('profile')->withErrors(Lang::get('general.profile-permission')); // $id is invalid or does not belong to the student
         }
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
@@ -227,7 +228,7 @@ class ProducingWorkplaceLearningController extends Controller
                 $category->save();
             }
             // Done, redirect back to profile page
-            return redirect()->route('period-producing-edit', ["id" => $id])->with('succes', 'De wijzigingen in jouw categoriën zijn opgeslagen.');
+            return redirect()->route('period-producing-edit', ["id" => $id])->with('succes', Lang::get('general.edit-saved'));
         }
     }
 

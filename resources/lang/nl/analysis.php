@@ -1,6 +1,7 @@
 <?php
 
 return array (
+    "no-activity"=> 'Helaas, wij kunnen geen analyse uitvoeren als er nog geen activiteiten zijn ingevoerd.',
   'acting' => 
   array (
     'description' => 'Op deze pagina kun je je ingevoerde leermomenten analyseren en kun je persoonlijke tips krijgen op basis van jouw leermomenten',
@@ -39,4 +40,9 @@ return array (
                         begeleiders
                         of een medestudent om samen na te gaan hoe dit komt.',
   ),
+    'create-error' => "Het is niet gelukt de analyse op te slaan.",
+    "create" => 'De analyse is aangemaakt.',
+    "remove-error" => "Het is niet gelukt de analyse te verwijderen.",
+    "removed" => 'Analyse verwijderd uit de database.',
+    "query-removed" => 'Query is uit de cache verwijderd',
 );

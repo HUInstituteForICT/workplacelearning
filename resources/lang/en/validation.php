@@ -144,4 +144,8 @@ return array (
   ),
   'after_or_equal' => 'The :attribute should be a date equal to or after :date',
   'before_or_equal' => 'The :attribute should be a date equal to or before :date',
+
+  "newnotfinished" => "The description is required and can be up to 150 characters.",
+  "ondersteuning_werkplek.required_unless" => "Describing the support from your workplace is required, unless you say to not need any.",
+  "ondersteuning_opleiding.required_unless" => "Describing the support form your program is required, unless you say to not need any."
 );

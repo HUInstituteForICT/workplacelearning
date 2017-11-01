@@ -38,4 +38,12 @@ return array (
   'no-charts' => 'Er zijn geen grafieken.',
   'axis' => 'as',
   'error-create-no-data' => 'Kan geen grafiek aanmaken, er is geen data',
+
+  "cant-move-further" => "Kan niet verder verplaatsen!",
+  "failed-to-move" => 'Niet gelukt te verplaatsen',
+
+  "chart-added-fail" => "Niet gelukt op te slaan",
+  "chart-added" => "Grafiek toegevoegd",
+  "chart-removed-fail" => "Niet gelukt grafiek te verwijderen",
+  "chart-removed" => "Grafiek verwijderd van dashboard.",
 );

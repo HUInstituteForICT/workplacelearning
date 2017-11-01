@@ -7,6 +7,7 @@ use App\AnalysisChart;
 use App\DashboardChart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Lang;
 
 class AnalyticsDashboardController extends Controller
 {
@@ -61,7 +62,7 @@ class AnalyticsDashboardController extends Controller
         if ($next === null) {
             return redirect()
                 ->back()
-                ->withErrors(["Can't move any further!"]);
+                ->withErrors([Lang::get('dashboard.cant-move-further')]);
         }
 
         \DB::transaction(function() use ($chart, $next) {
@@ -77,7 +78,7 @@ class AnalyticsDashboardController extends Controller
         });
         return redirect()
             ->back()
-            ->withErrors(['Failed to move the chart.']);
+            ->withErrors([Lang::get('dashboard.failed-to-move')]);
     }
 
     public function store(Request $request)
@@ -93,9 +94,9 @@ class AnalyticsDashboardController extends Controller
         if (!$dchart->save())
             return redirect()
                 ->back()
-                ->withErrors(['error', "Failed to save that to the database."]);
+                ->withErrors(['error', Lang::get('dashboard.chart-added-fail')]);
 
-        return redirect()->route('dashboard.index')->with('success', 'Chart has been added.');
+        return redirect()->route('dashboard.index')->with('success', Lang::get('dashboard.chart-added'));
     }
 
     public function destroy($id)
@@ -104,9 +105,9 @@ class AnalyticsDashboardController extends Controller
         if (!$chart->delete())
             return redirect()
                 ->back()
-                ->withErrors(['error', "Failed to remove the chart from the dashboard."]);
+                ->withErrors(['error', Lang::get('dashboard.chart-removed-fail')]);
 
         return redirect()->back()
-            ->with('success', 'Chart has been removed from the dashboard');
+            ->with('success', Lang::get('dashboard.chart-removed'));
     }
 }

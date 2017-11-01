@@ -38,4 +38,12 @@ return array (
   'weeks' => 'Weeks',
   'years' => 'Years',
   'error-create-no-data' => 'Cannot create a chart, there is no data',
+
+    "cant-move-further" => "Can't move any further!",
+    "failed-to-move" => 'Failed to move the chart.',
+
+    "chart-added-fail" => "Failed to save to database",
+    "chart-added" => "Chart added",
+    "chart-removed-fail" => "Failed to remove chart",
+    "chart-removed" => "Chart removed from dashboard.",
 );

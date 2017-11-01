@@ -100,4 +100,8 @@ return array (
   'with' => 'With whom?',
   'work-learn-with' => 'Work/Learn with',
   'transfered' => 'Transferred',
+  "saved-successfully" => 'The learning activity has been saved.',
+
+    "feedback-activity-saved" => "Both the activity and the feedback have been saved."
+
 );
