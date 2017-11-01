@@ -13,4 +13,6 @@ return array (
   'reset-link-why' => 'Je krijgt deze email omdat je aan hebt gegeven dat je je wachtwoord bent vergeten voor de website',
   'reset-link-how' => 'Je kan een nieuw wachtwoord instellen met de volgende link',
   'reset-not-me' => 'Heb je geen nieuw wachtwoord aangevraagd? dan kan je deze email als niet verzonden beschouwen.',
+  'new' => 'Nieuw',
+  'confirm' => 'Bevestigen',
 );

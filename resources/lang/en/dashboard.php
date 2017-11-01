@@ -37,4 +37,5 @@ return array (
   'warning' => 'Are you sure?',
   'weeks' => 'Weeks',
   'years' => 'Years',
+  'error-create-no-data' => 'Cannot create a chart, there is no data',
 );

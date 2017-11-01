@@ -99,4 +99,5 @@ return array (
       8 => 'Klik op \'Opslaan\'. De activiteit wordt onder in het scherm toegevoegd.',
     ),
   ),
+  'transfered' => 'Overgedragen',
 );

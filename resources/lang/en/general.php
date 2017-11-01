@@ -30,4 +30,6 @@ return array (
   'werkplekleren' => 'Workplace learning',
   'with' => 'with',
   'yes' => 'Yes',
+  'this_page' => 'this page',
+  'tip_request' => 'If you have a suggestion for an analysis you would like to see, let us know via',
 );

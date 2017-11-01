@@ -12,7 +12,7 @@
                             <form action="{{ route('analytics-edit', $analysis->id) }}" method="get" accept-charset="UTF-8">
                                 <input type="hidden" name="id" value="{{ $analysis->id }}">
                                 <div class="form-group">
-                                    <button class="btn btn-info" type="submit">{{ Lang::get('dashoard.analysis-edit') }}</button>
+                                    <button class="btn btn-info" type="submit">{{ Lang::get('dashboard.analysis-edit') }}</button>
                                 </div>
                             </form>
                         </div>

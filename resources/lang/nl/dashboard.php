@@ -37,4 +37,5 @@ return array (
   'delete' => 'verwijderen',
   'no-charts' => 'Er zijn geen grafieken.',
   'axis' => 'as',
+  'error-create-no-data' => 'Kan geen grafiek aanmaken, er is geen data',
 );

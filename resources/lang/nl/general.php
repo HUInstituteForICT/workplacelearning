@@ -30,4 +30,6 @@ return array (
   'calendar' => 'Kalender',
   'program' => 'Opleiding',
   'subject' => 'Betreft',
+  'tip_request' => 'Als je een tip hebt voor een analyse die je hier graag zou willen zien, geef dit dan aan ons door via',
+  'this_page' => 'deze pagina',
 );

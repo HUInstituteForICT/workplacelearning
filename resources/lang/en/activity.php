@@ -5,7 +5,7 @@ return array (
   array (
     'steps' => 
     array (
-      1 => 'Pick the date on which the learning moment happened. The date cannot be in the future.',
+      1 => 'Pick a date on which the learning moment happened. The date cannot be in the future.',
       2 => 'Enter a description of the situation of the learning moment',
       3 => 'Give the category of this learning moment (this could for example be a specific patient). You can add categories yourself as well. However adding too many will make it cluttered. Think smart about which categories you add.',
       4 => 'With whom did you experience this learning moment, or was it alone?',
@@ -99,4 +99,5 @@ return array (
   'whatnow' => 'What is next?',
   'with' => 'With whom?',
   'work-learn-with' => 'Work/Learn with',
+  'transfered' => 'Transferred',
 );
