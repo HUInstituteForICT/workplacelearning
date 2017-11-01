@@ -11,15 +11,6 @@ const {mix} = require('laravel-mix');
  |
  */
 
-const WebpackShellPlugin = require('webpack-shell-plugin');
-
-// Add shell command plugin configured to create JavaScript language file
-mix.webpackConfig({
-    plugins:
-        [
-            new WebpackShellPlugin({onBuildStart:['php artisan lang:js --quiet'], onBuildEnd:[]})
-        ]
-});
 
 mix.react('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
