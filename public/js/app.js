@@ -55881,43 +55881,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 
-/***/ "./node_modules/react-file-download/file-download.js":
-/***/ (function(module, exports) {
-
-module.exports = function(data, filename, mime) {
-    var blob = new Blob([data], {type: mime || 'application/octet-stream'});
-    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-        // IE workaround for "HTML7007: One or more blob URLs were 
-        // revoked by closing the blob for which they were created. 
-        // These URLs will no longer resolve as the data backing 
-        // the URL has been freed."
-        window.navigator.msSaveBlob(blob, filename);
-    }
-    else {
-        var blobURL = window.URL.createObjectURL(blob);
-        var tempLink = document.createElement('a');
-        tempLink.style.display = 'none';
-        tempLink.href = blobURL;
-        tempLink.setAttribute('download', filename); 
-        
-        // Safari thinks _blank anchor are pop ups. We only want to set _blank
-        // target if the browser does not support the HTML5 download attribute.
-        // This allows you to download files in desktop safari if pop up blocking 
-        // is enabled.
-        if (typeof tempLink.download === 'undefined') {
-            tempLink.setAttribute('target', '_blank');
-        }
-        
-        document.body.appendChild(tempLink);
-        tempLink.click();
-        document.body.removeChild(tempLink);
-        window.URL.revokeObjectURL(blobURL);
-    }
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/react-onclickoutside/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -59630,8 +59593,6 @@ var Row = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_datepicker__ = __webpack_require__("./node_modules/react-datepicker/dist/react-datepicker.min.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_datepicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_datepicker__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_file_download__ = __webpack_require__("./node_modules/react-file-download/file-download.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_file_download___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_file_download__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -59639,7 +59600,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -59823,7 +59783,8 @@ var ActivityActingProcessTable = function (_React$Component) {
                             $('.filters').slideToggle();
                         } },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-arrow-circle-o-down", "aria-hidden": "true" }),
-                    " Filters"
+                    " ",
+                    Lang.get('react.filters')
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     "div",
@@ -59834,7 +59795,7 @@ var ActivityActingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
-                            "Datum"
+                            Lang.get('react.date')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -59842,7 +59803,8 @@ var ActivityActingProcessTable = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "strong",
                                 null,
-                                "Startdatum:"
+                                Lang.get('react.startdate'),
+                                ":"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_datepicker___default.a, { selected: this.state.startDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
                                     return _this4.setState({ startDate: date });
@@ -59851,7 +59813,8 @@ var ActivityActingProcessTable = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "strong",
                                 null,
-                                "Einddatum:"
+                                Lang.get('react.enddate'),
+                                ":"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_datepicker___default.a, { selected: this.state.endDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
                                     return _this4.setState({ endDate: date });
@@ -59865,7 +59828,7 @@ var ActivityActingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
-                            "Categorie"
+                            Lang.get('react.category')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -59883,7 +59846,7 @@ var ActivityActingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
-                            "Leervraag"
+                            Lang.get('react.learningquestion')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -59902,7 +59865,7 @@ var ActivityActingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
-                            "Competentie"
+                            Lang.get('react.competence')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -59923,7 +59886,8 @@ var ActivityActingProcessTable = function (_React$Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "label",
                         null,
-                        "Export naar\xA0",
+                        Lang.get('react.export-to'),
+                        "\xA0",
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "select",
                             { onChange: function onChange(e) {
@@ -59951,7 +59915,8 @@ var ActivityActingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "label",
                             null,
-                            "Mailen naar: ",
+                            Lang.get('react.mail-to'),
+                            ": ",
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "email", className: "form-control", onChange: function onChange(e) {
                                     return _this4.setState({ email: e.target.value });
                                 }, value: this.state.email })
@@ -59959,17 +59924,17 @@ var ActivityActingProcessTable = function (_React$Component) {
                         this.state.emailAlert === undefined && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "alert alert-info", role: "alert" },
-                            "Bezig met verzenden"
+                            Lang.get('react.mail.sending')
                         ),
                         this.state.emailAlert === true && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "alert alert-success", role: "alert" },
-                            "De email is succesvol verzonden"
+                            Lang.get('react.mail.sent')
                         ),
                         this.state.emailAlert === false && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "alert alert-danger", role: "alert" },
-                            "Er is iets misgegaan bij het verzenden van de email, probeer het later nog eens"
+                            Lang.get('react.mail.failed')
                         )
                     )
                 ),
@@ -59989,47 +59954,47 @@ var ActivityActingProcessTable = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Datum"
+                                    Lang.get('react.date')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Situatie"
+                                    Lang.get('react.situation')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Categorie"
+                                    Lang.get('react.category')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Met wie?"
+                                    Lang.get('react.with-whom')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Theorie"
+                                    Lang.get('react.theory')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Leerpunten en vervolg"
+                                    Lang.get('react.learningpoints-followup')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Leervraag"
+                                    Lang.get('react.learningquestion')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Competentie"
+                                    Lang.get('react.competence')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Bewijsstuk"
+                                    Lang.get('react.evidence')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null)
                             )
@@ -60452,7 +60417,8 @@ var ActivityProducingProcessTable = function (_React$Component) {
                             $('.filters').slideToggle();
                         } },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "fa fa-arrow-circle-o-down", "aria-hidden": "true" }),
-                    " Filters"
+                    " ",
+                    Lang.get('react.filters')
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     "div",
@@ -60463,7 +60429,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
-                            "Datum"
+                            Lang.get('react.date')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -60471,7 +60437,8 @@ var ActivityProducingProcessTable = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "strong",
                                 null,
-                                "Startdatum:"
+                                Lang.get('react.startdate'),
+                                ":"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_datepicker___default.a, { selected: this.state.startDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
                                     return _this4.setState({ startDate: date });
@@ -60480,7 +60447,8 @@ var ActivityProducingProcessTable = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 "strong",
                                 null,
-                                "Einddatum:"
+                                Lang.get('react.enddate'),
+                                ":"
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_datepicker___default.a, { selected: this.state.endDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
                                     return _this4.setState({ endDate: date });
@@ -60494,7 +60462,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
-                            "Tijd"
+                            Lang.get('react.time')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -60512,7 +60480,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
-                            "Hulpbron"
+                            Lang.get('react.aid')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -60531,7 +60499,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
-                            "Categorie"
+                            Lang.get('react.category')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -60549,7 +60517,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "h4",
                             null,
-                            "Complexiteit"
+                            Lang.get('react.complexity')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -60569,7 +60537,8 @@ var ActivityProducingProcessTable = function (_React$Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "label",
                         null,
-                        "Export naar\xA0",
+                        Lang.get('react.export-to'),
+                        "\xA0",
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "select",
                             { onChange: function onChange(e) {
@@ -60597,7 +60566,8 @@ var ActivityProducingProcessTable = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "label",
                             null,
-                            "Mailen naar: ",
+                            Lang.get('react.mail-to'),
+                            ": ",
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "email", className: "form-control", onChange: function onChange(e) {
                                     return _this4.setState({ email: e.target.value });
                                 }, value: this.state.email })
@@ -60605,17 +60575,17 @@ var ActivityProducingProcessTable = function (_React$Component) {
                         this.state.emailAlert === undefined && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "alert alert-info", role: "alert" },
-                            "Bezig met verzenden"
+                            Lang.get('react.mail.sending')
                         ),
                         this.state.emailAlert === true && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "alert alert-success", role: "alert" },
-                            "De email is succesvol verzonden"
+                            Lang.get('react.mail.sent')
                         ),
                         this.state.emailAlert === false && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
                             { className: "alert alert-danger", role: "alert" },
-                            "Er is iets misgegaan bij het verzenden van de email, probeer het later nog eens"
+                            Lang.get('react.mail.failed')
                         )
                     )
                 ),
@@ -60635,37 +60605,37 @@ var ActivityProducingProcessTable = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Datum"
+                                    Lang.get('react.date')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Omschrijving"
+                                    Lang.get('react.description')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Tijd"
+                                    Lang.get('react.time')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Hulpbron"
+                                    Lang.get('react.aid')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Categorie"
+                                    Lang.get('react.category')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Complexiteit"
+                                    Lang.get('react.complexity')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     "td",
                                     null,
-                                    "Status"
+                                    Lang.get('react.status')
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("td", null)
                             )
@@ -60776,7 +60746,7 @@ var Cohorts = function (_React$Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "h3",
                     null,
-                    "Cohorts"
+                    Lang.get('react.cohorts')
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "a",
@@ -60787,7 +60757,7 @@ var Cohorts = function (_React$Component) {
                                 _this4.setState({ cohorts: cohorts });
                             });
                         } },
-                    "Add cohort"
+                    Lang.get('react.add-cohort')
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "div",
@@ -60816,7 +60786,7 @@ var Cohorts = function (_React$Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                         "h4",
                         null,
-                        "Cohort details"
+                        Lang.get('react.cohort-details')
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                         "div",
@@ -60830,7 +60800,7 @@ var Cohorts = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                                     "label",
                                     null,
-                                    "Cohort name",
+                                    Lang.get('react.cohort-name'),
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "text", className: "form-control", value: selectedCohort.name,
                                         onChange: function onChange(e) {
                                             _this4.setState({
@@ -60851,7 +60821,7 @@ var Cohorts = function (_React$Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                                     "label",
                                     null,
-                                    "Cohort description",
+                                    Lang.get('react.cohort-desc'),
                                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "text", className: "form-control", value: selectedCohort.description,
                                         onChange: function onChange(e) {
                                             _this4.setState({
@@ -60879,7 +60849,7 @@ var Cohorts = function (_React$Component) {
                                             }
                                         });
                                     } },
-                                selectedCohort.disabled ? "Enable cohort for new workplace learning periods" : "Disable program for new workplace learning periods"
+                                selectedCohort.disabled ? Lang.get('react.cohort-enable') : Lang.get('react.cohort-disable')
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
@@ -60898,7 +60868,7 @@ var Cohorts = function (_React$Component) {
                                             });
                                         }
                                     } },
-                                selectedCohort.canBeDeleted ? "Delete cohort" : "Cohort has workplace learning periods, therefore it cannot be deleted"
+                                selectedCohort.canBeDeleted ? Lang.get('react.cohort-delete') : Lang.get('react.cohort-delete-block')
                             )
                         )
                     ),
@@ -61069,7 +61039,7 @@ var EditProgram = function (_React$Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                         "h4",
                         null,
-                        "Program details"
+                        Lang.get('react.program-details')
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                         "div",
@@ -61077,7 +61047,7 @@ var EditProgram = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                             "label",
                             null,
-                            "Education program name",
+                            Lang.get('react.educprogram-name'),
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { type: "text", className: "form-control", name: "ep_name", value: program.ep_name,
                                 onChange: this.programOnNameChange })
                         )
@@ -61093,7 +61063,7 @@ var EditProgram = function (_React$Component) {
                                 { onClick: function onClick() {
                                         return _this6.onClickToggleDisableProgram(_this6.props.id);
                                     } },
-                                program.disabled ? "Enable program for new students" : "Disable program for new students"
+                                program.disabled ? Lang.get('react.program-enable') : Lang.get('react.program-disable')
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
@@ -61110,7 +61080,7 @@ var EditProgram = function (_React$Component) {
                                             });
                                         }
                                     } },
-                                program.canBeDeleted ? "Delete program" : "Program has cohorts, therefore it cannot be deleted"
+                                program.canBeDeleted ? Lang.get('react.program-delete') : Lang.get('react.program-delete-blocked')
                             )
                         )
                     )
@@ -61291,7 +61261,7 @@ var Competence = function (_Entity) {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "h4",
                     null,
-                    "Competencies"
+                    Lang.get('react.competencies')
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "div",
@@ -61313,7 +61283,7 @@ var Competence = function (_Entity) {
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                         "h5",
                         null,
-                        "Competence description"
+                        Lang.get('react.competence-description')
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                         "div",
@@ -61321,14 +61291,15 @@ var Competence = function (_Entity) {
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                             "span",
                             null,
-                            "Current description: \xA0",
+                            Lang.get('react.current-description'),
+                            ": \xA0",
                             this.state.competence_description !== null && this.state.competence_description.has_data && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                                 "span",
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                                     "a",
                                     { href: this.state.competence_description['download-url'] },
-                                    "download"
+                                    Lang.get('react.download')
                                 ),
                                 "\xA0-\xA0",
                                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
@@ -61338,13 +61309,13 @@ var Competence = function (_Entity) {
                                                 _this5.setState({ competence_description: null });
                                             });
                                         } },
-                                    "remove"
+                                    Lang.get('react.remove')
                                 )
                             ),
                             (this.state.competence_description === null || !this.state.competence_description.has_data) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                                 "span",
                                 null,
-                                "none"
+                                Lang.get('react.none')
                             ),
                             this.state.uploadedText
                         ),
@@ -61355,7 +61326,7 @@ var Competence = function (_Entity) {
                             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                                 "span",
                                 null,
-                                "Click or drop file to upload the competence description"
+                                Lang.get('react.upload-instructions')
                             )
                         )
                     )
@@ -61390,7 +61361,7 @@ var Timeslot = function (_Entity2) {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "h4",
                     null,
-                    "Categories"
+                    Lang.get('react.categories')
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "div",
@@ -61440,7 +61411,7 @@ var ResourcePerson = function (_Entity3) {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "h4",
                     null,
-                    "Resource Persons"
+                    Lang.get('react.resourceperson')
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "div",
@@ -61490,7 +61461,7 @@ var Category = function (_Entity4) {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "h4",
                     null,
-                    "Categories"
+                    Lang.get('react.categories')
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "div",
@@ -61602,7 +61573,7 @@ var EntityCreator = function (_React$Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                         "span",
                         { className: "defaultButton add", onClick: this.onCreateEntityClick },
-                        "Add"
+                        Lang.get('react.add')
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("hr", null)
@@ -61713,7 +61684,7 @@ var EntityListEntry = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                             "span",
                             { className: "defaultButton", style: styleBtn, onClick: this.save },
-                            "Save"
+                            Lang.get('react.save')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                             "span",
@@ -61721,7 +61692,7 @@ var EntityListEntry = function (_React$Component) {
                                 onClick: function onClick() {
                                     return _this3.props.onRemoveClick(_this3.props.id, _this3.props.type);
                                 } },
-                            "Delete"
+                            Lang.get('react.delete')
                         )
                     )
                 );
@@ -61880,12 +61851,12 @@ var educationProgramsApp = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                             "h4",
                             null,
-                            "Education Program"
+                            Lang.get('react.educationprogram')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                             "p",
                             null,
-                            "Manage and create education programs"
+                            Lang.get('react.educprogram-manage')
                         ),
                         this.state.programs.map(function (program) {
                             return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
@@ -61925,13 +61896,13 @@ var educationProgramsApp = function (_React$Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "h5",
                     { style: { marginTop: 25 } },
-                    "Add education programs"
+                    Lang.get('react.educprogram-add')
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "div",
                     { className: "form-group" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { className: "form-control", type: "text", value: this.state.newProgramName,
-                        placeholder: "Program name",
+                        placeholder: Lang.get('react.educprogram-name'),
                         onChange: function onChange(e) {
                             return _this5.setState({ newProgramName: e.target.value });
                         } }),
@@ -61943,19 +61914,19 @@ var educationProgramsApp = function (_React$Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                             "option",
                             { value: "1" },
-                            "Acting"
+                            Lang.get('react.acting')
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                             "option",
                             { value: "2" },
-                            "Producing"
+                            Lang.get('react.producing')
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                         "span",
                         { className: "defaultButton fill", onClick: this.onClickAddEducationProgram },
-                        "Add"
+                        Lang.get('react.add')
                     )
                 )
             );
@@ -61968,7 +61939,7 @@ var educationProgramsApp = function (_React$Component) {
                 return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
                     "h5",
                     null,
-                    "None selected"
+                    Lang.get('react.none-selected')
                 );
             }
 

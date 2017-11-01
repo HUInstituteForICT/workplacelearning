@@ -49,7 +49,7 @@ export class EntityCreator extends React.Component {
                     <input onKeyPress={this.onKeyPress} className="form-control" type="text" placeholder="Name of item to add" onChange={this.onFieldChange}
                            value={this.state.fieldValue}/>
                     <br/>
-                    <span className="defaultButton add" onClick={this.onCreateEntityClick}>Add</span>
+                    <span className="defaultButton add" onClick={this.onCreateEntityClick}>{Lang.get('react.add')}</span>
 
                 </div>
                 <hr/>

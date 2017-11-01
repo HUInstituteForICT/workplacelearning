@@ -81,8 +81,8 @@ export default class educationProgramsApp extends React.Component {
         return <div>
             <div className="row">
                 <div className="col-md-2">
-                    <h4>Education Program</h4>
-                    <p>Manage and create education programs</p>
+                    <h4>{Lang.get('react.educationprogram')}</h4>
+                    <p>{Lang.get('react.educprogram-manage')}</p>
                     {this.state.programs.map(program => {
                         return <span className="defaultButton list" key={program.ep_id}
                                      onClick={() => this.setState({selectedProgramId: program.ep_id})}>{program.ep_name}
@@ -106,20 +106,20 @@ export default class educationProgramsApp extends React.Component {
         if (this.state.newProgramLoading) return <div className="loader">Loading...</div>;
 
         return <div>
-            <h5 style={{marginTop: 25}}>Add education programs</h5>
+            <h5 style={{marginTop: 25}}>{Lang.get('react.educprogram-add')}</h5>
             <div className="form-group">
 
                 <input className="form-control" type="text" value={this.state.newProgramName}
-                       placeholder="Program name"
+                       placeholder={Lang.get('react.educprogram-name')}
                        onChange={e => this.setState({newProgramName: e.target.value})}/>
                 <br/>
                 <select value={this.state.newProgramType}
                         onChange={this.onChangeEducationProgramType} className="form-control">
-                    <option value="1">Acting</option>
-                    <option value="2">Producing</option>
+                    <option value="1">{Lang.get('react.acting')}</option>
+                    <option value="2">{Lang.get('react.producing')}</option>
                 </select>
                 <br/>
-                <span className="defaultButton fill" onClick={this.onClickAddEducationProgram}>Add</span>
+                <span className="defaultButton fill" onClick={this.onClickAddEducationProgram}>{Lang.get('react.add')}</span>
             </div>
         </div>
     }
@@ -127,7 +127,7 @@ export default class educationProgramsApp extends React.Component {
     renderEditForm() {
 
         if (this.state.selectedProgramId === null) {
-            return <h5>None selected</h5>
+            return <h5>{Lang.get('react.none-selected')}</h5>
         }
 
         return <EditProgram id={this.state.selectedProgramId}

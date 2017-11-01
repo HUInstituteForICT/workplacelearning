@@ -74,10 +74,10 @@ export default class EditProgram extends React.Component {
         const program = this.state;
         return <div>
             <div>
-                <h4>Program details</h4>
+                <h4>{Lang.get('react.program-details')}</h4>
                 <div className="form-group">
                     <label>
-                        Education program name
+                        {Lang.get('react.educprogram-name')}
                         <input type="text" className="form-control" name="ep_name" value={program.ep_name}
                                onChange={this.programOnNameChange}/>
                     </label>
@@ -86,7 +86,7 @@ export default class EditProgram extends React.Component {
 
                     <div className={"col-md-3"}>
                         <a onClick={() => this.onClickToggleDisableProgram(this.props.id)}>
-                            {program.disabled ? "Enable program for new students" : "Disable program for new students"}
+                            {program.disabled ? Lang.get('react.program-enable') : Lang.get('react.program-disable')}
                         </a>
                     </div>
 
@@ -100,7 +100,7 @@ export default class EditProgram extends React.Component {
                                 })
                             }
                         }}>
-                            {program.canBeDeleted ? "Delete program" : "Program has cohorts, therefore it cannot be deleted"}
+                            {program.canBeDeleted ? Lang.get('react.program-delete') : Lang.get('react.program-delete-blocked')}
                         </a>
                     </div>
 

@@ -13,7 +13,8 @@
         "laravelcollective/html": "5.4.*",
         "laravel/tinker": "~1.0",
         "doctrine/dbal": "^2.5",
-        "phpoffice/phpword": "dev-develop"
+        "phpoffice/phpword": "dev-develop",
+        "mariuzzo/laravel-js-localization": "^1.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
