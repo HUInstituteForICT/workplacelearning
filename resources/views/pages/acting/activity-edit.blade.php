@@ -71,7 +71,7 @@
                                 <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : ($activity->getCompetencies()->competence_id == $value->competence_id) ? 'selected' : null }}>{{ $value->competence_label }}</option>
                             @endforeach
                         </select>
-                        <h5>{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "/assets/pdf/CompetentiesLerarenopleiding.pdf", array()), Lang::get('elements.competences.competencedetails')) !!}</h5>
+                        <h5>{!! str_replace('%s', "/assets/pdf/CompetentiesLerarenopleiding.pdf", Lang::get('elements.competences.competencedetails')) !!}</h5>
                     </div>
                     <div style="margin-top: 20px;">
                         <h4>{{ Lang::get('process.evidence') }}</h4>

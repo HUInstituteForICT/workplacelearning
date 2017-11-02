@@ -85,7 +85,7 @@
                 <div class="main-login main-center">
                     <h2>@yield('title')</h2>
                     <p>@yield('content')</p>
-                    <a href="{{ LaravelLocalization::GetLocalizedURL(null, '/', array()) }}">{{ Lang::get('errors.returnhome') }}</a>
+                    <a href="{{ '/' }}">{{ Lang::get('errors.returnhome') }}</a>
                 </div>
             </div>
         </div>

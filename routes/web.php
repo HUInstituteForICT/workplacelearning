@@ -15,12 +15,11 @@
 */
 
 use App\Http\Middleware\CheckUserLevel;
+use App\Http\Middleware\Locale;
 
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
-
-//Route::auth();
-
+Route::post('locale', "LocaleSwitcher@switchLocale")->name('localeswitcher');
 
 // API ROUTES - NOTE: NO LOCALIZATION AS IT WILL BREAK THE REQUEST DUE TO REDIRECTS (urls without a specified language get redirected, breaks POST requests to GET)
 Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix' => '/education-programs/api'],
@@ -67,15 +66,16 @@ Route::group(['before' => 'auth'], function() {
 // Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
 // Note: The localisation is saved in a session state.
 Route::group([
-    'before'     => 'auth',
-    'prefix'     => LaravelLocalization::setLocale(),
-    'middleware' => ['localizationRedirect', 'usernotifications'],
+    'before'     => ['auth', ],
+    'middleware' => ['usernotifications'],
 ], function () {
 
     Route::group(['middleware' => CheckUserLevel::class], function () {
         Route::get('/education-programs', 'EducationProgramsController@index')
             ->name('education-programs');
     });
+
+
 
 
 

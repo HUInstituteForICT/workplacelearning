@@ -15,7 +15,7 @@
             <!-- Profile Info -->
             <div class="col-md-6">
 
-                {!! Form::open(array('url' => LaravelLocalization::getLocalizedURL(null, URL::to('profiel/update'), array(), true), 'class' => 'form-horizontal well')) !!}
+                {!! Form::open(array('url' => URL::to('profiel/update'), 'class' => 'form-horizontal well')) !!}
                 {!! Form::hidden('student_id', Auth::user()->student_id) !!}
                 <h2>{{ Lang::get('elements.profile.title') }}</h2>
                 <div class="form-group">
@@ -38,6 +38,10 @@
                     {!! Form::label('email', Lang::get('elements.profile.labels.email'), array('class' => 'col-sm-3 control-label')) !!}
                     {{--<div class="col-sm-6"><p class="form-control-static">{{ Auth::user()->email }}</p></div>--}}
                     <div class="col-sm-6">{!! Form::email('email', Auth::user()->email, array('placeholder' => Lang::get('elements.profile.placeholders.email'), 'class' => 'form-control')) !!}</div>
+                </div>
+                <div class="form-group">
+                    {!! Form::label('language', Lang::get('elements.profile.labels.language'), ["class" => "col-sm-3 control-label"]) !!}
+                    <div class="col-sm-6">{!! Form::select('locale', $locales, Auth::user()->locale, ["class" => "form-control"] )!!}</div>
                     <div class="col-sm-2"><input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" /></div>
                 </div>
                 <!-- <div class="form-group">
@@ -104,7 +108,7 @@
                 <tbody>
                 @foreach(Auth::user()->getWorkplaceLearningPeriods() as $wplp)
                     <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id == $wplp->wplp_id) ? "highlight" : "" }}">
-                        <td><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/period/edit/'.$wplp->wplp_id, array()) }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
+                        <td><a href="{{ '/period/edit/'.$wplp->wplp_id }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
                         <td>{{ $wplp->getWorkplace()->wp_name }}</td>
                         <td>{{ date('d-m-Y', strtotime($wplp->startdate)) }}</td>
                         <td>{{ date('d-m-Y', strtotime($wplp->enddate)) }}</td>
