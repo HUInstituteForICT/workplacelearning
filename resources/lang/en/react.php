@@ -54,7 +54,7 @@ return [
     "program-details"  => "Program details",
     "educprogram-name" => "Program name",
 
-    "progrma-enable"         => "Enable program for new students",
+    "program-enable"         => "Enable program for new students",
     "program-disable"        => "Disable program for new students",
     "program-delete"         => "Delete program",
     "program-delete-blocked" => "Program has cohorts, therefore it cannot be deleted",

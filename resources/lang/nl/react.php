@@ -53,7 +53,7 @@ return [
     "program-details" => "Programmadetails",
     "educprogram-name" => "Naam opleiding",
 
-    "progrma-enable" => "Opleiding aanzetten voor nieuwe studenten",
+    "program-enable" => "Opleiding aanzetten voor nieuwe studenten",
     "program-disable" => "Opleiding uitzetten voor nieuwe studenten",
     "program-delete" => "Verwijder opleiding",
     "program-delete-blocked" => "Opleiding heeft cohorten gekoppeld en kan dus niet verwijderd worden",

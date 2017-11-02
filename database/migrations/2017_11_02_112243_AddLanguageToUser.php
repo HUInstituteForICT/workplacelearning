@@ -16,6 +16,8 @@ class AddLanguageToUser extends Migration
         Schema::table('student', function(Blueprint $table) {
             $table->string('locale', 10)->default('nl');
         });
+
+        \DB::raw("UPDATE student SET locale = 'nl' WHERE locale IS NULL");
     }
 
     /**
