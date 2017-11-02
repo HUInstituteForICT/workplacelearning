@@ -35,16 +35,30 @@
                     <div class="form-group text-center">
                         <a href="{{ url('/register') }}">{{ Lang::get('elements.registration.buttons.register') }}</a>&nbsp;|&nbsp;<a href="{{ url('/password/reset') }}">{{ Lang::get('passwords.reset_password') }}</a>
                     </div>
-                    @if(count($errors) > 0 || session()->has('success'))
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                                    <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
-                                </div>
+
+                </form>
+                <div class="row">
+                    <div class="col-md-2 col-lg-offset-3">
+                    {{ Form::open(["url"=>route('localeswitcher'), "id" => "localeSwitcherForm"]) }}
+                    {{ Form::hidden('previousPage', URL::current()) }}
+                    {!! Form::select('locale', \App\Student::$locales, Session::get('locale', 'nl'), ["id" => "localeSwitcher", "class" => ""] )!!}
+                    <script>
+                        (function(){$('#localeSwitcher').on('change', function() {
+                            $('#localeSwitcherForm').submit();
+                        })})()
+                    </script>
+                    {{ Form::close() }}
+                    </div>
+                </div>
+                @if(count($errors) > 0 || session()->has('success'))
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
+                                <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
                             </div>
                         </div>
-                    @endif
-                </form>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

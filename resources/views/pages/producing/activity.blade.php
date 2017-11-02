@@ -43,7 +43,7 @@
         </script>
         <div class="row">
             <div class="col-md-12 well">
-                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i> Hoe werkt deze pagina?</h4>
+                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i> {{ Lang::get('activity.how-does-this-page-work') }}</h4>
                 <div id="help-text">
                     <ol>
                         <li>{{ Lang::get('activity.producing.steps.1') }}</li>
@@ -80,7 +80,7 @@
                     </div>
 
                     <h5>{{ Lang::get('activity.description') }}:</h5>
-                    <textarea class="form-control fit-bs" name="{{ Lang::get('activity.description') }}" required maxlength="80" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="80" rows="5" cols="19"></textarea>
 
                     <h5>{{ Lang::get('activity.chain-to') }}:</h5>
                     <select class="form-control fit-bs" name="previous_wzh" >

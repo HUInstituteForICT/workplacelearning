@@ -46,7 +46,7 @@
                             </div>
                         @endforeach
                     @endif
-                    <br /><a href="{{ LaravelLocalization::GetLocalizedURL(null, '/bugreport', array()) }}"><img src="{{ secure_asset('assets/img/bug_add.png') }}" width="16px" height="16px" /> {{ Lang::get('home.tips') }}</a>
+                    <br /><a href="{{ '/bugreport' }}"><img src="{{ secure_asset('assets/img/bug_add.png') }}" width="16px" height="16px" /> {{ Lang::get('home.tips') }}</a>
                 </div>
             </div>
         </div>

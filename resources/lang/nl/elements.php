@@ -79,6 +79,7 @@ return array (
       'email' => 'E-Mail',
       'phone' => 'Telefoonnummer',
       'birthdate' => 'Geboortedatum',
+      'language' => "Taal",
       'password' => 'Wachtwoord',
       'password_repeat' => 'Wachtwoord (Bevestiging)',
       'secretquestion' => 

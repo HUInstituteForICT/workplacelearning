@@ -105,7 +105,7 @@ class ProducingReportController extends Controller
         $date_loop = date('Y-m-d',
             strtotime('monday this week', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate)));
         $datefmt = $formatter = new IntlDateFormatter(
-            (LaravelLocalization::getCurrentLocale() == "en") ? "en_US" : "nl_NL",
+            LaravelLocalization::getCurrentLocaleRegional(),
             IntlDateFormatter::GREGORIAN,
             IntlDateFormatter::NONE,
             null,

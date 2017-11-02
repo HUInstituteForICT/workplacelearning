@@ -114,7 +114,7 @@
                                     <label class="col-md-4 control-label">{{ Lang::get('elements.registration.labels.education') }}</label>
 
                                     <div class="col-md-6">
-                                        <select name="education">
+                                        <select name="education" class="form-control">
                                           @foreach(\App\EducationProgram::where('disabled', '=', 0)->get() as $program)
                                                 <option value="{{ $program->ep_id }}" {{ (old('education') == $program->ep_id) ? 'selected' : null }}> {{ $program->ep_name }}</option>
                                           @endforeach
@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">
-                                        <p style="font-size: 10px;">{!! str_replace('%s', LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), "/assets/pdf/privacyverklaring.pdf", array()), Lang::get('elements.registration.privacyagreement')) !!}</p>
+                                        <p style="font-size: 10px;">{!! str_replace('%s', "/assets/pdf/privacyverklaring.pdf", Lang::get('elements.registration.privacyagreement')) !!}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -157,6 +157,19 @@
                                     <a href="{{ url('/login') }}">{{ Lang::get('auth.to_login') }}</a>
                                 </div>
                             </form>
+                            <div class="row">
+                                <div class="col-md-2 col-lg-offset-5">
+                                    {{ Form::open(["url"=>route('localeswitcher'), "id" => "localeSwitcherForm"]) }}
+                                    {{ Form::hidden('previousPage', URL::current()) }}
+                                    {!! Form::select('locale', \App\Student::$locales, Session::get('locale', 'nl'), ["id" => "localeSwitcher", "class" => ""] )!!}
+                                    <script>
+                                        (function(){$('#localeSwitcher').on('change', function() {
+                                            $('#localeSwitcherForm').submit();
+                                        })})()
+                                    </script>
+                                    {{ Form::close() }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

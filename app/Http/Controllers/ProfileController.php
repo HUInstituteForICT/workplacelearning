@@ -22,7 +22,8 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        return view('pages.profile');
+        return view('pages.profile')
+            ->with('locales', Student::$locales);
     }
 
     public function update(Request $request)
@@ -46,6 +47,7 @@ class ProfileController extends Controller
             $user->firstname    = $request->firstname;
             $user->lastname  = $request->lastname;
             $user->email       = $request->email;
+            $user->locale = $request->get('locale');
             //$user->telefoon    = $request->phone;
             $user->save();
             return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
