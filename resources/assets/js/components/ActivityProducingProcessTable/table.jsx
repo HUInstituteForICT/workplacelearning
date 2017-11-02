@@ -243,7 +243,7 @@ export default class ActivityProducingProcessTable extends React.Component {
                         })}
                     </select>
                 </label> &nbsp;
-                <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) )}>exporteer</button>
+                <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) )}>{Lang.get('react.export')}</button>
                 <br/>
                 {this.state.selectedExport === 'email' &&
                     <div style={{maxWidth: "400px"}}>

@@ -60557,7 +60557,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "button",
                         { className: "btn btn-info", onClick: this.exportHandler, disabled: this.state.activities.length === 0 || this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) },
-                        "exporteer"
+                        Lang.get('react.export')
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null),
                     this.state.selectedExport === 'email' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
