@@ -56,11 +56,11 @@ class ProducingReportController extends Controller
         $internTable->addRow();
         // total days
         $internTable->addCell()->addText(Lang::get('process_export.wordexport.total-days').": ");
-        $internTable->addCell()->addText("x");
+        $internTable->addCell()->addText("");
         $internTable->addRow();
         // Mentor
         $internTable->addCell()->addText(Lang::get('process_export.wordexport.mentor').": ");
-        $internTable->addCell()->addText("x");
+        $internTable->addCell()->addText("");
 
 
         $page->addText("\n\n" . Lang::get('process_export.wordexport.by-workplace'), $bold);
