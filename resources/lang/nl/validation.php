@@ -144,4 +144,8 @@ return array (
     'lastname' => 'achternaam',
     'email' => 'email address',
   ),
+
+  "newnotfinished" => "De omschrijving is verplicht en mag maximaal 150 tekens zijn.",
+  "ondersteuning_werkplek.required_unless" => "Omschrijving van de ondersteuning van de werkplek is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben.",
+  "ondersteuning_opleiding.required_unless" => "Omschrijving van de ondersteuning van de opleiding is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben."
 );

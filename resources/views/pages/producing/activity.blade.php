@@ -1,9 +1,5 @@
 <?php
-/**
- * This file (tasks.blade.php) was created on 06/24/2016 at 15:44.
- * (C) Max Cassee
- * This project was commissioned by HU University of Applied Sciences.
- */
+/**transferred*/
 ?>
 @extends('layout.HUdefault')
 @section('title')
@@ -47,17 +43,17 @@
         </script>
         <div class="row">
             <div class="col-md-12 well">
-                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i> Hoe werkt deze pagina?</h4>
+                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i> {{ Lang::get('activity.how-does-this-page-work') }}</h4>
                 <div id="help-text">
                     <ol>
-                        <li>Kies een datum waarop je de activiteit hebt uitgevoerd. Deze mag niet in de toekomst liggen.</li>
-                        <li>Vul een omschrijving in van de activiteit die je hebt uitgevoerd.</li>
-                        <li>Geef aan hoeveel tijd je aan deze activiteit hebt besteed.</li>
-                        <li>Selecteer de categorie waarin deze activiteit het beste past.</li>
-                        <li>Selecteer welke hulpbron je hebt ingeschakeld bij deze activiteit.</li>
-                        <li>Selecteer de status van deze werkzaamheid. Is deze al afgerond of ben je er nog mee bezig? Of is deze nog niet klaar maar heb je het overgedragen aan iemand anders?</li>
-                        <li>Selecteer hoe moeilijk je deze taak vond. Liep je tegen problemen aan of ging het je goed af?</li>
-                        <li>Klik op 'Opslaan'. De activiteit wordt onder in het scherm toegevoegd.</li>
+                        <li>{{ Lang::get('activity.producing.steps.1') }}</li>
+                        <li>{{ Lang::get('activity.producing.steps.2') }}</li>
+                        <li>{{ Lang::get('activity.producing.steps.3') }}</li>
+                        <li>{{ Lang::get('activity.producing.steps.4') }}</li>
+                        <li>{{ Lang::get('activity.producing.steps.5') }}</li>
+                        <li>{{ Lang::get('activity.producing.steps.6') }}</li>
+                        <li>{{ Lang::get('activity.producing.steps.7') }}</li>
+                        <li>{{ Lang::get('activity.producing.steps.8') }}</li>
                     </ol>
                 </div>
             </div>
@@ -74,7 +70,7 @@
         <div class="row">
             {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => route('process-producing-create'))) !!}
                 <div class="col-md-2 form-group">
-                    <h4>Activiteit</h4>
+                    <h4>{{ Lang::get('activity.activity') }}</h4>
 
                     <div class='input-group date fit-bs' id='date-deadline'>
                         <input id="datum" name="datum" type='text' class="form-control" value="{{ (!is_null(old('datum'))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y') }}"/>
@@ -83,12 +79,12 @@
                         </span>
                     </div>
 
-                    <h5>Omschrijving:</h5>
+                    <h5>{{ Lang::get('activity.description') }}:</h5>
                     <textarea class="form-control fit-bs" name="omschrijving" required maxlength="80" rows="5" cols="19"></textarea>
 
-                    <h5>Koppel aan vorige activiteit:</h5>
+                    <h5>{{ Lang::get('activity.chain-to') }}:</h5>
                     <select class="form-control fit-bs" name="previous_wzh" >
-                        <option value="-1">- Niet Koppelen-</option>
+                        <option value="-1">- {{ Lang::get('no-chain') }}-</option>
                         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != NULL)
                             @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getUnfinishedActivityProducing() as $w)
                                 @if($w->nextLearningActivityProducing === null)
@@ -101,7 +97,7 @@
 
                 </div>
                 <div class="col-md-2 form-group buttons numpad">
-                    <h4>Uren</h4>
+                    <h4>{{ Lang::get('activity.hours') }}</h4>
                     <label><input type="radio" name="aantaluren" value="0.25" checked><span>15 min.</span></label>
                     <label><input type="radio" name="aantaluren" value="0.50"><span>30 min.</span></label>
                     <label><input type="radio" name="aantaluren" value="0.75"><span>45 min.</span></label>
@@ -109,62 +105,62 @@
                         {!! "<label>". Form::radio('aantaluren', $i) ."<span>". $i ." ". Lang::choice('elements.tasks.hour', $i) ."</span></label>" !!}
                     @endfor
                     <div class="custom">
-                        <label id="hours_custom"><input type="radio" name="aantaluren" value="x" /><span>Anders</span></label>
+                        <label id="hours_custom"><input type="radio" name="aantaluren" value="x" /><span>{{ Lang::get('activity.other') }}</span></label>
                         <br/>
-                        <div id="custom_hours_container"><input class="form-control" type="number" step="1" min="1" max="300" name="aantaluren_custom" value="5">minuten</div>
+                        <div id="custom_hours_container"><input class="form-control" type="number" step="1" min="1" max="300" name="aantaluren_custom" value="5">{{ Lang::get('dashboard.minutes') }}</div>
                     </div>
                 </div>
 
                 <div class="col-md-2 form-group buttons">
-                    <h4>Categorie <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
+                    <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach($categories as $cat)
                             <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->category_id == 1) ? "checked" : "" }}/><span>{{ $cat->category_label }}</span></label>
                         @endforeach
                     @endif
                     <div>
-                        <label class="newcat"><input type="radio" name="category_id" value="new" /><span class="new" id="newcat">Anders<br />(Toevoegen)</span></label>
-                        <input id="category" type="text" maxlength="50" name="newcat" placeholder="Omschrijving" />
+                        <label class="newcat"><input type="radio" name="category_id" value="new" /><span class="new" id="newcat">{{ Lang::get('activity.other') }}<br />({{ Lang::get('activity.add') }})</span></label>
+                        <input id="category" type="text" maxlength="50" name="newcat" placeholder="{{ Lang::get('activity.description') }}" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Werken/Leren Met <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_with') }}"></i></h4>
+                    <h4>{{ Lang::get('activity.work-learn-with') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_with') }}"></i></h4>
                     <div id="swvcontainer">
-                        <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>Persoon</span></label>
+                        <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>{{ Lang::get('activity.person') }}</span></label>
                         <select id="rp_id" name="personsource" class="cond-hidden">
                             @foreach($learningWith as $res)
                                 <option value="{{ $res->rp_id }}">{{ $res->person_label }}</option>
                             @endforeach */ ?>
-                            <option value="new">Nieuw/Anders</option>
+                            <option value="new">{{ Lang::get('general.new') }}/{{ Lang::get('activity.other') }}</option>
                         </select>
                         <input id="cond-select-hidden" type="text" maxlength="50" name="newswv" placeholder="Omschrijving" />
                     </div>
                     <div id="solocontainer">
-                        <label class="expand-click"><input type="radio" name="resource" value="alleen" /><span>Alleen</span></label>
+                        <label class="expand-click"><input type="radio" name="resource" value="alleen" /><span>{{ Lang::get('activity.alone') }}</span></label>
                     </div>
                     <div id="internetcontainer">
-                        <label class="expand-click"><input type="radio" name="resource" value="internet" /><span>Internetbron</span></label>
-                        <input class="cond-hidden" type="text" name="internetsource" value="" placeholder="http://www.bron.domein/" />
+                        <label class="expand-click"><input type="radio" name="resource" value="internet" /><span>{{ Lang::get('activity.internetsource') }}</span></label>
+                        <input class="cond-hidden" type="text" name="internetsource" value="" placeholder="http://www.source.com/" />
                     </div>
                     <div id="boekcontainer">
-                        <label class="expand-click"><input type="radio" name="resource" value="boek" /><span>Boek/Artikel</span></label>
-                        <input class="cond-hidden" type="text" name="booksource" value="" placeholder="Naam Boek/Artikel" />
+                        <label class="expand-click"><input type="radio" name="resource" value="boek" /><span>{{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}</span></label>
+                        <input class="cond-hidden" type="text" name="booksource" value="" placeholder="{{ Lang::get('dashboard.name') }} {{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
-                    <h4>Status <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_status') }}"></i></h4>
-                    <label><input type="radio" name="status" value="1" checked/><span>Afgerond</span></label>
-                    <label><input type="radio" name="status" value="2"/><span>Mee Bezig</span></label>
-                    <label><input type="radio" name="status" value="3"/><span>Overgedragen</span></label>
+                    <h4>{{ Lang::get('activity.status') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_status') }}"></i></h4>
+                    <label><input type="radio" name="status" value="1" checked/><span>{{ Lang::get('activity.finished') }}</span></label>
+                    <label><input type="radio" name="status" value="2"/><span>{{ Lang::get('activity.busy') }}</span></label>
+                    <label><input type="radio" name="status" value="3"/><span>{{ Lang::get('activity.transfered') }}</span></label>
                 </div>
                 <div class="col-md-1 form-group buttons">
-                    <h4>Moeilijkheidsgraad <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_difficulty') }}"></i></h4>
-                    <label><input type="radio" name="moeilijkheid" value="1" checked/><span>Makkelijk</span></label>
-                    <label><input type="radio" name="moeilijkheid" value="2"/><span>Gemiddeld</span></label>
-                    <label><input type="radio" name="moeilijkheid" value="3"/><span>Moeilijk</span></label>
+                    <h4>{{ Lang::get('activity.difficulty') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_difficulty') }}"></i></h4>
+                    <label><input type="radio" name="moeilijkheid" value="1" checked/><span>{{ Lang::get('activity.easy') }}</span></label>
+                    <label><input type="radio" name="moeilijkheid" value="2"/><span>{{ Lang::get('activity.average') }}</span></label>
+                    <label><input type="radio" name="moeilijkheid" value="3"/><span>{{ Lang::get('activity.hard') }}</span></label>
                 </div>
                 <div class="col-md-1 form-group buttons">
-                    <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />
+                    <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="{{ Lang::get('general.save') }}" />
                 </div>
             {{ Form::close() }}
         </div>

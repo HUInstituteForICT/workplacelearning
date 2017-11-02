@@ -7,4 +7,12 @@ return array (
   'token' => 'This password reset token is invalid.',
   'user' => 'We can\'t find a user with that e-mail address.',
   'sendreset' => 'Send link',
+  'dear-student' => 'Dear Student',
+  'password-reset-link' => 'Password reset link',
+  'reset-link-how' => 'You can reset your password with the following link',
+  'reset-link-why' => 'You receive this email because you request a password reset.',
+  'reset-not-me' => 'If you did not request this password reset, ignore this mail.',
+  'reset_password' => 'Reset password',
+  'confirm' => 'Confirm',
+  'new' => 'New',
 );

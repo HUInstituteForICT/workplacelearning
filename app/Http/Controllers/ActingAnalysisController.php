@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 
 class ActingAnalysisController extends Controller
 {
@@ -22,7 +23,7 @@ class ActingAnalysisController extends Controller
     {
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null || Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count() === 0) {
             return redirect()->route('home-acting')
-                ->withErrors(['Helaas, wij kunnen geen analyse uitvoeren als er nog geen activiteiten zijn ingevoerd.']);
+                ->withErrors([Lang::get('analysis.no-activity')]);
         }
 
 

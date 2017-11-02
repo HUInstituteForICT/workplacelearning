@@ -16,6 +16,7 @@ use App\WorkplaceLearningPeriod;
 use App\LearningGoal;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -37,7 +38,7 @@ class ActingWorkplaceLearningController extends Controller
         $wplPeriod = WorkplaceLearningPeriod::find($id);
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
-                ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
+                ->with('error', Lang::get('errors.internship-no-permission'));
         } else {
             return view('pages.acting.internship')
                 ->with("period", $wplPeriod)
@@ -113,16 +114,16 @@ class ActingWorkplaceLearningController extends Controller
 
         // Create unplanned learning as default learning goal
         $learningGoal = new LearningGoal;
-        $learningGoal->learninggoal_label = "Ongepland leermoment";
-        $learningGoal->description = "Een ongepland leermoment";
+        $learningGoal->learninggoal_label = Lang::get('general.default.learninggoal_label');
+        $learningGoal->description = Lang::get('general.default.learninggoal_desc');
         $learningGoal->wplp_id = $wplPeriod->wplp_id;
         $learningGoal->save();
 
         // Creating default learning goals for internship period
         for ($i = 1; $i < 4; $i++) {
             $learningGoal = new LearningGoal;
-            $learningGoal->learninggoal_label = sprintf('Leervraag %s', $i);
-            $learningGoal->description = sprintf('Omschrijving van leervraag %s', $i);
+            $learningGoal->learninggoal_label = sprintf(Lang::get('activity.learningquestion') . ' %s', $i);
+            $learningGoal->description = sprintf(Lang::get('general.default.learninggoal_desc_placeholder'). ' %s', $i);
             $learningGoal->wplp_id = $wplPeriod->wplp_id;
             $learningGoal->save();
         }
@@ -132,7 +133,7 @@ class ActingWorkplaceLearningController extends Controller
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
-        return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
+        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
     public function update(Request $request, $id)
@@ -166,7 +167,7 @@ class ActingWorkplaceLearningController extends Controller
         $wplPeriod = WorkplaceLearningPeriod::find($id);
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
-                ->with('error', 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien');
+                ->with('error', Lang::get('errors.internship-no-permission'));
         }
 
         // Succes. Also fetch the associated Workplace Eloquent object and update
@@ -200,7 +201,7 @@ class ActingWorkplaceLearningController extends Controller
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
-        return redirect()->route('profile')->with('success', 'De wijzigingen zijn opgeslagen.');
+        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
     public function updateLearningGoals(Request $request, $id)
@@ -214,7 +215,7 @@ class ActingWorkplaceLearningController extends Controller
             }
         }
         if (!$belongsToStudent) {
-            return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel.");
+            return redirect()->route('profile')->withErrors(Lang::get('general.profile-permission'));
         } // $id is invalid or does not belong to the student
 
         $validator = Validator::make($request->all(), [
@@ -270,7 +271,7 @@ class ActingWorkplaceLearningController extends Controller
         // Done, redirect back to profile page
         return redirect()->route('period-acting-edit', ["id" => $id])->with(
             'success',
-            'De wijzigingen in jouw leerdoelen zijn opgeslagen.'
+            Lang::get('general.edit-saved')
         );
     }
 
@@ -285,7 +286,7 @@ class ActingWorkplaceLearningController extends Controller
             }
         }
         if (!$belongsToStudent) {
-            return redirect()->route('profile')->withErrors("Je hebt geen rechten om deze actie uit te voeren voor dit profiel.");
+            return redirect()->route('profile')->withErrors(Lang::get('general.profile-permission'));
         } // $id is invalid or does not belong to the student
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
@@ -320,7 +321,7 @@ class ActingWorkplaceLearningController extends Controller
             // Done, redirect back to profile page
             return redirect()->route('period-acting-edit', ["id" => $id])->with(
                 'succes',
-                'De wijzigingen in jouw categoriën zijn opgeslagen.'
+                Lang::get('general.edit-saved')
             );
         }
     }

@@ -8,6 +8,7 @@ use App\ChartType;
 use App\DashboardChart;
 use App\Label;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 
 class AnalyticsChartController extends Controller
 {
@@ -153,13 +154,13 @@ class AnalyticsChartController extends Controller
             if (!$chart->delete())
                 return redirect()
                     ->back()
-                    ->withErrors(['error', "Failed to remove the chart from the database."]);
+                    ->withErrors(['error', Lang::get('charts.removed-fail')]);
             $this->dchart->where('chart_id', $chart->id)
                 ->delete();
         });
 
         return redirect()->route('charts.index')
-            ->with('success', 'Chart has been removed from the database');
+            ->with('success', Lang::get('charts.removed'));
     }
 
 }

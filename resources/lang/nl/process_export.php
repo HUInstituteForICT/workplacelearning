@@ -18,5 +18,39 @@ return array (
   'supportWp' => 'hulp werkplek',
   'supportEd' => 'hulp Hogeschool Utrecht',
   'learningGoalDescription' => 'omschrijving leerdoel',
-    'evidence' => 'bewijsstuk'
+  'evidence' => 'bewijsstuk',
+  'text-mail' => 'Goedendag,
+
+Student :name heeft u een aantal leermomenten gestuurd vanuit de stage-app https://werkplekleren.hu.nl.
+
+Onder deze mail vindt u de tekst van de betreffende leermomenten.
+
+
+
+Met vriendelijke groeten,
+Hogeschool Utrecht – werkplekleren.hu.nl',
+
+  "wordexport" => [
+      "by-intern" => "In te vullen door de stagiair",
+      "intern-name" => "Naam Stagiair",
+      "organisation" => "Stageverlenende organisatie",
+      "studentnr" => "Studentnummer",
+      "address" => "Adres",
+      "total-days" => "Totaal aantal dagen stage gelopen",
+      "mentor" => "Stagedocent",
+      "by-workplace" => "In te vullen door stageplek",
+      "name" => "Naam",
+      "date" => "Datum",
+      "confirmation" => "Bevestiging, namens het bedrijf, dat het aantal dagen dat stage is gelopen, hierboven naar waarheid is ingevuld.",
+      "signature" => "Handtekening",
+      "remarks" => "Opmerkingen van de stageverlenende organisatie",
+      "week" => "Week",
+      "activities" => "Werkzaamheden",
+      "absent" => "Absent",
+      "days-worked" => "Aantal dagen gewerkt (7,5 uur of meer)",
+      "day" => "Dag",
+      "days" => "Dagen",
+      "absence-reason" => "Reden eventuele absentie",
+      "remarks-week" => "Opmerkingen"
+  ]
 );

@@ -25,5 +25,8 @@
     "react-dom": "^15.5.4",
     "react-dropzone": "^3.13.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "moment": "^2.19.1",
+    "react-datepicker": "^0.57.0"
+  }
 }

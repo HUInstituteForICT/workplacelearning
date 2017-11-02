@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Analysis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Lang;
 
 class AnalyticsController extends Controller
 {
@@ -55,9 +56,9 @@ class AnalyticsController extends Controller
         if (!$analysis->save())
             return redirect()
                 ->back()
-                ->withErrors(['error', "Failed to save the analysis to the database."]);
+                ->withErrors(['error', Lang::get('analysis.create-error')]);
 
-        return redirect()->route('analytics-show', $analysis->id)->with('success', 'The analysis has been created.');
+        return redirect()->route('analytics-show', $analysis->id)->with('success', Lang::get('analysis.create'));
     }
 
     /**
@@ -111,7 +112,7 @@ class AnalyticsController extends Controller
         $data = $request->all();
         $analysis = $this->analysis->findOrFail($data['id']);
         $analysis->refresh();
-        return redirect()->back()->with('success', 'Query has been removed from the cache');
+        return redirect()->back()->with('success', Lang::get('analysis.query-removed'));
     }
 
     /**
@@ -185,10 +186,10 @@ class AnalyticsController extends Controller
         if (!$analysis->delete())
             return redirect()
                 ->back()
-                ->withErrors(['error', "Failed to remove the analysis from the database."]);
+                ->withErrors(['error', Lang::get('analysis.remove-error')]);
 
         return redirect()->route('analytics-index')
-            ->with('success', 'Analysis has been removed from the database');
+            ->with('success', Lang::get('analysis.removed'));
     }
 
 }

@@ -17,7 +17,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <title>@yield('httperrno') - An error occured</title>
+    <title>@yield('httperrno') - {{ Lang::get('errors.occurred') }}</title>
     <style>
         .main{
             margin-top: 70px;
@@ -85,7 +85,7 @@
                 <div class="main-login main-center">
                     <h2>@yield('title')</h2>
                     <p>@yield('content')</p>
-                    <a href="{{ LaravelLocalization::GetLocalizedURL(null, '/', array()) }}">{{ Lang::get('errors.returnhome') }}</a>
+                    <a href="{{ '/' }}">{{ Lang::get('errors.returnhome') }}</a>
                 </div>
             </div>
         </div>

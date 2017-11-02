@@ -16,6 +16,7 @@ use App\Http\Requests\EducationProgram\UpdateEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,7 +78,7 @@ class EducationProgramsController extends Controller
     {
         if ($cohort->workplaceLearningPeriods()->count() > 0) {
             return response()->json(["status"  => "error",
-                                     "message" => \Lang::trans("This cohort has associated workplace learning periods and cannot be deleted"),
+                                     "message" => Lang::get("general.cohort.delete-has-children"),
             ], 405);
         }
 
@@ -125,7 +126,7 @@ class EducationProgramsController extends Controller
     {
         if ($program->cohorts()->count() > 0) {
             return response()->json(["status"  => "error",
-                                     "message" => \Lang::trans("This program has cohorts and therefore cannot be deleted"),
+                                     "message" => Lang::get("general.ep.delete-has-cohorts"),
             ], 405);
         }
         $program->delete();
@@ -170,7 +171,7 @@ class EducationProgramsController extends Controller
             if (Str::contains($exception->getMessage(), "foreign key constraint fails")) {
                 return response()->json([
                     "status"  => "error",
-                    "message" => \Lang::trans("This entity is referenced by other entities and cannot be deleted without harming the integrity of student activities."),
+                    "message" => Lang::get('general.ep.entity-delete-references'),
                 ], 422);
             }
         } catch (\Exception $exception) {

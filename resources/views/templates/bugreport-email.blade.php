@@ -5,11 +5,11 @@
         <table>
         <tbody>
         <tr>
-                <td><strong>Naam student:</strong></td>
+                <td><strong>{{ Lang::get('dashboard.name') }} student:</strong></td>
                 <td>{{ $student_name }}</td>
         </tr>
         <tr>
-                <td><strong>Opleiding</strong></td>
+                <td><strong>{{ Lang::get('general.program') }}</strong></td>
                 <td>{{ $education->ep_name }}</td>
         </tr>
         <tr>
@@ -17,7 +17,7 @@
                 <td>{{ $student_email }}</td>
         </tr>
         <tr>
-                <td><strong>Betreft:</strong></td>
+                <td><strong>{{ Lang::get('general.subject') }}:</strong></td>
                 <td>{{ $subject }}</td>
         </tr>
         </tbody>

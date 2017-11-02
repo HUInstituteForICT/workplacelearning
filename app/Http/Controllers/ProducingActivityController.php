@@ -17,6 +17,7 @@ use App\ResourcePerson;
 use App\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 use Validator;
 
 class ProducingActivityController extends Controller
@@ -25,12 +26,11 @@ class ProducingActivityController extends Controller
     public function show()
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
-        $x = Auth::user();
-        $y = Auth::user()->getCurrentWorkplaceLearningPeriod();
+
         $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
@@ -64,14 +64,14 @@ class ProducingActivityController extends Controller
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
         $activity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
 
         if (!$activity) {
             return redirect()->route('process-producing')
-                ->withErrors('Helaas, er is geen activiteit gevonden.');
+                ->withErrors(Lang::get('errors.no-activity-found'));
         }
 
         $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
@@ -102,6 +102,10 @@ class ProducingActivityController extends Controller
 
     public function progress($pageNr)
     {
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+            return redirect()->route('profile')->withErrors([Lang::get("notifications.generic.nointernshipprogress")]);
+        }
+
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->get());
@@ -123,14 +127,14 @@ class ProducingActivityController extends Controller
         if ($feedback != null) {
             $learningActivityProducing = LearningActivityProducing::find($feedback->learningactivity_id);
             if (is_null($learningActivityProducing) || $learningActivityProducing->wplp_id != Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id) {
-                return redirect()->route('home')->withErrors(['Je hebt geen rechten om deze feedback te versturen']);
+                return redirect()->route('home')->withErrors([Lang::get('errors.feedback-permission')]);
             }
         }
 
         $messages = [
-            "newnotfinished" => "De omschrijving is verplicht en mag maximaal 150 tekens zijn",
-            "ondersteuning_werkplek.required_unless" => "Omschrijving van de ondersteuning van de werkplek is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben",
-            "ondersteuning_opleiding.required_unless" => "Omschrijving van de ondersteuning van de opleiding is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben"
+            "newnotfinished" => Lang::get('validation.newnotfinished'),
+            "ondersteuning_werkplek.required_unless" => Lang::get('validation.ondersteuning_werkplek.required_unless'),
+            "ondersteuning_opleiding.required_unless" => Lang::get('validation.ondersteuning_opleiding.required_unless')
         ];
 
         $validator = Validator::make($request->all(), [
@@ -167,7 +171,7 @@ class ProducingActivityController extends Controller
             $feedback->save();
 
             return redirect()->route('process-producing')->with('success',
-                'Zowel de activiteit als de feedback zijn opgeslagen.');
+                Lang::get('activity.feedback-activity-saved'));
         }
     }
 
@@ -175,7 +179,7 @@ class ProducingActivityController extends Controller
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+            return redirect()->route('profile')->withErrors([Lang::get('errors.internship-no-permission')]);
         }
 
         $validator = Validator::make($request->all(), [
@@ -277,9 +281,9 @@ class ProducingActivityController extends Controller
                 $feedback = new Feedback;
                 $feedback->learningactivity_id = $learningActivityProducing->lap_id;
                 $feedback->save();
-                return redirect()->route('feedback-producing', ['id' => $feedback->fb_id])->with('notification', 'Je vond deze activiteit moeilijk. Kan je aangeven wat je lastig vond?');
+                return redirect()->route('feedback-producing', ['id' => $feedback->fb_id])->with('notification', Lang::get('notifications.feedback-hard'));
             }
-            return redirect()->route('process-producing')->with('success', 'De leeractiviteit is opgeslagen.');
+            return redirect()->route('process-producing')->with('success', Lang::get('activity.saved-successfully'));
         }
     }
 
@@ -287,7 +291,7 @@ class ProducingActivityController extends Controller
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('profile')->withErrors(['Je kan geen activiteiten registreren zonder (actieve) stage.']);
+            return redirect()->route('profile')->withErrors([Lang::get('errors.internship-no-permission')]);
         }
 
         // TODO shouldn't these fields be in English?
@@ -368,6 +372,6 @@ class ProducingActivityController extends Controller
         $learningActivityProducing->status_id = $request['status'];
         $learningActivityProducing->save();
 
-        return redirect()->route('process-producing')->with('success', 'De leeractiviteit is aangepast.');
+        return redirect()->route('process-producing')->with('success', Lang::get('activity.saved-successfully'));
     }
 }

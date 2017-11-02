@@ -6,6 +6,7 @@ use App\Mail\FeedbackGiven;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 use Validator;
 use App\Http\Controllers\Controller;
 
@@ -53,6 +54,6 @@ class HomeController extends Controller
 
         $mailer->send(new FeedbackGiven($request, Auth::user()));
 
-        return redirect()->route('home')->with('success', 'Bedankt voor je bijdrage! Je krijgt per email een reactie terug.');
+        return redirect()->route('home')->with('success', Lang::get('general.bugreport-sent'));
     }
 }

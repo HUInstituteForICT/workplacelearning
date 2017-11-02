@@ -15,12 +15,11 @@
 */
 
 use App\Http\Middleware\CheckUserLevel;
+use App\Http\Middleware\Locale;
 
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
-
-//Route::auth();
-
+Route::post('locale', "LocaleSwitcher@switchLocale")->name('localeswitcher');
 
 // API ROUTES - NOTE: NO LOCALIZATION AS IT WILL BREAK THE REQUEST DUE TO REDIRECTS (urls without a specified language get redirected, breaks POST requests to GET)
 Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix' => '/education-programs/api'],
@@ -57,6 +56,8 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 
 Route::group(['before' => 'auth'], function() {
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
+    Route::post('/activity-export-doc', "ActivityExportController@exportActivitiesToWord");
+    Route::get('/download/activity-export-doc/{fileName}', "ActivityExportController@downloadWordExport")->name('docx-export-download');
     // Catch the stat registration post
     Route::post('/log', 'LogController@log');
 });
@@ -65,15 +66,16 @@ Route::group(['before' => 'auth'], function() {
 // Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
 // Note: The localisation is saved in a session state.
 Route::group([
-    'before'     => 'auth',
-    'prefix'     => LaravelLocalization::setLocale(),
-    'middleware' => ['localizationRedirect', 'usernotifications'],
+    'before'     => ['auth', ],
+    'middleware' => ['usernotifications'],
 ], function () {
 
     Route::group(['middleware' => CheckUserLevel::class], function () {
         Route::get('/education-programs', 'EducationProgramsController@index')
             ->name('education-programs');
     });
+
+
 
 
 
@@ -224,7 +226,7 @@ Route::group([
         // Progress
         Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page',
             '[1-9]{1}[0-9]*')->name('progress-producing');
-        Route::get('report/export', 'ProducingReportController@export')->name('report-producing-export');
+        Route::get('report/export', 'ProducingReportController@wordExport')->name('report-producing-export');
 
         // Report Creation
         Route::get('analysis', 'ProducingAnalysisController@showChoiceScreen')->name('analysis-producing-choice');

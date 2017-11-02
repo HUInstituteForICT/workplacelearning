@@ -26,6 +26,13 @@ class Student extends Authenticatable
         'registrationdate',
         'answer',
         'pw_hash',
+        'locale'
+    ];
+
+
+    public static $locales = [
+        "nl" => "Nederlands",
+        "en" => "English",
     ];
 
     protected $hidden = [

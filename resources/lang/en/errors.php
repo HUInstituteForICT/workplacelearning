@@ -20,4 +20,8 @@ return array (
     ),
   ),
   'returnhome' => 'Back to Dashboard',
+    "activity-no-internship" => "You cannot register activities without an active internship.",
+    "no-activity-found" => "Unable to find any activities",
+  "internship-no-permission" => 'This internship does not exist, or you have no access to see it.',
+  "feedback-permission" => "You do not have permission to send this feedback."
 );

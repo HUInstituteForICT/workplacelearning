@@ -84,7 +84,7 @@ class Competence extends Entity {
 
     render() {
         return <div className="col-md-4">
-            <h4>Competencies</h4>
+            <h4>{Lang.get('react.competencies')}</h4>
             <div className="form-group">
 
                 {this.state.competencies.map(competence => {
@@ -102,33 +102,33 @@ class Competence extends Entity {
                                cohortId={this.props.cohortId}/>
 
 
-                <h5>Competence description</h5>
+                <h5>{Lang.get('react.competence-description')}</h5>
                 <div>
                         <span>
-                            Current description:
+                            {Lang.get('react.current-description')}:
                             &nbsp;
                             {this.state.competence_description !== null && this.state.competence_description.has_data &&
                             <span>
-                                <a href={this.state.competence_description['download-url']}>download</a>
+                                <a href={this.state.competence_description['download-url']}>{Lang.get('react.download')}</a>
                                 &nbsp;-&nbsp;
                                 <a onClick={() => {
                                     EducationProgramService.removeCompetenceDescription(this.props.programId, () => {
                                         this.setState({competence_description: null})
                                     });
                                 }}>
-                                remove
+                                {Lang.get('react.remove')}
                                 </a>
                             </span>
                             }
                             {(this.state.competence_description === null || !this.state.competence_description.has_data ) &&
-                            <span>none</span>
+                            <span>{Lang.get('react.none')}</span>
                             }
                             {this.state.uploadedText}
                         </span>
                     <Dropzone className="dropzone" accept="application/pdf" multiple={false}
                               onDrop={this.onDrop.bind(this)}>
                                 <span>
-                                    Click or drop file to upload the competence description
+                                    {Lang.get('react.upload-instructions')}
                                 </span>
                     </Dropzone>
                 </div>
@@ -146,7 +146,7 @@ class Timeslot extends Entity {
 
     render() {
         return <div className="col-md-4">
-            <h4>Categories</h4>
+            <h4>{Lang.get('react.categories')}</h4>
             <div className="form-group">
 
                 {this.state.timeslots.map(timeslot => {
@@ -176,7 +176,7 @@ class ResourcePerson extends Entity {
 
     render() {
         return <div className="col-md-4">
-            <h4>Resource Persons</h4>
+            <h4>{Lang.get('react.resourceperson')}</h4>
             <div className="form-group">
 
                 {this.state.resourcePersons.map(resourcePerson => {
@@ -206,7 +206,7 @@ class Category extends Entity {
 
     render() {
         return <div className="col-md-4">
-            <h4>Categories</h4>
+            <h4>{Lang.get('react.categories')}</h4>
             <div className="form-group">
 
                 {this.state.categories.map(category => {

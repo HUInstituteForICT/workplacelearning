@@ -45,12 +45,12 @@ export default class Cohorts extends React.Component {
         const selectedCohort = this.state.cohorts[this.cohortIndex(this.state.selectedCohortId)];
         return <div>
 
-            <h3>Cohorts</h3>
+            <h3>{Lang.get('react.cohorts')}</h3>
             <a onClick={() => EducationProgramService.createCohort(this.props.programId, response => {
                 const cohorts = this.state.cohorts.slice();
                 cohorts.push(response.data);
                 this.setState({cohorts: cohorts});
-            })}>Add cohort</a>
+            })}>{Lang.get('react.add-cohort')}</a>
             <div className={"row"}>
 
                 {this.state.cohorts.map(cohort => {
@@ -67,12 +67,12 @@ export default class Cohorts extends React.Component {
             {(this.state.selectedCohortId !== null && this.state.loading === false) &&
 
             <div>
-                <h4>Cohort details</h4>
+                <h4>{Lang.get('react.cohort-details')}</h4>
                 <div className={"row"}>
                     <div className={"col-md-6"}>
                         <div className="form-group">
                             <label>
-                                Cohort name
+                                {Lang.get('react.cohort-name')}
                                 <input type="text" className="form-control" value={selectedCohort.name}
                                        onChange={e => {
                                            this.setState(
@@ -90,7 +90,7 @@ export default class Cohorts extends React.Component {
                     <div className={"col-md-6"}>
                         <div className="form-group">
                             <label>
-                                Cohort description
+                                {Lang.get('react.cohort-desc')}
                                 <input type="text" className="form-control" value={selectedCohort.description}
                                        onChange={e => {
                                            this.setState(
@@ -113,7 +113,7 @@ export default class Cohorts extends React.Component {
                                 this.setState({cohorts: update(this.state.cohorts, {[index]: {disabled: {$set: response.data.disabled}}})});
                             }
                         })}>
-                            {selectedCohort.disabled ? "Enable cohort for new workplace learning periods" : "Disable program for new workplace learning periods"}
+                            {selectedCohort.disabled ? Lang.get('react.cohort-enable'):Lang.get('react.cohort-disable')}
                         </a>
                     </div>
                     <div className={"col-md-3"}>
@@ -128,7 +128,7 @@ export default class Cohorts extends React.Component {
                                 })
                             }
                         }}>
-                            {selectedCohort.canBeDeleted ? "Delete cohort" : "Cohort has workplace learning periods, therefore it cannot be deleted"}
+                            {selectedCohort.canBeDeleted ? Lang.get('react.cohort-delete') : Lang.get('react.cohort-delete-block')}
                         </a>
                     </div>
 

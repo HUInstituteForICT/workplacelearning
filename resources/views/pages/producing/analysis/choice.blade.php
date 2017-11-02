@@ -1,6 +1,6 @@
 @extends('layout.HUdefault')
 @section('title')
-    Analyse
+    {{ Lang::get('analysis.analysis') }}
 @stop
 @section('content')
 
@@ -45,7 +45,7 @@
                     <h3>{{ Lang::get('elements.analysis.choice') }}</h3>
                     <?php
                         $intlfmt = new IntlDateFormatter(
-                                (LaravelLocalization::getCurrentLocale() == "en") ? "en_US" : "nl_NL",
+                                LaravelLocalization::getCurrentLocaleRegional(),
                                 IntlDateFormatter::GREGORIAN,
                                 IntlDateFormatter::NONE,
                                 NULL,

@@ -8,6 +8,7 @@
 namespace app\Http\Controllers;
 
 use App\Deadline;
+use Illuminate\Support\Facades\Lang;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -39,7 +40,7 @@ class CalendarController extends Controller
         $deadline->dl_datetime     = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
         $deadline->save();
         
-        return redirect()->route('deadline')->with('success', "De deadline is opgeslagen.");
+        return redirect()->route('deadline')->with('success', Lang::get('general.calendar-deadline-saved'));
     }
 
     public function update(Request $request)
@@ -58,17 +59,17 @@ class CalendarController extends Controller
 
         $deadline = Deadline::find($request['id']);
         if (is_null($deadline) || $deadline->student_id != Auth::user()->student_id) {
-            return redirect('deadline')->withErrors(['error', "Deze deadline bestaat niet, of je hebt geen rechten om deze te bewerken."]);
+            return redirect('deadline')->withErrors(['error', Lang::get('general.calendar-deadline-permission')]);
         } elseif ($request->input('action') === "submit") {
             $deadline->dl_value        = $request['nameDeadline'];
             $deadline->dl_datetime     = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
             $deadline->save();
-            $msg = "De deadline is aangepast.";
+            $msg = Lang::get('general.calendar-deadline-edited');
         } elseif ($request->input('action') === "delete") {
             $deadline->delete();
-            $msg = "De deadline is verwijderd uit het overzicht.";
+            $msg = Lang::get('general.calendar-deadline-removed');
         } else {
-            return redirect()->route('deadline')->withErrors(['error', "Er is een onbekende fout opgetreden."]);
+            return redirect()->route('deadline')->withErrors(['error', Lang::get('errors.occurred')]);
         }
         return redirect()->route('deadline')->with('success', $msg);
     }

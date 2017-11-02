@@ -3,18 +3,34 @@ import Row from "./row";
 import FilterRule from "./filterRule";
 import _ from "lodash";
 import ProducingActivityProcessExporter from "../../services/ProducingActivityProcessExporter";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 export default class ActivityProducingProcessTable extends React.Component {
 
     constructor(props) {
         super(props);
+        let earliestDate = moment(), latestDate = moment();
+        window.activities.forEach(activity => {
+            if(moment(activity.date, "DD-MM-YYYY") < earliestDate || earliestDate === undefined) {
+                earliestDate = moment(activity.date, "DD-MM-YYYY");
+            }
+            if(moment(activity.date, "DD-MM-YYYY") > latestDate || latestDate === undefined) {
+                latestDate = moment(activity.date, "DD-MM-YYYY");
+            }
+        });
+
         this.state = {
             activities: window.activities,
             filters: this.buildFilter(window.activities),
-            exports: ["csv", "txt", "email"],
+            exports: ["csv", "txt", "email", "word"],
             selectedExport: "txt",
             email: "",
-            emailAlert: null
+            emailAlert: null,
+            startDate: earliestDate,
+            endDate: latestDate,
         };
 
         this.updateFilter = this.updateFilter.bind(this);
@@ -119,16 +135,16 @@ export default class ActivityProducingProcessTable extends React.Component {
 
                 return this.state.filters.difficulty.selectedRules.indexOf(activity.difficulty) > -1;
             })
+            .filter((activity) => {
+                return moment(activity.date, "DD-MM-YYYY").isSameOrAfter(this.state.startDate) && moment(activity.date, "DD-MM-YYYY").isSameOrBefore(this.state.endDate)
+            })
     }
 
 
     exportHandler() {
         const exporter = new ProducingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
 
-        if(this.state.selectedExport !== 'email') {
-            exporter[this.state.selectedExport]();
-            exporter.download();
-        } else {
+        if(this.state.selectedExport === "email") {
             this.setState({emailAlert: undefined});
             exporter.mail(this.state.email, response => {
                 if(response.hasOwnProperty("data") && response.data.status === "success") {
@@ -140,6 +156,17 @@ export default class ActivityProducingProcessTable extends React.Component {
 
 
             });
+        } else if(this.state.selectedExport === "word") {
+            exporter.txt();
+            const exportText = exporter.outputData;
+            axios.post('/activity-export-doc', {exportText})
+                .then(response => {
+                    console.log(response);
+                    window.location.href = response.data.download;
+                });
+        } else {
+            exporter[this.state.selectedExport]();
+            exporter.download();
         }
     }
 
@@ -147,10 +174,21 @@ export default class ActivityProducingProcessTable extends React.Component {
     render() {
         let filteredActivities = this.filterActivities(this.state.activities);
         return <div>
-            <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> Filters</h3>
+            <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> {Lang.get('react.filters')}</h3>
             <div className="filters row" style={{display:"none"}}>
-                <div className="duration col-md-3">
-                    <h4>Tijd</h4>
+                <div className="date col-md-2">
+                    <h4>{ Lang.get('react.date') }</h4>
+                    <div>
+                        <strong>{Lang.get('react.startdate')}:</strong>
+                        <DatePicker selected={this.state.startDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({startDate: date})} />
+                    <br/>
+                        <strong>{Lang.get('react.enddate')}:</strong>
+                        <DatePicker selected={this.state.endDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({endDate: date})} />
+                    </div>
+                    <div style={{clear: 'both'}}/>
+                </div>
+                <div className="duration col-md-2">
+                    <h4>{Lang.get('react.time')}</h4>
                     <div className="buttons">
                         {this.state.filters.duration.rules.map(rule => {
                             return <FilterRule key={rule} type="duration" onClickHandler={this.updateFilter} rule={rule}
@@ -160,8 +198,8 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <div style={{clear: 'both'}}/>
                 </div>
 
-                <div className="resourceDetail col-md-3">
-                    <h4>Hulpbron</h4>
+                <div className="resourceDetail col-md-2">
+                    <h4>{Lang.get('react.aid')}</h4>
                     <div className="buttons">
                         {this.state.filters.resourceDetail.rules.map(rule => {
                             return <FilterRule key={rule} type="resourceDetail" onClickHandler={this.updateFilter}
@@ -172,8 +210,8 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <div style={{clear: 'both'}}/>
                 </div>
 
-                <div className="duration col-md-3">
-                    <h4>Categorie</h4>
+                <div className="duration col-md-2">
+                    <h4>{Lang.get('react.category')}</h4>
                     <div className="buttons">
                         {this.state.filters.category.rules.map(rule => {
                             return <FilterRule key={rule} type="category" onClickHandler={this.updateFilter} rule={rule}
@@ -183,8 +221,8 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <div style={{clear: 'both'}}/>
                 </div>
 
-                <div className="duration col-md-3">
-                    <h4>Complexiteit</h4>
+                <div className="duration col-md-2">
+                    <h4>{Lang.get('react.complexity')}</h4>
                     <div className="buttons">
                         {this.state.filters.difficulty.rules.map(rule => {
                             return <FilterRule key={rule} type="difficulty" onClickHandler={this.updateFilter} rule={rule}
@@ -198,29 +236,29 @@ export default class ActivityProducingProcessTable extends React.Component {
             <br/>
             <div className="export" style={{paddingBottom:"15px"}}>
 
-                <label>Export naar&nbsp;
+                <label>{Lang.get('react.export-to')}&nbsp;
                     <select onChange={e => {this.setState({selectedExport: e.target.value})}} defaultValue={this.state.selectedExport}>
                         {this.state.exports.map(type => {
                             return <option key={type} value={type}>{type}</option>
                         })}
                     </select>
                 </label> &nbsp;
-                <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) )}>exporteer</button>
+                <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) )}>{Lang.get('react.export')}</button>
                 <br/>
                 {this.state.selectedExport === 'email' &&
                     <div style={{maxWidth: "400px"}}>
-                        <label>Mailen naar: <input type="email" className="form-control" onChange={e => this.setState({email: e.target.value})} value={this.state.email} /></label>
+                        <label>{Lang.get('react.mail-to')}: <input type="email" className="form-control" onChange={e => this.setState({email: e.target.value})} value={this.state.email} /></label>
                         {
                             this.state.emailAlert === undefined &&
-                            <div className="alert alert-info" role="alert">Bezig met verzenden</div>
+                            <div className="alert alert-info" role="alert">{Lang.get('react.mail.sending')}</div>
                         }
                         {
                             this.state.emailAlert === true &&
-                            <div className="alert alert-success" role="alert">De email is succesvol verzonden</div>
+                            <div className="alert alert-success" role="alert">{Lang.get('react.mail.sent')}</div>
                         }
                         {
                             this.state.emailAlert === false &&
-                            <div className="alert alert-danger" role="alert">Er is iets misgegaan bij het verzenden van de email, probeer het later nog eens</div>
+                            <div className="alert alert-danger" role="alert">{Lang.get('react.mail.failed')}</div>
                         }
                     </div>
                 }
@@ -231,13 +269,13 @@ export default class ActivityProducingProcessTable extends React.Component {
                 <thead className="blue_tile">
                 <tr>
                     <td></td>
-                    <td>Datum</td>
-                    <td>Omschrijving</td>
-                    <td>Tijd</td>
-                    <td>Hulpbron</td>
-                    <td>Categorie</td>
-                    <td>Complexiteit</td>
-                    <td>Status</td>
+                    <td>{Lang.get('react.date')}</td>
+                    <td>{Lang.get('react.description')}</td>
+                    <td>{Lang.get('react.time')}</td>
+                    <td>{Lang.get('react.aid')}</td>
+                    <td>{Lang.get('react.category')}</td>
+                    <td>{Lang.get('react.complexity')}</td>
+                    <td>{Lang.get('react.status')}</td>
                     <td>{/* Edit URL, no table header */}</td>
                 </tr>
                 </thead>

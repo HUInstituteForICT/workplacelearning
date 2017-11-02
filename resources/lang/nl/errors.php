@@ -20,4 +20,9 @@ return array (
     ),
   ),
   'returnhome' => 'Terug naar Dashboard',
+    'occurred' => "Er heeft een fout opgetreden",
+    "activity-no-internship" => "Je kan geen activiteiten registreren zonder (actieve) stage.",
+    "no-activity-found" => "Helaas, er is geen activiteit gevonden.",
+    "internship-no-permission" => 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien.',
+    "feedback-permission" => "Je hebt geen rechten om deze feedback te versturen."
 );

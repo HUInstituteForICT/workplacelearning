@@ -9,7 +9,7 @@
 <html>
 <head>
     @include('includes.head')
-    <title>@yield('title') - Werkplekleren</title>
+    <title>@yield('title') - {{ Lang::get('general.werkplekleren') }}</title>
 </head>
 <body>
 
@@ -41,6 +41,10 @@
     </script>
 </div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
+<script src="/messages.js"></script>
+<script>
+    Lang.setLocale('{{ App::getLocale() }}')
+</script>
 <script src="{{ mix('/js/app.js') }}"></script>
 </body>
 </html>

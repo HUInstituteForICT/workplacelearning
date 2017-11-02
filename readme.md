@@ -83,6 +83,14 @@ To keep compiling on changes
 docker exec -it wpl_php npm run watch
 ```
 
+#### Translations
+Translations can be added and modified manually by editing the right lang files in `resources/lang/*`.
+Another approach is to use the Laravel Translation Manager package, available in dev environment at `localhost/translations`.
+Instructions on how to use it can be found at its [github page](https://github.com/barryvdh/laravel-translation-manager).
+
+React/JS translations are stored in `resources/lang/*/react.php`. These are compiled to the `public/messages.js` file with `php artisan lang:js`.
+So don't forget to compile whenever you add new translations that are used in React/JS.
+
 #### Xdebug
 It is possible to use Xdebug with docker and PHPStorm, follow the steps below to configure it correctly.
 

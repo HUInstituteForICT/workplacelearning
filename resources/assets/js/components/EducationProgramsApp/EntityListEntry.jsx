@@ -64,11 +64,11 @@ export default class EntityListEntry extends React.Component {
                            onChange={this.onChangeFieldValue}/>
                     <br/>
                     <span className="defaultButton" style={styleBtn} onClick={this.save}>
-                        Save
+                        {Lang.get('react.save')}
                         </span>
                     <span className="defaultButton red" style={styleBtn}
                           onClick={() => this.props.onRemoveClick(this.props.id, this.props.type)}>
-                        Delete
+                        {Lang.get('react.delete')}
                         </span>
                 </div>}
             </div>
