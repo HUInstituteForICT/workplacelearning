@@ -173,7 +173,10 @@ Route::group([
             'ActingWorkplaceLearningController@update')->name('period-acting-update')->where('id', '[0-9]*');
 
         // Report Creation
-        Route::get('analysis', 'ActingAnalysisController@show')->name('analysis-acting-choice');
+        Route::get('analysis', 'ActingAnalysisController@showChoiceScreen')->name('analysis-acting-choice');
+        Route::get('analysis/{year}/{month}',
+            'ActingAnalysisController@showDetail')->name('analysis-acting-detail');
+
 
         // Download competence description
         Route::get('competence-description/{competenceDescription}',

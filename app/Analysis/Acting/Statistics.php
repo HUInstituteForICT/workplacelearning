@@ -27,6 +27,7 @@ class Statistics
         $this->analysisCollector = $analysisCollector;
     }
 
+
     /**
      * Get the percentage of activities in this timeslot
      *
@@ -239,8 +240,10 @@ class Statistics
     }
 
     public function percentageLearningGoalWithoutMaterial(LearningGoal $learningGoal) {
-
-        $activities = $learningGoal->learningActivityActing()->get();
+        $activities = $this->analysisCollector->getLearningActivities();
+        $activities = $activities->filter(function (LearningActivityActing $activity) use (&$learningGoal) {
+            return (int)$activity->learninggoal_id == (int)$learningGoal->learninggoal_id;
+        });
         $noTheory = $activities->filter(function(LearningActivityActing $activity) {
             return $activity->resourceMaterial === null;
         });
@@ -248,8 +251,8 @@ class Statistics
             return 0;
         }
 
-        if($activities->count() > 0) {
-            return round(($noTheory->count() / $activities->count()) * 100, 1);
+        if ($this->analysisCollector->getLearningActivities()->count() > 0) {
+            return round(($noTheory->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
         } else {
             return 0;
         }
