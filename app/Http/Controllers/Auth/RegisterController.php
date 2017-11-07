@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\EducationProgram;
 use App\Student;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -85,7 +86,8 @@ class RegisterController extends Controller
             //'phonenr'          => $data['phone'],         // Deprecated
             'userlevel' => 0,
             'registrationdate'  => date('Y-m-d H:i:s'),
-            //'answer'            => $data['answer'],       // Deprecated
+            //'answer'            => $data['answer'],       // Deprecated,
+            'locale' => Session::get('locale', 'nl')
         ]);
     }
 }
