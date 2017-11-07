@@ -3,7 +3,7 @@
 return array (
   'header' => 
   array (
-    'title' => 'Workplace Assisted Learning',
+    'title' => 'Workplace Learning',
   ),
   'sidebar' => 
   array (
