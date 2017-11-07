@@ -27,7 +27,7 @@ class ProducingReportController extends Controller
     private $viewdata = [
     ];
 
-    public function wordExport()
+    public function wordExport(Request $request)
     {
         $student = Auth::user();
         $wp = $student->getCurrentWorkplace();
@@ -99,11 +99,11 @@ class ProducingReportController extends Controller
         ];
         $firstRowStyle = ['bgColor' => '66BBFF'];
         $w->addTableStyle('table', $tableStyle, $firstRowStyle);
-        $lap_array = $this->getWerkzaamheden();
+        $lap_array = $this->getWerkzaamheden(Carbon::createFromTimestamp($request->get('startDate')), Carbon::createFromTimestamp($request->get('endDate')));
 
         $wplp = $student->getCurrentWorkplaceLearningPeriod();
         $date_loop = date('Y-m-d',
-            strtotime('monday this week', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate)));
+            strtotime('monday this week', $request->get('startDate')));
         $datefmt = $formatter = new IntlDateFormatter(
             LaravelLocalization::getCurrentLocaleRegional(),
             IntlDateFormatter::GREGORIAN,
@@ -114,7 +114,7 @@ class ProducingReportController extends Controller
         );
 
 
-        while (strtotime($date_loop) < strtotime($wplp->enddate) && strtotime($date_loop) < time()) {
+        while (strtotime($date_loop) < $request->get('endDate') && strtotime($date_loop) < time()) {
             $table = $activityPage->addTable('table');
             $table->addRow();
             $table->addCell(2000)->addText(Lang::get('process_export.wordexport.week')." " . date('W' , strtotime($date_loop)), $bold);
@@ -127,7 +127,7 @@ class ProducingReportController extends Controller
 
                 $table->addRow();
                 $table->addCell(2000)->addText(ucwords($datefmt->format(strtotime($date_loop))));
-                $table->addCell(2000)->addText($date_loop);
+                $table->addCell(2000)->addText(Carbon::createFromTimestamp(strtotime($date_loop))->format("d-m-Y"));
 
                 $hrs = 0;
                 if (array_key_exists("" . date('d-m-Y', strtotime($date_loop)), $lap_array)) {
@@ -177,7 +177,7 @@ class ProducingReportController extends Controller
         $w->save("{$fileName}.docx", "Word2007", true);
     }
 
-    private function getWerkzaamheden()
+    private function getWerkzaamheden(Carbon $startDate, Carbon $endDate)
     {
         $dataset = [];
         $allWerkzaamheden = DB::table('learningactivityproducing')
@@ -198,6 +198,10 @@ class ProducingReportController extends Controller
             ->orderBy('lap_id', 'asc')
             ->get();
         foreach ($allWerkzaamheden as $lap) {
+            $activityDate = Carbon::createFromTimestamp(strtotime($lap->date));
+            if($activityDate->lessThan($startDate) || $activityDate->greaterThan($endDate) ) {
+                continue;
+            }
             $dataset["".date('d-m-Y', strtotime($lap->date))][$lap->lap_id] = [
                 'date'          => $lap->date,
                 'duration'      => $lap->duration,

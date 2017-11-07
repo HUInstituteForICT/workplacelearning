@@ -9,13 +9,15 @@ import DOM from "react-dom";
 import ActivityActingProcessTable from "./components/ActivityActingProcessTable/table";
 import EducationProgramsApp from "./components/EducationProgramsApp/educationProgramsApp";
 import ActivityProducingProcessTable from "./components/ActivityProducingProcessTable/table";
+import ProducingWeekStatesExport from "./components/ProducingWeekStatesExport";
 
 
 
 const Apps = {
     ActivityActingProcessTable,
     ActivityProducingProcessTable,
-    EducationProgramsApp
+    EducationProgramsApp,
+    ProducingWeekStatesExport,
 };
 
 // Automatically mount if one of the above declared Apps exist in the DOM

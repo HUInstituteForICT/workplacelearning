@@ -15,6 +15,7 @@ use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
 use App\ResourcePerson;
 use App\Status;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
@@ -106,18 +107,37 @@ class ProducingActivityController extends Controller
             return redirect()->route('profile')->withErrors([Lang::get("notifications.generic.nointernshipprogress")]);
         }
 
-        $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
+        $activities = Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
-            ->get());
+            ->get();
+        $exportBuilder = new LearningActivityProducingExportBuilder($activities);
 
         $activitiesJson = $exportBuilder->getJson();
+
+        /** @var Carbon $earliest */
+        $earliest = null;
+        /** @var Carbon $latest */
+        $latest = null;
+
+        $activities->each(function(LearningActivityProducing $activity) use(&$earliest, &$latest) {
+            $activityDate = Carbon::createFromTimestamp(strtotime($activity->date));
+
+            if($earliest === null || $activityDate->lessThan($earliest)) {
+                $earliest = $activityDate;
+            }
+            if($latest === null || $activityDate->greaterThan($latest)) {
+                $latest = $activityDate;
+            }
+        });
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
         return view('pages.producing.progress')
             ->with("activitiesJson", $activitiesJson)
             ->with("exportTranslatedFieldMapping", json_encode($exportTranslatedFieldMapping))
-            ->with('page', $pageNr);
+            ->with('page', $pageNr)
+            ->with('weekStatesDates', ["earliest" => $earliest->format("Y-m-d"), "latest" => $latest->format("Y-m-d")])
+            ;
     }
 
     public function updateFeedback(Request $request, $id)

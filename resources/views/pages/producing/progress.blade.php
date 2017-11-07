@@ -13,20 +13,26 @@
     <div class="container-fluid">
         <!-- Internship Info -->
         <div class="row">
-            <div class="col-md-11">
+
+            <div class="col-md-12">
                 <h3>{{ Lang::get('general.weekstates') }}</h3>
-            </div>
-            <div class="col-md-1">
-                <a class="btn btn-info" role="button" target="_blank" href="{{ route('report-producing-export') }}">{{ Lang::get('general.export') }}</a>
+                <div id="ProducingWeekStatesExport" class="__reactRoot" data-latest="{{ $weekStatesDates['latest'] }}"
+                     data-earliest="{{ $weekStatesDates['earliest'] }}"
+                     data-url="{{ route('report-producing-export') }}"></div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin-top:50px;">
+            <div class="col-md-12">
+                <h3>{{ Lang::get('home.progress') }}</h3>
             <script>
                 window.activities = {!! $activitiesJson !!};
                 window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
             </script>
 
-            <div id="ActivityProducingProcessTable" class="__reactRoot col-md-12"></div>
+                <div class="row">
+                    <div id="ActivityProducingProcessTable" class="__reactRoot col-md-12"></div>
+                </div>
+            </div>
         </div>
         {{--<div class="row">
         <table class="table blockTable col-md-12">

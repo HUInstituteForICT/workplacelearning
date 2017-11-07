@@ -59322,6 +59322,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_ActivityActingProcessTable_table__ = __webpack_require__("./resources/assets/js/components/ActivityActingProcessTable/table.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_EducationProgramsApp_educationProgramsApp__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/educationProgramsApp.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ActivityProducingProcessTable_table__ = __webpack_require__("./resources/assets/js/components/ActivityProducingProcessTable/table.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_ProducingWeekStatesExport__ = __webpack_require__("./resources/assets/js/components/ProducingWeekStatesExport.jsx");
 
 
 
@@ -59334,10 +59335,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 var Apps = {
     ActivityActingProcessTable: __WEBPACK_IMPORTED_MODULE_3__components_ActivityActingProcessTable_table__["a" /* default */],
     ActivityProducingProcessTable: __WEBPACK_IMPORTED_MODULE_5__components_ActivityProducingProcessTable_table__["a" /* default */],
-    EducationProgramsApp: __WEBPACK_IMPORTED_MODULE_4__components_EducationProgramsApp_educationProgramsApp__["a" /* default */]
+    EducationProgramsApp: __WEBPACK_IMPORTED_MODULE_4__components_EducationProgramsApp_educationProgramsApp__["a" /* default */],
+    ProducingWeekStatesExport: __WEBPACK_IMPORTED_MODULE_6__components_ProducingWeekStatesExport__["a" /* default */]
 };
 
 // Automatically mount if one of the above declared Apps exist in the DOM
@@ -61955,6 +61958,94 @@ var educationProgramsApp = function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (educationProgramsApp);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/ProducingWeekStatesExport.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_datepicker__ = __webpack_require__("./node_modules/react-datepicker/dist/react-datepicker.min.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_datepicker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_datepicker__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__("./node_modules/moment/moment.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var ProducingWeekStatesExport = function (_React$Component) {
+    _inherits(ProducingWeekStatesExport, _React$Component);
+
+    function ProducingWeekStatesExport(props) {
+        _classCallCheck(this, ProducingWeekStatesExport);
+
+        var _this = _possibleConstructorReturn(this, (ProducingWeekStatesExport.__proto__ || Object.getPrototypeOf(ProducingWeekStatesExport)).call(this, props));
+
+        _this.state = {
+            startDate: __WEBPACK_IMPORTED_MODULE_2_moment___default()(props.earliest, "YYYY/MM/DD"),
+            endDate: __WEBPACK_IMPORTED_MODULE_2_moment___default()(props.latest, "YYYY/MM/DD")
+        };
+        return _this;
+    }
+
+    _createClass(ProducingWeekStatesExport, [{
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                { className: 'row' },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "col-md-2" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "strong",
+                        null,
+                        Lang.get('react.startdate')
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_datepicker___default.a, { className: "form-control", selected: this.state.startDate, dateFormat: "DD/MM/YYYY",
+                        onChange: function onChange(date) {
+                            return _this2.setState({ startDate: date });
+                        } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "strong",
+                        null,
+                        Lang.get('react.enddate')
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_datepicker___default.a, { className: "form-control", selected: this.state.endDate, endDate: this.state.endDate, dateFormat: "DD/MM/YYYY",
+                        onChange: function onChange(date) {
+                            return _this2.setState({ endDate: date });
+                        } })
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "col-md-1" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "a",
+                        { href: this.props.url + "?startDate=" + this.state.startDate.unix() + "&endDate=" + this.state.endDate.unix(), target: "_blank", className: "btn btn-info", role: "button" },
+                        Lang.get('react.export')
+                    )
+                )
+            );
+        }
+    }]);
+
+    return ProducingWeekStatesExport;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (ProducingWeekStatesExport);
 
 /***/ }),
 
