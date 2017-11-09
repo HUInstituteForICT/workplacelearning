@@ -17,16 +17,15 @@
     "babel-preset-react": "^6.24.1",
     "cross-env": "^3.2.4",
     "immutability-helper": "^2.2.3",
-    "laravel-mix": "^1.4.3",
+    "laravel-mix": "^1.6.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "lodash": "^4.17.4",
+    "moment": "^2.19.1",
     "react": "^15.5.4",
+    "react-datepicker": "^0.57.0",
     "react-dom": "^15.5.4",
     "react-dropzone": "^3.13.4"
   },
-  "dependencies": {
-    "moment": "^2.19.1",
-    "react-datepicker": "^0.57.0"
-  }
+  "dependencies": {}
 }
