@@ -45,7 +45,7 @@
                     <h3>{{ Lang::get('elements.analysis.choice') }}</h3>
                     <?php
                         $intlfmt = new IntlDateFormatter(
-                                LaravelLocalization::getCurrentLocaleRegional(),
+                                App::getLocale(),
                                 IntlDateFormatter::GREGORIAN,
                                 IntlDateFormatter::NONE,
                                 NULL,
