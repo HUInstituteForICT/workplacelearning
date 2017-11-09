@@ -105,7 +105,7 @@ class ProducingReportController extends Controller
         $date_loop = date('Y-m-d',
             strtotime('monday this week', $request->get('startDate')));
         $datefmt = $formatter = new IntlDateFormatter(
-            LaravelLocalization::getCurrentLocaleRegional(),
+            App::getLocale(),
             IntlDateFormatter::GREGORIAN,
             IntlDateFormatter::NONE,
             null,
