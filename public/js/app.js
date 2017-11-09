@@ -59809,7 +59809,7 @@ var ActivityActingProcessTable = function (_React$Component) {
                                 Lang.get('react.startdate'),
                                 ":"
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_datepicker___default.a, { selected: this.state.startDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_datepicker___default.a, { className: "form-control", selected: this.state.startDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
                                     return _this4.setState({ startDate: date });
                                 } }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null),
@@ -59819,7 +59819,7 @@ var ActivityActingProcessTable = function (_React$Component) {
                                 Lang.get('react.enddate'),
                                 ":"
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_datepicker___default.a, { selected: this.state.endDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_datepicker___default.a, { className: "form-control", selected: this.state.endDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
                                     return _this4.setState({ endDate: date });
                                 } })
                         ),
@@ -60443,7 +60443,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
                                 Lang.get('react.startdate'),
                                 ":"
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_datepicker___default.a, { selected: this.state.startDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_datepicker___default.a, { className: "form-control", selected: this.state.startDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
                                     return _this4.setState({ startDate: date });
                                 } }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null),
@@ -60453,7 +60453,7 @@ var ActivityProducingProcessTable = function (_React$Component) {
                                 Lang.get('react.enddate'),
                                 ":"
                             ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_datepicker___default.a, { selected: this.state.endDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_datepicker___default.a, { className: "form-control", selected: this.state.endDate, dateFormat: "DD/MM/YYYY", onChange: function onChange(date) {
                                     return _this4.setState({ endDate: date });
                                 } })
                         ),
