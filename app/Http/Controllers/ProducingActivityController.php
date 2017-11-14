@@ -132,6 +132,9 @@ class ProducingActivityController extends Controller
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
+        $earliest = $earliest ?? Carbon::now();
+        $latest = $latest ?? Carbon::now();
+
         return view('pages.producing.progress')
             ->with("activitiesJson", $activitiesJson)
             ->with("exportTranslatedFieldMapping", json_encode($exportTranslatedFieldMapping))
