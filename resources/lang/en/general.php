@@ -57,4 +57,7 @@ return array (
 
     "bugreport-sent" => 'Thank you for your contribution! You will receive an email response.',
     'startdate' => "Start date",
+
+    "no-internship-active-header" => "No internship active",
+    "until-header" => "until"
 );

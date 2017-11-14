@@ -19,7 +19,36 @@ class ActingAnalysisCollector
     private $competencies;
     private $resourcePersons;
     private $resourceMaterials;
+    public $year;
+    public $month;
 
+    public function __construct($year, $month)
+    {
+        $this->year = $year;
+        $this->month = $month;
+    }
+
+    /**
+     * Limit a Collection from a certain date and +1 month
+     *
+     * @param $collection
+     * @param $year
+     * @param $month
+     * @return mixed
+     */
+    public function limitCollectionByDate(Collection $collection, $year, $month)
+    {
+        if ($year != "all" && $month != "all") {
+            $dtime = mktime(0, 0, 0, intval($month), 1, intval($year));
+            $collection = $collection->filter(function($activity) use($dtime) {
+                $activityDate = strtotime($activity->date);
+                $x =  $activityDate >= $dtime && $activityDate <= strtotime("+1 month", $dtime);
+                return $x;
+            });
+        }
+
+        return $collection;
+    }
 
     /**
      * Get all learning activities of the user
@@ -28,7 +57,7 @@ class ActingAnalysisCollector
      */
     public function getLearningActivities() {
         if($this->learningActivities === null) {
-            $this->learningActivities = Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()->get();
+            $this->learningActivities = $this->limitCollectionByDate(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()->get(), $this->year, $this->month);
         }
         return $this->learningActivities;
     }

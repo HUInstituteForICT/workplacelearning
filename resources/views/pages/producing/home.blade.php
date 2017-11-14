@@ -13,7 +13,7 @@
                         <li>{{ Lang::get('home.with-tile') }} <b>{{ Lang::get('home.learningprocess') }}</b> {{ Lang::get('home.steps.1') }}</li>
                         <li>{{ Lang::get('home.with-tile') }} <b>{{ Lang::get('home.progress') }}</b> {{ Lang::get('home.steps.2') }}</li>
                         <li>{{ Lang::get('home.with-tile') }} <b>{{ Lang::get('home.analysis') }}</b> {{ Lang::get('home.steps.3') }}</li>
-                        <li>{{ Lang::get('home.with-tile') }} <b>{{ Lang::get('home.deadlines') }}</b> {{ Lang::get('steps.4') }}</li>
+                        <li>{{ Lang::get('home.with-tile') }} <b>{{ Lang::get('home.deadlines') }}</b> {{ Lang::get('home.steps.4') }}</li>
                         <li>{{ Lang::get('home.with-tile') }} <b>{{ Lang::get('home.profile') }}</b> {{ Lang::get('home.steps.5') }}</li>
                     </ul>
                     <p>{{ Lang::get('home.goodluck') }}</p>

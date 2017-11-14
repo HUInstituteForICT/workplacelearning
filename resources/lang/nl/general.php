@@ -57,4 +57,7 @@ return array (
 
     "bugreport-sent" => 'Bedankt voor je bijdrage! Je krijgt per email een reactie terug.',
     'startdate' => "Startdatum",
+
+    "no-internship-active-header" => "Geen Stage Actief",
+    "until-header" => "t/m"
 );

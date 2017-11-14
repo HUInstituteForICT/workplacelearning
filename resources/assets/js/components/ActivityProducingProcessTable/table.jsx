@@ -180,10 +180,10 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <h4>{ Lang.get('react.date') }</h4>
                     <div>
                         <strong>{Lang.get('react.startdate')}:</strong>
-                        <DatePicker selected={this.state.startDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({startDate: date})} />
+                        <DatePicker className={"form-control"} selected={this.state.startDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({startDate: date})} />
                     <br/>
                         <strong>{Lang.get('react.enddate')}:</strong>
-                        <DatePicker selected={this.state.endDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({endDate: date})} />
+                        <DatePicker className={"form-control"} selected={this.state.endDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({endDate: date})} />
                     </div>
                     <div style={{clear: 'both'}}/>
                 </div>
