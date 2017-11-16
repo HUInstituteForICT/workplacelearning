@@ -23,7 +23,6 @@ class LocaleSwitcher extends Controller
             Auth::user()->save();
         }
 
-        $x = Session::get('locale');
         App::setLocale(Session::get('locale'));
 
         return redirect($request->get('previousPage', url('/')));
