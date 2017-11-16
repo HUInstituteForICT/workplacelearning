@@ -39,6 +39,7 @@ return array (
     'create-error' => "Failed to save the analysis to the database.",
     "create" => 'The analysis has been created.',
     "query-removed" => 'Query has been removed from the cache',
+    "query-data-expired" => "De query data is ververst",
     "remove-error" => "Failed to remove the analysis from the database.",
     "removed" => 'Analysis has been removed from the database',
     "producing" => [
@@ -46,5 +47,6 @@ return array (
         "activities-lookback" => "You can look back on and see what you find difficult this month and how you managed to continue. You could discuss this information with your workplace or internship teacher during a progress interview.",
         "show-details" => "Show Details",
         "time-spent" => "Time spent",
-    ]
+    ],
+    "expire-all" => "Expire all queries",
 );

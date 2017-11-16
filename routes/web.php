@@ -124,7 +124,7 @@ Route::group([
                     Route::post('/move/{id}/{oldpos}/{newpos}', 'AnalyticsDashboardController@move')->name('dashboard.move');
                     Route::delete('/delete/{id}', 'AnalyticsDashboardController@destroy')->name('dashboard.delete');
 
-
+                    Route::get('/analytics/expire', 'AnalyticsController@expireAll')->name('analytics-expire-all');
                     Route::get('/analytics', 'AnalyticsController@index')->name('analytics-index');
                     Route::get('/analytics/view/{id}', 'AnalyticsController@show')->name('analytics-show');
                     Route::get('/create', 'AnalyticsController@create')->name('analytics-create');

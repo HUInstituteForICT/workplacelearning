@@ -59,10 +59,12 @@ return array (
     "remove-error" => "Het is niet gelukt de analyse te verwijderen.",
     "removed" => 'Analyse verwijderd uit de database.',
     "query-removed" => 'Query is uit de cache verwijderd',
+    "query-data-expired" => "De query data is ververst",
     "producing" => [
         "ordered-list-monthly-activities" => "Hieronder zie je alle series van opeenvolgende activiteiten in deze maand.",
         "activities-lookback" => "Je kunt hier op terugblikken en bekijken wat je in deze maand moeilijk vond en hoe je moeilijke situaties hebt overwonnen. Als je deze informatie wilt delen, zou je het kunnen bespreken bij een voortgangsgesprek met je bedrijfsbegeleider of je stagedocent.",
         "show-details" => "Toon Details",
         "time-spent" => "Tijd besteed"
-    ]
+    ],
+    "expire-all" => "Ververs alle queries",
 );

@@ -19,6 +19,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <a href="{{ route('analytics-create') }}" class="btn btn-primary">{{ Lang::get('general.new') }}</a>
+                <a href="{{ route('analytics-expire-all') }}">{{ trans('analysis.expire-all') }}</a>
             </div>
         </div>
     </div>

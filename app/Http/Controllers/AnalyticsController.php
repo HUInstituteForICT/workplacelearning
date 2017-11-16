@@ -112,7 +112,18 @@ class AnalyticsController extends Controller
         $data = $request->all();
         $analysis = $this->analysis->findOrFail($data['id']);
         $analysis->refresh();
-        return redirect()->back()->with('success', Lang::get('analysis.query-removed'));
+        return redirect()->back()->with('success', Lang::get('analysis.query-data-expired'));
+    }
+
+    /**
+     * Expire all cached analyses
+     */
+    public function expireAll() {
+        $this->analysis->all()->each(function(Analysis $analysis) {
+            $analysis->refresh();
+        });
+
+        return redirect()->route('analytics-index')->with('success', Lang::get('analysis.query-data-expired'));
     }
 
     /**
