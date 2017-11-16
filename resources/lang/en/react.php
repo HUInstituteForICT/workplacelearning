@@ -6,7 +6,7 @@ return [
     "startdate"               => "Starting date",
     "enddate"                 => "End date",
     "time"                    => "Duration",
-    "aid"                     => "Aid",
+    "aid"                     => "Support",
     "category"                => "Category",
     "complexity"              => "Complexity",
     "export-to"               => "Export to",

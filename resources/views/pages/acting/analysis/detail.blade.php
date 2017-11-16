@@ -25,7 +25,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6">
-                <h1>Analyse</h1>
+                <h1>{{ Lang::get('analyses.title') }}</h1>
                 <p>{{ trans('analysis.acting.description') }}</p>
 
 

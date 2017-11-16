@@ -85,10 +85,11 @@ return array (
       7 => 'Tenslotte kun je dit leermoment nog koppelen aan een van je leervragen (of niet) en aan een van de competenties van je opleiding.',
     ),
   ),
-  'producing' => 
+  'producing' =>
   array (
-    'steps' => 
-    array (
+      "person" => "Persoon",
+      'steps'  =>
+          array (
       1 => 'Kies een datum waarop je de activiteit hebt uitgevoerd. Deze mag niet in de toekomst liggen.',
       2 => 'Vul een omschrijving in van de activiteit die je hebt uitgevoerd.',
       3 => 'Geef aan hoeveel tijd je aan deze activiteit hebt besteed.',

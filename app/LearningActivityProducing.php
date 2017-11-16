@@ -3,6 +3,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 
 class LearningActivityProducing extends Model
 {
@@ -69,7 +70,7 @@ class LearningActivityProducing extends Model
 
     public function getDifficulty()
     {
-        return $this->difficulty()->first()->difficulty_label;
+        return Lang::get('general.'.strtolower($this->difficulty->difficulty_label));
     }
 
     public function getCategory()
@@ -89,7 +90,7 @@ class LearningActivityProducing extends Model
             case ($this->duration < 1):
                 return round($this->duration * 60) . " min";
             default:
-                return $this->duration." uur";
+                return $this->duration." " . Lang::get('general.hour');
         }
     }
 
@@ -100,9 +101,9 @@ class LearningActivityProducing extends Model
                 ->first()
                 ->rm_label . ': ' . $this->res_material_detail;
         } else if ($this->res_person_id) {
-            return 'Persoon: ' . $this->resourcePerson()->first()->person_label;
+            return Lang::get('activity.producing.person').': ' . $this->resourcePerson()->first()->person_label;
         } else {
-            return 'Alleen';
+            return Lang::get('activity.alone');
         }
     }
 
@@ -123,7 +124,7 @@ class LearningActivityProducing extends Model
     public function getStatus()
     {
         $st = DB::table("status")->where('status_id', $this->status_id)->first();
-        return $st->status_label;
+        return Lang::get('general.'. strtolower($st->status_label));
     }
 
     public function getFeedback()

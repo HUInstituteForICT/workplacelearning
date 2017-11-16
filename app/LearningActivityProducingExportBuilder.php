@@ -6,6 +6,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Translation\Translator;
 
 class LearningActivityProducingExportBuilder
@@ -31,7 +32,7 @@ class LearningActivityProducingExportBuilder
                 "description" => $activity->description,
                 "resourceDetail" => $activity->getResourceDetail(),
                 "category" => $activity->getCategory(),
-                "difficulty" => $activity->getDifficulty(),
+                "difficulty" => Lang::get('general.' . strtolower($activity->getDifficulty())),
                 "status" => $activity->getStatus(),
                 "url" => route('process-producing-edit', ['id' => $activity->lap_id])
             ];

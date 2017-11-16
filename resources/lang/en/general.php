@@ -59,5 +59,18 @@ return array (
     'startdate' => "Start date",
 
     "no-internship-active-header" => "No internship active",
-    "until-header" => "until"
+    "until-header" => "until",
+    "hour" => "hours",
+    "makkelijk" => "Easy",
+    "gemiddeld" => "Average",
+    "moeilijk" => "Difficult",
+    "mee bezig" => "Busy",
+    "afgerond" => "Finished",
+    "overgedragen" => "Transferred",
+    "not-applicable" => "n/a",
+    "feedback" => "Feedback",
+    "feedforward" => "Feedforward",
+    "satisfied" => "satisfied",
+    "unsatisfied" => "unsatisfied",
+    "course-of-activity" => "with the course of this activity"
 );

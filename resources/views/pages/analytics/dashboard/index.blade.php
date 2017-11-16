@@ -37,7 +37,7 @@
                 @empty
                     <p>{{ Lang::get('dashboard.empty') }}</p>
                     <p>
-                        <a href="{{ route('dashboard.add') }}" class="btn btn-primary">{{ Lang::get('add-chart') }}</a>
+                        <a href="{{ route('dashboard.add') }}" class="btn btn-primary">{{ Lang::get('dashboard.add-chart') }}</a>
                     </p>
                 @endforelse
             </div>

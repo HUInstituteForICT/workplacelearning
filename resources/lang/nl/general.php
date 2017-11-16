@@ -59,5 +59,18 @@ return array (
     'startdate' => "Startdatum",
 
     "no-internship-active-header" => "Geen Stage Actief",
-    "until-header" => "t/m"
+    "until-header" => "t/m",
+    "hour" => "uur",
+    "makkelijk" => "Makkelijk",
+    "gemiddeld" => "Gemiddeld",
+    "moeilijk" => "Moeilijk",
+    "mee bezig" => "Mee bezig",
+    "afgerond" => "Afgerond",
+    "overgedragen" => "Overgedragen",
+    "not-applicable" => "n.v.t.",
+    "feedback" => "Feedback",
+    "feedforward" => "Feedforward",
+    "satisfied" => "tevreden",
+    "unsatisfied" => "niet tevreden",
+    "course-of-activity" => "met het verloop van deze activiteit"
 );

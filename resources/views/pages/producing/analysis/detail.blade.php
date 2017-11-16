@@ -35,7 +35,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <h2>Tijd per categorie</h2>
+                    <h2>{{ Lang::get('analyses.time-per-category') }}</h2>
                     <canvas id="chart_hours"></canvas>
                     <script>
                         var canvasHours = document.getElementById('chart_hours');
@@ -77,24 +77,24 @@
             <div class="row">
                 <div class="col-md-8">
                     {!! Form::open(array('url' => 'dummy', 'class' => 'form-horizontal')) !!}
-                    <h2>Statistiek</h2>
+                    <h2>{{ Lang::get('analyses.statistic') }}</h2>
                     <div class="form-group">
-                        {!! Form::label('', "Gemiddelde Moeilijkheid", array('class' => 'col-sm-3 control-label')) !!}
+                        {!! Form::label('', Lang::get('analyses.average-difficulty'), array('class' => 'col-sm-3 control-label')) !!}
                         <div class="col-sm-9"><p
                                     class="form-control-static">{{ $producingAnalysis->statistic('averageDifficulty') }}
-                                (10 is het meest complex)</p></div>
+                                ({{ Lang::get('analyses.10-most-complex') }})</p></div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('', "Percentage moeilijke activiteiten", array('class' => 'col-sm-3 control-label')) !!}
+                        {!! Form::label('', Lang::get('analyses.percentage-difficult'), array('class' => 'col-sm-3 control-label')) !!}
                         <div class="col-sm-9"><p
                                     class="form-control-static">{{ $producingAnalysis->statistic('percentageDifficultTasks') }}
-                                % van je werkzaamheden vond je <b>Moeilijk</b></p></div>
+                                 <b>{{ Lang::get('general.moeilijk') }}</b></p></div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('', "Percentage zelfstandig werken", array('class' => 'col-sm-3 control-label')) !!}
+                        {!! Form::label('', Lang::get('analyses.percentage-work-on-own'), array('class' => 'col-sm-3 control-label')) !!}
                         <div class="col-sm-9"><p
                                     class="form-control-static">{{ $producingAnalysis->statistic('percentageAloneHours') }}
-                                % van de activiteiten voerde je Alleen uit</p></div>
+                                {{ Lang::get('analyses.percentage-work-alone') }}</p></div>
                     </div>
                     {!! Form::close() !!}
                     <canvas id="chart_categories"></canvas>
@@ -139,45 +139,42 @@
             <!-- Tips -->
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Tips</h2>
+                    <h2>{{ trans('analysis.tips.tips') }}</h2>
                     @if($producingAnalysis->statistic('percentageAloneHours') > 75 && $producingAnalysis->statistic('percentageDifficultTasks') > 50)
-                        <p>Je hebt {{ $producingAnalysis->statistic('percentageAloneHours') }}% van de tijd Alleen
-                        gewerkt, en je vond {{ $producingAnalysis->statistic('percentageDifficultTasks') }}% van dit
-                        zelfstandige werk Moeilijk. Je zou met je bedrijfsbegeleider kunnen bespreken op welke
-                        manier je er samen voor kunt zorgen dat je eerder hulp of ondersteuning krijgt bij moeilijke
-                        werkzaamheden.</p>
+                        <p>{{ trans('analysis.tips.percentageAloneHours', ['percentage' => $producingAnalysis->statistic('percentageAloneHours'), 'percentageDifficultTasks' => $producingAnalysis->statistic('percentageDifficultTasks')]) }}</p>
                     @endif
                     @if($producingAnalysis->statistic('percentageEasyHours') > 65)
-                        <p>Je vindt maar liefst {{ $producingAnalysis->statistic('percentageAloneHours') }}% van je werk Makkelijk! Het lijkt erop dat je meer in je mars hebt. 
-                        Je zou je bedrijfsbegeleider om meer uitdaging of een complexere opdracht kunnen vragen.</p>
+                        <p>
+                            {{ trans('analysis.tips.percentageEasyHours', ["percentage" => $producingAnalysis->statistic('percentageEasyHours')]) }}
+                        </p>
                     @endif
-                    @if($producingAnalysis->statistic('persentageMostDifficultCategory') > 75)
-                        <p>Je vindt {{ $producingAnalysis->statistic('mostDifficultCategoryName') }} de moeilijkste categorie in jouw werk. Van alle activiteiten in deze categorie vind je {{ $producingAnalysis->statistic('persentageMostDifficultCategory') }}% Moeilijk. 
-                        Je zou dit met je begeleider kunnen bespreken hoe je bij je werk in deze categorie ondersteund kunt worden. 
-                        Misschien kun je vanuit de werkplek tips krijgen voor literatuur of personen die je hier verder mee kunnen helpen.</p>
-                    @endif
-                    @if($producingAnalysis->statistic('persentageAveragePersonDifficulty') < 20 && $producingAnalysis->statistic('persentageAveragePersonDifficulty') > 0)
-                        <p>Wanneer jij samenwerk met {{ $producingAnalysis->statistic('averagePersonDifficultyName') }}, vind je jouw werk het makkelijkst. Ga eens voor jezelf na hoe deze persoon jou helpt, 
-                        waardoor je meer kunt bereiken. En bedank deze persoon eens voor zijn of haar ondersteuning ;-)</p>
-                    @endif
+
+                        <p>
+                            {{ trans('analysis.tips.mostDifficultCategory', ["category" => $producingAnalysis->statistic('mostDifficultCategoryName'), "percentage" => $producingAnalysis->statistic('persentageMostDifficultCategory')]) }}
+                        </p>
+
+                        <p>
+                            {{ trans('analysis.tips.averagePersonDifficultyName', ['person' => $producingAnalysis->statistic('averagePersonDifficultyName')]) }}
+                        </p>
+
                 </div>
             </div>
 
             @if(count($producingAnalysis->chains()) > 0)
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Detail</h2>
-                        <p>Hieronder zie je alle series van opeenvolgende activiteiten in deze maand.</p>
-                        <p>Je kunt hier op terugblikken en bekijken wat je in deze maand moeilijk vond en hoe je moeilijke situaties hebt overwonnen. Als je deze informatie wilt delen, zou je het kunnen bespreken bij een voortgangsgesprek met je bedrijfsbegeleider of je stagedocent.</p>
+                        <h2>{{ trans('analysis.detail') }}</h2>
+                        <p>{{ trans('analysis.producing.ordered-list-monthly-activities') }}</p>
+                        <p>{{ trans('analysis.producing.activities-lookback') }}</p>
                     </div>
                     <table class="table blockTable col-md-12">
                         <thead class="blue_tile">
                         <tr>
-                            <td>Datum</td>
-                            <td>Activiteit</td>
-                            <td>Aantal Uren</td>
-                            <td>Afgerond?</td>
-                            <td>Toon Detail</td>
+                            <td>{{ trans('react.date') }}</td>
+                            <td>{{ trans('activity.activity') }}</td>
+                            <td>{{ trans('activity.hours') }}</td>
+                            <td>{{ trans('activity.finished') }}?</td>
+                            <td>{{ trans('analysis.detail') }}</td>
                         </tr>
                         </thead>
 
@@ -197,9 +194,9 @@
                                 </td>
                                 <td>
                                     @if($chain->hasDetail())
-                                        <a data-id="{{ $chain->first()->lap_id }}" href="#" class="expand-detail">Toon Detail</a>
+                                        <a data-id="{{ $chain->first()->lap_id }}" href="#" class="expand-detail">{{ trans('analysis.producing.show-details') }}</a>
                                     @else
-                                        <p>N.V.T.</p>
+                                        <p>{{ trans('general.not-applicable') }}</p>
                                     @endif
                                 </td>
                             </tr>
@@ -211,13 +208,13 @@
                                         <table class="table blockTable col-md-12">
                                             <tbody>
                                             <tr class="blue_tile">
-                                                <td>Datum</td>
-                                                <td>Omschrijving</td>
-                                                <td>Complexiteit</td>
-                                                <td>Tijd besteed</td>
-                                                <td>Hulpbron</td>
-                                                <td>Feedback</td>
-                                                <td>Feedforward</td>
+                                                <td>{{ trans('react.date') }}</td>
+                                                <td>{{ trans('activity.description') }}</td>
+                                                <td>{{ trans('react.complexity') }}</td>
+                                                <td>{{ trans('analysis.producing.time-spent') }}</td>
+                                                <td>{{ trans('react.aid') }}</td>
+                                                <td>{{ trans('general.feedback') }}</td>
+                                                <td>{{ trans('general.feedforward') }}</td>
                                             </tr>
                                             @foreach($chain->raw() as $learningActProd)
                                                 <?php
@@ -230,7 +227,7 @@
                                                     <td>{{ ($feedback != null) ? $learningActProd->getDifficulty().": ".$feedback->notfinished : $learningActProd->getDifficulty() }}</td>
                                                     <td>{{ $learningActProd->getDurationString() }}</td>
                                                     <td>{{ $learningActProd->getResourceDetail() }}</td>
-                                                    <td>{!! ($feedback != null) ? "Je was " . (($feedback->progress_satisfied == 2) ? "tevreden" : "niet tevreden") . " met het verloop van deze activiteit (<a href='".route("feedback-producing", array("id" => $feedback->fb_id))."'>Detail</a>)." : "Geen" !!}</td>
+                                                    <td>{!! ($feedback != null) ? "Je was " . (($feedback->progress_satisfied == 2) ? trans('general.satisfied') : trans('general.unsatisfied')) . " ".trans('general.course-of-activity')." (<a href='".route("feedback-producing", array("id" => $feedback->fb_id))."'>". trans('analysis.detail') ."</a>)." : trans('react.none') !!}</td>
                                                     <td>{{ ($feedback != null) ? $feedback->nextstep_self : "" }}</td>
                                                 </tr>
                                             @endforeach
