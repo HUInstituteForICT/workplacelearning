@@ -11,7 +11,12 @@ class CreateChartTypesTable extends Migration {
 			$table->increments('id');
 			$table->string('name', 255);
 		});
-	}
+
+        collect(["pie", "bar", "line"])->each(function($type) {
+            (new \App\ChartType(["name" => ucfirst($type), "slug" => $type]))->save();
+        });
+
+    }
 
 	public function down()
 	{
