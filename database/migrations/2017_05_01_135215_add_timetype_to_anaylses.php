@@ -13,7 +13,7 @@ class AddTimetypeToAnaylses extends Migration
     public function up()
     {
         Schema::table('analyses', function (Blueprint $table) {
-            $table->string('type_time');
+            $table->string('type_time')->nullable();
         });
     }
 

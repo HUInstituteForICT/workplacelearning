@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\LearningActivityActing;
-use App\LearningActivityProducingExportBuilder;
+use App\LearningActivityActingExportBuilder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -40,7 +40,7 @@ class LearningActivityExportBuilderTest extends TestCase
      */
     public function testGetJson()
     {
-        $exporter = new LearningActivityProducingExportBuilder(collect([$this->buildMock()]));
+        $exporter = new LearningActivityActingExportBuilder(collect([$this->buildMock()]));
         $json = $exporter->getJson();
 
         $this->assertTrue(is_string($json), "Export is not a string, therefore not JSON");
@@ -61,7 +61,7 @@ class LearningActivityExportBuilderTest extends TestCase
         ];
 
         foreach($mapping as $field => $value) {
-            $this->assertEquals($value, $decoded[0]->{$field});
+            $this->assertEquals($value, $decoded[0]->{$field}, "{$field}: expected({$value}) got({$decoded[0]->{$field}})");
         }
 
 

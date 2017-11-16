@@ -14,7 +14,7 @@ class EditTimeslotTable extends Migration
     public function up()
     {
         Schema::table('timeslot', function (Blueprint $table) {
-            $table->integer('wplp_id');
+            $table->integer('wplp_id')->nullable();
             $table->foreign('wplp_id', 'fk_Timeslot_Wplp1')->references('wplp_id')->on('workplacelearningperiod')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }

@@ -13,7 +13,7 @@ class AddTypeColumnToLabelsTable extends Migration
     public function up()
     {
         Schema::table('labels', function (Blueprint $table) {
-            $table->string('type');
+            $table->string('type')->nullable();
         });
     }
 

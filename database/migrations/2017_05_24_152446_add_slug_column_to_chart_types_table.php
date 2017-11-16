@@ -13,7 +13,7 @@ class AddSlugColumnToChartTypesTable extends Migration
     public function up()
     {
         Schema::table('chart_types', function (Blueprint $table) {
-            $table->string('slug');
+            $table->string('slug')->nullable();
         });
     }
 

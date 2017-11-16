@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Competence;
+use App\Cohort;
 use App\EducationProgram;
 use App\EducationProgramsService;
 use App\EducationProgramType;
@@ -22,6 +23,8 @@ class EducationProgramsServiceTest extends TestCase
     private $educationProgram;
     /** @var $programsService EducationProgramsService */
     private $programsService;
+    /** @var $cohort Cohort */
+    private $cohort;
 
     public function setUp()
     {
@@ -29,36 +32,37 @@ class EducationProgramsServiceTest extends TestCase
         /** @var EducationProgramType $type */
         $type = EducationProgramType::create(['eptype_name' => 'Acting']);
         $this->educationProgram = EducationProgram::create(['ep_name' => 'Test EP', 'eptype_id' => $type->eptype_id]);
+        $this->cohort = Cohort::create(["name" => "Test cohort", "description" => "Test description", "ep_id" => $this->educationProgram->ep_id]);
         $this->programsService = new EducationProgramsService();
     }
 
     public function testCreateEntity()
     {
-        $entity = $this->programsService->createEntity(EducationProgramsService::entityTypes["competence"], 'Test program', $this->educationProgram);
+        $entity = $this->programsService->createEntity("competence", 'Test program', $this->cohort);
         $this->assertInstanceOf(Competence::class, $entity);
 
-        $entity = $this->programsService->createEntity(EducationProgramsService::entityTypes["timeslot"], 'Test program', $this->educationProgram);
+        $entity = $this->programsService->createEntity("timeslot", 'Test program', $this->cohort);
         $this->assertInstanceOf(Timeslot::class, $entity);
 
-        $entity = $this->programsService->createEntity(EducationProgramsService::entityTypes["resourcePerson"], 'Test program', $this->educationProgram);
+        $entity = $this->programsService->createEntity("resourcePerson", 'Test program', $this->cohort);
         $this->assertInstanceOf(ResourcePerson::class, $entity);
 
     }
 
     public function testDeleteEntity() {
-        $createdEntity = $this->programsService->createEntity(EducationProgramsService::entityTypes["resourcePerson"], 'Test program', $this->educationProgram);
+        $createdEntity = $this->programsService->createEntity("resourcePerson", 'Test program', $this->cohort);
         $this->assertInstanceOf(ResourcePerson::class, $createdEntity);
 
-        $result = $this->programsService->deleteEntity($createdEntity->rp_id, EducationProgramsService::entityTypes["resourcePerson"]);
+        $result = $this->programsService->deleteEntity($createdEntity->rp_id, "resourcePerson");
         $this->assertTrue($result);
     }
 
     public function testUpdateEntity() {
-        $createdEntity = $this->programsService->createEntity(EducationProgramsService::entityTypes["resourcePerson"], 'Test program', $this->educationProgram);
+        $createdEntity = $this->programsService->createEntity("resourcePerson", 'Test program', $this->cohort);
         $this->assertInstanceOf(ResourcePerson::class, $createdEntity);
 
         $newValue = "new name";
-        $updatedEntity = $this->programsService->updateEntity($createdEntity->rp_id, ["type" => EducationProgramsService::entityTypes["resourcePerson"], "name" => $newValue]);
+        $updatedEntity = $this->programsService->updateEntity($createdEntity->rp_id, ["type" => "resourcePerson", "name" => $newValue]);
 
         $this->assertEquals($newValue, $updatedEntity->person_label);
 
