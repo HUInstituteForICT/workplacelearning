@@ -15,6 +15,10 @@ class AddTypeColumnToLabelsTable extends Migration
         Schema::table('labels', function (Blueprint $table) {
             $table->string('type')->nullable();
         });
+
+        collect(["pie", "bar", "line"])->each(function($type) {
+            (new \App\ChartType(["name" => ucfirst($type), "slug" => $type]))->save();
+        });
     }
 
     /**
