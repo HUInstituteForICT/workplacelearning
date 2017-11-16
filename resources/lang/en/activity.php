@@ -32,7 +32,7 @@ return array (
   array (
     'busy' => 'and you are still busy with it.',
     'category' => 'The activity is in the category',
-    'difficulty-indication' => 'You thought this activity was',
+    'difficulty-indication' => 'You found the difficulty of this activity',
     'duration' => 'the duration of the activity was',
     'feedback' => 'Feedback',
     'finished' => 'and you finished it.',

@@ -37,7 +37,7 @@ return array (
   'feedback' => 
   array (
     'feedback' => 'Feedback',
-    'difficulty-indication' => 'Jij vond deze activiteit ',
+    'difficulty-indication' => 'Qua complexiteit vond jij deze activiteit ',
     'given-information' => 'Je hebt de volgende informatie ingegeven:',
     'time' => 'Tijd',
     'duration' => 'de activiteit duurde',
