@@ -52,7 +52,8 @@ class ActingActivityController extends Controller
             ->with('competencies', Auth::user()->currentCohort()->competencies()->get())
             ->with('activities', Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8))
             ->with('activitiesJson', $activitiesJson)
-            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping));
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
+            ->with('workplacelearningperiod', Auth::user()->getCurrentWorkplaceLearningPeriod());
     }
 
     public function edit($id)
@@ -115,9 +116,11 @@ class ActingActivityController extends Controller
 
         $activityActing = new LearningActivityActing;
 
+
+
         $validator = Validator::make($request->all(),
             [
-                'date'          => 'required|date|before:' . date('d-m-Y', strtotime('tomorrow')), // TODO Date validation not working
+                'date'          => 'required|date|before:tomorrow|after_or_equal:'. strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate), // TODO Date validation not working
                 'description'   => 'required|max:1000',
                 'learned'       => 'required|max:1000',
                 'support_wp'    => 'max:500',
