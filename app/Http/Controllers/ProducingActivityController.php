@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Validation\UnauthorizedException;
 use Validator;
 
 class ProducingActivityController extends Controller
@@ -396,5 +397,25 @@ class ProducingActivityController extends Controller
         $learningActivityProducing->save();
 
         return redirect()->route('process-producing')->with('success', Lang::get('activity.saved-successfully'));
+    }
+
+    public function delete(LearningActivityProducing $activity)
+    {
+        if($activity === null) {
+            return redirect()->route('process-acting');
+        }
+        // Allow only to view this page if an internship exists.
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
+        }
+
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $activity->wplp_id) {
+            throw new UnauthorizedException("No access");
+        }
+
+        $activity->feedback->delete();
+        $activity->delete();
+
+        return redirect()->route('process-producing');
     }
 }

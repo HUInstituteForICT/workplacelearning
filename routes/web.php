@@ -160,6 +160,7 @@ Route::group([
         Route::post('process/create', 'ActingActivityController@create')->name('process-acting-create');
         Route::get('process/edit/{id}', 'ActingActivityController@edit')->name('process-acting-edit');
         Route::post('process/update/{id}', 'ActingActivityController@update')->name('process-acting-update');
+        Route::get('process/delete/{activity}', 'ActingActivityController@delete')->name('process-acting-delete');
 
         Route::get('progress/{page}', 'ActingActivityController@progress')->where('page',
             '[1-9]{1}[0-9]*')->name('progress-acting');
@@ -225,6 +226,7 @@ Route::group([
         Route::post('process/create', 'ProducingActivityController@create')->name('process-producing-create');
         Route::get('process/edit/{id}', 'ProducingActivityController@edit')->name('process-producing-edit');
         Route::post('process/update/{id}', 'ProducingActivityController@update')->name('process-producing-update');
+        Route::get('process/delete/{activity}', 'ProducingActivityController@delete')->name('process-producing-delete');
 
         // Progress
         Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page',
