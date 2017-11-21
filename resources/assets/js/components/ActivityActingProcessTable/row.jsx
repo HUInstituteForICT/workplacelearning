@@ -51,7 +51,11 @@ export default class Row extends React.Component {
             <td>{activity.learningGoal}</td>
             <td>{activity.competence}</td>
             <td>{activity.evidence !== "-" && <a href={activity.evidence}>download</a>}</td>
-            <td><a href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a></td>
+            <td>
+                <a href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
+                &nbsp;
+                <a onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/acting/process/delete/" + activity.id: null}><i className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
+            </td>
         </tr>
     }
 

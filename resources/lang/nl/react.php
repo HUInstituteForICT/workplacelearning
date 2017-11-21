@@ -67,6 +67,6 @@ return [
     "none-selected" => "Geen geselecteerd",
     "save" => "Opslaan",
     "delete" => "Verwijderen",
-
+    "delete-confirm" => "Weet je zeker dat je deze activiteit wilt verwijderen?"
 
 ];

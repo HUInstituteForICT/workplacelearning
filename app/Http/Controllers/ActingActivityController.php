@@ -11,6 +11,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\UnauthorizedException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Validator;
@@ -298,5 +299,25 @@ class ActingActivityController extends Controller
         $learningActivity->competence()->sync([$req['competence']]);
 
         return redirect()->route('process-acting')->with('success', Lang::get('activity.saved-successfully'));
+    }
+
+    public function delete(LearningActivityActing $activity)
+    {
+        if($activity === null) {
+            return redirect()->route('process-acting');
+        }
+        // Allow only to view this page if an internship exists.
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
+        }
+
+        if(Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $activity->wplp_id) {
+            throw new UnauthorizedException("No access");
+        }
+
+        $activity->competence()->detach($activity->competence()->first()->competence_id);
+        $activity->delete();
+
+        return redirect()->route('process-acting');
     }
 }

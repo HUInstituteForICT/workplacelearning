@@ -68,6 +68,6 @@ return [
     "none-selected"      => "None selected",
     "save"               => "Save",
     "delete"             => "Delete",
-
+    "delete-confirm" => "Are you sure you want to delete this activity?"
 
 ];
