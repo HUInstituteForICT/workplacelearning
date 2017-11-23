@@ -10,6 +10,8 @@ namespace App\Http\Controllers;
 use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
 use App\LearningActivityActing;
+use App\Tips\ActingCollector;
+use App\Tips\DataCollector;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +49,10 @@ class ActingAnalysisController extends Controller
         ) {
             return redirect()->route('analysis-producing-choice');
         }
+
+        $dataCollector = new DataCollector(new ActingCollector($year, $month, Auth::user()->getCurrentWorkplaceLearningPeriod()));
+        dump($dataCollector->getDataUnit("activitiesWithRP[person_label=Alleen]"));
+        die();
 
         // TODO: add month year filter so we can show monthly stuff etc
         $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));

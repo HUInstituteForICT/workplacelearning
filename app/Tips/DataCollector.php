@@ -6,9 +6,15 @@ namespace App\Tips;
 
 class DataCollector
 {
-    private $data = [];
+    /** @var CollectorInterface $collector */
+    private $collector;
 
-    public function getDataUnit($unitName) {
-        return $this->data[$unitName];
+    public function __construct(CollectorInterface $collector)
+    {
+        $this->collector = $collector;
+    }
+
+    public function getDataUnit($dataUnitName) {
+        return $this->collector->get($dataUnitName);
     }
 }
