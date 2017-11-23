@@ -14,7 +14,8 @@
         "laravel/tinker": "~1.0",
         "doctrine/dbal": "^2.5",
         "phpoffice/phpword": "dev-develop",
-        "mariuzzo/laravel-js-localization": "^1.4"
+        "mariuzzo/laravel-js-localization": "^1.4",
+        "nanigans/single-table-inheritance": "0.8.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
