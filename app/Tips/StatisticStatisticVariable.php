@@ -4,7 +4,7 @@
 namespace App\Tips;
 
 /**
- * @property Statistic nestedStatistic
+ * @property Statistic $nestedStatistic
  */
 class StatisticStatisticVariable extends StatisticVariable implements HasStatisticVariableValue
 {
@@ -12,10 +12,9 @@ class StatisticStatisticVariable extends StatisticVariable implements HasStatist
 
     protected static $persisted = ['statistic_id'];
 
-    /** @var DataCollector */
+    /** @var DataCollectorContainer */
     private $dataCollector;
-    private $year;
-    private $month;
+
 
     /**
      * Set the dataCollector
@@ -24,11 +23,9 @@ class StatisticStatisticVariable extends StatisticVariable implements HasStatist
      * @param $year
      * @param $month
      */
-    public function setDataCollector(DataCollector $dataCollector, $year, $month)
+    public function setDataCollector(DataCollectorContainer $dataCollector)
     {
         $this->dataCollector = $dataCollector;
-        $this->year = $year;
-        $this->month = $month;
     }
 
     public function nestedStatistic()
@@ -41,6 +38,7 @@ class StatisticStatisticVariable extends StatisticVariable implements HasStatist
      */
     public function getValue()
     {
+        $this->nestedStatistic->setDataCollector($this->dataCollector);
         return $this->nestedStatistic->calculate();
     }
 }

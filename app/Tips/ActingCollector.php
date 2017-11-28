@@ -4,32 +4,42 @@
 namespace App\Tips;
 
 
-use App\LearningActivityActing;
-use App\WorkplaceLearningPeriod;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Str;
-
 class ActingCollector extends AbstractCollector
 {
-    public static $dataUnitToMethodMapping = [
-        "totalLearningActivities" => "totalLearningActivities",
-        "activitiesWithRP" => "activitiesWithResourcePerson"
-    ];
 
-
-
+    /**
+     * @DataUnitAnnotation(name="Total learning activities", method="totalLearningActivities")
+     * @return int
+     */
     public function totalLearningActivities()
     {
         return $this->wherePeriod($this->learningPeriod->learningActivityActing()->getBaseQuery())->count();
     }
 
-    public function activitiesWithResourcePerson($column, $value)
+    /**
+     * @DataUnitAnnotation(name="Activities with certain resource person", method="activitiesWithResourcePerson", hasParameters=true, parameterName="Person label")
+     * @param mixed $personLabel
+     * @return int
+     */
+    public function activitiesWithResourcePerson($personLabel)
     {
         return $this->wherePeriod(
-            $this->learningPeriod->learningActivityActing()->getBaseQuery()->leftJoin('resourceperson', 'res_person_id', '=', 'rp_id')->where($column, '=', $value)
+            $this->learningPeriod->learningActivityActing()->getBaseQuery()->leftJoin('resourceperson', 'res_person_id',
+                '=', 'rp_id')->where('person_label', '=', $personLabel)
         )->count();
+    }
 
+    /**
+     * @DataUnitAnnotation(name="Activities with certain category", method="activitiesWithTimeslot", hasParameters=true, parameterName="Category/Timeslot label")
+     * @param string $timeslotText timeslot name/text
+     * @return int
+     */
+    public function activitiesWithTimeslot($timeslotText)
+    {
+        return $this->wherePeriod(
+            $this->learningPeriod->learningActivityActing()->getBaseQuery()->leftJoin('timeslot', 'learningactivityacting.timeslot_id', '=', 'timeslot.timeslot_id')
+            ->where('timeslot_text', '=', $timeslotText)
+        )->count();
     }
 
 }

@@ -16,7 +16,8 @@ class CreateStatisticVariablesTable extends Migration
         Schema::create('statistic_variables', function(Blueprint $table) {
             $table->increments('id');
             $table->string('type');
-            $table->string('dataUnitName');
+            $table->string('dataUnitMethod');
+            $table->string('dataUnitParameterValue');
             $table->integer('statistic_id');
         });
     }
