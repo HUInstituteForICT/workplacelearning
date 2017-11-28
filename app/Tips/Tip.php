@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * @property Statistic statistic The statistic used for this tip
- * @property float threshold The threshold that determines whether the tip is applicable or not
- * @property string tipText The text including placeholders used for displaying the tip
- * @property boolean showInAnalysis Whether or not the tip is visible to students. Should be false on nested Tips that are of no use to the student
- * @property boolean multiplyBy100 Whether or not the percentage calculated should be multiplied by 100 in the getTipText
+ * @property Statistic $statistic The statistic used for this tip
+ * @property float $threshold The threshold that determines whether the tip is applicable or not
+ * @property string $tipText The text including placeholders used for displaying the tip
+ * @property boolean $multiplyBy100 Whether or not the percentage calculated should be multiplied by 100 in the getTipText
  */
 class Tip extends Model
 {

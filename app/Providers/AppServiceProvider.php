@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +18,9 @@ class AppServiceProvider extends ServiceProvider
         if (!\App::environment('debug')) {
             \URL::forceScheme('https');
         }
+
+        // Require annotation manually
+        require_once app_path('Tips/DataUnitAnnotation.php');
     }
 
     /**

@@ -15,7 +15,8 @@
         "doctrine/dbal": "^2.5",
         "phpoffice/phpword": "dev-develop",
         "mariuzzo/laravel-js-localization": "^1.4",
-        "nanigans/single-table-inheritance": "0.8.*"
+        "nanigans/single-table-inheritance": "0.8.*",
+        "doctrine/common": "2.8.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -24,7 +25,8 @@
         "mcamara/laravel-localization": "1.2.*",
         "barryvdh/laravel-ide-helper": "^2.3",
         "barryvdh/laravel-dompdf": "^0.8.0",
-        "barryvdh/laravel-translation-manager": "0.2.x"
+        "barryvdh/laravel-translation-manager": "0.2.x",
+        "phpstan/phpstan": "^0.8.5"
     },
     "autoload": {
         "classmap": [

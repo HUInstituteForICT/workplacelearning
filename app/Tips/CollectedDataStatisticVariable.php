@@ -4,32 +4,28 @@
 namespace App\Tips;
 
 /**
- * @property string dataUnitName
+ * @property string $dataUnitMethod The method to call for the collected data
+ * @property string $dataUnitParameterValue The value for optional filtering
  */
 class CollectedDataStatisticVariable extends StatisticVariable implements HasStatisticVariableValue
 {
     public $timestamps = false;
     protected static $singleTableType = "collecteddatastatistic";
 
-    protected static $persisted = ['dataUnitName'];
+    protected static $persisted = ['dataUnitMethod', 'dataUnitParameterValue'];
 
-    /** @var DataCollector */
+    /** @var DataCollectorContainer */
     private $dataCollector;
-    private $year;
-    private $month;
+
 
     /**
      * Set the dataCollector
      *
      * @param $dataCollector
-     * @param $year
-     * @param $month
      */
-    public function setDataCollector(DataCollector $dataCollector, $year, $month)
+    public function setDataCollector(DataCollectorContainer $dataCollector)
     {
         $this->dataCollector = $dataCollector;
-        $this->year = $year;
-        $this->month = $month;
     }
 
     /**
@@ -39,7 +35,9 @@ class CollectedDataStatisticVariable extends StatisticVariable implements HasSta
      */
     public function getValue()
     {
-        return $this->dataCollector->getDataUnit($this->dataUnitName);
+        $dataUnit = new DataUnit($this->dataUnitMethod, $this->dataUnitParameterValue);
+
+        return $this->dataCollector->getDataUnit($dataUnit);
     }
 
 }

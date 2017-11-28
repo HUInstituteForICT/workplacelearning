@@ -16,6 +16,8 @@ class CreateStatisticsTable extends Migration
         Schema::create('statistics', function(Blueprint $table) {
             $table->increments('id');
             $table->smallInteger('operator');
+            $table->string('name');
+            $table->smallInteger('educationProgramType');
             $table->integer('tip_id');
         });
     }

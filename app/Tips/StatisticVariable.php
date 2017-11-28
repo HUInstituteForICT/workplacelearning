@@ -13,7 +13,7 @@ class StatisticVariable extends Model
     use SingleTableInheritanceTrait;
 
     protected static $singleTableTypeField = 'type';
-    protected static $persisted = ['statistic_id'];
+    protected static $persisted = ['name', 'statistic_id'];
     protected static $singleTableSubclasses = [StatisticStatisticVariable::class, CollectedDataStatisticVariable::class];
     protected $table = "statistic_variables";
 

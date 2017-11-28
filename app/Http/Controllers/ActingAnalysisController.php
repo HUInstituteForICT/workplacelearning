@@ -11,7 +11,12 @@ use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
 use App\LearningActivityActing;
 use App\Tips\ActingCollector;
-use App\Tips\DataCollector;
+use App\Tips\CollectedDataStatisticVariable;
+use App\Tips\CollectibleDataAggregator;
+use App\Tips\DataCollectorContainer;
+use App\Tips\DataUnitParser;
+use App\Tips\Statistic;
+use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -50,12 +55,51 @@ class ActingAnalysisController extends Controller
             return redirect()->route('analysis-producing-choice');
         }
 
-        $dataCollector = new DataCollector(new ActingCollector($year, $month, Auth::user()->getCurrentWorkplaceLearningPeriod()));
-        dump($dataCollector->getDataUnit("activitiesWithRP[person_label=Alleen]"));
+        if($year === "all" || $month === "all") {
+            $year = null;
+            $month = null;
+        }
+
+        $var1 = new CollectedDataStatisticVariable();
+        $var1->dataUnitMethod = "activitiesWithTimeslot";
+        $var1->dataUnitParameterValue = "Dan ja toch";
+
+        $var2 = new CollectedDataStatisticVariable();
+        $var2->dataUnitMethod = "totalLearningActivities";
+
+        $stat = new Statistic();
+        $stat->statisticVariableOne = $var1;
+        $stat->statisticVariableTwo = $var2;
+        $stat->operator = Statistic::OPERATOR_DIVIDE;
+
+
+        $ccCollector = new ActingCollector($year, $month, Auth::user()->getCurrentWorkplaceLearningPeriod());
+        dump($ccCollector->totalLearningActivities());
+        $dataCollector = new DataCollectorContainer($ccCollector);
+
+        $stat->setDataCollector($dataCollector);
+        dump($stat->calculate());
+
+        $tip = new Tip();
+        $tip->multiplyBy100 = true;
+        $tip->tipText = "Percentage leermomenten in tijdslot/categorie Dan ja toch: :percentage%";
+        $tip->threshold = 0.1;
+        $tip->statistic = $stat;
+        dump($tip->isApplicable());
+        dump($tip->getTipText());
+
+        dump((new CollectibleDataAggregator($ccCollector))->getInformation());
+
+
+        die();
+
+
+
+        //dump($dataCollector->getDataUnit("activitiesWithRP[person_label=Alleen]"));
         die();
 
         // TODO: add month year filter so we can show monthly stuff etc
-        $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
+//        $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
 
         return view('pages.acting.analysis.detail')
             ->with('actingAnalysis', $analysis);

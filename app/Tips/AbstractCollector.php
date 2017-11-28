@@ -24,30 +24,6 @@ abstract class AbstractCollector implements CollectorInterface
         $this->learningPeriod = $learningPeriod;
     }
 
-    /**
-     * Get the value of the dataUnit by name
-     *
-     * @param $dataUnitName
-     * @return float|int
-     */
-    public function get($dataUnitName)
-    {
-        $method = $this->getMethod($dataUnitName);
-        $parameters = $this->getOptionalParameters($dataUnitName);
-        list($column, $value) = $parameters;
-
-        return $this->{$method}($column, $value);
-    }
-
-    protected function getOptionalParameters($dataUnitName)
-    {
-        if(preg_match('/\[(.*?)\]/', $dataUnitName, $columnAndValue) > 0 && !empty($columnAndValue[1])) { // Check index 2 because we will have 3 matches (whole string, column, value), this check prevents empty params
-            return explode("=", $columnAndValue[1]);
-        }
-        return [null, null];
-    }
-
-
     protected function wherePeriod(Builder $queryBuilder)
     {
         if ($this->year === null || $this->month === null) {
@@ -55,14 +31,5 @@ abstract class AbstractCollector implements CollectorInterface
         }
 
         return $queryBuilder->whereRaw("YEAR(date) = ? AND MONTH(date) = ?", [$this->year, $this->month]);
-    }
-
-
-    protected function getMethod($dataUnitName)
-    {
-        if(str_contains($dataUnitName, ["[", "]"])) {
-            return static::$dataUnitToMethodMapping[explode("[", $dataUnitName)[0]];
-        }
-        return static::$dataUnitToMethodMapping[$dataUnitName];
     }
 }
