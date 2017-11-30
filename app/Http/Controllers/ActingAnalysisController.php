@@ -60,39 +60,19 @@ class ActingAnalysisController extends Controller
             $month = null;
         }
 
-        $var1 = new CollectedDataStatisticVariable();
-        $var1->dataUnitMethod = "activitiesWithTimeslot";
-        $var1->dataUnitParameterValue = "Dan ja toch";
-
-        $var2 = new CollectedDataStatisticVariable();
-        $var2->dataUnitMethod = "totalLearningActivities";
-
-        $stat = new Statistic();
-        $stat->statisticVariableOne = $var1;
-        $stat->statisticVariableTwo = $var2;
-        $stat->operator = Statistic::OPERATOR_DIVIDE;
-
-
         $ccCollector = new ActingCollector($year, $month, Auth::user()->getCurrentWorkplaceLearningPeriod());
         dump($ccCollector->totalLearningActivities());
         $dataCollector = new DataCollectorContainer($ccCollector);
 
-        $stat->setDataCollector($dataCollector);
-        dump($stat->calculate());
-
-        $tip = new Tip();
-        $tip->multiplyBy100 = true;
-        $tip->tipText = "Percentage leermomenten in tijdslot/categorie Dan ja toch: :percentage%";
-        $tip->threshold = 0.1;
-        $tip->statistic = $stat;
-        dump($tip->isApplicable());
-        dump($tip->getTipText());
-
-        dump((new CollectibleDataAggregator($ccCollector))->getInformation());
 
 
-        die();
-
+        $stats = Statistic::all();
+        /** @var Statistic $stat */
+        foreach($stats as $stat) {
+            $stat->setDataCollector($dataCollector);
+            dump($stat);
+            dump($stat->name, $stat->calculate());
+        }
 
 
         //dump($dataCollector->getDataUnit("activitiesWithRP[person_label=Alleen]"));

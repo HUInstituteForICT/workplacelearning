@@ -59358,6 +59358,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_EducationProgramsApp_educationProgramsApp__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/educationProgramsApp.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ActivityProducingProcessTable_table__ = __webpack_require__("./resources/assets/js/components/ActivityProducingProcessTable/table.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_ProducingWeekStatesExport__ = __webpack_require__("./resources/assets/js/components/ProducingWeekStatesExport.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Statistics_CreateForm__ = __webpack_require__("./resources/assets/js/components/Statistics/CreateForm.jsx");
 
 
 
@@ -59371,11 +59372,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 var Apps = {
     ActivityActingProcessTable: __WEBPACK_IMPORTED_MODULE_3__components_ActivityActingProcessTable_table__["a" /* default */],
     ActivityProducingProcessTable: __WEBPACK_IMPORTED_MODULE_5__components_ActivityProducingProcessTable_table__["a" /* default */],
     EducationProgramsApp: __WEBPACK_IMPORTED_MODULE_4__components_EducationProgramsApp_educationProgramsApp__["a" /* default */],
-    ProducingWeekStatesExport: __WEBPACK_IMPORTED_MODULE_6__components_ProducingWeekStatesExport__["a" /* default */]
+    ProducingWeekStatesExport: __WEBPACK_IMPORTED_MODULE_6__components_ProducingWeekStatesExport__["a" /* default */],
+    CreateForm: __WEBPACK_IMPORTED_MODULE_7__components_Statistics_CreateForm__["a" /* default */]
 };
 
 // Automatically mount if one of the above declared Apps exist in the DOM
@@ -62097,6 +62100,276 @@ var ProducingWeekStatesExport = function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (ProducingWeekStatesExport);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Statistics/CreateForm.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var CreateForm = function (_React$Component) {
+    _inherits(CreateForm, _React$Component);
+
+    function CreateForm(props) {
+        _classCallCheck(this, CreateForm);
+
+        var _this = _possibleConstructorReturn(this, (CreateForm.__proto__ || Object.getPrototypeOf(CreateForm)).call(this, props));
+
+        _this.state = {
+            operators: operators, // Loaded from a <script> tag declaration
+            statisticVariables: statisticVariables, // Loaded from a <script> tag declaration
+
+            name: '',
+            statisticVariableOneIndex: 0,
+            statisticVariableOneParameter: '',
+            statisticVariableTwoIndex: 0,
+            statisticVariableTwoParameter: '',
+            operatorIndex: 0
+
+        };
+        return _this;
+    }
+
+    _createClass(CreateForm, [{
+        key: "statisticIndex",
+        value: function statisticIndex(statisticToFind) {
+            return this.state.statisticVariables.findIndex(function (statistic) {
+                return statistic.name === statisticToFind.name;
+            });
+        }
+    }, {
+        key: "operatorIndex",
+        value: function operatorIndex(operatorToFind) {
+            return this.state.operators.findIndex(function (operator) {
+                return operator.type === operatorToFind.type;
+            });
+        }
+    }, {
+        key: "submit",
+        value: function submit() {
+            if (!this.validate()) {
+                return false;
+            }
+
+            var operator = this.state.operators[this.state.operatorIndex];
+            var variableOne = this.state.statisticVariables[this.state.statisticVariableOneIndex];
+            var variableTwo = this.state.statisticVariables[this.state.statisticVariableTwoIndex];
+
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('/statistics', {
+                name: this.state.name,
+                operator: operator.type,
+                statisticVariableOne: variableOne,
+                statisticVariableOneParameter: this.state.statisticVariableOneParameter,
+                statisticVariableTwo: variableTwo,
+                statisticVariableTwoParameter: this.state.statisticVariableTwoParameter
+            }).then(function (response) {
+                // window.location.href = "/statistics"
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: "validate",
+        value: function validate() {
+            if (this.state.name === '') {
+                alert(Lang.get('react.statistic.errors.empty-name'));
+                return false;
+            }
+            var operator = this.state.operators[this.state.operatorIndex];
+            var variableOne = this.state.statisticVariables[this.state.statisticVariableOneIndex];
+            var variableTwo = this.state.statisticVariables[this.state.statisticVariableTwoIndex];
+
+            if (operator.type < 0 || operator.type > 3) {
+                // 4 operators: +-*/
+                return false;
+            }
+            if (variableOne.type === "collecteddatastatistic" && variableOne.hasParameters && this.state.statisticVariableOneParameter === '') {
+                alert(Lang.get('react.statistic.errors.empty-variable-parameter'));
+                return false;
+            }
+            if (variableTwo.type === "collecteddatastatistic" && variableTwo.hasParameters && this.state.statisticVariableTwoParameter === '') {
+                alert(Lang.get('react.statistic.errors.empty-variable-parameter'));
+                return false;
+            }
+
+            return true;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "h2",
+                    null,
+                    Lang.get('react.statistic.create-statistic')
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "row" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "col-md-4" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "strong",
+                            null,
+                            Lang.get('react.statistic.statistic-name')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { onChange: function onChange(e) {
+                                return _this2.setState({ name: e.target.value });
+                            }, value: this.state.name,
+                            className: "form-control", type: "text", maxLength: 255 })
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "row" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "col-md-4" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "h4",
+                            null,
+                            Lang.get('react.statistic.select-variable-one')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "select",
+                            { className: "form-control", onChange: function onChange(e) {
+                                    return _this2.setState({
+                                        statisticVariableOneIndex: parseInt(e.target.value)
+                                    });
+                                }, value: this.state.statisticVariableOneIndex },
+                            this.state.statisticVariables.map(function (statisticVariable) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "option",
+                                    { key: statisticVariable.name,
+                                        value: _this2.statisticIndex(statisticVariable) },
+                                    statisticVariable.name
+                                );
+                            })
+                        ),
+
+                        // Check if this Statistic Variable has a parameter
+                        this.state.statisticVariables[this.state.statisticVariableOneIndex].type === "collecteddatastatistic" && this.state.statisticVariables[this.state.statisticVariableOneIndex].hasParameters && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "strong",
+                                null,
+                                Lang.get('react.statistic.parameter'),
+                                ": ",
+                                this.state.statisticVariables[this.state.statisticVariableOneIndex].parameterName
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { value: this.state.statisticVariableOneParameter,
+                                onChange: function onChange(e) {
+                                    return _this2.setState({ statisticVariableOneParameter: e.target.value });
+                                },
+                                type: "text", className: "form-control", maxLength: 255 })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "col-md-4" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "h4",
+                            null,
+                            Lang.get('react.statistic.select-operator')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "select",
+                            { className: "form-control", onChange: function onChange(e) {
+                                    return _this2.setState({
+                                        operatorIndex: parseInt(e.target.value)
+                                    });
+                                }, value: this.state.operatorIndex },
+                            this.state.operators.map(function (operator) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "option",
+                                    { key: operator.label,
+                                        value: _this2.operatorIndex(operator) },
+                                    operator.label
+                                );
+                            })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "col-md-4" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "h4",
+                            null,
+                            Lang.get('react.statistic.select-variable-two')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "select",
+                            { className: "form-control", onChange: function onChange(e) {
+                                    return _this2.setState({
+                                        statisticVariableTwoIndex: parseInt(e.target.value)
+                                    });
+                                }, value: this.state.statisticVariableTwoIndex },
+                            this.state.statisticVariables.map(function (statisticVariable) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "option",
+                                    { key: statisticVariable.name,
+                                        value: _this2.statisticIndex(statisticVariable) },
+                                    statisticVariable.name
+                                );
+                            })
+                        ),
+
+                        // Check if this Statistic Variable has a parameter
+                        this.state.statisticVariables[this.state.statisticVariableTwoIndex].type === "collecteddatastatistic" && this.state.statisticVariables[this.state.statisticVariableTwoIndex].hasParameters && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "strong",
+                                null,
+                                Lang.get('react.statistic.parameter'),
+                                ": ",
+                                this.state.statisticVariables[this.state.statisticVariableTwoIndex].parameterName
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { value: this.state.statisticVariableTwoParameter,
+                                onChange: function onChange(e) {
+                                    return _this2.setState({ statisticVariableTwoParameter: e.target.value });
+                                },
+                                type: "text", className: "form-control", maxLength: 255 })
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "a",
+                    { onClick: function onClick() {
+                            return _this2.submit();
+                        } },
+                    "hoi"
+                )
+            );
+        }
+    }]);
+
+    return CreateForm;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (CreateForm);
 
 /***/ }),
 

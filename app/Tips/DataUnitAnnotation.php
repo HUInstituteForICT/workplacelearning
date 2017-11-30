@@ -13,4 +13,5 @@ class DataUnitAnnotation
     public $method;
     public $hasParameters = false;
     public $parameterName = null;
+    public $type;
 }

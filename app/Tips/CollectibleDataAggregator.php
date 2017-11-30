@@ -33,7 +33,9 @@ class CollectibleDataAggregator
             }
 
             $methodInformation = $this->informationForMethod($this->collector, $method);
-            $information[$methodInformation->name] = (array) $methodInformation;
+            $methodInformation->type = (new CollectedDataStatisticVariable())->getType();
+
+            $information[] = (array) $methodInformation;
         }
 
         return $information;

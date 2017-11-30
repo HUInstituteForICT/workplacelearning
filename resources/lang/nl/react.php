@@ -67,6 +67,20 @@ return [
     "none-selected" => "Geen geselecteerd",
     "save" => "Opslaan",
     "delete" => "Verwijderen",
-    "delete-confirm" => "Weet je zeker dat je deze activiteit wilt verwijderen?"
+    "delete-confirm" => "Weet je zeker dat je deze activiteit wilt verwijderen?",
 
+
+    "statistic" => [
+        "create-statistic" => "Maak nieuwe statistiek aan",
+        "select-variable-one" => "Selecteer de eerste variabele",
+        "select-variable-two" => "Selecteer de tweede variabele",
+        "select-operator" => "Selecteer operator",
+        "parameter" => "Parameter",
+        "statistic-name" => "Naam voor nieuwe statistiek",
+
+        "errors" => [
+            "name" => "De naam van de statistiek mag niet leeg zijn",
+            "empty-variable-parameter" => "De parameter voor een variabele mag niet leeg zijn"
+        ]
+    ]
 ];

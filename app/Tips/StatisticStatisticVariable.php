@@ -5,12 +5,13 @@ namespace App\Tips;
 
 /**
  * @property Statistic $nestedStatistic
+ * @property integer $nested_statistic_id
  */
 class StatisticStatisticVariable extends StatisticVariable implements HasStatisticVariableValue
 {
     protected static $singleTableType = "statisticstatistic";
 
-    protected static $persisted = ['statistic_id'];
+    protected static $persisted = ['nested_statistic_id'];
 
     /** @var DataCollectorContainer */
     private $dataCollector;
@@ -28,7 +29,7 @@ class StatisticStatisticVariable extends StatisticVariable implements HasStatist
 
     public function nestedStatistic()
     {
-        return $this->hasOne(Statistic::class, 'statistic_id');
+        return $this->belongsTo(Statistic::class, 'nested_statistic_id');
     }
 
     /**
