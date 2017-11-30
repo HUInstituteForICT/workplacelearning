@@ -35,14 +35,15 @@ class DataCollectorContainer
      * Check if the method of the collector should receive parameters
      *
      * @param CollectorInterface $collector
-     * @param $method
-     * @return mixed
+     * @param string $method
+     * @return boolean
      */
     private function hasParameters(CollectorInterface $collector, $method) {
         $annotationReader = new AnnotationReader();
         $collectorClass = get_class($collector);
 
         $reflectionMethod = new \ReflectionMethod($collectorClass, $method);
+        /** @var DataUnitAnnotation $dataUnitAnnotation */
         $dataUnitAnnotation = $annotationReader->getMethodAnnotation($reflectionMethod, DataUnitAnnotation::class);
 
         return $dataUnitAnnotation->hasParameters;

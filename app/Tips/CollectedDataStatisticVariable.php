@@ -21,7 +21,7 @@ class CollectedDataStatisticVariable extends StatisticVariable implements HasSta
     /**
      * Set the dataCollector
      *
-     * @param $dataCollector
+     * @param DataCollectorContainer $dataCollector
      */
     public function setDataCollector(DataCollectorContainer $dataCollector)
     {
