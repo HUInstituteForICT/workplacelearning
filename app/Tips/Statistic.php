@@ -95,9 +95,7 @@ class Statistic extends Model
     /**
      * Set the dataCollector used by certain StatisticVariables
      *
-     * @param $dataCollector
-     * @param $year
-     * @param $month
+     * @param DataCollectorContainer $dataCollector
      */
     public function setDataCollector($dataCollector)
     {

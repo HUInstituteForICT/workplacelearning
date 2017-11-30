@@ -64,7 +64,9 @@ class CollectibleDataAggregator
         $collectorClass = get_class($collector);
         $reflectionMethod = new \ReflectionMethod($collectorClass, $method);
 
-        return $annotationReader->getMethodAnnotation($reflectionMethod, DataUnitAnnotation::class);
+        /** @var DataUnitAnnotation $dataUnitAnnotation */
+        $dataUnitAnnotation = $annotationReader->getMethodAnnotation($reflectionMethod, DataUnitAnnotation::class);
+        return $dataUnitAnnotation;
     }
 
 }

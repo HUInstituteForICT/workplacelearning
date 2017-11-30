@@ -19,9 +19,7 @@ class StatisticStatisticVariable extends StatisticVariable implements HasStatist
     /**
      * Set the dataCollector
      *
-     * @param $dataCollector
-     * @param $year
-     * @param $month
+     * @param DataCollectorContainer $dataCollector
      */
     public function setDataCollector(DataCollectorContainer $dataCollector)
     {
