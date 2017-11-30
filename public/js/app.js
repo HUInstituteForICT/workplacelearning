@@ -2791,7 +2791,7 @@ module.exports = camelizeStyleName;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 var isTextNode = __webpack_require__("./node_modules/fbjs/lib/isTextNode.js");
@@ -3054,7 +3054,7 @@ module.exports = createNodesFromMarkup;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 function makeEmptyFunction(arg) {
@@ -3533,7 +3533,7 @@ module.exports = isTextNode;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  * @typechecks static-only
  */
 
@@ -3633,7 +3633,7 @@ module.exports = performanceNow;
  * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
- *
+ * 
  */
 
 /*eslint-disable no-self-compare */
@@ -39449,7 +39449,7 @@ module.exports = CSSPropertyOperations;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -41176,7 +41176,7 @@ module.exports = EventPluginHub;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -42141,7 +42141,7 @@ module.exports = HTMLDOMPropertyConfig;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -42346,7 +42346,7 @@ module.exports = LinkedValueUtils;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -42980,7 +42980,7 @@ module.exports = ReactComponentBrowserEnvironment;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -47014,7 +47014,7 @@ module.exports = ReactDOMUnknownPropertyHook;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -47541,7 +47541,7 @@ module.exports = {
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -47599,7 +47599,7 @@ module.exports = ReactEmptyComponent;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -47876,7 +47876,7 @@ module.exports = ReactEventListener;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -47974,7 +47974,7 @@ module.exports = ReactHostComponent;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -48227,7 +48227,7 @@ module.exports = ReactInstanceMap;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -48255,7 +48255,7 @@ module.exports = { debugTool: debugTool };
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -49342,7 +49342,7 @@ module.exports = ReactMultiChild;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -49386,7 +49386,7 @@ module.exports = ReactNodeTypes;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -49483,7 +49483,7 @@ module.exports = ReactOwner;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -49512,7 +49512,7 @@ module.exports = ReactPropTypeLocationNames;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -49885,7 +49885,7 @@ module.exports = ReactReconciler;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -50072,7 +50072,7 @@ module.exports = ReactServerRenderingTransaction;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -51224,7 +51224,7 @@ module.exports = SelectEventPlugin;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -52349,7 +52349,7 @@ module.exports = SyntheticWheelEvent;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -52610,7 +52610,7 @@ module.exports = ViewportMetrics;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -52672,7 +52672,7 @@ module.exports = accumulateInto;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -53121,7 +53121,7 @@ module.exports = findDOMNode;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -53202,7 +53202,7 @@ module.exports = flattenChildren;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -53527,7 +53527,7 @@ module.exports = getHostComponentFromComposite;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -54116,7 +54116,7 @@ module.exports = isEventSupported;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -54201,7 +54201,7 @@ module.exports = quoteAttributeValueForBrowser;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -55073,54 +55073,54 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
+	
 	var _react = __webpack_require__(2);
-
+	
 	var _react2 = _interopRequireDefault(_react);
-
+	
 	var _propTypes = __webpack_require__(3);
-
+	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
-
+	
 	var _attrAccept = __webpack_require__(4);
-
+	
 	var _attrAccept2 = _interopRequireDefault(_attrAccept);
-
+	
 	var _getDataTransferItems = __webpack_require__(5);
-
+	
 	var _getDataTransferItems2 = _interopRequireDefault(_getDataTransferItems);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
+	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
+	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
+	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint prefer-template: 0 */
-
+	
 	var supportMultiple = typeof document !== 'undefined' && document && document.createElement ? 'multiple' in document.createElement('input') : true;
-
+	
 	function fileAccepted(file, accept) {
 	  // Firefox versions prior to 53 return a bogus MIME type for every file drag, so dragovers with
 	  // that MIME type will always be accepted
 	  return file.type === 'application/x-moz-file' || (0, _attrAccept2.default)(file, accept);
 	}
-
+	
 	var Dropzone = function (_React$Component) {
 	  _inherits(Dropzone, _React$Component);
-
+	
 	  _createClass(Dropzone, null, [{
 	    key: 'onDocumentDragOver',
 	    value: function onDocumentDragOver(evt) {
@@ -55128,19 +55128,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      evt.preventDefault();
 	    }
 	  }]);
-
+	
 	  function Dropzone(props, context) {
 	    _classCallCheck(this, Dropzone);
-
+	
 	    var _this = _possibleConstructorReturn(this, (Dropzone.__proto__ || Object.getPrototypeOf(Dropzone)).call(this, props, context));
-
+	
 	    _this.renderChildren = function (children, isDragActive, isDragReject) {
 	      if (typeof children === 'function') {
 	        return children(_extends({}, _this.state, { isDragActive: isDragActive, isDragReject: isDragReject }));
 	      }
 	      return children;
 	    };
-
+	
 	    _this.onClick = _this.onClick.bind(_this);
 	    _this.onDocumentDrop = _this.onDocumentDrop.bind(_this);
 	    _this.onDragStart = _this.onDragStart.bind(_this);
@@ -55160,14 +55160,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    return _this;
 	  }
-
+	
 	  _createClass(Dropzone, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var preventDropOnDocument = this.props.preventDropOnDocument;
-
+	
 	      this.dragTargets = [];
-
+	
 	      if (preventDropOnDocument) {
 	        document.addEventListener('dragover', Dropzone.onDocumentDragOver, false);
 	        document.addEventListener('drop', this.onDocumentDrop, false);
@@ -55180,7 +55180,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      var preventDropOnDocument = this.props.preventDropOnDocument;
-
+	
 	      if (preventDropOnDocument) {
 	        document.removeEventListener('dragover', Dropzone.onDocumentDragOver);
 	        document.removeEventListener('drop', this.onDocumentDrop);
@@ -55210,14 +55210,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'onDragEnter',
 	    value: function onDragEnter(evt) {
 	      evt.preventDefault();
-
+	
 	      // Count the dropzone and any children that are entered.
 	      if (this.dragTargets.indexOf(evt.target) === -1) {
 	        this.dragTargets.push(evt.target);
 	      }
-
+	
 	      this.setState({ draggedFiles: (0, _getDataTransferItems2.default)(evt) });
-
+	
 	      if (this.props.onDragEnter) {
 	        this.props.onDragEnter.call(this, evt);
 	      }
@@ -55233,7 +55233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } catch (err) {
 	        // continue regardless of error
 	      }
-
+	
 	      if (this.props.onDragOver) {
 	        this.props.onDragOver.call(this, evt);
 	      }
@@ -55243,9 +55243,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'onDragLeave',
 	    value: function onDragLeave(evt) {
 	      var _this2 = this;
-
+	
 	      evt.preventDefault();
-
+	
 	      // Only deactivate once the dropzone and all children have been left.
 	      this.dragTargets = this.dragTargets.filter(function (el) {
 	        return el !== evt.target && _this2.node.contains(el);
@@ -55253,10 +55253,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (this.dragTargets.length > 0) {
 	        return;
 	      }
-
+	
 	      // Clear dragging files state
 	      this.setState({ draggedFiles: [] });
-
+	
 	      if (this.props.onDragLeave) {
 	        this.props.onDragLeave.call(this, evt);
 	      }
@@ -55265,7 +55265,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'onDrop',
 	    value: function onDrop(evt) {
 	      var _this3 = this;
-
+	
 	      var _props = this.props,
 	          onDrop = _props.onDrop,
 	          onDropAccepted = _props.onDropAccepted,
@@ -55273,18 +55273,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	          multiple = _props.multiple,
 	          disablePreview = _props.disablePreview,
 	          accept = _props.accept;
-
+	
 	      var fileList = (0, _getDataTransferItems2.default)(evt);
 	      var acceptedFiles = [];
 	      var rejectedFiles = [];
-
+	
 	      // Stop default browser behavior
 	      evt.preventDefault();
-
+	
 	      // Reset the counter along with the drag on a drop.
 	      this.dragTargets = [];
 	      this.isFileDialogActive = false;
-
+	
 	      fileList.forEach(function (file) {
 	        if (!disablePreview) {
 	          try {
@@ -55295,35 +55295,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	          }
 	        }
-
+	
 	        if (fileAccepted(file, accept) && _this3.fileMatchSize(file)) {
 	          acceptedFiles.push(file);
 	        } else {
 	          rejectedFiles.push(file);
 	        }
 	      });
-
+	
 	      if (!multiple) {
 	        // if not in multi mode add any extra accepted files to rejected.
 	        // This will allow end users to easily ignore a multi file drop in "single" mode.
 	        rejectedFiles.push.apply(rejectedFiles, _toConsumableArray(acceptedFiles.splice(1)));
 	      }
-
+	
 	      if (onDrop) {
 	        onDrop.call(this, acceptedFiles, rejectedFiles, evt);
 	      }
-
+	
 	      if (rejectedFiles.length > 0 && onDropRejected) {
 	        onDropRejected.call(this, rejectedFiles, evt);
 	      }
-
+	
 	      if (acceptedFiles.length > 0 && onDropAccepted) {
 	        onDropAccepted.call(this, acceptedFiles, evt);
 	      }
-
+	
 	      // Clear files value
 	      this.draggedFiles = null;
-
+	
 	      // Reset drag state
 	      this.setState({
 	        draggedFiles: [],
@@ -55337,14 +55337,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _props2 = this.props,
 	          onClick = _props2.onClick,
 	          disableClick = _props2.disableClick;
-
+	
 	      if (!disableClick) {
 	        evt.stopPropagation();
-
+	
 	        if (onClick) {
 	          onClick.call(this, evt);
 	        }
-
+	
 	        // in IE11/Edge the file-browser dialog is blocking, ensure this is behind setTimeout
 	        // this is so react can handle state changes in the onClick prop above above
 	        // see: https://github.com/okonet/react-dropzone/issues/450
@@ -55368,7 +55368,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var isFileDialogActive = this.isFileDialogActive;
 	      // execute the timeout only if the onFileDialogCancel is defined and FileDialog
 	      // is opened in the browser
-
+	
 	      if (onFileDialogCancel && isFileDialogActive) {
 	        setTimeout(function () {
 	          // Returns an object as FileList
@@ -55399,18 +55399,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'allFilesAccepted',
 	    value: function allFilesAccepted(files) {
 	      var _this4 = this;
-
+	
 	      return files.every(function (file) {
 	        return fileAccepted(file, _this4.props.accept);
 	      });
 	    }
-
+	
 	    /**
 	     * Open system file upload dialog.
 	     *
 	     * @public
 	     */
-
+	
 	  }, {
 	    key: 'open',
 	    value: function open() {
@@ -55430,29 +55430,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	          rejectClassName = _props3.rejectClassName,
 	          children = _props3.children,
 	          rest = _objectWithoutProperties(_props3, ['accept', 'activeClassName', 'inputProps', 'multiple', 'name', 'rejectClassName', 'children']);
-
+	
 	      var activeStyle = rest.activeStyle,
 	          className = rest.className,
 	          rejectStyle = rest.rejectStyle,
 	          style = rest.style,
 	          props = _objectWithoutProperties(rest, ['activeStyle', 'className', 'rejectStyle', 'style']);
-
+	
 	      var draggedFiles = this.state.draggedFiles;
-
+	
 	      var filesCount = draggedFiles.length;
 	      var isMultipleAllowed = multiple || filesCount <= 1;
 	      var isDragActive = filesCount > 0 && this.allFilesAccepted(draggedFiles);
 	      var isDragReject = filesCount > 0 && (!isDragActive || !isMultipleAllowed);
-
+	
 	      className = className || '';
-
+	
 	      if (isDragActive && activeClassName) {
 	        className += ' ' + activeClassName;
 	      }
 	      if (isDragReject && rejectClassName) {
 	        className += ' ' + rejectClassName;
 	      }
-
+	
 	      if (!className && !style && !activeStyle && !rejectStyle) {
 	        style = {
 	          width: 200,
@@ -55473,7 +55473,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          backgroundColor: '#eee'
 	        };
 	      }
-
+	
 	      var appliedStyle = void 0;
 	      if (activeStyle && isDragActive) {
 	        appliedStyle = _extends({}, style, activeStyle);
@@ -55482,7 +55482,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else {
 	        appliedStyle = _extends({}, style);
 	      }
-
+	
 	      var inputAttributes = {
 	        accept: accept,
 	        type: 'file',
@@ -55491,18 +55491,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ref: this.setRefs,
 	        onChange: this.onDrop
 	      };
-
+	
 	      if (name && name.length) {
 	        inputAttributes.name = name;
 	      }
-
+	
 	      // Remove custom properties before passing them to the wrapper div element
 	      var customProps = ['acceptedFiles', 'preventDropOnDocument', 'disablePreview', 'disableClick', 'onDropAccepted', 'onDropRejected', 'onFileDialogCancel', 'maxSize', 'minSize'];
 	      var divProps = _extends({}, props);
 	      customProps.forEach(function (prop) {
 	        return delete divProps[prop];
 	      });
-
+	
 	      return _react2.default.createElement(
 	        'div',
 	        _extends({
@@ -55522,10 +55522,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      );
 	    }
 	  }]);
-
+	
 	  return Dropzone;
 	}(_react2.default.Component);
-
+	
 	Dropzone.propTypes = {
 	  /**
 	   * Allow specific types of files. See https://github.com/okonet/attr-accept for more information.
@@ -55535,129 +55535,129 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * See: https://github.com/okonet/react-dropzone/issues/276
 	   */
 	  accept: _propTypes2.default.string,
-
+	
 	  /**
 	   * Contents of the dropzone
 	   */
 	  children: _propTypes2.default.oneOfType([_propTypes2.default.node, _propTypes2.default.func]),
-
+	
 	  /**
 	   * Disallow clicking on the dropzone container to open file dialog
 	   */
 	  disableClick: _propTypes2.default.bool,
-
+	
 	  /**
 	   * Enable/disable preview generation
 	   */
 	  disablePreview: _propTypes2.default.bool,
-
+	
 	  /**
 	   * If false, allow dropped items to take over the current browser window
 	   */
 	  preventDropOnDocument: _propTypes2.default.bool,
-
+	
 	  /**
 	   * Pass additional attributes to the `<input type="file"/>` tag
 	   */
 	  inputProps: _propTypes2.default.object,
-
+	
 	  /**
 	   * Allow dropping multiple files
 	   */
 	  multiple: _propTypes2.default.bool,
-
+	
 	  /**
 	   * `name` attribute for the input tag
 	   */
 	  name: _propTypes2.default.string,
-
+	
 	  /**
 	   * Maximum file size
 	   */
 	  maxSize: _propTypes2.default.number,
-
+	
 	  /**
 	   * Minimum file size
 	   */
 	  minSize: _propTypes2.default.number,
-
+	
 	  /**
 	   * className
 	   */
 	  className: _propTypes2.default.string,
-
+	
 	  /**
 	   * className for accepted state
 	   */
 	  activeClassName: _propTypes2.default.string,
-
+	
 	  /**
 	   * className for rejected state
 	   */
 	  rejectClassName: _propTypes2.default.string,
-
+	
 	  /**
 	   * CSS styles to apply
 	   */
 	  style: _propTypes2.default.object,
-
+	
 	  /**
 	   * CSS styles to apply when drop will be accepted
 	   */
 	  activeStyle: _propTypes2.default.object,
-
+	
 	  /**
 	   * CSS styles to apply when drop will be rejected
 	   */
 	  rejectStyle: _propTypes2.default.object,
-
+	
 	  /**
 	   * onClick callback
 	   * @param {Event} event
 	   */
 	  onClick: _propTypes2.default.func,
-
+	
 	  /**
 	   * onDrop callback
 	   */
 	  onDrop: _propTypes2.default.func,
-
+	
 	  /**
 	   * onDropAccepted callback
 	   */
 	  onDropAccepted: _propTypes2.default.func,
-
+	
 	  /**
 	   * onDropRejected callback
 	   */
 	  onDropRejected: _propTypes2.default.func,
-
+	
 	  /**
 	   * onDragStart callback
 	   */
 	  onDragStart: _propTypes2.default.func,
-
+	
 	  /**
 	   * onDragEnter callback
 	   */
 	  onDragEnter: _propTypes2.default.func,
-
+	
 	  /**
 	   * onDragOver callback
 	   */
 	  onDragOver: _propTypes2.default.func,
-
+	
 	  /**
 	   * onDragLeave callback
 	   */
 	  onDragLeave: _propTypes2.default.func,
-
+	
 	  /**
 	   * Provide a callback on clicking the cancel button of the file dialog
 	   */
 	  onFileDialogCancel: _propTypes2.default.func
 	};
-
+	
 	Dropzone.defaultProps = {
 	  preventDropOnDocument: true,
 	  disablePreview: false,
@@ -55666,7 +55666,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  maxSize: Infinity,
 	  minSize: 0
 	};
-
+	
 	exports.default = Dropzone;
 	module.exports = exports['default'];
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -55677,15 +55677,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// shim for using process in browser
 	var process = module.exports = {};
-
+	
 	// cached from whatever global is present so that test runners that stub it
 	// don't break things.  But we need to wrap it in a try catch in case it is
 	// wrapped in strict mode code which doesn't define any globals.  It's inside a
 	// function because try/catches deoptimize in certain engines.
-
+	
 	var cachedSetTimeout;
 	var cachedClearTimeout;
-
+	
 	function defaultSetTimout() {
 	    throw new Error('setTimeout has not been defined');
 	}
@@ -55734,8 +55734,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return cachedSetTimeout.call(this, fun, 0);
 	        }
 	    }
-
-
+	
+	
 	}
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
@@ -55760,15 +55760,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return cachedClearTimeout.call(this, marker);
 	        }
 	    }
-
-
-
+	
+	
+	
 	}
 	var queue = [];
 	var draining = false;
 	var currentQueue;
 	var queueIndex = -1;
-
+	
 	function cleanUpNextTick() {
 	    if (!draining || !currentQueue) {
 	        return;
@@ -55783,14 +55783,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        drainQueue();
 	    }
 	}
-
+	
 	function drainQueue() {
 	    if (draining) {
 	        return;
 	    }
 	    var timeout = runTimeout(cleanUpNextTick);
 	    draining = true;
-
+	
 	    var len = queue.length;
 	    while(len) {
 	        currentQueue = queue;
@@ -55807,7 +55807,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    draining = false;
 	    runClearTimeout(timeout);
 	}
-
+	
 	process.nextTick = function (fun) {
 	    var args = new Array(arguments.length - 1);
 	    if (arguments.length > 1) {
@@ -55820,7 +55820,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        runTimeout(drainQueue);
 	    }
 	};
-
+	
 	// v8 likes predictible objects
 	function Item(fun, array) {
 	    this.fun = fun;
@@ -55835,9 +55835,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	process.argv = [];
 	process.version = ''; // empty string to avoid regexp issues
 	process.versions = {};
-
+	
 	function noop() {}
-
+	
 	process.on = noop;
 	process.addListener = noop;
 	process.once = noop;
@@ -55847,13 +55847,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	process.emit = noop;
 	process.prependListener = noop;
 	process.prependOnceListener = noop;
-
+	
 	process.listeners = function (name) { return [] }
-
+	
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
 	};
-
+	
 	process.cwd = function () { return '/' };
 	process.chdir = function (dir) {
 	    throw new Error('process.chdir is not supported');
@@ -55884,7 +55884,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports) {
 
 	"use strict";
-
+	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
@@ -56212,7 +56212,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -56275,7 +56275,7 @@ module.exports = KeyEscapeUtils;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -56869,7 +56869,7 @@ module.exports = ReactChildren;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -57252,7 +57252,7 @@ module.exports = ReactComponentTreeHook;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -57803,7 +57803,7 @@ module.exports = ReactElement;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -58185,7 +58185,7 @@ module.exports = ReactNoopUpdateQueue;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -58237,7 +58237,7 @@ module.exports = factory(isValidElement);
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -58276,7 +58276,7 @@ module.exports = '15.6.2';
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -58425,7 +58425,7 @@ module.exports = factory(Component, isValidElement, ReactNoopUpdateQueue);
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -58470,7 +58470,7 @@ module.exports = getIteratorFn;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -58606,7 +58606,7 @@ module.exports = onlyChild;
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- *
+ * 
  */
 
 
@@ -59047,15 +59047,15 @@ function addStyle (obj, options) {
 	    result = options.transform(obj.css);
 
 	    if (result) {
-		// If transform returns a value, use that instead of the original css.
-		// This allows running runtime transformations on the css.
-		obj.css = result;
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
 	    } else {
-		// If the transform function returns a falsy value, don't add this css.
-		// This allows conditional loading of css
-		return function() {
-			// noop
-		};
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
 	    }
 	}
 
@@ -59265,7 +59265,7 @@ module.exports = function (css) {
 		var newUrl;
 
 		if (unquotedOrigUrl.indexOf("//") === 0) {
-			//TODO: should we add protocol?
+		  	//TODO: should we add protocol?
 			newUrl = unquotedOrigUrl;
 		} else if (unquotedOrigUrl.indexOf("/") === 0) {
 			// path should be relative to the base url
@@ -59358,6 +59358,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_EducationProgramsApp_educationProgramsApp__ = __webpack_require__("./resources/assets/js/components/EducationProgramsApp/educationProgramsApp.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ActivityProducingProcessTable_table__ = __webpack_require__("./resources/assets/js/components/ActivityProducingProcessTable/table.jsx");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_ProducingWeekStatesExport__ = __webpack_require__("./resources/assets/js/components/ProducingWeekStatesExport.jsx");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Statistics_CreateForm__ = __webpack_require__("./resources/assets/js/components/Statistics/CreateForm.jsx");
 
 
 
@@ -59371,11 +59372,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 var Apps = {
     ActivityActingProcessTable: __WEBPACK_IMPORTED_MODULE_3__components_ActivityActingProcessTable_table__["a" /* default */],
     ActivityProducingProcessTable: __WEBPACK_IMPORTED_MODULE_5__components_ActivityProducingProcessTable_table__["a" /* default */],
     EducationProgramsApp: __WEBPACK_IMPORTED_MODULE_4__components_EducationProgramsApp_educationProgramsApp__["a" /* default */],
-    ProducingWeekStatesExport: __WEBPACK_IMPORTED_MODULE_6__components_ProducingWeekStatesExport__["a" /* default */]
+    ProducingWeekStatesExport: __WEBPACK_IMPORTED_MODULE_6__components_ProducingWeekStatesExport__["a" /* default */],
+    CreateForm: __WEBPACK_IMPORTED_MODULE_7__components_Statistics_CreateForm__["a" /* default */]
 };
 
 // Automatically mount if one of the above declared Apps exist in the DOM
@@ -62097,6 +62100,276 @@ var ProducingWeekStatesExport = function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 /* harmony default export */ __webpack_exports__["a"] = (ProducingWeekStatesExport);
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/Statistics/CreateForm.jsx":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__("./node_modules/react/react.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__("./node_modules/axios/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var CreateForm = function (_React$Component) {
+    _inherits(CreateForm, _React$Component);
+
+    function CreateForm(props) {
+        _classCallCheck(this, CreateForm);
+
+        var _this = _possibleConstructorReturn(this, (CreateForm.__proto__ || Object.getPrototypeOf(CreateForm)).call(this, props));
+
+        _this.state = {
+            operators: operators, // Loaded from a <script> tag declaration
+            statisticVariables: statisticVariables, // Loaded from a <script> tag declaration
+
+            name: '',
+            statisticVariableOneIndex: 0,
+            statisticVariableOneParameter: '',
+            statisticVariableTwoIndex: 0,
+            statisticVariableTwoParameter: '',
+            operatorIndex: 0
+
+        };
+        return _this;
+    }
+
+    _createClass(CreateForm, [{
+        key: "statisticIndex",
+        value: function statisticIndex(statisticToFind) {
+            return this.state.statisticVariables.findIndex(function (statistic) {
+                return statistic.name === statisticToFind.name;
+            });
+        }
+    }, {
+        key: "operatorIndex",
+        value: function operatorIndex(operatorToFind) {
+            return this.state.operators.findIndex(function (operator) {
+                return operator.type === operatorToFind.type;
+            });
+        }
+    }, {
+        key: "submit",
+        value: function submit() {
+            if (!this.validate()) {
+                return false;
+            }
+
+            var operator = this.state.operators[this.state.operatorIndex];
+            var variableOne = this.state.statisticVariables[this.state.statisticVariableOneIndex];
+            var variableTwo = this.state.statisticVariables[this.state.statisticVariableTwoIndex];
+
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('/statistics', {
+                name: this.state.name,
+                operator: operator.type,
+                statisticVariableOne: variableOne,
+                statisticVariableOneParameter: this.state.statisticVariableOneParameter,
+                statisticVariableTwo: variableTwo,
+                statisticVariableTwoParameter: this.state.statisticVariableTwoParameter
+            }).then(function (response) {
+                // window.location.href = "/statistics"
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: "validate",
+        value: function validate() {
+            if (this.state.name === '') {
+                alert(Lang.get('react.statistic.errors.empty-name'));
+                return false;
+            }
+            var operator = this.state.operators[this.state.operatorIndex];
+            var variableOne = this.state.statisticVariables[this.state.statisticVariableOneIndex];
+            var variableTwo = this.state.statisticVariables[this.state.statisticVariableTwoIndex];
+
+            if (operator.type < 0 || operator.type > 3) {
+                // 4 operators: +-*/
+                return false;
+            }
+            if (variableOne.type === "collecteddatastatistic" && variableOne.hasParameters && this.state.statisticVariableOneParameter === '') {
+                alert(Lang.get('react.statistic.errors.empty-variable-parameter'));
+                return false;
+            }
+            if (variableTwo.type === "collecteddatastatistic" && variableTwo.hasParameters && this.state.statisticVariableTwoParameter === '') {
+                alert(Lang.get('react.statistic.errors.empty-variable-parameter'));
+                return false;
+            }
+
+            return true;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                "div",
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "h2",
+                    null,
+                    Lang.get('react.statistic.create-statistic')
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "row" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "col-md-4" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "strong",
+                            null,
+                            Lang.get('react.statistic.statistic-name')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("br", null),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { onChange: function onChange(e) {
+                                return _this2.setState({ name: e.target.value });
+                            }, value: this.state.name,
+                            className: "form-control", type: "text", maxLength: 255 })
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "div",
+                    { className: "row" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "col-md-4" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "h4",
+                            null,
+                            Lang.get('react.statistic.select-variable-one')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "select",
+                            { className: "form-control", onChange: function onChange(e) {
+                                    return _this2.setState({
+                                        statisticVariableOneIndex: parseInt(e.target.value)
+                                    });
+                                }, value: this.state.statisticVariableOneIndex },
+                            this.state.statisticVariables.map(function (statisticVariable) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "option",
+                                    { key: statisticVariable.name,
+                                        value: _this2.statisticIndex(statisticVariable) },
+                                    statisticVariable.name
+                                );
+                            })
+                        ),
+
+                        // Check if this Statistic Variable has a parameter
+                        this.state.statisticVariables[this.state.statisticVariableOneIndex].type === "collecteddatastatistic" && this.state.statisticVariables[this.state.statisticVariableOneIndex].hasParameters && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "strong",
+                                null,
+                                Lang.get('react.statistic.parameter'),
+                                ": ",
+                                this.state.statisticVariables[this.state.statisticVariableOneIndex].parameterName
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { value: this.state.statisticVariableOneParameter,
+                                onChange: function onChange(e) {
+                                    return _this2.setState({ statisticVariableOneParameter: e.target.value });
+                                },
+                                type: "text", className: "form-control", maxLength: 255 })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "col-md-4" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "h4",
+                            null,
+                            Lang.get('react.statistic.select-operator')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "select",
+                            { className: "form-control", onChange: function onChange(e) {
+                                    return _this2.setState({
+                                        operatorIndex: parseInt(e.target.value)
+                                    });
+                                }, value: this.state.operatorIndex },
+                            this.state.operators.map(function (operator) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "option",
+                                    { key: operator.label,
+                                        value: _this2.operatorIndex(operator) },
+                                    operator.label
+                                );
+                            })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                        "div",
+                        { className: "col-md-4" },
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "h4",
+                            null,
+                            Lang.get('react.statistic.select-variable-two')
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "select",
+                            { className: "form-control", onChange: function onChange(e) {
+                                    return _this2.setState({
+                                        statisticVariableTwoIndex: parseInt(e.target.value)
+                                    });
+                                }, value: this.state.statisticVariableTwoIndex },
+                            this.state.statisticVariables.map(function (statisticVariable) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                    "option",
+                                    { key: statisticVariable.name,
+                                        value: _this2.statisticIndex(statisticVariable) },
+                                    statisticVariable.name
+                                );
+                            })
+                        ),
+
+                        // Check if this Statistic Variable has a parameter
+                        this.state.statisticVariables[this.state.statisticVariableTwoIndex].type === "collecteddatastatistic" && this.state.statisticVariables[this.state.statisticVariableTwoIndex].hasParameters && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                            "div",
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                                "strong",
+                                null,
+                                Lang.get('react.statistic.parameter'),
+                                ": ",
+                                this.state.statisticVariables[this.state.statisticVariableTwoIndex].parameterName
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { value: this.state.statisticVariableTwoParameter,
+                                onChange: function onChange(e) {
+                                    return _this2.setState({ statisticVariableTwoParameter: e.target.value });
+                                },
+                                type: "text", className: "form-control", maxLength: 255 })
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](
+                    "a",
+                    { onClick: function onClick() {
+                            return _this2.submit();
+                        } },
+                    "hoi"
+                )
+            );
+        }
+    }]);
+
+    return CreateForm;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (CreateForm);
 
 /***/ }),
 

@@ -6,6 +6,7 @@ namespace App\Tips;
 /**
  * @property string $dataUnitMethod The method to call for the collected data
  * @property string $dataUnitParameterValue The value for optional filtering
+ * @property string name
  */
 class CollectedDataStatisticVariable extends StatisticVariable implements HasStatisticVariableValue
 {

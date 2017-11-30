@@ -7,7 +7,9 @@ namespace App\Tips;
 use Illuminate\Database\Eloquent\Model;
 use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 
-
+/**
+ * @property string $name
+ */
 class StatisticVariable extends Model
 {
     use SingleTableInheritanceTrait;
@@ -16,6 +18,13 @@ class StatisticVariable extends Model
     protected static $persisted = ['name', 'statistic_id'];
     protected static $singleTableSubclasses = [StatisticStatisticVariable::class, CollectedDataStatisticVariable::class];
     protected $table = "statistic_variables";
+
+    public $timestamps = false;
+
+    public function getType()
+    {
+        return static::$singleTableType;
+    }
 
     /**
      * The statistic this variable is a part of for the calculation

@@ -16,9 +16,11 @@ class CreateStatisticVariablesTable extends Migration
         Schema::create('statistic_variables', function(Blueprint $table) {
             $table->increments('id');
             $table->string('type');
-            $table->string('dataUnitMethod');
-            $table->string('dataUnitParameterValue');
+            $table->string('dataUnitMethod')->nullable();
+            $table->string('dataUnitParameterValue')->nullable();
             $table->integer('statistic_id');
+            $table->integer('nested_statistic_id')->nullable();
+
         });
     }
 

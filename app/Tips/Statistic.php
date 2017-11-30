@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableOne
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableTwo
+ * @property integer $id THe id of the statistic
  * @property integer $operator the operator that will be used for the two statisticVariables
  * @property string $name The name of this statistic
  * @property integer $educationProgramType the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
@@ -57,6 +58,7 @@ class Statistic extends Model
      */
     public function calculate()
     {
+        $this->load(['statisticVariableOne', 'statisticVariableTwo']);
         $this->statisticVariableOne = $this->injectDependenciesIntoStatisticVariable($this->statisticVariableOne);
         $this->statisticVariableTwo = $this->injectDependenciesIntoStatisticVariable($this->statisticVariableTwo);
 

@@ -14,6 +14,7 @@
 
 */
 
+use App\Http\Controllers\StatisticController;
 use App\Http\Middleware\CheckUserLevel;
 use App\Http\Middleware\Locale;
 
@@ -53,6 +54,10 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 
     }
 );
+
+Route::group(['middleware' => ['auth', CheckUserLevel::class]], function() {
+    Route::resource('statistics', 'StatisticController');
+});
 
 Route::group(['before' => 'auth'], function() {
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
