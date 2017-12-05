@@ -22,6 +22,13 @@ class Statistic extends Model
     const OPERATOR_MULTIPLY = 2;
     const OPERATOR_DIVIDE = 3;
 
+    const OPERATORS = [
+        self::OPERATOR_ADD      => ["type" => Statistic::OPERATOR_ADD, "label" => "+"],
+        self::OPERATOR_SUBTRACT => ["type" => Statistic::OPERATOR_SUBTRACT, "label" => "-"],
+        self::OPERATOR_MULTIPLY => ["type" => Statistic::OPERATOR_MULTIPLY, "label" => "*"],
+        self::OPERATOR_DIVIDE   => ["type" => Statistic::OPERATOR_DIVIDE, "label" => "/"],
+    ];
+
     /* Education program types. Used to check if a statistic can be used for a cohort */
     const EDUCATION_PROGRAM_TYPE_ACTING = 1;
     const EDUCATION_PROGRAM_TYPE_PRODUCING = 2;
