@@ -61,7 +61,6 @@ class ActingAnalysisController extends Controller
         }
 
         $ccCollector = new ActingCollector($year, $month, Auth::user()->getCurrentWorkplaceLearningPeriod());
-        dump($ccCollector->totalLearningActivities());
         $dataCollector = new DataCollectorContainer($ccCollector);
 
 
@@ -70,8 +69,9 @@ class ActingAnalysisController extends Controller
         /** @var Statistic $stat */
         foreach($stats as $stat) {
             $stat->setDataCollector($dataCollector);
-            dump($stat);
-            dump($stat->name, $stat->calculate());
+//            dump($stat->name, $stat->calculate());
+            dump("{$stat->name}: {$stat->calculate()} : {$stat->operator} ({$stat->statisticVariableOne->getValue()} & {$stat->statisticVariableTwo->getValue()})");
+
         }
 
 

@@ -18,7 +18,6 @@ class CreateStatisticVariablesTable extends Migration
             $table->string('type');
             $table->string('dataUnitMethod')->nullable();
             $table->string('dataUnitParameterValue')->nullable();
-            $table->integer('statistic_id');
             $table->integer('nested_statistic_id')->nullable();
 
         });

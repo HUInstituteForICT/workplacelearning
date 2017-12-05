@@ -19,7 +19,7 @@ const Apps = {
     ActivityProducingProcessTable,
     EducationProgramsApp,
     ProducingWeekStatesExport,
-    CreateForm
+    CreateForm,
 };
 
 // Automatically mount if one of the above declared Apps exist in the DOM

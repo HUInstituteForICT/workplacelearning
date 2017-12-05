@@ -9,7 +9,7 @@
                 var operators = {!! json_encode($operators) !!};
                 var statisticVariables = {!! json_encode($statisticVariables) !!};
             </script>
-            <div class="__reactRoot" id="CreateForm" data-url="{{ route('statistics.store') }}"></div>
+            <div class="__reactRoot" id="CreateForm" data-education-program-type-id="{{ $educationProgramTypeId }}" data-url="{{ route('statistics.store') }}"></div>
         </div>
     </div>
 @stop

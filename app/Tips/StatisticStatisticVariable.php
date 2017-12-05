@@ -38,6 +38,7 @@ class StatisticStatisticVariable extends StatisticVariable implements HasStatist
     public function getValue()
     {
         $this->nestedStatistic->setDataCollector($this->dataCollector);
-        return $this->nestedStatistic->calculate();
+        $value = $this->nestedStatistic->calculate();
+        return $value;
     }
 }

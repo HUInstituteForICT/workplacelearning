@@ -42,9 +42,10 @@ export default class CreateForm extends React.Component {
             statisticVariableOne: variableOne,
             statisticVariableOneParameter: this.state.statisticVariableOneParameter,
             statisticVariableTwo: variableTwo,
-            statisticVariableTwoParameter: this.state.statisticVariableTwoParameter
+            statisticVariableTwoParameter: this.state.statisticVariableTwoParameter,
+            educationProgramTypeId: this.props.educationProgramTypeId
         }).then(response => {
-            // window.location.href = "/statistics"
+            window.location.href = "/statistics"
         }).catch(error => {
             console.log(error);
         });
@@ -157,11 +158,14 @@ export default class CreateForm extends React.Component {
                         </div>
                     }
                 </div>
-
-
             </div>
 
-            <a onClick={() => this.submit()}>hoi</a>
+
+            <div className="row">
+                <div className="col-md-2" style={{"marginTop":"10px"}}>
+                    <a className="defaultButton" onClick={() => this.submit()}>{Lang.get('react.statistic.create')}</a>
+                </div>
+            </div>
 
         </div>;
     }

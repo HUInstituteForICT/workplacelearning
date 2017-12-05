@@ -10,8 +10,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property integer eptype_id ID of the EducationProgramType
- * @property string eptype_name Name of the EducationProgramType
+ * @property integer $eptype_id
+ * @property string $eptype_name Name of the program type
  */
 class EducationProgramType extends Model
 {

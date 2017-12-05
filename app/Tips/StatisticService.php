@@ -4,61 +4,56 @@
 namespace App\Tips;
 
 
+use App\EducationProgramType;
+
 class StatisticService
 {
+    /** @var StatisticVariableService $statisticVariableService */
+    private $statisticVariableService;
+
+    public function __construct(StatisticVariableService $statisticVariableService)
+    {
+        $this->statisticVariableService = $statisticVariableService;
+    }
+
     /**
      * @param array $data
      * @return Statistic
      */
     public function createStatistic(array $data) {
 
-        $variableOne = $this->createStatisticVariable($data['statisticVariableOne'], $data['statisticVariableOneParameter']);
-        $variableTwo = $this->createStatisticVariable($data['statisticVariableTwo'], $data['statisticVariableTwoParameter']);
+        $variableOne = $this->statisticVariableService->createStatisticVariable($data['statisticVariableOne'], $data['statisticVariableOneParameter']);
+        $variableTwo = $this->statisticVariableService->createStatisticVariable($data['statisticVariableTwo'], $data['statisticVariableTwoParameter']);
+
+        $variableOne->save();
+        $variableTwo->save();
 
         $statistic = new Statistic();
 
         $statistic->name = $data['name'];
 
-        $statistic->educationProgramType = Statistic::EDUCATION_PROGRAM_TYPE_ACTING;
-        $statistic->tip_id = 1;
-        $statistic->operator = $data['operator'];
+        $statistic->educationProgramType()->associate($this->getEducationProgramType($data['educationProgramTypeId']));
+        $statistic->operator = $this->getOperator($data['operator']);
+
+        $statistic->statisticVariableOne()->associate($variableOne);
+        $statistic->statisticVariableTwo()->associate($variableTwo);
 
         $statistic->save();
 
-        $statistic->statisticVariableOne()->save($variableOne);
-        $statistic->statisticVariableTwo()->save($variableTwo);
-
     }
 
-    public function createStatisticVariable(array $data, $parameter = null) {
-        switch($data['type']) {
-            case (new CollectedDataStatisticVariable())->getType():
-                return $this->createCollectedDataStatisticVariable($data['method'], $parameter);
-            case (new StatisticStatisticVariable())->getType():
-                return $this->createStatisticStatisticVariable((new Statistic)->find($data['id']));
+    private function getOperator($operator) {
+        if(!isset(Statistic::OPERATORS[$operator])) {
+            throw new \Exception("Operator with id {$operator} not found in Statistic::OPERATORS");
         }
 
-        throw new \Exception("Unknown statistic variable type: {$data['type']}");
+        return $operator;
     }
 
-    private function createStatisticStatisticVariable(Statistic $statistic) {
-        $variable = new StatisticStatisticVariable();
-        $variable->nestedStatistic()->associate($statistic);
-
-        return $variable;
+    private function getEducationProgramType($educationProgramTypeId) {
+        $programType = (new EducationProgramType)->findOrFail($educationProgramTypeId);
+        return $programType;
     }
 
-    /**
-     * @param string $name
-     * @param string $method
-     * @param string $parameter
-     * @return CollectedDataStatisticVariable
-     */
-    private function createCollectedDataStatisticVariable($method, $parameter) {
-        $variable = new CollectedDataStatisticVariable();
-        $variable->dataUnitMethod = $method;
-        $variable->dataUnitParameterValue = $parameter;
 
-        return $variable;
-    }
 }

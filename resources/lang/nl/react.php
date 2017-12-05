@@ -77,6 +77,8 @@ return [
         "select-operator" => "Selecteer operator",
         "parameter" => "Parameter",
         "statistic-name" => "Naam voor nieuwe statistiek",
+        "create" => "Maak aan",
+        "save" => "Opslaan",
 
         "errors" => [
             "name" => "De naam van de statistiek mag niet leeg zijn",

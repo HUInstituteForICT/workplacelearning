@@ -4,15 +4,16 @@
 namespace App\Tips;
 
 
+use App\EducationProgramType;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableOne
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableTwo
- * @property integer $id THe id of the statistic
+ * @property integer $id The id of the statistic
  * @property integer $operator the operator that will be used for the two statisticVariables
  * @property string $name The name of this statistic
- * @property integer $educationProgramType the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
+ * @property EducationProgramType $educationProgramType the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
  */
 class Statistic extends Model
 {
@@ -41,20 +42,31 @@ class Statistic extends Model
 
     /**
      * Relation to first statisticVariable of this statistic
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * BelongsTo relation because the statistic should be the owning side
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function statisticVariableOne()
     {
-        return $this->hasOne(StatisticVariable::class);
+        return $this->belongsTo(StatisticVariable::class, 'statistic_variable_one_id');
     }
 
     /**
      * Relation to second statisticVariable of this statistic
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * BelongsTo relation because the statistic should be the owning side
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function statisticVariableTwo()
     {
-        return $this->hasOne(StatisticVariable::class);
+        return $this->belongsTo(StatisticVariable::class, 'statistic_variable_two_id');
+    }
+
+    /**
+     * Relation to the EducationProgramType
+     * Certain data is only available to certain education program types (acting, producing)
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function educationProgramType() {
+        return $this->belongsTo(EducationProgramType::class, 'education_program_type_id', 'eptype_id');
     }
 
     /**
@@ -66,8 +78,11 @@ class Statistic extends Model
     public function calculate()
     {
         $this->load(['statisticVariableOne', 'statisticVariableTwo']);
-        $this->statisticVariableOne = $this->injectDependenciesIntoStatisticVariable($this->statisticVariableOne);
-        $this->statisticVariableTwo = $this->injectDependenciesIntoStatisticVariable($this->statisticVariableTwo);
+        $this->injectDependenciesIntoStatisticVariable($this->statisticVariableOne);
+        $this->injectDependenciesIntoStatisticVariable($this->statisticVariableTwo);
+
+        $x = 2;
+
 
         try {
             switch ($this->operator) {
