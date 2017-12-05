@@ -2,6 +2,8 @@
 
 
 # WorkplaceLearning
+Master: [![Build Status](https://travis-ci.org/HUInstituteForICT/workplacelearning.svg?branch=master)](https://travis-ci.org/HUInstituteForICT/workplacelearning)
+Development: [![Build Status](https://travis-ci.org/HUInstituteForICT/workplacelearning.svg?branch=development)](https://travis-ci.org/HUInstituteForICT/workplacelearning)
 
 ## Getting Started
 
