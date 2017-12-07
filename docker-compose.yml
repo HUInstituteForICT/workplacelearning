@@ -19,7 +19,7 @@ services:
       context: ./docker/config/
       dockerfile: php
     volumes:
-      - .:/var/www
+      - .:/var/www:cached
     environment:
           XDEBUG_CONFIG: "remote_host=${host_lan_ip}"
           PHP_IDE_CONFIG: "serverName=wpl"

@@ -4,14 +4,22 @@
 namespace App\Tips;
 
 
+use App\Cohort;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 
 /**
- * @property Statistic $statistic The statistic used for this tip
- * @property float $threshold The threshold that determines whether the tip is applicable or not
- * @property string $tipText The text including placeholders used for displaying the tip
+ * Class Tip
+ *
  * @property boolean $multiplyBy100 Whether or not the percentage calculated should be multiplied by 100 in the getTipText
+ * @property string $name Name of the tip
+ * @property boolean $showInAnalysis Whether or not the tip should be displayed in analyses
+ * @property integer $id ID of the tip
+ * @property Statistic $statistic of the tip
+ * @property float $threshold The threshold that determines whether the tip is applicable or not
+ * @property string tipText The text including placeholders used for displaying the tip
+ * @property Cohort[]|Collection enabledCohorts
  */
 class Tip extends Model
 {
@@ -23,20 +31,32 @@ class Tip extends Model
      */
     private $cachedResult;
 
+    public $timestamps = false;
+
     /**
      * The statistic used for this tip
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function statistic() {
-        return $this->hasOne(Statistic::class);
+        return $this->belongsTo(Statistic::class);
+    }
+
+    /**
+     * The cohorts this Tip is enabled for
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function enabledCohorts() {
+        return $this->belongsToMany(Cohort::class);
     }
 
     /**
      * Check if the tip is applicable
+     * @param DataCollectorContainer $collector
      * @return bool
      */
-    public function isApplicable()
+    public function isApplicable(DataCollectorContainer $collector)
     {
+        $this->statistic->setDataCollector($collector);
         $this->cachedResult = $this->statistic->calculate();
 
         return $this->cachedResult >= $this->threshold;
@@ -54,5 +74,6 @@ class Tip extends Model
 
         return $tipText;
     }
+
 
 }

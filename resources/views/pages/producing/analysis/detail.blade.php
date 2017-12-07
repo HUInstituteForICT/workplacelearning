@@ -136,9 +136,21 @@
                 </div>
             </div>
 
+
             <!-- Tips -->
             <div class="row">
                 <div class="col-md-12">
+
+                    <h3>Tips</h3>
+                    <?php $tipCounter = 1; ?>
+
+                    @foreach($tips as $tip)
+                        <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
+                        <p>{{ $tip->getTipText() }}</p>
+                        <br/><br/>
+                        <?php $tipCounter++; ?>
+                    @endforeach
+
                     <h2>{{ trans('analysis.tips.tips') }}</h2>
                     @if($producingAnalysis->statistic('percentageAloneHours') > 75 && $producingAnalysis->statistic('percentageDifficultTasks') > 50)
                         <p>{{ trans('analysis.tips.percentageAloneHours', ['percentage' => $producingAnalysis->statistic('percentageAloneHours'), 'percentageDifficultTasks' => $producingAnalysis->statistic('percentageDifficultTasks')]) }}</p>

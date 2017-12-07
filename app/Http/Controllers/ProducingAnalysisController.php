@@ -8,9 +8,14 @@
 namespace App\Http\Controllers;
 
 use App\Chart;
+use App\Cohort;
 use App\LearningActivityProducing;
 use App\Analysis\Producing\ProducingAnalysis;
 use App\Analysis\Producing\ProducingAnalysisCollector;
+use App\Tips\ActingCollector;
+use App\Tips\DataCollectorContainer;
+use App\Tips\ProducingCollector;
+use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +58,21 @@ class ProducingAnalysisController extends Controller
         // Create new Analysis for the producing student
         $producingAnalysis = new ProducingAnalysis(new ProducingAnalysisCollector(), $year, $month);
 
+        if($year === "all" || $month === "all") {
+            $year = null;
+            $month = null;
+        }
+
+        $ccCollector = new ProducingCollector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
+        $dataCollector = new DataCollectorContainer($ccCollector);
+
+        /** @var Cohort $cohort */
+        $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
+        $applicableTips = $cohort->tips->filter(function(Tip $tip) use($dataCollector) {
+            return $tip->showInAnalysis && $tip->isApplicable($dataCollector);
+        });
+
+
         // If there are no chains, there are no activities therefore redirect user somewhere else
         if (count($producingAnalysis->chains()) == 0) {
             return redirect()->route('analysis-producing-choice')->withErrors([Lang::get('notifications.generic.nointernshiphoursmonth')]);
@@ -62,6 +82,7 @@ class ProducingAnalysisController extends Controller
         $analysisData = $producingAnalysis->analysisData;
 
         return view('pages.producing.analysis.detail')
+            ->with('tips', $applicableTips)
             ->with('producingAnalysis', $producingAnalysis)
             ->with('analysis', $analysisData)
             ->with('year', $year)

@@ -16,6 +16,7 @@ return array (
       'profile' => 'Profiel',
       'settings' => 'Voortgang',
       'educationprograms' => 'Programma\'s',
+      "tips" => "Tips",
       'logout' => 'Uitloggen',
     ),
   ),

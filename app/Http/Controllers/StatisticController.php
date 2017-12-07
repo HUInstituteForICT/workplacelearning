@@ -85,44 +85,6 @@ class StatisticController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Tips\Statistic $statistic
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
-     */
-    public function show(Statistic $statistic)
-    {
-        throw new \Exception("Not implemented");
-    }
-
-    /**
-     * Show the form for editing the specified Statistic.
-     *
-     * @param  \App\Tips\Statistic $statistic
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
-     */
-    public function edit(Statistic $statistic, Request $request)
-    {
-        throw new \Exception("Not implemented");
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param  \App\Tips\Statistic $statistic
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
-     */
-    public function update(Request $request, Statistic $statistic)
-    {
-        throw new \Exception("Not implemented");
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Tips\Statistic $statistic

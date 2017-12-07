@@ -10,11 +10,13 @@ class CreateTipTable extends Migration
     {
         Schema::create('tips', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('cohort_id');
+            $table->string('name');
             $table->float('threshold');
             $table->text("tipText");
             $table->boolean("multiplyBy100");
             $table->boolean("showInAnalysis");
+
+            $table->integer('statistic_id')->unsigned();
 
         });
     }

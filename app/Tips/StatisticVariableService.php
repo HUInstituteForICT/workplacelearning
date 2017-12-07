@@ -14,7 +14,7 @@ class StatisticVariableService
     public function createStatisticVariable(array $data, $parameter = null) {
         switch($data['type']) {
             case (new CollectedDataStatisticVariable())->getType():
-                return $this->createCollectedDataStatisticVariable($data['method'], $parameter);
+                return $this->createCollectedDataStatisticVariable($data['name'], $data['method'], $parameter);
             case (new StatisticStatisticVariable())->getType():
                 return $this->createStatisticStatisticVariable((new Statistic)->find($data['id']));
         }
@@ -24,6 +24,7 @@ class StatisticVariableService
 
     private function createStatisticStatisticVariable(Statistic $statistic) {
         $variable = new StatisticStatisticVariable();
+        $variable->name = $statistic->name;
         $variable->nestedStatistic()->associate($statistic);
 
         return $variable;
@@ -35,8 +36,9 @@ class StatisticVariableService
      * @param string $parameter
      * @return CollectedDataStatisticVariable
      */
-    private function createCollectedDataStatisticVariable($method, $parameter) {
+    private function createCollectedDataStatisticVariable($name, $method, $parameter) {
         $variable = new CollectedDataStatisticVariable();
+        $variable->name = $name;
         $variable->dataUnitMethod = $method;
         $variable->dataUnitParameterValue = $parameter;
 

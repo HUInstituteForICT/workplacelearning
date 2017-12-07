@@ -56,7 +56,9 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 );
 
 Route::group(['middleware' => ['auth', CheckUserLevel::class]], function() {
-    Route::resource('statistics', 'StatisticController');
+    Route::resource('statistics', 'StatisticController', ['only' => ['index', 'create', 'store', 'destroy']]);
+    Route::put('tips/{tip}/cohorts', 'TipsController@updateCohorts')->name('tips.updateCohorts');
+    Route::resource('tips', 'TipsController');
 });
 
 Route::group(['before' => 'auth'], function() {

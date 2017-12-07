@@ -20,7 +20,6 @@ class CreateStatisticsTable extends Migration
             $table->smallInteger('education_program_type_id');
             $table->integer('statistic_variable_one_id');
             $table->integer('statistic_variable_two_id');
-            $table->integer('tip_id')->nullable();
         });
     }
 

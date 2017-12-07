@@ -214,33 +214,14 @@
                 <h3>Tips</h3>
                 <?php $tipCounter = 1; ?>
 
-                {{--Percentage leermomenten bij leervraag zonder theorie--}}
-
-                @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals() as $learningGoal)
-
-                    @if($actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) > 50)
-                        <strong>{{ Lang::get('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
-
-                        {{ Lang::get('analysis.tips.learninggoal-material', ["percentage" => $actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal), "label" => $learningGoal->learninggoal_label]) }}
-                        <br/><br/>
-
-                        <?php $tipCounter++ ?>
-                    @endif
-
-
+                @foreach($tips as $tip)
+                    <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
+                    <p>{{ $tip->getTipText() }}</p>
+                    <br/><br/>
+                    <?php $tipCounter++; ?>
                 @endforeach
 
-                {{--Percentage leermomenten in tijdslot hoger dan 30% tip--}}
-                @foreach(Auth::user()->currentCohort()->timeslots()->get()->merge(Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()) as $timeslot)
-                    @if($actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) >= 30)
-                        <strong>{{ Lang::get('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
 
-                        {{ Lang::get('analysis.tips.activities-timeslot', ["percentage" => $actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot), "label" => $timeslot->timeslot_text]) }}
-                        <br/><br/>
-                        <?php $tipCounter++ ?>
-                    @endif
-
-                @endforeach
             </div>
         </div>
     </div>

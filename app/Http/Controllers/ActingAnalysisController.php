@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 
 use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
+use App\Cohort;
 use App\LearningActivityActing;
 use App\Tips\ActingCollector;
 use App\Tips\CollectedDataStatisticVariable;
@@ -41,6 +42,12 @@ class ActingAnalysisController extends Controller
         return view('pages.acting.analysis.choice');
     }
 
+    /**
+     * @param Request $request
+     * @param $year
+     * @param $month
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
     public function showDetail(Request $request, $year, $month)
     {
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null || Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count() === 0) {
@@ -55,33 +62,26 @@ class ActingAnalysisController extends Controller
             return redirect()->route('analysis-producing-choice');
         }
 
+        // The analysis for the charts etc.
+        $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
+
         if($year === "all" || $month === "all") {
             $year = null;
             $month = null;
         }
 
-        $ccCollector = new ActingCollector($year, $month, Auth::user()->getCurrentWorkplaceLearningPeriod());
+        $ccCollector = new ActingCollector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
         $dataCollector = new DataCollectorContainer($ccCollector);
 
+        /** @var Cohort $cohort */
+        $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
+        $applicableTips = $cohort->tips->filter(function(Tip $tip) use($dataCollector) {
+            return $tip->showInAnalysis && $tip->isApplicable($dataCollector);
+        });
 
-
-        $stats = Statistic::all();
-        /** @var Statistic $stat */
-        foreach($stats as $stat) {
-            $stat->setDataCollector($dataCollector);
-//            dump($stat->name, $stat->calculate());
-            dump("{$stat->name}: {$stat->calculate()} : {$stat->operator} ({$stat->statisticVariableOne->getValue()} & {$stat->statisticVariableTwo->getValue()})");
-
-        }
-
-
-        //dump($dataCollector->getDataUnit("activitiesWithRP[person_label=Alleen]"));
-        die();
-
-        // TODO: add month year filter so we can show monthly stuff etc
-//        $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
 
         return view('pages.acting.analysis.detail')
+            ->with('tips', $applicableTips)
             ->with('actingAnalysis', $analysis);
     }
 }

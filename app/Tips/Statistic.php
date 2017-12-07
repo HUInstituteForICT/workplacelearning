@@ -36,6 +36,10 @@ class Statistic extends Model
     // Injected into StatisticVariables that use a dataCollector
     private $dataCollector;
 
+    public function tips() {
+        return $this->hasMany(Tip::class);
+    }
+
     /**
      * Relation to first statisticVariable of this statistic
      * BelongsTo relation because the statistic should be the owning side
@@ -76,9 +80,6 @@ class Statistic extends Model
         $this->load(['statisticVariableOne', 'statisticVariableTwo']);
         $this->injectDependenciesIntoStatisticVariable($this->statisticVariableOne);
         $this->injectDependenciesIntoStatisticVariable($this->statisticVariableTwo);
-
-        $x = 2;
-
 
         try {
             switch ($this->operator) {
@@ -122,4 +123,28 @@ class Statistic extends Model
         $this->dataCollector = $dataCollector;
     }
 
+
+    /**
+     * Get the expression of this statistic as a string
+     * Used for display purposes
+     *
+     * @return string
+     */
+    public function getStatisticCalculationExpression() {
+        $expression = "";
+        $expression .= "{$this->statisticVariableOne->name} ";
+        if($this->statisticVariableOne instanceof CollectedDataStatisticVariable && $this->statisticVariableOne->dataUnitParameterValue !== null) {
+            $expression .= "({$this->statisticVariableOne->dataUnitParameterValue}) ";
+        }
+        
+        $expression .= self::OPERATORS[$this->operator]['label'] . " ";
+
+        $expression .= "{$this->statisticVariableTwo->name} ";
+        if($this->statisticVariableTwo instanceof CollectedDataStatisticVariable && $this->statisticVariableTwo->dataUnitParameterValue !== null) {
+            $expression .= "({$this->statisticVariableTwo->dataUnitParameterValue}) ";
+        }
+
+        return $expression;
+    }
+    
 }
