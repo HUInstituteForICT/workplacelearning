@@ -30,10 +30,6 @@ class Statistic extends Model
         self::OPERATOR_DIVIDE   => ["type" => Statistic::OPERATOR_DIVIDE, "label" => "/"],
     ];
 
-    /* Education program types. Used to check if a statistic can be used for a cohort */
-    const EDUCATION_PROGRAM_TYPE_ACTING = 1;
-    const EDUCATION_PROGRAM_TYPE_PRODUCING = 2;
-
     // Disable timestamps
     public $timestamps = false;
 

@@ -26,7 +26,8 @@
         "barryvdh/laravel-ide-helper": "^2.3",
         "barryvdh/laravel-dompdf": "^0.8.0",
         "barryvdh/laravel-translation-manager": "0.2.x",
-        "phpstan/phpstan": "^0.9"
+        "phpstan/phpstan": "^0.9",
+        "barryvdh/laravel-debugbar": "2.4.*"
     },
     "autoload": {
         "classmap": [

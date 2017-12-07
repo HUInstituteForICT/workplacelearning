@@ -17,7 +17,7 @@
             <ul>
                 @foreach($statistics as $statistic)
                     <li style="margin-top:15px;">
-                        <a href="{{ route('statistics.edit', ['id' => $statistic->id]) }}">{{ $statistic->name }} ({{ $statistic->educationProgramType->eptype_name }})</a>
+                        {{ $statistic->name }} ({{ $statistic->educationProgramType->eptype_name }})
                         {{ Form::open(['route' => ['statistics.destroy', $statistic->id], 'method' => 'delete']) }}
                             <button class="btn btn-primary">{{ trans('react.delete') }}</button>
                         {{ Form::close() }}
