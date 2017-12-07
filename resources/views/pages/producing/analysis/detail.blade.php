@@ -151,23 +151,25 @@
                         <?php $tipCounter++; ?>
                     @endforeach
 
-                    <h2>{{ trans('analysis.tips.tips') }}</h2>
-                    @if($producingAnalysis->statistic('percentageAloneHours') > 75 && $producingAnalysis->statistic('percentageDifficultTasks') > 50)
-                        <p>{{ trans('analysis.tips.percentageAloneHours', ['percentage' => $producingAnalysis->statistic('percentageAloneHours'), 'percentageDifficultTasks' => $producingAnalysis->statistic('percentageDifficultTasks')]) }}</p>
-                    @endif
-                    @if($producingAnalysis->statistic('percentageEasyHours') > 65)
-                        <p>
-                            {{ trans('analysis.tips.percentageEasyHours', ["percentage" => $producingAnalysis->statistic('percentageEasyHours')]) }}
-                        </p>
-                    @endif
 
-                        <p>
-                            {{ trans('analysis.tips.mostDifficultCategory', ["category" => $producingAnalysis->statistic('mostDifficultCategoryName'), "percentage" => $producingAnalysis->statistic('persentageMostDifficultCategory')]) }}
-                        </p>
 
-                        <p>
-                            {{ trans('analysis.tips.averagePersonDifficultyName', ['person' => $producingAnalysis->statistic('averagePersonDifficultyName')]) }}
-                        </p>
+                    {{--<h2>{{ trans('analysis.tips.tips') }}</h2>--}}
+                    {{--@if($producingAnalysis->statistic('percentageAloneHours') > 75 && $producingAnalysis->statistic('percentageDifficultTasks') > 50)--}}
+                        {{--<p>{{ trans('analysis.tips.percentageAloneHours', ['percentage' => $producingAnalysis->statistic('percentageAloneHours'), 'percentageDifficultTasks' => $producingAnalysis->statistic('percentageDifficultTasks')]) }}</p>--}}
+                    {{--@endif--}}
+                    {{--@if($producingAnalysis->statistic('percentageEasyHours') > 65)--}}
+                        {{--<p>--}}
+                            {{--{{ trans('analysis.tips.percentageEasyHours', ["percentage" => $producingAnalysis->statistic('percentageEasyHours')]) }}--}}
+                        {{--</p>--}}
+                    {{--@endif--}}
+
+                        {{--<p>--}}
+                            {{--{{ trans('analysis.tips.mostDifficultCategory', ["category" => $producingAnalysis->statistic('mostDifficultCategoryName'), "percentage" => $producingAnalysis->statistic('persentageMostDifficultCategory')]) }}--}}
+                        {{--</p>--}}
+
+                        {{--<p>--}}
+                            {{--{{ trans('analysis.tips.averagePersonDifficultyName', ['person' => $producingAnalysis->statistic('averagePersonDifficultyName')]) }}--}}
+                        {{--</p>--}}
 
                 </div>
             </div>
