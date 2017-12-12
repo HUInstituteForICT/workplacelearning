@@ -68,6 +68,7 @@ class ProducingAnalysisController extends Controller
 
         /** @var Cohort $cohort */
         $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
+        $cohort->load('tips.statistics');
         $applicableTips = $cohort->tips->filter(function(Tip $tip) use($dataCollector) {
             return $tip->showInAnalysis && $tip->isApplicable($dataCollector);
         });

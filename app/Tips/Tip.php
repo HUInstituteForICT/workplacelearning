@@ -38,7 +38,9 @@ class Tip extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function statistics() {
-        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')->using(TipCoupledStatistic::class);
+        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')
+            ->using(TipCoupledStatistic::class)
+            ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
     }
 
     /**
@@ -56,10 +58,17 @@ class Tip extends Model
      */
     public function isApplicable(DataCollectorContainer $collector)
     {
-        $this->statistic->setDataCollector($collector);
-        $this->cachedResult = $this->statistic->calculate();
+        $applicable = true;
+        $this->statistics->each(function(Statistic $statistic) use(&$applicable, $collector) {
+            $statistic->setDataCollector($collector);
+            $this->cachedResult[$statistic->pivot->id] = $statistic->calculate();
 
-        return $this->cachedResult >= $this->threshold;
+            $applicable = $statistic->pivot->passes($this->cachedResult[$statistic->pivot->id]);
+            return $applicable;
+        });
+
+
+        return $applicable;
     }
 
     /**
@@ -69,10 +78,18 @@ class Tip extends Model
     public function getTipText()
     {
         $tipText = $this->tipText;
-        $percentageValue = $this->multiplyBy100 ? number_format($this->cachedResult * 100) : $this->cachedResult;
-        $tipText = str_replace(':percentage', $percentageValue, $tipText);
+        $this->statistics->each(function(Statistic $statistic) use(&$tipText) {
+            $percentageValue = $statistic->pivot->multiplyBy100 ? number_format($this->cachedResult[$statistic->pivot->id] * 100) : $this->cachedResult[$statistic->pivot->id];
+            $tipText = str_replace(":value-{$statistic->pivot->id}", $percentageValue, $tipText);
+        });
 
         return $tipText;
+    }
+
+    public function buildTextParameters() {
+        return $this->statistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function(Statistic $statistic) {
+            return [$statistic->pivot->ifExpression() => ":value-{$statistic->pivot->id}"];
+        });
     }
 
 

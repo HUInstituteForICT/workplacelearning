@@ -16,25 +16,27 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="statistic[id]">{{ trans('tips.form.statistic') }}</label>
-                    {{ Form::select('statistic[id]', $statistics, null, ["class" => "form-control"]) }}
-                </div>
-
-                <div class="form-group">
-                    <label for="threshold">{{ trans('tips.form.threshold') }}</label>
-                    {{ Form::number('threshold', null, ['class' => 'form-control', 'min' => '0.01', 'max' => '1', 'step' => '0.01']) }}
-                </div>
-
-                <div class="form-group">
                     <label for="tipText">{{ trans('tips.form.tipText') }}</label>
                     {{ Form::textarea('tipText', null, ['class' => 'form-control', 'max' => '1000', 'rows' => '3', 'placeholder' => trans('tips.form.tipTextPlaceholder')]) }}
-                </div>
+                    <br/>
+                    <strong>{{ trans('tips.form.statistic-value-parameters') }}</strong>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>{{ trans('tips.form.table-statistic') }}</th>
+                            <th>{{ trans('tips.form.table-value-parameter') }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($tip->buildTextParameters() as $coupledStatistic => $valueId)
+                            <tr>
+                                <td>{{ $coupledStatistic }}</td>
+                                <td><strong>{{ $valueId }}</strong></td>
+                            </tr>
+                        @endforeach
+                        </tbody>
 
-                <div class="form-group">
-                    <label for="multiplyBy100">
-                        {{ Form::checkbox('multiplyBy100', 1) }}
-                        {{ trans('tips.form.multiplyBy100') }}
-                    </label>
+                    </table>
                 </div>
 
                 <div class="form-group">
@@ -49,7 +51,37 @@
                 {{ Form::close() }}
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-3 col-md-offset-1">
+
+                <h4>{{ trans('tips.this-tip-statistics') }}</h4>
+                <a href="{{ route('tips.select-statistic', ['id' => $tip->id]) }}">{{ trans('tips.add-statistic') }}</a>
+                <div class="row">
+
+
+                    @foreach($tip->statistics as $statistic)
+
+                        <div class="col-md-12 panel panel-default">
+                            <div class="panel-body">
+                                <strong>Name:</strong> {{ $statistic->name }}<br/>
+                                <strong>EP Type:</strong> ({{ $statistic->educationProgramType->eptype_name }})<br/>
+                                <strong>If:</strong> {{ $statistic->pivot->ifExpression() }}
+                            </div>
+                            <div class="panel-footer row">
+                                <div class="col-md-12 text-right">
+                                    {{ Form::open(['route' => ['tips.decouple-statistic', $tip->id, $statistic->pivot->id], 'method' => 'delete']) }}
+                                    <button class="btn btn-danger">{{ strtolower(trans('react.delete')) }}</button>
+                                    {{ Form::close() }}
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="col-md-3 col-md-offset-1">
                 <h4>{{ trans('tips.form.cohorts-enable') }}</h4>
 
                 {{ Form::model($tip, ['route' => ['tips.updateCohorts', $tip->id], 'method' => "put"]) }}

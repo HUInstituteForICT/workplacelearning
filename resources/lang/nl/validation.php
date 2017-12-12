@@ -143,6 +143,10 @@ return array (
     'firstname' => 'voornaam',
     'lastname' => 'achternaam',
     'email' => 'email address',
+      'name' => 'naam',
+      'threshold' => 'grenswaarde',
+      'tipText' => 'tip tekst',
+      'showInAnalysis' => 'zichtbaar in analyse'
   ),
 
   "newnotfinished" => "De omschrijving is verplicht en mag maximaal 150 tekens zijn.",

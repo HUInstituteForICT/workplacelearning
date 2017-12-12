@@ -12,7 +12,7 @@ class TipTest extends PHPUnit\Framework\TestCase
         $statistic->method('calculate')->willReturn(0.5);
 
         $tip = new Tip();
-        $tip->statistic = $statistic;
+        $tip->statistics()->attach($statistic);
         $tip->threshold = 0.4;
 
         $dataCollectorContainer = $this->createMock(\App\Tips\DataCollectorContainer::class);

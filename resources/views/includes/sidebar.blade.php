@@ -68,7 +68,7 @@
 
         <a class="nav-tile" href="{{ route('tips.index') }}">
             <div class="tile blue_tile">
-                <img class="icon" src="{{ URL::asset('assets/img/Studievoortgang_blauw.svg', true) }}"/>
+                <img class="icon" src="{{ URL::asset('assets/img/cursus_wit.svg', true) }}"/>
                 <div class="nav-title"
                      style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.tips') }}</div>
             </div>

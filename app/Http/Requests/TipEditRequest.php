@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TipStoreRequest extends FormRequest
+class TipEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,7 @@ class TipStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-//            "threshold" => 'required|numeric|min:0.1|max:1',
-//            "tipText" => "required",
-//            "statistic.id" => "exists:statistics,id"
-
+            'tipText' => 'required|max:1000'
         ];
     }
 }

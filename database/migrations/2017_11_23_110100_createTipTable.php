@@ -11,8 +11,8 @@ class CreateTipTable extends Migration
         Schema::create('tips', function(Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->text("tipText");
-            $table->boolean("showInAnalysis");
+            $table->string("tipText", 1000)->default('');
+            $table->boolean("showInAnalysis")->default(true);
         });
     }
 

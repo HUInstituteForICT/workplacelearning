@@ -21,9 +21,6 @@ class CreateTipCoupledStatisticPivotTable extends Migration
             $table->float('threshold');
             $table->boolean("multiplyBy100");
 
-
-            $table->unique(['tip_id', 'statistic_id']);
-
         });
     }
 

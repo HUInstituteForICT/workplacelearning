@@ -58,6 +58,9 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 Route::group(['middleware' => ['auth', CheckUserLevel::class]], function() {
     Route::resource('statistics', 'StatisticController', ['only' => ['index', 'create', 'store', 'destroy']]);
     Route::put('tips/{tip}/cohorts', 'TipsController@updateCohorts')->name('tips.updateCohorts');
+    Route::get('tips/{tip}/select-statistic', 'TipsController@selectStatistic')->name('tips.select-statistic');
+    Route::put('tips/{tip}/couple-statistic', 'TipsController@coupleStatistic')->name('tips.couple-statistic');
+    Route::delete('tips/{tip}/decouple-statistic/{tipCoupledStatisticId}', 'TipsController@decoupleStatistic')->name('tips.decouple-statistic');
     Route::resource('tips', 'TipsController');
 });
 

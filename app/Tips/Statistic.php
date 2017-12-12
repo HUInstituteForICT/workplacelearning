@@ -40,7 +40,9 @@ class Statistic extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tips() {
-        return $this->belongsToMany(Tip::class, 'tip_coupled_statistic')->using(TipCoupledStatistic::class);
+        return $this->belongsToMany(Tip::class, 'tip_coupled_statistic')
+            ->using(TipCoupledStatistic::class)
+            ->withPivot(['comparison_operator', 'threshold', 'multiplyBy100']);
     }
 
     /**

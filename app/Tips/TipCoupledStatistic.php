@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $comparison_operator
  * @property float $threshold
  * @property boolean $multiplyBy100
+ * @property Statistic $statistic
  */
 class TipCoupledStatistic extends Pivot
 {
@@ -24,7 +25,31 @@ class TipCoupledStatistic extends Pivot
         self::COMPARISON_OPERATOR_GREATER_THAN => ['type' => self::COMPARISON_OPERATOR_GREATER_THAN, 'label' => '>'],
     ];
     public $timestamps = false;
-    protected $fillable = ['tip_id', 'statistic_id', 'comparison_operator', 'threshold', 'multiplyBy100'];
+    public $fillable = ['comparison_operator', 'threshold', 'multiplyBy100'];
     protected $table = 'tip_coupled_statistic';
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function statistic() {
+        return $this->belongsTo(Statistic::class);
+    }
+
+    public function ifExpression() {
+        $expression = $this->statistic->name . ' ';
+        $expression .= self::COMPARISON_OPERATORS[$this->comparison_operator]['label'] . ' ';
+        $expression .= $this->threshold;
+        return $expression;
+    }
+
+    public function passes($calculatedValue) {
+        if($this->comparison_operator === self::COMPARISON_OPERATOR_LESS_THAN) {
+            return $calculatedValue < $this->threshold;
+        } elseif ($this->comparison_operator === self::COMPARISON_OPERATOR_GREATER_THAN) {
+            return $calculatedValue > $this->threshold;
+        }
+
+        throw new \Exception("Unknown comparison operator with enum value {$this->comparison_operator}");
+    }
 
 }
