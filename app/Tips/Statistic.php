@@ -36,8 +36,11 @@ class Statistic extends Model
     // Injected into StatisticVariables that use a dataCollector
     private $dataCollector;
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function tips() {
-        return $this->hasMany(Tip::class);
+        return $this->belongsToMany(Tip::class, 'tip_coupled_statistic')->using(TipCoupledStatistic::class);
     }
 
     /**

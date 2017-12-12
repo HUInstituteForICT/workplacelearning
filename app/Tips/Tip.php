@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name Name of the tip
  * @property boolean $showInAnalysis Whether or not the tip should be displayed in analyses
  * @property integer $id ID of the tip
- * @property Statistic $statistic of the tip
+ * @property Statistic[]|Collection $statistics of the tip
  * @property float $threshold The threshold that determines whether the tip is applicable or not
  * @property string tipText The text including placeholders used for displaying the tip
  * @property Cohort[]|Collection enabledCohorts
@@ -35,10 +35,10 @@ class Tip extends Model
 
     /**
      * The statistic used for this tip
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function statistic() {
-        return $this->belongsTo(Statistic::class);
+    public function statistics() {
+        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')->using(TipCoupledStatistic::class);
     }
 
     /**
