@@ -19,19 +19,23 @@ class TipService
     public function setTipData(Tip $tip, array $data) {
 
         $tip->name = $data['name'];
-        $tip->threshold = $data['threshold'];
         $tip->tipText = $data['tipText'];
-        $tip->multiplyBy100 = isset($data['multiplyBy100']);
         $tip->showInAnalysis = isset($data['showInAnalysis']);
 
-        $statistic = (new Statistic)->findOrFail($data['statistic']['id']);
-        $tip->statistic()->associate($statistic);
-
         $tip->save();
+
+        $this->coupleStatistics($tip, $data['statistics']);
 
         return $tip;
     }
 
+    /**
+     * Enable this tip for selected cohorts
+     *
+     * @param Tip $tip
+     * @param array $data
+     * @return Tip
+     */
     public function enableCohorts(Tip $tip, array $data)
     {
         $tip->load('enabledCohorts');
@@ -42,5 +46,19 @@ class TipService
         $tip->enabledCohorts()->attach($data['enabledCohorts']);
 
         return $tip;
+    }
+
+    /**
+     * Couple the selected statistics to the Tip
+     *
+     * @param Tip $tip
+     * @param array $statisticsData
+     * @return void
+     */
+    public function coupleStatistics(Tip $tip, array $statisticsData) {
+        foreach($statisticsData as $statisticId => $couplingData) {
+            $statistic = (new Statistic)->findOrFail($statisticId);
+            $tip->statistics()->attach($statistic, $couplingData);
+        }
     }
 }

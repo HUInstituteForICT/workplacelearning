@@ -3,6 +3,7 @@
 
 use App\Tips\Statistic;
 
+use App\Tips\Tip;
 use App\Tips\TipCoupledStatistic;
 
 
@@ -30,5 +31,25 @@ class TipCoupledStatisticTest extends \Tests\TestCase
         $this->assertInstanceOf(TipCoupledStatistic::class, $tip->statistics->first()->pivot);
 
 
+    }
+
+    public function testTipServiceCoupling() {
+        $tipService = new \App\Tips\TipService();
+
+        /** @var Tip $tip */
+        $tip = factory(Tip::class)->make();
+        /** @var Statistic $statistic */
+        $statistic = factory(Statistic::class)->create();
+
+        $data = $tip->attributesToArray();
+        $data['statistics'] = [$statistic->id => [
+            'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
+            'threshold' => 0.5,
+            'multiplyBy100' => false,
+        ]];
+        $newTip = $tipService->setTipData(new Tip, $data);
+
+        $this->assertInstanceOf(TipCoupledStatistic::class, $newTip->statistics->first()->pivot);
+        $this->assertCount(1, $newTip->statistics);
     }
 }
