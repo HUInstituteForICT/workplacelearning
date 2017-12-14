@@ -1,8 +1,10 @@
 <?php
 
 
+use App\Student;
 use App\Tips\Tip;
 use App\Tips\TipCoupledStatistic;
+use App\Tips\TipService;
 
 
 class TipTest extends \Tests\TestCase
@@ -54,7 +56,20 @@ class TipTest extends \Tests\TestCase
         $tip->statistics->first()->pivot->multiplyBy100 = false;
         $tip->isApplicable($dataCollectorContainer); // to trigger calculate
         $this->assertEquals("20 should be 20", $tip->getTipText());
+    }
 
+    public function testTipLike() {
+        $tip = factory(Tip::class)->create();
+        $student = factory(Student::class)->create();
+
+        $tipService = new TipService();
+        $result = $tipService->likeTip($tip,$student);
+
+        $this->assertTrue($result);
+
+        $result = $tipService->likeTip($tip,$student);
+
+        $this->assertFalse($result);
     }
 
 }

@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Class Student
+ * @property int $student_id
+ * @package App
+ */
 class Student extends Authenticatable
 {
     // Override the table used for the User Model

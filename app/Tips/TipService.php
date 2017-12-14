@@ -4,7 +4,7 @@
 namespace App\Tips;
 
 
-use App\Cohort;
+use App\Student;
 
 class TipService
 {
@@ -15,7 +15,8 @@ class TipService
      * @param array $tipData
      * @return Tip
      */
-    public function createTip(array $tipData) {
+    public function createTip(array $tipData)
+    {
         $tip = new Tip;
         $tip->name = $tipData['name'];
         $tip->showInAnalysis = isset($tipData['showInAnalysis']);
@@ -23,11 +24,13 @@ class TipService
         return $tip;
     }
 
-    public function coupleStatistic(Tip $tip, Statistic $statistic, array $tipCoupledStatisticData) {
+    public function coupleStatistic(Tip $tip, Statistic $statistic, array $tipCoupledStatisticData)
+    {
         $tip->statistics()->attach($statistic, $tipCoupledStatisticData);
     }
 
-    public function decoupleStatistic(Tip $tip, $tipCoupledStatisticId) {
+    public function decoupleStatistic(Tip $tip, $tipCoupledStatisticId)
+    {
         return $tip->statistics()->wherePivot('id', '=', $tipCoupledStatisticId)->detach();
     }
 
@@ -38,7 +41,8 @@ class TipService
      * @param array $data
      * @return Tip
      */
-    public function setTipData(Tip $tip, array $data) {
+    public function setTipData(Tip $tip, array $data)
+    {
         $tip->name = $data['name'];
         $tip->tipText = $data['tipText'];
         $tip->showInAnalysis = isset($data['showInAnalysis']);
@@ -74,10 +78,34 @@ class TipService
      * @param array $statisticsData
      * @return void
      */
-    public function coupleStatistics(Tip $tip, array $statisticsData) {
-        foreach($statisticsData as $statisticId => $couplingData) {
+    public function coupleStatistics(Tip $tip, array $statisticsData)
+    {
+        foreach ($statisticsData as $statisticId => $couplingData) {
             $statistic = (new Statistic)->findOrFail($statisticId);
             $tip->statistics()->attach($statistic, $couplingData);
         }
+    }
+
+    /**
+     * Add a new Like to a Tip given by a Student
+     *
+     * @param Tip $tip
+     * @param Student $student
+     * @return bool whether a new like has been added
+     */
+    public function likeTip(Tip $tip, Student $student)
+    {
+        if ((new Like)
+                ->where('tip_id', '=', $tip->id)
+                ->where('student_id', '=', $student->student_id)
+                ->count() > 0) {
+            return false;
+        }
+
+        $like = new Like;
+        $like->tip()->associate($tip);
+        $like->student()->associate($student);
+        return $like->save();
+
     }
 }

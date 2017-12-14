@@ -11,6 +11,33 @@
 |
 */
 
+$factory->define(\App\Student::class, function(Faker\Generator $faker) {
+    return [
+        'studentnr' => $faker->numberBetween(1000000, 9999999),
+        'firstname' => $faker->firstName,
+        'lastname' => $faker->lastName,
+        'ep_id' => function() {
+            return factory(\App\EducationProgram::class)->create()->ep_id;
+        },
+        'userlevel' => 0,
+        'pw_hash' => Hash::make($faker->password),
+        'gender' => $faker->randomElement(['m', 'f']),
+        'birthdate' => $faker->date(),
+        'email' => $faker->email,
+        'phonenr' => $faker->phoneNumber,
+        'locale' => $faker->randomElement(['nl', 'en'])
+    ];
+});
+
+$factory->define(\App\EducationProgram::class, function(Faker\Generator $faker) {
+    return [
+        'ep_name' => $faker->name . ' opleiding',
+        'eptype_id' => function() {
+            return factory(\App\EducationProgramType::class)->states('acting')->create()->eptype_id;
+        },
+        'disabled' => false,
+    ];
+});
 
 $factory->define(\App\Tips\CollectedDataStatisticVariable::class, function () {
     return [

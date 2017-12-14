@@ -18,8 +18,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $id ID of the tip
  * @property Statistic[]|Collection $statistics of the tip
  * @property float $threshold The threshold that determines whether the tip is applicable or not
- * @property string tipText The text including placeholders used for displaying the tip
- * @property Cohort[]|Collection enabledCohorts
+ * @property string $tipText The text including placeholders used for displaying the tip
+ * @property Cohort[]|Collection $enabledCohorts
+ * @property Like[]|Collection $likes
  */
 class Tip extends Model
 {
@@ -41,6 +42,15 @@ class Tip extends Model
         return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')
             ->using(TipCoupledStatistic::class)
             ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
+    }
+
+    /**
+     * The likes this Tip has given by Students
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
     }
 
     /**
