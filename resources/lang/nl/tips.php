@@ -14,6 +14,9 @@ return [
     'statistics-count' => 'Statistieken',
     'condition' => 'Voorwaarde',
     'multiplyBy100' => 'Waarde * 100',
+    'like' => 'Like tip',
+    'liked' => 'Je hebt deze tip geliked!',
+    'likes' => 'Likes',
 
 
     "form" => [

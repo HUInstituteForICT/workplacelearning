@@ -16,7 +16,9 @@
                             <strong>{{ trans('tips.name') }}:</strong> {{ $tip->name }}<br/>
                             <strong>{{ trans('tips.ep-type') }}:</strong>
                             ({{ $tip->statistics->first()->educationProgramType->eptype_name }})<br/>
-                            <strong>{{ trans('tips.statistics-count') }}:</strong> {{ count($tip->statistics) }}
+                            <strong>{{ trans('tips.statistics-count') }}:</strong> {{ $tip->statistics->count() }}<br/>
+                            <strong>{{ trans('tips.likes') }}:</strong> {{ $tip->likes->count() }}
+
                             <br/><br/>
 
                         </div>

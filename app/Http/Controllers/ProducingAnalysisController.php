@@ -68,7 +68,13 @@ class ProducingAnalysisController extends Controller
 
         /** @var Cohort $cohort */
         $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
-        $cohort->load('tips.statistics');
+        $cohort->load('tips.statistics')->load(
+            [
+                'tips.likes' => function ($relationshipQuery) use ($request) {
+                    // Load the student's likes
+                    $relationshipQuery->where('student_id', '=', $request->user()->student_id);
+                },
+            ]);
         $applicableTips = $cohort->tips->filter(function(Tip $tip) use($dataCollector) {
             return $tip->showInAnalysis && $tip->isApplicable($dataCollector);
         });

@@ -10,18 +10,13 @@ namespace App\Http\Controllers;
 use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
 use App\Cohort;
-use App\LearningActivityActing;
 use App\Tips\ActingCollector;
-use App\Tips\CollectedDataStatisticVariable;
-use App\Tips\CollectibleDataAggregator;
 use App\Tips\DataCollectorContainer;
 use App\Tips\DataUnitParser;
-use App\Tips\Statistic;
 use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
 class ActingAnalysisController extends Controller
@@ -65,7 +60,7 @@ class ActingAnalysisController extends Controller
         // The analysis for the charts etc.
         $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
 
-        if($year === "all" || $month === "all") {
+        if ($year === "all" || $month === "all") {
             $year = null;
             $month = null;
         }
@@ -75,8 +70,14 @@ class ActingAnalysisController extends Controller
 
         /** @var Cohort $cohort */
         $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
-        $cohort->load('tips.statistics');
-        $applicableTips = $cohort->tips->filter(function(Tip $tip) use($dataCollector) {
+        $cohort->load('tips.statistics')->load(
+            [
+                'tips.likes' => function ($relationshipQuery) use ($request) {
+                    // Load the student's likes
+                    $relationshipQuery->where('student_id', '=', $request->user()->student_id);
+                },
+            ]);
+        $applicableTips = $cohort->tips->filter(function (Tip $tip) use ($dataCollector) {
             return $tip->showInAnalysis && $tip->isApplicable($dataCollector);
         });
 

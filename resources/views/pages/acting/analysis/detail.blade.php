@@ -215,7 +215,14 @@
                 <?php $tipCounter = 1; ?>
 
                 @foreach($tips as $tip)
-                    <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
+                    <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>:
+                    @if(count($tip->likes) === 0)
+                        <a id="likeTip-{{ $tip->id }}" onclick="likeTip({{ $tip->id }})"
+                           target="_blank">{{ trans('tips.like') }}</a>
+                    @else
+                        {{ trans('tips.liked') }}
+                    @endif
+                    <br/>
                     <p>{{ $tip->getTipText() }}</p>
                     <br/><br/>
                     <?php $tipCounter++; ?>
@@ -225,5 +232,14 @@
             </div>
         </div>
     </div>
+    <script>
+        function likeTip(tipId) {
+            const url = "{{ route('tips.like', ['id' => ':id']) }}";
+            $.get(url.replace(':id', tipId)).then(function() {
+                $('#likeTip-' + tipId).after('{{ trans('tips.liked') }}').remove();
+
+            });
+        }
+    </script>
 
 @stop

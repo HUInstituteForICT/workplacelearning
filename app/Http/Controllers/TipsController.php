@@ -21,17 +21,10 @@ class TipsController extends Controller
      */
     public function index()
     {
-        $tips = (new Tip)->with(['statistics.educationProgramType'])->orderBy('name', 'ASC')->get();
-
-//        $statistics = [];
-//        (new Statistic)->with('educationProgramType')->get()->each(function (Statistic $statistic) use (&$statistics) {
-//            $statistics[$statistic->id] = "{$statistic->name} ({$statistic->educationProgramType->eptype_name})";
-//        });
+        $tips = (new Tip)->with(['statistics.educationProgramType', 'likes'])->orderBy('name', 'ASC')->get();
 
 
         return view('pages.tips.index')
-//            ->with('statistics', $statistics)
-//            ->with('newTip', new Tip)
             ->with('tips', $tips);
     }
 
@@ -187,5 +180,10 @@ class TipsController extends Controller
         $tip->delete();
 
         return redirect()->route('tips.index');
+    }
+
+    public function likeTip(Tip $tip, TipService $tipService, Request $request) {
+        $liked = $tipService->likeTip($tip, $request->user());
+        return response()->json(['status' => $liked ? 'success' : 'error']);
     }
 }

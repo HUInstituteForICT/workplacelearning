@@ -5,6 +5,7 @@ namespace App\Tips;
 
 
 use App\Cohort;
+use App\Student;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -51,6 +52,10 @@ class Tip extends Model
     public function likes()
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function likesByStudent(Student $student) {
+        return $this->hasMany(Like::class)->where('student_id', '=', $student->student_id);
     }
 
     /**

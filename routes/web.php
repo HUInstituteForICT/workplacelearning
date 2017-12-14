@@ -161,6 +161,9 @@ Route::group([
                                 Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
                             });
 
+
+    Route::get('/tip/{tip}/like', 'TipsController@likeTip')->name('tips.like');
+
     /* EP Type: Acting */
     Route::group([
         'prefix' => "/acting",
