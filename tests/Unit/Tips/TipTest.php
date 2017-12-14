@@ -2,46 +2,59 @@
 
 
 use App\Tips\Tip;
+use App\Tips\TipCoupledStatistic;
 
 
-class TipTest extends PHPUnit\Framework\TestCase
+class TipTest extends \Tests\TestCase
 {
     public function testTipApplicable() {
+        /** @var \App\Tips\Statistic $statistic */
+        $statistic = factory(\App\Tips\Statistic::class)->create();
 
-        $statistic = $this->createMock(\App\Tips\Statistic::class);
-        $statistic->method('calculate')->willReturn(0.5);
-
-        $tip = new Tip();
-        $tip->statistics()->attach($statistic);
-        $tip->threshold = 0.4;
+        /** @var Tip $tip */
+        $tip = factory(Tip::class)->create();
+        $tip->statistics()->attach($statistic, [
+            'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
+            'threshold' => 0.1,
+            'multiplyBy100' => false,
+        ]);
 
         $dataCollectorContainer = $this->createMock(\App\Tips\DataCollectorContainer::class);
+        $dataCollectorContainer->method('getDataUnit')->willReturn(0.2);
 
         $this->assertTrue($tip->isApplicable($dataCollectorContainer));
 
-        $tip->threshold = 0.9;
+        $tip->statistics->first()->pivot->threshold = 0.9;
         $this->assertFalse($tip->isApplicable($dataCollectorContainer));
     }
 
     public function testTipText() {
-        $statistic = $this->createMock(\App\Tips\Statistic::class);
-        $statistic->method('calculate')->willReturn(0.5);
+
+        /** @var \App\Tips\Statistic $statistic */
+        $statistic = factory(\App\Tips\Statistic::class)->create();
+
+        /** @var Tip $tip */
+        $tip = factory(Tip::class)->create();
+        $tip->statistics()->attach($statistic, [
+            'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
+            'threshold' => 0.1,
+            'multiplyBy100' => true,
+        ]);
 
         $dataCollectorContainer = $this->createMock(\App\Tips\DataCollectorContainer::class);
+        $dataCollectorContainer->method('getDataUnit')->willReturn(10);
 
 
-        $tip = new Tip();
-        $tip->statistic = $statistic;
-        $tip->tipText = ":percentage should be 50";
-        $tip->multiplyBy100 = true;
+        $tip->tipText = ":value-1 should be 2,000";
         $tip->isApplicable($dataCollectorContainer); // to trigger calculate
 
-        $this->assertEquals("50 should be 50", $tip->getTipText());
+        $this->assertEquals("2,000 should be 2,000", $tip->getTipText());
 
-        $tip->tipText = ":percentage should be 0.5";
-        $tip->multiplyBy100 = false;
+        $tip->tipText = ":value-1 should be 20";
+        $tip->statistics->first()->pivot->multiplyBy100 = false;
         $tip->isApplicable($dataCollectorContainer); // to trigger calculate
-        $this->assertEquals("0.5 should be 0.5", $tip->getTipText());
+        $this->assertEquals("20 should be 20", $tip->getTipText());
 
     }
+
 }

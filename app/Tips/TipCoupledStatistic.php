@@ -55,9 +55,9 @@ class TipCoupledStatistic extends Pivot
      * @throws \Exception
      */
     public function passes($calculatedValue) {
-        if($this->comparison_operator === self::COMPARISON_OPERATOR_LESS_THAN) {
+        if((int) $this->comparison_operator === self::COMPARISON_OPERATOR_LESS_THAN) {
             return $calculatedValue < $this->threshold;
-        } elseif ($this->comparison_operator === self::COMPARISON_OPERATOR_GREATER_THAN) {
+        } elseif ((int) $this->comparison_operator === self::COMPARISON_OPERATOR_GREATER_THAN) {
             return $calculatedValue > $this->threshold;
         }
 
