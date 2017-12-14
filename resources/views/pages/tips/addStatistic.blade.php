@@ -7,10 +7,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <h2>{{ $tip->name }}</h2>
+                <h4>{{ $tip->name }}</h4>
                 @if(count($tip->statistics) > 0)
                     <a href="{{ route('tips.edit', ['id' => $tip->id]) }}">{{ trans('tips.to-tip') }}</a>
                 @endif
+                <hr>
                 <h4>{{ trans('tips.form.selecting-statistic') }}</h4>
 
                 {{ Form::open(['route' => ['tips.couple-statistic', $tip->id], 'method' => 'put']) }}
@@ -50,21 +51,20 @@
 
             @if(count($alreadyCoupledStatistics) > 0)
                 <div class="col-md-8 col-md-offset-1">
-                    <h3>{{ trans('tips.this-tip-statistics') }}</h3>
+                    <h4>{{ trans('tips.this-tip-statistics') }}</h4>
                     <div class="row">
 
 
                         @foreach($alreadyCoupledStatistics as $statistic)
-
                             <div class="col-md-3 col-md-offset-1 panel panel-default">
                                 <div class="panel-body">
-                                    <strong>Name:</strong> {{ $statistic->name }}<br/>
-                                    <strong>EP Type:</strong> ({{ $statistic->educationProgramType->eptype_name }})<br/>
-                                    <strong>If:</strong> {{ $statistic->pivot->ifExpression() }}
+                                    <strong>{{ trans('tips.name') }}:</strong> {{ $statistic->name }}<br/>
+                                    <strong>{{ trans('tips.ep-type') }}:</strong> {{ $statistic->educationProgramType->eptype_name }}<br/>
+                                    <strong>{{ trans('tips.condition') }}:</strong> {{ $statistic->pivot->condition() }}<br/>
+                                    <strong>{{ trans('tips.multiplyBy100') }}:</strong> {{ $statistic->pivot->multiplyBy100 ? trans('general.yes') : trans('general.no') }}
+                                    <strong></strong>
                                 </div>
                             </div>
-
-
                         @endforeach
                     </div>
                 </div>

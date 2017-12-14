@@ -35,13 +35,25 @@ class TipCoupledStatistic extends Pivot
         return $this->belongsTo(Statistic::class);
     }
 
-    public function ifExpression() {
+    /**
+     * Get the condition for when this TipCoupledStatistic passes
+     *
+     * @return string
+     */
+    public function condition() {
         $expression = $this->statistic->name . ' ';
         $expression .= self::COMPARISON_OPERATORS[$this->comparison_operator]['label'] . ' ';
         $expression .= $this->threshold;
         return $expression;
     }
 
+    /**
+     * Check if this TipCoupledStatistic passes the threshold
+     *
+     * @param $calculatedValue
+     * @return bool
+     * @throws \Exception
+     */
     public function passes($calculatedValue) {
         if($this->comparison_operator === self::COMPARISON_OPERATOR_LESS_THAN) {
             return $calculatedValue < $this->threshold;

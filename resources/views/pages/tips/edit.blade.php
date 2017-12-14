@@ -62,9 +62,10 @@
 
                         <div class="col-md-12 panel panel-default">
                             <div class="panel-body">
-                                <strong>Name:</strong> {{ $statistic->name }}<br/>
-                                <strong>EP Type:</strong> ({{ $statistic->educationProgramType->eptype_name }})<br/>
-                                <strong>If:</strong> {{ $statistic->pivot->ifExpression() }}
+                                <strong>{{trans('tips.name')}}:</strong> {{ $statistic->name }}<br/>
+                                <strong>{{trans('tips.ep-type')}}:</strong> {{ $statistic->educationProgramType->eptype_name }}<br/>
+                                <strong>{{trans('tips.condition')}}:</strong> {{ $statistic->pivot->condition() }}<br/>
+                                <strong>{{ trans('tips.multiplyBy100') }}:</strong> {{ $statistic->pivot->multiplyBy100 ? trans('general.yes') : trans('general.no') }}
                             </div>
                             <div class="panel-footer row">
                                 <div class="col-md-12 text-right">

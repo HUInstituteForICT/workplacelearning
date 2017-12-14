@@ -9,6 +9,11 @@ return [
     'this-tip-statistics' => 'Statistieken van deze tip',
     'add-statistic' => 'Statistiek toevoegen',
     'to-tip' => 'Naar tip',
+    'name' => 'Naam',
+    'ep-type' => 'Opleidingstype',
+    'statistics-count' => 'Statistieken',
+    'condition' => 'Voorwaarde',
+    'multiplyBy100' => 'Waarde * 100',
 
 
     "form" => [

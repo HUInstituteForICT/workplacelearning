@@ -88,7 +88,7 @@ class Tip extends Model
 
     public function buildTextParameters() {
         return $this->statistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function(Statistic $statistic) {
-            return [$statistic->pivot->ifExpression() => ":value-{$statistic->pivot->id}"];
+            return [$statistic->pivot->condition() => ":value-{$statistic->pivot->id}"];
         });
     }
 

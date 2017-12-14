@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $operator the operator that will be used for the two statisticVariables
  * @property string $name The name of this statistic
  * @property EducationProgramType $educationProgramType the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
+ * @property TipCoupledStatistic $pivot
  */
 class Statistic extends Model
 {
@@ -127,7 +128,6 @@ class Statistic extends Model
     {
         $this->dataCollector = $dataCollector;
     }
-
 
     /**
      * Get the expression of this statistic as a string
