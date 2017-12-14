@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property integer id
  * @property string name
  * @property Tip[]|Collection tips
+ * @property Category[]|Collection categories
  * @package App
  */
 class Cohort extends Model

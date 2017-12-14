@@ -42,4 +42,17 @@ class ActingCollector extends AbstractCollector
         )->count();
     }
 
+    /**
+     * @DataUnitAnnotation(name="Activities with certain category", method="activitiesWithTimeslot", hasParameters=true, parameterName="Category/Timeslot label")
+     * @param string $timeslotText timeslot name/text
+     * @return int
+     */
+    public function activitiesWithLearningQuestion($timeslotText)
+    {
+        return $this->wherePeriod(
+            $this->learningPeriod->learningActivityActing()->getBaseQuery()->leftJoin('timeslot', 'learningactivityacting.timeslot_id', '=', 'timeslot.timeslot_id')
+                ->where('timeslot_text', '=', $timeslotText)
+        )->count();
+    }
+
 }

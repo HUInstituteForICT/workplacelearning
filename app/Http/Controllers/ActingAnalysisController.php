@@ -57,6 +57,9 @@ class ActingAnalysisController extends Controller
             return redirect()->route('analysis-producing-choice');
         }
 
+
+
+
         // The analysis for the charts etc.
         $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
 

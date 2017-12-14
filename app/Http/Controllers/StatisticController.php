@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EducationProgramType;
 use App\Http\Requests\StatisticStoreRequest;
-use App\Tips\CollectibleDataAggregator;
+use App\Tips\CollectorDataAggregator;
 use App\Tips\CollectorFactory;
 use App\Tips\Statistic;
 use App\Tips\StatisticService;
@@ -46,7 +46,7 @@ class StatisticController extends Controller
         $educationProgramTypeId = (int)$request->get('id');
         $collector = $collectorFactory->buildCollector((new EducationProgramType)->find($educationProgramTypeId));
 
-        $collectibleDataStatisticVariables = (new CollectibleDataAggregator($collector))->getInformation();
+        $collectibleDataStatisticVariables = (new CollectorDataAggregator($collector))->getInformation();
 
         $availableStatisticStatisticVariables = (new Statistic)
             ->where('education_program_type_id', '=', $educationProgramTypeId)

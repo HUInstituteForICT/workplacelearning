@@ -24,7 +24,7 @@ class TipService
         return $tip;
     }
 
-    public function coupleStatistic(Tip $tip, Statistic $statistic, array $tipCoupledStatisticData)
+    public function coupleStatistic(Tip $tip, RootStatistic $statistic, array $tipCoupledStatisticData)
     {
         $tip->statistics()->attach($statistic, $tipCoupledStatisticData);
     }

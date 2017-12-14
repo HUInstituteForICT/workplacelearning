@@ -6,7 +6,7 @@ namespace App\Tips;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 
-class CollectibleDataAggregator
+class CollectorDataAggregator
 {
 
     /** @var CollectorInterface $collector */

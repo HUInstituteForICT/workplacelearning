@@ -32,7 +32,7 @@ class TipCoupledStatistic extends Pivot
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function statistic() {
-        return $this->belongsTo(Statistic::class);
+        return $this->belongsTo(RootStatistic::class);
     }
 
     /**
@@ -44,6 +44,7 @@ class TipCoupledStatistic extends Pivot
         $expression = $this->statistic->name . ' ';
         $expression .= self::COMPARISON_OPERATORS[$this->comparison_operator]['label'] . ' ';
         $expression .= $this->threshold;
+
         return $expression;
     }
 

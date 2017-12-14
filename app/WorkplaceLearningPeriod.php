@@ -10,6 +10,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class WorkplaceLearningPeriod
+ * @package App
+ * @property Cohort $cohort
+ * @property Category[]|Collection categories
+ */
 class WorkplaceLearningPeriod extends Model
 {
     // Override the table used for the User Model

@@ -5,6 +5,7 @@ namespace App\Tips;
 
 
 use App\EducationProgramType;
+use App\Tips\Statistics\PredefinedStatisticHelper;
 
 class StatisticService
 {
@@ -40,6 +41,28 @@ class StatisticService
 
         $statistic->save();
 
+    }
+
+    public function createPredefinedStatistic($methodName) {
+        $statistic = new PredefinedStatistic();
+
+        if(PredefinedStatisticHelper::isActingMethod($methodName)) {
+            $statistic->educationProgramType()->associate((new EducationProgramType)->where('eptype_name', '=', 'Acting')->firstOrFail());
+            $statistic->name = collect(PredefinedStatisticHelper::getActingData())->first(function($annotation) use($methodName) {
+                return $methodName === $annotation['method'];
+            })['name'];
+        } elseif(PredefinedStatisticHelper::isProducingMethod($methodName)) {
+            $statistic->educationProgramType()->associate((new EducationProgramType)->where('eptype_name', '=', 'Producing')->firstOrFail());
+            $statistic->name = collect(PredefinedStatisticHelper::getProducingData())->first(function($annotation) use($methodName) {
+                return $methodName === $annotation['method'];
+            })['name'];
+        } else {
+            throw new \Exception("Method not found in a PredefinedStatisticCollector: {$methodName}");
+        }
+
+        $statistic->save();
+
+        return $statistic;
     }
 
     private function getOperator($operator) {

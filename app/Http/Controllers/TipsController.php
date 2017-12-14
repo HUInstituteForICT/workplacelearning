@@ -6,10 +6,17 @@ use App\Cohort;
 use App\Http\Requests\TipCoupleStatisticRequest;
 use App\Http\Requests\TipEditRequest;
 use App\Http\Requests\TipStoreRequest;
+use App\Tips\ActingPredefinedStatisticCollector;
+use App\Tips\CollectorDataAggregator;
+use App\Tips\PredefinedStatistic;
+use App\Tips\ProducingPredefinedStatisticCollector;
 use App\Tips\Statistic;
+use App\Tips\Statistics\PredefinedStatisticHelper;
+use App\Tips\StatisticService;
 use App\Tips\Tip;
 use App\Tips\TipCoupledStatistic;
 use App\Tips\TipService;
+use App\WorkplaceLearningPeriod;
 use Illuminate\Http\Request;
 
 class TipsController extends Controller
@@ -54,6 +61,7 @@ class TipsController extends Controller
 
     public function selectStatistic(Tip $tip)
     {
+        // Todo move the statistics stuff below into a service or something
         // Fetch statistics. If none have been coupled yet, fetch all statistics. If there are coupled ones, only show from same EP type
         $statistics = [];
         if ($tip->statistics()->count() === 0) {
@@ -61,12 +69,39 @@ class TipsController extends Controller
             ) {
                 $statistics[$statistic->id] = "{$statistic->name} ({$statistic->educationProgramType->eptype_name})";
             });
+
+            collect(PredefinedStatisticHelper::getProducingData())
+                ->each(function ($predefinedStatistic) use (&$statistics
+                ) {
+                    $statistics["predefined-{$predefinedStatistic['method']}"] = "{$predefinedStatistic['name']} (Producing)";
+                });
+
+            collect(PredefinedStatisticHelper::getActingData())
+                ->each(function ($predefinedStatistic) use (&$statistics
+                ) {
+                    $statistics["predefined-{$predefinedStatistic['method']}"] = "{$predefinedStatistic['name']} (Acting)";
+                });
+
         } else {
             $epType = $tip->statistics()->with('educationProgramType')->first()->educationProgramType;
             (new Statistic)->where('education_program_type_id', '=',
                 $epType->eptype_id)->get()->each(function (Statistic $statistic) use (&$statistics) {
                 $statistics[$statistic->id] = "{$statistic->name} ({$statistic->educationProgramType->eptype_name})";
             });
+            if(strtolower($epType->eptype_name) === "acting") {
+                collect(PredefinedStatisticHelper::getActingData())
+                    ->each(function ($predefinedStatistic) use (&$statistics
+                    ) {
+                        $statistics["predefined-{$predefinedStatistic['method']}"] = "{$predefinedStatistic['name']} (Acting)";
+                    });
+            } elseif(strtolower($epType->eptype_name) === "producing") {
+                collect(PredefinedStatisticHelper::getProducingData())
+                    ->each(function ($predefinedStatistic) use (&$statistics
+                    ) {
+                        $statistics["predefined-{$predefinedStatistic['method']}"] = "{$predefinedStatistic['name']} (Producing)";
+                    });
+
+            }
         }
 
         $comparisonOperators = collect(TipCoupledStatistic::COMPARISON_OPERATORS)->flatMap(function (array $operator) {
@@ -81,10 +116,17 @@ class TipsController extends Controller
             ->with('alreadyCoupledStatistics', $tip->statistics);
     }
 
-    public function coupleStatistic(TipCoupleStatisticRequest $request, Tip $tip, TipService $tipService)
+    public function coupleStatistic(TipCoupleStatisticRequest $request, Tip $tip, TipService $tipService, StatisticService $statisticService)
     {
-        /** @var Statistic $statistic */
-        $statistic = (new Statistic)->findOrFail($request->get('id'));
+
+        if(!starts_with($request->get('id'), 'predefined-')) {
+            /** @var Statistic $statistic */
+            $statistic = (new Statistic)->findOrFail($request->get('id'));
+        } else {
+            $statistic = $statisticService->createPredefinedStatistic(str_after($request->get('id'), 'predefined-'));
+        }
+
+
         $tipService->coupleStatistic($tip, $statistic,
             $request->only('comparison_operator', 'threshold', 'multiplyBy100'));
 
@@ -123,7 +165,7 @@ class TipsController extends Controller
      */
     public function edit(Tip $tip)
     {
-        $tip->load(['statistics.educationProgramType',]);
+        $tip->load(['statistics.educationProgramType', 'statistics']);
 
 
         $cohorts = [];

@@ -6,8 +6,11 @@ namespace App\Tips;
 
 use App\Cohort;
 use App\Student;
+use App\Tips\Statistics\PredefinedStatisticHelper;
+use App\Tips\Statistics\StatisticCalculationResult;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -29,9 +32,9 @@ class Tip extends Model
     /**
      * The result will be newly cached after every call to the "isApplicable". This to counteract recalculating on a "getTipText" call.
      * We can safely assume the "getTipText" call immediately follows the "isApplicable" call.
-     * @var float|int $cachedResult
+     * @var StatisticCalculationResult[] $cachedResult
      */
-    private $cachedResult;
+    protected $cachedResult;
 
     public $timestamps = false;
 
@@ -40,7 +43,7 @@ class Tip extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function statistics() {
-        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')
+        return $this->belongsToMany(RootStatistic::class, 'tip_coupled_statistic')
             ->using(TipCoupledStatistic::class)
             ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
     }
@@ -74,11 +77,19 @@ class Tip extends Model
     public function isApplicable(DataCollectorContainer $collector)
     {
         $applicable = true;
-        $this->statistics->each(function(Statistic $statistic) use(&$applicable, $collector) {
-            $statistic->setDataCollector($collector);
+        $this->statistics->each(function(RootStatistic $statistic) use(&$applicable, $collector) {
+            if($statistic instanceof PredefinedStatistic) {
+                if(strtolower($statistic->educationProgramType->eptype_name) === "producing") {
+                    $statistic->setDataCollector(new ProducingPredefinedStatisticCollector(null, null, Auth::user()->getCurrentWorkplaceLearningPeriod()));
+                }
+            } else {
+                $statistic->setDataCollector($collector);
+            }
+
+            //
             $this->cachedResult[$statistic->pivot->id] = $statistic->calculate();
 
-            $applicable = $statistic->pivot->passes($this->cachedResult[$statistic->pivot->id]);
+            $applicable = $statistic->pivot->passes($this->cachedResult[$statistic->pivot->id]->getResult());
             return $applicable;
         });
 
@@ -93,16 +104,22 @@ class Tip extends Model
     public function getTipText()
     {
         $tipText = $this->tipText;
-        $this->statistics->each(function(Statistic $statistic) use(&$tipText) {
-            $percentageValue = $statistic->pivot->multiplyBy100 ? number_format($this->cachedResult[$statistic->pivot->id] * 100) : $this->cachedResult[$statistic->pivot->id];
+        $this->statistics->each(function(RootStatistic $statistic) use(&$tipText) {
+            $percentageValue = $statistic->pivot->multiplyBy100 ?
+                number_format($this->cachedResult[$statistic->pivot->id]->getResult() * 100) :
+                $this->cachedResult[$statistic->pivot->id]->getResult();
+            if($statistic instanceof PredefinedStatistic) {
+                $tipText = str_replace(":value-name-{$statistic->pivot->id}", $this->cachedResult[$statistic->pivot->id]->getEntityName(), $tipText);
+            }
             $tipText = str_replace(":value-{$statistic->pivot->id}", $percentageValue, $tipText);
+
         });
 
         return $tipText;
     }
 
     public function buildTextParameters() {
-        return $this->statistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function(Statistic $statistic) {
+        return $this->statistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function(RootStatistic $statistic) {
             return [$statistic->pivot->condition() => ":value-{$statistic->pivot->id}"];
         });
     }

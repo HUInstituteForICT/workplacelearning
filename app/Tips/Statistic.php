@@ -5,19 +5,19 @@ namespace App\Tips;
 
 
 use App\EducationProgramType;
+use App\Tips\Statistics\StatisticCalculationResult;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableOne
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableTwo
- * @property integer $id The id of the statistic
  * @property integer $operator the operator that will be used for the two statisticVariables
- * @property string $name The name of this statistic
- * @property EducationProgramType $educationProgramType the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
- * @property TipCoupledStatistic $pivot
  */
-class Statistic extends Model
+class Statistic extends RootStatistic
 {
+    protected static $persisted = ['operator', 'statistic_variable_one_id', 'statistic_variable_two_id'];
+
+
     /* Operators used for calculations */
     const OPERATOR_ADD = 0;
     const OPERATOR_SUBTRACT = 1;
@@ -31,20 +31,7 @@ class Statistic extends Model
         self::OPERATOR_DIVIDE   => ["type" => Statistic::OPERATOR_DIVIDE, "label" => "/"],
     ];
 
-    // Disable timestamps
-    public $timestamps = false;
 
-    // Injected into StatisticVariables that use a dataCollector
-    private $dataCollector;
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tips() {
-        return $this->belongsToMany(Tip::class, 'tip_coupled_statistic')
-            ->using(TipCoupledStatistic::class)
-            ->withPivot(['comparison_operator', 'threshold', 'multiplyBy100']);
-    }
 
     /**
      * Relation to first statisticVariable of this statistic
@@ -67,18 +54,9 @@ class Statistic extends Model
     }
 
     /**
-     * Relation to the EducationProgramType
-     * Certain data is only available to certain education program types (acting, producing)
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function educationProgramType() {
-        return $this->belongsTo(EducationProgramType::class, 'education_program_type_id', 'eptype_id');
-    }
-
-    /**
      * Calculate the value of this statistic
      *
-     * @return float|int
+     * @return StatisticCalculationResult
      * @throws \Exception
      */
     public function calculate()
@@ -90,19 +68,19 @@ class Statistic extends Model
         try {
             switch ($this->operator) {
                 case self::OPERATOR_ADD:
-                    return $this->statisticVariableOne->getValue() + $this->statisticVariableTwo->getValue();
+                    return new StatisticCalculationResult($this->statisticVariableOne->getValue() + $this->statisticVariableTwo->getValue(),$this->name);
                 case self::OPERATOR_SUBTRACT:
-                    return $this->statisticVariableOne->getValue() - $this->statisticVariableTwo->getValue();
+                    return new StatisticCalculationResult($this->statisticVariableOne->getValue() - $this->statisticVariableTwo->getValue() ,$this->name);
                 case self::OPERATOR_MULTIPLY:
-                    return $this->statisticVariableOne->getValue() * $this->statisticVariableTwo->getValue();
+                    return new StatisticCalculationResult($this->statisticVariableOne->getValue() * $this->statisticVariableTwo->getValue(),$this->name);
                 case self::OPERATOR_DIVIDE:
-                    return $this->statisticVariableOne->getValue() / $this->statisticVariableTwo->getValue();
+                    return new StatisticCalculationResult($this->statisticVariableOne->getValue() / $this->statisticVariableTwo->getValue(),$this->name);
             }
         } catch (\DivisionByZeroError $exception) {
-            return 0;
+            return new StatisticCalculationResult(0 ,$this->name);
         } catch(\ErrorException $exception) {
             if($exception->getMessage() === "Division by zero") {
-                return 0;
+                return new StatisticCalculationResult(0 ,$this->name);
             }
         }
 
@@ -119,16 +97,7 @@ class Statistic extends Model
         return $statisticVariable;
     }
 
-    /**
-     * Set the dataCollector used by certain StatisticVariables
-     *
-     * @param DataCollectorContainer $dataCollector
-     */
-    public function setDataCollector($dataCollector)
-    {
-        $this->dataCollector = $dataCollector;
-    }
-
+    
     /**
      * Get the expression of this statistic as a string
      * Used for display purposes
