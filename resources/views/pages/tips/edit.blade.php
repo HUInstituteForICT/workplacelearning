@@ -25,13 +25,19 @@
                         <tr>
                             <th>{{ trans('tips.form.table-statistic') }}</th>
                             <th>{{ trans('tips.form.table-value-parameter') }}</th>
+                            <th>{{ trans('tips.form.table-value-name-parameter') }}</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($tip->buildTextParameters() as $coupledStatistic => $valueId)
+                        @foreach($tip->buildTextParameters() as $coupledStatistic => $values)
                             <tr>
                                 <td>{{ $coupledStatistic }}</td>
-                                <td><strong>{{ $valueId }}</strong></td>
+                                <td><strong>{{ $values['value']}}</strong></td>
+                                <td>
+                                    @if($values['valueName'] !== null)
+                                        <strong>{{ $values['valueName'] }}</strong>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

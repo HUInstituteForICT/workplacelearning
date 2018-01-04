@@ -4,9 +4,7 @@
 namespace App\Tips;
 
 
-use App\EducationProgramType;
 use App\Tips\Statistics\StatisticCalculationResult;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableOne
@@ -97,7 +95,7 @@ class Statistic extends RootStatistic
         return $statisticVariable;
     }
 
-    
+
     /**
      * Get the expression of this statistic as a string
      * Used for display purposes
@@ -110,7 +108,7 @@ class Statistic extends RootStatistic
         if($this->statisticVariableOne instanceof CollectedDataStatisticVariable && $this->statisticVariableOne->dataUnitParameterValue !== null) {
             $expression .= "({$this->statisticVariableOne->dataUnitParameterValue}) ";
         }
-        
+
         $expression .= self::OPERATORS[$this->operator]['label'] . " ";
 
         $expression .= "{$this->statisticVariableTwo->name} ";
@@ -120,5 +118,5 @@ class Statistic extends RootStatistic
 
         return $expression;
     }
-    
+
 }

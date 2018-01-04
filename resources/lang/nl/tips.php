@@ -38,6 +38,7 @@ return [
         'comparison-operator' => 'Vergelijking',
         'statistic-value-parameters' => 'Waarde parameters bij deze tip',
         'table-statistic' => 'Statistiek',
-        'table-value-parameter' => 'Waarde parameter'
+        'table-value-parameter' => 'Waarde parameter',
+        'table-value-name-parameter' => 'Waardenaam parameter'
     ]
 ];

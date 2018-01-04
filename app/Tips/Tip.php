@@ -6,7 +6,6 @@ namespace App\Tips;
 
 use App\Cohort;
 use App\Student;
-use App\Tips\Statistics\PredefinedStatisticHelper;
 use App\Tips\Statistics\StatisticCalculationResult;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -120,7 +119,12 @@ class Tip extends Model
 
     public function buildTextParameters() {
         return $this->statistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function(RootStatistic $statistic) {
-            return [$statistic->pivot->condition() => ":value-{$statistic->pivot->id}"];
+            return [
+                $statistic->pivot->condition() => [
+                    "value" => ":value-{$statistic->pivot->id}",
+                    "valueName" => ($statistic instanceof PredefinedStatistic ? ":value-name-{$statistic->pivot->id}" : null)
+                    ]
+                ];
         });
     }
 

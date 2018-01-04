@@ -1,5 +1,5 @@
 <?php
-
+// TODO Change RootStatistic to Statistic and Statistic to CalculatedStatistic
 
 namespace App\Tips;
 
