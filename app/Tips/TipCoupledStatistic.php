@@ -5,7 +5,7 @@ namespace App\Tips;
 
 
 use App\Tips\Statistics\CustomStatistic;
-use App\Tips\Statistics\RootStatistic;
+use App\Tips\Statistics\Statistic;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -34,7 +34,7 @@ class TipCoupledStatistic extends Pivot
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function statistic() {
-        return $this->belongsTo(RootStatistic::class);
+        return $this->belongsTo(Statistic::class);
     }
 
     /**

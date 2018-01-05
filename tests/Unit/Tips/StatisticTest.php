@@ -19,7 +19,7 @@ class StatisticTest extends \Tests\TestCase
         $variableTwo->expects($this->exactly(4))->method('getValue')->willReturn('3');
 
         $statistic = new CustomStatistic();
-        $statistic->setDataCollector($this->createMock(DataCollectorContainer::class));
+        $statistic->setDataCollectorContainer($this->createMock(DataCollectorContainer::class));
         $statistic->statisticVariableOne = $variableOne;
         $statistic->statisticVariableTwo = $variableTwo;
 
@@ -50,7 +50,7 @@ class StatisticTest extends \Tests\TestCase
 
         $nestedStatistic = new CustomStatistic();
         $nestedStatistic->operator = CustomStatistic::OPERATOR_ADD;
-        $nestedStatistic->setDataCollector($this->createMock(DataCollectorContainer::class));
+        $nestedStatistic->setDataCollectorContainer($this->createMock(DataCollectorContainer::class));
         $nestedStatistic->statisticVariableOne = $nestedVariableOne;
         $nestedStatistic->statisticVariableTwo = $nestedVariableTwo;
 
@@ -65,7 +65,7 @@ class StatisticTest extends \Tests\TestCase
         $variableOne->nestedStatistic = $nestedStatistic;
 
         $statistic = new CustomStatistic();
-        $statistic->setDataCollector($this->createMock(DataCollectorContainer::class));
+        $statistic->setDataCollectorContainer($this->createMock(DataCollectorContainer::class));
         $statistic->operator = CustomStatistic::OPERATOR_MULTIPLY;
         $statistic->statisticVariableOne = $variableOne;
         $statistic->statisticVariableTwo = $variableTwo;

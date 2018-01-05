@@ -4,6 +4,8 @@
 namespace App\Tips\DataCollectors;
 
 
+use App\Tips\DataUnitAnnotation;
+
 class ActingCollector extends AbstractCollector
 {
 

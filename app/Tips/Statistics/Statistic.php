@@ -1,5 +1,4 @@
 <?php
-// TODO Change RootStatistic to Statistic and Statistic to CalculatedStatistic
 
 namespace App\Tips\Statistics;
 
@@ -18,10 +17,16 @@ use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
  * @property EducationProgramType $educationProgramType the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
  * @property TipCoupledStatistic $pivot
  */
-class RootStatistic extends Model
+class Statistic extends Model
 {
     use SingleTableInheritanceTrait;
 
+    /**
+     * Overwrites the SingleTableInheritanceTrait because it doesn't support pivot tables which we use
+     *
+     * @param array $attributes
+     * @throws SingleTableInheritanceInvalidAttributesException
+     */
     public function setFilteredAttributes(array $attributes) {
         $persistedAttributes = $this->getPersistedAttributes();
         if (empty($persistedAttributes)) {
@@ -45,6 +50,12 @@ class RootStatistic extends Model
         $this->setRawAttributes($filteredAttributes, true);
     }
 
+    /**
+     * * Overwrites the SingleTableInheritanceTrait because it doesn't support pivot tables which we use
+     *
+     * @param $attributes
+     * @return array
+     */
     protected function getPivotAttributeNames($attributes)
     {
         $pivots = [];
@@ -56,12 +67,7 @@ class RootStatistic extends Model
         return $pivots;
     }
 
-    public function getForeignKey()
-    {
-        return 'statistic_id';
-    }
-
-    protected $table = "statistics";
+    protected $table = 'statistics';
 
     protected static $singleTableTypeField = 'type';
 
@@ -69,12 +75,16 @@ class RootStatistic extends Model
 
     protected static $persisted = ['name', 'education_program_type_id'];
 
-    // Injected into StatisticVariables or PredefinedStatistic that use a dataCollector
-    protected $dataCollector;
+    // Injected into StatisticVariables,  or PredefinedStatistic that use a dataCollector
+    /** @var DataCollectorContainer $dataCollectorContainer */
+    protected $dataCollectorContainer;
 
     // Disable timestamps
     public $timestamps = false;
 
+    /**
+     * @throws \Exception
+     */
     public function calculate() { throw new \Exception("Should be called in subclass"); }
 
     /**
@@ -98,11 +108,11 @@ class RootStatistic extends Model
     /**
      * Set the dataCollector used by certain StatisticVariables and PredefinedStatistics
      *
-     * @param DataCollectorContainer $dataCollector
+     * @param DataCollectorContainer $dataCollectorContainer
      */
-    public function setDataCollector($dataCollector)
+    public function setDataCollectorContainer(DataCollectorContainer $dataCollectorContainer)
     {
-        $this->dataCollector = $dataCollector;
+        $this->dataCollectorContainer = $dataCollectorContainer;
     }
 
 }

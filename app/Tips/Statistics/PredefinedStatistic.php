@@ -9,7 +9,7 @@ use App\Tips\CollectorDataAggregator;
 /**
  * @property string name
  */
-class PredefinedStatistic extends RootStatistic
+class PredefinedStatistic extends Statistic
 {
     protected static $singleTableType = 'predefinedstatistic';
 
@@ -23,14 +23,14 @@ class PredefinedStatistic extends RootStatistic
     {
         /** @var StatisticCalculationResult $result */
         $method = $this->getMethod($this->name)['method'];
-        $result = $this->dataCollector->{$method}();
+        $result = $this->dataCollectorContainer->getPredefinedCollector()->{$method}();
 
         return $result;
     }
 
     private function getMethod($name)
     {
-        return collect((new CollectorDataAggregator($this->dataCollector))->getInformation())
+        return collect((new CollectorDataAggregator($this->dataCollectorContainer->getPredefinedCollector()))->getInformation())
             ->first(function (array $annotation) use ($name) {
                 return $annotation['name'] === $name;
             });

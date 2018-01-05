@@ -3,7 +3,6 @@
 
 namespace App\Tips\Statistics\Variables;
 
-use App\Tips\DataCollectors\DataCollectorContainer;
 use App\Tips\DataUnit;
 
 /**
@@ -18,30 +17,18 @@ class CollectedDataStatisticVariable extends StatisticVariable implements HasSta
 
     protected static $persisted = ['dataUnitMethod', 'dataUnitParameterValue'];
 
-    /** @var DataCollectorContainer */
-    private $dataCollector;
-
-
-    /**
-     * Set the dataCollector
-     *
-     * @param DataCollectorContainer $dataCollector
-     */
-    public function setDataCollector(DataCollectorContainer $dataCollector)
-    {
-        $this->dataCollector = $dataCollector;
-    }
 
     /**
      * Get the value of the StatisticVariable
      *
      * @return float|int
+     * @throws \Exception
      */
     public function getValue()
     {
         $dataUnit = new DataUnit($this->dataUnitMethod, $this->dataUnitParameterValue);
 
-        return $this->dataCollector->getDataUnit($dataUnit);
+        return $this->dataCollectorContainer->getDataUnit($dataUnit);
     }
 
 }

@@ -17,11 +17,20 @@ abstract class AbstractCollector implements CollectorInterface
     /** @var WorkplaceLearningPeriod $learningPeriod */
     protected $learningPeriod;
 
+    /** @var ProducingPredefinedStatisticCollector | ActingPredefinedStatisticCollector $predefinedStatisticCollector */
+    public $predefinedStatisticCollector;
+
     public function __construct($year, $month, WorkplaceLearningPeriod $learningPeriod)
     {
         $this->year = $year;
         $this->month = $month;
         $this->learningPeriod = $learningPeriod;
+
+        if(static::class === ActingCollector::class) {
+            $this->predefinedStatisticCollector = new ActingPredefinedStatisticCollector($year, $month, $learningPeriod);
+        } elseif(static::class === ProducingCollector::class) {
+            $this->predefinedStatisticCollector = new ProducingPredefinedStatisticCollector($year, $month, $learningPeriod);
+        }
     }
 
     protected function wherePeriod(Builder $queryBuilder)

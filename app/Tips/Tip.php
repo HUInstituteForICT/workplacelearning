@@ -7,14 +7,12 @@ namespace App\Tips;
 use App\Cohort;
 use App\Student;
 use App\Tips\DataCollectors\DataCollectorContainer;
-use App\Tips\DataCollectors\ProducingPredefinedStatisticCollector;
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\PredefinedStatistic;
-use App\Tips\Statistics\RootStatistic;
+use App\Tips\Statistics\Statistic;
 use App\Tips\Statistics\StatisticCalculationResult;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -47,7 +45,7 @@ class Tip extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function statistics() {
-        return $this->belongsToMany(RootStatistic::class, 'tip_coupled_statistic')
+        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')
             ->using(TipCoupledStatistic::class)
             ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
     }
@@ -81,17 +79,9 @@ class Tip extends Model
     public function isApplicable(DataCollectorContainer $collector)
     {
         $applicable = true;
-        $this->statistics->each(function(RootStatistic $statistic) use(&$applicable, $collector) {
-            // TODO create a datacollectorCollection that we create in AnalysisController and then use here to select which datacollector we need to inject into the statistic
-            if($statistic instanceof PredefinedStatistic) {
-                if(strtolower($statistic->educationProgramType->eptype_name) === "producing") {
-                    $statistic->setDataCollector(new ProducingPredefinedStatisticCollector(null, null, Auth::user()->getCurrentWorkplaceLearningPeriod())); // Todo should be able to get month/year
-                }
-            } else {
-                $statistic->setDataCollector($collector);
-            }
+        $this->statistics->each(function (Statistic $statistic) use (&$applicable, $collector) {
+            $statistic->setDataCollectorContainer($collector);
 
-            //
             $this->cachedResult[$statistic->pivot->id] = $statistic->calculate();
 
             $applicable = $statistic->pivot->passes($this->cachedResult[$statistic->pivot->id]->getResult());
@@ -109,7 +99,7 @@ class Tip extends Model
     public function getTipText()
     {
         $tipText = $this->tipText;
-        $this->statistics->each(function(RootStatistic $statistic) use(&$tipText) {
+        $this->statistics->each(function (Statistic $statistic) use (&$tipText) {
             $percentageValue = $statistic->pivot->multiplyBy100 ?
                 number_format($this->cachedResult[$statistic->pivot->id]->getResult() * 100) :
                 $this->cachedResult[$statistic->pivot->id]->getResult();
@@ -124,7 +114,9 @@ class Tip extends Model
     }
 
     public function buildTextParameters() {
-        return $this->statistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function(RootStatistic $statistic) {
+        return $this->statistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function (
+            Statistic $statistic
+        ) {
             return [
                 $statistic->pivot->condition() => [
                     "value" => ":value-{$statistic->pivot->id}",

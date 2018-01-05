@@ -16,20 +16,6 @@ class StatisticStatisticVariable extends StatisticVariable implements HasStatist
 
     protected static $persisted = ['nested_statistic_id'];
 
-    /** @var DataCollectorContainer */
-    private $dataCollector;
-
-
-    /**
-     * Set the dataCollector
-     *
-     * @param DataCollectorContainer $dataCollector
-     */
-    public function setDataCollector(DataCollectorContainer $dataCollector)
-    {
-        $this->dataCollector = $dataCollector;
-    }
-
     public function nestedStatistic()
     {
         return $this->belongsTo(CustomStatistic::class, 'nested_statistic_id');
@@ -37,10 +23,11 @@ class StatisticStatisticVariable extends StatisticVariable implements HasStatist
 
     /**
      * Get the value of the variable by calculating the nested statistic
+     * @throws \Exception
      */
     public function getValue()
     {
-        $this->nestedStatistic->setDataCollector($this->dataCollector);
+        $this->nestedStatistic->setDataCollectorContainer($this->dataCollectorContainer);
         $value = $this->nestedStatistic->calculate()->getResult();
         return $value;
     }

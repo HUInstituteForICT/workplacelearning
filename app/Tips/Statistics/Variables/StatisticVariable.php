@@ -4,6 +4,7 @@
 namespace App\Tips\Statistics\Variables;
 
 
+use App\Tips\DataCollectors\DataCollectorContainer;
 use Illuminate\Database\Eloquent\Model;
 use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 
@@ -21,9 +22,22 @@ class StatisticVariable extends Model
 
     public $timestamps = false;
 
+    /** @var DataCollectorContainer */
+    protected $dataCollectorContainer;
+
     public function getType()
     {
         return static::$singleTableType;
+    }
+
+    /**
+     * Set the dataCollector
+     *
+     * @param DataCollectorContainer $dataCollector
+     */
+    public function setDataCollectorContainer(DataCollectorContainer $dataCollector)
+    {
+        $this->dataCollectorContainer = $dataCollector;
     }
 
 }

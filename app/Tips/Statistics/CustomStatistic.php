@@ -6,7 +6,6 @@ namespace App\Tips\Statistics;
 
 use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
 use App\Tips\Statistics\Variables\HasStatisticVariableValue;
-use App\Tips\Statistics\Variables\StatisticStatisticVariable;
 use App\Tips\Statistics\Variables\StatisticVariable;
 
 /**
@@ -14,7 +13,7 @@ use App\Tips\Statistics\Variables\StatisticVariable;
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableTwo
  * @property integer $operator the operator that will be used for the two statisticVariables
  */
-class CustomStatistic extends RootStatistic
+class CustomStatistic extends Statistic
 {
     protected static $singleTableType = 'customstatistic';
 
@@ -90,14 +89,9 @@ class CustomStatistic extends RootStatistic
         throw new \Exception("Missing Statistic operator for calculation");
     }
 
-    private function injectDependenciesIntoStatisticVariable($statisticVariable)
+    private function injectDependenciesIntoStatisticVariable(StatisticVariable $statisticVariable)
     {
-        if ($statisticVariable instanceof CollectedDataStatisticVariable
-            || $statisticVariable instanceof StatisticStatisticVariable) {
-            $statisticVariable->setDataCollector($this->dataCollector);
-        }
-
-        return $statisticVariable;
+        $statisticVariable->setDataCollectorContainer($this->dataCollectorContainer);
     }
 
 

@@ -10,15 +10,27 @@ use Doctrine\Common\Annotations\AnnotationReader;
 
 class DataCollectorContainer
 {
-    /** @var CollectorInterface $collector */
+    /** @var AbstractCollector $collector */
     private $collector;
-
 
     public function __construct(CollectorInterface $collector)
     {
         $this->collector = $collector;
     }
 
+    /**
+     * Get the PredefinedCollector
+     * @return ActingPredefinedStatisticCollector|ProducingPredefinedStatisticCollector
+     */
+    public function getPredefinedCollector() {
+        return $this->collector->predefinedStatisticCollector;
+    }
+
+    /**
+     * @param DataUnit $dataUnit
+     * @return mixed
+     * @throws \Exception
+     */
     public function getDataUnit(DataUnit $dataUnit) {
 
         if(!method_exists($this->collector, $dataUnit->getMethod())) {

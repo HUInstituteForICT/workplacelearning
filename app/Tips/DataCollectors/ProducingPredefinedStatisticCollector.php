@@ -5,6 +5,7 @@ namespace App\Tips\DataCollectors;
 
 
 use App\Category;
+use App\Tips\DataUnitAnnotation;
 use App\Tips\Statistics\StatisticCalculationResult;
 
 class ProducingPredefinedStatisticCollector extends AbstractCollector
