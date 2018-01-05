@@ -25,16 +25,16 @@ class StatisticTest extends \Tests\TestCase
 
 
         $statistic->operator = Statistic::OPERATOR_ADD;
-        $this->assertEquals(6, $statistic->calculate());
+        $this->assertEquals(6, $statistic->calculate()->getResult());
 
         $statistic->operator = Statistic::OPERATOR_SUBTRACT;
-        $this->assertEquals(0, $statistic->calculate());
+        $this->assertEquals(0, $statistic->calculate()->getResult());
 
         $statistic->operator = Statistic::OPERATOR_MULTIPLY;
-        $this->assertEquals(9, $statistic->calculate());
+        $this->assertEquals(9, $statistic->calculate()->getResult());
 
         $statistic->operator = Statistic::OPERATOR_DIVIDE;
-        $this->assertEquals(1, $statistic->calculate());
+        $this->assertEquals(1, $statistic->calculate()->getResult());
     }
 
     /**
@@ -55,7 +55,7 @@ class StatisticTest extends \Tests\TestCase
         $nestedStatistic->statisticVariableTwo = $nestedVariableTwo;
 
         // Make sure the nested statistic calculates correctly
-        $this->assertEquals(6, $nestedStatistic->calculate());
+        $this->assertEquals(6, $nestedStatistic->calculate()->getResult());
 
         // Create the top level statistic
         $variableTwo = $this->createMock(CollectedDataStatisticVariable::class);
@@ -72,15 +72,15 @@ class StatisticTest extends \Tests\TestCase
 
         // Assert all operators
         $statistic->operator = Statistic::OPERATOR_ADD;
-        $this->assertEquals(16, $statistic->calculate());
+        $this->assertEquals(16, $statistic->calculate()->getResult());
 
         $statistic->operator = Statistic::OPERATOR_SUBTRACT;
-        $this->assertEquals(-4, $statistic->calculate());
+        $this->assertEquals(-4, $statistic->calculate()->getResult());
 
         $statistic->operator = Statistic::OPERATOR_MULTIPLY;
-        $this->assertEquals(60, $statistic->calculate());
+        $this->assertEquals(60, $statistic->calculate()->getResult());
 
         $statistic->operator = Statistic::OPERATOR_DIVIDE;
-        $this->assertEquals(0.6, $statistic->calculate());
+        $this->assertEquals(0.6, $statistic->calculate()->getResult());
     }
 }
