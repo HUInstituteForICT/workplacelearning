@@ -1,10 +1,10 @@
 <?php
 
 
-use App\Tips\CollectedDataStatisticVariable;
-use App\Tips\DataCollectorContainer;
-use App\Tips\Statistic;
-use App\Tips\StatisticStatisticVariable;
+use App\Tips\DataCollectors\DataCollectorContainer;
+use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
+use App\Tips\Statistics\Variables\StatisticStatisticVariable;
 
 
 class StatisticTest extends \Tests\TestCase
@@ -18,22 +18,22 @@ class StatisticTest extends \Tests\TestCase
         $variableTwo = $this->createMock(CollectedDataStatisticVariable::class);
         $variableTwo->expects($this->exactly(4))->method('getValue')->willReturn('3');
 
-        $statistic = new Statistic();
+        $statistic = new CustomStatistic();
         $statistic->setDataCollector($this->createMock(DataCollectorContainer::class));
         $statistic->statisticVariableOne = $variableOne;
         $statistic->statisticVariableTwo = $variableTwo;
 
 
-        $statistic->operator = Statistic::OPERATOR_ADD;
+        $statistic->operator = CustomStatistic::OPERATOR_ADD;
         $this->assertEquals(6, $statistic->calculate()->getResult());
 
-        $statistic->operator = Statistic::OPERATOR_SUBTRACT;
+        $statistic->operator = CustomStatistic::OPERATOR_SUBTRACT;
         $this->assertEquals(0, $statistic->calculate()->getResult());
 
-        $statistic->operator = Statistic::OPERATOR_MULTIPLY;
+        $statistic->operator = CustomStatistic::OPERATOR_MULTIPLY;
         $this->assertEquals(9, $statistic->calculate()->getResult());
 
-        $statistic->operator = Statistic::OPERATOR_DIVIDE;
+        $statistic->operator = CustomStatistic::OPERATOR_DIVIDE;
         $this->assertEquals(1, $statistic->calculate()->getResult());
     }
 
@@ -48,8 +48,8 @@ class StatisticTest extends \Tests\TestCase
         $nestedVariableTwo = $this->createMock(CollectedDataStatisticVariable::class);
         $nestedVariableTwo->expects($this->exactly(5))->method('getValue')->willReturn('3');
 
-        $nestedStatistic = new Statistic();
-        $nestedStatistic->operator = Statistic::OPERATOR_ADD;
+        $nestedStatistic = new CustomStatistic();
+        $nestedStatistic->operator = CustomStatistic::OPERATOR_ADD;
         $nestedStatistic->setDataCollector($this->createMock(DataCollectorContainer::class));
         $nestedStatistic->statisticVariableOne = $nestedVariableOne;
         $nestedStatistic->statisticVariableTwo = $nestedVariableTwo;
@@ -64,23 +64,23 @@ class StatisticTest extends \Tests\TestCase
         $variableOne = new StatisticStatisticVariable();
         $variableOne->nestedStatistic = $nestedStatistic;
 
-        $statistic = new Statistic();
+        $statistic = new CustomStatistic();
         $statistic->setDataCollector($this->createMock(DataCollectorContainer::class));
-        $statistic->operator = Statistic::OPERATOR_MULTIPLY;
+        $statistic->operator = CustomStatistic::OPERATOR_MULTIPLY;
         $statistic->statisticVariableOne = $variableOne;
         $statistic->statisticVariableTwo = $variableTwo;
 
         // Assert all operators
-        $statistic->operator = Statistic::OPERATOR_ADD;
+        $statistic->operator = CustomStatistic::OPERATOR_ADD;
         $this->assertEquals(16, $statistic->calculate()->getResult());
 
-        $statistic->operator = Statistic::OPERATOR_SUBTRACT;
+        $statistic->operator = CustomStatistic::OPERATOR_SUBTRACT;
         $this->assertEquals(-4, $statistic->calculate()->getResult());
 
-        $statistic->operator = Statistic::OPERATOR_MULTIPLY;
+        $statistic->operator = CustomStatistic::OPERATOR_MULTIPLY;
         $this->assertEquals(60, $statistic->calculate()->getResult());
 
-        $statistic->operator = Statistic::OPERATOR_DIVIDE;
+        $statistic->operator = CustomStatistic::OPERATOR_DIVIDE;
         $this->assertEquals(0.6, $statistic->calculate()->getResult());
     }
 }

@@ -4,9 +4,9 @@
 namespace App\Tips\Statistics;
 
 
-use App\Tips\ActingPredefinedStatisticCollector;
 use App\Tips\CollectorDataAggregator;
-use App\Tips\ProducingPredefinedStatisticCollector;
+use App\Tips\DataCollectors\ActingPredefinedStatisticCollector;
+use App\Tips\DataCollectors\ProducingPredefinedStatisticCollector;
 use App\WorkplaceLearningPeriod;
 
 class PredefinedStatisticHelper

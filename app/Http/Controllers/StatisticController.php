@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\EducationProgramType;
 use App\Http\Requests\StatisticStoreRequest;
 use App\Tips\CollectorDataAggregator;
-use App\Tips\CollectorFactory;
-use App\Tips\Statistic;
+use App\Tips\DataCollectors\CollectorFactory;
+use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Statistics\Variables\StatisticStatisticVariable;
 use App\Tips\StatisticService;
-use App\Tips\StatisticStatisticVariable;
 use DB;
 use Illuminate\Http\Request;
 use Lang;
@@ -22,8 +22,8 @@ class StatisticController extends Controller
      */
     public function index()
     {
-        /** @var Statistic[] $statistics */
-        $statistics = (new Statistic)->with(['educationProgramType'])->orderBy('name',
+        /** @var CustomStatistic[] $statistics */
+        $statistics = (new CustomStatistic)->with(['educationProgramType'])->orderBy('name',
             'ASC')->get();
 
         $educationProgramTypes = EducationProgramType::all();
@@ -48,12 +48,12 @@ class StatisticController extends Controller
 
         $collectibleDataStatisticVariables = (new CollectorDataAggregator($collector))->getInformation();
 
-        $availableStatisticStatisticVariables = (new Statistic)
+        $availableStatisticStatisticVariables = (new CustomStatistic)
             ->where('education_program_type_id', '=', $educationProgramTypeId)
             ->orderBy('name', 'ASC')
             ->get();
 
-        $availableStatisticStatisticVariables->map(function (Statistic $statistic) {
+        $availableStatisticStatisticVariables->map(function (CustomStatistic $statistic) {
             $statistic->type = (new StatisticStatisticVariable)->getType();
 
             return $statistic;
@@ -62,7 +62,7 @@ class StatisticController extends Controller
         $statisticVariables = array_merge($collectibleDataStatisticVariables,
             $availableStatisticStatisticVariables->toArray());
 
-        $operators = Statistic::OPERATORS;
+        $operators = CustomStatistic::OPERATORS;
 
         return view('pages.statistics.create')
             ->with('statisticVariables', $statisticVariables)
@@ -87,10 +87,10 @@ class StatisticController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Tips\Statistic $statistic
+     * @param  \App\Tips\Statistics\CustomStatistic $statistic
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Statistic $statistic)
+    public function destroy(CustomStatistic $statistic)
     {
         $isUsedByOtherStatistics = (new StatisticStatisticVariable)->where('nested_statistic_id', '=',
                 $statistic->id)->count() > 0;

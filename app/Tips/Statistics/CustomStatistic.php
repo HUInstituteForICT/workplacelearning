@@ -1,18 +1,23 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Statistics;
 
 
-use App\Tips\Statistics\StatisticCalculationResult;
+use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
+use App\Tips\Statistics\Variables\HasStatisticVariableValue;
+use App\Tips\Statistics\Variables\StatisticStatisticVariable;
+use App\Tips\Statistics\Variables\StatisticVariable;
 
 /**
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableOne
  * @property StatisticVariable|HasStatisticVariableValue $statisticVariableTwo
  * @property integer $operator the operator that will be used for the two statisticVariables
  */
-class Statistic extends RootStatistic
+class CustomStatistic extends RootStatistic
 {
+    protected static $singleTableType = 'customstatistic';
+
     protected static $persisted = ['operator', 'statistic_variable_one_id', 'statistic_variable_two_id'];
 
 
@@ -23,10 +28,10 @@ class Statistic extends RootStatistic
     const OPERATOR_DIVIDE = 3;
 
     const OPERATORS = [
-        self::OPERATOR_ADD      => ["type" => Statistic::OPERATOR_ADD, "label" => "+"],
-        self::OPERATOR_SUBTRACT => ["type" => Statistic::OPERATOR_SUBTRACT, "label" => "-"],
-        self::OPERATOR_MULTIPLY => ["type" => Statistic::OPERATOR_MULTIPLY, "label" => "*"],
-        self::OPERATOR_DIVIDE   => ["type" => Statistic::OPERATOR_DIVIDE, "label" => "/"],
+        self::OPERATOR_ADD      => ["type" => CustomStatistic::OPERATOR_ADD, "label" => "+"],
+        self::OPERATOR_SUBTRACT => ["type" => CustomStatistic::OPERATOR_SUBTRACT, "label" => "-"],
+        self::OPERATOR_MULTIPLY => ["type" => CustomStatistic::OPERATOR_MULTIPLY, "label" => "*"],
+        self::OPERATOR_DIVIDE   => ["type" => CustomStatistic::OPERATOR_DIVIDE, "label" => "/"],
     ];
 
 

@@ -5,6 +5,8 @@ namespace App\Tips;
 
 
 use App\EducationProgramType;
+use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Statistics\PredefinedStatistic;
 use App\Tips\Statistics\PredefinedStatisticHelper;
 
 class StatisticService
@@ -19,7 +21,7 @@ class StatisticService
 
     /**
      * @param array $data
-     * @return Statistic
+     * @return CustomStatistic
      */
     public function createStatistic(array $data) {
 
@@ -29,7 +31,7 @@ class StatisticService
         $variableOne->save();
         $variableTwo->save();
 
-        $statistic = new Statistic();
+        $statistic = new CustomStatistic();
 
         $statistic->name = $data['name'];
 
@@ -66,7 +68,7 @@ class StatisticService
     }
 
     private function getOperator($operator) {
-        if(!isset(Statistic::OPERATORS[$operator])) {
+        if(!isset(CustomStatistic::OPERATORS[$operator])) {
             throw new \Exception("Operator with id {$operator} not found in Statistic::OPERATORS");
         }
 

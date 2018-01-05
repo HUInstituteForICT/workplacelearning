@@ -1,9 +1,11 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\DataCollectors;
 
 
+use App\Tips\DataUnit;
+use App\Tips\DataUnitAnnotation;
 use Doctrine\Common\Annotations\AnnotationReader;
 
 class DataCollectorContainer

@@ -1,9 +1,9 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Statistics;
 
-use App\Tips\Statistics\StatisticCalculationResult;
+use App\Tips\CollectorDataAggregator;
 
 
 /**

@@ -4,6 +4,8 @@
 namespace App\Tips;
 
 
+use App\Tips\DataCollectors\CollectorInterface;
+use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
 use Doctrine\Common\Annotations\AnnotationReader;
 
 class CollectorDataAggregator

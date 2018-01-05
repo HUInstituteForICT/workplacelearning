@@ -6,17 +6,12 @@ use App\Cohort;
 use App\Http\Requests\TipCoupleStatisticRequest;
 use App\Http\Requests\TipEditRequest;
 use App\Http\Requests\TipStoreRequest;
-use App\Tips\ActingPredefinedStatisticCollector;
-use App\Tips\CollectorDataAggregator;
-use App\Tips\PredefinedStatistic;
-use App\Tips\ProducingPredefinedStatisticCollector;
-use App\Tips\Statistic;
+use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\PredefinedStatisticHelper;
 use App\Tips\StatisticService;
 use App\Tips\Tip;
 use App\Tips\TipCoupledStatistic;
 use App\Tips\TipService;
-use App\WorkplaceLearningPeriod;
 use Illuminate\Http\Request;
 
 class TipsController extends Controller
@@ -65,7 +60,7 @@ class TipsController extends Controller
         // Fetch statistics. If none have been coupled yet, fetch all statistics. If there are coupled ones, only show from same EP type
         $statistics = [];
         if ($tip->statistics()->count() === 0) {
-            (new Statistic)->with('educationProgramType')->get()->each(function (Statistic $statistic) use (&$statistics
+            (new CustomStatistic)->with('educationProgramType')->get()->each(function (CustomStatistic $statistic) use (&$statistics
             ) {
                 $statistics[$statistic->id] = "{$statistic->name} ({$statistic->educationProgramType->eptype_name})";
             });
@@ -84,8 +79,8 @@ class TipsController extends Controller
 
         } else {
             $epType = $tip->statistics()->with('educationProgramType')->first()->educationProgramType;
-            (new Statistic)->where('education_program_type_id', '=',
-                $epType->eptype_id)->get()->each(function (Statistic $statistic) use (&$statistics) {
+            (new CustomStatistic)->where('education_program_type_id', '=',
+                $epType->eptype_id)->get()->each(function (CustomStatistic $statistic) use (&$statistics) {
                 $statistics[$statistic->id] = "{$statistic->name} ({$statistic->educationProgramType->eptype_name})";
             });
             if(strtolower($epType->eptype_name) === "acting") {
@@ -120,8 +115,8 @@ class TipsController extends Controller
     {
 
         if(!starts_with($request->get('id'), 'predefined-')) {
-            /** @var Statistic $statistic */
-            $statistic = (new Statistic)->findOrFail($request->get('id'));
+            /** @var CustomStatistic $statistic */
+            $statistic = (new CustomStatistic)->findOrFail($request->get('id'));
         } else {
             $statistic = $statisticService->createPredefinedStatistic(str_after($request->get('id'), 'predefined-'));
         }

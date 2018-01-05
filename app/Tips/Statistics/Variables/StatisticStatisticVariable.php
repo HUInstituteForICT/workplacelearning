@@ -1,10 +1,13 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Statistics\Variables;
+
+use App\Tips\DataCollectors\DataCollectorContainer;
+use App\Tips\Statistics\CustomStatistic;
 
 /**
- * @property Statistic $nestedStatistic
+ * @property CustomStatistic $nestedStatistic
  * @property integer $nested_statistic_id
  */
 class StatisticStatisticVariable extends StatisticVariable implements HasStatisticVariableValue
@@ -29,7 +32,7 @@ class StatisticStatisticVariable extends StatisticVariable implements HasStatist
 
     public function nestedStatistic()
     {
-        return $this->belongsTo(Statistic::class, 'nested_statistic_id');
+        return $this->belongsTo(CustomStatistic::class, 'nested_statistic_id');
     }
 
     /**

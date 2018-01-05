@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Statistics\Variables;
 
 
 use Illuminate\Database\Eloquent\Model;

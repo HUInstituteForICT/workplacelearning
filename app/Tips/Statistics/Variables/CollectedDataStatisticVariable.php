@@ -1,7 +1,10 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Statistics\Variables;
+
+use App\Tips\DataCollectors\DataCollectorContainer;
+use App\Tips\DataUnit;
 
 /**
  * @property string $dataUnitMethod The method to call for the collected data

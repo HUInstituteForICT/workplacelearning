@@ -1,10 +1,13 @@
 <?php
 // TODO Change RootStatistic to Statistic and Statistic to CalculatedStatistic
 
-namespace App\Tips;
+namespace App\Tips\Statistics;
 
 
 use App\EducationProgramType;
+use App\Tips\DataCollectors\DataCollectorContainer;
+use App\Tips\Tip;
+use App\Tips\TipCoupledStatistic;
 use Illuminate\Database\Eloquent\Model;
 use Nanigans\SingleTableInheritance\Exceptions\SingleTableInheritanceInvalidAttributesException;
 use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
@@ -62,7 +65,7 @@ class RootStatistic extends Model
 
     protected static $singleTableTypeField = 'type';
 
-    protected static $singleTableSubclasses = [Statistic::class, PredefinedStatistic::class];
+    protected static $singleTableSubclasses = [CustomStatistic::class, PredefinedStatistic::class];
 
     protected static $persisted = ['name', 'education_program_type_id'];
 

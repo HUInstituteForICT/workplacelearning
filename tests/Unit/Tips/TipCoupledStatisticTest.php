@@ -1,8 +1,7 @@
 <?php
 
 
-use App\Tips\Statistic;
-
+use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Tip;
 use App\Tips\TipCoupledStatistic;
 
@@ -12,8 +11,8 @@ class TipCoupledStatisticTest extends \Tests\TestCase
     public function testTipRelation() {
         /** @var \App\Tips\Tip $tip */
         $tip = factory(\App\Tips\Tip::class)->create();
-        /** @var Statistic $statistic */
-        $statistic = factory(Statistic::class)->create();
+        /** @var CustomStatistic $statistic */
+        $statistic = factory(CustomStatistic::class)->create();
 
         $tip->statistics()->attach($statistic,
             [
@@ -38,8 +37,8 @@ class TipCoupledStatisticTest extends \Tests\TestCase
 
         /** @var Tip $tip */
         $tip = factory(Tip::class)->create();
-        /** @var Statistic $statistic */
-        $statistic = factory(Statistic::class)->create();
+        /** @var CustomStatistic $statistic */
+        $statistic = factory(CustomStatistic::class)->create();
 
         $tipService->coupleStatistic($tip, $statistic, [
             'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,

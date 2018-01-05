@@ -5,6 +5,8 @@ namespace App\Tips;
 
 
 use App\Student;
+use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Statistics\RootStatistic;
 
 class TipService
 {
@@ -81,7 +83,7 @@ class TipService
     public function coupleStatistics(Tip $tip, array $statisticsData)
     {
         foreach ($statisticsData as $statisticId => $couplingData) {
-            $statistic = (new Statistic)->findOrFail($statisticId);
+            $statistic = (new CustomStatistic)->findOrFail($statisticId);
             $tip->statistics()->attach($statistic, $couplingData);
         }
     }

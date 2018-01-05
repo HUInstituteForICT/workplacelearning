@@ -10,8 +10,8 @@ use App\Tips\TipService;
 class TipTest extends \Tests\TestCase
 {
     public function testTipApplicable() {
-        /** @var \App\Tips\Statistic $statistic */
-        $statistic = factory(\App\Tips\Statistic::class)->create();
+        /** @var \App\Tips\Statistics\CustomStatistic $statistic */
+        $statistic = factory(\App\Tips\Statistics\CustomStatistic::class)->create();
 
         /** @var Tip $tip */
         $tip = factory(Tip::class)->create();
@@ -21,7 +21,7 @@ class TipTest extends \Tests\TestCase
             'multiplyBy100' => false,
         ]);
 
-        $dataCollectorContainer = $this->createMock(\App\Tips\DataCollectorContainer::class);
+        $dataCollectorContainer = $this->createMock(\App\Tips\DataCollectors\DataCollectorContainer::class);
         $dataCollectorContainer->method('getDataUnit')->willReturn(0.2);
 
         $this->assertTrue($tip->isApplicable($dataCollectorContainer));
@@ -32,8 +32,8 @@ class TipTest extends \Tests\TestCase
 
     public function testTipText() {
 
-        /** @var \App\Tips\Statistic $statistic */
-        $statistic = factory(\App\Tips\Statistic::class)->create();
+        /** @var \App\Tips\Statistics\CustomStatistic $statistic */
+        $statistic = factory(\App\Tips\Statistics\CustomStatistic::class)->create();
 
         /** @var Tip $tip */
         $tip = factory(Tip::class)->create();
@@ -43,7 +43,7 @@ class TipTest extends \Tests\TestCase
             'multiplyBy100' => true,
         ]);
 
-        $dataCollectorContainer = $this->createMock(\App\Tips\DataCollectorContainer::class);
+        $dataCollectorContainer = $this->createMock(\App\Tips\DataCollectors\DataCollectorContainer::class);
         $dataCollectorContainer->method('getDataUnit')->willReturn(10);
 
 

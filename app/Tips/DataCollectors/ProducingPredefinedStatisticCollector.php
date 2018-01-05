@@ -1,13 +1,11 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\DataCollectors;
 
 
 use App\Category;
 use App\Tips\Statistics\StatisticCalculationResult;
-use App\WorkplaceLearningPeriod;
-use Illuminate\Support\Facades\DB;
 
 class ProducingPredefinedStatisticCollector extends AbstractCollector
 {

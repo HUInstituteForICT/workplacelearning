@@ -6,6 +6,11 @@ namespace App\Tips;
 
 use App\Cohort;
 use App\Student;
+use App\Tips\DataCollectors\DataCollectorContainer;
+use App\Tips\DataCollectors\ProducingPredefinedStatisticCollector;
+use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Statistics\PredefinedStatistic;
+use App\Tips\Statistics\RootStatistic;
 use App\Tips\Statistics\StatisticCalculationResult;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +24,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string $name Name of the tip
  * @property boolean $showInAnalysis Whether or not the tip should be displayed in analyses
  * @property integer $id ID of the tip
- * @property Statistic[]|Collection $statistics of the tip
+ * @property CustomStatistic[]|Collection $statistics of the tip
  * @property float $threshold The threshold that determines whether the tip is applicable or not
  * @property string $tipText The text including placeholders used for displaying the tip
  * @property Cohort[]|Collection $enabledCohorts
@@ -77,9 +82,10 @@ class Tip extends Model
     {
         $applicable = true;
         $this->statistics->each(function(RootStatistic $statistic) use(&$applicable, $collector) {
+            // TODO create a datacollectorCollection that we create in AnalysisController and then use here to select which datacollector we need to inject into the statistic
             if($statistic instanceof PredefinedStatistic) {
                 if(strtolower($statistic->educationProgramType->eptype_name) === "producing") {
-                    $statistic->setDataCollector(new ProducingPredefinedStatisticCollector(null, null, Auth::user()->getCurrentWorkplaceLearningPeriod()));
+                    $statistic->setDataCollector(new ProducingPredefinedStatisticCollector(null, null, Auth::user()->getCurrentWorkplaceLearningPeriod())); // Todo should be able to get month/year
                 }
             } else {
                 $statistic->setDataCollector($collector);
@@ -122,7 +128,7 @@ class Tip extends Model
             return [
                 $statistic->pivot->condition() => [
                     "value" => ":value-{$statistic->pivot->id}",
-                    "valueName" => ($statistic instanceof PredefinedStatistic ? ":value-name-{$statistic->pivot->id}" : null)
+                    "valueName" => ($statistic instanceof PredefinedStatistic ? ":value-name-{$statistic->pivot->id}" : trans('-'))
                     ]
                 ];
         });

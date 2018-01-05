@@ -4,6 +4,8 @@
 namespace App\Tips;
 
 
+use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Statistics\RootStatistic;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -13,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $comparison_operator
  * @property float $threshold
  * @property boolean $multiplyBy100
- * @property Statistic $statistic
+ * @property CustomStatistic $statistic
  */
 class TipCoupledStatistic extends Pivot
 {

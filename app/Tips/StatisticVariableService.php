@@ -4,6 +4,10 @@
 namespace App\Tips;
 
 
+use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
+use App\Tips\Statistics\Variables\StatisticStatisticVariable;
+
 class StatisticVariableService
 {
     public function __construct()
@@ -16,13 +20,13 @@ class StatisticVariableService
             case (new CollectedDataStatisticVariable())->getType():
                 return $this->createCollectedDataStatisticVariable($data['name'], $data['method'], $parameter);
             case (new StatisticStatisticVariable())->getType():
-                return $this->createStatisticStatisticVariable((new Statistic)->find($data['id']));
+                return $this->createStatisticStatisticVariable((new CustomStatistic)->find($data['id']));
         }
 
         throw new \Exception("Unknown statistic variable type: {$data['type']}");
     }
 
-    private function createStatisticStatisticVariable(Statistic $statistic) {
+    private function createStatisticStatisticVariable(CustomStatistic $statistic) {
         $variable = new StatisticStatisticVariable();
         $variable->name = $statistic->name;
         $variable->nestedStatistic()->associate($statistic);

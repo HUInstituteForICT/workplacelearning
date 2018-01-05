@@ -2,12 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Tips\ActingPredefinedStatisticCollector;
-use App\Tips\CollectorDataAggregator;
-use App\Tips\ProducingPredefinedStatisticCollector;
 use App\Tips\Statistics\PredefinedStatisticHelper;
 use App\Tips\TipCoupledStatistic;
-use App\WorkplaceLearningPeriod;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;

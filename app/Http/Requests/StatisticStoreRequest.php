@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Tips\CollectedDataStatisticVariable;
+use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StatisticStoreRequest extends FormRequest

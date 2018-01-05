@@ -7,19 +7,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Chart;
-use App\Cohort;
-use App\LearningActivityProducing;
 use App\Analysis\Producing\ProducingAnalysis;
 use App\Analysis\Producing\ProducingAnalysisCollector;
-use App\Tips\ActingCollector;
-use App\Tips\DataCollectorContainer;
-use App\Tips\ProducingCollector;
+use App\Cohort;
+use App\Tips\DataCollectors\DataCollectorContainer;
+use App\Tips\DataCollectors\ProducingCollector;
 use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
 class ProducingAnalysisController extends Controller

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Statistics\Variables;
 
 /**
  * This interface only exists because the Single Table Inheritance package requires that our Parent class StatisticVariable is a concrete class and not an interface or abstract class.
