@@ -25,20 +25,21 @@ class StatisticTest extends \Tests\TestCase
 
 
         $statistic->operator = CustomStatistic::OPERATOR_ADD;
-        $this->assertEquals(6, $statistic->calculate()->getResult());
+        $this->assertEquals(6, $statistic->calculate()->firstResult()->getResult());
 
         $statistic->operator = CustomStatistic::OPERATOR_SUBTRACT;
-        $this->assertEquals(0, $statistic->calculate()->getResult());
+        $this->assertEquals(0, $statistic->calculate()->firstResult()->getResult());
 
         $statistic->operator = CustomStatistic::OPERATOR_MULTIPLY;
-        $this->assertEquals(9, $statistic->calculate()->getResult());
+        $this->assertEquals(9, $statistic->calculate()->firstResult()->getResult());
 
         $statistic->operator = CustomStatistic::OPERATOR_DIVIDE;
-        $this->assertEquals(1, $statistic->calculate()->getResult());
+        $this->assertEquals(1, $statistic->calculate()->firstResult()->getResult());
     }
 
     /**
      * Test that a nested statistic will also be calculated
+     * @throws Exception
      */
     public function testNestedStatisticCalculate() {
         // Create a nested statistic that is based on CollectedDataStatistics
@@ -55,7 +56,7 @@ class StatisticTest extends \Tests\TestCase
         $nestedStatistic->statisticVariableTwo = $nestedVariableTwo;
 
         // Make sure the nested statistic calculates correctly
-        $this->assertEquals(6, $nestedStatistic->calculate()->getResult());
+        $this->assertEquals(6, $nestedStatistic->calculate()->firstResult()->getResult());
 
         // Create the top level statistic
         $variableTwo = $this->createMock(CollectedDataStatisticVariable::class);
@@ -72,15 +73,15 @@ class StatisticTest extends \Tests\TestCase
 
         // Assert all operators
         $statistic->operator = CustomStatistic::OPERATOR_ADD;
-        $this->assertEquals(16, $statistic->calculate()->getResult());
+        $this->assertEquals(16, $statistic->calculate()->firstResult()->getResult());
 
         $statistic->operator = CustomStatistic::OPERATOR_SUBTRACT;
-        $this->assertEquals(-4, $statistic->calculate()->getResult());
+        $this->assertEquals(-4, $statistic->calculate()->firstResult()->getResult());
 
         $statistic->operator = CustomStatistic::OPERATOR_MULTIPLY;
-        $this->assertEquals(60, $statistic->calculate()->getResult());
+        $this->assertEquals(60, $statistic->calculate()->firstResult()->getResult());
 
         $statistic->operator = CustomStatistic::OPERATOR_DIVIDE;
-        $this->assertEquals(0.6, $statistic->calculate()->getResult());
+        $this->assertEquals(0.6, $statistic->calculate()->firstResult()->getResult());
     }
 }
