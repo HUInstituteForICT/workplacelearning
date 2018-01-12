@@ -93,4 +93,20 @@ class ProducingCollector extends AbstractCollector
                 ->where('difficulty_label', '=', $difficultyLabel)
         )->sum('duration');
     }
+
+    /**
+     * @DataUnitAnnotation(name="Hours of work alone and difficult", method="hoursDifficultAndAlone")
+     * @return int
+     * @throws \Exception When unable to find ResourcePerson
+     */
+    public function hoursDifficultAndAlone()
+    {
+        return $this->wherePeriod(
+            $this->learningPeriod->learningActivityProducing()
+                ->where('difficulty_id', '=', 3)
+                ->leftJoin('resourceperson', 'res_person_id', '=', 'rp_id')->whereIn('person_label',
+                    ['Alleen', 'alleen', 'None', 'none'])
+                ->getBaseQuery()
+        )->sum('duration');
+    }
 }
