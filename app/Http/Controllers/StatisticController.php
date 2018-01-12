@@ -9,6 +9,7 @@ use App\Tips\DataCollectors\CollectorFactory;
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\Variables\StatisticStatisticVariable;
 use App\Tips\StatisticService;
+use App\Tips\Tip;
 use DB;
 use Illuminate\Http\Request;
 use Lang;
@@ -111,6 +112,7 @@ class StatisticController extends Controller
 
         $statistic->statisticVariableOne()->delete();
         $statistic->statisticVariableTwo()->delete();
+        $statistic->tips()->detach();
         $statistic->delete();
 
         return redirect()->route('statistics.index');
