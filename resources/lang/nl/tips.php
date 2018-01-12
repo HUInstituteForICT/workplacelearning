@@ -1,6 +1,5 @@
 <?php
 
-
 return [
     'tips' => "Tips",
     'create-new' => "Maak nieuwe tip aan",
@@ -25,7 +24,7 @@ return [
         "threshold" => "De grenswaarde voor deze statistiek. Bijv. 40%, dan 0.4 invoeren. Voor niet-percentages gewoon volle getallen.",
         "tipText" => "De tekst van de tip. Gebruik de waarde parameters beneden (:value-x) om de plek aan te geven waar een berekende waarde moet staan.",
         "tipTextPlaceholder" => "Bij :value-1 van je activiteiten werk je alleen.",
-        "multiplyBy100" => "Vermenigvuldig de berekende waarde (0.x) met 100 zodat het getal in de tip tekst een percentage is?",
+        "multiplyBy100" => "Vermenigvuldig de berekende waarde (0.x) met 100 en voeg % teken toe zodat het getal in de tip tekst een percentage is?",
         "showInAnalysis" => "Moet de tip zichtbaar zijn in de analyse?",
         "statistic" => "Statistiek voor berekening",
         "enabledCohorts" => "Selecteer de cohorten waar deze tip actief moet zijn",
