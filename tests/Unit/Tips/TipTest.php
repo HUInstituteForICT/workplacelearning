@@ -47,10 +47,10 @@ class TipTest extends \Tests\TestCase
         $dataCollectorContainer->method('getDataUnit')->willReturn(10);
 
 
-        $tip->tipText = ":value-1 should be 2,000";
+        $tip->tipText = ":value-1 should be 2,000%";
         $tip->isApplicable($dataCollectorContainer); // to trigger calculate
 
-        $this->assertEquals("2,000 should be 2,000", $tip->getTipText());
+        $this->assertEquals("2,000% should be 2,000%", $tip->getTipText());
 
         $tip->tipText = ":value-1 should be 20";
         $tip->statistics->first()->pivot->multiplyBy100 = false;
