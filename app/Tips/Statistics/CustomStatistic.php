@@ -15,25 +15,21 @@ use App\Tips\Statistics\Variables\StatisticVariable;
  */
 class CustomStatistic extends Statistic
 {
-    protected static $singleTableType = 'customstatistic';
-
-    protected static $persisted = ['operator', 'statistic_variable_one_id', 'statistic_variable_two_id'];
+    const OPERATOR_ADD = 0;
+    const OPERATOR_SUBTRACT = 1;
 
 
     /* Operators used for calculations */
-    const OPERATOR_ADD = 0;
-    const OPERATOR_SUBTRACT = 1;
     const OPERATOR_MULTIPLY = 2;
     const OPERATOR_DIVIDE = 3;
-
     const OPERATORS = [
         self::OPERATOR_ADD      => ["type" => CustomStatistic::OPERATOR_ADD, "label" => "+"],
         self::OPERATOR_SUBTRACT => ["type" => CustomStatistic::OPERATOR_SUBTRACT, "label" => "-"],
         self::OPERATOR_MULTIPLY => ["type" => CustomStatistic::OPERATOR_MULTIPLY, "label" => "*"],
         self::OPERATOR_DIVIDE   => ["type" => CustomStatistic::OPERATOR_DIVIDE, "label" => "/"],
     ];
-
-
+    protected static $singleTableType = 'customstatistic';
+    protected static $persisted = ['operator', 'statistic_variable_one_id', 'statistic_variable_two_id'];
 
     /**
      * Relation to first statisticVariable of this statistic
@@ -58,7 +54,7 @@ class CustomStatistic extends Statistic
     /**
      * Calculate the value of this statistic
      *
-     * @return StatisticCalculationResult
+     * @return StatisticCalculationResultCollection
      * @throws \Exception
      */
     public function calculate()
@@ -67,22 +63,38 @@ class CustomStatistic extends Statistic
         $this->injectDependenciesIntoStatisticVariable($this->statisticVariableOne);
         $this->injectDependenciesIntoStatisticVariable($this->statisticVariableTwo);
 
+        $resultCollection = new StatisticCalculationResultCollection();
         try {
+
             switch ($this->operator) {
                 case self::OPERATOR_ADD:
-                    return new StatisticCalculationResult($this->statisticVariableOne->getValue() + $this->statisticVariableTwo->getValue(),$this->name);
+                    $resultCollection->addResult(new StatisticCalculationResult($this->statisticVariableOne->getValue() + $this->statisticVariableTwo->getValue(),
+                        $this->name));
+                    break;
                 case self::OPERATOR_SUBTRACT:
-                    return new StatisticCalculationResult($this->statisticVariableOne->getValue() - $this->statisticVariableTwo->getValue() ,$this->name);
+                    $resultCollection->addResult(new StatisticCalculationResult($this->statisticVariableOne->getValue() - $this->statisticVariableTwo->getValue(),
+                        $this->name));
+                    break;
                 case self::OPERATOR_MULTIPLY:
-                    return new StatisticCalculationResult($this->statisticVariableOne->getValue() * $this->statisticVariableTwo->getValue(),$this->name);
+                    $resultCollection->addResult(new StatisticCalculationResult($this->statisticVariableOne->getValue() * $this->statisticVariableTwo->getValue(),
+                        $this->name));
+                    break;
                 case self::OPERATOR_DIVIDE:
-                    return new StatisticCalculationResult($this->statisticVariableOne->getValue() / $this->statisticVariableTwo->getValue(),$this->name);
+                    $resultCollection->addResult(new StatisticCalculationResult($this->statisticVariableOne->getValue() / $this->statisticVariableTwo->getValue(),
+                        $this->name));
+                    break;
             }
+
+            return $resultCollection;
         } catch (\DivisionByZeroError $exception) {
-            return new StatisticCalculationResult(0 ,$this->name);
-        } catch(\ErrorException $exception) {
-            if($exception->getMessage() === "Division by zero") {
-                return new StatisticCalculationResult(0 ,$this->name);
+            $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
+
+            return $resultCollection;
+        } catch (\ErrorException $exception) {
+            if ($exception->getMessage() === "Division by zero") {
+                $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
+
+                return $resultCollection;
             }
         }
 
@@ -101,17 +113,18 @@ class CustomStatistic extends Statistic
      *
      * @return string
      */
-    public function getStatisticCalculationExpression() {
+    public function getStatisticCalculationExpression()
+    {
         $expression = "";
         $expression .= "{$this->statisticVariableOne->name} ";
-        if($this->statisticVariableOne instanceof CollectedDataStatisticVariable && $this->statisticVariableOne->dataUnitParameterValue !== null) {
+        if ($this->statisticVariableOne instanceof CollectedDataStatisticVariable && $this->statisticVariableOne->dataUnitParameterValue !== null) {
             $expression .= "({$this->statisticVariableOne->dataUnitParameterValue}) ";
         }
 
         $expression .= self::OPERATORS[$this->operator]['label'] . " ";
 
         $expression .= "{$this->statisticVariableTwo->name} ";
-        if($this->statisticVariableTwo instanceof CollectedDataStatisticVariable && $this->statisticVariableTwo->dataUnitParameterValue !== null) {
+        if ($this->statisticVariableTwo instanceof CollectedDataStatisticVariable && $this->statisticVariableTwo->dataUnitParameterValue !== null) {
             $expression .= "({$this->statisticVariableTwo->dataUnitParameterValue}) ";
         }
 

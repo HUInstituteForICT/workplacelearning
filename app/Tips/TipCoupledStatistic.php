@@ -6,6 +6,7 @@ namespace App\Tips;
 
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\Statistic;
+use App\Tips\Statistics\StatisticCalculationResultCollection;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -53,18 +54,35 @@ class TipCoupledStatistic extends Pivot
     /**
      * Check if this TipCoupledStatistic passes the threshold
      *
-     * @param $calculatedValue
+     * @param StatisticCalculationResultCollection $calculationResultCollection
      * @return bool
      * @throws \Exception
      */
-    public function passes($calculatedValue) {
-        if((int) $this->comparison_operator === self::COMPARISON_OPERATOR_LESS_THAN) {
-            return $calculatedValue < $this->threshold;
-        } elseif ((int) $this->comparison_operator === self::COMPARISON_OPERATOR_GREATER_THAN) {
-            return $calculatedValue > $this->threshold;
+    public function passes(StatisticCalculationResultCollection $calculationResultCollection)
+    {
+        // By default statistic fails unless one of the calculations passes. Mark the calculations that passed so we can loop over them later
+        $passes = false;
+        foreach ($calculationResultCollection->getResults() as $calculationResult) {
+            if ((int)$this->comparison_operator === self::COMPARISON_OPERATOR_LESS_THAN) {
+                if ($calculationResult->getResult() < $this->threshold) {
+                    $calculationResult->passes();
+                    $passes = true;
+                } else {
+                    $calculationResult->failed();
+                }
+            } elseif ((int)$this->comparison_operator === self::COMPARISON_OPERATOR_GREATER_THAN) {
+                if ($calculationResult->getResult() > $this->threshold) {
+                    $calculationResult->passes();
+                    $passes = true;
+                } else {
+                    $calculationResult->failed();
+                }
+            } else {
+                throw new \Exception("Unknown comparison operator with enum value {$this->comparison_operator}");
+            }
         }
 
-        throw new \Exception("Unknown comparison operator with enum value {$this->comparison_operator}");
+        return $passes;
     }
 
 }

@@ -9,6 +9,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class ResourcePerson
+ * @property string person_label
+ * @package App
+ */
 class ResourcePerson extends Model
 {
     // Override the table used for the User Model

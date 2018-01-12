@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @property Cohort $cohort
  * @property Category[]|Collection categories
+ * @property LearningGoal[]|Collection learningGoals
+ * @property LearningActivityActing[]|Collection learningActivityActing
  */
 class WorkplaceLearningPeriod extends Model
 {

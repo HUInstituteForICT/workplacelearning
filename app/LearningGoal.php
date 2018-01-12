@@ -4,6 +4,10 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @property mixed learninggoal_id
+ * @property mixed learninggoal_label
+ */
 class LearningGoal extends Model
 {
     // Override the table used for the User Model

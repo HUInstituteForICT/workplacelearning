@@ -223,7 +223,7 @@
                         {{ trans('tips.liked') }}
                     @endif
                     <br/>
-                    <p>{{ $tip->getTipText() }}</p>
+                    <p>{{ nl2br($tip->getTipText()) }}</p>
                     <br/><br/>
                     <?php $tipCounter++; ?>
                 @endforeach

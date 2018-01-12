@@ -11,6 +11,7 @@ use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\PredefinedStatistic;
 use App\Tips\Statistics\Statistic;
 use App\Tips\Statistics\StatisticCalculationResult;
+use App\Tips\Statistics\StatisticCalculationResultCollection;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,24 +32,13 @@ use Illuminate\Database\Eloquent\Model;
 class Tip extends Model
 {
 
+    public $timestamps = false;
     /**
      * The result will be newly cached after every call to the "isApplicable". This to counteract recalculating on a "getTipText" call.
      * We can safely assume the "getTipText" call immediately follows the "isApplicable" call.
-     * @var StatisticCalculationResult[] $cachedResult
+     * @var StatisticCalculationResultCollection[] $cachedResultsCollection
      */
-    protected $cachedResult;
-
-    public $timestamps = false;
-
-    /**
-     * The statistic used for this tip
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function statistics() {
-        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')
-            ->using(TipCoupledStatistic::class)
-            ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
-    }
+    protected $cachedResultsCollection;
 
     /**
      * The likes this Tip has given by Students
@@ -59,7 +49,8 @@ class Tip extends Model
         return $this->hasMany(Like::class);
     }
 
-    public function likesByStudent(Student $student) {
+    public function likesByStudent(Student $student)
+    {
         return $this->hasMany(Like::class)->where('student_id', '=', $student->student_id);
     }
 
@@ -67,7 +58,8 @@ class Tip extends Model
      * The cohorts this Tip is enabled for
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function enabledCohorts() {
+    public function enabledCohorts()
+    {
         return $this->belongsToMany(Cohort::class);
     }
 
@@ -82,9 +74,10 @@ class Tip extends Model
         $this->statistics->each(function (Statistic $statistic) use (&$applicable, $collector) {
             $statistic->setDataCollectorContainer($collector);
 
-            $this->cachedResult[$statistic->pivot->id] = $statistic->calculate();
+            $this->cachedResultsCollection[$statistic->pivot->id] = $statistic->calculate();
 
-            $applicable = $statistic->pivot->passes($this->cachedResult[$statistic->pivot->id]->getResult());
+            $applicable = $statistic->pivot->passes($this->cachedResultsCollection[$statistic->pivot->id]);
+
             return $applicable;
         });
 
@@ -100,30 +93,54 @@ class Tip extends Model
     {
         $tipText = $this->tipText;
         $this->statistics->each(function (Statistic $statistic) use (&$tipText) {
-            $percentageValue = $statistic->pivot->multiplyBy100 ?
-                number_format($this->cachedResult[$statistic->pivot->id]->getResult() * 100) :
-                $this->cachedResult[$statistic->pivot->id]->getResult();
-            if($statistic instanceof PredefinedStatistic) {
-                $tipText = str_replace(":value-name-{$statistic->pivot->id}", $this->cachedResult[$statistic->pivot->id]->getEntityName(), $tipText);
+            $percentageValues = [];
+            /** @var StatisticCalculationResult $calculationResult */
+            foreach ($this->cachedResultsCollection[$statistic->pivot->id]->getResults() as $calculationResult) {
+                if ($calculationResult->hasPassed()) {
+                    $percentageValues[] = $statistic->pivot->multiplyBy100 ?
+                        number_format($calculationResult->getResult() * 100) . '%' :
+                        $calculationResult->getResult();
+                }
             }
-            $tipText = str_replace(":value-{$statistic->pivot->id}", $percentageValue, $tipText);
+
+
+            if ($statistic instanceof PredefinedStatistic) {
+                $entityNames = array_map(function (StatisticCalculationResult $calculationResult) {
+                    return $calculationResult->getEntityName();
+                }, $this->cachedResultsCollection[$statistic->pivot->id]->getResults());
+                $tipText = str_replace(":value-name-{$statistic->pivot->id}",
+                    implode(', ', $entityNames), $tipText);
+            }
+            $tipText = str_replace(":value-{$statistic->pivot->id}", implode(', ', $percentageValues), $tipText);
 
         });
 
         return $tipText;
     }
 
-    public function buildTextParameters() {
+    public function buildTextParameters()
+    {
         return $this->statistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function (
             Statistic $statistic
         ) {
             return [
                 $statistic->pivot->condition() => [
-                    "value" => ":value-{$statistic->pivot->id}",
-                    "valueName" => ($statistic instanceof PredefinedStatistic ? ":value-name-{$statistic->pivot->id}" : trans('-'))
-                    ]
-                ];
+                    "value"     => ":value-{$statistic->pivot->id}",
+                    "valueName" => ($statistic instanceof PredefinedStatistic ? ":value-name-{$statistic->pivot->id}" : trans('-')),
+                ],
+            ];
         });
+    }
+
+    /**
+     * The statistic used for this tip
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function statistics()
+    {
+        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')
+            ->using(TipCoupledStatistic::class)
+            ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
     }
 
 
