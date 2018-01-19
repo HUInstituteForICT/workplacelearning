@@ -209,7 +209,7 @@
             $('#date-deadline').datetimepicker({
                 locale: 'nl',
                 format: 'DD-MM-YYYY',
-                minDate: "{{ date('Y-m-d', strtotime("-3 week")) }}",
+                minDate: "{{ $workplacelearningperiod->startdate }}",
                 maxDate: "{{ date('Y-m-d', strtotime("now")) }}",
                 useCurrent: false,
             });

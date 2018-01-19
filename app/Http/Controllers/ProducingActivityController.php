@@ -59,7 +59,8 @@ class ProducingActivityController extends Controller
             ->with('difficulties', Difficulty::all())
             ->with('statuses', Status::all())
             ->with('activitiesJson', $activitiesJson)
-            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping));
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
+            ->with('workplacelearningperiod', Auth::user()->getCurrentWorkplaceLearningPeriod());
     }
 
     public function edit($id)
