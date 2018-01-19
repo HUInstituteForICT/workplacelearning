@@ -15,7 +15,11 @@
                         <div class="panel-body">
                             <strong>{{ trans('tips.name') }}:</strong> {{ $tip->name }}<br/>
                             <strong>{{ trans('tips.ep-type') }}:</strong>
-                            ({{ $tip->statistics->first()->educationProgramType->eptype_name }})<br/>
+                            @if($tip->statistics->first() !== null)
+                                ({{ $tip->statistics->first()->educationProgramType->eptype_name }})<br/>
+                            @else
+                                -
+                            @endif
                             <strong>{{ trans('tips.statistics-count') }}:</strong> {{ $tip->statistics->count() }}<br/>
                             <strong>{{ trans('tips.likes') }}:</strong> {{ $tip->likes->count() }}
 
