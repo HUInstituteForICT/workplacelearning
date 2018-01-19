@@ -6,7 +6,8 @@
     <h1>{{ trans('tips.tips') }}</h1>
     <div class="row">
         <div class="col-md-12">
-            <a href="{{ route('tips.create') }}" class="">{{ trans('tips.create-new') }}</a>
+            <a href="{{ route('tips.create') }}" class="">{{ trans('tips.create-new') }}</a><br/>
+            <a href="{{ route('statistics.index') }}" class="">{{ trans('statistics.go-to') }}</a>
             <h3>{{ trans('tips.all-tips') }}</h3>
             <div class="row">
                 @foreach($tips as $tip)
