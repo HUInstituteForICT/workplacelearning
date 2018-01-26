@@ -134,8 +134,7 @@ class ProducingReportController extends Controller
                     $textEntries = [];
                     foreach ($lap_array["" . date('d-m-Y', strtotime($date_loop))] as $lap) {
                         $hrs += $lap['duration'];
-                        $textEntries[] = "- {$lap['description']}";
-
+                        $textEntries[] = "- " . htmlspecialchars($lap['description']);
                     }
                     $table->addCell(8000)->addText(implode("\n", $textEntries));
                 } else {
