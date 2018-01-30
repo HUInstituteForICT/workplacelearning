@@ -14,13 +14,13 @@ class PredefinedStatisticHelper
     public static function getActingData() {
         return (new CollectorDataAggregator(new ActingPredefinedStatisticCollector(null, null,
             new WorkplaceLearningPeriod)))
-            ->getInformation();
+            ->getInformation(false);
     }
 
     public static function getProducingData() {
         return (new CollectorDataAggregator(new ProducingPredefinedStatisticCollector(null, null,
             new WorkplaceLearningPeriod)))
-            ->getInformation();
+            ->getInformation(false);
     }
 
     public static function isActingMethod($method) {

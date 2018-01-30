@@ -7,7 +7,7 @@ namespace App\Tips;
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\Statistic;
 use App\Tips\Statistics\StatisticCalculationResultCollection;
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property boolean $multiplyBy100
  * @property CustomStatistic $statistic
  */
-class TipCoupledStatistic extends Pivot
+class TipCoupledStatistic extends Model
 {
     const COMPARISON_OPERATOR_LESS_THAN = 0;
     const COMPARISON_OPERATOR_GREATER_THAN = 1;
@@ -28,14 +28,28 @@ class TipCoupledStatistic extends Pivot
         self::COMPARISON_OPERATOR_GREATER_THAN => ['type' => self::COMPARISON_OPERATOR_GREATER_THAN, 'label' => '>'],
     ];
     public $timestamps = false;
-    public $fillable = ['comparison_operator', 'threshold', 'multiplyBy100'];
+    public $fillable = ['tip_id', 'statistic_id', 'comparison_operator', 'threshold', 'multiplyBy100'];
     protected $table = 'tip_coupled_statistic';
+    public $appends = ['condition'];
+
+    public function getConditionAttribute()
+    {
+        return $this->condition();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function statistic() {
         return $this->belongsTo(Statistic::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tip()
+    {
+        return $this->belongsTo(Tip::class);
     }
 
     /**

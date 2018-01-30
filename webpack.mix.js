@@ -18,6 +18,7 @@ mix.react('resources/assets/js/app.js', 'public/js')
     .less('resources/assets/less/fonts.less', 'public/css')
     .less('resources/assets/less/weekstaten.less', 'public/css')
     .less('resources/assets/less/PDFstyle.less', 'public/css')
+    .sourceMaps()
 
 ;
 

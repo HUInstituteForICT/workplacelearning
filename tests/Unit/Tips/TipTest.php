@@ -26,7 +26,7 @@ class TipTest extends \Tests\TestCase
 
         $this->assertTrue($tip->isApplicable($dataCollectorContainer));
 
-        $tip->statistics->first()->pivot->threshold = 0.9;
+        $tip->coupledStatistics->first()->pivot->threshold = 0.9;
         $this->assertFalse($tip->isApplicable($dataCollectorContainer));
     }
 
@@ -53,7 +53,7 @@ class TipTest extends \Tests\TestCase
         $this->assertEquals("2,000% should be 2,000%", $tip->getTipText());
 
         $tip->tipText = ":value-1 should be 20";
-        $tip->statistics->first()->pivot->multiplyBy100 = false;
+        $tip->coupledStatistics->first()->pivot->multiplyBy100 = false;
         $tip->isApplicable($dataCollectorContainer); // to trigger calculate
         $this->assertEquals("20 should be 20", $tip->getTipText());
     }

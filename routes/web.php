@@ -55,13 +55,24 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
     }
 );
 
-Route::group(['middleware' => ['auth', CheckUserLevel::class]], function() {
-    Route::resource('statistics', 'StatisticController', ['only' => ['index', 'create', 'store', 'destroy']]);
+Route::get('/manage/tips', function() {
+    return view('pages.tips.tips-app');
+})->middleware(['auth', CheckUserLevel::class]);
+
+Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api/'], function() {
+
+    Route::resource('tip-coupled-statistics', 'TipApi\TipCoupledStatisticController');
+    Route::resource('statistics', 'TipApi\StatisticController');
+    Route::resource('tips', 'TipApi\TipsController');
+
+
+
+//    Route::resource('statistics', 'StatisticController', ['only' => ['index', 'create', 'store', 'destroy']]);
     Route::put('tips/{tip}/cohorts', 'TipsController@updateCohorts')->name('tips.updateCohorts');
     Route::get('tips/{tip}/select-statistic', 'TipsController@selectStatistic')->name('tips.select-statistic');
     Route::put('tips/{tip}/couple-statistic', 'TipsController@coupleStatistic')->name('tips.couple-statistic');
     Route::delete('tips/{tip}/decouple-statistic/{tipCoupledStatisticId}', 'TipsController@decoupleStatistic')->name('tips.decouple-statistic');
-    Route::resource('tips', 'TipsController');
+//    Route::resource('tips', 'TipsController');
 });
 
 Route::group(['before' => 'auth'], function() {

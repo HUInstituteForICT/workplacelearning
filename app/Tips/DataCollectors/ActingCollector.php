@@ -45,7 +45,7 @@ class ActingCollector extends AbstractCollector
     }
 
     /**
-     * @DataUnitAnnotation(name="Activities with certain category", method="activitiesWithTimeslot", hasParameters=true, parameterName="Category/Timeslot label")
+     * @DataUnitAnnotation(name="Activities with learning question", method="activitiesWithLearningQuestion", hasParameters=true, parameterName="Timeslot text")
      * @param string $timeslotText timeslot name/text
      * @return int
      */

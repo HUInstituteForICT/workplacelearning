@@ -27,7 +27,7 @@ class TipCoupledStatisticTest extends \Tests\TestCase
 
         $this->assertTrue($count === 1, "TipCoupledStatistic relation inserting");
 
-        $this->assertInstanceOf(TipCoupledStatistic::class, $tip->statistics->first()->pivot);
+        $this->assertInstanceOf(TipCoupledStatistic::class, $tip->coupledStatistics->first()->pivot);
 
 
     }
@@ -46,7 +46,7 @@ class TipCoupledStatisticTest extends \Tests\TestCase
             'multiplyBy100' => false,
         ]);
 
-        $this->assertInstanceOf(TipCoupledStatistic::class, $tip->statistics->first()->pivot);
-        $this->assertCount(1, $tip->statistics);
+        $this->assertInstanceOf(TipCoupledStatistic::class, $tip->coupledStatistics->first()->pivot);
+        $this->assertCount(1, $tip->coupledStatistics);
     }
 }

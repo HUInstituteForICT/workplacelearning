@@ -10,6 +10,7 @@ import ActivityActingProcessTable from "./components/ActivityActingProcessTable/
 import EducationProgramsApp from "./components/EducationProgramsApp/educationProgramsApp";
 import ActivityProducingProcessTable from "./components/ActivityProducingProcessTable/table";
 import ProducingWeekStatesExport from "./components/ProducingWeekStatesExport";
+import TipsApp from "./components/TipsApp";
 import CreateForm from "./components/Statistics/CreateForm";
 
 
@@ -19,6 +20,7 @@ const Apps = {
     ActivityProducingProcessTable,
     EducationProgramsApp,
     ProducingWeekStatesExport,
+    TipsApp,
     CreateForm,
 };
 

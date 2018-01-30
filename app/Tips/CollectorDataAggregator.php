@@ -4,6 +4,7 @@
 namespace App\Tips;
 
 
+use App\Tips\DataCollectors\ActingPredefinedStatisticCollector;
 use App\Tips\DataCollectors\CollectorInterface;
 use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -22,9 +23,11 @@ class CollectorDataAggregator
     /**
      * Get the information of all DataUnit methods of a collector
      * Used for displaying
+     * @param bool $variableStatistic
      * @return array
      */
-    public function getInformation() {
+    public function getInformation($variableStatistic = true)
+    {
         $methods = $this->methodsForObject($this->collector);
 
         $information = [];
@@ -35,7 +38,9 @@ class CollectorDataAggregator
             }
 
             $methodInformation = $this->informationForMethod($this->collector, $method);
-            $methodInformation->type = (new CollectedDataStatisticVariable())->getType();
+            if ($variableStatistic) {
+                $methodInformation->type = (new CollectedDataStatisticVariable())->getType();
+            }
 
             $information[] = (array) $methodInformation;
         }
@@ -52,6 +57,7 @@ class CollectorDataAggregator
     private function methodsForObject(CollectorInterface $collector)
     {
         $className = get_class($collector);
+
         return get_class_methods($className);
     }
 
@@ -70,6 +76,7 @@ class CollectorDataAggregator
 
         /** @var DataUnitAnnotation $dataUnitAnnotation */
         $dataUnitAnnotation = $annotationReader->getMethodAnnotation($reflectionMethod, DataUnitAnnotation::class);
+
         return $dataUnitAnnotation;
     }
 

@@ -19,12 +19,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Tip
  *
- * @property boolean $multiplyBy100 Whether or not the percentage calculated should be multiplied by 100 in the getTipText
  * @property string $name Name of the tip
  * @property boolean $showInAnalysis Whether or not the tip should be displayed in analyses
  * @property integer $id ID of the tip
- * @property CustomStatistic[]|Collection $statistics of the tip
- * @property float $threshold The threshold that determines whether the tip is applicable or not
+ * @property Statistic[]|Collection $coupledStatistics of the tip
  * @property string $tipText The text including placeholders used for displaying the tip
  * @property Cohort[]|Collection $enabledCohorts
  * @property Like[]|Collection $likes
@@ -71,7 +69,7 @@ class Tip extends Model
     public function isApplicable(DataCollectorContainer $collector)
     {
         $applicable = true;
-        $this->statistics->each(function (Statistic $statistic) use (&$applicable, $collector) {
+        $this->coupledStatistics->each(function (Statistic $statistic) use (&$applicable, $collector) {
             $statistic->setDataCollectorContainer($collector);
 
             $this->cachedResultsCollection[$statistic->pivot->id] = $statistic->calculate();
@@ -92,7 +90,7 @@ class Tip extends Model
     public function getTipText()
     {
         $tipText = $this->tipText;
-        $this->statistics->each(function (Statistic $statistic) use (&$tipText) {
+        $this->coupledStatistics->each(function (Statistic $statistic) use (&$tipText) {
             $percentageValues = [];
             /** @var StatisticCalculationResult $calculationResult */
             foreach ($this->cachedResultsCollection[$statistic->pivot->id]->getResults() as $calculationResult) {
@@ -120,7 +118,7 @@ class Tip extends Model
 
     public function buildTextParameters()
     {
-        return $this->statistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function (
+        return $this->coupledStatistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function (
             Statistic $statistic
         ) {
             return [
@@ -133,15 +131,15 @@ class Tip extends Model
     }
 
     /**
-     * The statistic used for this tip
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * The coupled statistics used for this tip
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function statistics()
+    public function coupledStatistics()
     {
-        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')
-            ->using(TipCoupledStatistic::class)
-            ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
+        return $this->hasMany(TipCoupledStatistic::class);
+//        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')
+//            ->using(TipCoupledStatistic::class)
+//            ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
     }
-
 
 }

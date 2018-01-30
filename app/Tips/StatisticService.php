@@ -22,6 +22,7 @@ class StatisticService
     /**
      * @param array $data
      * @return CustomStatistic
+     * @throws \Exception
      */
     public function createStatistic(array $data) {
 
@@ -42,6 +43,8 @@ class StatisticService
         $statistic->statisticVariableTwo()->associate($variableTwo);
 
         $statistic->save();
+
+        return $statistic;
 
     }
 

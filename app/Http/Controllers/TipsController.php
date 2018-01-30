@@ -63,7 +63,7 @@ class TipsController extends Controller
             (new CustomStatistic)->with('educationProgramType')->get()->each(function (CustomStatistic $statistic) use (&$statistics
             ) {
                 $statistics[$statistic->id] = "{$statistic->name} ({$statistic->educationProgramType->eptype_name})";
-            });
+            })->merge();
 
             collect(PredefinedStatisticHelper::getProducingData())
                 ->each(function ($predefinedStatistic) use (&$statistics
@@ -108,7 +108,7 @@ class TipsController extends Controller
             ->with('tipCoupledStatistic')
             ->with('statistics', $statistics)
             ->with('comparisonOperators', $comparisonOperators)
-            ->with('alreadyCoupledStatistics', $tip->statistics);
+            ->with('alreadyCoupledStatistics', $tip->coupledStatistics);
     }
 
     public function coupleStatistic(TipCoupleStatisticRequest $request, Tip $tip, TipService $tipService, StatisticService $statisticService)
@@ -164,10 +164,10 @@ class TipsController extends Controller
 
 
         $cohorts = [];
-        if (count($tip->statistics) > 0) {
+        if (count($tip->coupledStatistics) > 0) {
             (new Cohort)->leftJoin('educationprogram', 'cohorts.ep_id', '=',
                 'educationprogram.ep_id')->where('eptype_id', '=',
-                $tip->statistics->first()->educationProgramType->eptype_id)
+                $tip->coupledStatistics->first()->educationProgramType->eptype_id)
                 ->orderBy('cohorts.name', 'ASC')
                 ->get()->each(function (Cohort $cohort) use (&$cohorts) {
                     $cohorts[$cohort->id] = "{$cohort->name}";
@@ -177,7 +177,7 @@ class TipsController extends Controller
 
         return view('pages.tips.edit')
             ->with('cohorts', $cohorts)
-            ->with('statistics', $tip->statistics)
+            ->with('statistics', $tip->coupledStatistics)
             ->with('tip', $tip);
 
     }

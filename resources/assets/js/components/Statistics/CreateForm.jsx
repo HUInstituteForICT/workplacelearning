@@ -6,9 +6,6 @@ export default class CreateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            operators: operators, // Loaded from a <script> tag declaration
-            statisticVariables: statisticVariables, // Loaded from a <script> tag declaration
-
             name: '',
             statisticVariableOneIndex: 0,
             statisticVariableOneParameter: '',
@@ -20,11 +17,11 @@ export default class CreateForm extends React.Component {
     }
 
     statisticIndex(statisticToFind) {
-        return this.state.statisticVariables.findIndex(statistic => statistic.name === statisticToFind.name);
+        return this.props.statisticVariables.findIndex(statistic => statistic.name === statisticToFind.name);
     }
 
     operatorIndex(operatorToFind) {
-        return this.state.operators.findIndex(operator => operator.type === operatorToFind.type);
+        return this.props.operators.findIndex(operator => operator.type === operatorToFind.type);
     }
 
     submit() {
@@ -32,20 +29,20 @@ export default class CreateForm extends React.Component {
             return false;
         }
 
-        const operator = this.state.operators[this.state.operatorIndex];
-        const variableOne = this.state.statisticVariables[this.state.statisticVariableOneIndex];
-        const variableTwo = this.state.statisticVariables[this.state.statisticVariableTwoIndex];
+        const operator = this.props.operators[this.state.operatorIndex];
+        const variableOne = this.props.statisticVariables[this.state.statisticVariableOneIndex];
+        const variableTwo = this.props.statisticVariables[this.state.statisticVariableTwoIndex];
 
-        axios.post('/statistics', {
+        axios.post('/api/statistics', {
             name: this.state.name,
             operator: operator.type,
             statisticVariableOne: variableOne,
             statisticVariableOneParameter: this.state.statisticVariableOneParameter,
             statisticVariableTwo: variableTwo,
             statisticVariableTwoParameter: this.state.statisticVariableTwoParameter,
-            educationProgramTypeId: this.props.educationProgramTypeId
+            educationProgramTypeId: variableOne.education_program_type_id
         }).then(response => {
-            window.location.href = "/statistics"
+            this.props.onCreated(response.data);
         }).catch(error => {
             console.log(error);
         });
@@ -57,9 +54,9 @@ export default class CreateForm extends React.Component {
             alert(Lang.get('react.statistic.errors.empty-name'));
             return false;
         }
-        const operator = this.state.operators[this.state.operatorIndex];
-        const variableOne = this.state.statisticVariables[this.state.statisticVariableOneIndex];
-        const variableTwo = this.state.statisticVariables[this.state.statisticVariableTwoIndex];
+        const operator = this.props.operators[this.state.operatorIndex];
+        const variableOne = this.props.statisticVariables[this.state.statisticVariableOneIndex];
+        const variableTwo = this.props.statisticVariables[this.state.statisticVariableTwoIndex];
 
         if(operator.type < 0 || operator.type > 3) { // 4 operators: +-*/
             return false;
@@ -78,9 +75,6 @@ export default class CreateForm extends React.Component {
 
     render() {
         return <div>
-            <h2>{Lang.get('react.statistic.create-statistic')}</h2>
-
-
             <div className="row">
                 <div className="col-md-4">
                     <strong>{Lang.get('react.statistic.statistic-name')}</strong><br/>
@@ -98,20 +92,20 @@ export default class CreateForm extends React.Component {
                     <select className="form-control" onChange={e => this.setState({
                         statisticVariableOneIndex: parseInt(e.target.value)
                     })} value={this.state.statisticVariableOneIndex}>
-                        {this.state.statisticVariables.map(
+                        {this.props.statisticVariables.map(
                             statisticVariable =>
-                                <option key={statisticVariable.name}
+                                <option key={`${statisticVariable.id}`}
                                         value={this.statisticIndex(statisticVariable)}>
-                                    {statisticVariable.name}
+                                    {statisticVariable.name} - ({this.props.educationProgramTypes[statisticVariable.education_program_type_id].eptype_name})
                                 </option>)}
                     </select>
 
                     {
                         // Check if this Statistic Variable has a parameter
-                        (this.state.statisticVariables[this.state.statisticVariableOneIndex].type === "collecteddatastatistic" &&
-                            this.state.statisticVariables[this.state.statisticVariableOneIndex].hasParameters
+                        (this.props.statisticVariables[this.state.statisticVariableOneIndex].type === "collecteddatastatistic" &&
+                            this.props.statisticVariables[this.state.statisticVariableOneIndex].hasParameters
                         ) && <div>
-                            <strong>{Lang.get('react.statistic.parameter')}: {this.state.statisticVariables[this.state.statisticVariableOneIndex].parameterName}</strong>
+                            <strong>{Lang.get('react.statistic.parameter')}: {this.props.statisticVariables[this.state.statisticVariableOneIndex].parameterName}</strong>
                             <input value={this.state.statisticVariableOneParameter}
                                    onChange={e => this.setState({statisticVariableOneParameter: e.target.value})}
                                    type="text" className="form-control" maxLength={255}/>
@@ -125,7 +119,7 @@ export default class CreateForm extends React.Component {
                     <select className="form-control" onChange={e => this.setState({
                         operatorIndex: parseInt(e.target.value)
                     })} value={this.state.operatorIndex}>
-                        {this.state.operators.map(
+                        {this.props.operators.map(
                             operator =>
                                 <option key={operator.label}
                                         value={this.operatorIndex(operator)}>
@@ -139,19 +133,19 @@ export default class CreateForm extends React.Component {
                     <select className="form-control" onChange={e => this.setState({
                         statisticVariableTwoIndex: parseInt(e.target.value)
                     })} value={this.state.statisticVariableTwoIndex}>
-                        {this.state.statisticVariables.map(
+                        {this.props.statisticVariables.map(
                             statisticVariable =>
-                                <option key={statisticVariable.name}
+                                <option key={`${statisticVariable.id}`}
                                         value={this.statisticIndex(statisticVariable)}>
-                                    {statisticVariable.name}
+                                    {statisticVariable.name} - ({this.props.educationProgramTypes[statisticVariable.education_program_type_id].eptype_name})
                                 </option>)}
                     </select>
                     {
                         // Check if this Statistic Variable has a parameter
-                        (this.state.statisticVariables[this.state.statisticVariableTwoIndex].type === "collecteddatastatistic" &&
-                            this.state.statisticVariables[this.state.statisticVariableTwoIndex].hasParameters
+                        (this.props.statisticVariables[this.state.statisticVariableTwoIndex].type === "collecteddatastatistic" &&
+                            this.props.statisticVariables[this.state.statisticVariableTwoIndex].hasParameters
                         ) && <div>
-                            <strong>{Lang.get('react.statistic.parameter')}: {this.state.statisticVariables[this.state.statisticVariableTwoIndex].parameterName}</strong>
+                            <strong>{Lang.get('react.statistic.parameter')}: {this.props.statisticVariables[this.state.statisticVariableTwoIndex].parameterName}</strong>
                             <input value={this.state.statisticVariableTwoParameter}
                                    onChange={e => this.setState({statisticVariableTwoParameter: e.target.value})}
                                    type="text" className="form-control" maxLength={255}/>
@@ -161,11 +155,7 @@ export default class CreateForm extends React.Component {
             </div>
 
 
-            <div className="row">
-                <div className="col-md-2" style={{"marginTop":"10px"}}>
-                    <a className="defaultButton" onClick={() => this.submit()}>{Lang.get('react.statistic.create')}</a>
-                </div>
-            </div>
+            <a className="defaultButton" onClick={() => this.submit()}>{Lang.get('react.statistic.create')}</a>
 
         </div>;
     }
