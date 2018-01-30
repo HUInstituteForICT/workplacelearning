@@ -2,10 +2,13 @@
 
 namespace App;
 
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Student extends Authenticatable
 {
+    use Notifiable, CanResetPassword;
     // Override the table used for the User Model
     protected $table = 'student';
     // Disable using created_at and updated_at columns
