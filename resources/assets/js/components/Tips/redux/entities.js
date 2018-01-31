@@ -1,17 +1,19 @@
-import {coupledStatistic} from "../../../Schema";
-
 const types = {
     ADD_ENTITIES: 'ADD_ENTITIES',
     UPDATE_ENTITY: 'UPDATE_ENTITY',
-    STATISTIC_COUPLED: 'STATISTIC_COUPLED',
-    ADD_COUPLED_STATISTIC_TO_TIP: 'ADD_COUPLED_STATISTIC_TO_TIP'
+    ADD_COUPLED_STATISTIC_TO_TIP: 'ADD_COUPLED_STATISTIC_TO_TIP',
+    DECOUPLE_STATISTIC_FROM_TIP: 'DECOUPLE_STATISTIC_FROM_TIP'
 };
 
 const actions = {
     addEntities: entities => ({type: types.ADD_ENTITIES, entities}),
     updateEntity: (name, key, entity) => ({type: types.UPDATE_ENTITY, name, key, entity}),
-    statisticCoupled: coupledStatistic => ({type: types.STATISTIC_COUPLED, coupledStatistic}),
-    addCoupledStatisticToTip: (coupledStatisticId, tipId) => ({type: types.ADD_COUPLED_STATISTIC_TO_TIP, coupledStatisticId, tipId})
+    addCoupledStatisticToTip: (coupledStatisticId, tipId) => ({
+        type: types.ADD_COUPLED_STATISTIC_TO_TIP,
+        coupledStatisticId,
+        tipId
+    }),
+    decoupleStatisticFromTip: (coupledStatistic) => ({type: types.DECOUPLE_STATISTIC_FROM_TIP, coupledStatistic}),
 };
 
 const defaultState = {
@@ -20,6 +22,9 @@ const defaultState = {
     cohorts: {},
     statistics: {},
     statisticVariables: {},
+    availableStatistics: {},
+    availableStatisticVariables: {},
+    educationProgramTypes: {},
 };
 
 const reducer = (state = defaultState, action) => {
@@ -42,7 +47,21 @@ const reducer = (state = defaultState, action) => {
                 ...state,
                 tips: {...state.tips, [tip.id]: tip}
             };
+        }
 
+        case types.DECOUPLE_STATISTIC_FROM_TIP: {
+            const tip = {...state.tips[action.coupledStatistic.tip_id]};
+            tip.coupled_statistics = [...tip.coupled_statistics];
+            tip.coupled_statistics.splice(tip.coupled_statistics.indexOf(action.coupledStatistic.id), 1);
+
+            const coupledStatistics = {...state.coupledStatistics};
+            delete coupledStatistics[action.coupledStatistic.id];
+
+            return {
+                ...state,
+                tips: {...state.tips, [tip.id]: tip},
+                coupledStatistics
+            }
         }
 
     }

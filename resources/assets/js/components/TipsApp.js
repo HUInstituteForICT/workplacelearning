@@ -5,12 +5,13 @@ import {HashRouter, Route, Switch, withRouter} from "react-router-dom";
 import IndexPage from "./Tips/IndexPage";
 import {actions, reducer as entities} from "./Tips/redux/entities";
 import {reducer as coupleStatistic} from "./Tips/redux/coupleStatistic";
+import {reducer as tipEditPageUi} from "./Tips/redux/tipPageUi";
 import axios from "axios";
 import {normalize} from "normalizr";
 import {loadSchema} from "../Schema";
 import TipEditPage from "./Tips/TipEditPage";
 
-const rootReducer = combineReducers({entities, coupleStatistic});
+const rootReducer = combineReducers({entities, coupleStatistic, tipEditPageUi});
 const store = createStore(rootReducer);
 
 window.getState = store.getState;

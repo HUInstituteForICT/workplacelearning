@@ -5,6 +5,7 @@ namespace App\Http\Controllers\TipApi;
 use App\Cohort;
 use App\EducationProgramType;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TipUpdateRequest;
 use App\Tips\CollectorDataAggregator;
 use App\Tips\DataCollectors\CollectorFactory;
 use App\Tips\Statistics\CustomStatistic;
@@ -12,6 +13,7 @@ use App\Tips\Statistics\PredefinedStatistic;
 use App\Tips\Statistics\PredefinedStatisticHelper;
 use App\Tips\Statistics\Variables\StatisticStatisticVariable;
 use App\Tips\Tip;
+use App\Tips\TipService;
 use Illuminate\Http\Request;
 
 class TipsController extends Controller
@@ -66,7 +68,8 @@ class TipsController extends Controller
                     ->map(function ($predefinedStatistic) {
                         $predefinedStatistic['id'] = 'predef-producing-' . substr(md5($predefinedStatistic['name']), 0,
                                 5);
-                        $predefinedStatistic['education_program_type'] = 2;
+                        $predefinedStatistic['education_program_type'] = 2; // Todo Check which one of these is actually necessary in front end
+                        $predefinedStatistic['education_program_type_id'] = 2;
                         $predefinedStatistic['type'] = 'predefinedstatistic';
 
                         return $predefinedStatistic;
@@ -75,11 +78,23 @@ class TipsController extends Controller
                     ->map(function ($predefinedStatistic) {
                         $predefinedStatistic['id'] = 'predef-acting-' . substr(md5($predefinedStatistic['name']), 0, 5);
                         $predefinedStatistic['education_program_type'] = 1;
+                        $predefinedStatistic['education_program_type_id'] = 1; // Todo Check which one of these is actually necessary in front end
                         $predefinedStatistic['type'] = 'predefinedstatistic';
 
                         return $predefinedStatistic;
                     })->toArray()
             );
+
+        $findAvailableStatisticByid = function ($id) use ($availableStatistics) {
+            foreach ($availableStatistics as $stat) {
+                if ($stat['id'] == $id) {
+                    return $stat;
+                }
+            }
+            throw new \Exception("Can't find availableStatistic for id ${id}");
+        };
+
+//        dump($availableStatistics);
 
         return [
             'educationProgramTypes'       => EducationProgramType::all(),
@@ -88,53 +103,34 @@ class TipsController extends Controller
             'availableStatistics'         => $availableStatistics,
             'statistics'                  => (new CustomStatistic)->with('educationProgramType', 'statisticVariableOne',
                 'statisticVariableTwo')->get()->merge(
-                (new PredefinedStatistic)->with('educationProgramType')->get()
+                (new PredefinedStatistic)->with('educationProgramType')->get()->each(function (
+                    PredefinedStatistic $statistic
+                ) {
+                    $data = ($statistic->educationProgramType->eptype_id === 1 ? PredefinedStatisticHelper::getActingData() : PredefinedStatisticHelper::getProducingData());
+                    foreach ($data as $entry) {
+                        if ($entry['name'] === $statistic->name) {
+                            $statistic->valueParameterDescription = $entry['valueParameterDescription'];
+                        }
+                    }
+                })
             ),
             'availableStatisticVariables' => $statisticVariables,
         ];
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param TipService $service
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function store(Request $request)
+    public function store(Request $request, TipService $service)
     {
-        //
-    }
+        $tip = $service->createTip(['name' => trans('general.new') . ' Tip', 'shownInAnalysis' => true]);
+        $tip->save();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return (new Tip)->with('coupledStatistics', 'enabledCohorts')->findOrFail($tip->id);
     }
 
     /**
@@ -142,11 +138,19 @@ class TipsController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return Tip
      */
-    public function update(Request $request, $id)
+    public function update(TipUpdateRequest $request, $id)
     {
-        //
+        /** @var Tip $tip */
+        $tip = (new Tip)->findOrFail($id);
+        $tip->name = $request->get('name');
+        $tip->tipText = $request->get('tipText');
+        $tip->showInAnalysis = $request->has('showInAnalysis');
+        $tip->save();
+        $tip->enabledCohorts()->sync($request->get('enabled_cohorts'));
+
+        return $tip;
     }
 
     /**

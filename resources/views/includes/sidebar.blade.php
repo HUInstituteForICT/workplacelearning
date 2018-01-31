@@ -66,7 +66,7 @@
             </div>
         </a>
 
-        <a class="nav-tile" href="{{ route('tips.index') }}">
+        <a class="nav-tile" href="{{ route('tips-app') }}">
             <div class="tile blue_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/cursus_wit.svg', true) }}"/>
                 <div class="nav-title"

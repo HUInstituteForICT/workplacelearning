@@ -75,14 +75,9 @@ export default class CreateForm extends React.Component {
 
     render() {
         return <div>
-            <div className="row">
-                <div className="col-md-4">
-                    <strong>{Lang.get('react.statistic.statistic-name')}</strong><br/>
-                    <input onChange={e => this.setState({name: e.target.value})} value={this.state.name}
-                           className="form-control" type="text" maxLength={255}/>
-                </div>
-            </div>
-
+            <strong>{Lang.get('react.statistic.statistic-name')}</strong><br/>
+            <input onChange={e => this.setState({name: e.target.value})} value={this.state.name}
+                   className="form-control" type="text" maxLength={255}/>
 
             <div className="row">
 
@@ -133,7 +128,12 @@ export default class CreateForm extends React.Component {
                     <select className="form-control" onChange={e => this.setState({
                         statisticVariableTwoIndex: parseInt(e.target.value)
                     })} value={this.state.statisticVariableTwoIndex}>
-                        {this.props.statisticVariables.map(
+                        {this.props.statisticVariables.filter(statisticVariable => {
+                            if(this.state.statisticVariableOneIndex > 0) {
+                                return this.props.statisticVariables[this.state.statisticVariableOneIndex].education_program_type_id === statisticVariable.education_program_type_id;
+                            }
+                            return true;
+                        }).map(
                             statisticVariable =>
                                 <option key={`${statisticVariable.id}`}
                                         value={this.statisticIndex(statisticVariable)}>
@@ -154,8 +154,8 @@ export default class CreateForm extends React.Component {
                 </div>
             </div>
 
-
-            <a className="defaultButton" onClick={() => this.submit()}>{Lang.get('react.statistic.create')}</a>
+            <br/>
+            <button type="button" className="btn defaultButton" onClick={() => this.submit()}>{Lang.get('react.statistic.create')}</button>
 
         </div>;
     }

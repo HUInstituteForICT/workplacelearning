@@ -57,7 +57,7 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 
 Route::get('/manage/tips', function() {
     return view('pages.tips.tips-app');
-})->middleware(['auth', CheckUserLevel::class]);
+})->middleware(['auth', CheckUserLevel::class])->name('tips-app');
 
 Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api/'], function() {
 

@@ -7,7 +7,7 @@ const IndexPage = ({match, entities}) => <div>
 
     <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
         {Object.values(entities.tips).map(tip => <div key={tip.id} className="panel panel-default"
-                                                      style={{width: 'auto', margin: 20}}>
+                                                      style={{minWidth: 230, margin: 20}}>
             <div className="panel-body">
                 <strong>{Lang.get('react.tips.name')}:</strong> {tip.name}<br/>
                 <strong>{Lang.get('react.tips.program')}:</strong> {

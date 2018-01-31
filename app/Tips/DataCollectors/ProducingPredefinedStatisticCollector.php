@@ -14,7 +14,7 @@ class ProducingPredefinedStatisticCollector extends AbstractCollector
 {
 
     /**
-     * @DataUnitAnnotation(name="Category with highest difficulty", method="categoryWithHighestDifficulty")
+     * @DataUnitAnnotation(name="Category with highest difficulty", method="categoryWithHighestDifficulty", valueParameterDescription="The found category's name")
      * @return StatisticCalculationResultCollection
      * @throws \Exception
      */
@@ -42,7 +42,7 @@ class ProducingPredefinedStatisticCollector extends AbstractCollector
 
 
     /**
-     * @DataUnitAnnotation(name="Person easiest to work with", method="personWithEasiestDifficulty")
+     * @DataUnitAnnotation(name="Person easiest to work with", method="personWithEasiestDifficulty", valueParameterDescription="The found person's name")
      * @return StatisticCalculationResultCollection
      * @throws \Exception When unable to find ResourcePerson
      */

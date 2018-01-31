@@ -4,11 +4,11 @@ namespace App\Http\Controllers\TipApi;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipCoupledStatisticCreateRequest;
+use App\Http\Requests\TipCoupledStatisticUpdateRequest;
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\StatisticService;
 use App\Tips\Tip;
 use App\Tips\TipCoupledStatistic;
-use Illuminate\Http\Request;
 
 class TipCoupledStatisticController extends Controller
 {
@@ -52,13 +52,16 @@ class TipCoupledStatisticController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param TipCoupledStatisticUpdateRequest $request
+     * @param int $id
+     * @return TipCoupledStatistic
      */
-    public function update(Request $request, $id)
+    public function update(TipCoupledStatisticUpdateRequest $request, $id)
     {
-        //
+        $coupledStatistic = (new TipCoupledStatistic)->with('statistic')->find($id);
+        $coupledStatistic->update($request->all());
+
+        return $coupledStatistic;
     }
 
     /**
@@ -66,9 +69,13 @@ class TipCoupledStatisticController extends Controller
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        //
+        $coupledStatisic = (new TipCoupledStatistic)->findOrFail($id);
+        $coupledStatisic->delete();
+
+        return response()->json([], 200);
     }
 }

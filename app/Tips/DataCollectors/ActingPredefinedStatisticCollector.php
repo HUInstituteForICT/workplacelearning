@@ -13,7 +13,7 @@ use Illuminate\Database\Query\Builder;
 class ActingPredefinedStatisticCollector extends AbstractCollector
 {
     /**
-     * @DataUnitAnnotation(name="Percentage learning moments for every learning question without use of theory", method="percentageLearningMomentsWithoutTheory")
+     * @DataUnitAnnotation(name="Percentage learning moments for every learning question without use of theory", method="percentageLearningMomentsWithoutTheory", valueParameterDescription="The names of the learning moments")
      * @return StatisticCalculationResultCollection
      * @throws \Exception
      */

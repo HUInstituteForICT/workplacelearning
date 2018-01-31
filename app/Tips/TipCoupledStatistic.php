@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property int $tip_id
+ * @property Tip $tip
  * @property int $statistic_id
  * @property int $comparison_operator
  * @property float $threshold

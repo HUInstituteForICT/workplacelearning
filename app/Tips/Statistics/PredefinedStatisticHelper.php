@@ -11,16 +11,27 @@ use App\WorkplaceLearningPeriod;
 
 class PredefinedStatisticHelper
 {
+    private static $actingCache = null;
+    private static $producingCache = null;
+
     public static function getActingData() {
-        return (new CollectorDataAggregator(new ActingPredefinedStatisticCollector(null, null,
-            new WorkplaceLearningPeriod)))
-            ->getInformation(false);
+        if (self::$actingCache === null) {
+            self::$actingCache = (new CollectorDataAggregator(new ActingPredefinedStatisticCollector(null, null,
+                new WorkplaceLearningPeriod)))
+                ->getInformation(false);
+        }
+
+        return self::$actingCache;
     }
 
     public static function getProducingData() {
-        return (new CollectorDataAggregator(new ProducingPredefinedStatisticCollector(null, null,
-            new WorkplaceLearningPeriod)))
-            ->getInformation(false);
+        if (self::$producingCache === null) {
+            self::$producingCache = (new CollectorDataAggregator(new ProducingPredefinedStatisticCollector(null, null,
+                new WorkplaceLearningPeriod)))
+                ->getInformation(false);
+        }
+
+        return self::$producingCache;
     }
 
     public static function isActingMethod($method) {
