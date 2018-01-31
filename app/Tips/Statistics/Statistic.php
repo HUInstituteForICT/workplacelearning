@@ -21,52 +21,6 @@ class Statistic extends Model
 {
     use SingleTableInheritanceTrait;
 
-    /**
-     * Overwrites the SingleTableInheritanceTrait because it doesn't support pivot tables which we use
-     *
-     * @param array $attributes
-     * @throws SingleTableInheritanceInvalidAttributesException
-     */
-    public function setFilteredAttributes(array $attributes) {
-        $persistedAttributes = $this->getPersistedAttributes();
-        if (empty($persistedAttributes)) {
-            $filteredAttributes = $attributes;
-        } else {
-            // The query often include a 'select *' from the table which will return null for columns that are not persisted.
-            // If any of those columns are non-null then we need to filter them our or throw and exception if configured.
-            // array_flip is a cute way to do diff/intersection on keys by a non-associative array
-            $extraAttributes = array_filter(array_diff_key($attributes, array_flip($persistedAttributes)), function($value) {
-                return !is_null($value);
-            });
-            if (!empty($extraAttributes) && $this->getThrowInvalidAttributeExceptions()) {
-                throw new SingleTableInheritanceInvalidAttributesException("Cannot construct " . get_called_class() . ".", $extraAttributes);
-            }
-            $filteredAttributes = array_intersect_key($attributes, array_flip($persistedAttributes));
-        }
-        // All pivot attributes start with 'pivot_'
-        // Add pivot attributes back in
-        $filteredAttributes += $this->getPivotAttributeNames($attributes);
-
-        $this->setRawAttributes($filteredAttributes, true);
-    }
-
-    /**
-     * * Overwrites the SingleTableInheritanceTrait because it doesn't support pivot tables which we use
-     *
-     * @param $attributes
-     * @return array
-     */
-    protected function getPivotAttributeNames($attributes)
-    {
-        $pivots = [];
-        foreach ($attributes as $key => $value) {
-            if (starts_with($key, 'pivot_')) {
-                array_set($pivots, $key, $value);
-            }
-        }
-        return $pivots;
-    }
-
     protected $table = 'statistics';
 
     protected static $singleTableTypeField = 'type';
@@ -82,19 +36,26 @@ class Statistic extends Model
     // Disable timestamps
     public $timestamps = false;
 
+    // Hide it from API because we already have the education_program_type relation in the JSON
+    protected $hidden = ['education_program_type_id'];
+
     /**
      * @throws \Exception
      */
     public function calculate() { throw new \Exception("Should be called in subclass"); }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function tips() {
-        return $this->belongsToMany(Tip::class, 'tip_coupled_statistic')
-            ->using(TipCoupledStatistic::class)
-            ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
+    public function coupledStatistics() {
+        return $this->hasMany(TipCoupledStatistic::class, 'statistic_id');
+
+//        return $this->belongsToMany(Tip::class, 'tip_coupled_statistic')
+//            ->using(TipCoupledStatistic::class)
+//            ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
     }
+
+
 
     /**
      * Relation to the EducationProgramType

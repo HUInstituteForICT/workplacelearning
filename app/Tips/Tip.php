@@ -69,12 +69,12 @@ class Tip extends Model
     public function isApplicable(DataCollectorContainer $collector)
     {
         $applicable = true;
-        $this->coupledStatistics->each(function (Statistic $statistic) use (&$applicable, $collector) {
-            $statistic->setDataCollectorContainer($collector);
+        $this->coupledStatistics->each(function (TipCoupledStatistic $tipCoupledStatistic) use (&$applicable, $collector) {
+            $tipCoupledStatistic->statistic->setDataCollectorContainer($collector);
 
-            $this->cachedResultsCollection[$statistic->pivot->id] = $statistic->calculate();
+            $this->cachedResultsCollection[$tipCoupledStatistic->id] = $tipCoupledStatistic->statistic->calculate();
 
-            $applicable = $statistic->pivot->passes($this->cachedResultsCollection[$statistic->pivot->id]);
+            $applicable = $tipCoupledStatistic->passes($this->cachedResultsCollection[$tipCoupledStatistic->id]);
 
             return $applicable;
         });
@@ -90,45 +90,45 @@ class Tip extends Model
     public function getTipText()
     {
         $tipText = $this->tipText;
-        $this->coupledStatistics->each(function (Statistic $statistic) use (&$tipText) {
+        $this->coupledStatistics->each(function (TipCoupledStatistic $tipCoupledStatistic) use (&$tipText) {
             $percentageValues = [];
             /** @var StatisticCalculationResult $calculationResult */
-            foreach ($this->cachedResultsCollection[$statistic->pivot->id]->getResults() as $calculationResult) {
+            foreach ($this->cachedResultsCollection[$tipCoupledStatistic->id]->getResults() as $calculationResult) {
                 if ($calculationResult->hasPassed()) {
-                    $percentageValues[] = $statistic->pivot->multiplyBy100 ?
+                    $percentageValues[] = $tipCoupledStatistic->multiplyBy100 ?
                         number_format($calculationResult->getResult() * 100) . '%' :
                         $calculationResult->getResult();
                 }
             }
 
 
-            if ($statistic instanceof PredefinedStatistic) {
+            if ($tipCoupledStatistic->statistic instanceof PredefinedStatistic) {
                 $entityNames = array_map(function (StatisticCalculationResult $calculationResult) {
                     return $calculationResult->getEntityName();
-                }, $this->cachedResultsCollection[$statistic->pivot->id]->getResults());
-                $tipText = str_replace(":value-name-{$statistic->pivot->id}",
+                }, $this->cachedResultsCollection[$tipCoupledStatistic->id]->getResults());
+                $tipText = str_replace(":value-name-{$tipCoupledStatistic->id}",
                     implode(', ', $entityNames), $tipText);
             }
-            $tipText = str_replace(":value-{$statistic->pivot->id}", implode(', ', $percentageValues), $tipText);
+            $tipText = str_replace(":value-{$tipCoupledStatistic->id}", implode(', ', $percentageValues), $tipText);
 
         });
 
         return $tipText;
     }
 
-    public function buildTextParameters()
-    {
-        return $this->coupledStatistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function (
-            Statistic $statistic
-        ) {
-            return [
-                $statistic->pivot->condition() => [
-                    "value"     => ":value-{$statistic->pivot->id}",
-                    "valueName" => ($statistic instanceof PredefinedStatistic ? ":value-name-{$statistic->pivot->id}" : trans('-')),
-                ],
-            ];
-        });
-    }
+//    public function buildTextParameters()
+//    {
+//        return $this->coupledStatistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function (
+//            Statistic $statistic
+//        ) {
+//            return [
+//                $statistic->pivot->condition() => [
+//                    "value"     => ":value-{$statistic->pivot->id}",
+//                    "valueName" => ($statistic instanceof PredefinedStatistic ? ":value-name-{$statistic->pivot->id}" : trans('-')),
+//                ],
+//            ];
+//        });
+//    }
 
     /**
      * The coupled statistics used for this tip

@@ -26,7 +26,7 @@ class TipUpdateRequest extends FormRequest
         return [
             'name' => 'required',
             'tipText' => 'required|max:1000',
-            'enabled_cohorts' => 'required|array'
+            'enabled_cohorts' => 'array'
         ];
     }
 }

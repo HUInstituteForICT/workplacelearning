@@ -32,6 +32,7 @@ class TipCoupledStatistic extends Model
     public $fillable = ['tip_id', 'statistic_id', 'comparison_operator', 'threshold', 'multiplyBy100'];
     protected $table = 'tip_coupled_statistic';
     public $appends = ['condition'];
+    protected $hidden = ['statistic_id'];
 
     public function getConditionAttribute()
     {

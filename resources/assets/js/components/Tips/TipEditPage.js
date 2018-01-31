@@ -4,15 +4,20 @@ import {actions as coupleStatisticActions} from "./redux/coupleStatistic";
 import {actions as entityActions} from "./redux/entities";
 import {actions as uiActions} from "./redux/tipPageUi";
 import axios from "axios/index";
-import {availableStatistic, coupledStatisticSchema} from "../../Schema";
+import {Schema} from "../../Schema";
 import {normalize} from "normalizr";
 import CreateForm from "../Statistics/CreateForm";
+import {Link} from "react-router-dom";
 
 // Should connect smaller components themselves because this looks ridiculous as props
-const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleStatisticFormProperty, coupledStatisticsInEditMode, storeNewCoupledStatistic, storeNewStatisticVariable, updateEntity, toggleEditModeForCoupledStatistic, decoupleStatistic}) => {
+const TipEditPage = ({match, tip, coupledStatistics, statistics, educationProgramTypes, statisticVariables, cohorts, coupleStatisticForm, updateCoupleStatisticFormProperty, coupledStatisticsInEditMode, storeNewCoupledStatistic, storeNewStatisticVariable, updateEntity, toggleEditModeForCoupledStatistic, decoupleStatistic}) => {
     if (tip === undefined) return <div>Loading...</div>;
 
     return <div className="container">
+        <Link to="/">
+            <button type="button" className="btn">{Lang.get('tips.back')}</button>
+        </Link>
+        <br/>
         <h1>{Lang.get('tips.edit')}</h1>
         <div className="input-group input-group-lg">
             <input type="text" className="form-control" placeholder={Lang.get('tips.name')} value={tip.name}
@@ -24,15 +29,13 @@ const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleSta
         <h3>{Lang.get('tips.coupled-statistics')}</h3>
         <div style={{display: 'flex', flexDirection: 'column'}}>
             {
-                tip.coupled_statistics.sort().map(coupledStatisticId => {
+                coupledStatistics.map(coupledStatistic => {
+                    const statistic = statistics[coupledStatistic.statistic];
 
-                    const coupledStatistic = entities.coupledStatistics[coupledStatisticId];
-                    const statistic = entities.statistics[coupledStatistic.statistic_id];
-
-                    return <CoupledStatisticItem key={coupledStatisticId} coupledStatistic={coupledStatistic} tip={tip}
+                    return <CoupledStatisticItem key={coupledStatistic.id} coupledStatistic={coupledStatistic} tip={tip}
                                                  statistic={statistic}
-                                                 educationProgramType={entities.educationProgramTypes[statistic.education_program_type_id]}
-                                                 editMode={coupledStatisticsInEditMode.includes(coupledStatisticId)}
+                                                 educationProgramType={educationProgramTypes[statistic.education_program_type]}
+                                                 editMode={coupledStatisticsInEditMode.includes(coupledStatistic.id)}
                                                  updateEntity={updateEntity}
                                                  toggleEditModeForCoupledStatistic={toggleEditModeForCoupledStatistic}
                                                  decoupleStatistic={decoupleStatistic}
@@ -54,11 +57,11 @@ const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleSta
                             <option disabled={true}/>
                             {
 
-                                allowedAvailableStatistic(tip, Object.values(entities.availableStatistics), entities.coupledStatistics, entities.statistics).map(
+                                allowedStatistics(tip, statistics, coupledStatistics).map(
                                     statistic => <option key={statistic.id}
                                                          value={statistic.id}>
                                         {statistic.name}&nbsp;-&nbsp;
-                                        ({entities.educationProgramTypes[statistic.education_program_type].eptype_name})
+                                        ({educationProgramTypes[statistic.education_program_type].eptype_name})
                                         {statistic.type === 'predefinedstatistic' && ' - (Predefined)'}
                                     </option>
                                 )
@@ -97,11 +100,11 @@ const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleSta
                                     tip_id: tip.id,
                                     statistic_id: coupleStatisticForm.statistic,
                                     threshold: coupleStatisticForm.threshold,
-                                    method: entities.availableStatistics[coupleStatisticForm.statistic].hasOwnProperty('method') ? entities.availableStatistics[coupleStatisticForm.statistic].method : null,
+                                    method: statistics[coupleStatisticForm.statistic].hasOwnProperty('method') ? statistics[coupleStatisticForm.statistic].method : null,
                                     comparisonOperator: coupleStatisticForm.comparisonOperator,
                                     multiplyBy100: coupleStatisticForm.multiplyBy100
                                 }).then(response => {
-                                    storeNewCoupledStatistic(normalize(response.data, coupledStatisticSchema))
+                                    storeNewCoupledStatistic(normalize(response.data, Schema.coupledStatistic))
                                 })
                             }}>{Lang.get('tips.save')}</button>
                 </div>
@@ -109,8 +112,11 @@ const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleSta
 
             <div className="col-md-5 col-md-offset-2">
                 <h3>{Lang.get('react.statistic.create-statistic')}</h3>
-                <CreateForm statisticVariables={Object.values(entities.availableStatisticVariables)}
-                            educationProgramTypes={entities.educationProgramTypes}
+                <CreateForm statisticVariables={Object.values(statisticVariables).filter(statisticVariable => {
+                    // Check for c- (collectable) in id, those can be used for new statistics
+                    return String(statisticVariable.id).includes('c-');
+                })}
+                            educationProgramTypes={educationProgramTypes}
                             operators={[
                                 {type: 0, label: "+"},
                                 {type: 1, label: "-"},
@@ -118,7 +124,7 @@ const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleSta
                                 {type: 3, label: "/"},
                             ]}
                             onCreated={newEntity => {
-                                storeNewStatisticVariable(normalize(newEntity, availableStatistic));
+                                storeNewStatisticVariable(normalize(newEntity, Schema.statistic));
                             }}
                 />
             </div>
@@ -143,10 +149,9 @@ const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleSta
             </thead>
             <tbody>
             {
-                tip.coupled_statistics.sort().map(id => {
-                    const coupledStatistic = entities.coupledStatistics[id];
+                coupledStatistics.map(coupledStatistic => {
 
-                    const statistic = entities.statistics[coupledStatistic.statistic_id];
+                    const statistic = statistics[coupledStatistic.statistic];
 
                     return <tr key={coupledStatistic.id}>
                         <td>{statistic.name}</td>
@@ -155,7 +160,7 @@ const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleSta
                             {
                                 statistic.type === 'predefinedstatistic' &&
                                 <span>
-                                    <strong>:value-parameter-{coupledStatistic.id}</strong>
+                                    <strong>:value-name-{coupledStatistic.id}</strong>
                                     <br/>
                                     {statistic.valueParameterDescription}
                                 </span>
@@ -197,13 +202,15 @@ const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleSta
                                 });
                                 console.log(tip.enabled_cohorts);
                             }}>
-                        {Object.values(entities.cohorts).filter(cohort => {
+                        {Object.values(cohorts).filter(cohort => {
                             if (tip.coupled_statistics.length === 0) return true;
                             const epMapping = {
                                 1: 2,
                                 2: 1,
                             };
-                            const epTypeId = entities.statistics[entities.coupledStatistics[tip.coupled_statistics[0]].statistic_id].education_program_type;
+                            const firstCoupledStatistic = coupledStatistics[0];
+                            const statistic = statistics[firstCoupledStatistic.statistic];
+                            const epTypeId = statistic.education_program_type;
                             return epMapping[cohort.ep_id] === epTypeId;
                         }).sort().map(cohort => {
                             return <option key={cohort.id} value={cohort.id}>{cohort.name}</option>
@@ -214,7 +221,7 @@ const TipEditPage = ({match, tip, entities, coupleStatisticForm, updateCoupleSta
         </div>
 
 
-        <button className="btn btn-primary" onClick={() => {
+        <button disabled={tip.name === '' || tip.tipText === ''} className="btn btn-primary" onClick={() => {
             axios.put(`/api/tips/${tip.id}`, tip).then(response => console.log(response));
         }}>{Lang.get('general.save')}</button>
 
@@ -318,21 +325,33 @@ const CoupledStatisticItem = ({tip, coupledStatistic, statistic, educationProgra
  * Check which statistics can be selected for a tip
  * This changes when at least 1 tip is coupled, then that Tip's educationprogramtype is leading
  */
-const allowedAvailableStatistic = (tip, availableStatistics, coupledStatistics, statistics) => {
-    if (tip.coupled_statistics.length === 0) return availableStatistics;
+const allowedStatistics = (tip, statistics, coupledStatistics) => {
+    if (tip.coupled_statistics.length === 0) return Object.values(statistics).filter(statistic => String(statistic.id).startsWith('p-p-') || String(statistic.id).startsWith('p-a-') || statistic.type === 'customstatistic');
 
-    const allowedEpTypeId = statistics[coupledStatistics[tip.coupled_statistics[0]].statistic_id].education_program_type;
+    const allowedEpTypeId = statistics[coupledStatistics[0].statistic].education_program_type;
 
-    return availableStatistics.filter(stat => parseInt(stat.education_program_type_id) === parseInt(allowedEpTypeId));
+    return Object.values(statistics)
+        .filter(statistic => parseInt(statistic.education_program_type) === parseInt(allowedEpTypeId))
+        .filter(statistic => String(statistic.id).startsWith('p-p-') || String(statistic.id).startsWith('p-a-') || statistic.type === 'customstatistic');
 };
 
 const mapping = {
-    state: (state, props) => ({
-        tip: state.entities.tips[props.match.params.id],
-        entities: state.entities,
-        coupleStatisticForm: state.coupleStatistic,
-        coupledStatisticsInEditMode: state.tipEditPageUi.inEditMode
-    }),
+    state: (state, props) => {
+        const tip = state.entities.tips[props.match.params.id];
+        // Signal whether we're loading
+        if (tip === undefined) return {tip: undefined};
+        const coupledStatistics = tip.coupled_statistics.sort().map(id => state.entities.coupledStatistics[id]);
+        return {
+            tip,
+            coupledStatistics,
+            statistics: state.entities.statistics,
+            educationProgramTypes: state.entities.educationProgramTypes,
+            statisticVariables: state.entities.statisticVariables,
+            cohorts: state.entities.cohorts,
+            coupleStatisticForm: state.coupleStatistic,
+            coupledStatisticsInEditMode: state.tipEditPageUi.inEditMode
+        };
+    },
     dispatch: dispatch => ({
         updateCoupleStatisticFormProperty: (property, value) => dispatch(coupleStatisticActions.updateCoupleStatisticFormProperty(property, value)),
         storeNewCoupledStatistic: normalized => {

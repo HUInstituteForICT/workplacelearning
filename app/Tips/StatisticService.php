@@ -25,14 +25,28 @@ class StatisticService
      * @throws \Exception
      */
     public function createStatistic(array $data) {
+        $statistic = new CustomStatistic();
 
+        $this->updateStatistic($statistic, $data);
+
+        return $statistic;
+
+    }
+
+    /**
+     * @param CustomStatistic $statistic
+     * @param array $data
+     * @return CustomStatistic
+     * @throws \Exception
+     */
+    public function updateStatistic(CustomStatistic $statistic, array $data)
+    {
         $variableOne = $this->statisticVariableService->createStatisticVariable($data['statisticVariableOne'], $data['statisticVariableOneParameter']);
         $variableTwo = $this->statisticVariableService->createStatisticVariable($data['statisticVariableTwo'], $data['statisticVariableTwoParameter']);
 
         $variableOne->save();
         $variableTwo->save();
 
-        $statistic = new CustomStatistic();
 
         $statistic->name = $data['name'];
 
@@ -45,7 +59,6 @@ class StatisticService
         $statistic->save();
 
         return $statistic;
-
     }
 
     public function createPredefinedStatistic($methodName) {

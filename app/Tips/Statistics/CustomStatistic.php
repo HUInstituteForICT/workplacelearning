@@ -31,6 +31,8 @@ class CustomStatistic extends Statistic
     protected static $singleTableType = 'customstatistic';
     protected static $persisted = ['operator', 'statistic_variable_one_id', 'statistic_variable_two_id'];
 
+    protected $hidden = ['statistic_variable_one_id', 'statistic_variable_two_id', 'education_program_type_id'];
+
     /**
      * Relation to first statisticVariable of this statistic
      * BelongsTo relation because the statistic should be the owning side

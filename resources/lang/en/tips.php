@@ -16,7 +16,14 @@ return [
     'like' => 'Like tip',
     'liked' => 'You have liked this tip!',
     'likes' => 'Likes',
-
+    'new' => 'New tip',
+    'back' => 'Back to index',
+    'coupled-statistics' => 'Coupled statistics',
+    'couple-statistic' => 'Couple a statistic',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'decouple' => 'Decouple',
+    'statistics' => 'Statistics',
 
     "form" => [
         "name" => "Tip name",

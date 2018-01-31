@@ -64,7 +64,7 @@ class ProducingAnalysisController extends Controller
 
         /** @var Cohort $cohort */
         $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
-        $cohort->load('tips.statistics')->load(
+        $cohort->load('tips.coupledStatistics.statistic')->load(
             [
                 'tips.likes' => function ($relationshipQuery) use ($request) {
                     // Load the student's likes

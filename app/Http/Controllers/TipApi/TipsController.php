@@ -11,6 +11,7 @@ use App\Tips\DataCollectors\CollectorFactory;
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\PredefinedStatistic;
 use App\Tips\Statistics\PredefinedStatisticHelper;
+use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
 use App\Tips\Statistics\Variables\StatisticStatisticVariable;
 use App\Tips\Tip;
 use App\Tips\TipService;
@@ -18,24 +19,29 @@ use Illuminate\Http\Request;
 
 class TipsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param CollectorFactory $collectorFactory
-     * @return array
-     * @throws \Exception
-     */
-    public function index(CollectorFactory $collectorFactory)
+    private function getStatisticVariables(CollectorFactory $collectorFactory)
     {
-        // Collect statisticVariables available
+        // We prepend the id of collectableVariables with "c-" and the already existing statistics that can be used as variables with "s-"
+        // This way we can easily filter them from already in use variables in the front end without complicating with different lists, as I tried before 🙃
+
+
+        // Get statistic variables (separate because only StatisticStatisticVariable has that relation but we need it)
+        // These are also the variables that are already in use by statistics and can NOT be used again
+        $statisticVariables = array_merge(
+            StatisticStatisticVariable::with('nestedStatistic')->get()->toArray(),
+            CollectedDataStatisticVariable::all()->toArray()
+        );
+
+        // Collectable statisticVariables available
         $collectibleDataStatisticVariables = [];
         EducationProgramType::all()->each(
             function (EducationProgramType $type) use (&$collectibleDataStatisticVariables, $collectorFactory) {
                 $collector = $collectorFactory->buildCollector((new EducationProgramType)->find($type->eptype_id));
 
                 $info = array_map(function ($infoItem) use ($type) {
-                    $infoItem['education_program_type_id'] = $type->eptype_id;
-                    $infoItem['id'] = 'collectable-' . substr(md5($type->eptype_id . $infoItem['name']), 0, 5);
+                    $infoItem['education_program_type'] = $type->eptype_id;
+                    $infoItem['id'] = 'c-' . md5($type->eptype_id . $infoItem['name']);
+                    $infoItem['findable_id'] = $infoItem['method'] . '-' . $type->eptype_id;
 
                     return $infoItem;
                 }, (new CollectorDataAggregator($collector))->getInformation());
@@ -45,76 +51,75 @@ class TipsController extends Controller
             }
         );
 
+// Disabled because it makes front-end way too complex and seems niche feature as well (feature would allow for nesting statistics as statisticVariable in new statistics)
+//        $availableStatisticStatisticVariables = (new CustomStatistic)
+//            ->with('educationProgramType')
+//            ->orderBy('name', 'ASC')
+//            ->get()->map(function (CustomStatistic $statistic) {
+//                $statistic = $statistic->toArray();
+//                // s- to identify pickable statistic variable in front-end
+//                $statistic['id'] = 's-' . $statistic['id'];
+//                $statistic['type'] = (new StatisticStatisticVariable)->getType();
+//                return $statistic;
+//            });
 
-        $availableStatisticStatisticVariables = (new CustomStatistic)
-//            ->where('education_program_type_id', '=', $educationProgramTypeId)
-            ->orderBy('name', 'ASC')
-            ->get();
+        return array_merge(
+            $statisticVariables,
+            $collectibleDataStatisticVariables
+        /*$availableStatisticStatisticVariables->toArray()*/);
+    }
 
-        $availableStatisticStatisticVariables->map(function (CustomStatistic $statistic) {
-            $statistic->type = (new StatisticStatisticVariable)->getType();
+    private function getStatistics()
+    {
 
-            return $statistic;
-        });
+        $statistics = array_merge(
+            (new PredefinedStatistic)->with('educationProgramType')->get()->toArray(),
+            (new CustomStatistic)->with('educationProgramType', 'statisticVariableOne',
+                'statisticVariableTwo')->get()->toArray()
+        );
 
-        $statisticVariables = array_merge($collectibleDataStatisticVariables,
-            $availableStatisticStatisticVariables->toArray());
 
-        $availableStatistics =
-            array_merge(
-                (new CustomStatistic)
-                    ->with('educationProgramType', 'statisticVariableOne', 'statisticVariableTwo')->get()->toArray(),
-                collect(PredefinedStatisticHelper::getProducingData())
-                    ->map(function ($predefinedStatistic) {
-                        $predefinedStatistic['id'] = 'predef-producing-' . substr(md5($predefinedStatistic['name']), 0,
-                                5);
-                        $predefinedStatistic['education_program_type'] = 2; // Todo Check which one of these is actually necessary in front end
-                        $predefinedStatistic['education_program_type_id'] = 2;
-                        $predefinedStatistic['type'] = 'predefinedstatistic';
+        // Add predefined statistics to the collection because they can also be chosen but aren't in the DB
+        $predefinedProducing = collect(PredefinedStatisticHelper::getProducingData())
+            ->map(function (array $predefinedStatistic) {
 
-                        return $predefinedStatistic;
-                    })->toArray(),
-                collect(PredefinedStatisticHelper::getActingData())
-                    ->map(function ($predefinedStatistic) {
-                        $predefinedStatistic['id'] = 'predef-acting-' . substr(md5($predefinedStatistic['name']), 0, 5);
-                        $predefinedStatistic['education_program_type'] = 1;
-                        $predefinedStatistic['education_program_type_id'] = 1; // Todo Check which one of these is actually necessary in front end
-                        $predefinedStatistic['type'] = 'predefinedstatistic';
+                $predefinedStatistic['id'] = 'p-p-' . md5($predefinedStatistic['name']);
+                $predefinedStatistic['education_program_type'] = 2;
+                $predefinedStatistic['type'] = 'predefinedstatistic';
 
-                        return $predefinedStatistic;
-                    })->toArray()
-            );
+                return $predefinedStatistic;
+            })->toArray();
 
-        $findAvailableStatisticByid = function ($id) use ($availableStatistics) {
-            foreach ($availableStatistics as $stat) {
-                if ($stat['id'] == $id) {
-                    return $stat;
-                }
-            }
-            throw new \Exception("Can't find availableStatistic for id ${id}");
-        };
+        $predefinedActing = collect(PredefinedStatisticHelper::getActingData())
+            ->map(function ($predefinedStatistic) {
+                $predefinedStatistic['id'] = 'p-a-' . md5($predefinedStatistic['name']);
+                $predefinedStatistic['education_program_type'] = 1;
+                $predefinedStatistic['type'] = 'predefinedstatistic';
 
-//        dump($availableStatistics);
+                return $predefinedStatistic;
+            })->toArray();
+
+        return array_merge($statistics, $predefinedActing, $predefinedProducing);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param CollectorFactory $collectorFactory
+     * @return array
+     * @throws \Exception
+     */
+    public function index(CollectorFactory $collectorFactory)
+    {
+        $tips = (new Tip)->with('coupledStatistics', 'enabledCohorts')->get();
+        $statistics = $this->getStatistics();
 
         return [
-            'educationProgramTypes'       => EducationProgramType::all(),
-            'tips'                        => (new Tip)->with('coupledStatistics', 'enabledCohorts')->get(),
-            'cohorts'                     => Cohort::all(),
-            'availableStatistics'         => $availableStatistics,
-            'statistics'                  => (new CustomStatistic)->with('educationProgramType', 'statisticVariableOne',
-                'statisticVariableTwo')->get()->merge(
-                (new PredefinedStatistic)->with('educationProgramType')->get()->each(function (
-                    PredefinedStatistic $statistic
-                ) {
-                    $data = ($statistic->educationProgramType->eptype_id === 1 ? PredefinedStatisticHelper::getActingData() : PredefinedStatisticHelper::getProducingData());
-                    foreach ($data as $entry) {
-                        if ($entry['name'] === $statistic->name) {
-                            $statistic->valueParameterDescription = $entry['valueParameterDescription'];
-                        }
-                    }
-                })
-            ),
-            'availableStatisticVariables' => $statisticVariables,
+            'educationProgramTypes' => EducationProgramType::all(),
+            'tips'                  => $tips,
+            'cohorts'               => Cohort::all(),
+            'statistics'            => $statistics,
+            'statisticVariables'    => $this->getStatisticVariables($collectorFactory),
         ];
     }
 
@@ -158,9 +163,18 @@ class TipsController extends Controller
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        //
+        /** @var Tip $tip */
+        $tip = (new Tip)->findOrFail($id);
+        $tip->coupledStatistics()->delete();
+        $tip->enabledCohorts()->detach();
+        $tip->likes()->delete();
+        $tip->delete();
+
+
+        return response()->json([], 200);
     }
 }

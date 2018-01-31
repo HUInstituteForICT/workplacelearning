@@ -112,7 +112,7 @@ class StatisticController extends Controller
 
         $statistic->statisticVariableOne()->delete();
         $statistic->statisticVariableTwo()->delete();
-        $statistic->tips()->detach();
+//        $statistic->tips()->detach();
         $statistic->delete();
 
         return redirect()->route('statistics.index');

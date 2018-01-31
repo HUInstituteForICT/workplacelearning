@@ -2,7 +2,9 @@ const types = {
     ADD_ENTITIES: 'ADD_ENTITIES',
     UPDATE_ENTITY: 'UPDATE_ENTITY',
     ADD_COUPLED_STATISTIC_TO_TIP: 'ADD_COUPLED_STATISTIC_TO_TIP',
-    DECOUPLE_STATISTIC_FROM_TIP: 'DECOUPLE_STATISTIC_FROM_TIP'
+    DECOUPLE_STATISTIC_FROM_TIP: 'DECOUPLE_STATISTIC_FROM_TIP',
+    REMOVE_TIP: 'REMOVE_TIP',
+    STATISTIC_DELETED: 'STATISTIC_DELETED',
 };
 
 const actions = {
@@ -14,6 +16,8 @@ const actions = {
         tipId
     }),
     decoupleStatisticFromTip: (coupledStatistic) => ({type: types.DECOUPLE_STATISTIC_FROM_TIP, coupledStatistic}),
+    removeTip: id => ({type: types.REMOVE_TIP, id}),
+    removeStatistic: id => ({type: types.STATISTIC_DELETED, id}),
 };
 
 const defaultState = {
@@ -22,8 +26,6 @@ const defaultState = {
     cohorts: {},
     statistics: {},
     statisticVariables: {},
-    availableStatistics: {},
-    availableStatisticVariables: {},
     educationProgramTypes: {},
 };
 
@@ -62,6 +64,18 @@ const reducer = (state = defaultState, action) => {
                 tips: {...state.tips, [tip.id]: tip},
                 coupledStatistics
             }
+        }
+
+        case types.REMOVE_TIP: {
+            const tips = {...state.tips};
+            delete tips[action.id];
+            return {...state, tips};
+        }
+
+        case types.STATISTIC_DELETED: {
+            const statistics = {...state.statistics};
+            delete statistics[action.id];
+            return {...state, statistics};
         }
 
     }

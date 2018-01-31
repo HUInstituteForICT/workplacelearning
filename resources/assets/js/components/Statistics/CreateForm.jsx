@@ -40,7 +40,7 @@ export default class CreateForm extends React.Component {
             statisticVariableOneParameter: this.state.statisticVariableOneParameter,
             statisticVariableTwo: variableTwo,
             statisticVariableTwoParameter: this.state.statisticVariableTwoParameter,
-            educationProgramTypeId: variableOne.education_program_type_id
+            educationProgramTypeId: variableOne.education_program_type
         }).then(response => {
             this.props.onCreated(response.data);
         }).catch(error => {
@@ -91,7 +91,7 @@ export default class CreateForm extends React.Component {
                             statisticVariable =>
                                 <option key={`${statisticVariable.id}`}
                                         value={this.statisticIndex(statisticVariable)}>
-                                    {statisticVariable.name} - ({this.props.educationProgramTypes[statisticVariable.education_program_type_id].eptype_name})
+                                    {statisticVariable.name} - ({this.props.educationProgramTypes[statisticVariable.education_program_type].eptype_name})
                                 </option>)}
                     </select>
 
@@ -130,14 +130,14 @@ export default class CreateForm extends React.Component {
                     })} value={this.state.statisticVariableTwoIndex}>
                         {this.props.statisticVariables.filter(statisticVariable => {
                             if(this.state.statisticVariableOneIndex > 0) {
-                                return this.props.statisticVariables[this.state.statisticVariableOneIndex].education_program_type_id === statisticVariable.education_program_type_id;
+                                return this.props.statisticVariables[this.state.statisticVariableOneIndex].education_program_type === statisticVariable.education_program_type;
                             }
                             return true;
                         }).map(
                             statisticVariable =>
                                 <option key={`${statisticVariable.id}`}
                                         value={this.statisticIndex(statisticVariable)}>
-                                    {statisticVariable.name} - ({this.props.educationProgramTypes[statisticVariable.education_program_type_id].eptype_name})
+                                    {statisticVariable.name} - ({this.props.educationProgramTypes[statisticVariable.education_program_type].eptype_name})
                                 </option>)}
                     </select>
                     {

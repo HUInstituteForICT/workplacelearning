@@ -1,6 +1,11 @@
 <?php
 
 return array (
+    'tips' => [
+        'name' => 'Name',
+        'program' => 'Education program',
+        'statistics' => 'Statistics'
+    ],
   'filters' => 'Filters',
   'date' => 'Date',
   'startdate' => 'Starting date',
@@ -75,6 +80,7 @@ return array (
     'select-operator' => 'Select operator',
     'select-variable-one' => 'Select first variable',
     'select-variable-two' => 'Select second variable',
-    'statistic-name' => 'Name for new statistic',
+    'statistic-name' => 'Statistic name',
   ),
+    'edit' => 'Edit'
 );

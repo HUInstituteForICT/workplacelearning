@@ -8,8 +8,9 @@ import {reducer as coupleStatistic} from "./Tips/redux/coupleStatistic";
 import {reducer as tipEditPageUi} from "./Tips/redux/tipPageUi";
 import axios from "axios";
 import {normalize} from "normalizr";
-import {loadSchema} from "../Schema";
+import {Schema} from "../Schema";
 import TipEditPage from "./Tips/TipEditPage";
+import UpdateForm from "./Statistics/UpdateForm";
 
 const rootReducer = combineReducers({entities, coupleStatistic, tipEditPageUi});
 const store = createStore(rootReducer);
@@ -18,7 +19,8 @@ window.getState = store.getState;
 
 const mapping = {
     state: state => state,
-    dispatch: dispatch => ({loadData: () => axios.get('/api/tips').then(response => dispatch(actions.addEntities(normalize(response.data, loadSchema).entities)))})
+    dispatch: dispatch => ({loadData: () => axios.get('/api/tips')
+            .then(response => dispatch(actions.addEntities(normalize(response.data, Schema.loadSchema).entities)))})
 };
 
 
@@ -30,6 +32,7 @@ class TipsApp extends React.Component {
 
     render = () => <Switch>
         <Route exact path={'/tip/:id'} component={TipEditPage}/>
+        <Route exact path={'/statistic/:id'} component={UpdateForm} />
         <Route exact path={'/'} component={IndexPage}/>
     </Switch>
 }

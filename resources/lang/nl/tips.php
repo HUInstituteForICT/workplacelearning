@@ -16,7 +16,14 @@ return [
     'like' => 'Like tip',
     'liked' => 'Je hebt deze tip geliked!',
     'likes' => 'Likes',
-
+    'new' => 'Nieuwe tip',
+    'back' => 'Terug naar overzicht',
+    'coupled-statistics' => 'Gekoppelde statistieken',
+    'couple-statistic' => 'Koppel een statistiek',
+    'save' => 'Opslaan',
+    'cancel' => 'Annuleren',
+    'decouple' => 'Ontkoppelen',
+    'statistics' => 'Statistieken',
 
     "form" => [
         "name" => "Tip naam",

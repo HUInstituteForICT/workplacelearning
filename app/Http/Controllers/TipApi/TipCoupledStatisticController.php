@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TipCoupledStatisticCreateRequest;
 use App\Http\Requests\TipCoupledStatisticUpdateRequest;
 use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Statistics\PredefinedStatisticHelper;
 use App\Tips\StatisticService;
 use App\Tips\Tip;
 use App\Tips\TipCoupledStatistic;
@@ -23,11 +24,14 @@ class TipCoupledStatisticController extends Controller
      */
     public function store(TipCoupledStatisticCreateRequest $request, StatisticService $statisticService)
     {
-        if (!starts_with($request->get('statistic_id'), 'predef-')) {
+        // p-a- & p-p- are IDs for predefined statistics (Producing/Acting)
+        if (!starts_with($request->get('statistic_id'), ['p-p-', 'p-a-'])) {
             /** @var CustomStatistic $statistic */
-            $statistic = (new CustomStatistic)->findOrFail($request->get('statistic_id'));
+            $statistic = (new CustomStatistic)->with('educationProgramType', 'statisticVariableOne',
+                'statisticVariableTwo')->findOrFail($request->get('statistic_id'));
         } else {
             $statistic = $statisticService->createPredefinedStatistic($request->get('method'));
+            $statistic->load('educationProgramType');
         }
         $tip = (new Tip)->findOrFail($request->get('tip_id'));
 
@@ -39,13 +43,10 @@ class TipCoupledStatisticController extends Controller
             'multiplyBy100'       => $request->get('multiplyBy100'),
         ]);
 
+        $coupledStatistic->statistic()->associate($statistic);
+
         $coupledStatistic->save();
-        if($statistic instanceof CustomStatistic)
-        {
-            $coupledStatistic->with('educationProgramType', 'statisticVariableOne', 'statisticVariableTwo');
-        } else {
-            $coupledStatistic->with('educationProgramType');
-        }
+
         return $coupledStatistic;
     }
 

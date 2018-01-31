@@ -68,7 +68,7 @@ return array (
     'select-variable-two' => 'Selecteer de tweede variabele',
     'select-operator' => 'Selecteer operator',
     'parameter' => 'Parameter',
-    'statistic-name' => 'Naam voor nieuwe statistiek',
+    'statistic-name' => 'Statistiek naam',
     'create' => 'Maak aan',
     'save' => 'Opslaan',
     'errors' => 
@@ -77,4 +77,10 @@ return array (
       'empty-variable-parameter' => 'De parameter voor een variabele mag niet leeg zijn',
     ),
   ),
+  'tips' => [
+      'name' => 'Name',
+      'program' => 'Education program',
+      'statistics' => 'Statistics'
+  ],
+    'edit' => 'Wijzigen'
 );
