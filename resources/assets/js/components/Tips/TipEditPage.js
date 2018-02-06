@@ -229,7 +229,7 @@ class TipEditPage extends React.Component {
                                                   onChange={e => {
                                                       const enabled = [...tip.enabled_cohorts];
                                                       if (enabled.includes(cohort.id)) {
-                                                          enabled.splice(enabled.indexOf(parseInt(cohort.id)));
+                                                          enabled.splice(enabled.indexOf(cohort.id), 1);
                                                       } else {
                                                           enabled.push(cohort.id);
                                                       }
@@ -277,7 +277,7 @@ const CoupledStatisticItem = ({tip, coupledStatistic, statistic, educationProgra
             comparison_operator: coupledStatistic.comparison_operator,
             multiplyBy100: coupledStatistic.multiplyBy100,
         }).then(response => {
-            const normalizedCoupledStatistic = normalize(response.data, coupledStatisticSchema).entities.coupledStatistics[coupledStatistic.id];
+            const normalizedCoupledStatistic = normalize(response.data, Schema.coupledStatistic).entities.coupledStatistics[coupledStatistic.id];
             updateEntity('coupledStatistics', coupledStatistic.id, normalizedCoupledStatistic);
             toggleEditModeForCoupledStatistic(coupledStatistic.id);
         });
