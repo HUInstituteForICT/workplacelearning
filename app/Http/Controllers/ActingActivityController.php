@@ -37,7 +37,7 @@ class ActingActivityController extends Controller
         $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
             ->take(8)
-            ->orderBy('laa_id', 'DESC')
+            ->orderBy('date', 'DESC')
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
@@ -96,6 +96,7 @@ class ActingActivityController extends Controller
 
         $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
+            ->orderBy('date', 'DESC')
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
