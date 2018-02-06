@@ -59,5 +59,6 @@ class WplUserSeeder extends Seeder
         \DB::select("GRANT SELECT (nrofdays) ON workplacelearningperiod TO 'wpldashboard'@'%';");
         \DB::select("GRANT SELECT (description) ON workplacelearningperiod TO 'wpldashboard'@'%';");
         \DB::select("GRANT SELECT (is_in_analytics) ON workplacelearningperiod TO 'wpldashboard'@'%';");
+        \DB::select("GRANT SELECT (cohort_id) ON workplacelearningperiod TO 'wpldashboard'@'%';");
     }
 }
