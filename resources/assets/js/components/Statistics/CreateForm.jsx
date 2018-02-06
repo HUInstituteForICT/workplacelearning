@@ -12,7 +12,7 @@ export default class CreateForm extends React.Component {
             statisticVariableTwoIndex: 0,
             statisticVariableTwoParameter: '',
             operatorIndex: 0,
-
+            submitting: false,
         }
     }
 
@@ -33,6 +33,7 @@ export default class CreateForm extends React.Component {
         const variableOne = this.props.statisticVariables[this.state.statisticVariableOneIndex];
         const variableTwo = this.props.statisticVariables[this.state.statisticVariableTwoIndex];
 
+        this.setState({submitting: true});
         axios.post('/api/statistics', {
             name: this.state.name,
             operator: operator.type,
@@ -43,8 +44,10 @@ export default class CreateForm extends React.Component {
             educationProgramTypeId: variableOne.education_program_type
         }).then(response => {
             this.props.onCreated(response.data);
+            this.setState({submitting: false});
         }).catch(error => {
             console.log(error);
+            this.setState({submitting: false});
         });
 
     }
@@ -155,7 +158,13 @@ export default class CreateForm extends React.Component {
             </div>
 
             <br/>
-            <button type="button" className="btn defaultButton" onClick={() => this.submit()}>{Lang.get('react.statistic.create')}</button>
+            <button type="button" className="btn defaultButton"  disabled={this.state.submitting}
+                    onClick={() => this.submit()}>
+                {this.state.submitting ?
+                    '...' :
+                    Lang.get('react.statistic.create')
+                }
+            </button>
 
         </div>;
     }

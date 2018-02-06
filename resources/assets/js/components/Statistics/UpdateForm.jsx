@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {Schema} from "../../Schema";
 import {normalize} from "normalizr";
 import {actions} from "../Tips/redux/entities";
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 class UpdateForm extends React.Component {
 
@@ -21,6 +21,7 @@ class UpdateForm extends React.Component {
             statisticVariableTwoIndex: props.source.statisticVariableTwoIndex,
             statisticVariableTwoParameter: props.source.statisticVariableTwoParameter,
             operatorIndex: props.source.operator,
+            submitting: false,
         }
     }
 
@@ -53,6 +54,7 @@ class UpdateForm extends React.Component {
         const variableOne = this.props.statisticVariables[this.state.statisticVariableOneIndex];
         const variableTwo = this.props.statisticVariables[this.state.statisticVariableTwoIndex];
 
+        this.setState({submitting: true});
         axios.put(`/api/statistics/${this.props.id}`, {
             name: this.state.name,
             operator: operator.type,
@@ -62,10 +64,12 @@ class UpdateForm extends React.Component {
             statisticVariableTwoParameter: this.state.statisticVariableTwoParameter,
             educationProgramTypeId: variableOne.education_program_type
         }).then(response => {
+            this.setState({submitting: false});
             this.props.onUpdated(response.data);
             this.props.history.push('/');
         }).catch(error => {
             console.log(error);
+            this.setState({submitting: false});
         });
 
 
@@ -99,6 +103,9 @@ class UpdateForm extends React.Component {
         if (this.props.loading) return null;
 
         return <div className="col-md-6">
+            <Link to="/">
+                <button type="button" className="btn">{Lang.get('tips.back')}</button>
+            </Link>
             <h1>{Lang.get('statistics.edit')}</h1>
             <strong>{Lang.get('react.statistic.statistic-name')}</strong><br/>
             <input onChange={e => this.setState({name: e.target.value})} value={this.state.name}
@@ -183,7 +190,13 @@ class UpdateForm extends React.Component {
 
             <br/>
             <button type="button" className="btn defaultButton" style={{maxWidth: '150px'}}
-                    onClick={() => this.submit()}>{Lang.get('tips.save')}</button>
+                    disabled={this.state.submitting}
+                    onClick={() => this.submit()}>
+                {this.state.submitting ?
+                    '...' :
+                    Lang.get('tips.save')
+                }
+            </button>
 
         </div>;
     }

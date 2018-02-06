@@ -9,199 +9,208 @@ import {normalize} from "normalizr";
 import CreateForm from "../Statistics/CreateForm";
 import {Link} from "react-router-dom";
 
-// Should connect smaller components themselves because this looks ridiculous as props
-const TipEditPage = ({match, tip, coupledStatistics, statistics, educationProgramTypes, statisticVariables, cohorts, coupleStatisticForm, updateCoupleStatisticFormProperty, coupledStatisticsInEditMode, storeNewCoupledStatistic, storeNewStatisticVariable, updateEntity, toggleEditModeForCoupledStatistic, decoupleStatistic}) => {
-    if (tip === undefined) return <div>Loading...</div>;
 
-    return <div className="container">
-        <Link to="/">
-            <button type="button" className="btn">{Lang.get('tips.back')}</button>
-        </Link>
-        <br/>
-        <h1>{Lang.get('tips.edit')}</h1>
-        <div className="input-group input-group-lg">
-            <input type="text" className="form-control" placeholder={Lang.get('tips.name')} value={tip.name}
-                   onChange={e => updateEntity('tips', tip.id, {...tip, name: e.target.value})}/>
-        </div>
+class TipEditPage extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            submitting: false,
+            saveButtonText: Lang.get('general.save')
+        }
+    }
+
+    render = () => {
+        const {
+            match,
+            tip, coupledStatistics,
+            statistics, educationProgramTypes,
+            statisticVariables, cohorts,
+            coupleStatisticForm, updateCoupleStatisticFormProperty,
+            coupledStatisticsInEditMode, storeNewCoupledStatistic,
+            storeNewStatisticVariable, updateEntity,
+            toggleEditModeForCoupledStatistic, decoupleStatistic
+        } = this.props;
+
+        if (tip === undefined) return <div>Loading...</div>;
+
+        return <div className="container">
+            <Link to="/">
+                <button type="button" className="btn">{Lang.get('tips.back')}</button>
+            </Link>
+            <br/>
+            <h1>{Lang.get('tips.edit')}</h1>
+            <div className="input-group input-group-lg">
+                <input type="text" className="form-control" placeholder={Lang.get('tips.name')} value={tip.name}
+                       onChange={e => updateEntity('tips', tip.id, {...tip, name: e.target.value})}/>
+            </div>
 
 
-        {/* The list op coupled statistics for this tip */}
-        <h3>{Lang.get('tips.coupled-statistics')}</h3>
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-            {
-                coupledStatistics.map(coupledStatistic => {
-                    const statistic = statistics[coupledStatistic.statistic];
+            {/* The list op coupled statistics for this tip */}
+            <h3>{Lang.get('tips.coupled-statistics')}</h3>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                {
+                    coupledStatistics.map(coupledStatistic => {
+                        const statistic = statistics[coupledStatistic.statistic];
 
-                    return <CoupledStatisticItem key={coupledStatistic.id} coupledStatistic={coupledStatistic} tip={tip}
-                                                 statistic={statistic}
-                                                 educationProgramType={educationProgramTypes[statistic.education_program_type]}
-                                                 editMode={coupledStatisticsInEditMode.includes(coupledStatistic.id)}
-                                                 updateEntity={updateEntity}
-                                                 toggleEditModeForCoupledStatistic={toggleEditModeForCoupledStatistic}
-                                                 decoupleStatistic={decoupleStatistic}
+                        return <CoupledStatisticItem key={coupledStatistic.id} coupledStatistic={coupledStatistic}
+                                                     tip={tip}
+                                                     statistic={statistic}
+                                                     educationProgramType={educationProgramTypes[statistic.education_program_type]}
+                                                     editMode={coupledStatisticsInEditMode.includes(coupledStatistic.id)}
+                                                     updateEntity={updateEntity}
+                                                     toggleEditModeForCoupledStatistic={toggleEditModeForCoupledStatistic}
+                                                     decoupleStatistic={decoupleStatistic}
+                        />
+                    })
+                }
+            </div>
+
+
+            <div className="row">
+                <div className="col-md-5">
+                    {/* Couple a statistic to the tip */}
+                    <h3>{Lang.get('tips.couple-statistic')}</h3>
+                    <div>
+                        <div className="form-group">
+                            <label>{Lang.get('tips.form.statistic')}</label>
+                            <select value={coupleStatisticForm.statistic} className="form-control"
+                                    onChange={e => updateCoupleStatisticFormProperty('statistic', e.target.value)}>
+                                <option disabled={true}/>
+                                {
+
+                                    allowedStatistics(tip, statistics, coupledStatistics).map(
+                                        statistic => <option key={statistic.id}
+                                                             value={statistic.id}>
+                                            {statistic.name}&nbsp;-&nbsp;
+                                            ({educationProgramTypes[statistic.education_program_type].eptype_name})
+                                            {statistic.type === 'predefinedstatistic' && ' - (Predefined)'}
+                                        </option>
+                                    )
+                                }
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>{Lang.get('tips.form.comparison-operator')}</label>
+                            <select value={coupleStatisticForm.comparisonOperator} className="form-control"
+                                    onChange={e => updateCoupleStatisticFormProperty('comparisonOperator', e.target.value)}>
+                                <option value="0">&lt;</option>
+                                <option value="1">&gt;</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>{Lang.get('tips.form.threshold')}</label>
+                            <input type="number" className="form-control" step="any"
+                                   value={coupleStatisticForm.threshold}
+                                   onChange={e => updateCoupleStatisticFormProperty('threshold', e.target.value)}/>
+                        </div>
+
+                        <div className="form-group">
+                            <label>
+                                <input type="checkbox" checked={coupleStatisticForm.multiplyBy100}
+                                       onChange={e => updateCoupleStatisticFormProperty('multiplyBy100', e.target.checked)}/>
+                                &nbsp;{Lang.get('tips.form.multiplyBy100')}
+                            </label>
+                        </div>
+
+                        <button className="btn defaultButton"
+                                disabled={coupleStatisticForm.statistic === '' || coupleStatisticForm.threshold === '' || coupleStatisticForm.comparisonOperator > '2'}
+                                onClick={() => {
+
+                                    axios.post('/api/tip-coupled-statistics', {
+                                        tip_id: tip.id,
+                                        statistic_id: coupleStatisticForm.statistic,
+                                        threshold: coupleStatisticForm.threshold,
+                                        method: statistics[coupleStatisticForm.statistic].hasOwnProperty('method') ? statistics[coupleStatisticForm.statistic].method : null,
+                                        comparisonOperator: coupleStatisticForm.comparisonOperator,
+                                        multiplyBy100: coupleStatisticForm.multiplyBy100
+                                    }).then(response => {
+                                        storeNewCoupledStatistic(normalize(response.data, Schema.coupledStatistic))
+                                    })
+                                }}>{Lang.get('tips.save')}</button>
+                    </div>
+                </div>
+
+                <div className="col-md-5 col-md-offset-2">
+                    <h3>{Lang.get('react.statistic.create-statistic')}</h3>
+                    <CreateForm statisticVariables={Object.values(statisticVariables).filter(statisticVariable => {
+                        // Check for c- (collectable) in id, those can be used for new statistics
+                        return String(statisticVariable.id).includes('c-');
+                    })}
+                                educationProgramTypes={educationProgramTypes}
+                                operators={[
+                                    {type: 0, label: "+"},
+                                    {type: 1, label: "-"},
+                                    {type: 2, label: "*"},
+                                    {type: 3, label: "/"},
+                                ]}
+                                onCreated={newEntity => {
+                                    storeNewStatisticVariable(normalize(newEntity, Schema.statistic));
+                                }}
                     />
-                })
-            }
-        </div>
-
-
-        <div className="row">
-            <div className="col-md-5">
-                {/* Couple a statistic to the tip */}
-                <h3>{Lang.get('tips.couple-statistic')}</h3>
-                <div>
-                    <div className="form-group">
-                        <label>{Lang.get('tips.form.statistic')}</label>
-                        <select value={coupleStatisticForm.statistic} className="form-control"
-                                onChange={e => updateCoupleStatisticFormProperty('statistic', e.target.value)}>
-                            <option disabled={true}/>
-                            {
-
-                                allowedStatistics(tip, statistics, coupledStatistics).map(
-                                    statistic => <option key={statistic.id}
-                                                         value={statistic.id}>
-                                        {statistic.name}&nbsp;-&nbsp;
-                                        ({educationProgramTypes[statistic.education_program_type].eptype_name})
-                                        {statistic.type === 'predefinedstatistic' && ' - (Predefined)'}
-                                    </option>
-                                )
-                            }
-                        </select>
-                    </div>
-
-                    <div className="form-group">
-                        <label>{Lang.get('tips.form.comparison-operator')}</label>
-                        <select value={coupleStatisticForm.comparisonOperator} className="form-control"
-                                onChange={e => updateCoupleStatisticFormProperty('comparisonOperator', e.target.value)}>
-                            <option value="0">&lt;</option>
-                            <option value="1">&gt;</option>
-                        </select>
-                    </div>
-
-                    <div className="form-group">
-                        <label>{Lang.get('tips.form.threshold')}</label>
-                        <input type="number" className="form-control" step="any" value={coupleStatisticForm.threshold}
-                               onChange={e => updateCoupleStatisticFormProperty('threshold', e.target.value)}/>
-                    </div>
-
-                    <div className="form-group">
-                        <label>
-                            <input type="checkbox" checked={coupleStatisticForm.multiplyBy100}
-                                   onChange={e => updateCoupleStatisticFormProperty('multiplyBy100', e.target.checked)}/>
-                            &nbsp;{Lang.get('tips.form.multiplyBy100')}
-                        </label>
-                    </div>
-
-                    <button className="btn defaultButton"
-                            disabled={coupleStatisticForm.statistic === '' || coupleStatisticForm.threshold === '' || coupleStatisticForm.comparisonOperator > '2'}
-                            onClick={() => {
-
-                                axios.post('/api/tip-coupled-statistics', {
-                                    tip_id: tip.id,
-                                    statistic_id: coupleStatisticForm.statistic,
-                                    threshold: coupleStatisticForm.threshold,
-                                    method: statistics[coupleStatisticForm.statistic].hasOwnProperty('method') ? statistics[coupleStatisticForm.statistic].method : null,
-                                    comparisonOperator: coupleStatisticForm.comparisonOperator,
-                                    multiplyBy100: coupleStatisticForm.multiplyBy100
-                                }).then(response => {
-                                    storeNewCoupledStatistic(normalize(response.data, Schema.coupledStatistic))
-                                })
-                            }}>{Lang.get('tips.save')}</button>
                 </div>
             </div>
+            <hr/>
 
-            <div className="col-md-5 col-md-offset-2">
-                <h3>{Lang.get('react.statistic.create-statistic')}</h3>
-                <CreateForm statisticVariables={Object.values(statisticVariables).filter(statisticVariable => {
-                    // Check for c- (collectable) in id, those can be used for new statistics
-                    return String(statisticVariable.id).includes('c-');
-                })}
-                            educationProgramTypes={educationProgramTypes}
-                            operators={[
-                                {type: 0, label: "+"},
-                                {type: 1, label: "-"},
-                                {type: 2, label: "*"},
-                                {type: 3, label: "/"},
-                            ]}
-                            onCreated={newEntity => {
-                                storeNewStatisticVariable(normalize(newEntity, Schema.statistic));
-                            }}
-                />
+            <div className="form-group">
+                <label>Tip text</label>
+                <textarea className="form-control" value={tip.tipText} maxLength={1000} rows={3}
+                          onChange={e => updateEntity('tips', tip.id, {...tip, tipText: e.target.value})}/>
             </div>
-        </div>
-        <hr/>
+            <p>{Lang.get('tips.form.statistic-value-parameters')}</p>
 
-        <div className="form-group">
-            <label>Tip text</label>
-            <textarea className="form-control" value={tip.tipText} maxLength={1000} rows={3}
-                      onChange={e => updateEntity('tips', tip.id, {...tip, tipText: e.target.value})}/>
-        </div>
-        <p>{Lang.get('tips.form.statistic-value-parameters')}</p>
+            {/* Table for value parameters */}
+            <table className="table">
+                <thead>
+                <tr>
+                    <th>{Lang.get('tips.form.table-statistic')}</th>
+                    <th>{Lang.get('tips.form.table-value-parameter')}</th>
+                    <th>{Lang.get('tips.form.table-value-name-parameter')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {
+                    coupledStatistics.map(coupledStatistic => {
 
-        {/* Table for value parameters */}
-        <table className="table">
-            <thead>
-            <tr>
-                <th>{Lang.get('tips.form.table-statistic')}</th>
-                <th>{Lang.get('tips.form.table-value-parameter')}</th>
-                <th>{Lang.get('tips.form.table-value-name-parameter')}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {
-                coupledStatistics.map(coupledStatistic => {
+                        const statistic = statistics[coupledStatistic.statistic];
 
-                    const statistic = statistics[coupledStatistic.statistic];
-
-                    return <tr key={coupledStatistic.id}>
-                        <td>{statistic.name}</td>
-                        <td><strong>:value-{coupledStatistic.id}</strong></td>
-                        <td>
-                            {
-                                statistic.type === 'predefinedstatistic' &&
-                                <span>
+                        return <tr key={coupledStatistic.id}>
+                            <td>{statistic.name}</td>
+                            <td><strong>:value-{coupledStatistic.id}</strong></td>
+                            <td>
+                                {
+                                    statistic.type === 'predefinedstatistic' &&
+                                    <span>
                                     <strong>:value-name-{coupledStatistic.id}</strong>
                                     <br/>
-                                    {statistic.valueParameterDescription}
+                                        {statistic.valueParameterDescription}
                                 </span>
-                            }
-                        </td>
-                    </tr>
-                })
-            }
-            </tbody>
-        </table>
-        <hr/>
-
-        <div className="form-group">
-            <input type="checkbox" checked={tip.showInAnalysis}
-                   onChange={e => updateEntity('tips', tip.id, {...tip, showInAnalysis: e.target.checked})}/>
-            <label>&nbsp;{Lang.get('tips.form.showInAnalysis')}</label>
-        </div>
-
-        <hr/>
-
-        <h3>{Lang.get('tips.form.cohorts-enable')}</h3>
-
-        <div className="row">
-            <div className="col-md-4">
-                <div className="form-group">
-                    <label>{Lang.get('tips.form.enabledCohorts')}</label>
-                    <select className="form-control" value={tip.enabled_cohorts} multiple={true}
-                            onChange={e => {
-
-                                const enabled = [...tip.enabled_cohorts];
-                                if (enabled.includes(parseInt(e.target.value))) {
-                                    enabled.splice(enabled.indexOf(parseInt(e.target.value)));
-                                } else {
-                                    enabled.push(parseInt(e.target.value));
                                 }
-                                updateEntity('tips', tip.id, {
-                                    ...tip,
-                                    enabled_cohorts: enabled
-                                });
-                                console.log(tip.enabled_cohorts);
-                            }}>
+                            </td>
+                        </tr>
+                    })
+                }
+                </tbody>
+            </table>
+            <hr/>
+
+            <div className="form-group">
+                <input type="checkbox" checked={tip.showInAnalysis}
+                       onChange={e => updateEntity('tips', tip.id, {...tip, showInAnalysis: e.target.checked})}/>
+                <label>&nbsp;{Lang.get('tips.form.showInAnalysis')}</label>
+            </div>
+
+            <hr/>
+
+            <h3>{Lang.get('tips.form.cohorts-enable')}</h3>
+
+            <div className="row">
+                <div className="col-md-10">
+                    <label>{Lang.get('tips.form.enabledCohorts')}</label>
+                    <div className="row">
+
                         {Object.values(cohorts).filter(cohort => {
                             if (tip.coupled_statistics.length === 0) return true;
                             const epMapping = {
@@ -213,20 +222,52 @@ const TipEditPage = ({match, tip, coupledStatistics, statistics, educationProgra
                             const epTypeId = statistic.education_program_type;
                             return epMapping[cohort.ep_id] === epTypeId;
                         }).sort().map(cohort => {
-                            return <option key={cohort.id} value={cohort.id}>{cohort.name}</option>
+                            return <div className="col-md-2" key={cohort.id}>
+                                <div className="form-group"><p className="checkbox">
+                                    <label><input type="checkbox"
+                                                  checked={tip.enabled_cohorts.includes(cohort.id)}
+                                                  onChange={e => {
+                                                      const enabled = [...tip.enabled_cohorts];
+                                                      if (enabled.includes(cohort.id)) {
+                                                          enabled.splice(enabled.indexOf(parseInt(cohort.id)));
+                                                      } else {
+                                                          enabled.push(cohort.id);
+                                                      }
+                                                      updateEntity('tips', tip.id, {
+                                                          ...tip,
+                                                          enabled_cohorts: enabled
+                                                      });
+                                                  }}
+                                    /> {cohort.name}
+                                    </label></p>
+                                </div>
+                            </div>;
                         })}
-                    </select>
+
+
+                    </div>
+
                 </div>
             </div>
+
+
+            <button disabled={tip.name === '' || tip.tipText === '' || this.state.submitting}
+                    className="btn btn-primary" onClick={this.save}>{this.state.saveButtonText}</button>
+
         </div>
+    };
 
+    save = () => {
+        const {tip} = this.props;
+        this.setState({submitting: true, saveButtonText: "..."});
+        axios.put(`/api/tips/${tip.id}`, tip).then(response => {
+            this.setState({submitting: false, saveButtonText: Lang.get('general.saved')});
+            setTimeout(() => this.setState({saveButtonText: Lang.get('general.save')}), 2000);
+        });
+    }
 
-        <button disabled={tip.name === '' || tip.tipText === ''} className="btn btn-primary" onClick={() => {
-            axios.put(`/api/tips/${tip.id}`, tip).then(response => console.log(response));
-        }}>{Lang.get('general.save')}</button>
+}
 
-    </div>
-};
 
 const CoupledStatisticItem = ({tip, coupledStatistic, statistic, educationProgramType, editMode, updateEntity, toggleEditModeForCoupledStatistic, decoupleStatistic}) => {
 
