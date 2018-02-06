@@ -107,7 +107,7 @@
                     <div class="form-group">
                         {!! Form::label('cohort', Lang::get('elements.profile.internships.cohort'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-6">
-                            <select @if($period->cohort !== null) readonly="true" @endif class="form-control" name="cohort">
+                            <select @if($period->cohort !== null) readonly="true" disabled @endif class="form-control" name="cohort">
                                 @foreach($cohorts as $cohort)
 
                                     @if(is_null($period->cohort))

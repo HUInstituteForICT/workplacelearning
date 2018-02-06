@@ -13,14 +13,13 @@ use App\Category;
 use App\Cohort;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
-use App\LearningGoal;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use InvalidArgumentException;
 use Validator;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class ProducingWorkplaceLearningController extends Controller
 {
@@ -30,7 +29,7 @@ class ProducingWorkplaceLearningController extends Controller
         return view("pages.producing.internship")
                 ->with("period", new WorkplaceLearningPeriod)
                 ->with("workplace", new Workplace)
-            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
+            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
     }
 
     public function edit($id)
@@ -45,7 +44,7 @@ class ProducingWorkplaceLearningController extends Controller
                 ->with("workplace", Workplace::find($wplPeriod->wp_id))
                 ->with("categories", $wplPeriod->categories()->get())
                 ->with("resource", new Collection)
-                ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
+                ->with('cohorts', collect($wplPeriod->cohort()->get()));
         }
     }
 
@@ -79,7 +78,7 @@ class ProducingWorkplaceLearningController extends Controller
 
         $cohort = Cohort::find($request['cohort']);
 
-        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id || $cohort->disabled === 1) {
             throw new InvalidArgumentException("Unknown cohort");
         }
 

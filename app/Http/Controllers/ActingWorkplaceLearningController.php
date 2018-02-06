@@ -30,7 +30,7 @@ class ActingWorkplaceLearningController extends Controller
         return view("pages.acting.internship")
             ->with("period", new WorkplaceLearningPeriod)
             ->with("workplace", new Workplace)
-            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
+            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
     }
 
     public function edit($id)
@@ -45,7 +45,7 @@ class ActingWorkplaceLearningController extends Controller
                 ->with("workplace", Workplace::find($wplPeriod->wp_id))
                 ->with("learninggoals", $wplPeriod->getLearningGoals())
                 ->with("resource", new Collection)
-                ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
+                ->with('cohorts', collect($wplPeriod->cohort()->get()));
         }
     }
 
@@ -80,7 +80,7 @@ class ActingWorkplaceLearningController extends Controller
 
         $cohort = Cohort::find($request['cohort']);
 
-        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id || $cohort->disabled === 1) {
             throw new InvalidArgumentException("Unknown cohort");
         }
 
