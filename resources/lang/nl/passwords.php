@@ -15,4 +15,5 @@ return array (
   'reset-not-me' => 'Heb je geen nieuw wachtwoord aangevraagd? dan kan je deze email als niet verzonden beschouwen.',
   'new' => 'Nieuw wachtwoord',
   'confirm' => 'Bevestig wachtwoord',
+    'change' => 'Wachtwoord veranderen'
 );

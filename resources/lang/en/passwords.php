@@ -15,4 +15,5 @@ return array (
   'reset_password' => 'Reset password',
   'confirm' => 'Confirm password',
   'new' => 'New password',
+    'change' => 'Change password'
 );

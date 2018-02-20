@@ -81,6 +81,7 @@ return array (
       'birthdate' => 'Date of Birth',
       'language' => "Language",
       'password' => 'Password',
+      'new_password' => 'New password',
       'password_repeat' => 'Password (Confirmation)',
       'secretquestion' =>
       array (

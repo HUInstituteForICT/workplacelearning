@@ -81,6 +81,7 @@ return array (
       'birthdate' => 'Geboortedatum',
       'language' => "Taal",
       'password' => 'Wachtwoord',
+      'new_password' => 'Nieuw wachtwoord',
       'password_repeat' => 'Wachtwoord (Bevestiging)',
       'secretquestion' => 
       array (
