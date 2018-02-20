@@ -63,23 +63,25 @@
                 </div>
                 <div class="col-md-2 form-group buttons numpad">
                     <h4>{{ Lang::get('activity.hours') }}</h4>
+
                     <label><input type="radio" name="aantaluren"
                                   value="0.25" {{ (old('aantaluren') === 0.25) ? ('checked') : ($activity->duration === 0.25) ? 'checked' : null }}><span>15 min.</span></label>
                     <label><input type="radio" name="aantaluren"
                                   value="0.50" {{ (old('aantaluren') === 0.50) ? 'checked' : ($activity->duration === 0.50) ? 'checked' : null }}><span>30 min.</span></label>
                     <label><input type="radio" name="aantaluren"
                                   value="0.75" {{ (old('aantaluren') === 0.75) ? 'checked' : ($activity->duration === 0.75) ? 'checked' : null }}><span>45 min.</span></label>
-                    @for($i = 1; $i <= 6; $i++)
+                    {{-- NEEDS TO BE FLOATS because hours are saved as floats in db... --}}
+                    @for($i = 1.0; $i <= 6.0; $i++)
                         <label><input type="radio" name="aantaluren"
                                       value="{{ $i }}" {{ (old('aantaluren') === $i) ? 'checked' : ($activity->duration === $i) ? 'checked' : null }}><span>{{ $i . ' ' . Lang::choice('elements.tasks.hour', $i) }}</span></label>
                     @endfor
 
                     <div class="custom">
                         <label id="hours_custom"><input type="radio" name="aantaluren" value="x"
-                                                        @if(!in_array($activity->duration, [0.25, 0.50, 0.75, 1, 2, 3, 4, 5, 6])) checked @endif/><span>{{ Lang::get('activity.other') }}</span></label>
+                                                        @if(!in_array($activity->duration, [0.25, 0.50, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0])) checked @endif/><span>{{ Lang::get('activity.other') }}</span></label>
                         <br/>
                         <div id="custom_hours_container">
-                            @if(!in_array($activity->duration, [0.25, 0.50, 0.75, 1, 2, 3, 4, 5, 6]))
+                            @if(!in_array($activity->duration, [0.25, 0.50, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0]))
                                 <input class="form-control" type="number" step="1" min="1" max="300"
                                        name="aantaluren_custom" value="{{ round($activity->duration*60) }}">{{ Lang::get('dashboard.minutes') }}
                                 <script>
@@ -91,7 +93,7 @@
                                 </script>
                             @else
                                 <input class="form-control" type="number" step="1" min="1" max="300"
-                                       name="aantaluren_custom" value="5">{{ Lang::get('dashboard.minutes') }}
+                                       name="aantaluren_custom" value="5">&nbsp;{{ Lang::get('dashboard.minutes') }}
                             @endif
                         </div>
                     </div>

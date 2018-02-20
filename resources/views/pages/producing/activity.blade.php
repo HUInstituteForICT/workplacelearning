@@ -107,15 +107,22 @@
                     <div class="custom">
                         <label id="hours_custom"><input type="radio" name="aantaluren" value="x" /><span>{{ Lang::get('activity.other') }}</span></label>
                         <br/>
-                        <div id="custom_hours_container"><input class="form-control" type="number" step="1" min="1" max="300" name="aantaluren_custom" value="5">{{ Lang::get('dashboard.minutes') }}</div>
+                        <div id="custom_hours_container">
+                            <input class="form-control" type="number" step="1" min="1" max="300"
+                                   name="aantaluren_custom" value="5">
+                            &nbsp;
+                            {{ Lang::get('dashboard.minutes') }}
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
+                    <?php $checkedFirst = false ?>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach($categories as $cat)
-                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->category_id == 1) ? "checked" : "" }}/><span>{{ $cat->category_label }}</span></label>
+                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($checkedFirst === false) ? "checked" : "" }}/><span>{{ $cat->category_label }}</span></label>
+                            <?php if($checkedFirst === false) $checkedFirst = true; ?>
                         @endforeach
                     @endif
                     <div>
@@ -206,6 +213,13 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('input[name="aantaluren"]').click(function () {
+                if ($(this).attr('id') !== 'hours_custom') {
+                    $('input[name="aantaluren_custom"]').val('5');
+                    $('#custom_hours_container').hide();
+                }
+            });
+
             $('#date-deadline').datetimepicker({
                 locale: 'nl',
                 format: 'DD-MM-YYYY',

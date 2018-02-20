@@ -45,6 +45,7 @@ class ProducingActivityController extends Controller
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->take(8)
             ->orderBy('date', 'DESC')
+            ->orderBy('lap_id', 'DESC')
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
@@ -390,6 +391,11 @@ class ProducingActivityController extends Controller
                 $learningActivityProducing->res_material_id = 2;
                 $learningActivityProducing->res_material_detail = $request['booksource'];
                 $learningActivityProducing->res_person_id = null;
+                break;
+            case 'alleen':
+                $learningActivityProducing->res_person_id = null;
+                $learningActivityProducing->res_material_id = null;
+                $learningActivityProducing->res_material_detail = null;
                 break;
         }
 
