@@ -13,6 +13,7 @@ return array (
   'reset-link-why' => 'You receive this email because you request a password reset.',
   'reset-not-me' => 'If you did not request this password reset, ignore this mail.',
   'reset_password' => 'Reset password',
-  'confirm' => 'Confirm',
-  'new' => 'New',
+  'confirm' => 'Confirm password',
+  'new' => 'New password',
+    'change' => 'Change password'
 );

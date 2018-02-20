@@ -38,6 +38,7 @@ class ActingActivityController extends Controller
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
             ->take(8)
             ->orderBy('date', 'DESC')
+            ->orderBy('laa', 'DESC')
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();

@@ -85,6 +85,7 @@ Route::group([
     // User Creation and modification
     Route::get('profiel', 'ProfileController@show')->name('profile');
     Route::post('profiel/update', 'ProfileController@update');
+    Route::put('profiel/change-password', 'ProfileController@changePassword');
 
     // Category updating
     Route::post('categorie/update/{id}',

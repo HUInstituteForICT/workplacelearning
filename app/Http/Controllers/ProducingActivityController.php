@@ -45,6 +45,7 @@ class ProducingActivityController extends Controller
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->take(8)
             ->orderBy('date', 'DESC')
+            ->orderBy('lap_id', 'DESC')
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
@@ -346,10 +347,10 @@ class ProducingActivityController extends Controller
         });
         //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
 
-        $validator->sometimes('internetsource', 'required|url|max:250', function ($input) {
+        $validator->sometimes('internetsource', 'required|url|max:75', function ($input) {
             return $input->resource == "internet";
         });
-        $validator->sometimes('booksource', 'required|max:250', function ($input) {
+        $validator->sometimes('booksource', 'required|max:75', function ($input) {
             return $input->resource == "book";
         });
         $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
@@ -390,6 +391,11 @@ class ProducingActivityController extends Controller
                 $learningActivityProducing->res_material_id = 2;
                 $learningActivityProducing->res_material_detail = $request['booksource'];
                 $learningActivityProducing->res_person_id = null;
+                break;
+            case 'alleen':
+                $learningActivityProducing->res_person_id = null;
+                $learningActivityProducing->res_material_id = null;
+                $learningActivityProducing->res_material_detail = null;
                 break;
         }
 
