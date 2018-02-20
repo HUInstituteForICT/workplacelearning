@@ -347,10 +347,10 @@ class ProducingActivityController extends Controller
         });
         //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
 
-        $validator->sometimes('internetsource', 'required|url|max:250', function ($input) {
+        $validator->sometimes('internetsource', 'required|url|max:75', function ($input) {
             return $input->resource == "internet";
         });
-        $validator->sometimes('booksource', 'required|max:250', function ($input) {
+        $validator->sometimes('booksource', 'required|max:75', function ($input) {
             return $input->resource == "book";
         });
         $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {

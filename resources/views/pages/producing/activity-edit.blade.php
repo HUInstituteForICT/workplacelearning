@@ -122,11 +122,11 @@
                     </div>
                     <div id="internetcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="internet" {{ (old('resource') == 'internet') ? 'checked' : (!old('resource') && $activity->res_material_id == 1) ? 'checked' : null }} /><span>{{ Lang::get('activity.internetsource') }}</span></label>
-                        <input class="cond-hidden" type="text" name="internetsource" value="{{ (old('internetsource') != null) ? old('internetsource') : $activity->res_material_detail }}" placeholder="http://www.bron.domein/" />
+                        <input class="cond-hidden" maxlength="75" type="text" name="internetsource" value="{{ (old('internetsource') != null) ? old('internetsource') : $activity->res_material_detail }}" placeholder="http://www.bron.domein/" />
                     </div>
                     <div id="boekcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="boek" {{ (old('resource') == 'boek') ? 'checked' : (!old('resource') && $activity->res_material_id == 2) ? 'checked' : null }} /><span>{{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}</span></label>
-                        <input class="cond-hidden" type="text" name="booksource" value="{{ (old('booksource') != null) ? old('internetsource') : $activity->res_material_detail }}" placeholder="{{ Lang::get('dashboard.name') }}{{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}" />
+                        <input class="cond-hidden" type="text" maxlength="75" name="booksource" value="{{ (old('booksource') != null) ? old('internetsource') : $activity->res_material_detail }}" placeholder="{{ Lang::get('dashboard.name') }}{{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">

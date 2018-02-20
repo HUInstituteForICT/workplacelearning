@@ -147,11 +147,11 @@
                     </div>
                     <div id="internetcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="internet" /><span>{{ Lang::get('activity.internetsource') }}</span></label>
-                        <input class="cond-hidden" type="text" name="internetsource" value="" placeholder="http://www.source.com/" />
+                        <input class="cond-hidden" type="text" name="internetsource" maxlength="75" value="" placeholder="http://www.source.com/" />
                     </div>
                     <div id="boekcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="boek" /><span>{{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}</span></label>
-                        <input class="cond-hidden" type="text" name="booksource" value="" placeholder="{{ Lang::get('dashboard.name') }} {{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}" />
+                        <input class="cond-hidden" type="text" name="booksource" maxlength="75" value="" placeholder="{{ Lang::get('dashboard.name') }} {{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
