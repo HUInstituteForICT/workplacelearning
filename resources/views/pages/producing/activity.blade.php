@@ -108,7 +108,7 @@
                         <label id="hours_custom"><input type="radio" name="aantaluren" value="x" /><span>{{ Lang::get('activity.other') }}</span></label>
                         <br/>
                         <div id="custom_hours_container">
-                            <input class="form-control" type="number" step="1" min="1" max="300"
+                            <input class="form-control" type="number" step="1" min="1" max="480"
                                    name="aantaluren_custom" value="5">
                             &nbsp;
                             {{ Lang::get('dashboard.minutes') }}
