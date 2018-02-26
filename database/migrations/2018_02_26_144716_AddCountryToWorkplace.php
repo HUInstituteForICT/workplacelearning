@@ -14,7 +14,7 @@ class AddCountryToWorkplace extends Migration
     public function up()
     {
         Schema::table('workplace', function(Blueprint $table) {
-            $table->string('country');
+            $table->string('country')->default('');
         });
     }
 
