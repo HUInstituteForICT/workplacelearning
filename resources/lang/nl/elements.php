@@ -121,6 +121,7 @@ return array (
       'numdays' => 'Aantal Dagen',
       'companyname' => 'Bedrijfsnaam',
       'companylocation' => 'Locatie',
+      'companyCountry' => 'Land',
       'companystreet' => 'Straatnaam',
       'companyhousenr' => 'Nummer',
       'companypostalcode' => 'Postcode',

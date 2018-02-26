@@ -27,9 +27,11 @@ class ActingWorkplaceLearningController extends Controller
 
     public function show()
     {
+        $workplace = new Workplace();
+        $workplace->country = trans('general.netherlands');
         return view("pages.acting.internship")
             ->with("period", new WorkplaceLearningPeriod)
-            ->with("workplace", new Workplace)
+            ->with("workplace", $workplace)
             ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
     }
 
@@ -59,6 +61,7 @@ class ActingWorkplaceLearningController extends Controller
             //
             'companyPostalcode'    => 'required|postalcode',
             'companyLocation'      => 'required|max:255|min:3',
+            'companyCountry'       => 'required|max:255|min:2',
             'contactPerson'        => 'required|max:255|min:3',
             'contactPhone'         => 'required',
             'contactEmail'         => 'required|email|max:255',
@@ -96,6 +99,7 @@ class ActingWorkplaceLearningController extends Controller
         $workplace->housenr = $request['companyHousenr'];
         $workplace->postalcode = $request['companyPostalcode'];
         $workplace->town = $request['companyLocation'];
+        $workplace->country = $request['companyCountry'];
         $workplace->contact_name = $request['contactPerson'];
         $workplace->contact_email = $request['contactEmail'];
         $workplace->contact_phone = $request['contactPhone'];
@@ -146,6 +150,7 @@ class ActingWorkplaceLearningController extends Controller
             //
             'companyPostalcode'    => 'required|postalcode',
             'companyLocation'      => 'required|max:255|min:3',
+            'companyCountry'       => 'required|max:255|min:2',
             'contactPerson'        => 'required|max:255|min:3',
             'contactPhone'         => 'required',
             'contactEmail'         => 'required|email|max:255',
@@ -181,6 +186,7 @@ class ActingWorkplaceLearningController extends Controller
         $workplace->housenr = $request['companyHousenr'];
         $workplace->postalcode = $request['companyPostalcode'];
         $workplace->town = $request['companyLocation'];
+        $workplace->country = $request['companyCountry'];
         $workplace->contact_name = $request['contactPerson'];
         $workplace->contact_email = $request['contactEmail'];
         $workplace->contact_phone = $request['contactPhone'];

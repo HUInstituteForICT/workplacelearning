@@ -75,5 +75,6 @@ return array (
     "feedforward" => "Feedforward",
     "satisfied" => "satisfied",
     "unsatisfied" => "unsatisfied",
-    "course-of-activity" => "with the course of this activity"
+    "course-of-activity" => "with the course of this activity",
+    "netherlands" => "the Netherlands",
 );

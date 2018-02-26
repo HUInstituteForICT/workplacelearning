@@ -7,7 +7,7 @@
 ?>
 @extends('layout.HUdefault')
 @section('title')
-   {{ Lang::get('home.profile') }}: {{ Auth::user()->voornaam ." ". Auth::user()->achternaam }}
+   {{ Lang::get('home.profile') }}: {{ Auth::user()->firstname ." ". Auth::user()->lastname }}
 @stop
 @section('content')
     <div class="container-fluid">
@@ -132,7 +132,7 @@
                 <tbody>
                 @foreach(Auth::user()->getWorkplaceLearningPeriods() as $wplp)
                     <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id == $wplp->wplp_id) ? "highlight" : "" }}">
-                        <td><a href="{{ '/period/edit/'.$wplp->wplp_id }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></td></a>
+                        <td><a href="{{ '/period/edit/'.$wplp->wplp_id }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></a></td>
                         <td>{{ $wplp->getWorkplace()->wp_name }}</td>
                         <td>{{ date('d-m-Y', strtotime($wplp->startdate)) }}</td>
                         <td>{{ date('d-m-Y', strtotime($wplp->enddate)) }}</td>

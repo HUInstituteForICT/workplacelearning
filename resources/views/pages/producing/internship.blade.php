@@ -55,12 +55,16 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('companyPostalcode', Lang::get('elements.profile.internships.companylocation'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <input name="companyPostalcode" maxlength="255" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companypostalcode') }}" value="{{ (is_null($workplace->postalcode)) ? old("companyPostalcode") : $workplace->postalcode }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-3">
                             <input name="companyLocation" maxlength="255" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companylocation') }}" value="{{ (is_null($workplace->town)) ? old("companyLocation") : $workplace->town }}" required />
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="col-sm-3">
+                            <input name="companyCountry" maxlength="255" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companyCountry') }}" value="{{ (is_null($workplace->country)) ? old("companyCountry") : $workplace->country }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
