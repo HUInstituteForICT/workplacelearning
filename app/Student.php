@@ -6,6 +6,12 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Class Student
+ * @package App
+ * @property string $firstname
+ * @property string $lastname
+ */
 class Student extends Authenticatable
 {
     use Notifiable, CanResetPassword;

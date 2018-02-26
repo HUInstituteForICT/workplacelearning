@@ -11,6 +11,22 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\InternshipPeriod;
 
+/**
+ * Class Workplace
+ * @package App
+ *
+ * @property int $wp_id
+ * @property string $wp_name
+ * @property string $street
+ * @property string $housenr
+ * @property string $postalcode
+ * @property string $town
+ * @property string $country
+ * @property string $contact_name
+ * @property string $contact_email
+ * @property string $contact_phone
+ * @property int $numberofemployees
+ */
 class Workplace extends Model
 {
     // Override the table used for the User Model
@@ -28,6 +44,7 @@ class Workplace extends Model
         'housenr',
         'postalcode',
         'town',
+        'country',
         'contact_name',
         'contact_email',
         'contact_phone',
