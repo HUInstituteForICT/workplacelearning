@@ -43,8 +43,8 @@
                             datasets: [{
                                 label: 'Percentage leermomenten per categorie',
                                 data: {!! $actingAnalysis->charts('timeslot')->data->toJson() !!},
-                                backgroundColor: [],
-                                borderColor: [
+                                borderColor: [],
+                                backgroundColor: [
                                     @foreach($actingAnalysis->charts('timeslot')->labels as $label)
                                     {{ "getChartColor(),"}}
                                     @endforeach
@@ -76,8 +76,8 @@
                             datasets: [{
                                 label: 'Percentage leermomenten per leerdoel',
                                 data: {!! $actingAnalysis->charts('learninggoal')->data->toJson() !!},
-                                backgroundColor: [],
-                                borderColor: [
+                                borderColor: [],
+                                backgroundColor: [
                                     @foreach($actingAnalysis->charts('learninggoal')->labels as $label)
                                     {{ "getChartColor(),"}}
                                     @endforeach
@@ -108,8 +108,8 @@
                             datasets: [{
                                 label: 'Percentage leermomenten per competentie',
                                 data: {!! $actingAnalysis->charts('competence')->data->toJson() !!},
-                                backgroundColor: [],
-                                borderColor: [
+                                borderColor: [],
+                                backgroundColor: [
                                     @foreach($actingAnalysis->charts('competence')->labels as $label)
                                     {{ "getChartColor(),"}}
                                     @endforeach

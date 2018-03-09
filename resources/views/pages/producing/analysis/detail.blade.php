@@ -3,6 +3,24 @@
     {{ Lang::get('analysis.detail') }}
 @stop
 @section('content')
+    <script>
+        let lastColorIndex = 0;
+
+        function getChartColor() {
+            const colors = [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+            ];
+            if (lastColorIndex === colors.length) {
+                lastColorIndex = 0;
+            }
+            return colors[lastColorIndex++];
+        }
+    </script>
 
     <div class="container-fluid">
         <script>
@@ -46,12 +64,9 @@
                                 datasets: [{
                                     data: {!! $producingAnalysis->charts('hours')->data->toJson() !!},
                                     backgroundColor: [
-                                        'rgba(255,99,132,1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)'
+                                        @foreach($producingAnalysis->charts('hours')->labels as $label)
+                                        {{ "getChartColor(),"}}
+                                        @endforeach
                                     ],
                                     hoverBackgroundColor: []
                                 }]
@@ -109,15 +124,11 @@
                                     label: 'Moeilijkheidsgraad op schaal van 1-10',
                                     data: {!! $producingAnalysis->charts('categories')->data->toJson() !!},
                                     backgroundColor: [
+                                        @foreach($producingAnalysis->charts('categories')->labels as $label)
+                                        {{ "getChartColor(),"}}
+                                        @endforeach
                                     ],
-                                    borderColor: [
-                                        'rgba(255,99,132,1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)'
-                                    ],
+                                    borderColor: [],
                                     borderWidth: 1
                                 }]
                             },
