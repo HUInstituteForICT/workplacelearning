@@ -14,7 +14,7 @@ class AddDescriptionToLearningGoal extends Migration
     public function up()
     {
         Schema::table('learninggoal', function(Blueprint $table) {
-            $table->text('description')->default("");
+            $table->text('description');
         });
     }
 
