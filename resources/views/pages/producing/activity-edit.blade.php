@@ -137,7 +137,7 @@
                 </div>
                 <div class="col-md-1 form-group buttons">
                     <h4>{{ Lang::get('activity.difficulty') }}<i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_difficulty') }}"></i></h4>
-                    <label><input type="radio" name="moeilijkheid" value="1"  {{ (old('moeilijkheid') == 1) ? 'checked' : ($activity->difficulty_id == 1) ? 'checked' : null }} /><span>{{ Lang::get('elements.alerts.success') }}</span></label>
+                    <label><input type="radio" name="moeilijkheid" value="1"  {{ (old('moeilijkheid') == 1) ? 'checked' : ($activity->difficulty_id == 1) ? 'checked' : null }} /><span>{{ Lang::get('activity.easy') }}</span></label>
                     <label><input type="radio" name="moeilijkheid" value="2" {{ (old('moeilijkheid') == 2) ? 'checked' : ($activity->difficulty_id == 2) ? 'checked' : null }} /><span>{{ Lang::get('activity.average') }}</span></label>
                     <label><input type="radio" name="moeilijkheid" value="3" {{ (old('moeilijkheid') == 3) ? 'checked' : ($activity->difficulty_id == 3) ? 'checked' : null }} /><span>{{ Lang::get('activity.hard') }}</span></label>
                 </div>

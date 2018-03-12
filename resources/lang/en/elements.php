@@ -121,6 +121,7 @@ return array (
       'numdays' => 'Number of Days',
       'companyname' => 'Company Name',
       'companylocation' => 'Location',
+      'companyCountry' => 'Country',
       'companystreet' => 'Street',
       'companyhousenr' => 'Building no.',
       'companypostalcode' => 'Postal Code',

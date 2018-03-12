@@ -26,9 +26,11 @@ class ProducingWorkplaceLearningController extends Controller
 
     public function show()
     {
+        $workplace = new Workplace();
+        $workplace->country = trans('general.netherlands');
         return view("pages.producing.internship")
                 ->with("period", new WorkplaceLearningPeriod)
-                ->with("workplace", new Workplace)
+                ->with("workplace", $workplace)
             ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
     }
 
@@ -57,6 +59,7 @@ class ProducingWorkplaceLearningController extends Controller
             'companyHousenr'        => 'required|max:9|min:1', //
             'companyPostalcode'     => 'required|postalcode',
             'companyLocation'       => 'required|max:255|min:3',
+            'companyCountry'        => 'required|max:255|min:2',
             'contactPerson'         => 'required|max:255|min:3',
             'contactPhone'          => 'required',
             'contactEmail'          => 'required|email|max:255',
@@ -93,6 +96,7 @@ class ProducingWorkplaceLearningController extends Controller
         $workplace->housenr        = $request['companyHousenr'];
         $workplace->postalcode     = $request['companyPostalcode'];
         $workplace->town           = $request['companyLocation'];
+        $workplace->country        = $request['companyCountry'];
         $workplace->contact_name   = $request['contactPerson'];
         $workplace->contact_email  = $request['contactEmail'];
         $workplace->contact_phone  = $request['contactPhone'];
@@ -126,6 +130,7 @@ class ProducingWorkplaceLearningController extends Controller
             'companyHousenr'        => 'required|max:4|min:1', //
             'companyPostalcode'     => 'required|postalcode',
             'companyLocation'       => 'required|max:255|min:3',
+            'companyCountry'        => 'required|max:255|min:2',
             'contactPerson'         => 'required|max:255|min:3',
             'contactPhone'          => 'required|',
             'contactEmail'          => 'required|email|max:255',
@@ -161,6 +166,7 @@ class ProducingWorkplaceLearningController extends Controller
         $workplace->housenr        = $request['companyHousenr'];
         $workplace->postalcode     = $request['companyPostalcode'];
         $workplace->town           = $request['companyLocation'];
+        $workplace->country        = $request['companyCountry'];
         $workplace->contact_name   = $request['contactPerson'];
         $workplace->contact_email  = $request['contactEmail'];
         $workplace->contact_phone  = $request['contactPhone'];
