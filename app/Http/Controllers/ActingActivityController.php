@@ -121,7 +121,7 @@ class ActingActivityController extends Controller
 
         $validator = Validator::make($request->all(),
             [
-                'date'          => 'required|date|before:tomorrow|after_or_equal:'. strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate), // TODO Date validation not working
+                'date'          => 'required|date|before:tomorrow', //after_or_equal:'. strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate), // TODO Date validation not working
                 'description'   => 'required|max:1000',
                 'learned'       => 'required|max:1000',
                 'support_wp'    => 'max:500',

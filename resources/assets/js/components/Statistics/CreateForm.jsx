@@ -17,7 +17,7 @@ export default class CreateForm extends React.Component {
     }
 
     statisticIndex(statisticToFind) {
-        return this.props.statisticVariables.findIndex(statistic => statistic.name === statisticToFind.name);
+        return this.props.statisticVariables.findIndex(statistic => statistic.id === statisticToFind.id);
     }
 
     operatorIndex(operatorToFind) {
