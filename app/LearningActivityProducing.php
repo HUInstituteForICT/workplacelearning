@@ -75,7 +75,8 @@ class LearningActivityProducing extends Model
 
     public function getCategory()
     {
-        return $this->category()->first()->category_label;
+        // Note the translation below. This means never trust the return value to refer to anything in the system
+        return __($this->category()->first()->category_label);
     }
 
     public function getDurationString()
@@ -96,14 +97,15 @@ class LearningActivityProducing extends Model
 
     public function getResourceDetail()
     {
+        // Note the translation(s) below. This means never trust the return value to refer to anything in the system
         if ($this->res_material_id) {
-            return $this->resourceMaterial()
+            return __($this->resourceMaterial()
                 ->first()
-                ->rm_label . ': ' . $this->res_material_detail;
+                ->rm_label) . ': ' . $this->res_material_detail;
         } else if ($this->res_person_id) {
-            return Lang::get('activity.producing.person').': ' . $this->resourcePerson()->first()->person_label;
+            return Lang::get('activity.producing.person').': ' . __($this->resourcePerson()->first()->person_label);
         } else {
-            return Lang::get('activity.alone');
+            return __('activity.alone');
         }
     }
 

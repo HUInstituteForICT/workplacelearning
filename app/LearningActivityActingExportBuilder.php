@@ -36,7 +36,7 @@ class LearningActivityActingExportBuilder
                 "learningGoalDescription" => $activity->learningGoal->description,
                 "supportWp" => $activity->support_wp !== null ? $activity->support_wp : "",
                 "supportEd" => $activity->support_ed !== null ? $activity->support_ed : "",
-                "competence" => $activity->getCompetencies()->competence_label,
+                "competence" => __($activity->getCompetencies()->competence_label),
                 "url" => route('process-acting-edit', ['id' => $activity->laa_id]),
                 "evidence" => $activity->evidence_filename === null ? "-" :
                     route('evidence-download', ["id" => $activity->laa_id, "diskFileName" => $activity->evidence_disk_filename])

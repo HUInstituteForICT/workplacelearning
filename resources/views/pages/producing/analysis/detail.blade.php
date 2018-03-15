@@ -121,7 +121,7 @@
                             data: {
                                 labels: {!! $producingAnalysis->charts('categories')->labels->toJson() !!},
                                 datasets: [{
-                                    label: 'Moeilijkheidsgraad op schaal van 1-10',
+                                    label: '{{ __('Moeilijkheidsgraad op schaal van 1-10') }}',
                                     data: {!! $producingAnalysis->charts('categories')->data->toJson() !!},
                                     backgroundColor: [
                                         @foreach($producingAnalysis->charts('categories')->labels as $label)
@@ -161,12 +161,14 @@
                     @endif
 
                         <p>
-                            {{ trans('analysis.tips.mostDifficultCategory', ["category" => $producingAnalysis->statistic('mostDifficultCategoryName'), "percentage" => $producingAnalysis->statistic('persentageMostDifficultCategory')]) }}
+                            {{ trans('analysis.tips.mostDifficultCategory', ["category" => __($producingAnalysis->statistic('mostDifficultCategoryName')), "percentage" => $producingAnalysis->statistic('persentageMostDifficultCategory')]) }}
                         </p>
 
+                    @if(!!$producingAnalysis->statistic('averagePersonDifficultyName'))
                         <p>
-                            {{ trans('analysis.tips.averagePersonDifficultyName', ['person' => $producingAnalysis->statistic('averagePersonDifficultyName')]) }}
+                            {{ trans('analysis.tips.averagePersonDifficultyName', ['person' => __($producingAnalysis->statistic('averagePersonDifficultyName'))]) }}
                         </p>
+                    @endif
 
                 </div>
             </div>

@@ -41,7 +41,7 @@
                         data: {
                             labels: {!! $actingAnalysis->charts('timeslot')->labels->toJson() !!},
                             datasets: [{
-                                label: 'Percentage leermomenten per categorie',
+                                label: '{{ __('Percentage leermomenten per categorie') }}',
                                 data: {!! $actingAnalysis->charts('timeslot')->data->toJson() !!},
                                 borderColor: [],
                                 backgroundColor: [
@@ -74,7 +74,7 @@
                         data: {
                             labels: {!! $actingAnalysis->charts('learninggoal')->labels->toJson() !!},
                             datasets: [{
-                                label: 'Percentage leermomenten per leerdoel',
+                                label: '{{ __('Percentage leermomenten per leerdoel') }}',
                                 data: {!! $actingAnalysis->charts('learninggoal')->data->toJson() !!},
                                 borderColor: [],
                                 backgroundColor: [
@@ -106,7 +106,7 @@
                         data: {
                             labels: {!! $actingAnalysis->charts('competence')->labels->toJson() !!},
                             datasets: [{
-                                label: 'Percentage leermomenten per competentie',
+                                label: '{{ __('Percentage leermomenten per competentie') }}',
                                 data: {!! $actingAnalysis->charts('competence')->data->toJson() !!},
                                 borderColor: [],
                                 backgroundColor: [
@@ -174,24 +174,20 @@
 
                     @if($actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage > 0)
                         <strong>{{ Lang::get('analysis.category-learninggoal') }}:</strong>
-                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->timeslot->timeslot_text }}
+                        {{ __($actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->timeslot->timeslot_text) }}
                         {{ Lang::get('general.with') }}
-                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->learningGoal->learninggoal_label }}
-                        ,
-                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage }}
-                        {{ Lang::get('analysis.activities-with-this-combo') }}
+                        {{ __($actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->learningGoal->learninggoal_label) }},
+                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotLearningGoal')->percentage }}{{ Lang::get('analysis.activities-with-this-combo') }}
 
                         <br/><br/>
                     @endif
 
                     @if($actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage > 0)
                         <strong>{{ Lang::get('analysis.category-competence') }}:</strong>
-                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->timeslot->timeslot_text }}
+                        {{ __($actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->timeslot->timeslot_text) }}
                         {{ Lang::get('with') }}
-                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->competence->competence_label }}
-                        ,
-                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage }}
-                        {{ Lang::get('analysis.activities-with-this-combo') }}
+                        {{ __($actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->competence->competence_label) }},
+                        {{ $actingAnalysis->statistic('mostOftenCombinationTimeslotCompetence')->percentage }}{{ Lang::get('analysis.activities-with-this-combo') }}
 
                         <br/><br/>
                     @endif
@@ -199,12 +195,10 @@
 
                     @if($actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage > 0)
                         <strong>{{ Lang::get('analysis.learninggoal-competence') }}:</strong>
-                        {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->learningGoal->learninggoal_label }}
+                        {{ __($actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->learningGoal->learninggoal_label) }}
                         {{ Lang::get('with') }}
-                        {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->competence->competence_label }}
-                        ,
-                        {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage }}
-                        {{ Lang::get('analysis.activities-with-this-combo') }}
+                        {{ __($actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->competence->competence_label) }},
+                        {{ $actingAnalysis->statistic('mostOftenCombinationLearningGoalCompetence')->percentage }}{{ Lang::get('analysis.activities-with-this-combo') }}
 
                         <br/><br/>
                     @endif

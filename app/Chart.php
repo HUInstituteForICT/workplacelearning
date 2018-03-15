@@ -16,7 +16,9 @@ class Chart
 
     public function __construct($labels, $data)
     {
-        $this->data['labels'] = collect($labels);
+        $this->data['labels'] = collect($labels)->map(function($label) {
+            return __($label);
+        });
         $this->data['data'] = collect($data);
     }
 

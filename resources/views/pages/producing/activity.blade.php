@@ -121,7 +121,7 @@
                     <?php $checkedFirst = false ?>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach($categories as $cat)
-                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($checkedFirst === false) ? "checked" : "" }}/><span>{{ $cat->category_label }}</span></label>
+                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($checkedFirst === false) ? "checked" : "" }}/><span>{{ __($cat->category_label) }}</span></label>
                             <?php if($checkedFirst === false) $checkedFirst = true; ?>
                         @endforeach
                     @endif
@@ -136,7 +136,7 @@
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>{{ Lang::get('activity.person') }}</span></label>
                         <select id="rp_id" name="personsource" class="cond-hidden">
                             @foreach($learningWith as $res)
-                                <option value="{{ $res->rp_id }}">{{ $res->person_label }}</option>
+                                <option value="{{ $res->rp_id }}">{{ __($res->person_label) }}</option>
                             @endforeach */ ?>
                             <option value="new">{{ Lang::get('general.new') }}/{{ Lang::get('activity.other') }}</option>
                         </select>

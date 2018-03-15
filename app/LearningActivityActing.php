@@ -57,23 +57,23 @@ class LearningActivityActing extends Model
 
     public function getTimeslot()
     {
-        return $this->timeslot()->first()->timeslot_text;
+        return __($this->timeslot()->first()->timeslot_text);
     }
 
     public function getResourcePerson()
     {
-        return $this->resourcePerson()->first()->person_label;
+        return __($this->resourcePerson()->first()->person_label);
     }
 
     public function getResourceMaterial()
     {
         $label = $this->resourceMaterial()->first();
-        return ($label) ? $label->rm_label : 'Geen';
+        return ($label) ? __($label->rm_label) : __('activity.none');
     }
 
     public function getLearningGoal()
     {
-        return $this->learningGoal()->first()->learninggoal_label;
+        return __($this->learningGoal()->first()->learninggoal_label);
     }
 
     public function getCompetencies()
