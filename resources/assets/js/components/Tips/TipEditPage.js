@@ -323,7 +323,7 @@ const CoupledStatisticItem = ({tip, coupledStatistic, statistic, educationProgra
                 </div>
 
                 <div className="form-group">
-                    <label>{Lang.get('tips.form.comparison_operator')}</label>
+                    <label>{Lang.get('tips.form.comparison-operator')}</label>
                     <select
                         value={coupledStatistic.comparison_operator} className="form-control"
                         onChange={e => updateEntity('coupledStatistics', parseInt(coupledStatistic.id), {

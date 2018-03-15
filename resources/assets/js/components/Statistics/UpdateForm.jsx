@@ -77,7 +77,7 @@ class UpdateForm extends React.Component {
 
     validate() {
         if (this.state.name === '') {
-            alert(Lang.get('react.statistic.errors.empty-name'));
+            alert(Lang.get('react.statistic.errors.name'));
             return false;
         }
         const operator = this.props.operators[this.state.operatorIndex];
