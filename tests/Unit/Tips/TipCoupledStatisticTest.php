@@ -14,12 +14,17 @@ class TipCoupledStatisticTest extends \Tests\TestCase
         /** @var CustomStatistic $statistic */
         $statistic = factory(CustomStatistic::class)->create();
 
-        $tip->statistics()->attach($statistic,
-            [
-                'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
-                'threshold' => 0.5,
-                'multiplyBy100' => false,
-            ]);
+
+
+        $tipCoupledStatistic = new TipCoupledStatistic([
+            'statistic_id'        => $statistic->id,
+            'tip_id'              => $tip->id,
+            'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
+            'threshold' => 0.5,
+            'multiplyBy100' => false,
+        ]);
+
+        $tip->coupledStatistics()->save($tipCoupledStatistic);
 
         $tip->save();
 
@@ -27,7 +32,7 @@ class TipCoupledStatisticTest extends \Tests\TestCase
 
         $this->assertTrue($count === 1, "TipCoupledStatistic relation inserting");
 
-        $this->assertInstanceOf(TipCoupledStatistic::class, $tip->coupledStatistics->first()->pivot);
+        $this->assertInstanceOf(TipCoupledStatistic::class, $tip->coupledStatistics->first());
 
 
     }
@@ -40,13 +45,16 @@ class TipCoupledStatisticTest extends \Tests\TestCase
         /** @var CustomStatistic $statistic */
         $statistic = factory(CustomStatistic::class)->create();
 
-        $tipService->coupleStatistic($tip, $statistic, [
+        $tipCoupledStatistic = new TipCoupledStatistic([
+            'statistic_id'        => $statistic->id,
+            'tip_id'              => $tip->id,
             'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
             'threshold' => 0.5,
             'multiplyBy100' => false,
         ]);
 
-        $this->assertInstanceOf(TipCoupledStatistic::class, $tip->coupledStatistics->first()->pivot);
+        $tip->coupledStatistics()->save($tipCoupledStatistic);
+        $this->assertInstanceOf(TipCoupledStatistic::class, $tip->coupledStatistics->first());
         $this->assertCount(1, $tip->coupledStatistics);
     }
 }
