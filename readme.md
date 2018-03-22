@@ -93,6 +93,13 @@ Instructions on how to use it can be found at its [github page](https://github.c
 React/JS translations are stored in `resources/lang/*/react.php`. These are compiled to the `public/messages.js` file with `php artisan lang:js`.
 So don't forget to compile whenever you add new translations that are used in React/JS.
 
+Laravel has three ways to use translations:
+- Lang::get('namespace.key')
+- trans('namespace.key')
+- __('namespace.key') or __('string to translate') 
+
+with the latter using .json files first. Recommended is to only use the __('') function as it will check both json and normal translations files, removing the need to decide which helper to use.
+
 #### Xdebug
 It is possible to use Xdebug with docker and PHPStorm, follow the steps below to configure it correctly.
 
