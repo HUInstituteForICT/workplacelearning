@@ -19,6 +19,7 @@ return array(
   'supportEd' => 'hulp Hogeschool Utrecht',
   'learningGoalDescription' => 'omschrijving leerdoel',
   'evidence' => 'bewijsstuk',
+  'mail-subject' => 'Leermomenten export gedeeld met u',
   'text-mail' => 'Goedendag,
 
 Student :name heeft u een aantal leermomenten gestuurd vanuit de stage-app https://werkplekleren.hu.nl.

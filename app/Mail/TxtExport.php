@@ -35,7 +35,7 @@ class TxtExport extends Mailable
     public function build()
     {
         return $this->from("noreply@werkplekleren.hu.nl")
-            ->subject("Leermomenten export gedeeld met u")
+            ->subject(__('process_export.mail-subject'))
             ->attachData($this->txt, 'leermomenten-export.txt', ["mime" => "text/plain"])
             ->text('mail.text-export', ["student" => Auth::user(), "comment" => $this->comment]);
     }
