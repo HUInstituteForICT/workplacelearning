@@ -59680,6 +59680,7 @@ var ActivityActingProcessTable = function (_React$Component) {
             exports: ["csv", "txt", "email", "word"],
             selectedExport: "csv",
             email: "",
+            emailComment: "",
             emailAlert: null,
             startDate: earliestDate,
             endDate: latestDate
@@ -59792,11 +59793,11 @@ var ActivityActingProcessTable = function (_React$Component) {
 
             if (this.state.selectedExport === "email") {
                 this.setState({ emailAlert: undefined });
-                exporter.mail(this.state.email, function (response) {
+                exporter.mail(this.state.email, this.state.emailComment, function (response) {
                     if (response.hasOwnProperty("data") && response.data.status === "success") {
-                        _this3.setState({ email: "", emailAlert: true });
+                        _this3.setState({ email: "", emailComment: '', emailAlert: true });
                     } else {
-                        _this3.setState({ email: "", emailAlert: false });
+                        _this3.setState({ email: "", emailComment: '', emailAlert: false });
                     }
                     setTimeout(function () {
                         return _this3.setState({ emailAlert: null });
@@ -59952,7 +59953,7 @@ var ActivityActingProcessTable = function (_React$Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "button",
                         { className: "btn btn-info", onClick: this.exportHandler, disabled: this.state.activities.length === 0 || this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) },
-                        "exporteer"
+                        Lang.get('react.export')
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null),
                     this.state.selectedExport === 'email' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -59966,6 +59967,16 @@ var ActivityActingProcessTable = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "email", className: "form-control", onChange: function onChange(e) {
                                     return _this4.setState({ email: e.target.value });
                                 }, value: this.state.email })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "label",
+                            null,
+                            Lang.get('react.mail-comment'),
+                            ": ",
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("textarea", { className: "form-control", onChange: function onChange(e) {
+                                    return _this4.setState({ emailComment: e.target.value });
+                                }, value: this.state.emailComment })
                         ),
                         this.state.emailAlert === undefined && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -60311,6 +60322,8 @@ var ActivityProducingProcessTable = function (_React$Component) {
             exports: ["csv", "txt", "email", "word"],
             selectedExport: "txt",
             email: "",
+            emailComment: "",
+
             emailAlert: null,
             startDate: earliestDate,
             endDate: latestDate
@@ -60434,11 +60447,11 @@ var ActivityProducingProcessTable = function (_React$Component) {
 
             if (this.state.selectedExport === "email") {
                 this.setState({ emailAlert: undefined });
-                exporter.mail(this.state.email, function (response) {
+                exporter.mail(this.state.email, this.state.emailComment, function (response) {
                     if (response.hasOwnProperty("data") && response.data.status === "success") {
-                        _this3.setState({ email: "", emailAlert: true });
+                        _this3.setState({ email: "", emailComment: '', emailAlert: true });
                     } else {
-                        _this3.setState({ email: "", emailAlert: false });
+                        _this3.setState({ email: "", emailComment: '', emailAlert: true });
                     }
                     setTimeout(function () {
                         return _this3.setState({ emailAlert: null });
@@ -60625,6 +60638,16 @@ var ActivityProducingProcessTable = function (_React$Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { type: "email", className: "form-control", onChange: function onChange(e) {
                                     return _this4.setState({ email: e.target.value });
                                 }, value: this.state.email })
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            "label",
+                            null,
+                            Lang.get('react.mail-comment'),
+                            ": ",
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("textarea", { className: "form-control", onChange: function onChange(e) {
+                                    return _this4.setState({ emailComment: e.target.value });
+                                }, value: this.state.emailComment })
                         ),
                         this.state.emailAlert === undefined && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "div",
@@ -62176,10 +62199,10 @@ var ActingActivityProcessExporter = function () {
         }
     }, {
         key: "mail",
-        value: function mail(email, callback) {
+        value: function mail(email, comment, callback) {
             this.txt();
 
-            axios.post('/activity-export-mail', { txt: this.outputData, email: email }).then(callback).catch(callback);
+            axios.post('/activity-export-mail', { txt: this.outputData, email: email, comment: comment }).then(callback).catch(callback);
         }
     }, {
         key: "output",
@@ -62424,10 +62447,10 @@ var ProducingActivityProcessExporter = function () {
         }
     }, {
         key: "mail",
-        value: function mail(email, callback) {
+        value: function mail(email, comment, callback) {
             this.txt();
 
-            __WEBPACK_IMPORTED_MODULE_1_axios__["post"]('/activity-export-mail', { txt: this.outputData, email: email }).then(callback).catch(callback);
+            __WEBPACK_IMPORTED_MODULE_1_axios__["post"]('/activity-export-mail', { txt: this.outputData, email: email, comment: comment }).then(callback).catch(callback);
         }
     }, {
         key: "output",

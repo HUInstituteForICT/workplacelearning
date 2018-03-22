@@ -11,6 +11,7 @@ return [
     "complexity" =>"Complexiteit",
     "export-to" =>"Export naar",
     "mail-to" => "Mailen naar",
+    "mail-comment"            => "Opmerking",
     "mail"=> [
         "sending" => "Bezig met verzenden",
         "sent" => "De email is successvol verzonden",

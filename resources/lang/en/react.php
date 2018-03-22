@@ -11,6 +11,7 @@ return [
     "complexity"              => "Complexity",
     "export-to"               => "Export to",
     "mail-to"                 => "Mail to",
+    "mail-comment"            => "Comment",
     "mail"                    => [
         "sending" => "Sending...",
         "sent"    => "The email has been sent",

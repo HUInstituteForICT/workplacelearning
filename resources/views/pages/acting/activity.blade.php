@@ -102,17 +102,17 @@
                 <div class="col-md-2 form-group buttons">
                     <h4>{{Lang::get('activity.category')}} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_when') }}"></i></h4>
                     @foreach ($timeslots as $key => $value)
-                        <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ (old('timeslot') != null && old('timeslot') == $value->timeslot_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->timeslot_text }}</span></label>
+                        <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ (old('timeslot') != null && old('timeslot') == $value->timeslot_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ __($value->timeslot_text) }}</span></label>
                     @endforeach
                     <div>
-                        <label><input type="radio" name="timeslot" id="new_timeslot" value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}><span class="new">Anders<br />(Toevoegen)</span></label>
+                        <label><input type="radio" name="timeslot" id="new_timeslot" value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}><span class="new">{{  Lang::get('activity.other') }}<br />({{ Lang::get('activity.add') }})</span></label>
                         <input id="new-timeslot-hidden" type="text" name="new_timeslot" value="{{ old('new-timeslot-hidden') }}" placeholder="{{ Lang::get('process_export.description') }}"  maxlength="50"/>
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.with') }}<i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_with') }}"></i></h4>
                     @foreach ($resPersons as $key => $value)
-                        <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->person_label }}</span></label>
+                        <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ __($value->person_label) }}</span></label>
                     @endforeach
                     <div>
                         <label><input type="radio" name="res_person" id="new_rp" value="new" {{ (old('res_person') == 'new') ? 'checked' : null }}><span class="new">{{ Lang::get('activity.other') }}<br />({{ Lang::get('activity.add') }})</span></label>
@@ -126,7 +126,7 @@
                         <label><input type="radio" name="res_material" value="{{ $value->rm_id }}" {{ (old('res_material') != null && old('res_material') == $value->rm_id) ? "checked" : null }} /><span>{{ $value->rm_label }}</span></label>
                     @endforeach
                     <input type="text" name="res_material_detail" id="res_material_detail" placeholder="{{ Lang::get('activity.source-description') }}" value="{{ old('res_material_detail') }}" />
-                    <label><input type="radio" name="res_material" id="new_rm" value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">Anders<br />({{ Lang::get('activity.add') }})</span></label>
+                    <label><input type="radio" name="res_material" id="new_rm" value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">{{ trans('activity.other') }}<br />({{ Lang::get('activity.add') }})</span></label>
                     <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
                 </div>
                 <div class="col-md-2 form-group">
@@ -152,13 +152,13 @@
                         <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learninggoal') }}"></i></h4>
                         <select name="learning_goal" class="form-control fit-bs">
                             @foreach ($learningGoals as $key => $value)
-                                <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'selected' : null }}>{{ $value->learninggoal_label }}</option>
+                                <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'selected' : null }}>{{ __($value->learninggoal_label) }}</option>
                             @endforeach
                         </select>
                         <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_competence') }}"></i></h4>
                         <select name="competence" class="form-control fit-bs">
                             @foreach ($competencies as $value)
-                                <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : null }}>{{ $value->competence_label }}</option>
+                                <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : null }}>{{ __($value->competence_label) }}</option>
                             @endforeach
                         </select>
                         @if($competenceDescription !== null)
@@ -217,7 +217,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">{{ Lang::get('general.close') }}</button>
-                        <a type="button" class="btn btn-primary" id="enlargedTextareaSave">{{ Lang::get('general.confirm') }}"</a>
+                        <a type="button" class="btn btn-primary" id="enlargedTextareaSave">{{ Lang::get('general.confirm') }}</a>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

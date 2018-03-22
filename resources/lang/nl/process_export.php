@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'date' => 'datum',
   'situation' => 'situatie',
   'timeslot' => 'lesuur',
@@ -19,12 +19,15 @@ return array (
   'supportEd' => 'hulp Hogeschool Utrecht',
   'learningGoalDescription' => 'omschrijving leerdoel',
   'evidence' => 'bewijsstuk',
+  'mail-subject' => 'Leermomenten export gedeeld met u',
   'text-mail' => 'Goedendag,
 
 Student :name heeft u een aantal leermomenten gestuurd vanuit de stage-app https://werkplekleren.hu.nl.
 
 Onder deze mail vindt u de tekst van de betreffende leermomenten.
 
+Opmerking van de student:
+:comment
 
 
 Met vriendelijke groeten,

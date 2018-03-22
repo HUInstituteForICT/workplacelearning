@@ -19,11 +19,15 @@ return array (
   'supportEd' => 'support Hogeschool Utrecht',
   'learningGoalDescription' => 'learning goal description',
   'evidence' => 'bewijsstuk',
+  'mail-subject' => 'Learning activities export shared',
   'text-mail' => 'Good day,
 
 Student :name has sent you a few learning moments from the internship app https://www.werkplekleren.hu.nl.
 
-Below this email you will find the text of these learning moments.
+Comments from the student:
+:comment
+
+Attached to this email you will find the text of these learning moments.
 
 Kind regards,
 Hogeschool Utrecht - werkplekleren.hu.nl',

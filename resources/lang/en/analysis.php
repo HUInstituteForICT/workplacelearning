@@ -31,7 +31,7 @@ return array (
     'learninggoal-material' => 'With :percentage% of the learning moments of :label you do not use any theory. Maybe you do not know which theory you could use? You could ask for support from your mentor or your workplace.',
       "percentageAloneHours" => ":percentage% of the time you worked alone, you found :percentageDifficultTasks% of this work Difficult. You could talk with your workplace about some support you could use for these Difficult activities.",
       "percentageEasyHours" => "You found :percentage% of your work Easy! It looks like you can handle more difficult tasks. You could ask for more challenging activities at your workplace.",
-      "mostDifficultCategory" => "You find :category the most difficult category in your work. Of all activities within this category you find :percentage% Difficult. You could discuss about support for this with your workplace. Maybe you could get tips from your workplace about literature or persons that could help you.",
+      "mostDifficultCategory" => "You find \":category\" the most difficult category in your work. Of all activities within this category you find :percentage% Difficult. You could discuss about support for this with your workplace. Maybe you could get tips from your workplace about literature or persons that could help you.",
       "averagePersonDifficultyName" => "You seem to find your work the easiest when you work together with :person. Think about how this person helps you out, so you can do even more. Don't forget to thank this person for his or her support ;-)",
 
 
