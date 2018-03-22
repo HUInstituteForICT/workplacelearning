@@ -92,7 +92,7 @@
                                     })()
                                 </script>
                             @else
-                                <input class="form-control" type="number" step="1" min="1" max="300"
+                                <input class="form-control" type="number" step="1" min="1" max="480"
                                        name="aantaluren_custom" value="5">
                                 &nbsp;
                                 {{ Lang::get('dashboard.minutes') }}
