@@ -13,6 +13,7 @@ class TxtExport extends Mailable
 
 
     protected $txt;
+    private $comment;
 
 
     /**
@@ -20,9 +21,10 @@ class TxtExport extends Mailable
      *
      * @param $txt
      */
-    public function __construct($txt)
+    public function __construct($txt, $comment)
     {
         $this->txt = $txt;
+        $this->comment = $comment;
     }
 
     /**
@@ -35,6 +37,6 @@ class TxtExport extends Mailable
         return $this->from("noreply@werkplekleren.hu.nl")
             ->subject("Leermomenten export gedeeld met u")
             ->attachData($this->txt, 'leermomenten-export.txt', ["mime" => "text/plain"])
-            ->text('mail.text-export', ["student" => Auth::user()]);
+            ->text('mail.text-export', ["student" => Auth::user(), "comment" => $this->comment]);
     }
 }

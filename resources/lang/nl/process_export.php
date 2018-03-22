@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'date' => 'datum',
   'situation' => 'situatie',
   'timeslot' => 'lesuur',
@@ -25,6 +25,8 @@ Student :name heeft u een aantal leermomenten gestuurd vanuit de stage-app https
 
 Onder deze mail vindt u de tekst van de betreffende leermomenten.
 
+Opmerking van de student:
+:comment
 
 
 Met vriendelijke groeten,

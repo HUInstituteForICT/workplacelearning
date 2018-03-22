@@ -55,22 +55,38 @@ class LearningActivityActing extends Model
         return $this->hasOne(\App\ResourceMaterial::class, 'rm_id', 'res_material_id');
     }
 
+    /**
+     * Used for display purposes
+     * @return string
+     */
     public function getTimeslot()
     {
         return __($this->timeslot()->first()->timeslot_text);
     }
 
+    /**
+     * Used for display purposes
+     * @return string
+     */
     public function getResourcePerson()
     {
         return __($this->resourcePerson()->first()->person_label);
     }
 
+    /**
+     * Used for display purposes
+     * @return string
+     */
     public function getResourceMaterial()
     {
         $label = $this->resourceMaterial()->first();
         return ($label) ? __($label->rm_label) : __('activity.none');
     }
 
+    /**
+     * Used for display purposes
+     * @return string
+     */
     public function getLearningGoal()
     {
         return __($this->learningGoal()->first()->learninggoal_label);

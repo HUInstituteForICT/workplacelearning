@@ -26,6 +26,7 @@ export default class ActivityActingProcessTable extends React.Component {
             exports: ["csv", "txt", "email", "word"],
             selectedExport: "csv",
             email: "",
+            emailComment: "",
             emailAlert: null,
             startDate: earliestDate,
             endDate: latestDate,
@@ -133,11 +134,11 @@ export default class ActivityActingProcessTable extends React.Component {
 
         if(this.state.selectedExport === "email") {
             this.setState({emailAlert: undefined});
-            exporter.mail(this.state.email, response => {
+            exporter.mail(this.state.email, this.state.emailComment, response => {
                 if(response.hasOwnProperty("data") && response.data.status === "success") {
-                    this.setState({email: "", emailAlert: true});
+                    this.setState({email: "", emailComment: '', emailAlert: true});
                 } else {
-                    this.setState({email: "", emailAlert: false});
+                    this.setState({email: "", emailComment: '', emailAlert: false});
                 }
                 setTimeout(() => this.setState({emailAlert: null}), 3000);
 
@@ -223,7 +224,12 @@ export default class ActivityActingProcessTable extends React.Component {
                 <br/>
                 {this.state.selectedExport === 'email' &&
                 <div style={{maxWidth: "400px"}}>
-                    <label>{Lang.get('react.mail-to')}: <input type="email" className="form-control" onChange={e => this.setState({email: e.target.value})} value={this.state.email} /></label>
+                    <label>
+                        {Lang.get('react.mail-to')}: <input type="email" className="form-control" onChange={e => this.setState({email: e.target.value})} value={this.state.email} />
+                    </label><br/>
+                    <label>
+                        {Lang.get('react.mail-comment')}: <textarea className="form-control" onChange={e => this.setState({emailComment: e.target.value})} value={this.state.emailComment} />
+                    </label>
                     {
                         this.state.emailAlert === undefined &&
                         <div className="alert alert-info" role="alert">{Lang.get('react.mail.sending')}</div>
