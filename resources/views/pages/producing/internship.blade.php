@@ -97,6 +97,13 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        {!! Form::label('numdays', Lang::get('elements.profile.internships.numhours'), array('class' => 'col-sm-4 control-label')) !!}
+                        <div class="col-sm-8">
+                            <input name="numhours" type="number" max="24" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.numhours') }}" value="{{ (is_null($period->hours_per_day)) ? old("numhours") : $period->hours_per_day }}"   required />
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         {!! Form::label('startdate', Lang::get('elements.profile.internships.startdate'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-6">
                             <input name="startdate" type="date" class="form-control" min="{{ date("Y-m-d", strtotime("-6 months")) }}" value="{{ date("Y-m-d", (($period->startdate) ? strtotime($period->startdate) : strtotime("now"))) }}">

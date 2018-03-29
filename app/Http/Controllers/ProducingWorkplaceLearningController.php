@@ -25,12 +25,16 @@ class ProducingWorkplaceLearningController extends Controller
 {
 
     public function show()
+
     {
         $workplace = new Workplace();
         $workplace->country = trans('general.netherlands');
-        return view("pages.producing.internship")
-                ->with("period", new WorkplaceLearningPeriod)
-                ->with("workplace", $workplace)
+        $period = new WorkplaceLearningPeriod();
+        $period->hours_per_day = 7.5; // Default hours per day for a new period
+
+        return view("pages.acting.internship")
+            ->with("period", $period)
+            ->with("workplace", $workplace)
             ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
     }
 
@@ -64,6 +68,7 @@ class ProducingWorkplaceLearningController extends Controller
             'contactPhone'          => 'required',
             'contactEmail'          => 'required|email|max:255',
             'numdays'               => 'required|integer|min:1',
+            'numhours'             => 'required|numeric|min:1|max:24',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
             'internshipAssignment'  => 'required|min:15|max:500',
@@ -109,6 +114,7 @@ class ProducingWorkplaceLearningController extends Controller
         $wplPeriod->startdate    = $request['startdate'];
         $wplPeriod->enddate      = $request['enddate'];
         $wplPeriod->nrofdays     = $request['numdays'];
+        $wplPeriod->hours_per_day = $request['numhours'];
         $wplPeriod->description  = $request['internshipAssignment'];
         $wplPeriod->cohort()->associate($cohort);
         $wplPeriod->save();
@@ -135,6 +141,7 @@ class ProducingWorkplaceLearningController extends Controller
             'contactPhone'          => 'required|',
             'contactEmail'          => 'required|email|max:255',
             'numdays'               => 'required|integer|min:1',
+            'numhours'             => 'required|numeric|min:1|max:24',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
             'internshipAssignment'  => 'required|min:15|max:500',
@@ -179,6 +186,7 @@ class ProducingWorkplaceLearningController extends Controller
         $wplPeriod->startdate    = $request['startdate'];
         $wplPeriod->enddate      = $request['enddate'];
         $wplPeriod->nrofdays     = $request['numdays'];
+        $wplPeriod->hours_per_day = $request['numhours'];
         $wplPeriod->description  = $request['internshipAssignment'];
         $wplPeriod->save();
 
