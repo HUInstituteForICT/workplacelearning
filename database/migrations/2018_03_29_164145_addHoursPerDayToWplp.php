@@ -14,7 +14,7 @@ class AddHoursPerDayToWplp extends Migration
     public function up()
     {
         Schema::table('workplacelearningperiod', function(Blueprint $table) {
-            $table->decimal('hours_per_day', 8, 1);
+            $table->decimal('hours_per_day', 8, 1)->default(7.5);
         });
     }
 
