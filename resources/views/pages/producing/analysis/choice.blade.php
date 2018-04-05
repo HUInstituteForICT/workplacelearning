@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h3>{{ Lang::get('elements.analysis.workingdaysheader') }}</h3>
-                    <p>{{ Lang::get('elements.analysis.workingdaysexplained') }}</p>
+                    <p>{{ Lang::get('elements.analysis.workingdaysexplained', ['hours' => Auth::user()->getCurrentWorkplaceLearningPeriod()->hours_per_day]) }}</p>
                 </div>
                 <div class="col-lg-1">
                     <p>{{ Lang::get('elements.analysis.numberofdays') }} </p>
@@ -26,12 +26,12 @@
                 <div class="col-lg-4">
                     <div class="progress">
                         <!-- $numdays is number of valid full working days, aantaluren is the goal number of internship *days* -->
-                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1) }}%">
+                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:{{ min(round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1),100) }}%">
                             @if($numdays >= (Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays / 2))
                                 {{ $numdays." / ".(Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays) }} {{ Lang::get('elements.analysis.days') }} ( {{ round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1) }}%)
                             @endif
                         </div>
-                        <div class="progress-bar" role="progressbar" style="width:{{ (100-round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1)) }}%">
+                        <div class="progress-bar" role="progressbar" style="width:{{ min((100-round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1)), 100) }}%">
                             @if($numdays < (Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays / 2))
                                 {{ $numdays." / ".(Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays) }} {{ Lang::get('elements.analysis.days') }} ( {{ round(($numdays/Auth::user()->getCurrentWorkplaceLearningPeriod()->nrofdays)*100,1) }}%)
                             @endif

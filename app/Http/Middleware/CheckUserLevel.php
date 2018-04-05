@@ -11,16 +11,17 @@ class CheckUserLevel
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
+     * @throws \Illuminate\Validation\UnauthorizedException
      */
     public function handle($request, Closure $next)
     {
         /** @var Student $user */
         $user = $request->user();
-        if(!$user->getUserLevel() === 1) {
-            throw new UnauthorizedException("Insufficient permissions");
+        if($user->getUserLevel() !== 1) {
+            throw new UnauthorizedException('Insufficient permissions');
         }
         return $next($request);
     }

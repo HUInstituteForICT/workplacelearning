@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
  * @package App
  * @property string $firstname
  * @property string $lastname
+ * @property integer $userlevel
  */
 class Student extends Authenticatable
 {
