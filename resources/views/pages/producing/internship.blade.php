@@ -97,7 +97,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('numdays', Lang::get('elements.profile.internships.numhours'), array('class' => 'col-sm-4 control-label')) !!}
+                        {!! Form::label('numhours', Lang::get('elements.profile.internships.numhours'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
                             <input name="numhours" type="number" max="24" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.numhours') }}" value="{{ (is_null($period->hours_per_day)) ? old("numhours") : $period->hours_per_day }}"   required />
                             <div class="help-block with-errors"></div>
