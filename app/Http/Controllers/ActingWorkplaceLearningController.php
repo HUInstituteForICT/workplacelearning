@@ -89,6 +89,7 @@ class ActingWorkplaceLearningController extends Controller
 
         // Pass. Create the internship and period.
         $wplPeriod = new WorkplaceLearningPeriod;
+        $wplPeriod->hours_per_day = 7.5; // Although not used in acting, still set it as its not nullable in DB
         $workplace = new Workplace;
 
 

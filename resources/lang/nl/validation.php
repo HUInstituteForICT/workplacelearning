@@ -1,6 +1,7 @@
 <?php
 
 return array (
+    'postalcode' => ':value is niet een geldige postcode.',
     'accepted' => ':attribute dient te worden geaccepteerd.',
     'active_url' => ':attribute is geen geldige URL.',
     'after' => ':attribute dient een datum te zijn na :date.',
@@ -143,7 +144,8 @@ return array (
     'firstname' => 'voornaam',
     'lastname' => 'achternaam',
     'email' => 'email address',
-    'new_password' => 'nieuw wachtwoord'
+    'new_password' => 'nieuw wachtwoord',
+      'postalcode' => 'postcode'
   ),
 
     "newnotfinished"                          => "De omschrijving is verplicht en mag maximaal 150 tekens zijn.",
