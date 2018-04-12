@@ -10,6 +10,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int ep_id
+ */
 class EducationProgram extends Model
 {
     // Override the table used for the User Model

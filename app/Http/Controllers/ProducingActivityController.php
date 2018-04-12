@@ -265,7 +265,7 @@ class ProducingActivityController extends Controller
                 $category->wplp_id         = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
                 $category->save();
             }
-            if ($request['personsource'] == "new") {
+            if ($request['personsource'] == "new" && $request['resource'] === 'persoon') { //
                 $resourcePerson                = new ResourcePerson;
                 $resourcePerson->person_label  = $request['newswv'];
                 $resourcePerson->wplp_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;

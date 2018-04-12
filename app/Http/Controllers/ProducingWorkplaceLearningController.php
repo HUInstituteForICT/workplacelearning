@@ -32,7 +32,7 @@ class ProducingWorkplaceLearningController extends Controller
         $period = new WorkplaceLearningPeriod();
         $period->hours_per_day = 7.5; // Default hours per day for a new period
 
-        return view("pages.acting.internship")
+        return view('pages.producing.internship')
             ->with("period", $period)
             ->with("workplace", $workplace)
             ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
@@ -66,14 +66,14 @@ class ProducingWorkplaceLearningController extends Controller
             'companyCountry'        => 'required|max:255|min:2',
             'contactPerson'         => 'required|max:255|min:3',
             'contactPhone'          => 'required',
-            'contactEmail'          => 'required|email|max:255',
-            'numdays'               => 'required|integer|min:1',
+            'contactEmail'         => 'required|email|max:255',
+            'numdays'              => 'required|integer|min:1',
             'numhours'             => 'required|numeric|min:1|max:24',
-            'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
-            'enddate'               => 'required|date|after:startdate',
-            'internshipAssignment'  => 'required|min:15|max:500',
-            'isActive'              => 'sometimes|required|in:1,0',
-            "cohort"               => "required|exists:cohorts,id",
+            'startdate'            => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
+            'enddate'              => 'required|date|after:startdate',
+            'internshipAssignment' => 'required|min:15|max:500',
+            'isActive'             => 'sometimes|required|in:1,0',
+            'cohort'               => 'required|exists:cohorts,id',
 
         ]);
 
@@ -86,8 +86,8 @@ class ProducingWorkplaceLearningController extends Controller
 
         $cohort = Cohort::find($request['cohort']);
 
-        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id || $cohort->disabled === 1) {
-            throw new InvalidArgumentException("Unknown cohort");
+        if ($cohort->disabled === 1 || $cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+            throw new InvalidArgumentException('Unknown cohort');
         }
 
         // Pass. Create the internship and period.

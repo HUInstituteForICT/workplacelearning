@@ -12,6 +12,9 @@ use Illuminate\Notifications\Notifiable;
  * @property string $firstname
  * @property string $lastname
  * @property integer $userlevel
+ * @property integer $student_id
+ * @property EducationProgram $educationProgram
+ *
  */
 class Student extends Authenticatable
 {
