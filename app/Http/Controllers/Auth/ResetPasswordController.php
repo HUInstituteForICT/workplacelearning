@@ -35,7 +35,6 @@ class ResetPasswordController extends Controller
         $user->forceFill([
             'pw_hash' => bcrypt($password),
         ])->save();
-
-        Auth::guard($this->getGuard())->login($user);
+        $this->guard()->login($user);
     }
 }
