@@ -25,14 +25,13 @@ class PredefinedStatistic extends Statistic
     {
         /** @var StatisticCalculationResult $result */
         $method = $this->getMethod($this->name)['method'];
-        $result = $this->dataCollectorContainer->getPredefinedCollector()->{$method}();
 
-        return $result;
+        return $this->collector->predefinedStatisticCollector->{$method}();
     }
 
     private function getMethod($name)
     {
-        return collect((new CollectorDataAggregator($this->dataCollectorContainer->getPredefinedCollector()))->getInformation())
+        return collect((new CollectorDataAggregator($this->collector->predefinedStatisticCollector))->getInformation())
             ->first(function (array $annotation) use ($name) {
                 return $annotation['name'] === $name;
             });
@@ -40,7 +39,7 @@ class PredefinedStatistic extends Statistic
 
     public function getValueParameterDescriptionAttribute()
     {
-        $data = ($this->educationProgramType->eptype_id === 1 ? PredefinedStatisticHelper::getActingData() : PredefinedStatisticHelper::getProducingData());
+        $data = PredefinedStatisticHelper::getData();// ($this->educationProgramType->eptype_id === 1 ? PredefinedStatisticHelper::getData() : PredefinedStatisticHelper::getProducingData());
         foreach ($data as $entry) {
             if ($entry['name'] === $this->name) {
                 return $entry['valueParameterDescription'];

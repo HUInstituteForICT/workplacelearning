@@ -6,7 +6,7 @@ namespace App\Tips\DataCollectors;
 
 use App\Tips\DataUnitAnnotation;
 
-class ProducingCollector extends AbstractCollector
+class ProducingCollector extends Collector
 {
     /**
      * @DataUnitAnnotation(name="Total learning activities", method="totalLearningActivities")

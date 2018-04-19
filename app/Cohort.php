@@ -13,7 +13,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string name
  * @property Tip[]|Collection tips
  * @property Category[]|Collection categories
- * @package App
+ * @property EducationProgram $educationProgram
+ *
  */
 class Cohort extends Model
 {

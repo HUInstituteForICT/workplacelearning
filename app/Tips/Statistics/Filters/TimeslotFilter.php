@@ -4,7 +4,7 @@
 namespace App\Tips\Statistics\Filters;
 
 
-use Doctrine\DBAL\Query\QueryBuilder;
+use Illuminate\Database\Query\Builder;
 
 class TimeslotFilter implements Filter
 {
@@ -16,9 +16,16 @@ class TimeslotFilter implements Filter
         $this->parameters = $parameters;
     }
 
-    public function filter(QueryBuilder $builder)
+    public function filter(Builder $builder)
     {
-        $builder->leftJoin('timeslot', 'learningactivityacting.timeslot_id', '=', 'timeslot.timeslot_id')
-        ->where('timeslot_text', '=', $this->parameters['timeslot_text']);
+        if (empty($this->parameters['timeslot_text'])) {
+            return;
+        }
+
+        $timeslots = array_map('trim', explode('||', $this->parameters['timeslot_text']));
+
+        $builder
+            ->leftJoin('timeslot', 'learningactivityacting.timeslot_id', '=', 'timeslot.timeslot_id')
+            ->whereIn('timeslot_text', $timeslots);
     }
 }

@@ -37,7 +37,6 @@ class TipsController extends Controller
             ->with('tip', new Tip);
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -56,11 +55,11 @@ class TipsController extends Controller
 
     public function selectStatistic(Tip $tip)
     {
-        // Todo move the statistics stuff below into a service or something
         // Fetch statistics. If none have been coupled yet, fetch all statistics. If there are coupled ones, only show from same EP type
         $statistics = [];
         if ($tip->statistics()->count() === 0) {
-            (new CustomStatistic)->with('educationProgramType')->get()->each(function (CustomStatistic $statistic) use (&$statistics
+            CustomStatistic::with('educationProgramType')->get()->each(function (CustomStatistic $statistic) use (
+                &$statistics
             ) {
                 $statistics[$statistic->id] = "{$statistic->name} ({$statistic->educationProgramType->eptype_name})";
             })->merge();

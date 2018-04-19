@@ -7,9 +7,14 @@
 
 namespace App;
 
+use App\EducationProgramType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class EducationProgram
+ * @property EducationProgramType $educationprogramType
+ */
 class EducationProgram extends Model
 {
     // Override the table used for the User Model
@@ -38,7 +43,7 @@ class EducationProgram extends Model
 
     public function educationprogramType()
     {
-        return $this->hasOne(\App\EducationProgramType::class, 'eptype_id', 'eptype_id');
+        return $this->hasOne(EducationProgramType::class, 'eptype_id', 'eptype_id');
     }
 
     public function student()

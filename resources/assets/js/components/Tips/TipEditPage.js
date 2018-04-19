@@ -40,7 +40,7 @@ class TipEditPage extends React.Component {
             </Link>
             <br/>
             <h1>{Lang.get('tips.edit')}</h1>
-            <div className="input-group input-group-lg">
+            <div className="field">
                 <input type="text" className="form-control" placeholder={Lang.get('tips.name')} value={tip.name}
                        onChange={e => updateEntity('tips', tip.id, {...tip, name: e.target.value})}/>
             </div>

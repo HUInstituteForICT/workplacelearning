@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Analysis\Producing\ProducingAnalysis;
 use App\Analysis\Producing\ProducingAnalysisCollector;
 use App\Cohort;
+use App\Tips\DataCollectors\Collector;
 use App\Tips\DataCollectors\DataCollectorContainer;
 use App\Tips\DataCollectors\ProducingCollector;
 use App\Tips\Tip;
@@ -59,8 +60,7 @@ class ProducingAnalysisController extends Controller
             $month = null;
         }
 
-        $ccCollector = new ProducingCollector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
-        $dataCollector = new DataCollectorContainer($ccCollector);
+        $ccCollector = new Collector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
 
         /** @var Cohort $cohort */
         $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
@@ -71,8 +71,8 @@ class ProducingAnalysisController extends Controller
                     $relationshipQuery->where('student_id', '=', $request->user()->student_id);
                 },
             ]);
-        $applicableTips = $cohort->tips->filter(function(Tip $tip) use($dataCollector) {
-            return $tip->showInAnalysis && $tip->isApplicable($dataCollector);
+        $applicableTips = $cohort->tips->filter(function(Tip $tip) use($ccCollector) {
+            return $tip->showInAnalysis && $tip->isApplicable($ccCollector);
         });
 
 

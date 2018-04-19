@@ -19,8 +19,8 @@ class CreateStatisticsTable extends Migration
             $table->string('name');
             $table->smallInteger('operator')->nullable();
             $table->smallInteger('education_program_type_id');
-            $table->integer('statistic_variable_one_id');
-            $table->integer('statistic_variable_two_id');
+            $table->integer('statistic_variable_one_id')->nullable();
+            $table->integer('statistic_variable_two_id')->nullable();
         });
     }
 

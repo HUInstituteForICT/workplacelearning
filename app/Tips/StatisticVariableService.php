@@ -9,10 +9,11 @@ use App\Tips\Statistics\StatisticVariable;
 class StatisticVariableService
 {
 
-    public function createStatisticVariable(array $data)
+    public function updateStatisticVariable(array $data, StatisticVariable $variable
+    )
     {
 
-        $variable = new StatisticVariable;
+
         $variable->type = $data['type'];
         $variable->selectType = $data['selectType'];
         $variable->filters = $data['filters'];
@@ -20,4 +21,9 @@ class StatisticVariableService
         return $variable;
     }
 
+
+    public function getStatisticVariableValue(StatisticVariable $statisticVariable)
+    {
+
+    }
 }

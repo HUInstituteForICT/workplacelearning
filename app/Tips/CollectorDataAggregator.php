@@ -6,6 +6,8 @@ namespace App\Tips;
 
 use App\Tips\DataCollectors\ActingPredefinedStatisticCollector;
 use App\Tips\DataCollectors\CollectorInterface;
+use App\Tips\Statistics\Statistic;
+use App\Tips\Statistics\StatisticVariable;
 use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
 use Doctrine\Common\Annotations\AnnotationReader;
 
@@ -38,9 +40,6 @@ class CollectorDataAggregator
             }
 
             $methodInformation = $this->informationForMethod($this->collector, $method);
-            if ($variableStatistic) {
-                $methodInformation->type = (new CollectedDataStatisticVariable())->getType();
-            }
 
             $information[] = (array) $methodInformation;
         }

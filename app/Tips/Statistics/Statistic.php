@@ -4,6 +4,8 @@ namespace App\Tips\Statistics;
 
 
 use App\EducationProgramType;
+use App\Http\Middleware\CheckUserLevel;
+use App\Tips\DataCollectors\Collector;
 use App\Tips\DataCollectors\DataCollectorContainer;
 use App\Tips\Tip;
 use App\Tips\TipCoupledStatistic;
@@ -29,9 +31,8 @@ class Statistic extends Model
 
     protected static $persisted = ['name', 'education_program_type_id'];
 
-    // Injected into StatisticVariables,  or PredefinedStatistic that use a dataCollector
-    /** @var DataCollectorContainer $dataCollectorContainer */
-    protected $dataCollectorContainer;
+    /** @var Collector $collector */
+    protected $collector;
 
     // Disable timestamps
     public $timestamps = false;
@@ -49,10 +50,6 @@ class Statistic extends Model
      */
     public function coupledStatistics() {
         return $this->hasMany(TipCoupledStatistic::class, 'statistic_id');
-
-//        return $this->belongsToMany(Tip::class, 'tip_coupled_statistic')
-//            ->using(TipCoupledStatistic::class)
-//            ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
     }
 
 
@@ -68,12 +65,10 @@ class Statistic extends Model
 
     /**
      * Set the dataCollector used by certain StatisticVariables and PredefinedStatistics
-     *
-     * @param DataCollectorContainer $dataCollectorContainer
      */
-    public function setDataCollectorContainer(DataCollectorContainer $dataCollectorContainer)
+    public function setCollector(Collector $collector)
     {
-        $this->dataCollectorContainer = $dataCollectorContainer;
+        $this->collector = $collector;
     }
 
 }

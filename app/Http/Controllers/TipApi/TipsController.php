@@ -57,26 +57,21 @@ class TipsController extends Controller
 
 
         // Add predefined statistics to the collection because they can also be chosen but aren't in the DB
-        $predefinedProducing = collect(PredefinedStatisticHelper::getProducingData())
+        $predefined = collect(PredefinedStatisticHelper::getData())
             ->map(function (array $predefinedStatistic) {
-
-                $predefinedStatistic['id'] = 'p-p-' . md5($predefinedStatistic['name']);
-                $predefinedStatistic['education_program_type'] = 2;
+                if($predefinedStatistic['epType'] === 'Producing') {
+                    $predefinedStatistic['id'] = 'p-p-' . md5($predefinedStatistic['name']);
+                    $predefinedStatistic['education_program_type'] = 2;
+                } elseif ($predefinedStatistic['epType'] === 'Acting') {
+                    $predefinedStatistic['id'] = 'p-a-' . md5($predefinedStatistic['name']);
+                    $predefinedStatistic['education_program_type'] = 1;
+                }
                 $predefinedStatistic['type'] = 'predefinedstatistic';
 
                 return $predefinedStatistic;
             })->toArray();
 
-        $predefinedActing = collect(PredefinedStatisticHelper::getActingData())
-            ->map(function ($predefinedStatistic) {
-                $predefinedStatistic['id'] = 'p-a-' . md5($predefinedStatistic['name']);
-                $predefinedStatistic['education_program_type'] = 1;
-                $predefinedStatistic['type'] = 'predefinedstatistic';
-
-                return $predefinedStatistic;
-            })->toArray();
-
-        return array_merge($statistics, $predefinedActing, $predefinedProducing);
+        return array_merge($statistics, $predefined);
     }
 
     /**

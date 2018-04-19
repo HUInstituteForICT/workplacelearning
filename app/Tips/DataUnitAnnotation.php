@@ -15,4 +15,5 @@ class DataUnitAnnotation
     public $parameterName = null;
     public $type;
     public $valueParameterDescription = '';
+    public $epType = '';
 }

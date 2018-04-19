@@ -11,6 +11,7 @@ use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
 use App\Cohort;
 use App\Tips\DataCollectors\ActingCollector;
+use App\Tips\DataCollectors\Collector;
 use App\Tips\DataCollectors\DataCollectorContainer;
 use App\Tips\DataUnitParser;
 use App\Tips\Tip;
@@ -68,8 +69,7 @@ class ActingAnalysisController extends Controller
             $month = null;
         }
 
-        $ccCollector = new ActingCollector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
-        $dataCollector = new DataCollectorContainer($ccCollector);
+        $ccCollector = new Collector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
 
         /** @var Cohort $cohort */
         $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
@@ -80,8 +80,8 @@ class ActingAnalysisController extends Controller
                     $relationshipQuery->where('student_id', '=', $request->user()->student_id);
                 },
             ]);
-        $applicableTips = $cohort->tips->filter(function (Tip $tip) use ($dataCollector) {
-            return $tip->showInAnalysis && $tip->isApplicable($dataCollector);
+        $applicableTips = $cohort->tips->filter(function (Tip $tip) use ($ccCollector) {
+            return $tip->showInAnalysis && $tip->isApplicable($ccCollector);
         });
 
 

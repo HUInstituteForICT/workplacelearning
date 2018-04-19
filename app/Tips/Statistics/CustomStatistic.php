@@ -4,7 +4,6 @@
 namespace App\Tips\Statistics;
 
 
-use App\Tips\Statistics\StatisticVariable;
 use DivisionByZeroError;
 
 /**
@@ -61,8 +60,9 @@ class CustomStatistic extends Statistic
     public function calculate()
     {
         $this->load(['statisticVariableOne', 'statisticVariableTwo']);
-        $this->injectDependenciesIntoStatisticVariable($this->statisticVariableOne);
-        $this->injectDependenciesIntoStatisticVariable($this->statisticVariableTwo);
+
+        $this->statisticVariableOne->setCollector($this->collector);
+        $this->statisticVariableTwo->setCollector($this->collector);
 
         $resultCollection = new StatisticCalculationResultCollection();
         try {
@@ -86,25 +86,12 @@ class CustomStatistic extends Statistic
                     break;
             }
 
-            return $resultCollection;
-        } catch (DivisionByZeroError $exception) {
+
+        } catch (\DivisionByZeroError $exception) {
             $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
-
-            return $resultCollection;
-        } catch (\ErrorException $exception) {
-            if ($exception->getMessage() === 'Division by zero') {
-                $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
-
-                return $resultCollection;
-            }
         }
 
-        throw new \Exception("Missing Statistic operator for calculation");
-    }
-
-    private function injectDependenciesIntoStatisticVariable(StatisticVariable $statisticVariable)
-    {
-        $statisticVariable->setDataCollectorContainer($this->dataCollectorContainer);
+        return $resultCollection;
     }
 
 

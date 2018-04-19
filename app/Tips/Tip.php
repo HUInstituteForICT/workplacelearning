@@ -6,6 +6,7 @@ namespace App\Tips;
 
 use App\Cohort;
 use App\Student;
+use App\Tips\DataCollectors\Collector;
 use App\Tips\DataCollectors\DataCollectorContainer;
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\PredefinedStatistic;
@@ -63,14 +64,14 @@ class Tip extends Model
 
     /**
      * Check if the tip is applicable
-     * @param DataCollectorContainer $collector
+     * @param Collector $collector
      * @return bool
      */
-    public function isApplicable(DataCollectorContainer $collector)
+    public function isApplicable(Collector $collector)
     {
         $applicable = true;
         $this->coupledStatistics->each(function (TipCoupledStatistic $tipCoupledStatistic) use (&$applicable, $collector) {
-            $tipCoupledStatistic->statistic->setDataCollectorContainer($collector);
+            $tipCoupledStatistic->statistic->setCollector($collector);
 
             $this->cachedResultsCollection[$tipCoupledStatistic->id] = $tipCoupledStatistic->statistic->calculate();
 
@@ -78,7 +79,6 @@ class Tip extends Model
 
             return $applicable;
         });
-
 
         return $applicable;
     }
@@ -97,7 +97,7 @@ class Tip extends Model
                 if ($calculationResult->hasPassed()) {
                     $percentageValues[] = $tipCoupledStatistic->multiplyBy100 ?
                         number_format($calculationResult->getResult() * 100) . '%' :
-                        $calculationResult->getResult();
+                        number_format($calculationResult->getResult(), 3) . '%';
                 }
             }
 
@@ -116,20 +116,6 @@ class Tip extends Model
         return $tipText;
     }
 
-//    public function buildTextParameters()
-//    {
-//        return $this->coupledStatistics()->orderBy('tip_coupled_statistic.id', 'ASC')->get()->flatMap(function (
-//            Statistic $statistic
-//        ) {
-//            return [
-//                $statistic->pivot->condition() => [
-//                    "value"     => ":value-{$statistic->pivot->id}",
-//                    "valueName" => ($statistic instanceof PredefinedStatistic ? ":value-name-{$statistic->pivot->id}" : trans('-')),
-//                ],
-//            ];
-//        });
-//    }
-
     /**
      * The coupled statistics used for this tip
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -137,9 +123,5 @@ class Tip extends Model
     public function coupledStatistics()
     {
         return $this->hasMany(TipCoupledStatistic::class);
-//        return $this->belongsToMany(Statistic::class, 'tip_coupled_statistic')
-//            ->using(TipCoupledStatistic::class)
-//            ->withPivot(['id', 'comparison_operator', 'threshold', 'multiplyBy100']);
     }
-
 }
