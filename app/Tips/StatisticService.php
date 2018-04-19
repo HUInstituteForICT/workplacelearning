@@ -41,8 +41,8 @@ class StatisticService
      */
     public function updateStatistic(CustomStatistic $statistic, array $data)
     {
-        $variableOne = $this->statisticVariableService->createStatisticVariable($data['statisticVariableOne'], $data['statisticVariableOneParameter']);
-        $variableTwo = $this->statisticVariableService->createStatisticVariable($data['statisticVariableTwo'], $data['statisticVariableTwoParameter']);
+        $variableOne = $this->statisticVariableService->createStatisticVariable($data['statisticVariableOne']);
+        $variableTwo = $this->statisticVariableService->createStatisticVariable($data['statisticVariableTwo']);
 
         $variableOne->save();
         $variableTwo->save();
@@ -50,7 +50,9 @@ class StatisticService
 
         $statistic->name = $data['name'];
 
-        $statistic->educationProgramType()->associate($this->getEducationProgramType($data['educationProgramTypeId']));
+        $educationProgramType = (new EducationProgramType)->where('eptype_name', '=', $variableOne->type)->first();
+
+        $statistic->educationProgramType()->associate($educationProgramType);
         $statistic->operator = $this->getOperator($data['operator']);
 
         $statistic->statisticVariableOne()->associate($variableOne);
@@ -90,11 +92,5 @@ class StatisticService
 
         return $operator;
     }
-
-    private function getEducationProgramType($educationProgramTypeId) {
-        $programType = (new EducationProgramType)->findOrFail($educationProgramTypeId);
-        return $programType;
-    }
-
 
 }

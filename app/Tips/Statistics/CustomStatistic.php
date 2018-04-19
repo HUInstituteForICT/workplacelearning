@@ -4,13 +4,12 @@
 namespace App\Tips\Statistics;
 
 
-use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
-use App\Tips\Statistics\Variables\HasStatisticVariableValue;
-use App\Tips\Statistics\Variables\StatisticVariable;
+use App\Tips\Statistics\StatisticVariable;
+use DivisionByZeroError;
 
 /**
- * @property StatisticVariable|HasStatisticVariableValue $statisticVariableOne
- * @property StatisticVariable|HasStatisticVariableValue $statisticVariableTwo
+ * @property StatisticVariable $statisticVariableOne
+ * @property StatisticVariable $statisticVariableTwo
  * @property integer $operator the operator that will be used for the two statisticVariables
  */
 class CustomStatistic extends Statistic
@@ -88,12 +87,12 @@ class CustomStatistic extends Statistic
             }
 
             return $resultCollection;
-        } catch (\DivisionByZeroError $exception) {
+        } catch (DivisionByZeroError $exception) {
             $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
 
             return $resultCollection;
         } catch (\ErrorException $exception) {
-            if ($exception->getMessage() === "Division by zero") {
+            if ($exception->getMessage() === 'Division by zero') {
                 $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
 
                 return $resultCollection;

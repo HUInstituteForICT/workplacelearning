@@ -11,8 +11,7 @@ use App\Tips\DataCollectors\CollectorFactory;
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\PredefinedStatistic;
 use App\Tips\Statistics\PredefinedStatisticHelper;
-use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
-use App\Tips\Statistics\Variables\StatisticStatisticVariable;
+use App\Tips\Statistics\StatisticVariable;
 use App\Tips\Tip;
 use App\Tips\TipService;
 use Illuminate\Http\Request;
@@ -25,56 +24,34 @@ class TipsController extends Controller
         // This way we can easily filter them from already in use variables in the front end without complicating with different lists, as I tried before 🙃
 
 
-        // Get statistic variables (separate because only StatisticStatisticVariable has that relation but we need it)
-        // These are also the variables that are already in use by statistics and can NOT be used again
-        $statisticVariables = array_merge(
-            StatisticStatisticVariable::with('nestedStatistic')->get()->toArray(),
-            CollectedDataStatisticVariable::all()->toArray()
-        );
+//        // Collectable statisticVariables available
+//        $collectibleDataStatisticVariables = [];
+//        EducationProgramType::all()->each(
+//            function (EducationProgramType $type) use (&$collectibleDataStatisticVariables, $collectorFactory) {
+//                $collector = $collectorFactory->buildCollector((new EducationProgramType)->find($type->eptype_id));
+//
+//                $info = array_map(function ($infoItem) use ($type) {
+//                    $infoItem['education_program_type'] = $type->eptype_id;
+//                    $infoItem['id'] = 'c-' . md5($type->eptype_id . $infoItem['name']);
+//                    $infoItem['findable_id'] = $infoItem['method'] . '-' . $type->eptype_id;
+//
+//                    return $infoItem;
+//                }, (new CollectorDataAggregator($collector))->getInformation());
+//
+//                $collectibleDataStatisticVariables = array_merge($collectibleDataStatisticVariables,
+//                    $info);
+//            }
+//        );
 
-        // Collectable statisticVariables available
-        $collectibleDataStatisticVariables = [];
-        EducationProgramType::all()->each(
-            function (EducationProgramType $type) use (&$collectibleDataStatisticVariables, $collectorFactory) {
-                $collector = $collectorFactory->buildCollector((new EducationProgramType)->find($type->eptype_id));
-
-                $info = array_map(function ($infoItem) use ($type) {
-                    $infoItem['education_program_type'] = $type->eptype_id;
-                    $infoItem['id'] = 'c-' . md5($type->eptype_id . $infoItem['name']);
-                    $infoItem['findable_id'] = $infoItem['method'] . '-' . $type->eptype_id;
-
-                    return $infoItem;
-                }, (new CollectorDataAggregator($collector))->getInformation());
-
-                $collectibleDataStatisticVariables = array_merge($collectibleDataStatisticVariables,
-                    $info);
-            }
-        );
-
-// Disabled because it makes front-end way too complex and seems niche feature as well (feature would allow for nesting statistics as statisticVariable in new statistics)
-//        $availableStatisticStatisticVariables = (new CustomStatistic)
-//            ->with('educationProgramType')
-//            ->orderBy('name', 'ASC')
-//            ->get()->map(function (CustomStatistic $statistic) {
-//                $statistic = $statistic->toArray();
-//                // s- to identify pickable statistic variable in front-end
-//                $statistic['id'] = 's-' . $statistic['id'];
-//                $statistic['type'] = (new StatisticStatisticVariable)->getType();
-//                return $statistic;
-//            });
-
-        return array_merge(
-            $statisticVariables,
-            $collectibleDataStatisticVariables
-        /*$availableStatisticStatisticVariables->toArray()*/);
+        return StatisticVariable::$availableFilters;
     }
 
     private function getStatistics()
     {
 
         $statistics = array_merge(
-            (new PredefinedStatistic)->with('educationProgramType')->get()->toArray(),
-            (new CustomStatistic)->with('educationProgramType', 'statisticVariableOne',
+            PredefinedStatistic::with('educationProgramType')->get()->toArray(),
+            CustomStatistic::with('educationProgramType', 'statisticVariableOne',
                 'statisticVariableTwo')->get()->toArray()
         );
 

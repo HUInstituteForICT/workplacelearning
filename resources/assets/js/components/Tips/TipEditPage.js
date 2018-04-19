@@ -25,7 +25,7 @@ class TipEditPage extends React.Component {
             match,
             tip, coupledStatistics,
             statistics, educationProgramTypes,
-            statisticVariables, cohorts,
+            variableFilters, cohorts,
             coupleStatisticForm, updateCoupleStatisticFormProperty,
             coupledStatisticsInEditMode, storeNewCoupledStatistic,
             storeNewStatisticVariable, updateEntity,
@@ -135,10 +135,7 @@ class TipEditPage extends React.Component {
 
                 <div className="col-md-5 col-md-offset-2">
                     <h3>{Lang.get('react.statistic.create-statistic')}</h3>
-                    <CreateForm statisticVariables={Object.values(statisticVariables).filter(statisticVariable => {
-                        // Check for c- (collectable) in id, those can be used for new statistics
-                        return String(statisticVariable.id).includes('c-');
-                    })}
+                    <CreateForm variableFilters={variableFilters}
                                 educationProgramTypes={educationProgramTypes}
                                 operators={[
                                     {type: 0, label: "+"},
@@ -387,7 +384,7 @@ const mapping = {
             coupledStatistics,
             statistics: state.entities.statistics,
             educationProgramTypes: state.entities.educationProgramTypes,
-            statisticVariables: state.entities.statisticVariables,
+            variableFilters: state.tipEditPageUi.variableFilters,
             cohorts: state.entities.cohorts,
             coupleStatisticForm: state.coupleStatistic,
             coupledStatisticsInEditMode: state.tipEditPageUi.inEditMode

@@ -29,20 +29,4 @@ class StatisticStoreRequest extends FormRequest
             "operator" => "numeric|min:0|max:3",
         ];
     }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    public function withValidator($validator) {
-        $validator->sometimes('statisticVariableOneParameter', 'required|max:255', function($input) {
-            return $input->statisticVariableOne['type'] === (new CollectedDataStatisticVariable)->getType() && $input->statisticVariableOne['hasParameters'];
-        });
-
-        $validator->sometimes('statisticVariableTwoParameter', 'required|max:255', function($input) {
-            return $input->statisticVariableTwo['type'] === (new CollectedDataStatisticVariable)->getType() && $input->statisticVariableTwo['hasParameters'];
-        });
-    }
 }

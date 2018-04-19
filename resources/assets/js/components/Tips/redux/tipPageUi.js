@@ -1,14 +1,17 @@
 const types = {
     TOGGLE_EDIT_MODE_COUPLED_STATISTIC: 'TOGGLE_EDIT_MODE_COUPLED_STATISTIC',
+    ADD_SELECTABLE_STATISTICVARIABLES: 'ADD_SELECTABLE_STATISTICVARIABLES'
 };
 
 const actions = {
-    toggleEditModeCoupledStatistic: id => ({type: types.TOGGLE_EDIT_MODE_COUPLED_STATISTIC, id})
+    toggleEditModeCoupledStatistic: id => ({type: types.TOGGLE_EDIT_MODE_COUPLED_STATISTIC, id}),
+    addSelectableStatisticVariables: variables => ({type: types.ADD_SELECTABLE_STATISTICVARIABLES, variables})
 };
 
 
 const defaultState = {
     inEditMode: [],
+    variableFilters: {acting: [], producing: []},
 };
 
 const reducer = (state = defaultState, action) => {
@@ -25,6 +28,12 @@ const reducer = (state = defaultState, action) => {
             }
             return {...state, inEditMode};
         }
+
+        case types.ADD_SELECTABLE_STATISTICVARIABLES: {
+            return {...state, variableFilters: action.variables}
+        }
+
+
     }
     return state;
 };

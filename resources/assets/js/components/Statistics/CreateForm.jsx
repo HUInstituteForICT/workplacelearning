@@ -7,41 +7,65 @@ export default class CreateForm extends React.Component {
         super(props);
         this.state = {
             name: '',
-            statisticVariableOneIndex: 0,
-            statisticVariableOneParameter: '',
-            statisticVariableTwoIndex: 0,
-            statisticVariableTwoParameter: '',
+            statisticVariableOneType: '',
+            statisticVariableTwoType: '',
+            statisticVariableOneFilters: [],
+            statisticVariableTwoFilters: [],
+            statisticVariableOneSelectType: 'count',
+            statisticVariableTwoSelectType: 'count',
             operatorIndex: 0,
             submitting: false,
-        }
+        };
     }
 
-    statisticIndex(statisticToFind) {
-        return this.props.statisticVariables.findIndex(statistic => statistic.id === statisticToFind.id);
-    }
 
     operatorIndex(operatorToFind) {
         return this.props.operators.findIndex(operator => operator.type === operatorToFind.type);
     }
+
+    selectVariableType = (number, value) => {
+        const variable = number === 'one' ? 'statisticVariableOne' : 'statisticVariableTwo';
+        this.setState({
+            [variable + 'Type']: value,
+            [variable + 'Filters']: JSON.parse(JSON.stringify(this.props.variableFilters[value])),
+        })
+    };
+
+    updateFilter = (number, filterIndex, parameterIndex, value) => {
+
+        const filter = number === 'one' ? {...this.state.statisticVariableOneFilters[filterIndex]} : {...this.state.statisticVariableTwoFilters[filterIndex]};
+        const parameters = [...filter.parameters];
+        const parameter = parameters[parameterIndex];
+        parameter.value = value;
+
+        parameters[parameterIndex] = parameter;
+        filter.parameters = parameters;
+
+        const filters = number === 'one' ? [...this.state.statisticVariableOneFilters] : [...this.state.statisticVariableTwoFilters];
+        filters[filterIndex] = filter;
+        number === 'one' ? this.setState({statisticVariableOneFilters: filters}) : this.setState({statisticVariableTwoFilters: filters});
+    };
+
 
     submit() {
         if(!this.validate()) {
             return false;
         }
 
-        const operator = this.props.operators[this.state.operatorIndex];
-        const variableOne = this.props.statisticVariables[this.state.statisticVariableOneIndex];
-        const variableTwo = this.props.statisticVariables[this.state.statisticVariableTwoIndex];
-
         this.setState({submitting: true});
         axios.post('/api/statistics', {
             name: this.state.name,
-            operator: operator.type,
-            statisticVariableOne: variableOne,
-            statisticVariableOneParameter: this.state.statisticVariableOneParameter,
-            statisticVariableTwo: variableTwo,
-            statisticVariableTwoParameter: this.state.statisticVariableTwoParameter,
-            educationProgramTypeId: variableOne.education_program_type
+            operator: this.props.operators[this.state.operatorIndex].type,
+            statisticVariableOne: {
+                type: this.state.statisticVariableOneType,
+                filters: this.state.statisticVariableOneFilters,
+                selectType: this.state.statisticVariableOneSelectType
+            },
+            statisticVariableTwo: {
+                type: this.state.statisticVariableTwoType,
+                filters: this.state.statisticVariableTwoFilters,
+                selectType: this.state.statisticVariableTwoSelectType
+            },
         }).then(response => {
             this.props.onCreated(response.data);
             this.setState({submitting: false});
@@ -58,25 +82,13 @@ export default class CreateForm extends React.Component {
             return false;
         }
         const operator = this.props.operators[this.state.operatorIndex];
-        const variableOne = this.props.statisticVariables[this.state.statisticVariableOneIndex];
-        const variableTwo = this.props.statisticVariables[this.state.statisticVariableTwoIndex];
 
-        if(operator.type < 0 || operator.type > 3) { // 4 operators: +-*/
-            return false;
-        }
-        if(variableOne.type === "collecteddatastatistic" && variableOne.hasParameters && this.state.statisticVariableOneParameter === '') {
-            alert(Lang.get('react.statistic.errors.empty-variable-parameter'));
-            return false;
-        }
-        if(variableTwo.type === "collecteddatastatistic" && variableTwo.hasParameters && this.state.statisticVariableTwoParameter === '') {
-            alert(Lang.get('react.statistic.errors.empty-variable-parameter'));
-            return false;
-        }
-
-        return true;
+        return !(operator.type < 0 || operator.type > 3);
     }
 
     render() {
+
+
         return <div>
             <strong>{Lang.get('react.statistic.statistic-name')}</strong><br/>
             <input onChange={e => this.setState({name: e.target.value})} value={this.state.name}
@@ -87,28 +99,36 @@ export default class CreateForm extends React.Component {
                 <div className="col-md-4">
 
                     <h4>{Lang.get('react.statistic.select-variable-one')}</h4>
-                    <select className="form-control" onChange={e => this.setState({
-                        statisticVariableOneIndex: parseInt(e.target.value)
-                    })} value={this.state.statisticVariableOneIndex}>
-                        {this.props.statisticVariables.map(
-                            statisticVariable =>
-                                <option key={`${statisticVariable.id}`}
-                                        value={this.statisticIndex(statisticVariable)}>
-                                    {statisticVariable.name} - ({this.props.educationProgramTypes[statisticVariable.education_program_type].eptype_name})
-                                </option>)}
+                    <select className="form-control"
+                            onChange={e => this.selectVariableType('one', e.target.value)}
+                            value={this.state.statisticVariableOneType}>
+                        <option value='' disabled/>
+                        <option value="acting">Acting</option>
+                        <option value="producing">Producing</option>
                     </select>
 
+
                     {
-                        // Check if this Statistic Variable has a parameter
-                        (this.props.statisticVariables[this.state.statisticVariableOneIndex].type === "collecteddatastatistic" &&
-                            this.props.statisticVariables[this.state.statisticVariableOneIndex].hasParameters
-                        ) && <div>
-                            <strong>{Lang.get('react.statistic.parameter')}: {this.props.statisticVariables[this.state.statisticVariableOneIndex].parameterName}</strong>
-                            <input value={this.state.statisticVariableOneParameter}
-                                   onChange={e => this.setState({statisticVariableOneParameter: e.target.value})}
-                                   type="text" className="form-control" maxLength={255}/>
-                        </div>
+                        this.state.statisticVariableOneFilters.map((filter, filterIndex) => {
+
+                            return <div key={filter.name}>
+                                <strong>{filter.name}</strong>
+                                {
+                                    filter.parameters.map((parameter, parameterIndex) => {
+                                        return <div key={parameter.name}>
+                                            <input value={parameter.value || ''}
+                                                   placeholder={parameter.name}
+                                                   onChange={e => this.updateFilter('one', filterIndex, parameterIndex, e.target.value)}
+                                                   type="text" className="form-control" maxLength={255}/>
+                                        </div>;
+                                    })
+                                }
+                            </div>;
+
+
+                        })
                     }
+
 
                 </div>
 
@@ -126,33 +146,38 @@ export default class CreateForm extends React.Component {
                     </select>
                 </div>
 
+
                 <div className="col-md-4">
+
                     <h4>{Lang.get('react.statistic.select-variable-two')}</h4>
-                    <select className="form-control" onChange={e => this.setState({
-                        statisticVariableTwoIndex: parseInt(e.target.value)
-                    })} value={this.state.statisticVariableTwoIndex}>
-                        {this.props.statisticVariables.filter(statisticVariable => {
-                            if(this.state.statisticVariableOneIndex > 0) {
-                                return this.props.statisticVariables[this.state.statisticVariableOneIndex].education_program_type === statisticVariable.education_program_type;
-                            }
-                            return true;
-                        }).map(
-                            statisticVariable =>
-                                <option key={`${statisticVariable.id}`}
-                                        value={this.statisticIndex(statisticVariable)}>
-                                    {statisticVariable.name} - ({this.props.educationProgramTypes[statisticVariable.education_program_type].eptype_name})
-                                </option>)}
+                    <select className="form-control"
+                            onChange={e => this.selectVariableType('two', e.target.value)}
+                            value={this.state.statisticVariableTwoType}>
+                        <option value='' disabled/>
+                        <option value="acting">Acting</option>
+                        <option value="producing">Producing</option>
                     </select>
+
+
                     {
-                        // Check if this Statistic Variable has a parameter
-                        (this.props.statisticVariables[this.state.statisticVariableTwoIndex].type === "collecteddatastatistic" &&
-                            this.props.statisticVariables[this.state.statisticVariableTwoIndex].hasParameters
-                        ) && <div>
-                            <strong>{Lang.get('react.statistic.parameter')}: {this.props.statisticVariables[this.state.statisticVariableTwoIndex].parameterName}</strong>
-                            <input value={this.state.statisticVariableTwoParameter}
-                                   onChange={e => this.setState({statisticVariableTwoParameter: e.target.value})}
-                                   type="text" className="form-control" maxLength={255}/>
-                        </div>
+                        this.state.statisticVariableTwoFilters.map((filter, filterIndex) => {
+
+                            return <div key={filter.name}>
+                                <strong>{filter.name}</strong>
+                                {
+                                    filter.parameters.map((parameter, parameterIndex) => {
+                                        return <div key={parameter.name}>
+                                            <input value={parameter.value || ''}
+                                                   placeholder={parameter.name}
+                                                   onChange={e => this.updateFilter('two', filterIndex, parameterIndex, e.target.value)}
+                                                   type="text" className="form-control" maxLength={255}/>
+                                        </div>;
+                                    })
+                                }
+                            </div>;
+
+
+                        })
                     }
                 </div>
             </div>

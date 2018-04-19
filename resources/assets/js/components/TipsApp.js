@@ -3,9 +3,9 @@ import {connect, Provider} from 'react-redux';
 import React from "react";
 import {HashRouter, Route, Switch, withRouter} from "react-router-dom";
 import IndexPage from "./Tips/IndexPage";
-import {actions, reducer as entities} from "./Tips/redux/entities";
+import {actions as entityActions, reducer as entities} from "./Tips/redux/entities";
 import {reducer as coupleStatistic} from "./Tips/redux/coupleStatistic";
-import {reducer as tipEditPageUi} from "./Tips/redux/tipPageUi";
+import {actions as uiActions, reducer as tipEditPageUi} from "./Tips/redux/tipPageUi";
 import axios from "axios";
 import {normalize} from "normalizr";
 import {Schema} from "../Schema";
@@ -20,7 +20,11 @@ window.getState = store.getState;
 const mapping = {
     state: state => state,
     dispatch: dispatch => ({loadData: () => axios.get('/api/tips')
-            .then(response => dispatch(actions.addEntities(normalize(response.data, Schema.loadSchema).entities)))})
+            .then(response => {
+                dispatch(uiActions.addSelectableStatisticVariables(response.data.statisticVariables));
+                delete response.data.statisticVariables;
+                dispatch(entityActions.addEntities(normalize(response.data, Schema.loadSchema).entities));
+            })})
 };
 
 

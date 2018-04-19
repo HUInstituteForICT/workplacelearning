@@ -16,7 +16,6 @@ statistic.define({
     statistic_variable_two: statisticVariable
 });
 statisticVariable.define({
-    nested_statistic: statistic
 });
 coupledStatistic.define({statistic});
 
