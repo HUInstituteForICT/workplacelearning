@@ -147,30 +147,31 @@
                     @endif
                     <?php $tipCounter = 1; ?>
 
-                    @foreach($tips as $tip)
+                        @foreach($tips as $tip)
+                            @if($tip->likes->count() === 0 || $tip->likes[0]->type === 1)
+                                <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
+                                <div class="row">
+                                    @if($tip->likes->count() === 0)
+                                        <div class="col-md-1"
+                                             style="display: inline-block; vertical-align: middle;   float: none;">
 
-                        @if($tip->likes->count() === 0)
-                            <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
-                            <div class="row">
-                                <div class="col-md-1"
-                                     style="display: inline-block; vertical-align: middle;   float: none;">
-                                    <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
-                                        onclick="likeTip({{ $tip->id }}, 1)"
-                                        target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
-                                    <h3 class="h3" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
-                                        onclick="likeTip({{ $tip->id }}, -1)"
-                                        target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h3>
-                                </div><!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
-                                    --><div class="col-md-11"
-                                            style="display: inline-block; vertical-align: middle;   float: none;">
-                                    <p>{!! nl2br($tip->getTipText()) !!}</p>
+                                            <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
+                                                onclick="likeTip({{ $tip->id }}, 1)"
+                                                target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
+                                            <h3 class="h3" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
+                                                onclick="likeTip({{ $tip->id }}, -1)"
+                                                target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h3>
+                                        </div>@endif<!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
+                                        --><div class="col-md-11"
+                                                style="display: inline-block; vertical-align: middle;   float: none;">
+                                        <p>{!! nl2br($tip->getTipText()) !!}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <br/><br/>
-                            <?php $tipCounter++; ?>
-                        @endif
+                                <br/><br/>
+                                <?php $tipCounter++; ?>
+                            @endif
 
-                    @endforeach
+                        @endforeach
 
                 </div>
             </div>

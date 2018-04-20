@@ -72,7 +72,7 @@ class ProducingAnalysisController extends Controller
                 },
             ]);
         $applicableTips = $cohort->tips->filter(function(Tip $tip) use($collector) {
-            return $tip->showInAnalysis && $tip->isApplicable($collector) && $tip->likes->count() === 0;
+            return $tip->showInAnalysis && $tip->isApplicable($collector);
         });
 
 
