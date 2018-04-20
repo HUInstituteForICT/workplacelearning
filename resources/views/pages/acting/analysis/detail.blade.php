@@ -212,18 +212,29 @@
 
 
                 @if($tips->count() > 0)
-                <h3>Tips</h3>
+                    <h3>Tips</h3>
                 @endif
                 <?php $tipCounter = 1; ?>
 
                 @foreach($tips as $tip)
 
                     @if($tip->likes->count() === 0)
-                        <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>:
-                        <a id="likeTip-{{ $tip->id }}" onclick="likeTip({{ $tip->id }})"
-                           target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></a>
-                        <br/>
-                        <p>{!! nl2br($tip->getTipText()) !!}</p>
+                        <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
+                        <div class="row">
+                            <div class="col-md-1"
+                                 style="display: inline-block; vertical-align: middle;   float: none;">
+                                <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
+                                    onclick="likeTip({{ $tip->id }}, 1)"
+                                    target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
+                                <h3 class="h3" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
+                                    onclick="likeTip({{ $tip->id }}, -1)"
+                                    target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h3>
+                            </div><!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
+                                --><div class="col-md-11"
+                                        style="display: inline-block; vertical-align: middle;   float: none;">
+                                <p>{!! nl2br($tip->getTipText()) !!}</p>
+                            </div>
+                        </div>
                         <br/><br/>
                         <?php $tipCounter++; ?>
                     @endif
@@ -231,15 +242,15 @@
                 @endforeach
 
 
+
             </div>
         </div>
     </div>
     <script>
-        function likeTip(tipId) {
+        function likeTip(tipId, type) {
             const url = "{{ route('tips.like', ['id' => ':id']) }}";
-            $.get(url.replace(':id', tipId)).then(function() {
-                $('#likeTip-' + tipId).after('{{ trans('tips.liked') }}').remove();
-
+            $.get(url.replace(':id', tipId) + '?type=' + type).then(function() {
+                $('#likeTip-' + tipId).parent().remove();
             });
         }
     </script>

@@ -221,7 +221,7 @@ class TipsController extends Controller
     }
 
     public function likeTip(Tip $tip, TipService $tipService, Request $request) {
-        $liked = $tipService->likeTip($tip, $request->user());
+        $liked = $tipService->likeTip($tip, (int) $request->get('type', 1), $request->user());
         return response()->json(['status' => $liked ? 'success' : 'error']);
     }
 }

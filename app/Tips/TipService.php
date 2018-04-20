@@ -92,19 +92,21 @@ class TipService
      * Add a new Like to a Tip given by a Student
      *
      * @param Tip $tip
+     * @param int $type
      * @param Student $student
      * @return bool whether a new like has been added
      */
-    public function likeTip(Tip $tip, Student $student)
+    public function likeTip(Tip $tip, $type, Student $student)
     {
-        if ((new Like)
-                ->where('tip_id', '=', $tip->id)
+        if (Like::
+                where('tip_id', '=', $tip->id)
                 ->where('student_id', '=', $student->student_id)
                 ->count() > 0) {
             return false;
         }
 
         $like = new Like;
+        $like->type = $type;
         $like->tip()->associate($tip);
         $like->student()->associate($student);
         return $like->save();

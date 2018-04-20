@@ -83,7 +83,7 @@ class TipsController extends Controller
      */
     public function index(CollectorFactory $collectorFactory)
     {
-        $tips = (new Tip)->with('coupledStatistics', 'enabledCohorts')->get();
+        $tips = Tip::with('coupledStatistics', 'enabledCohorts', 'likes')->get();
         $statistics = $this->getStatistics();
 
         return [

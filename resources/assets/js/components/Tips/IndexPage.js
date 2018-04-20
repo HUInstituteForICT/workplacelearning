@@ -102,6 +102,19 @@ const tipItem = ({tip, educationProgramType, removeTip}) => {
             <br/>
 
             <strong>{Lang.get('react.tips.statistics')}:</strong> {tip.coupled_statistics.length}<br/>
+            <br/>
+
+            <strong>Likes</strong>
+            <br/><br/>
+            <div className="row">
+                <div className="col-md-6" style={{textAlign: 'center'}}>
+                    <span className="glyphicon glyphicon-thumbs-up"/>&nbsp;{tip.likes.filter(like => like.type === 1).length}
+                </div>
+                <div className="col-md-6" style={{textAlign: 'center'}}>
+                    <span className="glyphicon glyphicon-thumbs-down"/>&nbsp;{tip.likes.filter(like => like.type === -1).length}
+                </div>
+            </div>
+
             <br/><br/>
 
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
