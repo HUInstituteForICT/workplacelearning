@@ -10,6 +10,7 @@ use App\Student;
  * @property int $tip_id
  * @property Student $student
  * @property Tip $tip
+ * @property int $score
  */
 class Like extends \Eloquent
 {

@@ -66,7 +66,6 @@ class CustomStatistic extends Statistic
 
         $resultCollection = new StatisticCalculationResultCollection();
         try {
-
             switch ($this->operator) {
                 case self::OPERATOR_ADD:
                     $resultCollection->addResult(new StatisticCalculationResult($this->statisticVariableOne->getValue() + $this->statisticVariableTwo->getValue(),
@@ -89,6 +88,10 @@ class CustomStatistic extends Statistic
 
         } catch (\DivisionByZeroError $exception) {
             $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
+//        } catch (\ErrorException $exception) {
+//            if($exception->getMessage() === 'Division by zero') {
+//                $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
+//            }
         }
 
         return $resultCollection;

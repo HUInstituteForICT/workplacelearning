@@ -183,6 +183,9 @@ export default class CreateForm extends React.Component {
             </div>
 
             <br/>
+            <p style={{whiteSpace: 'pre-line'}}>
+                { Lang.get('statistics.variable-help') }
+            </p>
             <button type="button" className="btn defaultButton"  disabled={this.state.submitting}
                     onClick={() => this.submit()}>
                 {this.state.submitting ?

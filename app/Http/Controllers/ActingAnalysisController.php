@@ -69,7 +69,7 @@ class ActingAnalysisController extends Controller
             $month = null;
         }
 
-        $ccCollector = new Collector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
+        $collector = new Collector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
 
         /** @var Cohort $cohort */
         $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
@@ -80,8 +80,8 @@ class ActingAnalysisController extends Controller
                     $relationshipQuery->where('student_id', '=', $request->user()->student_id);
                 },
             ]);
-        $applicableTips = $cohort->tips->filter(function (Tip $tip) use ($ccCollector) {
-            return $tip->showInAnalysis && $tip->isApplicable($ccCollector);
+        $applicableTips = $cohort->tips->filter(function (Tip $tip) use ($collector) {
+            return $tip->showInAnalysis && $tip->isApplicable($collector) && $tip->likes->count() === 0;
         });
 
 

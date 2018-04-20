@@ -141,42 +141,33 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <h3>Tips</h3>
+
+                    @if($tips->count() > 0)
+                        <h3>Tips</h3>
+                    @endif
                     <?php $tipCounter = 1; ?>
 
                     @foreach($tips as $tip)
-                        <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
-                        @if(count($tip->likes) === 0)
-                            <a id="likeTip-{{ $tip->id }}" onclick="likeTip({{ $tip->id }})"
-                               target="_blank">{{ trans('tips.like') }}</a>
-                        @else
-                            {{ trans('tips.liked') }}
+
+                        @if($tip->likes->count() === 0)
+                            <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
+                            <div class="row">
+                                <div class="col-md-1"
+                                     style="display: inline-block; vertical-align: middle;   float: none;">
+                                    <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
+                                        onclick="likeTip({{ $tip->id }})"
+                                        target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
+                                </div><!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
+                                --><div class="col-md-11"
+                                     style="display: inline-block; vertical-align: middle;   float: none;">
+                                    <p>{!! nl2br($tip->getTipText()) !!}</p>
+                                </div>
+                            </div>
+                            <br/><br/>
+                            <?php $tipCounter++; ?>
                         @endif
-                        <br/>
-                        <p>{!! nl2br($tip->getTipText()) !!}</p>
-                        <br/><br/>
-                        <?php $tipCounter++; ?>
+
                     @endforeach
-
-
-
-                    {{--<h2>{{ trans('analysis.tips.tips') }}</h2>--}}
-                    {{--@if($producingAnalysis->statistic('percentageAloneHours') > 75 && $producingAnalysis->statistic('percentageDifficultTasks') > 50)--}}
-                        {{--<p>{{ trans('analysis.tips.percentageAloneHours', ['percentage' => $producingAnalysis->statistic('percentageAloneHours'), 'percentageDifficultTasks' => $producingAnalysis->statistic('percentageDifficultTasks')]) }}</p>--}}
-                    {{--@endif--}}
-                    {{--@if($producingAnalysis->statistic('percentageEasyHours') > 65)--}}
-                        {{--<p>--}}
-                            {{--{{ trans('analysis.tips.percentageEasyHours', ["percentage" => $producingAnalysis->statistic('percentageEasyHours')]) }}--}}
-                        {{--</p>--}}
-                    {{--@endif--}}
-
-                        {{--<p>--}}
-                            {{--{{ trans('analysis.tips.mostDifficultCategory', ["category" => $producingAnalysis->statistic('mostDifficultCategoryName'), "percentage" => $producingAnalysis->statistic('persentageMostDifficultCategory')]) }}--}}
-                        {{--</p>--}}
-
-                        {{--<p>--}}
-                            {{--{{ trans('analysis.tips.averagePersonDifficultyName', ['person' => $producingAnalysis->statistic('averagePersonDifficultyName')]) }}--}}
-                        {{--</p>--}}
 
                 </div>
             </div>
@@ -274,8 +265,7 @@
         function likeTip(tipId) {
             const url = "{{ route('tips.like', ['id' => ':id']) }}";
             $.get(url.replace(':id', tipId)).then(function() {
-                $('#likeTip-' + tipId).after('{{ trans('tips.liked') }}').remove();
-
+                $('#likeTip-' + tipId).after('').remove();
             });
         }
     </script>

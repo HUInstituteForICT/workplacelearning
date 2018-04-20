@@ -10,7 +10,7 @@ use App\WorkplaceLearningPeriod;
 
 class PredefinedStatisticHelper
 {
-    private static $cache = null;
+    private static $cache;
 
     public static function getData()
     {
@@ -35,9 +35,7 @@ class PredefinedStatisticHelper
     public static function isProducingMethod($method)
     {
         $x = (bool)collect(self::getData())->first(function (array $predefinedStatisticData) use ($method) {
-            $x = $predefinedStatisticData['method'] === $method && $predefinedStatisticData['epType'] === 'Producing';
-
-            return $x;
+            return $predefinedStatisticData['method'] === $method && $predefinedStatisticData['epType'] === 'Producing';
         });
 
         return $x;

@@ -211,21 +211,23 @@
                 @endif
 
 
+                @if($tips->count() > 0)
                 <h3>Tips</h3>
+                @endif
                 <?php $tipCounter = 1; ?>
 
                 @foreach($tips as $tip)
-                    <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>:
-                    @if(count($tip->likes) === 0)
+
+                    @if($tip->likes->count() === 0)
+                        <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>:
                         <a id="likeTip-{{ $tip->id }}" onclick="likeTip({{ $tip->id }})"
-                           target="_blank">{{ trans('tips.like') }}</a>
-                    @else
-                        {{ trans('tips.liked') }}
+                           target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></a>
+                        <br/>
+                        <p>{!! nl2br($tip->getTipText()) !!}</p>
+                        <br/><br/>
+                        <?php $tipCounter++; ?>
                     @endif
-                    <br/>
-                    <p>{!! nl2br($tip->getTipText()) !!}</p>
-                    <br/><br/>
-                    <?php $tipCounter++; ?>
+
                 @endforeach
 
 

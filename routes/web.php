@@ -67,7 +67,6 @@ Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api
 
 
 
-//    Route::resource('statistics', 'StatisticController', ['only' => ['index', 'create', 'store', 'destroy']]);
     Route::put('tips/{tip}/cohorts', 'TipsController@updateCohorts')->name('tips.updateCohorts');
     Route::get('tips/{tip}/select-statistic', 'TipsController@selectStatistic')->name('tips.select-statistic');
     Route::put('tips/{tip}/couple-statistic', 'TipsController@coupleStatistic')->name('tips.couple-statistic');

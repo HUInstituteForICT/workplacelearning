@@ -93,7 +93,7 @@ class PredefinedStatisticCollector implements CollectorInterface
     }
 
     /**
-     * @DataUnitAnnotation(name="Percentage learning moments for every learning question without use of theory", method="percentageLearningMomentsWithoutTheory", valueParameterDescription="The names of the learning moments", epType="Acting")
+     * @DataUnitAnnotation(name="Percentage learning moments for every learning question without use of theory", method="percentageLearningMomentsWithoutTheory", valueParameterDescription="The names of the learning moments (e.g. 'Unplanned moment, individual session')", epType="Acting")
      * @return StatisticCalculationResultCollection
      * @throws \Exception
      */

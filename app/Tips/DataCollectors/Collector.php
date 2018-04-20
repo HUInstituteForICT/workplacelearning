@@ -44,7 +44,12 @@ class Collector implements CollectorInterface
 
     public function getValueForVariable(StatisticVariable $statisticVariable)
     {
-        $builder = $this->learningPeriod->learningActivityActing()->getBaseQuery();
+        if($statisticVariable->type === 'acting') {
+            $builder = $this->learningPeriod->learningActivityActing()->getBaseQuery();
+        } elseif($statisticVariable->type === 'producing') {
+            $builder = $this->learningPeriod->learningActivityProducing()->getBaseQuery();
+        }
+
 
         foreach ($statisticVariable->filters as $filterData) {
 

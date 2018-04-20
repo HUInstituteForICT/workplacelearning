@@ -126,7 +126,9 @@ class TipsController extends Controller
 
         if ($request->get('save-and') === 'again') {
             return redirect()->route('tips.select-statistic', ['id' => $tip->id]);
-        } elseif ($request->get('save-and') === 'continue') {
+        }
+
+        if ($request->get('save-and') === 'continue') {
             return redirect()->route('tips.edit', ['id' => $tip->id]);
         }
 
