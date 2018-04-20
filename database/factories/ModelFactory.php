@@ -39,13 +39,11 @@ $factory->define(\App\EducationProgram::class, function(Faker\Generator $faker) 
     ];
 });
 
-$factory->define(\App\Tips\Statistics\Variables\CollectedDataStatisticVariable::class, function () {
+$factory->define(\App\Tips\Statistics\StatisticVariable::class, function () {
     return [
-        'type'                => 'collecteddatastatistic',
-        'name'                => 'Total learning activities',
-        'dataUnitMethod'      => 'totalLearningActivities',
-        'dataUnitParameter'   => null,
-        'nested_statistic_id' => null,
+        'type'      => 'acting',
+        'filters'   => \App\Tips\Statistics\StatisticVariable::$availableFilters['acting'],
+        'selectType' => 'count',
     ];
 });
 
@@ -57,10 +55,10 @@ $factory->define(\App\Tips\Statistics\CustomStatistic::class, function () {
             return factory(\App\EducationProgramType::class)->states('acting')->create()->eptype_id;
         },
         'statistic_variable_one_id' => function () {
-            return factory(\App\Tips\Statistics\Variables\CollectedDataStatisticVariable::class)->create()->id;
+            return factory(\App\Tips\Statistics\StatisticVariable::class)->create()->id;
         },
         'statistic_variable_two_id' => function () {
-            return factory(\App\Tips\Statistics\Variables\CollectedDataStatisticVariable::class)->create()->id;
+            return factory(\App\Tips\Statistics\StatisticVariable::class)->create()->id;
         },
     ];
 });

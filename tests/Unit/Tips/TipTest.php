@@ -26,13 +26,13 @@ class TipTest extends \Tests\TestCase
 
         $tip->coupledStatistics()->save($tipCoupledStatistic);
 
-        $dataCollectorContainer = $this->createMock(\App\Tips\DataCollectors\DataCollectorContainer::class);
-        $dataCollectorContainer->method('getDataUnit')->willReturn(0.2);
+        $collector = $this->createMock(\App\Tips\DataCollectors\Collector::class);
+        $collector->method('getValueForVariable')->willReturn(0.3);
 
-        $this->assertTrue($tip->isApplicable($dataCollectorContainer));
+        $this->assertTrue($tip->isApplicable($collector));
 
         $tip->coupledStatistics->first()->threshold = 0.9;
-        $this->assertFalse($tip->isApplicable($dataCollectorContainer));
+        $this->assertFalse($tip->isApplicable($collector));
     }
 
     public function testTipText() {
@@ -53,19 +53,19 @@ class TipTest extends \Tests\TestCase
 
         $tip->coupledStatistics()->save($tipCoupledStatistic);
 
-        $dataCollectorContainer = $this->createMock(\App\Tips\DataCollectors\DataCollectorContainer::class);
-        $dataCollectorContainer->method('getDataUnit')->willReturn(10);
+        $collector = $this->createMock(\App\Tips\DataCollectors\Collector::class);
+        $collector->method('getValueForVariable')->willReturn(0.3);
 
 
-        $tip->tipText = ":value-1 should be 2,000%";
-        $tip->isApplicable($dataCollectorContainer); // to trigger calculate
+        $tip->tipText = ":value-1 should be 60%";
+        $tip->isApplicable($collector); // to trigger calculate
 
-        $this->assertEquals("2,000% should be 2,000%", $tip->getTipText());
+        $this->assertEquals("60% should be 60%", $tip->getTipText());
 
-        $tip->tipText = ":value-1 should be 20";
+        $tip->tipText = ":value-1 should be 0.600";
         $tip->coupledStatistics->first()->multiplyBy100 = false;
-        $tip->isApplicable($dataCollectorContainer); // to trigger calculate
-        $this->assertEquals("20 should be 20", $tip->getTipText());
+        $tip->isApplicable($collector); // to trigger calculate
+        $this->assertEquals("0.600% should be 0.600", $tip->getTipText());
     }
 
     public function testTipLike() {
