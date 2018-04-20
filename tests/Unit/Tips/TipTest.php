@@ -73,11 +73,11 @@ class TipTest extends \Tests\TestCase
         $student = factory(Student::class)->create();
 
         $tipService = new TipService();
-        $result = $tipService->likeTip($tip,$student);
+        $result = $tipService->likeTip($tip, 1, $student);
 
         $this->assertTrue($result);
 
-        $result = $tipService->likeTip($tip,$student);
+        $result = $tipService->likeTip($tip, 1, $student);
 
         $this->assertFalse($result);
     }

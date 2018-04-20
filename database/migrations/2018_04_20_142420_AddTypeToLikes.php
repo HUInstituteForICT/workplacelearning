@@ -14,7 +14,7 @@ class AddTypeToLikes extends Migration
     public function up()
     {
         Schema::table('likes', function(Blueprint $table) {
-            $table->integer('type');
+            $table->integer('type')->default(1);
         });
     }
 
