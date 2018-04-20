@@ -9,4 +9,7 @@ return [
     'edit'                => 'Statistiek aanpassen',
     'variable-help'       => 'Zet de filters voor de variabele, of laat één of meerdere leeg om die filters niet te gebruiken.
     Filter een attribuut op meerdere waardes door "||" the gebruiken tussen de waardes, bijv. "Alleen || Collega".',
+    'variable-select-count' => 'Aantal activiteiten',
+    'variable-select-hours' => 'Aantal uren',
+    'select' => 'Selecteer'
 ];

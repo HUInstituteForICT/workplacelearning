@@ -28,6 +28,17 @@ export default class CreateForm extends React.Component {
         this.setState({
             [variable + 'Type']: value,
             [variable + 'Filters']: JSON.parse(JSON.stringify(this.props.variableFilters[value])),
+        });
+        // If switched to acting, check if selecttype is on hours, if so, change to count as Acting doesnt support hours selecttype
+        if(value === 'acting' && this.state[variable + 'SelectType'] === 'hours') {
+            this.setState({[variable + 'SelectType']: 'count'})
+        }
+    };
+
+    selectSelectType = (number, value) => {
+        const variable = number === 'one' ? 'statisticVariableOne' : 'statisticVariableTwo';
+        this.setState({
+            [variable + 'SelectType']: value,
         })
     };
 
@@ -129,6 +140,14 @@ export default class CreateForm extends React.Component {
                         })
                     }
 
+                    <br/>
+                    <strong>{ Lang.get('statistics.select')}</strong>
+                    <select className="form-control"
+                            onChange={e => this.selectSelectType('one', e.target.value)}
+                            value={this.state.statisticVariableOneSelectType}>
+                        <option value="count">{ Lang.get('statistics.variable-select-count') }</option>
+                        <option value="hours" disabled={this.state.statisticVariableOneType === 'acting'}>{ Lang.get('statistics.variable-select-hours') }</option>
+                    </select>
 
                 </div>
 
@@ -145,6 +164,8 @@ export default class CreateForm extends React.Component {
                                 </option>)}
                     </select>
                 </div>
+
+
 
 
                 <div className="col-md-4">
@@ -179,6 +200,16 @@ export default class CreateForm extends React.Component {
 
                         })
                     }
+
+
+                    <br/>
+                    <strong>{ Lang.get('statistics.select')}</strong>
+                    <select className="form-control"
+                            onChange={e => this.selectSelectType('two', e.target.value)}
+                            value={this.state.statisticVariableTwoSelectType}>
+                        <option value="count">{ Lang.get('statistics.variable-select-count') }</option>
+                        <option value="hours" disabled={this.state.statisticVariableTwoType === 'acting'}>{ Lang.get('statistics.variable-select-hours') }</option>
+                    </select>
                 </div>
             </div>
 
