@@ -18,7 +18,7 @@ class DifficultyFilter implements Filter
 
     public function filter(Builder $builder)
     {
-        if (empty($this->parameters['category_label'])) {
+        if (empty($this->parameters['difficulty_label'])) {
             return;
         }
 
