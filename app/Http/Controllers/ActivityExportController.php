@@ -24,7 +24,9 @@ class ActivityExportController extends Controller
     {
         $w = new PhpWord();
         $s = $w->addSection("Hoi");
-        $s->addText($request->get('exportText'));
+        $text = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $request->get('exportText'));
+        $s->addText($text);
+
 
         $fileName = md5(time());
         $filePath = storage_path('app/word-exports/') . $fileName . '.docx';
