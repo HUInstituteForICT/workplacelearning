@@ -57,12 +57,12 @@ class TipTest extends \Tests\TestCase
         $collector->method('getValueForVariable')->willReturn(0.3);
 
 
-        $tip->tipText = ":value-1 should be 60%";
+        $tip->tipText = ":statistic-1 should be 60%";
         $tip->isApplicable($collector); // to trigger calculate
 
         $this->assertEquals("60% should be 60%", $tip->getTipText());
 
-        $tip->tipText = ":value-1 should be 0.600";
+        $tip->tipText = ":statistic-1 should be 0.600";
         $tip->coupledStatistics->first()->multiplyBy100 = false;
         $tip->isApplicable($collector); // to trigger calculate
         $this->assertEquals("0.600% should be 0.600", $tip->getTipText());

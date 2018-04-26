@@ -12,6 +12,7 @@ import {Schema} from "../Schema";
 import TipEditPage from "./Tips/TipEditPage";
 import UpdateForm from "./Statistics/UpdateForm";
 
+
 const rootReducer = combineReducers({entities, coupleStatistic, tipEditPageUi});
 const store = createStore(rootReducer);
 

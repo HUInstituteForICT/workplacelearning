@@ -13,6 +13,7 @@ const {mix} = require('laravel-mix');
 
 
 mix.react('resources/assets/js/app.js', 'public/js')
+    .sass('resources/assets/sass/app.scss', 'public/css')
     .less('resources/assets/less/style.less', 'public/css')
     .less('resources/assets/less/animations.less', 'public/css')
     .less('resources/assets/less/fonts.less', 'public/css')

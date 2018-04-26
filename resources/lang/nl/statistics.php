@@ -7,9 +7,12 @@ return [
     "go-to"               => "Ga naar statistieken",
     "is-nested-by-others" => "Deze statistiek kan niet verwijderd worden want deze wordt gebruikt door andere statistieken: :statistics",
     'edit'                => 'Statistiek aanpassen',
-    'variable-help'       => 'Zet de filters voor de variabele, of laat één of meerdere leeg om die filters niet te gebruiken.
+    'variable-help'       => 'Gebruik een filter door een waarde in te vullen, of laat leeg om de filter niet te gebruiken.
     Filter een attribuut op meerdere waardes door "||" the gebruiken tussen de waardes, bijv. "Alleen || Collega".',
     'variable-select-count' => 'Aantal activiteiten',
     'variable-select-hours' => 'Aantal uren',
-    'select' => 'Selecteer'
+    'select' => 'Selecteer',
+    'activity-type' => 'Leeractiviteittype',
+    'couple' => 'Koppel statistiek aan tip',
+    'acting-producing-coupled' => 'Er zijn zowel Acting als Producing statistieken gekoppeld, dit kan problemen opleveren.'
 ];

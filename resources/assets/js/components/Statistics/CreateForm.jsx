@@ -78,11 +78,12 @@ export default class CreateForm extends React.Component {
                 selectType: this.state.statisticVariableTwoSelectType
             },
         }).then(response => {
-            this.props.onCreated(response.data);
             this.setState({submitting: false});
+            this.props.onCreated(response.data);
         }).catch(error => {
             console.log(error);
             this.setState({submitting: false});
+
         });
 
     }
@@ -105,11 +106,13 @@ export default class CreateForm extends React.Component {
             <input onChange={e => this.setState({name: e.target.value})} value={this.state.name}
                    className="form-control" type="text" maxLength={255}/>
 
-            <div className="row">
+            <div className="row" >
 
                 <div className="col-md-4">
 
+                    <div id="step-4">
                     <h4>{Lang.get('react.statistic.select-variable-one')}</h4>
+                    {Lang.get('statistics.activity-type')}
                     <select className="form-control"
                             onChange={e => this.selectVariableType('one', e.target.value)}
                             value={this.state.statisticVariableOneType}>
@@ -117,37 +120,43 @@ export default class CreateForm extends React.Component {
                         <option value="acting">Acting</option>
                         <option value="producing">Producing</option>
                     </select>
+                    </div>
 
+                    <div id="step-5">
+                        {
+                            this.state.statisticVariableOneType !== '' &&
+                            <h5>{this.state.statisticVariableOneType} filters</h5>}
+                        {
+                            this.state.statisticVariableOneFilters.map((filter, filterIndex) => {
 
-                    {
-                        this.state.statisticVariableOneFilters.map((filter, filterIndex) => {
+                                return <div key={filter.name}>
+                                    {filter.name}
+                                    {
+                                        filter.parameters.map((parameter, parameterIndex) => {
+                                            return <div key={parameter.name}>
+                                                <input value={parameter.value || ''}
+                                                       placeholder={parameter.name}
+                                                       onChange={e => this.updateFilter('one', filterIndex, parameterIndex, e.target.value)}
+                                                       type="text" className="form-control" maxLength={255}/>
+                                            </div>;
+                                        })
+                                    }
+                                </div>;
+                            })
+                        }
+                    </div>
 
-                            return <div key={filter.name}>
-                                <strong>{filter.name}</strong>
-                                {
-                                    filter.parameters.map((parameter, parameterIndex) => {
-                                        return <div key={parameter.name}>
-                                            <input value={parameter.value || ''}
-                                                   placeholder={parameter.name}
-                                                   onChange={e => this.updateFilter('one', filterIndex, parameterIndex, e.target.value)}
-                                                   type="text" className="form-control" maxLength={255}/>
-                                        </div>;
-                                    })
-                                }
-                            </div>;
-
-
-                        })
-                    }
 
                     <br/>
-                    <strong>{ Lang.get('statistics.select')}</strong>
+                    <div id="step-7">
+                    {Lang.get('statistics.select')}
                     <select className="form-control"
                             onChange={e => this.selectSelectType('one', e.target.value)}
                             value={this.state.statisticVariableOneSelectType}>
                         <option value="count">{ Lang.get('statistics.variable-select-count') }</option>
                         <option value="hours" disabled={this.state.statisticVariableOneType === 'acting'}>{ Lang.get('statistics.variable-select-hours') }</option>
                     </select>
+                    </div>
 
                 </div>
 
@@ -171,6 +180,7 @@ export default class CreateForm extends React.Component {
                 <div className="col-md-4">
 
                     <h4>{Lang.get('react.statistic.select-variable-two')}</h4>
+                    {Lang.get('statistics.activity-type')}
                     <select className="form-control"
                             onChange={e => this.selectVariableType('two', e.target.value)}
                             value={this.state.statisticVariableTwoType}>
@@ -179,7 +189,8 @@ export default class CreateForm extends React.Component {
                         <option value="producing">Producing</option>
                     </select>
 
-
+                    {this.state.statisticVariableTwoType !== '' &&
+                    <h5>{this.state.statisticVariableTwoType} filters</h5>}
                     {
                         this.state.statisticVariableTwoFilters.map((filter, filterIndex) => {
 
@@ -203,7 +214,7 @@ export default class CreateForm extends React.Component {
 
 
                     <br/>
-                    <strong>{ Lang.get('statistics.select')}</strong>
+                    {Lang.get('statistics.select')}
                     <select className="form-control"
                             onChange={e => this.selectSelectType('two', e.target.value)}
                             value={this.state.statisticVariableTwoSelectType}>

@@ -29,8 +29,8 @@ return [
         "name" => "Tip naam",
         "selecting-statistic" => "Statistiek selecteren",
         "threshold" => "De grenswaarde voor deze statistiek. Bijv. 40%, dan 0.4 invoeren. Voor niet-percentages gewoon volle getallen.",
-        "tipText" => "De tekst van de tip. Gebruik de waarde parameters beneden (:value-x) om de plek aan te geven waar een berekende waarde moet staan.",
-        "tipTextPlaceholder" => "Bij :value-1 van je activiteiten werk je alleen.",
+        "tipText" => "De tekst van de tip. Gebruik de waarde parameters beneden (:statistic-x) om de plek aan te geven waar een berekende waarde moet staan.",
+        "tipTextPlaceholder" => "Bij :statistic-1 van je activiteiten werk je alleen.",
         "multiplyBy100" => "Vermenigvuldig de berekende waarde (0.x) met 100 en voeg % teken toe zodat het getal in de tip tekst een percentage is?",
         "showInAnalysis" => "Moet de tip zichtbaar zijn in de analyse?",
         "statistic" => "Statistiek voor berekening",
@@ -42,9 +42,37 @@ return [
         "submit" => "Aanmaken",
         "next-step" => "Volgende stap",
         'comparison-operator' => 'Vergelijking',
-        'statistic-value-parameters' => 'Waarde parameters bij deze tip',
+        'statistic-value-parameters' => 'Waarde parameters bij deze tip. Waardenaam parameters zijn enkel in gebruik bij "predefined" statistieken. Deze staan dan voor bijvoorbeeld de naam van de meest voorkomende categorie.',
         'table-statistic' => 'Statistiek',
         'table-value-parameter' => 'Waarde parameter',
         'table-value-name-parameter' => 'Waardenaam parameter'
+    ],
+
+
+    'help-steps' => [
+        'guide' => 'Gids',
+        'back' => 'Vorige',
+        'close' => 'Sluiten',
+        'last' => 'Laatste',
+        'next' => 'Volgende',
+        'skip' => 'Overslaan',
+        '1' => 'Stel de naam van de tip in. Deze is enkel zichtbaar voor jou, niet voor de studenten.',
+        '2' => 'Klik hier om een statistiek te koppelen. Probeer het!',
+        '3' => 'Laten we nu een nieuwe statistiek aanmaken',
+        '4' => 'Eerst, kies "leeractiviteittype".',
+        '5' => 'Stel nu de filters in. Bijvoorbeeld enkel activiteiten met als bronpersoon "Alleen".',
+        '6' => 'Tip! Je kunt ook meerdere waardes invullen voor een filter, je hoeft ze enkel te scheiden met " || ". Bijvoorbeeld "Alleen || Begeleider".',
+        '7' => 'Kies of de statistiekberekening gedaan moet worden met het aantal activiteiten of met de totale som van de uren van de activiteiten. Belangrijk: Enkel Producing statistiekn kunnen de uren optie gebruiken.',
+        '8' => 'Doe nu hetzelfde voor de tweede variabele, en kies de operator (+, -, /, *) voor de berekening. Vergeet niet ook een naam in te stellen voor de statistiek! Klik hierna op maak aan.',
+        '9' => 'Selecteer de statistiek die je zojuist hebt aangemaakt.',
+        '10' => 'Kies nu de vergelijking die gedaan moet worden; groter dan of kleiner dan.',
+        '11' => 'Stel de grenswaarde in voor wanneer de tip actief wordt.',
+        '12' => 'Koppel nu de statistiek aan de tip.',
+        '13' => 'De statistiek is nu gekoppeld aan de tip!',
+        '14' => 'Stel nu de tekst in die aan een student getoond moet worden als de tip actief is. Je kunt de berekende waardes van de statistieken hier invoegen door ":statistic-*" te typen, waar de * het nummer van de statistiek is. Deze nummers kun je in de tabel vinden.',
+        '15' => 'Stel de zichtbaardheid van de tip voor studenten in.',
+        '16' => 'Selecteer de cohorten waar de tip actief mag zijn.'
     ]
+
+
 ];

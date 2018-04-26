@@ -64,9 +64,9 @@ return array (
   'statistic' => 
   array (
     'create-statistic' => 'Maak nieuwe statistiek aan',
-    'select-variable-one' => 'Selecteer de eerste variabele',
-    'select-variable-two' => 'Selecteer de tweede variabele',
-    'select-operator' => 'Selecteer operator',
+    'select-variable-one' => 'Variabele 1',
+    'select-variable-two' => 'Variabele 2',
+    'select-operator' => 'Operator',
     'parameter' => 'Parameter',
     'statistic-name' => 'Statistiek naam',
     'create' => 'Maak aan',

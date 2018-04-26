@@ -7,9 +7,12 @@ return [
     "go-to" => "Go to statistics",
     "is-nested-by-others" => "This statistic cannot be removed because it is used by other statistics: :statistics",
     'edit' => 'Edit statistic',
-    'variable-help' => 'Fill in the filters for the variable, or leave empty to not use certain filters.
+    'variable-help' => 'To use a filter fill in a value, otherwise leave it empty.
     Filter a property on multiple values by using "||" between the values, e.g. "Alone || Colleague".',
     'variable-select-count' => 'Activity count',
     'variable-select-hours' => 'Hours',
-    'select' => 'Select'
+    'select' => 'Select',
+    'activity-type' => 'Learning activity type',
+    'couple' => 'Couple statistic to tip',
+    'acting-producing-coupled' => 'Both Acting and Producing statistics are coupled, this can create issues.'
 ];

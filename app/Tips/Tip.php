@@ -106,10 +106,11 @@ class Tip extends Model
                 $entityNames = array_map(function (StatisticCalculationResult $calculationResult) {
                     return $calculationResult->getEntityName();
                 }, $this->cachedResultsCollection[$tipCoupledStatistic->id]->getResults());
-                $tipText = str_replace(":value-name-{$tipCoupledStatistic->id}",
+                $tipText = str_replace(":statistic-name-{$tipCoupledStatistic->id}",
                     implode(', ', $entityNames), $tipText);
+
             }
-            $tipText = str_replace(":value-{$tipCoupledStatistic->id}", implode(', ', $percentageValues), $tipText);
+            $tipText = str_replace(":statistic-{$tipCoupledStatistic->id}", implode(', ', $percentageValues), $tipText);
 
         });
 
