@@ -43,31 +43,32 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('companyStreet', Lang::get('elements.profile.internships.companystreet'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-6">
+                        {!! Form::label('companyStreet', Lang::get('elements.profile.internships.companystreet'), array('class' => 'col-md-4 control-label')) !!}
+                        <div class="col-md-8">
                             <input name="companyStreet" maxlength="45" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companystreet') }}" value="{{ (is_null($workplace->street)) ? old("companyStreet") : $workplace->street }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
-                        <div class="col-sm-2">
+                        <br/>
+                        <div class="col-md-8 col-md-offset-4">
                             <input name="companyHousenr" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companyhousenr') }}" value="{{ (is_null($workplace->housenr)) ? old("companyHousenr") : $workplace->housenr }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('companyPostalcode', Lang::get('elements.profile.internships.companylocation'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-2">
-                            <input name="companyPostalcode" maxlength="255" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companypostalcode') }}" value="{{ (is_null($workplace->postalcode)) ? old("companyPostalcode") : $workplace->postalcode }}" required />
+                        <div class="col-sm-3">
+                            <input name="companyPostalcode" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companypostalcode') }}" value="{{ (is_null($workplace->postalcode)) ? old("companyPostalcode") : $workplace->postalcode }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-5">
                             <input name="companyLocation" maxlength="255" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companylocation') }}" value="{{ (is_null($workplace->town)) ? old("companyLocation") : $workplace->town }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
-                        <div class="col-sm-3">
+                        <br/>
+                        <div class="col-sm-8 col-sm-offset-4">
                             <input name="companyCountry" maxlength="255" type="text" class="form-control" placeholder="{{ Lang::get('elements.profile.internships.companyCountry') }}" value="{{ (is_null($workplace->country)) ? old("companyCountry") : $workplace->country }}" required />
                             <div class="help-block with-errors"></div>
                         </div>
-                    </div>
                     <div class="form-group">
                         {!! Form::label('contactperson', Lang::get('elements.profile.internships.contactperson'), array('class' => 'col-sm-4 control-label')) !!}
                         <div class="col-sm-8">
