@@ -107,7 +107,7 @@ class TipsController extends Controller
         $tip = $service->createTip(['name' => trans('general.new') . ' Tip', 'shownInAnalysis' => true]);
         $tip->save();
 
-        return (new Tip)->with('coupledStatistics', 'enabledCohorts')->findOrFail($tip->id);
+        return (new Tip)->with('coupledStatistics', 'enabledCohorts', 'likes')->findOrFail($tip->id);
     }
 
     /**
