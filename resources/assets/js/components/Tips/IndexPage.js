@@ -74,6 +74,9 @@ class IndexPage extends React.Component {
                 <li className={this.state.page === 'statistics' ? 'active' : ''}><a
                     onClick={e => this.setPage('statistics')}
                     style={{textTransform: 'capitalize'}}>{Lang.get('statistics.statistics')}</a></li>
+                <li className={this.state.page === 'help' ? 'active' : ''}><a
+                    onClick={e => this.setPage('help')}
+                    style={{textTransform: 'capitalize'}}>{Lang.get('tips.help.help')}</a></li>
             </ul>
 
 
@@ -157,6 +160,37 @@ class IndexPage extends React.Component {
                         })}
                         </tbody>
                     </table>
+                </div>
+            }
+
+            {
+                this.state.page === 'help' && <div>
+
+                    <h3>{Lang.get('tips.help.how-does-it-work')}</h3>
+
+                    <strong>{Lang.get('tips.tips')}</strong>
+                    <p>
+                        {Lang.get('tips.help.explain-tips')}
+                    </p>
+
+                    <strong>{Lang.get('statistics.statistics')}</strong>
+                    <p>
+                        {Lang.get('tips.help.explain-statistics')}
+                    </p>
+
+                    <strong>{Lang.get('tips.coupling-statistics')}</strong>
+                    <p>
+                        {Lang.get('tips.help.explain-couple')}
+                    </p>
+
+                    <strong>{Lang.get('tips.tiptext')}</strong>
+                    <p>
+                        {Lang.get('tips.help.explain-tiptext')}
+                    </p>
+
+                    <p>
+                        {Lang.get('tips.help.explain-footer')}
+                    </p>
                 </div>
             }
 

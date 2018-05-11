@@ -216,7 +216,6 @@ class TipEditPage extends React.Component {
             if (stat.education_program_type === 'producing') hasProducingCoupled = true;
         });
 
-
         return <div>
 
 
@@ -246,7 +245,7 @@ class TipEditPage extends React.Component {
                 </button>
                 <br/><br/>
 
-                <div className="row" style={{background: 'white'}} id="step-16">
+                <div className="row" style={{background: 'white', marginBottom: '10px', marginTop: '10px'}} id="step-16">
                     {hasProducingCoupled && hasActingCoupled &&
                     <div className="alert alert-danger text-danger" role="alert">
                         {Lang.get('statistics.acting-producing-coupled')}
@@ -377,7 +376,7 @@ class TipEditPage extends React.Component {
                 <div className="panel panel-default" id="step-17">
                     <div className="panel-body">
                         <div className="form-group">
-                            <label>Tip text</label>
+                            <label>{Lang.get('tips.tiptext')}</label>
                             <textarea className="form-control" value={tip.tipText} maxLength={1000} rows={3}
                                       onChange={e => updateEntity('tips', tip.id, {...tip, tipText: e.target.value})}/>
                         </div>
