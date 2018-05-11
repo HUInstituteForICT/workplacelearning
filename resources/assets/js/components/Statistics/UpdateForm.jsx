@@ -167,7 +167,7 @@ class UpdateForm extends React.Component {
                             this.state.statisticVariableOneFilters.map((filter, filterIndex) => {
 
                                 return <div key={filter.name}>
-                                    <strong>{filter.name}</strong>
+                                    <strong>{Lang.get('statistics.filters.' + filter.name)}</strong>
                                     {
                                         filter.parameters.map((parameter, parameterIndex) => {
                                             return <div key={parameter.name}>
@@ -207,7 +207,7 @@ class UpdateForm extends React.Component {
                             this.state.statisticVariableTwoFilters.map((filter, filterIndex) => {
 
                                 return <div key={filter.name}>
-                                    <strong>{filter.name}</strong>
+                                    <strong>{Lang.get('statistics.filters.' + filter.name)}</strong>
                                     {
                                         filter.parameters.map((parameter, parameterIndex) => {
                                             return <div key={parameter.name}>

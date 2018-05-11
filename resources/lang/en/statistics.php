@@ -32,5 +32,12 @@ return [
         'The found category\'s name' => 'The found category\'s name',
         'The found person\'s name' => 'The found person\'s name',
         'The names of the learning moments (e.g. \'Unplanned moment, individual session\')' => 'The names of the learning moments (e.g. \'Unplanned moment, individual session\')'
+    ],
+
+    'filters' => [
+        'Resource person' => 'Resource person',
+        'Category' => 'Category',
+        'Difficulty' => 'Difficulty',
+        'Timeslot/Category' => 'Timeslot/Category'
     ]
 ];

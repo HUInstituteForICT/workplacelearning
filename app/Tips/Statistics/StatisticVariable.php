@@ -33,7 +33,7 @@ class StatisticVariable extends Model
             ],
             [
                 'class'      => TimeslotFilter::class,
-                'name'       => 'Timeslot',
+                'name'       => 'Timeslot/Category',
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'timeslot_text']
                 ]

@@ -34,6 +34,13 @@ return [
         'The found category\'s name' => 'De gevonden categorienaam',
         'The found person\'s name' => 'De gevonden persoonsnaam',
         'The names of the learning moments (e.g. \'Unplanned moment, individual session\')' => 'De namen van de leermomenten (bijv. \'Ongepland leermoment, zelfstandig\')'
+    ],
+
+    'filters' => [
+        'Resource person' => 'Bronpersoon',
+        'Category' => 'Categorie',
+        'Difficulty' => 'Moeilijkheidsgraad',
+        'Timeslot/Category' => 'Tijdslot/Categorie'
     ]
 
 ];
