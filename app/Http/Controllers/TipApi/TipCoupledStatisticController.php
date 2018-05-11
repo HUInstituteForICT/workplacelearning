@@ -27,11 +27,10 @@ class TipCoupledStatisticController extends Controller
         // p-a- & p-p- are IDs for predefined statistics (Producing/Acting)
         if (!starts_with($request->get('statistic_id'), ['p-p-', 'p-a-'])) {
             /** @var CustomStatistic $statistic */
-            $statistic = (new CustomStatistic)->with('educationProgramType', 'statisticVariableOne',
+            $statistic = CustomStatistic::with('statisticVariableOne',
                 'statisticVariableTwo')->findOrFail($request->get('statistic_id'));
         } else {
             $statistic = $statisticService->createPredefinedStatistic($request->get('method'));
-            $statistic->load('educationProgramType');
         }
         $tip = (new Tip)->findOrFail($request->get('tip_id'));
 
@@ -40,7 +39,6 @@ class TipCoupledStatisticController extends Controller
             'tip_id'              => $tip->id,
             'comparison_operator' => $request->get('comparisonOperator'),
             'threshold'           => $request->get('threshold'),
-            'multiplyBy100'       => $request->get('multiplyBy100'),
         ]);
 
         $coupledStatistic->statistic()->associate($statistic);
@@ -59,7 +57,7 @@ class TipCoupledStatisticController extends Controller
      */
     public function update(TipCoupledStatisticUpdateRequest $request, $id)
     {
-        $coupledStatistic = (new TipCoupledStatistic)->with('statistic')->find($id);
+        $coupledStatistic = TipCoupledStatistic::with('statistic')->find($id);
         $coupledStatistic->update($request->all());
 
         return $coupledStatistic;

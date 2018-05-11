@@ -41,9 +41,7 @@ $factory->define(\App\EducationProgram::class, function(Faker\Generator $faker) 
 
 $factory->define(\App\Tips\Statistics\StatisticVariable::class, function () {
     return [
-        'type'      => 'acting',
         'filters'   => \App\Tips\Statistics\StatisticVariable::$availableFilters['acting'],
-        'selectType' => 'count',
     ];
 });
 
@@ -51,9 +49,8 @@ $factory->define(\App\Tips\Statistics\CustomStatistic::class, function () {
     return [
         'operator'                  => \App\Tips\Statistics\CustomStatistic::OPERATOR_ADD,
         'name'                      => 'Total learning activity + Total learning activity',
-        'education_program_type_id'  => function () {
-            return factory(\App\EducationProgramType::class)->states('acting')->create()->eptype_id;
-        },
+        'education_program_type'    => 'acting',
+        'select_type'               => 'count',
         'statistic_variable_one_id' => function () {
             return factory(\App\Tips\Statistics\StatisticVariable::class)->create()->id;
         },

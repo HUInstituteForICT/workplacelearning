@@ -158,7 +158,7 @@
                                             <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
                                                 onclick="likeTip({{ $tip->id }}, 1)"
                                                 target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
-                                            <h3 class="h3" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
+                                            <h2 class="h2" style="cursor: pointer;color: #e2423b;" id="likeTip-{{ $tip->id }}"
                                                 onclick="likeTip({{ $tip->id }}, -1)"
                                                 target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h3>
                                         </div>@endif<!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}

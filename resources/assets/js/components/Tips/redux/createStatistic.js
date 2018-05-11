@@ -11,7 +11,6 @@ const defaultState = {
     statistic: '',
     comparisonOperator: 0,
     threshold: 0.5,
-    multiplyBy100: false,
 };
 
 const reducer = (state = defaultState, action) => {

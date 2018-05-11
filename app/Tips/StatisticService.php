@@ -33,7 +33,6 @@ class StatisticService
         $this->updateStatistic($statistic, $data);
 
         return $statistic;
-
     }
 
     /**
@@ -53,9 +52,8 @@ class StatisticService
 
         $statistic->name = $data['name'];
 
-        $educationProgramType = (new EducationProgramType)->where('eptype_name', '=', $variableOne->type)->first();
-
-        $statistic->educationProgramType()->associate($educationProgramType);
+        $statistic->education_program_type = $data['education_program_type'];
+        $statistic->select_type = $data['select_type'];
         $statistic->operator = $this->getOperator($data['operator']);
 
         $statistic->statisticVariableOne()->associate($variableOne);
@@ -70,17 +68,17 @@ class StatisticService
         $statistic = new PredefinedStatistic();
 
         if(PredefinedStatisticHelper::isActingMethod($methodName)) {
-            $statistic->educationProgramType()->associate((new EducationProgramType)->where('eptype_name', '=', 'Acting')->firstOrFail());
+            $statistic->education_program_type = 'acting';
             $statistic->name = collect(PredefinedStatisticHelper::getData())->first(function($annotation) use($methodName) {
                 return $methodName === $annotation['method'] && $annotation['epType'] === 'Acting';
             })['name'];
         } elseif(PredefinedStatisticHelper::isProducingMethod($methodName)) {
-            $statistic->educationProgramType()->associate((new EducationProgramType)->where('eptype_name', '=', 'Producing')->firstOrFail());
+            $statistic->education_program_type = 'producing';
             $statistic->name = collect(PredefinedStatisticHelper::getData())->first(function($annotation) use($methodName) {
                 return $methodName === $annotation['method']  && $annotation['epType'] === 'Producing';
             })['name'];
         } else {
-            throw new \Exception("Method not found in a PredefinedStatisticCollector: {$methodName}");
+            throw new \RuntimeException("Method not found in a PredefinedStatisticCollector: {$methodName}");
         }
 
         $statistic->save();
@@ -90,7 +88,7 @@ class StatisticService
 
     private function getOperator($operator) {
         if(!isset(CustomStatistic::OPERATORS[$operator])) {
-            throw new \Exception("Operator with id {$operator} not found in Statistic::OPERATORS");
+            throw new \RuntimeException("Operator with id {$operator} not found in Statistic::OPERATORS");
         }
 
         return $operator;

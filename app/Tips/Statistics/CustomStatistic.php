@@ -27,9 +27,9 @@ class CustomStatistic extends Statistic
         self::OPERATOR_DIVIDE   => ["type" => CustomStatistic::OPERATOR_DIVIDE, "label" => "/"],
     ];
     protected static $singleTableType = 'customstatistic';
-    protected static $persisted = ['operator', 'statistic_variable_one_id', 'statistic_variable_two_id'];
+    protected static $persisted = ['operator', 'statistic_variable_one_id', 'statistic_variable_two_id', 'select_type'];
 
-    protected $hidden = ['statistic_variable_one_id', 'statistic_variable_two_id', 'education_program_type_id'];
+    protected $hidden = ['statistic_variable_one_id', 'statistic_variable_two_id'];
 
     /**
      * Relation to first statisticVariable of this statistic
@@ -63,6 +63,8 @@ class CustomStatistic extends Statistic
 
         $this->statisticVariableOne->setCollector($this->collector);
         $this->statisticVariableTwo->setCollector($this->collector);
+        $this->statisticVariableOne->statistic = $this;
+        $this->statisticVariableTwo->statistic = $this;
 
         $resultCollection = new StatisticCalculationResultCollection();
         try {
@@ -106,18 +108,9 @@ class CustomStatistic extends Statistic
      */
     public function getStatisticCalculationExpression()
     {
-        $expression = "";
-        $expression .= "{$this->statisticVariableOne->name} ";
-        if ($this->statisticVariableOne instanceof CollectedDataStatisticVariable && $this->statisticVariableOne->dataUnitParameterValue !== null) {
-            $expression .= "({$this->statisticVariableOne->dataUnitParameterValue}) ";
-        }
+        $expression = "Build again...?";
 
         $expression .= self::OPERATORS[$this->operator]['label'] . " ";
-
-        $expression .= "{$this->statisticVariableTwo->name} ";
-        if ($this->statisticVariableTwo instanceof CollectedDataStatisticVariable && $this->statisticVariableTwo->dataUnitParameterValue !== null) {
-            $expression .= "({$this->statisticVariableTwo->dataUnitParameterValue}) ";
-        }
 
         return $expression;
     }

@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 
 class TipsController extends Controller
 {
-    private function getStatisticVariables(CollectorFactory $collectorFactory)
+    private function getStatisticVariables()
     {
         // We prepend the id of collectableVariables with "c-" and the already existing statistics that can be used as variables with "s-"
         // This way we can easily filter them from already in use variables in the front end without complicating with different lists, as I tried before 🙃
@@ -50,8 +50,7 @@ class TipsController extends Controller
     {
 
         $statistics = array_merge(
-            PredefinedStatistic::with('educationProgramType')->get()->toArray(),
-            CustomStatistic::with('educationProgramType', 'statisticVariableOne',
+            CustomStatistic::with('statisticVariableOne',
                 'statisticVariableTwo')->get()->toArray()
         );
 
@@ -61,10 +60,10 @@ class TipsController extends Controller
             ->map(function (array $predefinedStatistic) {
                 if($predefinedStatistic['epType'] === 'Producing') {
                     $predefinedStatistic['id'] = 'p-p-' . md5($predefinedStatistic['name']);
-                    $predefinedStatistic['education_program_type'] = 2;
+                    $predefinedStatistic['education_program_type'] = 'producing';
                 } elseif ($predefinedStatistic['epType'] === 'Acting') {
                     $predefinedStatistic['id'] = 'p-a-' . md5($predefinedStatistic['name']);
-                    $predefinedStatistic['education_program_type'] = 1;
+                    $predefinedStatistic['education_program_type'] = 'acting';
                 }
                 $predefinedStatistic['type'] = 'predefinedstatistic';
 
@@ -77,11 +76,10 @@ class TipsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param CollectorFactory $collectorFactory
      * @return array
      * @throws \Exception
      */
-    public function index(CollectorFactory $collectorFactory)
+    public function index()
     {
         $tips = Tip::with('coupledStatistics', 'enabledCohorts', 'likes')->get();
         $statistics = $this->getStatistics();
@@ -91,23 +89,22 @@ class TipsController extends Controller
             'tips'                  => $tips,
             'cohorts'               => Cohort::all(),
             'statistics'            => $statistics,
-            'statisticVariables'    => $this->getStatisticVariables($collectorFactory),
+            'statisticVariables'    => $this->getStatisticVariables(),
         ];
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
      * @param TipService $service
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function store(Request $request, TipService $service)
+    public function store(TipService $service)
     {
         $tip = $service->createTip(['name' => trans('general.new') . ' Tip', 'shownInAnalysis' => true]);
         $tip->save();
 
-        return (new Tip)->with('coupledStatistics', 'enabledCohorts', 'likes')->findOrFail($tip->id);
+        return Tip::with('coupledStatistics', 'enabledCohorts', 'likes')->findOrFail($tip->id);
     }
 
     /**

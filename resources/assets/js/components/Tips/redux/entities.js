@@ -75,7 +75,29 @@ const reducer = (state = defaultState, action) => {
         case types.STATISTIC_DELETED: {
             const statistics = {...state.statistics};
             delete statistics[action.id];
-            return {...state, statistics};
+
+            let coupledIds = []; // Collect the ids of coupledStatistics that used this statistic, they need to be removed from tips and from entitycollection
+            const coupledStatistics = Object.values(state.coupledStatistics).filter(cStat => {
+                if(cStat.statistic === action.id) {
+                    coupledIds.push(cStat.id);
+                }
+                return cStat.statistic !== action.id
+            }).reduce((carry, cStat) => {
+                carry[cStat.id] = cStat;
+                return carry;
+            }, {});
+            console.log(coupledIds);
+
+            const tips = [...Object.values(state.tips)].map(tip => {
+                const newTip = {...tip};
+                newTip.coupled_statistics = newTip.coupled_statistics.filter(id => !coupledIds.includes(id));
+                return newTip;
+            }).reduce((carry, tip) => {
+                carry[tip.id] = tip;
+                return carry;
+            }, {});
+
+            return {...state, statistics, coupledStatistics, tips};
         }
 
     }

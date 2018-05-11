@@ -5,9 +5,11 @@ namespace App\Tips\DataCollectors;
 
 
 use App\Tips\Statistics\Filters\Filter;
+use App\Tips\Statistics\Filters\ResourcePersonFilter;
 use App\Tips\Statistics\StatisticVariable;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Query\Builder;
+use InvalidArgumentException;
 
 class Collector implements CollectorInterface
 {
@@ -42,17 +44,25 @@ class Collector implements CollectorInterface
         return $queryBuilder->whereRaw("YEAR(date) = ? AND MONTH(date) = ?", [$this->year, $this->month]);
     }
 
+    /**
+     * @param StatisticVariable $statisticVariable
+     * @throws InvalidArgumentException On invalid filter use
+     * @return int|mixed
+     */
     public function getValueForVariable(StatisticVariable $statisticVariable)
     {
-        if($statisticVariable->type === 'acting') {
+        // Get the base query from the correct Model
+        if($statisticVariable->statistic->education_program_type === 'acting') {
             $builder = $this->learningPeriod->learningActivityActing()->getBaseQuery();
-        } elseif($statisticVariable->type === 'producing') {
+        } elseif($statisticVariable->statistic->education_program_type === 'producing') {
             $builder = $this->learningPeriod->learningActivityProducing()->getBaseQuery();
         }
 
 
+        // Apply each filter
         foreach ($statisticVariable->filters as $filterData) {
 
+            // Get an array of the parameters for the filter
             $parameters = collect($filterData['parameters'])->reduce(function ($carry, $parameter) {
                 if (isset($parameter['value'])) {
                     $carry[$parameter['propertyName']] = $parameter['value'];
@@ -60,6 +70,10 @@ class Collector implements CollectorInterface
 
                 return $carry;
             }, []);
+            
+            if(!\in_array(Filter::class, class_implements($filterData['class']), true)) {
+                throw new InvalidArgumentException('Invalid filter found');
+            }
 
             /** @var Filter $filter */
             $filter = new $filterData['class']($parameters);
@@ -69,6 +83,7 @@ class Collector implements CollectorInterface
 
 
 
+        // Hours select can onle be used on a statistic variable
         if($statisticVariable->selectType === 'hours' && $statisticVariable->type === 'producing') {
             return $this->wherePeriod($builder)->sum('duration');
         }

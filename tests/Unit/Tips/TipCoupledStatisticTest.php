@@ -21,7 +21,6 @@ class TipCoupledStatisticTest extends \Tests\TestCase
             'tip_id'              => $tip->id,
             'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
             'threshold' => 0.5,
-            'multiplyBy100' => false,
         ]);
 
         $tip->coupledStatistics()->save($tipCoupledStatistic);
@@ -50,7 +49,6 @@ class TipCoupledStatisticTest extends \Tests\TestCase
             'tip_id'              => $tip->id,
             'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
             'threshold' => 0.5,
-            'multiplyBy100' => false,
         ]);
 
         $tip->coupledStatistics()->save($tipCoupledStatistic);

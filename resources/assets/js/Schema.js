@@ -11,7 +11,6 @@ const educationProgramType = new schema.Entity('educationProgramTypes', {}, {idA
 tip.define({enabled_cohorts: [cohort], coupled_statistics: [coupledStatistic]});
 
 statistic.define({
-    education_program_type: educationProgramType,
     statistic_variable_one: statisticVariable,
     statistic_variable_two: statisticVariable
 });

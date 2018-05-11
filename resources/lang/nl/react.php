@@ -60,6 +60,7 @@ return array (
   'none-selected' => 'Geen geselecteerd',
   'save' => 'Opslaan',
   'delete' => 'Verwijderen',
+  'cancel' => 'Annuleren',
   'delete-confirm' => 'Weet je zeker dat je deze activiteit wilt verwijderen?',
   'statistic' => 
   array (
@@ -78,9 +79,9 @@ return array (
     ),
   ),
   'tips' => [
-      'name' => 'Name',
-      'program' => 'Education program',
-      'statistics' => 'Statistics'
+      'name' => 'Naam',
+      'program' => 'Opleidingsprogramma',
+      'statistics' => 'Statistieken'
   ],
     'edit' => 'Wijzigen'
 );

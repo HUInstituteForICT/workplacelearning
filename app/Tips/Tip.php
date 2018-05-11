@@ -95,9 +95,8 @@ class Tip extends Model
             /** @var StatisticCalculationResult $calculationResult */
             foreach ($this->cachedResultsCollection[$tipCoupledStatistic->id]->getResults() as $calculationResult) {
                 if ($calculationResult->hasPassed()) {
-                    $percentageValues[] = $tipCoupledStatistic->multiplyBy100 ?
-                        number_format($calculationResult->getResult() * 100) . '%' :
-                        number_format($calculationResult->getResult(), 3) . '%';
+                    $percentageValues[] = number_format($calculationResult->getResult() * 100) . '%';
+//                        number_format($calculationResult->getResult(), 3) . '%';
                 }
             }
 

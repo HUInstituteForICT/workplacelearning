@@ -122,7 +122,7 @@ class TipsController extends Controller
 
 
         $tipService->coupleStatistic($tip, $statistic,
-            $request->only('comparison_operator', 'threshold', 'multiplyBy100'));
+            $request->only('comparison_operator', 'threshold'));
 
         if ($request->get('save-and') === 'again') {
             return redirect()->route('tips.select-statistic', ['id' => $tip->id]);

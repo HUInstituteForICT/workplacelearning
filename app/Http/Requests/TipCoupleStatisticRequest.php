@@ -27,10 +27,6 @@ class TipCoupleStatisticRequest extends FormRequest
      */
     public function rules()
     {
-        // Checkboxes won't be sent if not checked, so add stub in that case
-        if (!$this->request->has('multiplyBy100')) {
-            $this->request->add(['multiplyBy100' => false]);
-        }
 
         $idRule = 'required|exists:statistics';
         if (starts_with($this->request->get('id'),
@@ -42,8 +38,6 @@ class TipCoupleStatisticRequest extends FormRequest
             'id'                  => $idRule,
             'comparison_operator' => ['required', Rule::in(array_keys(TipCoupledStatistic::COMPARISON_OPERATORS))],
             'threshold'           => 'required|numeric',
-            'multiplyBy100'       => 'boolean',
-            'save-and'            => 'required|in:again,continue',
         ];
     }
 

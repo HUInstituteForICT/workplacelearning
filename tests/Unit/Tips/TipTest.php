@@ -21,7 +21,6 @@ class TipTest extends \Tests\TestCase
             'tip_id'              => $tip->id,
             'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
             'threshold' => 0.1,
-            'multiplyBy100' => false,
         ]);
 
         $tip->coupledStatistics()->save($tipCoupledStatistic);
@@ -48,7 +47,6 @@ class TipTest extends \Tests\TestCase
             'tip_id'              => $tip->id,
             'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
             'threshold' => 0.1,
-            'multiplyBy100' => true,
         ]);
 
         $tip->coupledStatistics()->save($tipCoupledStatistic);
@@ -59,13 +57,8 @@ class TipTest extends \Tests\TestCase
 
         $tip->tipText = ":statistic-1 should be 60%";
         $tip->isApplicable($collector); // to trigger calculate
-
         $this->assertEquals("60% should be 60%", $tip->getTipText());
 
-        $tip->tipText = ":statistic-1 should be 0.600";
-        $tip->coupledStatistics->first()->multiplyBy100 = false;
-        $tip->isApplicable($collector); // to trigger calculate
-        $this->assertEquals("0.600% should be 0.600", $tip->getTipText());
     }
 
     public function testTipLike() {

@@ -65,6 +65,7 @@ return [
     'none-selected'           => 'None selected',
     'save'                    => 'Save',
     'delete'                  => 'Delete',
+    'cancel' => 'Cancel',
     'delete-confirm'          => 'Are you sure you want to delete this activity?',
     'statistic'               =>
         [
@@ -74,6 +75,7 @@ return [
                 [
                     'empty-variable-parameter' => 'Parameter for a variable cannot be empty',
                     'name'                     => 'Name of a statistic cannot be empty',
+                    'errors.select-two-variables' => 'Select the learningtype'
                 ],
             'parameter'           => 'Parameter',
             'save'                => 'Save',

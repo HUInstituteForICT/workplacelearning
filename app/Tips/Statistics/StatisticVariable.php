@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property array $filters
- * @property string $type
+ * @property CustomStatistic $statistic
  * @property string $selectType
  */
 class StatisticVariable extends Model
@@ -72,7 +72,6 @@ class StatisticVariable extends Model
      * @var Collector $collector
      */
     private $collector;
-
 
     public function getValue()
     {

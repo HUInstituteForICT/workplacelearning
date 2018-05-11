@@ -21,21 +21,19 @@ class StatisticController extends Controller
      */
     public function store(StatisticStoreRequest $request, StatisticService $statisticService)
     {
-        $statistic = $statisticService->createStatistic($request->all());
-
-        return $statistic;
+        return $statisticService->createStatistic($request->all());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @throws \Exception
+     * @param StatisticStoreRequest $request
      * @param  int $id
      * @param StatisticService $statisticService
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
-     * @throws \Exception
+     * @return Statistic
      */
-    public function update(Request $request, $id, StatisticService $statisticService)
+    public function update(StatisticStoreRequest $request, $id, StatisticService $statisticService)
     {
         /** @var CustomStatistic $statistic */
         $statistic = (new CustomStatistic)->findOrFail($id);

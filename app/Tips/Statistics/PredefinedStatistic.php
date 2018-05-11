@@ -13,7 +13,7 @@ class PredefinedStatistic extends Statistic
 {
     protected static $singleTableType = 'predefinedstatistic';
 
-    protected static $persisted = ['name', 'education_program_type_id'];
+    protected static $persisted = ['name'];
 
     protected $appends = ['valueParameterDescription'];
 

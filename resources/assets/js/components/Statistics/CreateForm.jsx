@@ -7,13 +7,11 @@ export default class CreateForm extends React.Component {
         super(props);
         this.state = {
             name: '',
-            statisticVariableOneType: '',
-            statisticVariableTwoType: '',
-            statisticVariableOneFilters: [],
-            statisticVariableTwoFilters: [],
-            statisticVariableOneSelectType: 'count',
-            statisticVariableTwoSelectType: 'count',
-            operatorIndex: 0,
+            education_program_type: 'acting',
+            select_type: 'count',
+            statisticVariableOneFilters: JSON.parse(JSON.stringify(this.props.variableFilters['acting'])),
+            statisticVariableTwoFilters: JSON.parse(JSON.stringify(this.props.variableFilters['acting'])),
+            operatorIndex: 3,
             submitting: false,
         };
     }
@@ -23,23 +21,20 @@ export default class CreateForm extends React.Component {
         return this.props.operators.findIndex(operator => operator.type === operatorToFind.type);
     }
 
-    selectVariableType = (number, value) => {
-        const variable = number === 'one' ? 'statisticVariableOne' : 'statisticVariableTwo';
+    selectEducationProgramType = (value) => {
         this.setState({
-            [variable + 'Type']: value,
-            [variable + 'Filters']: JSON.parse(JSON.stringify(this.props.variableFilters[value])),
+            education_program_type: value,
+            statisticVariableOneFilters: JSON.parse(JSON.stringify(this.props.variableFilters[value])),
+            statisticVariableTwoFilters: JSON.parse(JSON.stringify(this.props.variableFilters[value])),
         });
         // If switched to acting, check if selecttype is on hours, if so, change to count as Acting doesnt support hours selecttype
-        if(value === 'acting' && this.state[variable + 'SelectType'] === 'hours') {
-            this.setState({[variable + 'SelectType']: 'count'})
+        if (value === 'acting' && this.state.select_type === 'hours') {
+            this.setState({select_type: 'count'})
         }
     };
 
-    selectSelectType = (number, value) => {
-        const variable = number === 'one' ? 'statisticVariableOne' : 'statisticVariableTwo';
-        this.setState({
-            [variable + 'SelectType']: value,
-        })
+    selectSelectType = (value) => {
+        this.setState({select_type: value});
     };
 
     updateFilter = (number, filterIndex, parameterIndex, value) => {
@@ -59,7 +54,7 @@ export default class CreateForm extends React.Component {
 
 
     submit() {
-        if(!this.validate()) {
+        if (!this.validate()) {
             return false;
         }
 
@@ -67,15 +62,13 @@ export default class CreateForm extends React.Component {
         axios.post('/api/statistics', {
             name: this.state.name,
             operator: this.props.operators[this.state.operatorIndex].type,
+            education_program_type: this.state.education_program_type,
+            select_type: this.state.select_type,
             statisticVariableOne: {
-                type: this.state.statisticVariableOneType,
                 filters: this.state.statisticVariableOneFilters,
-                selectType: this.state.statisticVariableOneSelectType
             },
             statisticVariableTwo: {
-                type: this.state.statisticVariableTwoType,
                 filters: this.state.statisticVariableTwoFilters,
-                selectType: this.state.statisticVariableTwoSelectType
             },
         }).then(response => {
             this.setState({submitting: false});
@@ -89,48 +82,64 @@ export default class CreateForm extends React.Component {
     }
 
     validate() {
-        if(this.state.name === '') {
+        if (this.state.name === '') {
             alert(Lang.get('react.statistic.errors.name'));
             return false;
         }
         const operator = this.props.operators[this.state.operatorIndex];
 
-        return !(operator.type < 0 || operator.type > 3);
+        if (operator.type < 0 || operator.type > 3) return false;
+        if (this.state.education_program_type === '') {
+            alert(Lang.get('react.statistic.errors.select-two-variables'));
+            return false;
+        }
+
+        return true;
     }
 
     render() {
-
-
         return <div>
-            <strong>{Lang.get('react.statistic.statistic-name')}</strong><br/>
-            <input onChange={e => this.setState({name: e.target.value})} value={this.state.name}
-                   className="form-control" type="text" maxLength={255}/>
-
-            <div className="row" >
-
-                <div className="col-md-4">
-
-                    <div id="step-4">
-                    <h4>{Lang.get('react.statistic.select-variable-one')}</h4>
-                    {Lang.get('statistics.activity-type')}
+            <div className="row">
+                <div className="col-lg-12" id="step-4">
+                    <strong>{Lang.get('react.statistic.statistic-name')}</strong><br/>
+                    <input onChange={e => this.setState({name: e.target.value})} value={this.state.name}
+                           className="form-control" type="text" maxLength={255}/>
+                </div>
+            </div>
+            <br/>
+            <div className="row">
+                <div className="col-lg-6" id="step-5">
+                    <strong>{Lang.get('statistics.activity-type')}</strong>
                     <select className="form-control"
-                            onChange={e => this.selectVariableType('one', e.target.value)}
-                            value={this.state.statisticVariableOneType}>
-                        <option value='' disabled/>
+                            onChange={e => this.selectEducationProgramType(e.target.value)}
+                            value={this.state.education_program_type}>
                         <option value="acting">Acting</option>
                         <option value="producing">Producing</option>
                     </select>
-                    </div>
+                </div>
+                <div className="col-lg-6" id="step-6">
+                    <strong>{Lang.get('statistics.select')}</strong>
+                    <select className="form-control"
+                            onChange={e => this.selectSelectType(e.target.value)}
+                            value={this.state.select_type}>
+                        <option value="count">{Lang.get('statistics.variable-select-count')}</option>
+                        <option value="hours"
+                                disabled={this.state.education_program_type === 'acting'}>{Lang.get('statistics.variable-select-hours')}</option>
+                    </select>
+                </div>
+            </div>
+            <hr/>
+            <div className="row">
+                <div className="col-md-4" id="step-7-and-8">
 
-                    <div id="step-5">
-                        {
-                            this.state.statisticVariableOneType !== '' &&
-                            <h5>{this.state.statisticVariableOneType} filters</h5>}
+                    <h4>{Lang.get('react.statistic.select-variable-one')} filters</h4>
+
+
                         {
                             this.state.statisticVariableOneFilters.map((filter, filterIndex) => {
 
                                 return <div key={filter.name}>
-                                    {filter.name}
+                                    <strong>{filter.name}</strong>
                                     {
                                         filter.parameters.map((parameter, parameterIndex) => {
                                             return <div key={parameter.name}>
@@ -144,23 +153,11 @@ export default class CreateForm extends React.Component {
                                 </div>;
                             })
                         }
-                    </div>
 
-
-                    <br/>
-                    <div id="step-7">
-                    {Lang.get('statistics.select')}
-                    <select className="form-control"
-                            onChange={e => this.selectSelectType('one', e.target.value)}
-                            value={this.state.statisticVariableOneSelectType}>
-                        <option value="count">{ Lang.get('statistics.variable-select-count') }</option>
-                        <option value="hours" disabled={this.state.statisticVariableOneType === 'acting'}>{ Lang.get('statistics.variable-select-hours') }</option>
-                    </select>
-                    </div>
 
                 </div>
 
-                <div className="col-md-4">
+                <div className="col-md-4" id="step-9">
                     <h4>{Lang.get('react.statistic.select-operator')}</h4>
                     <select className="form-control" onChange={e => this.setState({
                         operatorIndex: parseInt(e.target.value)
@@ -175,22 +172,9 @@ export default class CreateForm extends React.Component {
                 </div>
 
 
+                <div className="col-md-4" id="step-10">
 
-
-                <div className="col-md-4">
-
-                    <h4>{Lang.get('react.statistic.select-variable-two')}</h4>
-                    {Lang.get('statistics.activity-type')}
-                    <select className="form-control"
-                            onChange={e => this.selectVariableType('two', e.target.value)}
-                            value={this.state.statisticVariableTwoType}>
-                        <option value='' disabled/>
-                        <option value="acting">Acting</option>
-                        <option value="producing">Producing</option>
-                    </select>
-
-                    {this.state.statisticVariableTwoType !== '' &&
-                    <h5>{this.state.statisticVariableTwoType} filters</h5>}
+                    <h4>{Lang.get('react.statistic.select-variable-two')} filters</h4>
                     {
                         this.state.statisticVariableTwoFilters.map((filter, filterIndex) => {
 
@@ -211,29 +195,19 @@ export default class CreateForm extends React.Component {
 
                         })
                     }
-
-
-                    <br/>
-                    {Lang.get('statistics.select')}
-                    <select className="form-control"
-                            onChange={e => this.selectSelectType('two', e.target.value)}
-                            value={this.state.statisticVariableTwoSelectType}>
-                        <option value="count">{ Lang.get('statistics.variable-select-count') }</option>
-                        <option value="hours" disabled={this.state.statisticVariableTwoType === 'acting'}>{ Lang.get('statistics.variable-select-hours') }</option>
-                    </select>
                 </div>
             </div>
 
             <br/>
             <p style={{whiteSpace: 'pre-line'}}>
-                { Lang.get('statistics.variable-help') }
+                {Lang.get('statistics.variable-help')}
             </p>
-            <button type="button" className="btn defaultButton"  disabled={this.state.submitting}
+            <button id="step-11" type="button" className="btn btn-primary" disabled={this.state.submitting}
                     onClick={() => this.submit()}>
-                {this.state.submitting ?
-                    '...' :
-                    Lang.get('react.statistic.create')
-                }
+
+                {this.state.submitting &&
+                <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"/>}
+                {!this.state.submitting && <span>{Lang.get('react.statistic.create')}</span>}
             </button>
 
         </div>;

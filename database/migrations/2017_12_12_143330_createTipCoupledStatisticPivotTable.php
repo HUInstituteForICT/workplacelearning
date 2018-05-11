@@ -19,7 +19,6 @@ class CreateTipCoupledStatisticPivotTable extends Migration
             $table->integer('statistic_id')->unsigned();
             $table->smallInteger('comparison_operator')->unsigned();
             $table->float('threshold');
-            $table->boolean("multiplyBy100");
 
         });
     }

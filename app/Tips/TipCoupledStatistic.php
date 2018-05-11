@@ -5,6 +5,7 @@ namespace App\Tips;
 
 
 use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Statistics\PredefinedStatistic;
 use App\Tips\Statistics\Statistic;
 use App\Tips\Statistics\StatisticCalculationResultCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -16,8 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $statistic_id
  * @property int $comparison_operator
  * @property float $threshold
- * @property boolean $multiplyBy100
- * @property CustomStatistic $statistic
+ * @property Statistic $statistic
  */
 class TipCoupledStatistic extends Model
 {
@@ -29,7 +29,7 @@ class TipCoupledStatistic extends Model
         self::COMPARISON_OPERATOR_GREATER_THAN => ['type' => self::COMPARISON_OPERATOR_GREATER_THAN, 'label' => '>'],
     ];
     public $timestamps = false;
-    public $fillable = ['tip_id', 'statistic_id', 'comparison_operator', 'threshold', 'multiplyBy100'];
+    public $fillable = ['tip_id', 'statistic_id', 'comparison_operator', 'threshold'];
     protected $table = 'tip_coupled_statistic';
     public $appends = ['condition'];
     protected $hidden = ['statistic_id'];
@@ -60,7 +60,12 @@ class TipCoupledStatistic extends Model
      * @return string
      */
     public function condition() {
-        $expression = $this->statistic->name . ' ';
+        if($this->statistic instanceof PredefinedStatistic) {
+            $expression = __('statistics.predefined-stats.' . $this->statistic->name) . ' ';
+        }  else {
+            $expression = $this->statistic->name . ' ';
+        }
+
         $expression .= self::COMPARISON_OPERATORS[$this->comparison_operator]['label'] . ' ';
         $expression .= $this->threshold;
 
