@@ -24,21 +24,31 @@ class ResourcePersonFilter implements Filter
         $labels = array_map('trim', explode('||', $this->parameters['person_label']));
 
         $builder
-            ->leftJoin('resourceperson', 'res_person_id', '=', 'rp_id')
-            ->whereIn('person_label', $labels);
+            ->leftJoin('resourceperson', 'res_person_id', '=', 'rp_id');
+            
 
         // Because a LAP will not use a ResourcePerson model when the RP is alone we need to filter on null instead
         if (str_contains($builder->from, (new LearningActivityProducing())->getTable())) {
             $this->applyNullFilter($builder, $labels);
+        } else {
+            $builder->whereIn('person_label', $labels);
         }
     }
 
     private function applyNullFilter(Builder $builder, array $labels)
     {
-        if (collect($labels)->map(function($label) {
+        $labelsInLower = collect($labels)->map(function ($label) {
             return strtolower($label);
-        })->contains('alleen', 'alone')) {
-            $builder->orWhereNull('res_person_id');
+        });
+
+        // contains() only allows single key, not array of keys :(
+        if ($labelsInLower->contains('alleen') || $labelsInLower->contains('alone')) {
+            $builder->where(function (Builder $query) use ($labels) {
+                $query->whereIn('person_label', $labels)
+                    ->orWhereNull('res_person_id');
+            });
+        } else {
+            $builder->whereIn('person_label', $labels);
         }
     }
 }
