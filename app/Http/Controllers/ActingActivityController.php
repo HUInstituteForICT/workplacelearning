@@ -269,7 +269,8 @@ class ActingActivityController extends Controller
                 ->withInput();
         }
 
-        $learningActivity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityActingById($id);
+        /** @var LearningActivityActing $learningActivity */
+        $learningActivity = (new LearningActivityActing)->findOrFail($id);
 
         if ($req->hasFile('evidence')) {
             $evidence = $req->file('evidence');
@@ -293,7 +294,7 @@ class ActingActivityController extends Controller
         $learningActivity->support_wp = $req['support_wp'];
         $learningActivity->support_ed = $req['support_ed'];
         $learningActivity->res_person_id = $req['res_person'];
-        $learningActivity->res_material_id = ($req['res_material'] != 'none') ?  $req['res_material'] : null;
+        $learningActivity->res_material_id = ($req['res_material'] != 'none') ? $req['res_material'] : null;
         $learningActivity->res_material_detail = $req['res_material_detail'];
         $learningActivity->learninggoal_id = $req['learning_goal'];
         $learningActivity->save();

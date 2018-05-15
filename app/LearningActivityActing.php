@@ -5,6 +5,18 @@ use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @property string $date
+ * @property int $timeslot_id
+ * @property string $situation
+ * @property string $lessonslearned
+ * @property string $support_wp
+ * @property string $support_ed
+ * @property int $res_person_id
+ * @property int $res_material_id
+ * @property string $res_material_detail
+ * @property int $learninggoal_id
+ */
 class LearningActivityActing extends Model
 {
     // Override the table used for the User Model
