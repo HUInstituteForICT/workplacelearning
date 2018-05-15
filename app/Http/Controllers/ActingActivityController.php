@@ -270,7 +270,7 @@ class ActingActivityController extends Controller
         }
 
         /** @var LearningActivityActing $learningActivity */
-        $learningActivity = (new LearningActivityActing)->findOrFail($id);
+        $learningActivity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityActingById($id);
 
         if ($req->hasFile('evidence')) {
             $evidence = $req->file('evidence');
