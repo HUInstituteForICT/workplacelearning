@@ -421,7 +421,7 @@ class ProducingActivityController extends Controller
             throw new UnauthorizedException("No access");
         }
 
-        $activity->feedback->delete();
+        $activity->feedback()->delete();
         $activity->delete();
 
         return redirect()->route('process-producing');
