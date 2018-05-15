@@ -6,15 +6,11 @@ use App\Cohort;
 use App\EducationProgramType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipUpdateRequest;
-use App\Tips\CollectorDataAggregator;
-use App\Tips\DataCollectors\CollectorFactory;
 use App\Tips\Statistics\CustomStatistic;
-use App\Tips\Statistics\PredefinedStatistic;
 use App\Tips\Statistics\PredefinedStatisticHelper;
 use App\Tips\Statistics\StatisticVariable;
 use App\Tips\Tip;
 use App\Tips\TipService;
-use Illuminate\Http\Request;
 
 class TipsController extends Controller
 {

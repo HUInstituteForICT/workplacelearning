@@ -11,8 +11,6 @@ use App\Analysis\Producing\ProducingAnalysis;
 use App\Analysis\Producing\ProducingAnalysisCollector;
 use App\Cohort;
 use App\Tips\DataCollectors\Collector;
-use App\Tips\DataCollectors\DataCollectorContainer;
-use App\Tips\DataCollectors\ProducingCollector;
 use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

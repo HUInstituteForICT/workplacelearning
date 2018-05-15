@@ -72,7 +72,7 @@ class Collector implements CollectorInterface
             }, []);
             
             if(!\in_array(Filter::class, class_implements($filterData['class']), true)) {
-                throw new InvalidArgumentException('Invalid filter found');
+                throw new InvalidArgumentException('Invalid filter');
             }
 
             /** @var Filter $filter */

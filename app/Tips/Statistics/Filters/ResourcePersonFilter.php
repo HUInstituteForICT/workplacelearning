@@ -3,13 +3,11 @@
 
 namespace App\Tips\Statistics\Filters;
 
-
-use Doctrine\DBAL\Query\QueryBuilder;
+use App\LearningActivityProducing;
 use Illuminate\Database\Query\Builder;
 
 class ResourcePersonFilter implements Filter
 {
-
     private $parameters;
 
     public function __construct($parameters)
@@ -28,5 +26,17 @@ class ResourcePersonFilter implements Filter
         $builder
             ->leftJoin('resourceperson', 'res_person_id', '=', 'rp_id')
             ->whereIn('person_label', $labels);
+
+        // Because a LAP will not use a ResourcePerson model when the RP is alone we need to filter on null instead
+        if (str_contains($builder->from, (new LearningActivityProducing())->getTable())) {
+            $this->applyNullFilter($builder, $labels);
+        }
+    }
+
+    private function applyNullFilter(Builder $builder, array $labels)
+    {
+        if (collect($labels)->map('strtolower')->contains('alleen', 'alone')) {
+            $builder->orWhereNull('res_person_id');
+        }
     }
 }
