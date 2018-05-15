@@ -12,7 +12,6 @@ class IndexPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 'tips',
             filterTips: '',
             filterStatistics: '',
             showTipDeleteModal: false,
@@ -68,20 +67,20 @@ class IndexPage extends React.Component {
             <h1>Tips & statistieken</h1>
 
             <ul className="nav nav-tabs" role="tablist">
-                <li className={this.state.page === 'tips' ? 'active' : ''}><a onClick={e => this.setPage('tips')}
+                <li className={this.props.currentPage === 'tips' ? 'active' : ''}><a onClick={e => this.props.setCurrentPage('tips')}
                                                                               style={{textTransform: 'capitalize'}}>{Lang.get('tips.tips')}</a>
                 </li>
-                <li className={this.state.page === 'statistics' ? 'active' : ''}><a
-                    onClick={e => this.setPage('statistics')}
+                <li className={this.props.currentPage === 'statistics' ? 'active' : ''}><a
+                    onClick={e => this.props.setCurrentPage('statistics')}
                     style={{textTransform: 'capitalize'}}>{Lang.get('statistics.statistics')}</a></li>
-                <li className={this.state.page === 'help' ? 'active' : ''}><a
-                    onClick={e => this.setPage('help')}
+                <li className={this.props.currentPage === 'help' ? 'active' : ''}><a
+                    onClick={e => this.props.setCurrentPage('help')}
                     style={{textTransform: 'capitalize'}}>{Lang.get('tips.help.help')}</a></li>
             </ul>
 
 
             {
-                this.state.page === 'tips' &&
+                this.props.currentPage === 'tips' &&
 
                 <div>
                     <h3>{Lang.get('tips.tips')}</h3>
@@ -127,7 +126,7 @@ class IndexPage extends React.Component {
             }
 
             {
-                this.state.page === 'statistics' &&
+                this.props.currentPage === 'statistics' &&
                 <div>
                     <h3>{Lang.get('tips.statistics')}</h3>
 
@@ -164,7 +163,7 @@ class IndexPage extends React.Component {
             }
 
             {
-                this.state.page === 'help' && <div>
+                this.props.currentPage === 'help' && <div>
 
                     <h3>{Lang.get('tips.help.how-does-it-work')}</h3>
 

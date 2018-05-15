@@ -31,6 +31,13 @@ const mapping = {
 
 class TipsApp extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentPage: 'tips'
+        };
+    }
+
     componentDidMount = () => {
         this.props.loadData();
     };
@@ -38,7 +45,7 @@ class TipsApp extends React.Component {
     render = () => <Switch>
         <Route exact path={'/tip/:id'} component={TipEditPage}/>
         <Route exact path={'/statistic/:id'} component={UpdateForm} />
-        <Route exact path={'/'} component={IndexPage}/>
+        <Route exact path={'/'} render={() => <IndexPage currentPage={this.state.currentPage} setCurrentPage={(page) => this.setState({currentPage: page})} />}/>
     </Switch>
 }
 
