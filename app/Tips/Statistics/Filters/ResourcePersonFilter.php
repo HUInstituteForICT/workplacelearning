@@ -35,7 +35,9 @@ class ResourcePersonFilter implements Filter
 
     private function applyNullFilter(Builder $builder, array $labels)
     {
-        if (collect($labels)->map('strtolower')->contains('alleen', 'alone')) {
+        if (collect($labels)->map(function($label) {
+            return strtolower($label);
+        })->contains('alleen', 'alone')) {
             $builder->orWhereNull('res_person_id');
         }
     }

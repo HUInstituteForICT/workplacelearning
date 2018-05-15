@@ -5,6 +5,7 @@ namespace App\Tips\Statistics;
 
 
 use DivisionByZeroError;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property StatisticVariable $statisticVariableOne
@@ -88,12 +89,13 @@ class CustomStatistic extends Statistic
             }
 
 
+
         } catch (\DivisionByZeroError $exception) {
             $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
-//        } catch (\ErrorException $exception) {
-//            if($exception->getMessage() === 'Division by zero') {
-//                $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
-//            }
+        } catch (\ErrorException $exception) {
+            if($exception->getMessage() === 'Division by zero') {
+                $resultCollection->addResult(new StatisticCalculationResult(0, $this->name));
+            }
         }
 
         return $resultCollection;
