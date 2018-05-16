@@ -334,7 +334,9 @@ class TipEditPage extends React.Component {
                                 {!this.state.coupleRequestBusy && <span>{Lang.get('statistics.couple')}</span>}
 
                             </button>
+
                             &nbsp;
+
                             <button className="btn btn-danger"
                                     onClick={() => this.setState({showCoupleStatisticModal: false})}>
                                 {Lang.get('statistics.cancel')}
