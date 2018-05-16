@@ -322,7 +322,9 @@ class TipEditPage extends React.Component {
                                        onChange={e => updateCoupleStatisticFormProperty('threshold', e.target.value)}/>
                             </div>
                         </div>
+
                         <br/><br/>
+
                         <div>
                             <button className="btn btn-primary" id="step-15"
                                     disabled={coupleStatisticForm.statistic === '' || coupleStatisticForm.threshold === '' || coupleStatisticForm.comparisonOperator > '2' || this.state.coupleRequestBusy}
