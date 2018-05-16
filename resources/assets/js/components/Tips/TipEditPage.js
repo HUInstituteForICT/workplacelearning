@@ -312,8 +312,8 @@ class TipEditPage extends React.Component {
                             <div className="col-lg-3" id="step-13">
                                 <select value={coupleStatisticForm.comparisonOperator} className="form-control"
                                         onChange={e => updateCoupleStatisticFormProperty('comparisonOperator', e.target.value)}>
-                                    <option value="0">{Lang.get('statistics.greater-than')}</option>
-                                    <option value="1">{Lang.get('statistics.less-than')}</option>
+                                    <option value="1">{Lang.get('statistics.greater-than')}</option>
+                                    <option value="0">{Lang.get('statistics.less-than')}</option>
                                 </select>
                             </div>
                             <div className="col-lg-3" id="step-14">
@@ -578,8 +578,8 @@ const CoupledStatisticItem = ({tip, coupledStatistic, statistic, educationProgra
                                 ...coupledStatistic,
                                 comparison_operator: e.target.value
                             })}>
-                            <option value="0">{Lang.get('statistics.greater-than')}</option>
-                            <option value="1">{Lang.get('statistics.less-than')}</option>
+                            <option value="1">{Lang.get('statistics.greater-than')}</option>
+                            <option value="0">{Lang.get('statistics.less-than')}</option>
                         </select>
                     </div>
                     <div className="col-lg-6">
