@@ -25,6 +25,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6">
+                <a href="{{ route('analysis-acting-choice') }}" class="btn">{{__('analyses.back-to-choice')}}</a>
                 <h1>{{ Lang::get('analyses.title') }}</h1>
                 <p>{{ trans('analysis.acting.description') }}</p>
 

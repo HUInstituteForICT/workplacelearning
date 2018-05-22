@@ -20,6 +20,24 @@
                 </div>
             </div>
 
+            @if($tip !== null)
+                <div class="row" style="margin-bottom:20px;">
+                    <div class="col-lg-7">
+                        <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px;" role="alert">
+                            <h4>{{ __('tips.tip') }}</h4>
+                            <p>{!! nl2br($tip->getTipText()) !!}</p>
+                            <br/>
+
+                            <p class="text-right">
+                                <a class="alert-link" style="color: white;" href="{{ route('analysis-producing-detail', ['year' => 'all', 'month' => 'all']) }}">{{ __('tips.see-more') }}</a>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            @endif
+
+
             <div class="row">
                 <div class="col-lg-12">
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
@@ -46,8 +64,14 @@
                             </div>
                         @endforeach
                     @endif
-                    <br /><a href="{{ '/bugreport' }}"><img src="{{ secure_asset('assets/img/bug_add.png') }}" width="16px" height="16px" /> {{ Lang::get('home.tips') }}</a>
+
                 </div>
             </div>
+
+
+
+
+            <br /><a href="{{ '/bugreport' }}"><img src="{{ secure_asset('assets/img/bug_add.png') }}" width="16px" height="16px" /> {{ Lang::get('home.tips') }}</a>
+
         </div>
 @stop

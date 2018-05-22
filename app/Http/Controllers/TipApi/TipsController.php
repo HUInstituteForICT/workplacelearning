@@ -11,6 +11,7 @@ use App\Tips\Statistics\PredefinedStatisticHelper;
 use App\Tips\Statistics\StatisticVariable;
 use App\Tips\Tip;
 use App\Tips\TipService;
+use Illuminate\Http\Request;
 
 class TipsController extends Controller
 {
@@ -141,5 +142,17 @@ class TipsController extends Controller
 
 
         return response()->json([], 200);
+    }
+
+    public function updateCohorts(Request $request, Tip $tip, TipService $tipService)
+    {
+        $tip = $tipService->enableCohorts($tip, $request->all());
+
+        return redirect()->route('tips.edit', ['id' => $tip->id]);
+    }
+
+    public function likeTip(Tip $tip, TipService $tipService, Request $request) {
+        $liked = $tipService->likeTip($tip, (int) $request->get('type', 1), $request->user());
+        return response()->json(['status' => $liked ? 'success' : 'error']);
     }
 }

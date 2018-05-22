@@ -87,7 +87,10 @@ return [
         'explain-couple' => 'Statistics that have been created still need to be coupled to a tip. For this it is also necessary to configure the condition for when a statistic is considered active. For example when you want the statistic to be active when 50% of the learning activities are done alone you would enter 0.5 as the threshold and put the comparison on "greater than".',
         'explain-tiptext' => 'The tip text is the text shown to the student. It is possible to insert the calculated statistic values by writing ":statistic-*" where * is the number of the statistic. This way a student can know what the percentage of work done "Alone" is and if necessary adjust his or her work.',
         'explain-footer' => 'To better understand the tips workflow it is possible to follow an interactive guide. For this first create a new tip and then click the "Guide" button in the top right corner of the webpage.'
-    ]
+    ],
+
+    'see-more' => 'Want to see more tips or an analysis, click here',
+    'tip' => 'Tip',
 
 
 ];

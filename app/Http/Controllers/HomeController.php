@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Mail\FeedbackGiven;
+use App\Tips\ApplicableTipFetcher;
+use App\Tips\DataCollectors\Collector;
+use App\Tips\Tip;
+use App\WorkplaceLearningPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Validator;
-use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
@@ -19,14 +22,34 @@ class HomeController extends Controller
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate()
+    public function showProducingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher)
     {
-        return view('pages.producing.home');
+        /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
+        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
+        $collector = new Collector(null, null, $workplaceLearningPeriod);
+        $tips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort, $collector))
+            ->filter(function (Tip $tip) use ($request) {
+                return !$tip->dislikedByStudent($request->user());
+            });
+
+        $tip = $tips->count() > 0 ? $tips->random(null) : null;
+
+        return view('pages.producing.home', ['tip' => $tip]);
     }
 
-    public function showActingTemplate()
+    public function showActingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher)
     {
-        return view('pages.acting.home');
+        /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
+        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
+        $collector = new Collector(null, null, $workplaceLearningPeriod);
+        $tips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort,
+            $collector))->filter(function (Tip $tip) use ($request) {
+            return !$tip->dislikedByStudent($request->user());
+        });
+
+        $tip = $tips->count() > 0 ? $tips->random(null) : null;
+
+        return view('pages.acting.home', ['tip' => $tip]);
     }
 
     public function showDefault()

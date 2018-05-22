@@ -123,4 +123,18 @@ class Tip extends Model
     {
         return $this->hasMany(TipCoupledStatistic::class);
     }
+
+    public function dislikedByStudent(Student $student)
+    {
+        return $this->likes()->where('student_id', '=', $student->student_id)
+            ->where('type', '=', -1)
+            ->count() > 0;
+    }
+
+    public function likedByStudent(Student $student)
+    {
+        return $this->likes()->where('student_id', '=', $student->student_id)
+                ->where('type', '=', 1)
+                ->count() > 0;
+    }
 }

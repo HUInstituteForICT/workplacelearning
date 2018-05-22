@@ -17,6 +17,8 @@
         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
             <div class="row">
                 <div class="col-lg-12">
+                    <a href="{{ route('analysis-producing-choice') }}" class="btn">{{__('analyses.back-to-choice')}}</a>
+
                     <h1>{{ Lang::get('rapportages.pageheader') }}
                         <?php
                         $intlfmt = new IntlDateFormatter(

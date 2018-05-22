@@ -20,6 +20,23 @@
                 </div>
             </div>
 
+            @if($tip !== null)
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
+                            <h4>{{ __('tips.tip') }}</h4>
+                            <p>{!! nl2br($tip->getTipText()) !!}</p>
+                            <br/>
+
+                            <p class="text-right">
+                            <a class="alert-link" style="color: white;" href="{{ route('analysis-acting-detail', ['year' => 'all', 'month' => 'all']) }}">{{ __('tips.see-more') }}</a>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            @endif
+
             <div class="row">
                 <div class="col-lg-12">
                     <br /><a href="{{ route('bugreport') }}"><img src="{{ secure_asset('assets/img/bug_add.png') }}" width="16px" height="16px" /> {{ Lang::get('home.tips') }}</a>

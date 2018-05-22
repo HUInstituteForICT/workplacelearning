@@ -67,11 +67,7 @@ Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api
 
 
 
-    Route::put('tips/{tip}/cohorts', 'TipsController@updateCohorts')->name('tips.updateCohorts');
-    Route::get('tips/{tip}/select-statistic', 'TipsController@selectStatistic')->name('tips.select-statistic');
-    Route::put('tips/{tip}/couple-statistic', 'TipsController@coupleStatistic')->name('tips.couple-statistic');
-    Route::delete('tips/{tip}/decouple-statistic/{tipCoupledStatisticId}', 'TipsController@decoupleStatistic')->name('tips.decouple-statistic');
-//    Route::resource('tips', 'TipsController');
+    Route::put('tips/{tip}/cohorts', 'TipApi\TipsController@updateCohorts')->name('tips.updateCohorts');
 });
 
 Route::group(['before' => 'auth'], function() {
@@ -172,7 +168,7 @@ Route::group([
                             });
 
 
-    Route::get('/tip/{tip}/like', 'TipsController@likeTip')->name('tips.like');
+    Route::get('/tip/{tip}/like', 'TipApi\TipsController@likeTip')->name('tips.like');
 
     /* EP Type: Acting */
     Route::group([

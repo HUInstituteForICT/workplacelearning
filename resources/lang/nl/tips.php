@@ -87,7 +87,10 @@ return [
         'explain-couple' => 'Statistieken die aangemaakt zijn dienen nog gekoppeld te worden aan een tip. Hierbij wordt ook ingesteld hoe bepaald wordt of een statistiek actief is. Bijvoorbeeld wanneer meer dan 50% van de leeractiviteiten alleen zijn door 50% als grenswaarde in te stellen en de vergelijking op "groter dan".',
         'explain-tiptext' => 'De tip tekst is de tekst die getoond wordt aan een student. Hierin is het mogelijk om de berekende statistieken weer te geven met ":statistic-*" waar * het nummer is van de statistiek. Zo kan een student bijvoorbeeld weten wat zijn of haar percentage werk "Alleen" is en zich hier op aanpassen.',
         'explain-footer' => 'Om een beter beeld te krijgen van de workflow van de tips is het mogelijk om interactief te configureren, klik daarvoor op de "Gids" knop rechtsbovenin na het aanmaken van een tip.'
-    ]
+    ],
+
+    'see-more' => 'Wil je meer tips of een analyse zien, klik hier',
+    'tip' => 'Tip',
 
 
 ];

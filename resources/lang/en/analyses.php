@@ -8,5 +8,6 @@ return [
     "percentage-difficult" => "Percentage of difficult activities",
     "percentage-of-activities-you-found" => "% of your activities were",
     "percentage-work-on-own" => "Percentage independent work",
-    "percentage-work-alone" => "% of activities was done Individually"
+    "percentage-work-alone" => "% of activities was done Individually",
+    'back-to-choice' => 'Back to moment overview'
 ];

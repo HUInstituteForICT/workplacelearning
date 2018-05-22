@@ -6,12 +6,11 @@ namespace App\Tips;
 
 use App\Cohort;
 use App\Tips\DataCollectors\Collector;
-use App\WorkplaceLearningPeriod;
 
 class ApplicableTipFetcher
 {
 
-    public function fetchForCohort(Cohort $cohort, Collector $collector):array
+    public function fetchForCohort(Cohort $cohort, Collector $collector): array
     {
         $cohort->load('tips.coupledStatistics.statistic');
 
