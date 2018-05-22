@@ -44,8 +44,12 @@ class ResourcePersonFilter implements Filter
         // contains() only allows single key, not array of keys :(
         if ($labelsInLower->contains('alleen') || $labelsInLower->contains('alone')) {
             $builder->where(function (Builder $query) use ($labels) {
-                $query->whereIn('person_label', $labels)
-                    ->orWhereNull('res_person_id');
+                $query->whereIn('person_label', $labels) // Where the label is Alleen / Alone etc.
+                    ->orWhere(function(Builder $query) { // Or where res_person_id is null AND material is also null, because a book could've been used
+                        $query->whereNull('res_person_id')
+                            ->whereNull('res_material_id');
+                });
+
             });
         } else {
             $builder->whereIn('person_label', $labels);

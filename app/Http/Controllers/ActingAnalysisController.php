@@ -10,10 +10,10 @@ namespace App\Http\Controllers;
 use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
 use App\Cohort;
-use App\Tips\DataCollectors\ActingCollector;
+use App\Repository\LikeRepositoryInterface;
+use App\Student;
+use App\Tips\ApplicableTipFetcher;
 use App\Tips\DataCollectors\Collector;
-use App\Tips\DataCollectors\DataCollectorContainer;
-use App\Tips\DataUnitParser;
 use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -42,10 +42,17 @@ class ActingAnalysisController extends Controller
      * @param Request $request
      * @param $year
      * @param $month
+     * @param ApplicableTipFetcher $applicableTipFetcher
+     * @param LikeRepositoryInterface $likeRepository
      * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function showDetail(Request $request, $year, $month)
-    {
+    public function showDetail(
+        Request $request,
+        $year,
+        $month,
+        ApplicableTipFetcher $applicableTipFetcher,
+        LikeRepositoryInterface $likeRepository
+    ) {
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null || Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count() === 0) {
             return redirect()->route('home-acting')
                 ->withErrors([Lang::get('analysis.no-activity')]);
@@ -59,8 +66,6 @@ class ActingAnalysisController extends Controller
         }
 
 
-
-
         // The analysis for the charts etc.
         $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
 
@@ -69,19 +74,18 @@ class ActingAnalysisController extends Controller
             $month = null;
         }
 
-        $collector = new Collector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
+        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
 
+        $collector = new Collector($year, $month, $workplaceLearningPeriod);
         /** @var Cohort $cohort */
-        $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
-        $cohort->load('tips.coupledStatistics.statistic')->load(
-            [
-                'tips.likes' => function ($relationshipQuery) use ($request) {
-                    // Load the student's likes
-                    $relationshipQuery->where('student_id', '=', $request->user()->student_id);
-                },
-            ]);
-        $applicableTips = $cohort->tips->filter(function (Tip $tip) use ($collector) {
-            return $tip->showInAnalysis && $tip->isApplicable($collector);
+        $cohort = $workplaceLearningPeriod->cohort;
+
+        $applicableTips = collect($applicableTipFetcher->fetchForCohort($cohort, $collector));
+
+        /** @var Student $student */
+        $student = $request->user();
+        $applicableTips->each(function (Tip $tip) use ($student, $likeRepository) {
+            $likeRepository->loadForTipByStudent($tip, $student);
         });
 
 

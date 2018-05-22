@@ -74,7 +74,6 @@ class Tip extends Model
             $tipCoupledStatistic->statistic->setCollector($collector);
 
             $this->cachedResultsCollection[$tipCoupledStatistic->id] = $tipCoupledStatistic->statistic->calculate();
-
             $applicable = $tipCoupledStatistic->passes($this->cachedResultsCollection[$tipCoupledStatistic->id]);
 
             return $applicable;

@@ -54,6 +54,7 @@ class TipEditPage extends React.Component {
     joyrideCallback = (tour) => {
         const {action, index, type} = tour;
 
+        // Check if we need to open or close a modal, depending on which step we are
         if (type === EVENTS.STEP_AFTER) {
             if (index === 1) {
                 this.setState({showCoupleStatisticModal: true});
@@ -75,6 +76,7 @@ class TipEditPage extends React.Component {
         }
     };
 
+    // The steps of tour guide
     joyrideSteps = [
         {
             content: Lang.get('tips.help-steps.1'),

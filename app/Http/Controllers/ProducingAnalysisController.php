@@ -10,6 +10,9 @@ namespace App\Http\Controllers;
 use App\Analysis\Producing\ProducingAnalysis;
 use App\Analysis\Producing\ProducingAnalysisCollector;
 use App\Cohort;
+use App\Repository\Eloquent\LikeRepository;
+use App\Student;
+use App\Tips\ApplicableTipFetcher;
 use App\Tips\DataCollectors\Collector;
 use App\Tips\Tip;
 use Illuminate\Http\Request;
@@ -36,7 +39,7 @@ class ProducingAnalysisController extends Controller
             ->with('numdays', (new ProducingAnalysisCollector())->getFullWorkingDays("all", "all"));
     }
 
-    public function showDetail(Request $request, $year, $month)
+    public function showDetail(Request $request, $year, $month, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
         // If no data or not enough data, redirect to analysis choice page
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
@@ -57,21 +60,20 @@ class ProducingAnalysisController extends Controller
             $year = null;
             $month = null;
         }
+        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
 
-        $collector = new Collector($year, $month, $request->user()->getCurrentWorkplaceLearningPeriod());
-
+        $collector = new Collector($year, $month, $workplaceLearningPeriod);
         /** @var Cohort $cohort */
-        $cohort = $request->user()->getCurrentWorkplaceLearningPeriod()->cohort;
-        $cohort->load('tips.coupledStatistics.statistic')->load(
-            [
-                'tips.likes' => function ($relationshipQuery) use ($request) {
-                    // Load the student's likes
-                    $relationshipQuery->where('student_id', '=', $request->user()->student_id);
-                },
-            ]);
-        $applicableTips = $cohort->tips->filter(function(Tip $tip) use($collector) {
-            return $tip->showInAnalysis && $tip->isApplicable($collector);
+        $cohort = $workplaceLearningPeriod->cohort;
+
+        $applicableTips = collect($applicableTipFetcher->fetchForCohort($cohort, $collector));
+
+        /** @var Student $student */
+        $student = $request->user();
+        $applicableTips->each(function (Tip $tip) use ($student, $likeRepository) {
+            $likeRepository->loadForTipByStudent($tip, $student);
         });
+
 
 
         // If there are no chains, there are no activities therefore redirect user somewhere else

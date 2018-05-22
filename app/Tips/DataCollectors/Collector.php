@@ -87,7 +87,6 @@ class Collector implements CollectorInterface
         if($statisticVariable->selectType === 'hours' && $statisticVariable->type === 'producing') {
             return $this->wherePeriod($builder)->sum('duration');
         }
-
         return $this->wherePeriod($builder)->count();
 
 

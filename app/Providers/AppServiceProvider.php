@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
+use App\Repository\Eloquent\LikeRepository;
+use App\Repository\LikeRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            LikeRepositoryInterface::class,
+            LikeRepository::class
+        );
     }
 }
