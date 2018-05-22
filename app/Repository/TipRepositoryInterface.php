@@ -7,6 +7,6 @@ interface TipRepositoryInterface
 {
     public function get(int $id): Tip;
 
-    public function save(Tip $tip): void;
+    public function save(Tip $tip);
 
 }

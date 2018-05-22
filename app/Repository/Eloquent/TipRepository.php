@@ -14,7 +14,7 @@ class TipRepository implements TipRepositoryInterface
         return $tip;
     }
 
-    public function save(Tip $tip): void
+    public function save(Tip $tip)
     {
         $tip->save();
     }

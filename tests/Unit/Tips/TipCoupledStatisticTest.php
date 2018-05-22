@@ -37,7 +37,7 @@ class TipCoupledStatisticTest extends \Tests\TestCase
     }
 
     public function testTipServiceCoupling() {
-        $tipService = new \App\Tips\TipService();
+        $tipService = new \App\Tips\TipManager();
 
         /** @var Tip $tip */
         $tip = factory(Tip::class)->create();

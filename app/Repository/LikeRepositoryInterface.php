@@ -9,7 +9,7 @@ interface LikeRepositoryInterface
 {
     public function get(int $id): Like;
 
-    public function save(Like $like): void;
+    public function save(Like $like);
 
-    public function loadForTipByStudent(Tip $tip, Student $student): void;
+    public function loadForTipByStudent(Tip $tip, Student $student);
 }

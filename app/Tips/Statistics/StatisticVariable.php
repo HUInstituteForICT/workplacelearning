@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property array $filters
  * @property CustomStatistic $statistic
+ * @property string $type
  * @property string $selectType
  */
 class StatisticVariable extends Model
@@ -67,22 +68,5 @@ class StatisticVariable extends Model
     protected $casts = [
         'filters' => 'array',
     ];
-
-    /**
-     * @var Collector $collector
-     */
-    private $collector;
-
-    public function getValue()
-    {
-        return $this->collector->getValueForVariable($this);
-    }
-
-
-    public function setCollector(Collector $collector)
-    {
-        $this->collector = $collector;
-    }
-
 
 }

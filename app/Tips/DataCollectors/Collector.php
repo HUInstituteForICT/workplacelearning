@@ -5,13 +5,12 @@ namespace App\Tips\DataCollectors;
 
 
 use App\Tips\Statistics\Filters\Filter;
-use App\Tips\Statistics\Filters\ResourcePersonFilter;
 use App\Tips\Statistics\StatisticVariable;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Query\Builder;
 use InvalidArgumentException;
 
-class Collector implements CollectorInterface
+class Collector
 {
 
     /** @var string|int $year */
@@ -31,36 +30,36 @@ class Collector implements CollectorInterface
         $this->month = $month;
         $this->learningPeriod = $learningPeriod;
 
-        $this->predefinedStatisticCollector = new PredefinedStatisticCollector($year, $month, $learningPeriod);
-
+        $this->predefinedStatisticCollector = new PredefinedStatisticCollector($this->year, $this->month,
+            $this->learningPeriod);
     }
 
-    protected function wherePeriod(Builder $queryBuilder)
+    protected function applyPeriod(Builder $queryBuilder)
     {
         if ($this->year === null || $this->month === null) {
             return $queryBuilder;
         }
 
-        return $queryBuilder->whereRaw("YEAR(date) = ? AND MONTH(date) = ?", [$this->year, $this->month]);
+        return $queryBuilder->whereRaw('YEAR(date) = ? AND MONTH(date) = ?', [$this->year, $this->month]);
     }
 
-    /**
-     * @param StatisticVariable $statisticVariable
-     * @throws InvalidArgumentException On invalid filter use
-     * @return int|mixed
-     */
-    public function getValueForVariable(StatisticVariable $statisticVariable)
+    private function getQueryBuilder(string $educationProgramType): Builder
     {
         // Get the base query from the correct Model
-        if($statisticVariable->statistic->education_program_type === 'acting') {
-            $builder = $this->learningPeriod->learningActivityActing()->getBaseQuery();
-        } elseif($statisticVariable->statistic->education_program_type === 'producing') {
-            $builder = $this->learningPeriod->learningActivityProducing()->getBaseQuery();
+        if ($educationProgramType === 'acting') {
+            return $this->learningPeriod->learningActivityActing()->getBaseQuery();
         }
 
+        if ($educationProgramType === 'producing') {
+            return $this->learningPeriod->learningActivityProducing()->getBaseQuery();
+        }
 
-        // Apply each filter
-        foreach ($statisticVariable->filters as $filterData) {
+        throw new \RuntimeException('Invalid educationProgramType; no matching LearningActivity');
+    }
+
+    private function applyFilters(Builder $builder, array $filters)
+    {
+        array_walk($filters, function ($filterData) use ($builder) {
 
             // Get an array of the parameters for the filter
             $parameters = collect($filterData['parameters'])->reduce(function ($carry, $parameter) {
@@ -70,8 +69,8 @@ class Collector implements CollectorInterface
 
                 return $carry;
             }, []);
-            
-            if(!\in_array(Filter::class, class_implements($filterData['class']), true)) {
+
+            if (!\in_array(Filter::class, class_implements($filterData['class']), true)) {
                 throw new InvalidArgumentException('Invalid filter');
             }
 
@@ -79,16 +78,27 @@ class Collector implements CollectorInterface
             $filter = new $filterData['class']($parameters);
 
             $filter->filter($builder);
-        }
+        });
+    }
 
+    /**
+     * @param StatisticVariable $statisticVariable
+     * @param string $type
+     * @return int|mixed
+     */
+    public function getValueForVariable(StatisticVariable $statisticVariable, string $type): int
+    {
+        $builder = $this->getQueryBuilder($type);
 
+        $this->applyFilters($builder, $statisticVariable->filters);
+
+        $this->applyPeriod($builder);
 
         // Hours select can onle be used on a statistic variable
-        if($statisticVariable->selectType === 'hours' && $statisticVariable->type === 'producing') {
-            return $this->wherePeriod($builder)->sum('duration');
+        if ($statisticVariable->selectType === 'hours' && $statisticVariable->type === 'producing') {
+            return $builder->sum('duration');
         }
-        return $this->wherePeriod($builder)->count();
 
-
+        return $builder->count();
     }
 }

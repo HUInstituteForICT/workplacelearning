@@ -26,8 +26,6 @@ class Statistic extends Model
 
     protected static $persisted = ['name', 'education_program_type'];
 
-    /** @var Collector $collector */
-    protected $collector;
 
     // Disable timestamps
     public $timestamps = false;
@@ -45,15 +43,6 @@ class Statistic extends Model
      */
     public function coupledStatistics() {
         return $this->hasMany(TipCoupledStatistic::class, 'statistic_id');
-    }
-
-    /**
-     * Set the dataCollector used by certain StatisticVariables and PredefinedStatistics
-     * @param Collector $collector
-     */
-    public function setCollector(Collector $collector)
-    {
-        $this->collector = $collector;
     }
 
 }

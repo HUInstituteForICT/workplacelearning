@@ -10,7 +10,7 @@ use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\PredefinedStatisticHelper;
 use App\Tips\Statistics\StatisticVariable;
 use App\Tips\Tip;
-use App\Tips\TipService;
+use App\Tips\TipManager;
 use Illuminate\Http\Request;
 
 class TipsController extends Controller
@@ -93,10 +93,10 @@ class TipsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param TipService $service
+     * @param TipManager $service
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function store(TipService $service)
+    public function store(TipManager $service)
     {
         $tip = $service->createTip(['name' => trans('general.new') . ' Tip', 'shownInAnalysis' => true]);
         $tip->save();
@@ -144,14 +144,14 @@ class TipsController extends Controller
         return response()->json([], 200);
     }
 
-    public function updateCohorts(Request $request, Tip $tip, TipService $tipService)
+    public function updateCohorts(Request $request, Tip $tip, TipManager $tipService)
     {
         $tip = $tipService->enableCohorts($tip, $request->all());
 
         return redirect()->route('tips.edit', ['id' => $tip->id]);
     }
 
-    public function likeTip(Tip $tip, TipService $tipService, Request $request) {
+    public function likeTip(Tip $tip, TipManager $tipService, Request $request) {
         $liked = $tipService->likeTip($tip, (int) $request->get('type', 1), $request->user());
         return response()->json(['status' => $liked ? 'success' : 'error']);
     }

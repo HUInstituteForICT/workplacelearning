@@ -16,12 +16,12 @@ class LikeRepository implements LikeRepositoryInterface
         return $like;
     }
 
-    public function save(Like $like): void
+    public function save(Like $like)
     {
         $like->save();
     }
 
-    public function loadForTipByStudent(Tip $tip, Student $student):void
+    public function loadForTipByStudent(Tip $tip, Student $student)
     {
         $tip->likes()->where('student_id', '=', $student->student_id)->get();
     }

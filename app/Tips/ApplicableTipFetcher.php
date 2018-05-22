@@ -5,19 +5,35 @@ namespace App\Tips;
 
 
 use App\Cohort;
-use App\Tips\DataCollectors\Collector;
 
 class ApplicableTipFetcher
 {
 
-    public function fetchForCohort(Cohort $cohort, Collector $collector): array
+    /**
+     * @var TipEvaluator
+     */
+    private $tipEvaluator;
+
+    public function __construct(TipEvaluator $tipEvaluator)
+    {
+        $this->tipEvaluator = $tipEvaluator;
+    }
+
+    /**
+     * @param Cohort $cohort
+     * @return EvaluatedTip[]
+     */
+    public function fetchForCohort(Cohort $cohort): array
     {
         $cohort->load('tips.coupledStatistics.statistic');
 
-        $applicableTips = $cohort->tips->filter(function (Tip $tip) use ($collector) {
-            return $tip->showInAnalysis && $tip->isApplicable($collector);
+
+        $applicableEvaluatedTips = $cohort->tips->map(function (Tip $tip) {
+            return $this->tipEvaluator->evaluate($tip);
+        })->filter(function(EvaluatedTip $evaluatedTip) {
+            return $evaluatedTip->isPassing();
         });
 
-        return $applicableTips->all();
+        return $applicableEvaluatedTips->all();
     }
 }

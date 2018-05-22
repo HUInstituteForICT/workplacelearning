@@ -8,7 +8,7 @@ use App\Student;
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\Statistic;
 
-class TipService
+class TipManager
 {
 
     /**
