@@ -10,13 +10,6 @@ use Illuminate\Support\Facades\Input;
 class TemplateDashboardController extends Controller
 {
 
-    private $templates;
-
-    public function __construct()
-    {
-        $templates = Template::all();
-    }
-
     public function index()
     {
         $templates = Template::all();
@@ -90,7 +83,7 @@ class TemplateDashboardController extends Controller
         }
 
         //TODO: change route
-        return redirect()->route('dashboard.index')
+        return redirect()->route('template.index')
             ->with('success', Lang::get('template.template_removed'));
     }
 
