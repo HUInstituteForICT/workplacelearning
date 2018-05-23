@@ -21,7 +21,8 @@
                                         {{ csrf_field() }}
                                         <button class="btn btn-default" title="Move down on the stack">&rsaquo;</button>
                                     </form>
-                                    <form action="{{ route('dashboard.delete', $chart->id) }}" class="frmDelete"
+                                    <form action="{{ route('dashboard.delete', $chart->id) }}"
+
                                           style="display: inline-block;" method="post" accept-charset="UTF-8">
                                         {{ csrf_field() }}
                                         {{ method_field('delete') }}
@@ -129,7 +130,8 @@
                 options: defaultOptions
             });
             @endforeach
-        })()
+        })
+        ()
     </script>
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis">+</button>
 

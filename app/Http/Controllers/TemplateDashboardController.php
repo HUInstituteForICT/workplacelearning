@@ -4,17 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Template;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Input;
 
 class TemplateDashboardController extends Controller
 {
-
-    private $templates;
-
-    public function __construct()
-    {
-        $templates = Template::all();
-    }
 
     public function index()
     {
@@ -27,20 +21,6 @@ class TemplateDashboardController extends Controller
         return view('pages.analytics.template.create_template');
     }
 
-    /*
-     *     public function show($id)
-    {
-        $analysis = $this->analysis->findOrFail($id);
-        $analysis_result = null;
-
-        if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
-            $analysis->refresh();
-        $analysis_result = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
-
-        return view('pages.analytics.show', compact('analysis', 'analysis_result'));
-    }
-     */
-
     public function show($id)
     {
         $template = (new \App\Template)->findOrFail($id);
@@ -50,6 +30,22 @@ class TemplateDashboardController extends Controller
         }
     }
 
+    public function save(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'query' => 'required',
+        ]);
+
+        $name = $request->input('name');
+        $query = $request->input('query');
+
+        $template = new Template(['name' => $name, 'query' => $query]);
+        $template->save();
+        return redirect()->action('TemplateDashboardController@index')
+            ->with('success', Lang::get('template.template_saved'));
+    }
+
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -57,34 +53,38 @@ class TemplateDashboardController extends Controller
             'query' => 'required',
         ]);
 
-        $template = (new \App\Template)->findOrFail($id);
-
         $name = $request->input('name');
         $query = $request->input('query');
 
+        $template = (new \App\Template)->find($id);
         if (!$template->update(['name' => $name,
             'query' => $query ])) {
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors(['The template has not been updated']);
+                ->withErrors([Lang::get('template.template_not_updated')]);
         }
 
         $template->refresh();
         return redirect()->action('TemplateDashboardController@show', [$template['id']])
-            ->with('success', 'The template has been updated');
+            ->with('success', Lang::get('template.template_updated'));
     }
 
 
     public function destroy($id)
     {
-        \Log::error("test");
-        $template = \App\Template::find($id);
-        $template->delete();
+        $template = (new \App\Template)->find($id);
+        try {
+            $template->delete();
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withErrors([Lang::get('template.template_not_removed')]);
+        }
 
         //TODO: change route
-        return redirect()->route('dashboard.index')
-            ->with('success', 'Template verwijderd uit de database');
+        return redirect()->route('template.index')
+            ->with('success', Lang::get('template.template_removed'));
     }
 
 }
