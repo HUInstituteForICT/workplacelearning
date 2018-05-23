@@ -1,8 +1,6 @@
 @extends('layout.HUdefault')
 @section('title', 'Template Dashboard')
 @section('content')
-    {{--TODO: lang support--}}
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">

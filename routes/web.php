@@ -98,6 +98,7 @@ Route::group([
             Route::get('/', 'TemplateDashboardController@index')->name('template.index');
             Route::get('/view/{id}', 'TemplateDashboardController@show')->name('template.show')->where('id', '[0-9]+');
             Route::post('/{id}', 'TemplateDashboardController@update')->name('template.update')->where('id', '[0-9]+');
+            Route::post('/', 'TemplateDashboardController@save')->name('template.save');
             Route::get('/create', 'TemplateDashboardController@create')->name('template.create');
             Route::delete('/{id}', 'TemplateDashboardController@destroy')->name('template.destroy')->where('id', '[0-9]+');
         });

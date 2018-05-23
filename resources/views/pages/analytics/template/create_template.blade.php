@@ -1,20 +1,14 @@
 @extends('layout.HUdefault')
-@section('title', 'Template Maken')
+@section('title', 'Template maken')
 @section('content')
-    {{--TODO: lang support--}}
-
-    <form action="{{ route('template.index') }}" method="get">
-        <button class="btn btn-default" title="Terug"> < Terug
-        </button>
-    </form>
-
     <div class="row">
-        <div class="col-md-4">
-            <h1>Template Maken</h1>
-            <form action="" method="post">
+        <div class="col-md-6">
+            <h1>{{Lang::get('template.template_create')}}</h1>
+
+            <form action="{{ route('template.save') }}" method="post">
 
                 <div class="form-group">
-                    <label for="name">Naam</label>
+                    <label for="name">{{Lang::get('template.name')}}</label>
                     <input type="text" id="name" name="name" class="form-control">
                 </div>
 
@@ -24,13 +18,14 @@
                               class="form-control"></textarea>
                 </div>
 
-        {{--        <form action="{{ route('template.destroy', $template) }}" class="frmDelete" method="post" accept-charset="UTF-8">
-                    {{ method_field('delete') }}
-                    <button class="btn btn-default" style="float: right" title="Opslaan">Opslaan</button>
-                </form>--}}
+                <button class="btn btn-primary" style="float: right" type="submit" title="Opslaan">{{Lang::get('template.save')}}</button>
 
+                {{ csrf_field() }}
+            </form>
 
-
+            <form action="{{ route('template.index') }}" method="get">
+                <button class="btn btn-default" title="Terug">{{Lang::get('template.back')}}
+                </button>
             </form>
 
         </div>

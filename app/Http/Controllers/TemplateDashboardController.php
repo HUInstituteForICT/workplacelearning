@@ -27,20 +27,6 @@ class TemplateDashboardController extends Controller
         return view('pages.analytics.template.create_template');
     }
 
-    /*
-     *     public function show($id)
-    {
-        $analysis = $this->analysis->findOrFail($id);
-        $analysis_result = null;
-
-        if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
-            $analysis->refresh();
-        $analysis_result = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
-
-        return view('pages.analytics.show', compact('analysis', 'analysis_result'));
-    }
-     */
-
     public function show($id)
     {
         $template = (new \App\Template)->findOrFail($id);
@@ -50,6 +36,22 @@ class TemplateDashboardController extends Controller
         }
     }
 
+    public function save(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'query' => 'required',
+        ]);
+
+        $name = $request->input('name');
+        $query = $request->input('query');
+
+        $template = new Template([$name, $query]);
+        $template->save();
+        return redirect()->action('TemplateDashboardController@index')
+            ->with('success', 'The template has been saved');
+    }
+
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -57,11 +59,10 @@ class TemplateDashboardController extends Controller
             'query' => 'required',
         ]);
 
-        $template = (new \App\Template)->findOrFail($id);
-
         $name = $request->input('name');
         $query = $request->input('query');
 
+        $template = (new \App\Template)->find($id);
         if (!$template->update(['name' => $name,
             'query' => $query ])) {
             return redirect()
