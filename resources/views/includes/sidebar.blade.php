@@ -66,7 +66,7 @@
             </div>
         </a>
 
-        <a class="nav-tile" href="{{ '#' }}">
+        <a class="nav-tile" href="{{ route('template.index') }}">
             <div class="tile blue_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/agenda_wit.svg', true) }}"/>
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.template') }}</div>
