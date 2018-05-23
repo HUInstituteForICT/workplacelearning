@@ -16,10 +16,10 @@
                     </div>
 
                     <div class="col-sm-0.5">
-                        <form action="{{route('template.destroy', $template->id)}}" method="post">
+                        <form action="{{route('template.destroy', $template->id)}}" method="post" class="frmDelete">
                             {{ csrf_field() }}
                             {{ method_field('delete') }}
-                            <button class="btn btn-danger" title="DeleteTemplate" style="margin-top: 3px">&times;
+                            <button class="btn btn-danger" id="delete" title="DeleteTemplate" style="margin-top: 3px">&times;
                             </button>
                         </form>
                     </div>
@@ -34,4 +34,14 @@
         </form>
 
     </div>
+
+    <script>
+        $('.frmDelete').click(function (event) {
+            if (!confirm('{{ Lang::get('dashboard.warning') }}')) {
+                event.preventDefault();
+                return false
+            }
+        });
+    </script>
+
 @stop
