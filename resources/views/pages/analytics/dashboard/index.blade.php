@@ -131,4 +131,15 @@
             @endforeach
         })()
     </script>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis">+</button>
+
+    <div id="addAnalysis" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+                @include('pages.analytics.builder.step1-type')
+            </div>
+
+        </div>
+    </div>
 @stop
