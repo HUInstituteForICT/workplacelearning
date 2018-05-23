@@ -27,5 +27,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-seconday" data-dismiss="modal">Annuleren</button>
-    <button type="button" class="btn btn-primary">Volgende</button>
+    <button type="button" class="btn btn-primary" onclick="(function() { $('#QueryBuilder').load('/dashboard/builder/step/2');})();">Volgende</button>
 </div>

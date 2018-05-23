@@ -10,6 +10,7 @@
                 <option>Accesslog</option>
             </select>
         </div>
+        <p style="font-weight: bold;">Relaties</p>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_1" value="custom">
             <label class="form-check-label" for="analysis_relations_1">
@@ -25,6 +26,7 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-seconday">Vorige</button>
-    <button type="button" class="btn btn-primary">Volgende</button>
+    <button type="button" class="btn btn-seconday" onclick="(function() { $('#QueryBuilder').load('/dashboard/builder/step/1');})();">Vorige</button>
+    <button type="button" class="btn btn-primary" onclick="(function() { $('#QueryBuilder').load('/dashboard/builder/step/3');})();">Volgende</button>
+
 </div>

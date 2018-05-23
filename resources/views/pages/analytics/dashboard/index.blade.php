@@ -136,7 +136,7 @@
     <div id="addAnalysis" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
 
-            <div class="modal-content">
+            <div id="QueryBuilder" class="__reactRoot modal-content">
                 @include('pages.analytics.builder.step1-type')
             </div>
 
