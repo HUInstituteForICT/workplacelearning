@@ -10,6 +10,7 @@ import ActivityActingProcessTable from "./components/ActivityActingProcessTable/
 import EducationProgramsApp from "./components/EducationProgramsApp/educationProgramsApp";
 import ActivityProducingProcessTable from "./components/ActivityProducingProcessTable/table";
 import ProducingWeekStatesExport from "./components/ProducingWeekStatesExport";
+//import QueryBuilder from "./components/QueryBuilder/QueryBuilder";
 
 
 
@@ -18,6 +19,7 @@ const Apps = {
     ActivityProducingProcessTable,
     EducationProgramsApp,
     ProducingWeekStatesExport,
+//    QueryBuilder,
 };
 
 // Automatically mount if one of the above declared Apps exist in the DOM
