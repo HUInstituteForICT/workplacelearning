@@ -122,6 +122,10 @@ class TipsController extends Controller
         $tip->name = $request->get('name');
         $tip->tipText = $request->get('tipText');
         $tip->showInAnalysis = $request->has('showInAnalysis');
+        if($tip->trigger === 'moment') {
+            $tip->rangeStart = (int) $request->get('rangeStart');
+            $tip->rangeEnd = (int) $request->get('rangeEnd');
+        }
         $tip->save();
         $tip->enabledCohorts()->sync($request->get('enabled_cohorts'));
 

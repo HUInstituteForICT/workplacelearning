@@ -56,8 +56,8 @@ class TipManager
         $tip->showInAnalysis = isset($data['showInAnalysis']);
 
         if($tip->trigger === 'moment') {
-            $tip->rangeStart = $data['rangeStart'];
-            $tip->rangeEnd = $data['rangeEnd'];
+            $tip->rangeStart = (int) $data['rangeStart'];
+            $tip->rangeEnd = (int) $data['rangeEnd'];
         }
 
         $tip->save();
