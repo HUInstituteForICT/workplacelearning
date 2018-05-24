@@ -14,6 +14,7 @@ use App\Repository\LikeRepositoryInterface;
 use App\Student;
 use App\Tips\ApplicableTipFetcher;
 use App\Tips\DataCollectors\Collector;
+use App\Tips\EvaluatedStatisticTip;
 use App\Tips\EvaluatedTip;
 use App\Tips\Tip;
 use Illuminate\Http\Request;

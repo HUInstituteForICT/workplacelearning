@@ -93,12 +93,16 @@ class TipsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param Request $request
      * @param TipManager $service
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function store(TipManager $service)
+    public function store(Request $request, TipManager $service)
     {
-        $tip = $service->createTip(['name' => trans('general.new') . ' Tip', 'shownInAnalysis' => true]);
+        $tip = $service->createTip(['name'            => trans('general.new') . ' Tip',
+                                    'shownInAnalysis' => true,
+                                    'trigger'         => $request->get('trigger', 'statistic'),
+        ]);
         $tip->save();
 
         return Tip::with('coupledStatistics', 'enabledCohorts', 'likes')->findOrFail($tip->id);

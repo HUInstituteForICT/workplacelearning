@@ -195,6 +195,10 @@ class TipEditPage extends React.Component {
         }
     };
 
+    updateRange = (name, value) => {
+
+    }
+
     render = () => {
         const {
             match,
@@ -238,143 +242,183 @@ class TipEditPage extends React.Component {
             </div>
 
 
-            {/* The list op coupled statistics for this tip */}
+                {tip.trigger === 'statistic' && <div>
+                    {/* The list op coupled statistics for this tip */}
 
-                <h3>{Lang.get('tips.coupled-statistics')}</h3>
+                    <h3>{Lang.get('tips.coupled-statistics')}</h3>
 
-                <button id="step-2" className="btn btn-primary"
-                        onClick={this.toggleCoupleModal}>{Lang.get('statistics.couple')}
-                </button>
-                <br/><br/>
+                    <button id="step-2" className="btn btn-primary"
+                            onClick={this.toggleCoupleModal}>{Lang.get('statistics.couple')}
+                    </button>
+                    <br/><br/>
 
-                <div className="row" style={{background: 'white', marginBottom: '10px', marginTop: '10px'}} id="step-16">
-                    {hasProducingCoupled && hasActingCoupled &&
-                    <div className="alert alert-danger text-danger" role="alert">
-                        {Lang.get('statistics.acting-producing-coupled')}
-                    </div>}
-                    <div>
-                        {
-                            coupledStatistics.map(coupledStatistic => {
-                                const statistic = statistics[coupledStatistic.statistic];
-
-                                return <div className="col-md-4" key={coupledStatistic.id}><CoupledStatisticItem
-                                    coupledStatistic={coupledStatistic}
-                                    tip={tip}
-                                    statistic={statistic}
-                                    educationProgramType={educationProgramTypes[statistic.education_program_type]}
-                                    editMode={coupledStatisticsInEditMode.includes(coupledStatistic.id)}
-                                    updateEntity={updateEntity}
-                                    toggleEditModeForCoupledStatistic={toggleEditModeForCoupledStatistic}
-                                    decoupleStatistic={decoupleStatistic}
-                                /></div>
-                            })
-                        }
-                    </div>
-
-                </div>
-
-
-                <Modal open={this.state.showCoupleStatisticModal} little
-                       onClose={() => this.setState({showCoupleStatisticModal: false})}
-                       classNames={{'modal': "panel panel-default"}}>
-                    <div className="panel-body">
-                        <h3 style={{display: 'inline-block'}}>{Lang.get('tips.couple-statistic')}</h3>
-                        <br/>
-
-
-                        <strong>{Lang.get('statistics.select-statistic')}</strong>
-                        <div className="row">
-                            <div className="col-lg-6" id="step-12">
-                                <select value={coupleStatisticForm.statistic} className="form-control"
-                                        onChange={e => updateCoupleStatisticFormProperty('statistic', e.target.value)}>
-                                    <option disabled={true}/>
-                                    {
-
-                                        allowedStatistics(tip, statistics, coupledStatistics).map(
-                                            statistic => <option key={statistic.id}
-                                                                 value={statistic.id}>
-
-                                                {statistic.type === 'predefinedstatistic' && Lang.get('statistics.predefined-stats.' + statistic.name)}
-                                                {statistic.type !== 'predefinedstatistic' && statistic.name}
-
-                                                &nbsp;-&nbsp;
-                                                ({statistic.education_program_type})
-                                                {statistic.type === 'predefinedstatistic' && ' - (' + Lang.get('statistics.predefined') + ')'}
-                                            </option>
-                                        )
-                                    }
-                                </select>
-                            </div>
-                        </div>
-
-                        <br/>
-
-                        <strong>{Lang.get('statistics.when-active')}</strong>
-                        <div className="row">
-                            <div className="col-lg-3" id="step-13">
-                                <select value={coupleStatisticForm.comparisonOperator} className="form-control"
-                                        onChange={e => updateCoupleStatisticFormProperty('comparisonOperator', e.target.value)}>
-                                    <option value="1">{Lang.get('statistics.greater-than')}</option>
-                                    <option value="0">{Lang.get('statistics.less-than')}</option>
-                                </select>
-                            </div>
-                            <div className="col-lg-3" id="step-14">
-                                <input type="number" className="form-control" step="any"
-                                       value={coupleStatisticForm.threshold}
-                                       onChange={e => updateCoupleStatisticFormProperty('threshold', e.target.value)}/>
-                            </div>
-                        </div>
-
-                        <br/><br/>
-
+                    <div className="row" style={{background: 'white', marginBottom: '10px', marginTop: '10px'}}
+                         id="step-16">
+                        {hasProducingCoupled && hasActingCoupled &&
+                        <div className="alert alert-danger text-danger" role="alert">
+                            {Lang.get('statistics.acting-producing-coupled')}
+                        </div>}
                         <div>
-                            <button className="btn btn-primary" id="step-15"
-                                    disabled={coupleStatisticForm.statistic === '' || coupleStatisticForm.threshold === '' || coupleStatisticForm.comparisonOperator > '2' || this.state.coupleRequestBusy}
-                                    onClick={this.coupleStatistic}>
-                                {this.state.coupleRequestBusy &&
-                                <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"/>}
-                                {!this.state.coupleRequestBusy && <span>{Lang.get('statistics.couple')}</span>}
+                            {
+                                coupledStatistics.map(coupledStatistic => {
+                                    const statistic = statistics[coupledStatistic.statistic];
 
-                            </button>
-
-                            &nbsp;
-
-                            <button className="btn btn-danger"
-                                    onClick={() => this.setState({showCoupleStatisticModal: false})}>
-                                {Lang.get('statistics.cancel')}
-                            </button>
-
-                            <button className="pull-right btn btn-default" id="step-3"
-                                    onClick={this.toggleNewStatisticModal}>{Lang.get('react.statistic.create-statistic')}
-                            </button>
+                                    return <div className="col-md-4" key={coupledStatistic.id}><CoupledStatisticItem
+                                        coupledStatistic={coupledStatistic}
+                                        tip={tip}
+                                        statistic={statistic}
+                                        educationProgramType={educationProgramTypes[statistic.education_program_type]}
+                                        editMode={coupledStatisticsInEditMode.includes(coupledStatistic.id)}
+                                        updateEntity={updateEntity}
+                                        toggleEditModeForCoupledStatistic={toggleEditModeForCoupledStatistic}
+                                        decoupleStatistic={decoupleStatistic}
+                                    /></div>
+                                })
+                            }
                         </div>
-                    </div>
-                </Modal>
 
-                <Modal open={this.state.showNewStatisticModal} little
-                       onClose={() => this.setState({showNewStatisticModal: false})}
-                       classNames={{'modal': "panel panel-default"}}>
-                    <div className="panel-body" id="step-8">
-                    <h3>{Lang.get('react.statistic.create-statistic')}</h3>
-                    <CreateForm variableFilters={variableFilters}
-                                joyrideStepIndex={this.state.stepIndex}
-                                educationProgramTypes={educationProgramTypes}
-                                operators={[
-                                    {type: 0, label: "+"},
-                                    {type: 1, label: "-"},
-                                    {type: 2, label: "*"},
-                                    {type: 3, label: "/"},
-                                ]}
-                                onCreated={newEntity => {
-                                    storeNewStatisticVariable(normalize(newEntity, Schema.statistic));
-                                    if (this.state.runJoyride) {
-                                        this.joyrideRef.helpers.next();
-                                    }
-                                    this.setState({showNewStatisticModal: false});
-                                }}
-                    />
-                </div>
-                </Modal>
+                    </div>
+
+
+                    <Modal open={this.state.showCoupleStatisticModal} little
+                           onClose={() => this.setState({showCoupleStatisticModal: false})}
+                           classNames={{'modal': "panel panel-default"}}>
+                        <div className="panel-body">
+                            <h3 style={{display: 'inline-block'}}>{Lang.get('tips.couple-statistic')}</h3>
+                            <br/>
+
+
+                            <strong>{Lang.get('statistics.select-statistic')}</strong>
+                            <div className="row">
+                                <div className="col-lg-6" id="step-12">
+                                    <select value={coupleStatisticForm.statistic} className="form-control"
+                                            onChange={e => updateCoupleStatisticFormProperty('statistic', e.target.value)}>
+                                        <option disabled={true}/>
+                                        {
+
+                                            allowedStatistics(tip, statistics, coupledStatistics).map(
+                                                statistic => <option key={statistic.id}
+                                                                     value={statistic.id}>
+
+                                                    {statistic.type === 'predefinedstatistic' && Lang.get('statistics.predefined-stats.' + statistic.name)}
+                                                    {statistic.type !== 'predefinedstatistic' && statistic.name}
+
+                                                    &nbsp;-&nbsp;
+                                                    ({statistic.education_program_type})
+                                                    {statistic.type === 'predefinedstatistic' && ' - (' + Lang.get('statistics.predefined') + ')'}
+                                                </option>
+                                            )
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <br/>
+
+                            <strong>{Lang.get('statistics.when-active')}</strong>
+                            <div className="row">
+                                <div className="col-lg-3" id="step-13">
+                                    <select value={coupleStatisticForm.comparisonOperator} className="form-control"
+                                            onChange={e => updateCoupleStatisticFormProperty('comparisonOperator', e.target.value)}>
+                                        <option value="1">{Lang.get('statistics.greater-than')}</option>
+                                        <option value="0">{Lang.get('statistics.less-than')}</option>
+                                    </select>
+                                </div>
+                                <div className="col-lg-3" id="step-14">
+                                    <input type="number" className="form-control" step="any"
+                                           value={coupleStatisticForm.threshold}
+                                           onChange={e => updateCoupleStatisticFormProperty('threshold', e.target.value)}/>
+                                </div>
+                            </div>
+
+                            <br/><br/>
+
+                            <div>
+                                <button className="btn btn-primary" id="step-15"
+                                        disabled={coupleStatisticForm.statistic === '' || coupleStatisticForm.threshold === '' || coupleStatisticForm.comparisonOperator > '2' || this.state.coupleRequestBusy}
+                                        onClick={this.coupleStatistic}>
+                                    {this.state.coupleRequestBusy &&
+                                    <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"/>}
+                                    {!this.state.coupleRequestBusy && <span>{Lang.get('statistics.couple')}</span>}
+
+                                </button>
+
+                                &nbsp;
+
+                                <button className="btn btn-danger"
+                                        onClick={() => this.setState({showCoupleStatisticModal: false})}>
+                                    {Lang.get('statistics.cancel')}
+                                </button>
+
+                                <button className="pull-right btn btn-default" id="step-3"
+                                        onClick={this.toggleNewStatisticModal}>{Lang.get('react.statistic.create-statistic')}
+                                </button>
+                            </div>
+                        </div>
+                    </Modal>
+
+                    <Modal open={this.state.showNewStatisticModal} little
+                           onClose={() => this.setState({showNewStatisticModal: false})}
+                           classNames={{'modal': "panel panel-default"}}>
+                        <div className="panel-body" id="step-8">
+                            <h3>{Lang.get('react.statistic.create-statistic')}</h3>
+                            <CreateForm variableFilters={variableFilters}
+                                        joyrideStepIndex={this.state.stepIndex}
+                                        educationProgramTypes={educationProgramTypes}
+                                        operators={[
+                                            {type: 0, label: "+"},
+                                            {type: 1, label: "-"},
+                                            {type: 2, label: "*"},
+                                            {type: 3, label: "/"},
+                                        ]}
+                                        onCreated={newEntity => {
+                                            storeNewStatisticVariable(normalize(newEntity, Schema.statistic));
+                                            if (this.state.runJoyride) {
+                                                this.joyrideRef.helpers.next();
+                                            }
+                                            this.setState({showNewStatisticModal: false});
+                                        }}
+                            />
+                        </div>
+                    </Modal>
+                </div>}
+                {tip.trigger === 'moment' && <div>
+                    <h3>{Lang.get('tips.moment-trigger')}</h3>
+
+                    <p>{Lang.get('tips.moment-trigger-detail')}</p>
+                    <div className="row">
+
+                        <div className="col-lg-3">
+                            <div className="form-group">
+                                <label>{Lang.get('tips.rangeStart')}</label>
+                                <div className="input-group">
+                                    <input min={0} max={100} value={tip.rangeStart} type="number" step={1}
+                                           className="form-control" onChange={e => updateEntity('tips', tip.id, {
+                                        ...tip,
+                                        rangeStart: e.target.value
+                                    })}/>
+                                    <span className="input-group-addon">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-lg-3">
+                            <div className="form-group">
+                                <label>{Lang.get('tips.rangeEnd')}</label>
+                                <div className="input-group">
+                                    <input min={0} max={100} value={tip.rangeEnd} type="number" step={1}
+                                           className="form-control" onChange={e => updateEntity('tips', tip.id, {
+                                        ...tip,
+                                        rangeEnd: e.target.value
+                                    })}/>
+                                    <span className="input-group-addon">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>}
 
 
                 <div className="panel panel-default" id="step-17">
@@ -384,9 +428,10 @@ class TipEditPage extends React.Component {
                             <textarea className="form-control" value={tip.tipText} maxLength={1000} rows={3}
                                       onChange={e => updateEntity('tips', tip.id, {...tip, tipText: e.target.value})}/>
                         </div>
-                        <p>{Lang.get('tips.form.statistic-value-parameters')}</p>
+                        {tip.trigger === 'statistic' && <p>{Lang.get('tips.form.statistic-value-parameters')}</p>}
+                        {tip.trigger === 'moment' && <p>{Lang.get('tips.form.moment-value-parameters')}</p>}
 
-                        {/* Table for value parameters */}
+                        {tip.trigger === 'statistic' &&
                         <table className="table">
                             <thead>
                             <tr>
@@ -423,6 +468,7 @@ class TipEditPage extends React.Component {
                             }
                             </tbody>
                         </table>
+                        }
                     </div>
                 </div>
             <hr/>
@@ -657,3 +703,6 @@ const mapping = {
 export default connect(mapping.state, mapping.dispatch)(TipEditPage);
 
 
+const coupleStatisticForms = () => {
+
+};

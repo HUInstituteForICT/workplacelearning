@@ -9,6 +9,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Nette\Utils\DateTime;
 
 /**
  * Class WorkplaceLearningPeriod
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property Category[]|Collection categories
  * @property LearningGoal[]|Collection learningGoals
  * @property LearningActivityActing[]|Collection learningActivityActing
+ * @property DateTime $startdate
+ * @property DateTime $enddate
  */
 class WorkplaceLearningPeriod extends Model
 {

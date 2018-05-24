@@ -40,8 +40,8 @@ class ApplicableTipFetcherTest extends \PHPUnit\Framework\TestCase
 
     private function getEvaluatedTipMock()
     {
-        /** @var EvaluatedTip|\PHPUnit_Framework_MockObject_MockObject $mock */
-        $mock = $this->createMock(EvaluatedTip::class);
+        /** @var EvaluatedStatisticTip|\PHPUnit_Framework_MockObject_MockObject $mock */
+        $mock = $this->createMock(EvaluatedStatisticTip::class);
         $mock->expects($this->exactly(2))->method('isPassing')->willReturn(true, false);
 
         return $mock;

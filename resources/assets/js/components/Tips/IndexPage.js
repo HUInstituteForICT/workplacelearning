@@ -37,8 +37,16 @@ class IndexPage extends React.Component {
         });
     };
 
+    createTip = (trigger) => {
+        axios.post('/api/tips', {trigger}).then(response => {
+            const normalized = normalize(response.data, Schema.tip);
+            this.props.newTip(normalized.entities);
+            this.props.history.push(`/tip/${normalized.result}`)
+        })
+    };
+
     render() {
-        const {match, history, tips, statistics, newTip} = this.props;
+        const {tips, statistics} = this.props;
         return <div>
             <Modal open={this.state.showTipDeleteModal} little
                    onClose={() => this.setState({showTipDeleteModal: false, deleteTipId: null})}
@@ -84,14 +92,11 @@ class IndexPage extends React.Component {
 
                 <div>
                     <h3>{Lang.get('tips.tips')}</h3>
-                    <button type="button" className="btn btn-primary" onClick={() => {
-                        axios.post('/api/tips', {}).then(response => {
-                            const normalized = normalize(response.data, Schema.tip);
-                            newTip(normalized.entities);
-                            history.push(`/tip/${normalized.result}`)
-                        })
-                    }}>
-                        {Lang.get('tips.new')}
+                    <button type="button" className="btn btn-primary" onClick={() => {this.createTip('statistic')}}>
+                        {Lang.get('tips.new-statistic-driven')}
+                    </button>&nbsp;
+                    <button type="button" className="btn btn-primary" onClick={() => {this.createTip('moment')}}>
+                        {Lang.get('tips.new-moment-driven')}
                     </button>
                     <br/><br/>
 
@@ -109,6 +114,7 @@ class IndexPage extends React.Component {
                         <thead>
                         <tr>
                             <th>{Lang.get('react.tips.name')}</th>
+                            <th>Trigger</th>
                             <th>{Lang.get('react.tips.statistics')}</th>
                             <th>Likes</th>
                             <th/>
@@ -248,7 +254,11 @@ const tipItem = ({tip, onClickDelete}) => {
 
     return <tr>
         <td>{tip.name}</td>
-        <td>{tip.coupled_statistics.length}</td>
+        <td>
+            {tip.trigger === 'moment' && Lang.get('tips.type-moment') }
+            {tip.trigger === 'statistic' && Lang.get('tips.type-statistic') }
+        </td>
+        <td>{tip.trigger === 'statistic' && tip.coupled_statistics.length}</td>
         <td>
             <span
                 className="glyphicon glyphicon-thumbs-up"/>&nbsp;{tip.likes.filter(like => like.type === 1).length}&nbsp;/&nbsp;

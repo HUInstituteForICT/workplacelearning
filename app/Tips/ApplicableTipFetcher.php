@@ -21,7 +21,7 @@ class ApplicableTipFetcher
 
     /**
      * @param Cohort $cohort
-     * @return EvaluatedTip[]
+     * @return EvaluatedStatisticTip[]
      */
     public function fetchForCohort(Cohort $cohort): array
     {

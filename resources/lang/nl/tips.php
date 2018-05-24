@@ -16,6 +16,14 @@ return [
     'liked' => 'Je hebt deze tip geliked!',
     'likes' => 'Likes',
     'new' => 'Nieuwe tip',
+    'new-statistic-driven' => 'Nieuwe statistiek tip',
+    'new-moment-driven' => 'Nieuwe moment tip',
+    'moment-trigger' => 'Moment trigger',
+    'moment-trigger-detail' => 'Geef de periode aan waarop deze tip actief wordt. Bijvoorbeeld start op 10% van de stage tot 20%.',
+    'rangeStart' => 'Startgrens',
+    'rangeEnd' => 'Eindgrens',
+    'type-moment' => 'Moment',
+    'type-statistic' => 'Statistiek',
     'back' => 'Terug naar overzicht',
     'coupled-statistics' => 'Gekoppelde statistieken',
     'coupling-statistics' => 'Statistieken koppelen',
@@ -45,7 +53,8 @@ return [
         'statistic-value-parameters' => 'Waarde parameters bij deze tip. Waardenaam parameters zijn enkel in gebruik bij "ingebouwde" statistieken. Deze staan dan voor bijvoorbeeld de naam van de meest voorkomende categorie.',
         'table-statistic' => 'Statistiek',
         'table-value-parameter' => 'Waarde parameter (bijv. 20%)',
-        'table-value-name-parameter' => 'Waardenaam parameter (bijv. categorie)'
+        'table-value-name-parameter' => 'Waardenaam parameter (bijv. categorie)',
+        'moment-value-parameters' => 'Het berekende percentage van dagen bezig met de stage, bijv. 23%, kan gebruikt worden in de tip tekst door :days-percentage te gebruiken in te vullen.'
     ],
 
 
