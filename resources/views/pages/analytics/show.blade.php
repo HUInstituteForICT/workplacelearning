@@ -72,10 +72,10 @@
         </div>
 
     <script>
-        var frmDelete = document.getElementById('frmDelete')
+        var frmDelete = document.getElementById('frmDelete');
         frmDelete.addEventListener('submit', function (e) {
             if (!confirm('{{ Lang::get('dashboard.warning') }}')) {
-                e.preventDefault()
+                e.preventDefault();
                 return false
             }
         })

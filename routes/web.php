@@ -53,7 +53,7 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
     }
 );
 
-Route::group(['before' => 'auth'], function() {
+Route::group(['before' => 'auth'], function () {
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
     Route::post('/activity-export-doc', "ActivityExportController@exportActivitiesToWord");
     Route::get('/download/activity-export-doc/{fileName}', "ActivityExportController@downloadWordExport")->name('docx-export-download');
@@ -65,7 +65,7 @@ Route::group(['before' => 'auth'], function() {
 // Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
 // Note: The localisation is saved in a session state.
 Route::group([
-    'before'     => ['auth'],
+    'before' => ['auth'],
     'middleware' => ['usernotifications'],
 ], function () {
 
@@ -89,15 +89,23 @@ Route::group([
             Route::post('/create', 'AnalyticsController@store')->name('analytics-store');
             Route::post('/expire', 'AnalyticsController@expire')->name('analytics-expire');
             Route::get('/export/{id}', 'AnalyticsController@export')->name('analytics-export');
-            Route::delete('/destroy/{id}',    'AnalyticsController@destroy')->name('analytics-destroy');
+            Route::delete('/destroy/{id}', 'AnalyticsController@destroy')->name('analytics-destroy');
             Route::resource('charts', 'AnalyticsChartController');
             Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
+
+            Route::get('/builder/step/{id}', 'QueryBuilderController@showStep')->name('querybuilder-step');
         });
+
+        Route::group(['prefix' => 'template'], function () {
+            Route::get('/', 'TemplateDashboardController@index')->name('template.index');
+            Route::get('/view/{id}', 'TemplateDashboardController@show')->name('template.show')->where('id', '[0-9]+');
+            Route::post('/{id}', 'TemplateDashboardController@update')->name('template.update')->where('id', '[0-9]+');
+            Route::post('/', 'TemplateDashboardController@save')->name('template.save');
+            Route::get('/create', 'TemplateDashboardController@create')->name('template.create');
+            Route::delete('/{id}', 'TemplateDashboardController@destroy')->name('template.destroy')->where('id', '[0-9]+');
+        });
+
     });
-
-
-
-
 
 
     /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
@@ -137,21 +145,21 @@ Route::group([
         Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id',
             '[0-9]*');
     });
-                // Dashboard
+    // Dashboard
 
 
-                Route::group([
-                                'middleware' => [ 'taskTypeRedirect' ],
-                            ], function () {
-                                /* Add all middleware redirected urls here */
-                                Route::get('/', 'HomeController@showHome')->name('default');
-                                Route::get('home', 'HomeController@showHome')->name('home');
-                                Route::get('process', 'ActingActivityController@show')->name('process');
-                                Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
-                                Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
-                                Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
-                                Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
-                            });
+    Route::group([
+        'middleware' => ['taskTypeRedirect'],
+    ], function () {
+        /* Add all middleware redirected urls here */
+        Route::get('/', 'HomeController@showHome')->name('default');
+        Route::get('home', 'HomeController@showHome')->name('home');
+        Route::get('process', 'ActingActivityController@show')->name('process');
+        Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
+        Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
+        Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
+        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
+    });
 
     /* EP Type: Acting */
     Route::group([
@@ -189,13 +197,12 @@ Route::group([
             })->name('competence-description');
 
 
-
         Route::get('evidence/{learningActivity}/remove', function (\App\LearningActivityActing $learningActivity) {
-            if($learningActivity->workplaceLearningPeriod->student->student_id != Auth::user()->student_id) {
+            if ($learningActivity->workplaceLearningPeriod->student->student_id != Auth::user()->student_id) {
                 throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
             }
 
-            if(Storage::exists("activity-evidence/{$learningActivity->evidence_disk_filename}")) {
+            if (Storage::exists("activity-evidence/{$learningActivity->evidence_disk_filename}")) {
                 Storage::delete("activity-evidence/{$learningActivity->evidence_disk_filename}");
                 $learningActivity->evidence_filename = null;
                 $learningActivity->evidence_disk_filename = null;
