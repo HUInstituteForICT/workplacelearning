@@ -15,8 +15,6 @@ class ApplicableTipFetcherTest extends \PHPUnit\Framework\TestCase
     {
         /** @var Tip|\PHPUnit_Framework_MockObject_MockObject $mock */
         $mock = $this->createMock(Tip::class);
-        $mock->expects($this->exactly(2))->method('__get')->with('showInAnalysis')->willReturn(true, false);
-        $mock->expects($this->once())->method('isApplicable')->withAnyParameters()->willReturn(true);
 
         return $mock;
     }
@@ -31,10 +29,20 @@ class ApplicableTipFetcherTest extends \PHPUnit\Framework\TestCase
         return $mock;
     }
 
-    private function getCollectorMock()
+    private function getTipEvaluatorMock()
     {
-        /** @var Collector|\PHPUnit_Framework_MockObject_MockObject $mock */
-        $mock = $this->createMock(Collector::class);
+        /** @var TipEvaluator|\PHPUnit_Framework_MockObject_MockObject $mock */
+        $mock = $this->createMock(TipEvaluator::class);
+        $mock->expects($this->exactly(2))->method('evaluate')->withAnyParameters()->willReturn($this->getEvaluatedTipMock());
+
+        return $mock;
+    }
+
+    private function getEvaluatedTipMock()
+    {
+        /** @var EvaluatedTip|\PHPUnit_Framework_MockObject_MockObject $mock */
+        $mock = $this->createMock(EvaluatedTip::class);
+        $mock->expects($this->exactly(2))->method('isPassing')->willReturn(true, false);
 
         return $mock;
     }
@@ -42,12 +50,12 @@ class ApplicableTipFetcherTest extends \PHPUnit\Framework\TestCase
 
     public function testFetchForWorkplaceLearningPeriod()
     {
-        $fetcher = new ApplicableTipFetcher();
+        $fetcher = new ApplicableTipFetcher($this->getTipEvaluatorMock());
         $cohort = $this->getCohortMock(); // One instance; contained tip returns different value on 2nd call
-        $applicableTips = $fetcher->fetchForCohort($cohort, $this->getCollectorMock());
+        $applicableTips = $fetcher->fetchForCohort($cohort);
         $this->assertCount(1, $applicableTips);
 
-        $applicableTips = $fetcher->fetchForCohort($cohort, $this->getCollectorMock());
+        $applicableTips = $fetcher->fetchForCohort($cohort);
         $this->assertCount(0, $applicableTips);
     }
 }
