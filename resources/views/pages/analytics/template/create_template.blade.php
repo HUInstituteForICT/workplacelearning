@@ -50,12 +50,8 @@
                 let paramGroup = document.getElementById('paramGroup');
 
                 if (lastCount > count) {
-                    console.log(lastCount);
-                    console.log(count);
-
                     for (let i = count; i <= lastCount; i++) {
                         let name = "param" + i;
-                        console.log(name);
                         let elements = document.getElementsByName(name);
                         if (elements != null) {
                             elements.forEach(elem => paramGroup.removeChild(elem));
