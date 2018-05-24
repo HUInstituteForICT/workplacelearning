@@ -19,7 +19,7 @@
                                   class="form-control"></textarea>
                     </div>
 
-                    <div class="form" id="paramGroup">
+                    <div class="form" id="paramGroup" style="margin-bottom: 20px">
                         {{--JS will load parameters here--}}
                     </div>
 
@@ -44,61 +44,77 @@
         function loadParams() {
             let textArea = document.getElementById("query");
             let textValue = textArea.value;
-            let countLeft = (textValue.match(/{/g) || []).length;
-            let countRight = (textValue.match(/}/g) || []).length;
-            let count = countLeft < countRight ? countLeft : countRight;
+            let count = countStr(textValue, "{?}");
 
             if (count !== lastCount) {
                 let paramGroup = document.getElementById('paramGroup');
-                for (let i = 0; i < lastCount; i++) {
-                    let name = "param" + i;
-                    let elements = document.getElementsByName(name);
-                    if (elements != null) {
-                        elements.forEach(elem => paramGroup.removeChild(elem));
+
+                if (lastCount > count) {
+                    console.log(lastCount);
+                    console.log(count);
+
+                    for (let i = count; i <= lastCount; i++) {
+                        let name = "param" + i;
+                        console.log(name);
+                        let elements = document.getElementsByName(name);
+                        if (elements != null) {
+                            elements.forEach(elem => paramGroup.removeChild(elem));
+                        }
+                    }
+                } else {
+                    for (let i = lastCount; i < count; i++) {
+                        let name = "param" + i;
+
+                        let inputField = document.createElement("input");
+                        inputField.setAttribute("type", "text");
+                        inputField.setAttribute("placeholder", "param " + (i + 1));
+                        inputField.setAttribute("id", name);
+                        inputField.setAttribute("required", "true");
+                        inputField.style.cssFloat = "left";
+                        inputField.className = "form-control";
+
+                        let selectList = document.createElement("select");
+                        selectList.className = "form-control";
+                        selectList.style.cssFloat = "right";
+                        selectList.style.marginTop = "2px";
+
+                        for (let y = 0; y < dataTypes.length; y++) {
+                            let option = document.createElement("option");
+                            option.value = dataTypes[y];
+                            option.text = dataTypes[y];
+                            selectList.appendChild(option);
+                        }
+
+                        let row = document.createElement("div");
+                        row.setAttribute("name", name);
+                        row.className = "row";
+
+                        let div1 = getDiv();
+                        div1.appendChild(inputField);
+
+                        let div2 = getDiv();
+                        div2.appendChild(selectList);
+
+                        row.append(div1);
+                        row.append(div2);
+                        row.append(getDiv());
+
+                        document.getElementById('paramGroup').appendChild(row);
                     }
                 }
-
                 lastCount = count;
-                for (let i = 0; i < count; i++) {
-                    let name = "param" + i;
-
-                    let inputField = document.createElement("input");
-                    inputField.setAttribute("type", "text");
-                    inputField.setAttribute("placeholder", "param " + (i + 1));
-                    inputField.setAttribute("id", name);
-                    inputField.setAttribute("required", "true");
-                    inputField.style.cssFloat = "left";
-                    inputField.className = "form-control";
-
-                    let selectList = document.createElement("select");
-                    selectList.className = "form-control";
-                    selectList.style.cssFloat = "right";
-                    selectList.style.marginTop = "2px";
-
-                    for (let y = 0; y < dataTypes.length; y++) {
-                        let option = document.createElement("option");
-                        option.value = dataTypes[y];
-                        option.text = dataTypes[y];
-                        selectList.appendChild(option);
-                    }
-
-                    let row = document.createElement("div");
-                    row.setAttribute("name", name);
-                    row.className = "row";
-
-                    let div1 = getDiv();
-                    div1.appendChild(inputField);
-
-                    let div2 = getDiv();
-                    div2.appendChild(selectList);
-
-                    row.append(div1);
-                    row.append(div2);
-                    row.append(getDiv());
-
-                    document.getElementById('paramGroup').appendChild(row);
-                }
             }
+        }
+
+        function countStr(string, searchFor) {
+            let count = 0,
+                pos = string.indexOf(searchFor);
+
+            while (pos > -1) {
+                ++count;
+                pos = string.indexOf(searchFor, ++pos);
+            }
+            return count;
         }
 
         function getDiv() {
