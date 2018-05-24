@@ -24,7 +24,6 @@ class EvaluatedMomentTip implements EvaluatedTip
         $this->tip = $tip;
         $this->daysPercentage = $daysPercentage;
         $this->passes = $passes;
-        dump($this);
     }
 
     public function getTip(): Tip

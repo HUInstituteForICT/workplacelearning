@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\FeedbackGiven;
+use App\Repository\Eloquent\LikeRepository;
+use App\Student;
 use App\Tips\ApplicableTipFetcher;
 use App\Tips\DataCollectors\Collector;
+use App\Tips\EvaluatedTip;
 use App\Tips\Tip;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Http\Request;
@@ -26,30 +29,37 @@ class HomeController extends Controller
     {
         /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
         $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
-        $collector = new Collector(null, null, $workplaceLearningPeriod);
-        $tips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort, $collector))
-            ->filter(function (Tip $tip) use ($request) {
-                return !$tip->dislikedByStudent($request->user());
-            });
 
-        $tip = $tips->count() > 0 ? $tips->random(null) : null;
+        $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
 
-        return view('pages.producing.home', ['tip' => $tip]);
+        /** @var Student $student */
+        $student = $request->user();
+        $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+            $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
+        });
+
+        $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
+
+
+        return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip]);
     }
 
-    public function showActingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher)
+    public function showActingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
         /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
         $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
-        $collector = new Collector(null, null, $workplaceLearningPeriod);
-        $tips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort,
-            $collector))->filter(function (Tip $tip) use ($request) {
-            return !$tip->dislikedByStudent($request->user());
+
+        $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
+
+        /** @var Student $student */
+        $student = $request->user();
+        $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+            $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
         });
 
-        $tip = $tips->count() > 0 ? $tips->random(null) : null;
+        $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
 
-        return view('pages.acting.home', ['tip' => $tip]);
+        return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip]);
     }
 
     public function showDefault()

@@ -20,12 +20,12 @@
                 </div>
             </div>
 
-            @if($tip !== null)
+            @if($evaluatedTip !== null)
                 <div class="row">
                     <div class="col-lg-7">
                         <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
                             <h4>{{ __('tips.tip') }}</h4>
-                            <p>{!! nl2br($tip->getTipText()) !!}</p>
+                            <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
                             <br/>
 
                             <p class="text-right">
