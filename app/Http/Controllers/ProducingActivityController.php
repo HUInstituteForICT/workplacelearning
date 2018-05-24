@@ -210,7 +210,7 @@ class ProducingActivityController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
+            'datum'         => 'required|date|date_in_wplp',
             'omschrijving'  => 'required',
             'aantaluren'    => 'required',
             'resource'      => 'required|in:persoon,alleen,internet,boek,new',
@@ -323,7 +323,7 @@ class ProducingActivityController extends Controller
 
         // TODO shouldn't these fields be in English?
         $validator = Validator::make($request->all(), [
-            'datum'         => 'required|date|before:'.date('Y-m-d', strtotime('tomorrow')),
+            'datum'         => 'required|date|date_in_wplp',
             'omschrijving'  => 'required',
             'aantaluren'    => 'required',
             'resource'      => 'required|in:persoon,alleen,internet,boek,new',
