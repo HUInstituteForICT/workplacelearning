@@ -43,7 +43,7 @@ class TipManager
     }
 
     /**
-     * Create a new tip based on the data passed
+     * Update a tip based on the data passed
      *
      * @param Tip $tip
      * @param array $data
@@ -54,6 +54,11 @@ class TipManager
         $tip->name = $data['name'];
         $tip->tipText = $data['tipText'];
         $tip->showInAnalysis = isset($data['showInAnalysis']);
+
+        if($tip->trigger === 'moment') {
+            $tip->rangeStart = $data['rangeStart'];
+            $tip->rangeEnd = $data['rangeEnd'];
+        }
 
         $tip->save();
 
