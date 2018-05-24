@@ -28,7 +28,7 @@ class StatisticCalculator
     /**
      * @throws \ErrorException
      * @param Statistic $statistic
-     * @return StatisticCalculationResult
+     * @return Resultable
      */
     public function calculate(Statistic $statistic): Resultable
     {
@@ -44,7 +44,7 @@ class StatisticCalculator
     /**
      * @throws \ErrorException
      * @param CustomStatistic $statistic
-     * @return StatisticCalculationResult
+     * @return Resultable
      */
     private function calculateCustomStatistic(CustomStatistic $statistic): Resultable
     {

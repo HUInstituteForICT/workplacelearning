@@ -11,6 +11,15 @@ class StatisticResultCollection implements Resultable
 {
     /** @var StatisticCalculationResult[] $results Array of Statistic results of a statistic calculation */
     private $results = [];
+    /**
+     * @var bool
+     */
+    private $removeFailedResults;
+
+    public function __construct(bool $removeFailedResults = false)
+    {
+        $this->removeFailedResults = $removeFailedResults;
+    }
 
     /**
      * Add a new Statistic result
@@ -20,7 +29,6 @@ class StatisticResultCollection implements Resultable
     {
         $this->results[] = $result;
     }
-
 
     public function getResultString(): string
     {
@@ -33,6 +41,10 @@ class StatisticResultCollection implements Resultable
 
     public function hasPassed(): bool
     {
+        // In case all results failed and have been removed
+        if(\count($this->results) === 0) {
+            return false;
+        }
         $passed = true;
         array_walk($this->results, function(StatisticCalculationResult $result) use(&$passed) {
             if(!$result->hasPassed()) {
@@ -47,6 +59,13 @@ class StatisticResultCollection implements Resultable
         array_walk($this->results, function(Resultable $resultable) use($threshold, $operator) {
             $resultable->doThresholdComparison($threshold, $operator);
         });
+
+        // Some collections may want to remove failed results because the overall resultset should pass regardless
+        if($this->removeFailedResults) {
+            $this->results = array_filter($this->results, function(Resultable $resultable) {
+                return $resultable->hasPassed();
+            });
+        }
     }
 
     public function getName(): string

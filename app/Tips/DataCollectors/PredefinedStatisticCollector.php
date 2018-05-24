@@ -88,13 +88,13 @@ class PredefinedStatisticCollector implements CollectorInterface
     }
 
     /**
-     * @DataUnitAnnotation(name="Percentage learning moments for every learning question without use of theory", method="percentageLearningMomentsWithoutTheory", valueParameterDescription="The names of the learning moments (e.g. 'Unplanned moment, individual session')", epType="Acting")
+     * @DataUnitAnnotation(name="Percentage learning moments for every learning question without use of theory", method="percentageLearningMomentsWithoutTheory", valueParameterDescription="The comma separated names of the learning moments (e.g. 'Unplanned moment, individual session')", epType="Acting")
      * @return Resultable
      * @throws \Exception
      */
     public function percentageLearningMomentsWithoutTheory(): Resultable
     {
-        $resultCollection = new StatisticResultCollection();
+        $resultCollection = new StatisticResultCollection(true);
 
         $learningQuestions = $this->learningPeriod->learningGoals;
         $this->learningPeriod->learningActivityActing;

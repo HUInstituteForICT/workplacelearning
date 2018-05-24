@@ -7,7 +7,7 @@ use App\Tips\CollectorDataAggregator;
 
 
 /**
- * @property string name
+ * @property string $name
  */
 class PredefinedStatistic extends Statistic
 {
