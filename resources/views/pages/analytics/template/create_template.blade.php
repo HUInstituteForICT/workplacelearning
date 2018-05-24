@@ -10,13 +10,13 @@
 
                     <div class="form-group">
                         <label for="name">{{Lang::get('template.name')}}</label>
-                        <input type="text" id="name" name="name" class="form-control">
+                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}">
                     </div>
 
                     <div class="form-group">
                         <label for="query">Query</label>
                         <textarea rows="4" cols="50" onkeyup="loadParams()" maxlength="1000" id="query" name="query"
-                                  class="form-control"></textarea>
+                                  class="form-control">{{ old('query') }}</textarea>
                     </div>
 
                     <div class="form" id="paramGroup" style="margin-bottom: 20px">
