@@ -14,6 +14,7 @@ use App\Repository\Eloquent\LikeRepository;
 use App\Student;
 use App\Tips\ApplicableTipFetcher;
 use App\Tips\DataCollectors\Collector;
+use App\Tips\EvaluatedTip;
 use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -62,19 +63,16 @@ class ProducingAnalysisController extends Controller
         }
         $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
 
-        $collector = new Collector($year, $month, $workplaceLearningPeriod);
         /** @var Cohort $cohort */
         $cohort = $workplaceLearningPeriod->cohort;
 
-        $applicableTips = collect($applicableTipFetcher->fetchForCohort($cohort, $collector));
+        $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($cohort));
 
         /** @var Student $student */
         $student = $request->user();
-        $applicableTips->each(function (Tip $tip) use ($student, $likeRepository) {
-            $likeRepository->loadForTipByStudent($tip, $student);
+        $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+            $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
         });
-
-
 
         // If there are no chains, there are no activities therefore redirect user somewhere else
         if (count($producingAnalysis->chains()) == 0) {
@@ -85,7 +83,7 @@ class ProducingAnalysisController extends Controller
         $analysisData = $producingAnalysis->analysisData;
 
         return view('pages.producing.analysis.detail')
-            ->with('tips', $applicableTips)
+            ->with('evaluatedTips', $applicableEvaluatedTips)
             ->with('producingAnalysis', $producingAnalysis)
             ->with('analysis', $analysisData)
             ->with('year', $year)

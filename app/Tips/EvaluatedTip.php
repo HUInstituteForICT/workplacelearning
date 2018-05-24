@@ -5,6 +5,7 @@ namespace App\Tips;
 
 
 use App\Tips\Statistics\PredefinedStatistic;
+use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
 
 class EvaluatedTip
@@ -34,7 +35,7 @@ class EvaluatedTip
         return $this->tip;
     }
 
-    public function getCalculationResult(int $coupledStatisticId): StatisticCalculationResult
+    public function getResultable(int $coupledStatisticId): Resultable
     {
         return $this->calculationResults[$coupledStatisticId];
     }
@@ -43,7 +44,6 @@ class EvaluatedTip
     {
         return $this->passes;
     }
-
 
     public function getTipText(): string
     {
@@ -54,25 +54,17 @@ class EvaluatedTip
         $tip->coupledStatistics->each(function (TipCoupledStatistic $tipCoupledStatistic) use (&$tipText) {
 
             /** @var StatisticCalculationResult $result */
-            $result = $this->getCalculationResult($tipCoupledStatistic->id);
+            $result = $this->getResultable($tipCoupledStatistic->id);
 
             if ($result->hasPassed()) {
-                $percentageValue = number_format($result->getResult() * 100) . '%';
-                $tipText = str_replace(":statistic-{$tipCoupledStatistic->id}", $percentageValue, $tipText);
-//                        number_format($calculationResult->getResult(), 3) . '%';
+                $tipText = str_replace(":statistic-{$tipCoupledStatistic->id}", $result->getResultString(), $tipText);
             }
 
-            // TODO IMPLEMENT
-//            if ($tipCoupledStatistic->statistic instanceof PredefinedStatistic) {
-//                $entityName = array_map(function (StatisticCalculationResult $calculationResult) {
-//                    return $calculationResult->getEntityName();
-//                }, $this->getCalculationResult($tipCoupledStatistic->id));
-//                $tipText = str_replace(":statistic-name-{$tipCoupledStatistic->id}",
-//                    implode(', ', $entityNames), $tipText);
-//
-//            }
-//            $tipText = str_replace(":statistic-{$tipCoupledStatistic->id}", implode(', ', $percentageValues), $tipText);
+            if ($tipCoupledStatistic->statistic instanceof PredefinedStatistic) {
+                $nameString = $result->getName(); // Could be multiple names separated by commas
 
+                $tipText = str_replace(":statistic-name-{$tipCoupledStatistic->id}", $nameString, $tipText);
+            }
         });
 
         return $tipText;

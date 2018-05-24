@@ -10,7 +10,7 @@ use App\Tips\DataCollectors\Collector;
 use App\Tips\Statistics\PredefinedStatistic;
 use App\Tips\Statistics\Statistic;
 use App\Tips\Statistics\StatisticCalculationResult;
-use App\Tips\Statistics\StatisticCalculationResultCollection;
+use App\Tips\Statistics\StatisticResultCollection;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 

@@ -4,8 +4,8 @@
 namespace App\Tips;
 
 
+use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
-use App\Tips\Statistics\StatisticCalculationResultCollection;
 
 class TipEvaluator
 {
@@ -33,6 +33,7 @@ class TipEvaluator
         }
 
 
+        /** @var Resultable[] $tipCoupledStatisticResults */
         $tipCoupledStatisticResults = [];
 
         $passes = $tip->coupledStatistics->every(function (TipCoupledStatistic $tipCoupledStatistic) use (&$tipCoupledStatisticResults) {
@@ -46,26 +47,15 @@ class TipEvaluator
         return new EvaluatedTip($tip, $tipCoupledStatisticResults, $passes);
     }
 
-    private function coupledStatisticPasses(TipCoupledStatistic $tipCoupledStatistic, StatisticCalculationResult $calculationResult):bool
+    private function coupledStatisticPasses(TipCoupledStatistic $tipCoupledStatistic, Resultable $resultable): bool
     {
-        // By default statistic fails unless one of the calculations passes. Mark the calculations that passed so we can loop over them later
-        if ((int)$tipCoupledStatistic->comparison_operator === TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN) {
-            if ($calculationResult->getResult() < $tipCoupledStatistic->threshold) {
-                $calculationResult->passes();
-            } else {
-                $calculationResult->failed();
-            }
-        } elseif ((int)$tipCoupledStatistic->comparison_operator === TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN) {
-            if ($calculationResult->getResult() > $tipCoupledStatistic->threshold) {
-                $calculationResult->passes();
-            } else {
-                $calculationResult->failed();
-            }
-        } else {
-            throw new \RuntimeException("Unknown comparison operator with enum value {$tipCoupledStatistic->comparison_operator}");
-        }
+        // By default statistic fails unless one of the calculations passes. Mark the results that passed so we can loop over them later
+        $resultable->doThresholdComparison(
+            (int)$tipCoupledStatistic->threshold,
+            (int)$tipCoupledStatistic->comparison_operator
+        );
 
-        return $calculationResult->hasPassed();
+        return $resultable->hasPassed();
     }
 
     public function getResults(): array

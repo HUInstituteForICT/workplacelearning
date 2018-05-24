@@ -1,10 +1,16 @@
 <?php
 
+
 namespace App\Tips\Statistics;
 
 use App\Tips\TipCoupledStatistic;
 
-class StatisticCalculationResult implements Resultable
+/**
+ * Class StatisticResult
+ * Represents a generic result of a statistic. Is not necessarily a percentage-able value
+ * @package App\Tips\Statistics
+ */
+class StatisticResult implements Resultable
 {
     /** @var float $result Numeric result of a statistic calculation */
     private $result;
@@ -21,18 +27,26 @@ class StatisticCalculationResult implements Resultable
         $this->entityName = $entityName;
     }
 
-    /**
-     * Check if this statistic passed
-     * @return bool
-     */
-    public function hasPassed():bool
-    {
-        return $this->passed;
-    }
-
     public function getResultString(): string
     {
-        return number_format($this->result * 100) . '%';
+        return $this->result . '';
+    }
+
+
+
+    public function passes()
+    {
+        $this->passed = true;
+    }
+
+    public function failed()
+    {
+        $this->passed = false;
+    }
+
+    public function hasPassed(): bool
+    {
+        return $this->passed;
     }
 
     public function doThresholdComparison(int $threshold, int $operator)

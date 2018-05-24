@@ -7,6 +7,7 @@ namespace App\Tips;
 use App\Tips\DataCollectors\Collector;
 use App\Tips\Statistics\CustomStatistic;
 use App\Tips\Statistics\PredefinedStatistic;
+use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\Statistic;
 use App\Tips\Statistics\StatisticCalculationResult;
 use DivisionByZeroError;
@@ -29,7 +30,7 @@ class StatisticCalculator
      * @param Statistic $statistic
      * @return StatisticCalculationResult
      */
-    public function calculate(Statistic $statistic): StatisticCalculationResult
+    public function calculate(Statistic $statistic): Resultable
     {
         if ($statistic instanceof CustomStatistic) {
             return $this->calculateCustomStatistic($statistic);
@@ -45,7 +46,7 @@ class StatisticCalculator
      * @param CustomStatistic $statistic
      * @return StatisticCalculationResult
      */
-    private function calculateCustomStatistic(CustomStatistic $statistic): StatisticCalculationResult
+    private function calculateCustomStatistic(CustomStatistic $statistic): Resultable
     {
         $statistic->load(['statisticVariableOne', 'statisticVariableTwo']);
 
@@ -75,11 +76,10 @@ class StatisticCalculator
         throw new \RuntimeException('Could not calculate customs statistic for some reason');
     }
 
-    private function calculatePredefinedStatistic(PredefinedStatistic $statistic): StatisticCalculationResult
+    private function calculatePredefinedStatistic(PredefinedStatistic $statistic): Resultable
     {
         /** @var StatisticCalculationResult $result */
         $method = $this->getPredefinedMethodName($statistic->name)['method'];
-
         return $this->collector->predefinedStatisticCollector->{$method}();
     }
 

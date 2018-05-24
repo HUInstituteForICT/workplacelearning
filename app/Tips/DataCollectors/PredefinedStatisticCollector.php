@@ -8,8 +8,10 @@ use App\Category;
 use App\LearningGoal;
 use App\ResourcePerson;
 use App\Tips\DataUnitAnnotation;
+use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
-use App\Tips\Statistics\StatisticCalculationResultCollection;
+use App\Tips\Statistics\StatisticResultCollection;
+use App\Tips\Statistics\StatisticResult;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Query\Builder;
 
@@ -39,7 +41,7 @@ class PredefinedStatisticCollector implements CollectorInterface
 
     /**
      * @DataUnitAnnotation(name="Category with highest difficulty", method="categoryWithHighestDifficulty", valueParameterDescription="The found category's name", epType="Producing")
-     * @return StatisticCalculationResultCollection
+     * @return Resultable
      * @throws \Exception
      */
     public function categoryWithHighestDifficulty() {
@@ -50,56 +52,49 @@ class PredefinedStatisticCollector implements CollectorInterface
             ->orderBy('category_difficulty')->limit(1)->getBaseQuery())->first();
 
 
-        if (!empty($result->category_id) && !empty($result->category_difficulty)) {
+        if ($result !== null && !empty($result->category_id) && !empty($result->category_difficulty)) {
             $category = (new Category)->find($result->category_id);
         } else {
-            throw new \Exception("Unable to get category id");
+            throw new \RuntimeException('Unable to get category id');
         }
 
-        $resultCollection = new StatisticCalculationResultCollection();
-        $resultCollection->addResult(new StatisticCalculationResult($result->category_difficulty,
-            $category->category_label));
 
-
-        return $resultCollection;
+        return new StatisticResult((float) $result->category_difficulty, $category->category_label);
     }
 
     /**
      * @DataUnitAnnotation(name="Person easiest to work with", method="personWithEasiestDifficulty", valueParameterDescription="The found person's name", epType="Producing")
-     * @return StatisticCalculationResultCollection
+     * @return Resultable
      * @throws \Exception When unable to find ResourcePerson
      */
-    public function personWithEasiestDifficulty()
+    public function personWithEasiestDifficulty(): Resultable
     {
         $result = $this->wherePeriod($this->learningPeriod->learningActivityProducing()
             ->selectRaw('learningactivityproducing.res_person_id, ROUND(AVG(learningactivityproducing.difficulty_id) * 3.33,1) as person_difficulty')
             ->groupBy('learningactivityproducing.res_person_id')
-            ->join('resourceperson', 'learningactivityproducing.res_person_id', '=', 'rp_id')
+            ->rightJoin('resourceperson', 'learningactivityproducing.res_person_id', '=', 'rp_id')
             ->whereNotIn('person_label', ['Alleen', 'alleen', 'None', 'none'])
             ->orderBy('person_difficulty')->limit(1)->getBaseQuery()
         )->first();
 
-        if (!empty($result->res_person_id) && !empty($result->person_difficulty)) {
+        if ($result !== null && !empty($result->res_person_id) && !empty($result->person_difficulty)) {
             /** @var ResourcePerson $person */
             $person = (new ResourcePerson)->find($result->res_person_id);
         } else {
-            throw new \Exception("Unable to get person id");
+            throw new \RuntimeException('Unable to get person id');
         }
 
-        $resultCollection = new StatisticCalculationResultCollection();
-        $resultCollection->addResult(new StatisticCalculationResult($result->person_difficulty, $person->person_label));
-
-        return $resultCollection;
+        return new StatisticResult($result->person_difficulty, $person->person_label);
     }
 
     /**
      * @DataUnitAnnotation(name="Percentage learning moments for every learning question without use of theory", method="percentageLearningMomentsWithoutTheory", valueParameterDescription="The names of the learning moments (e.g. 'Unplanned moment, individual session')", epType="Acting")
-     * @return StatisticCalculationResultCollection
+     * @return Resultable
      * @throws \Exception
      */
-    public function percentageLearningMomentsWithoutTheory()
+    public function percentageLearningMomentsWithoutTheory(): Resultable
     {
-        $resultCollection = new StatisticCalculationResultCollection();
+        $resultCollection = new StatisticResultCollection();
 
         $learningQuestions = $this->learningPeriod->learningGoals;
         $this->learningPeriod->learningActivityActing;
@@ -117,7 +112,7 @@ class PredefinedStatisticCollector implements CollectorInterface
             )->count();
 
             if($totalCount > 0) {
-                $resultCollection->addResult(new StatisticCalculationResult(($noTheoryCount / $totalCount), $goal->learninggoal_label));
+                $resultCollection->addResult(new StatisticCalculationResult($noTheoryCount / $totalCount, $goal->learninggoal_label));
             }
         });
 

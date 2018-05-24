@@ -144,12 +144,13 @@
                 <div class="col-md-12">
 
 
-                    @if($tips->count() > 0)
+                    @if($evaluatedTips->count() > 0)
                         <h3>Tips</h3>
                     @endif
                     <?php $tipCounter = 1; ?>
 
-                        @foreach($tips as $tip)
+                    @foreach($evaluatedTips as $evaluatedTip)
+                        <?php $tip = $evaluatedTip->getTip(); ?>
                             @if($tip->likes->count() === 0 || $tip->likes[0]->type === 1)
                                 <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
                                 <div class="row">
@@ -166,7 +167,7 @@
                                         </div>@endif<!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
                                         --><div class="col-md-11"
                                                 style="display: inline-block; vertical-align: middle;   float: none;">
-                                        <p>{!! nl2br($tip->getTipText()) !!}</p>
+                                        <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
                                     </div>
                                 </div>
                                 <br/><br/>
