@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\LearningActivityActing;
 use App\LearningActivityProducingExportBuilder;
+use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Validator;
 
 class PostalCodeValidationTest extends TestCase
 {
