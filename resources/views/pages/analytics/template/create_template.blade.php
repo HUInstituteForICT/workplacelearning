@@ -39,12 +39,12 @@
 
     <script>
         let lastCount = 0;
-        let dataTypes = ["String", "Integer", "Date"];
+        let dataTypes = JSON.parse('{!! json_encode($typeNames) !!}');
 
         function loadParams() {
             let textArea = document.getElementById("query");
             let textValue = textArea.value;
-            let count = countStr(textValue, "{?}");
+            let count = countStringOccurrences(textValue, "{?}");
 
             if (count !== lastCount) {
                 let paramGroup = document.getElementById('paramGroup');
@@ -59,50 +59,45 @@
                     }
                 } else {
                     for (let i = lastCount; i < count; i++) {
-                        let name = "param" + i;
 
-                        let inputField = document.createElement("input");
-                        inputField.setAttribute("type", "text");
-                        inputField.setAttribute("placeholder", "param " + (i + 1));
-                        inputField.setAttribute("id", name);
-                        inputField.setAttribute("required", "true");
-                        inputField.style.cssFloat = "left";
-                        inputField.className = "form-control";
-
-                        let selectList = document.createElement("select");
-                        selectList.className = "form-control";
-                        selectList.style.cssFloat = "right";
-                        selectList.style.marginTop = "2px";
-
+                        let options = [];
                         for (let y = 0; y < dataTypes.length; y++) {
-                            let option = document.createElement("option");
-                            option.value = dataTypes[y];
-                            option.text = dataTypes[y];
-                            selectList.appendChild(option);
+                            options.push(`<option value="${dataTypes[y]}">${dataTypes[y]}</option>`);
                         }
 
-                        let row = document.createElement("div");
-                        row.setAttribute("name", name);
-                        row.className = "row";
+                        let rowTemplate = `<div name="param${i}" class="row">
+                                            <div class="col-md-3"><input type="text" placeholder="param ${i + 1}" id="param${i}" required="true" class="form-control"></div>
 
-                        let div1 = getDiv();
-                        div1.appendChild(inputField);
+                                            <div class="col-md-3"><select class="form-control">
+                                                    ${options}
+                                                </select></div>
+                                            <div class="col-md-3 column-value"></div>
+                                            <div class="col-md-3 display-column"></div>
+                                        </div>`;
 
-                        let div2 = getDiv();
-                        div2.appendChild(selectList);
+                        $('#paramGroup').append(rowTemplate);
 
-                        row.append(div1);
-                        row.append(div2);
-                        row.append(getDiv());
+                        $('#paramGroup').on("change", 'select', function () {
+                            console.log($(this).val());
+                            $(this).parent().parent().find(".column-value input").remove();
+                            $(this).parent().parent().find(".display-column input").remove();
 
-                        document.getElementById('paramGroup').appendChild(row);
+                            if ($(this).val().startsWith("Column")) {
+                                //TODO: change to select list and load all the database tables
+                                $(this).parent().parent().find(".column-value").append(`<input placeholder="Table" class="form-control">`);
+                                if ($(this).val() === "Column Value") {
+                                    //TODO: change to select list and load all the database columns for the selected table
+                                    $(this).parent().parent().find(".display-column").append(`<input placeholder="Display Column" class="form-control">`);
+                                }
+                            }
+                        });
                     }
                 }
                 lastCount = count;
             }
         }
 
-        function countStr(string, searchFor) {
+        function countStringOccurrences(string, searchFor) {
             let count = 0,
                 pos = string.indexOf(searchFor);
 
@@ -111,12 +106,6 @@
                 pos = string.indexOf(searchFor, ++pos);
             }
             return count;
-        }
-
-        function getDiv() {
-            let div = document.createElement("div");
-            div.className = "col-md-3";
-            return div;
         }
 
     </script>

@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Analysis\Template\ParameterType;
 use Illuminate\Http\Request;
 use App\Template;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Input;
+use App\Analysis\Template\ParameterManager;
+
 
 class TemplateDashboardController extends Controller
 {
+
+    private $paramManager;
+
+    public function __construct()
+    {
+        $this->paramManager = new ParameterManager();
+    }
 
     public function index()
     {
@@ -18,7 +28,9 @@ class TemplateDashboardController extends Controller
 
     public function create()
     {
-        return view('pages.analytics.template.create_template');
+        $paramTypes = $this->paramManager->getAllTypes();
+        $typeNames = array_map(function ($type) { return $type->getName();}, $paramTypes);
+        return view('pages.analytics.template.create_template', compact('paramTypes', 'typeNames'));
     }
 
     public function show($id)
@@ -82,7 +94,6 @@ class TemplateDashboardController extends Controller
                 ->withErrors([Lang::get('template.template_not_removed')]);
         }
 
-        //TODO: change route
         return redirect()->route('template.index')
             ->with('success', Lang::get('template.template_removed'));
     }
