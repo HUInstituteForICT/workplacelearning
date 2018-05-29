@@ -38,7 +38,6 @@ class FeedbackGiven extends Mailable
         $this->subject('Tip/Bug ingezonden!');
         $this->from('debug@werkplekleren.hu.nl', 'Werkplekleren @ Hogeschool Utrecht');
         $this->cc('esther.vanderstappen@hu.nl');
-        $this->cc('rogier+wpl@inesta.nl');
         $this->replyTo($this->user->email);
 
         return $this->view('templates.bugreport-email')

@@ -77,5 +77,6 @@ return array (
     "feedforward" => "Feedforward",
     "satisfied" => "tevreden",
     "unsatisfied" => "niet tevreden",
-    "course-of-activity" => "met het verloop van deze activiteit"
+    "course-of-activity" => "met het verloop van deze activiteit",
+    "netherlands" => "Nederland",
 );

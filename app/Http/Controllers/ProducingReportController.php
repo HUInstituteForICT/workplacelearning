@@ -134,22 +134,21 @@ class ProducingReportController extends Controller
                     $textEntries = [];
                     foreach ($lap_array["" . date('d-m-Y', strtotime($date_loop))] as $lap) {
                         $hrs += $lap['duration'];
-                        $textEntries[] = "- {$lap['description']}";
-
+                        $textEntries[] = "- " . htmlspecialchars($lap['description']);
                     }
                     $table->addCell(8000)->addText(implode("\n", $textEntries));
                 } else {
                     $table->addCell(8000)->addText(Lang::get('process_export.wordexport.absent'));
                 }
 
-                $days_this_week += ($hrs >= 7.5) ? 1 : 0;
+                $days_this_week += ($hrs >= Auth::user()->getCurrentWorkplaceLearningPeriod()->hours_per_day) ? 1 : 0;
                 $date_loop = date('d-m-Y', strtotime("+1 day", strtotime($date_loop)));
             }
 
             $weekMetaTable = $activityPage->addTable();
             $weekMetaTable->addRow();
             $totalDaysCell = $weekMetaTable->addCell(4000);
-            $totalDaysCell->addText(Lang::get('process_export.wordexport.days-worked').": ");
+            $totalDaysCell->addText(Lang::get('process_export.wordexport.days-worked', ['hours' => Auth::user()->getCurrentWorkplaceLearningPeriod()->hours_per_day]).": ");
             $totalDaysCell->getStyle()->setGridSpan(1);
             $weekMetaTable->addCell(8000)->addText(($days_this_week . (($days_this_week == 1) ? " ".Lang::get('process_export.wordexport.day') : " ".Lang::get('process_export.wordexport.days'))));
 

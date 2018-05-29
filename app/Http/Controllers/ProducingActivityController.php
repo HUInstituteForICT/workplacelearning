@@ -44,6 +44,7 @@ class ProducingActivityController extends Controller
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->take(8)
+            ->orderBy('date', 'DESC')
             ->orderBy('lap_id', 'DESC')
             ->get());
 
@@ -59,7 +60,8 @@ class ProducingActivityController extends Controller
             ->with('difficulties', Difficulty::all())
             ->with('statuses', Status::all())
             ->with('activitiesJson', $activitiesJson)
-            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping));
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
+            ->with('workplacelearningperiod', Auth::user()->getCurrentWorkplaceLearningPeriod());
     }
 
     public function edit($id)
@@ -110,6 +112,7 @@ class ProducingActivityController extends Controller
 
         $activities = Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
+            ->orderBy('date', 'DESC')
             ->get();
         $exportBuilder = new LearningActivityProducingExportBuilder($activities);
 
@@ -262,7 +265,7 @@ class ProducingActivityController extends Controller
                 $category->wplp_id         = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
                 $category->save();
             }
-            if ($request['personsource'] == "new") {
+            if ($request['personsource'] == "new" && $request['resource'] === 'persoon') { //
                 $resourcePerson                = new ResourcePerson;
                 $resourcePerson->person_label  = $request['newswv'];
                 $resourcePerson->wplp_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
@@ -344,10 +347,10 @@ class ProducingActivityController extends Controller
         });
         //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
 
-        $validator->sometimes('internetsource', 'required|url|max:250', function ($input) {
+        $validator->sometimes('internetsource', 'required|url|max:75', function ($input) {
             return $input->resource == "internet";
         });
-        $validator->sometimes('booksource', 'required|max:250', function ($input) {
+        $validator->sometimes('booksource', 'required|max:75', function ($input) {
             return $input->resource == "book";
         });
         $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
@@ -388,6 +391,11 @@ class ProducingActivityController extends Controller
                 $learningActivityProducing->res_material_id = 2;
                 $learningActivityProducing->res_material_detail = $request['booksource'];
                 $learningActivityProducing->res_person_id = null;
+                break;
+            case 'alleen':
+                $learningActivityProducing->res_person_id = null;
+                $learningActivityProducing->res_material_id = null;
+                $learningActivityProducing->res_material_detail = null;
                 break;
         }
 

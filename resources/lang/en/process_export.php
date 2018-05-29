@@ -19,11 +19,15 @@ return array (
   'supportEd' => 'support Hogeschool Utrecht',
   'learningGoalDescription' => 'learning goal description',
   'evidence' => 'bewijsstuk',
+  'mail-subject' => 'Learning activities export shared',
   'text-mail' => 'Good day,
 
 Student :name has sent you a few learning moments from the internship app https://www.werkplekleren.hu.nl.
 
-Below this email you will find the text of these learning moments.
+Comments from the student:
+:comment
+
+Attached to this email you will find the text of these learning moments.
 
 Kind regards,
 Hogeschool Utrecht - werkplekleren.hu.nl',
@@ -45,7 +49,7 @@ Hogeschool Utrecht - werkplekleren.hu.nl',
         "week" => "Week",
         "activities" => "Activities",
         "absent" => "Absent",
-        "days-worked" => "Total days worked (7.5 hours or more)",
+        "days-worked" => "Total days worked (:hours hours or more)",
         "day" => "Day",
         "days" => "Days",
         "absence-reason" => "Cause of absence, if applicable",

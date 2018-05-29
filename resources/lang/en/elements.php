@@ -81,6 +81,7 @@ return array (
       'phone' => 'Phone Number',
       'birthdate' => 'Date of Birth',
       'password' => 'Password',
+      'new_password' => 'New password',
       'password_repeat' => 'Password (Confirmation)',
       'secretquestion' => 
       array (
@@ -119,8 +120,10 @@ return array (
         'titleassignment' => 'Internship Assignment',
       ),
       'numdays' => 'Number of Days',
+      'numhours' => 'Hours per day',
       'companyname' => 'Company Name',
       'companylocation' => 'Location',
+      'companyCountry' => 'Country',
       'companystreet' => 'Street',
       'companyhousenr' => 'Building no.',
       'companypostalcode' => 'Postal Code',
@@ -189,7 +192,7 @@ return array (
     'analysisexplanation' => 'This page can give you insight in how you work and learn, and helps you to reflect on your activities in the workplace. This can give you insight in how to improve your learning process.',
     'analysischoice' => 'Below, you can choose to analyse the activities for a specific month or to view activities for all months.',
     'workingdaysheader' => 'Number of registered working days',
-    'workingdaysexplained' => 'Only days with at least 7.5 hours of registered activities are included.',
+    'workingdaysexplained' => 'Only days with at least :hours hours of registered activities are included.',
     'numberofdays' => 'Number of days:',
     'days' => 'day(s)',
     'choice' => 'Choose a month to display',

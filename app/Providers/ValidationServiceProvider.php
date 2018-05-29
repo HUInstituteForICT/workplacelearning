@@ -18,7 +18,9 @@ class ValidationServiceProvider extends ServiceProvider
         // Validation for postal codes
         Validator::extend('postalcode', function ($attribute, $value, $parameters, $validator) {
             $value = preg_replace('/\s+/', '', $value);
-
+            $validator->addReplacer('postalcode', function ($message, $attribute, $rule, $parameters) use ($value) {
+                return str_replace(':value', $value, $message);
+            });
             return (bool)preg_match('/^[a-zA-Z0-9]{3,10}$/', $value);
         });
     }

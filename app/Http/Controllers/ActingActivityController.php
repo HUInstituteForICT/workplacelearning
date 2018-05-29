@@ -37,6 +37,7 @@ class ActingActivityController extends Controller
         $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
             ->take(8)
+            ->orderBy('date', 'DESC')
             ->orderBy('laa_id', 'DESC')
             ->get());
 
@@ -96,6 +97,7 @@ class ActingActivityController extends Controller
 
         $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
             ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
+            ->orderBy('date', 'DESC')
             ->get());
 
         $activitiesJson = $exportBuilder->getJson();
@@ -235,13 +237,13 @@ class ActingActivityController extends Controller
 
         $validator = Validator::make($req->all(), [
             'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
-            'description'           => 'required|max:250',
+            'description'           => 'required|max:1000',
             'timeslot'              => 'required|exists:timeslot,timeslot_id',
             'new_rp'                => 'required_if:res_person,new|max:45|',
             'new_rm'                => 'required_if:res_material,new|max:45',
-            'learned'               => 'required|max:250',
-            'support_wp'            => 'max:125',
-            'support_ed'            => 'max:125',
+            'learned'               => 'required|max:1000',
+            'support_wp'            => 'max:500',
+            'support_ed'            => 'max:500',
             'learning_goal'         => 'required|exists:learninggoal,learninggoal_id',
             'competence'            => 'required|exists:competence,competence_id'
         ]);

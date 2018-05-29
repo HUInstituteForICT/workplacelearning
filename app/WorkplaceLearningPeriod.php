@@ -12,14 +12,19 @@ use Illuminate\Database\Eloquent\Model;
 use Nette\Utils\DateTime;
 
 /**
- * Class WorkplaceLearningPeriod
- * @package App
  * @property Cohort $cohort
  * @property Category[]|Collection categories
  * @property LearningGoal[]|Collection learningGoals
  * @property LearningActivityActing[]|Collection learningActivityActing
- * @property DateTime $startdate
- * @property DateTime $enddate
+ * @property int $wplp_id
+ * @property int student_id
+ * @property int $wp_id
+ * @property \DateTime $startdate
+ * @property \DateTime $enddate
+ * @property int $nrofdays
+ * @property string $description
+ * @property int $cohort_id
+ * @property double $hours_per_day
  */
 class WorkplaceLearningPeriod extends Model
 {
@@ -39,7 +44,8 @@ class WorkplaceLearningPeriod extends Model
         'enddate',
         'nrofdays',
         'description',
-        'cohort_id'
+        'cohort_id',
+        'hours_per_day'
     ];
 
     public function cohort() {

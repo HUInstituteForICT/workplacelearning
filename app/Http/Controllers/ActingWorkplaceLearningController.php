@@ -27,10 +27,12 @@ class ActingWorkplaceLearningController extends Controller
 
     public function show()
     {
+        $workplace = new Workplace();
+        $workplace->country = trans('general.netherlands');
         return view("pages.acting.internship")
             ->with("period", new WorkplaceLearningPeriod)
-            ->with("workplace", new Workplace)
-            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
+            ->with("workplace", $workplace)
+            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
     }
 
     public function edit($id)
@@ -45,7 +47,7 @@ class ActingWorkplaceLearningController extends Controller
                 ->with("workplace", Workplace::find($wplPeriod->wp_id))
                 ->with("learninggoals", $wplPeriod->getLearningGoals())
                 ->with("resource", new Collection)
-                ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
+                ->with('cohorts', collect($wplPeriod->cohort()->get()));
         }
     }
 
@@ -59,6 +61,7 @@ class ActingWorkplaceLearningController extends Controller
             //
             'companyPostalcode'    => 'required|postalcode',
             'companyLocation'      => 'required|max:255|min:3',
+            'companyCountry'       => 'required|max:255|min:2',
             'contactPerson'        => 'required|max:255|min:3',
             'contactPhone'         => 'required',
             'contactEmail'         => 'required|email|max:255',
@@ -80,12 +83,13 @@ class ActingWorkplaceLearningController extends Controller
 
         $cohort = Cohort::find($request['cohort']);
 
-        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id || $cohort->disabled === 1) {
             throw new InvalidArgumentException("Unknown cohort");
         }
 
         // Pass. Create the internship and period.
         $wplPeriod = new WorkplaceLearningPeriod;
+        $wplPeriod->hours_per_day = 7.5; // Although not used in acting, still set it as its not nullable in DB
         $workplace = new Workplace;
 
 
@@ -96,6 +100,7 @@ class ActingWorkplaceLearningController extends Controller
         $workplace->housenr = $request['companyHousenr'];
         $workplace->postalcode = $request['companyPostalcode'];
         $workplace->town = $request['companyLocation'];
+        $workplace->country = $request['companyCountry'];
         $workplace->contact_name = $request['contactPerson'];
         $workplace->contact_email = $request['contactEmail'];
         $workplace->contact_phone = $request['contactPhone'];
@@ -146,6 +151,7 @@ class ActingWorkplaceLearningController extends Controller
             //
             'companyPostalcode'    => 'required|postalcode',
             'companyLocation'      => 'required|max:255|min:3',
+            'companyCountry'       => 'required|max:255|min:2',
             'contactPerson'        => 'required|max:255|min:3',
             'contactPhone'         => 'required',
             'contactEmail'         => 'required|email|max:255',
@@ -181,6 +187,7 @@ class ActingWorkplaceLearningController extends Controller
         $workplace->housenr = $request['companyHousenr'];
         $workplace->postalcode = $request['companyPostalcode'];
         $workplace->town = $request['companyLocation'];
+        $workplace->country = $request['companyCountry'];
         $workplace->contact_name = $request['contactPerson'];
         $workplace->contact_email = $request['contactEmail'];
         $workplace->contact_phone = $request['contactPhone'];

@@ -16,7 +16,6 @@
 
 use App\Http\Controllers\StatisticController;
 use App\Http\Middleware\CheckUserLevel;
-use App\Http\Middleware\Locale;
 
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
@@ -82,13 +81,34 @@ Route::group(['before' => 'auth'], function() {
 // Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
 // Note: The localisation is saved in a session state.
 Route::group([
-    'before'     => ['auth', ],
+    'before'     => ['auth'],
     'middleware' => ['usernotifications'],
 ], function () {
 
     Route::group(['middleware' => CheckUserLevel::class], function () {
         Route::get('/education-programs', 'EducationProgramsController@index')
             ->name('education-programs');
+
+        Route::group(['prefix' => '/dashboard'], function () {
+            Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
+            Route::get('/add', 'AnalyticsDashboardController@add')->name('dashboard.add');
+            Route::post('/add', 'AnalyticsDashboardController@store')->name('dashboard.save');
+            Route::post('/move/{id}/{oldpos}/{newpos}', 'AnalyticsDashboardController@move')->name('dashboard.move');
+            Route::delete('/delete/{id}', 'AnalyticsDashboardController@destroy')->name('dashboard.delete');
+
+            Route::get('/analytics/expire', 'AnalyticsController@expireAll')->name('analytics-expire-all');
+            Route::get('/analytics', 'AnalyticsController@index')->name('analytics-index');
+            Route::get('/analytics/view/{id}', 'AnalyticsController@show')->name('analytics-show');
+            Route::get('/create', 'AnalyticsController@create')->name('analytics-create');
+            Route::get('/edit/{id}', 'AnalyticsController@edit')->name('analytics-edit');
+            Route::put('/update/{id}', 'AnalyticsController@update')->name('analytics-update');
+            Route::post('/create', 'AnalyticsController@store')->name('analytics-store');
+            Route::post('/expire', 'AnalyticsController@expire')->name('analytics-expire');
+            Route::get('/export/{id}', 'AnalyticsController@export')->name('analytics-export');
+            Route::delete('/destroy/{id}',    'AnalyticsController@destroy')->name('analytics-destroy');
+            Route::resource('charts', 'AnalyticsChartController');
+            Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
+        });
     });
 
 
@@ -101,6 +121,7 @@ Route::group([
     // User Creation and modification
     Route::get('profiel', 'ProfileController@show')->name('profile');
     Route::post('profiel/update', 'ProfileController@update');
+    Route::put('profiel/change-password', 'ProfileController@changePassword');
 
     // Category updating
     Route::post('categorie/update/{id}',
@@ -133,26 +154,7 @@ Route::group([
             '[0-9]*');
     });
                 // Dashboard
-                Route::group(['prefix' => '/dashboard'], function () {
-                    Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
-                    Route::get('/add', 'AnalyticsDashboardController@add')->name('dashboard.add');
-                    Route::post('/add', 'AnalyticsDashboardController@store')->name('dashboard.save');
-                    Route::post('/move/{id}/{oldpos}/{newpos}', 'AnalyticsDashboardController@move')->name('dashboard.move');
-                    Route::delete('/delete/{id}', 'AnalyticsDashboardController@destroy')->name('dashboard.delete');
 
-                    Route::get('/analytics/expire', 'AnalyticsController@expireAll')->name('analytics-expire-all');
-                    Route::get('/analytics', 'AnalyticsController@index')->name('analytics-index');
-                    Route::get('/analytics/view/{id}', 'AnalyticsController@show')->name('analytics-show');
-                    Route::get('/create', 'AnalyticsController@create')->name('analytics-create');
-                    Route::get('/edit/{id}', 'AnalyticsController@edit')->name('analytics-edit');
-                    Route::put('/update/{id}', 'AnalyticsController@update')->name('analytics-update');
-                    Route::post('/create', 'AnalyticsController@store')->name('analytics-store');
-                    Route::post('/expire', 'AnalyticsController@expire')->name('analytics-expire');
-                    Route::get('/export/{id}', 'AnalyticsController@export')->name('analytics-export');
-                    Route::delete('/destroy/{id}',    'AnalyticsController@destroy')->name('analytics-destroy');
-                    Route::resource('charts', 'AnalyticsChartController');
-                    Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
-                });
 
                 Route::group([
                                 'middleware' => [ 'taskTypeRedirect' ],

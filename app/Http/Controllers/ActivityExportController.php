@@ -3,7 +3,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Mail\TxtExport;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -14,24 +13,25 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ActivityExportController extends Controller
 {
-    public function exportMail(Request $request) {
-
-        Mail::to($request->get('email'))->send(new TxtExport($request->get('txt')));
+    public function exportMail(Request $request)
+    {
+        Mail::to($request->get('email'))->send(new TxtExport($request->get('txt'), $request->get('comment')));
 
         return \response(json_encode(["status" => "success"]));
-
     }
+
     public function exportActivitiesToWord(Request $request)
     {
         $w = new PhpWord();
         $s = $w->addSection("Hoi");
-        $s->addText($request->get('exportText'));
+        $text = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $request->get('exportText'));
+        $s->addText($text);
+
 
         $fileName = md5(time());
         $filePath = storage_path('app/word-exports/') . $fileName . '.docx';
         try {
             $w->save($filePath);
-
         } catch (\Exception $e) {
             die($e->getMessage());
         }
@@ -43,13 +43,13 @@ class ActivityExportController extends Controller
     {
         $validator = Validator::make(['filename' => $fileName], ['filename' => 'required|size:32|alpha_num']);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             throw new \Exception("Unknown export ");
         }
 
         $filePath = storage_path("app/word-exports/{$fileName}.docx");
 
-        if(!file_exists($filePath)) {
+        if (!file_exists($filePath)) {
             throw new \Exception("Unknown export");
         }
 

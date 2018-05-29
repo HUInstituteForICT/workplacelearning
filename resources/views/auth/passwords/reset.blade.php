@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="panel panel-default">
-                <div class="panel-heading">{{ Lang::get('passwords.reset') }}</div>
+                <div class="panel-heading">{{ Lang::get('passwords.reset_password') }}</div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -67,7 +67,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ Lang::get('passwords.reset') }}
+                                    {{ Lang::get('passwords.confirm') }}
                                 </button>
                             </div>
                         </div>

@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class EducationProgram
  * @property EducationProgramType $educationprogramType
+ * @property int ep_id
  */
 class EducationProgram extends Model
 {

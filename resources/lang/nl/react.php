@@ -11,6 +11,7 @@ return array (
   'complexity' => 'Complexiteit',
   'export-to' => 'Export naar',
   'mail-to' => 'Mailen naar',
+  'mail-comment' => 'Opmerking',
   'mail' => 
   array (
     'sending' => 'Bezig met verzenden',

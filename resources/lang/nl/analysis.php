@@ -48,7 +48,7 @@ return array (
                         werkzaamheden.",
       "percentageEasyHours" => "Je vindt maar liefst :percentage% van je werk Makkelijk! Het lijkt erop dat je meer in je mars hebt.
                         Je zou je bedrijfsbegeleider om meer uitdaging of een complexere opdracht kunnen vragen.",
-      "mostDifficultCategory" => "Je vindt :category de moeilijkste categorie in jouw werk. Van alle activiteiten in deze categorie vind je :percentage% Moeilijk.
+      "mostDifficultCategory" => "Je vindt \":category\" de moeilijkste categorie in jouw werk. Van alle activiteiten in deze categorie vind je :percentage% Moeilijk.
                         Je zou dit met je begeleider kunnen bespreken hoe je bij je werk in deze categorie ondersteund kunt worden.
                         Misschien kun je vanuit de werkplek tips krijgen voor literatuur of personen die je hier verder mee kunnen helpen.",
       "averagePersonDifficultyName" => "Wanneer jij samenwerk met :person, vind je jouw werk het makkelijkst. Ga eens voor jezelf na hoe deze persoon jou helpt,

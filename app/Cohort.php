@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Tip[]|Collection tips
  * @property Category[]|Collection categories
  * @property EducationProgram $educationProgram
+ * @property boolean $disabled
  *
  */
 class Cohort extends Model

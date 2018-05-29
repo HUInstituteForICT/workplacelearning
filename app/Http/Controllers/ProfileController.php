@@ -9,14 +9,12 @@ namespace App\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 use App\Student;
-use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Facades\Lang;
-use IntlDateFormatter;
-
-use \Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Lang;
+use Validator;
 
 class ProfileController extends Controller
 {
@@ -57,5 +55,33 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = $request->user();
+
+        // Just extend here, we don't need it anywhere else
+        Validator::extend('validPassword', function ($attribute, $value, $parameters, $validator) use($user) {
+            return Hash::check($value, $user->pw_hash);
+        });
+
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required|validPassword',
+            'new_password'     => 'required|string|min:6',
+            'confirm_password' => 'required|string|min:6|same:new_password',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->route('profile')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user->pw_hash = Hash::make($request->get('new_password'));
+        $user->save();
+
+        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 }

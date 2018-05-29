@@ -13,24 +13,29 @@ use App\Category;
 use App\Cohort;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
-use App\LearningGoal;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use InvalidArgumentException;
 use Validator;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class ProducingWorkplaceLearningController extends Controller
 {
 
     public function show()
+
     {
-        return view("pages.producing.internship")
-                ->with("period", new WorkplaceLearningPeriod)
-                ->with("workplace", new Workplace)
-            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
+        $workplace = new Workplace();
+        $workplace->country = trans('general.netherlands');
+        $period = new WorkplaceLearningPeriod();
+        $period->hours_per_day = 7.5; // Default hours per day for a new period
+
+        return view('pages.producing.internship')
+            ->with("period", $period)
+            ->with("workplace", $workplace)
+            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
     }
 
     public function edit($id)
@@ -45,7 +50,7 @@ class ProducingWorkplaceLearningController extends Controller
                 ->with("workplace", Workplace::find($wplPeriod->wp_id))
                 ->with("categories", $wplPeriod->categories()->get())
                 ->with("resource", new Collection)
-                ->with('cohorts', Auth::user()->getEducationProgram()->cohorts);
+                ->with('cohorts', collect($wplPeriod->cohort()->get()));
         }
     }
 
@@ -58,15 +63,17 @@ class ProducingWorkplaceLearningController extends Controller
             'companyHousenr'        => 'required|max:9|min:1', //
             'companyPostalcode'     => 'required|postalcode',
             'companyLocation'       => 'required|max:255|min:3',
+            'companyCountry'        => 'required|max:255|min:2',
             'contactPerson'         => 'required|max:255|min:3',
             'contactPhone'          => 'required',
-            'contactEmail'          => 'required|email|max:255',
-            'numdays'               => 'required|integer|min:1',
-            'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
-            'enddate'               => 'required|date|after:startdate',
-            'internshipAssignment'  => 'required|min:15|max:500',
-            'isActive'              => 'sometimes|required|in:1,0',
-            "cohort"               => "required|exists:cohorts,id",
+            'contactEmail'         => 'required|email|max:255',
+            'numdays'              => 'required|integer|min:1',
+            'numhours'             => 'required|numeric|min:1|max:24',
+            'startdate'            => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
+            'enddate'              => 'required|date|after:startdate',
+            'internshipAssignment' => 'required|min:15|max:500',
+            'isActive'             => 'sometimes|required|in:1,0',
+            'cohort'               => 'required|exists:cohorts,id',
 
         ]);
 
@@ -79,8 +86,8 @@ class ProducingWorkplaceLearningController extends Controller
 
         $cohort = Cohort::find($request['cohort']);
 
-        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
-            throw new InvalidArgumentException("Unknown cohort");
+        if ($cohort->disabled === 1 || $cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+            throw new InvalidArgumentException('Unknown cohort');
         }
 
         // Pass. Create the internship and period.
@@ -94,6 +101,7 @@ class ProducingWorkplaceLearningController extends Controller
         $workplace->housenr        = $request['companyHousenr'];
         $workplace->postalcode     = $request['companyPostalcode'];
         $workplace->town           = $request['companyLocation'];
+        $workplace->country        = $request['companyCountry'];
         $workplace->contact_name   = $request['contactPerson'];
         $workplace->contact_email  = $request['contactEmail'];
         $workplace->contact_phone  = $request['contactPhone'];
@@ -106,6 +114,7 @@ class ProducingWorkplaceLearningController extends Controller
         $wplPeriod->startdate    = $request['startdate'];
         $wplPeriod->enddate      = $request['enddate'];
         $wplPeriod->nrofdays     = $request['numdays'];
+        $wplPeriod->hours_per_day = $request['numhours'];
         $wplPeriod->description  = $request['internshipAssignment'];
         $wplPeriod->cohort()->associate($cohort);
         $wplPeriod->save();
@@ -127,10 +136,12 @@ class ProducingWorkplaceLearningController extends Controller
             'companyHousenr'        => 'required|max:4|min:1', //
             'companyPostalcode'     => 'required|postalcode',
             'companyLocation'       => 'required|max:255|min:3',
+            'companyCountry'        => 'required|max:255|min:2',
             'contactPerson'         => 'required|max:255|min:3',
             'contactPhone'          => 'required|',
             'contactEmail'          => 'required|email|max:255',
             'numdays'               => 'required|integer|min:1',
+            'numhours'             => 'required|numeric|min:1|max:24',
             'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
             'enddate'               => 'required|date|after:startdate',
             'internshipAssignment'  => 'required|min:15|max:500',
@@ -162,6 +173,7 @@ class ProducingWorkplaceLearningController extends Controller
         $workplace->housenr        = $request['companyHousenr'];
         $workplace->postalcode     = $request['companyPostalcode'];
         $workplace->town           = $request['companyLocation'];
+        $workplace->country        = $request['companyCountry'];
         $workplace->contact_name   = $request['contactPerson'];
         $workplace->contact_email  = $request['contactEmail'];
         $workplace->contact_phone  = $request['contactPhone'];
@@ -174,6 +186,7 @@ class ProducingWorkplaceLearningController extends Controller
         $wplPeriod->startdate    = $request['startdate'];
         $wplPeriod->enddate      = $request['enddate'];
         $wplPeriod->nrofdays     = $request['numdays'];
+        $wplPeriod->hours_per_day = $request['numhours'];
         $wplPeriod->description  = $request['internshipAssignment'];
         $wplPeriod->save();
 

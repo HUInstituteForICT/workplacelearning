@@ -81,6 +81,7 @@ return array (
       'phone' => 'Telefoonnummer',
       'birthdate' => 'Geboortedatum',
       'password' => 'Wachtwoord',
+      'new_password' => 'Nieuw wachtwoord',
       'password_repeat' => 'Wachtwoord (Bevestiging)',
       'secretquestion' => 
       array (
@@ -119,8 +120,10 @@ return array (
         'titleassignment' => 'Stageopdracht (Beschrijving)',
       ),
       'numdays' => 'Aantal Dagen',
+      'numhours' => 'Uren per dag',
       'companyname' => 'Bedrijfsnaam',
       'companylocation' => 'Locatie',
+      'companyCountry' => 'Land',
       'companystreet' => 'Straatnaam',
       'companyhousenr' => 'Nummer',
       'companypostalcode' => 'Postcode',
@@ -189,7 +192,7 @@ return array (
     'analysisexplanation' => 'Deze pagina geeft je meer inzicht in hoe je werkt en leert, en helpt je om na te denken over je werkzaamheden tijdens je stage, zodat je inzicht krijgt in hoe jij optimaal leert en zo je leerproces kunt verbeteren.',
     'analysischoice' => 'Kies hieronder voor een maand om de activiteiten in die maand te analyseren, of kies ervoor om alles te bekijken.',
     'workingdaysheader' => 'Aantal geregistreerde dagen',
-    'workingdaysexplained' => 'Alleen werkdagen waarop minstens 7,5 uur is geregistreerd worden meegerekend.',
+    'workingdaysexplained' => 'Alleen werkdagen waarop minstens :hours uur is geregistreerd worden meegerekend.',
     'numberofdays' => 'Aantal dagen:',
     'days' => 'dag(en)',
     'choice' => 'Kies een maand om weer te geven',

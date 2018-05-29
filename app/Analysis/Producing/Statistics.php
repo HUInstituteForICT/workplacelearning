@@ -71,7 +71,7 @@ class Statistics
     */
     public function averagePersonDifficultyName() {
         if($this->analysisData['person_difficulty'] === null) {
-            return '';
+            return false;
         }
         return $this->analysisData['person_difficulty']->name;
     }

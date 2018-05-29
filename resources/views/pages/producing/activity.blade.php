@@ -107,15 +107,22 @@
                     <div class="custom">
                         <label id="hours_custom"><input type="radio" name="aantaluren" value="x" /><span>{{ Lang::get('activity.other') }}</span></label>
                         <br/>
-                        <div id="custom_hours_container"><input class="form-control" type="number" step="1" min="1" max="300" name="aantaluren_custom" value="5">{{ Lang::get('dashboard.minutes') }}</div>
+                        <div id="custom_hours_container">
+                            <input class="form-control" type="number" step="1" min="1" max="480"
+                                   name="aantaluren_custom" value="5">
+                            &nbsp;
+                            {{ Lang::get('dashboard.minutes') }}
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
+                    <?php $checkedFirst = false ?>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach($categories as $cat)
-                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($cat->category_id == 1) ? "checked" : "" }}/><span>{{ $cat->category_label }}</span></label>
+                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($checkedFirst === false) ? "checked" : "" }}/><span>{{ __($cat->category_label) }}</span></label>
+                            <?php if($checkedFirst === false) $checkedFirst = true; ?>
                         @endforeach
                     @endif
                     <div>
@@ -129,7 +136,7 @@
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>{{ Lang::get('activity.person') }}</span></label>
                         <select id="rp_id" name="personsource" class="cond-hidden">
                             @foreach($learningWith as $res)
-                                <option value="{{ $res->rp_id }}">{{ $res->person_label }}</option>
+                                <option value="{{ $res->rp_id }}">{{ __($res->person_label) }}</option>
                             @endforeach */ ?>
                             <option value="new">{{ Lang::get('general.new') }}/{{ Lang::get('activity.other') }}</option>
                         </select>
@@ -140,11 +147,11 @@
                     </div>
                     <div id="internetcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="internet" /><span>{{ Lang::get('activity.internetsource') }}</span></label>
-                        <input class="cond-hidden" type="text" name="internetsource" value="" placeholder="http://www.source.com/" />
+                        <input class="cond-hidden" type="text" name="internetsource" maxlength="75" value="" placeholder="http://www.source.com/" />
                     </div>
                     <div id="boekcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="boek" /><span>{{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}</span></label>
-                        <input class="cond-hidden" type="text" name="booksource" value="" placeholder="{{ Lang::get('dashboard.name') }} {{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}" />
+                        <input class="cond-hidden" type="text" name="booksource" maxlength="75" value="" placeholder="{{ Lang::get('dashboard.name') }} {{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
@@ -206,10 +213,17 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('input[name="aantaluren"]').click(function () {
+                if ($(this).attr('id') !== 'hours_custom') {
+                    $('input[name="aantaluren_custom"]').val('5');
+                    $('#custom_hours_container').hide();
+                }
+            });
+
             $('#date-deadline').datetimepicker({
                 locale: 'nl',
                 format: 'DD-MM-YYYY',
-                minDate: "{{ date('Y-m-d', strtotime("-3 week")) }}",
+                minDate: "{{ $workplacelearningperiod->startdate }}",
                 maxDate: "{{ date('Y-m-d', strtotime("now")) }}",
                 useCurrent: false,
             });

@@ -5,7 +5,7 @@ return [
         'name'       => 'Name',
         'program'    => 'Education program',
         'statistics' => 'Statistics',
-    ],
+    "mail-comment"            => "Comment",
     'filters'                 => 'Filters',
     'date'                    => 'Date',
     'startdate'               => 'Starting date',

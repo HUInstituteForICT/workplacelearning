@@ -321,7 +321,7 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the amount of full working days (>7.5 hours)
+     * Get the amount of full working days (>7.5 hours || wplp defined hours amount)
      *
      * @param $year
      * @param $month
@@ -329,11 +329,11 @@ class ProducingAnalysisCollector
      */
     public function getFullWorkingDays($year, $month)
     {
-        // Retrieve the number of days the student worked at least 7.5 hours
+        // Retrieve the number of days the student worked at least his minimum hours defined in the wplp
         $result = LearningActivityProducing::selectRaw("COUNT(*) as days")->where('wplp_id',
             Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->groupBy('date')
-            ->havingRaw('SUM(duration)>=7.5')
+            ->havingRaw('SUM(duration) >= ?', [Auth::user()->getCurrentWorkplaceLearningPeriod()->hours_per_day])
             ->get()
             ->count();
 

@@ -2,15 +2,22 @@
 
 namespace App;
 
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * Class Student
  * @property int $student_id
- * @package App
+ * @property string $firstname
+ * @property string $lastname
+ * @property integer $userlevel
+ * @property EducationProgram $educationProgram
+ *
  */
 class Student extends Authenticatable
 {
+    use Notifiable, CanResetPassword;
     // Override the table used for the User Model
     protected $table = 'student';
     // Disable using created_at and updated_at columns
