@@ -9,6 +9,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Nette\Utils\DateTime;
 
 /**
@@ -25,6 +26,7 @@ use Nette\Utils\DateTime;
  * @property string $description
  * @property int $cohort_id
  * @property double $hours_per_day
+ * @property Collection $chains
  * @property Workplace $workplace
  */
 class WorkplaceLearningPeriod extends Model
@@ -208,5 +210,10 @@ class WorkplaceLearningPeriod extends Model
             ->take($count)
             ->get();
         return $x;
+    }
+
+    public function chains(): HasMany
+    {
+        return $this->hasMany(Chain::class, 'wplp_id', 'wplp_id');
     }
 }
