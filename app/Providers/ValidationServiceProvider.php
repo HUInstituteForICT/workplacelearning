@@ -19,6 +19,7 @@ class ValidationServiceProvider extends ServiceProvider
         // Application specific validation rules
         Validator::extend('postalcode', 'App\Validators\PostalValidator@validate');
         Validator::extend('dateInWplp', 'App\Validators\DateInLearningPeriodValidator@validate');
+        Validator::extend('canChain', 'App\Validators\ChainValidator@validate');
 
     }
 

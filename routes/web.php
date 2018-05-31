@@ -308,6 +308,8 @@ Route::group([
         Route::post('period/update/{id}',
             'ProducingWorkplaceLearningController@update')->name('period-producing-update')->where('id', '[0-9]*');
 
+
+        Route::post('/chain/create', 'ChainController@create')->name('chain-create');
         //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
     });
 });

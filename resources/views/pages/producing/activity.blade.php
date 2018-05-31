@@ -82,6 +82,7 @@
                     <h5>{{ Lang::get('activity.description') }}:</h5>
                     <textarea class="form-control fit-bs" name="omschrijving" required maxlength="80" rows="5" cols="19"></textarea>
 
+
                     <h5>{{ Lang::get('activity.chain-to') }}:</h5>
                     <select class="form-control fit-bs" name="previous_wzh" >
                         <option value="-1">- {{ Lang::get('no-chain') }}-</option>
@@ -94,6 +95,48 @@
                             @endforeach
                         @endif
                     </select>
+
+
+                    <select class="form-control fit-bs" id="chainSelect" name="chain_id">
+                        <option value="-1">{{ Lang::get('process.chain.none') }}</option>
+                        @foreach($chains as $chain)
+                            <option value="{{ $chain->id }}">{{ $chain->name }}</option>
+                        @endforeach
+
+                    </select>
+
+                    <button type="button" class="btn btn-primary"   id="chainModalOpen">
+                        {{ __('process.chain.create-new') }}
+                    </button>
+
+
+                    {{-- Modal used for enlarging fields --}}
+                    <div class="modal fade" id="chainModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">{{ __('process.chain.chain-activity') }}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-12 ">
+                                            <label for="chainName">{{ __('process.chain.name') }}</label>
+                                            <input type="text" class="form-control" id="chainName"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">{{ Lang::get('general.close') }}</button>
+                                    <a type="button" class="btn btn-primary"
+                                       id="createChainButton">{{ Lang::get('process.chain.create') }}</a>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
 
                 </div>
                 <div class="col-md-2 form-group buttons numpad">
@@ -227,6 +270,23 @@
                 maxDate: "{{ date('Y-m-d', strtotime("now")) }}",
                 useCurrent: false,
             });
+
+            $('#chainModalOpen').click(function() {
+                $('#chainModal').modal('show');
+            });
+
+            $('#createChainButton').click(function() {
+                let name = $('#chainName').val();
+                $.post('{{ route('chain-create') }}', {name: name}).then(function (chain) {
+                        const newChainOption = document.createElement('option');
+                        newChainOption.value = chain.id;
+                        newChainOption.text = chain.name;
+                        newChainOption.selected = true;
+                        document.getElementById('chainSelect').add(newChainOption);
+                        $('#chainModal').modal('hide');
+                })
+            });
+
         }).on('dp.change', function(e) {
             $('#datum').attr('value', moment(e.date).format("DD-MM-YYYY"));
         });

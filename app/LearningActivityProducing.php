@@ -2,12 +2,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
 /**
  * @property int $lap_id
- *
+ * @property int $chain_id
  */
 class LearningActivityProducing extends Model
 {
@@ -154,4 +155,13 @@ class LearningActivityProducing extends Model
     }
 
     // Note: DND, object comparison
+    public function __toString()
+    {
+        return $this->lap_id;
+    }
+
+    public function chain(): BelongsTo
+    {
+        return $this->belongsTo(Chain::class, 'chain_id', 'id');
+    }
 }

@@ -2,6 +2,7 @@
 
 return array (
     'postalcode' => ':value is niet een geldige postcode.',
+    'can_chain' => 'The activity cannot be attached to this chain',
     'date_in_wplp' => 'De datum :date valt niet binnen de start en einddatum van je werkplek.',
     'accepted' => ':attribute dient te worden geaccepteerd.',
     'active_url' => ':attribute is geen geldige URL.',

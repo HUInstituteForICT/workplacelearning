@@ -1,7 +1,14 @@
 <?php
 
 return array (
-  'enlarge' => 'Vergroot tekstveld',
+    'enlarge'  => 'Vergroot tekstveld',
     'evidence' => "Bewijsstuk",
-    "remove" => "verwijderen"
+    "remove"   => "verwijderen",
+    'chain'    => [
+        'chain-activity' => 'Chain activity',
+        'create-new'     => 'Create new chain',
+        'name'           => 'New chain name',
+        'create'         => 'Create',
+        'none'           => 'Don\'t chain',
+    ],
 );
