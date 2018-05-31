@@ -5,6 +5,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
+/**
+ * @property int $lap_id
+ *
+ */
 class LearningActivityProducing extends Model
 {
     // Override the table used for the User Model
