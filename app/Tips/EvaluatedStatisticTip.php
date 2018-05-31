@@ -61,7 +61,7 @@ class EvaluatedStatisticTip implements EvaluatedTip
             }
 
             if ($tipCoupledStatistic->statistic instanceof PredefinedStatistic) {
-                $nameString = $result->getName(); // Could be multiple names separated by commas
+                $nameString = $result->getName(); // Could be multiple names separated by commas (e.g. learninggoals)
 
                 $tipText = str_replace(":statistic-name-{$tipCoupledStatistic->id}", $nameString, $tipText);
             }

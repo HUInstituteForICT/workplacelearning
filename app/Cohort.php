@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Cohort
- * @property integer id
- * @property string name
- * @property Tip[]|Collection tips
- * @property Category[]|Collection categories
+ * @property integer $id
+ * @property string $name
+ * @property Tip[]|Collection $tips
+ * @property Category[]|Collection $categories
  * @property EducationProgram $educationProgram
  * @property boolean $disabled
  *

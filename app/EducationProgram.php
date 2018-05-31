@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property EducationProgramType $educationprogramType
- * @property int ep_id
+ * @property int $ep_id
  */
 class EducationProgram extends Model
 {

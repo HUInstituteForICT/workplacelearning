@@ -146,7 +146,7 @@ return array (
     'lastname' => 'achternaam',
     'email' => 'email address',
     'new_password' => 'nieuw wachtwoord',
-      'postalcode' => 'postcode'
+      'postalcode' => 'postcode',
       'name' => 'naam',
       'threshold' => 'grenswaarde',
       'tipText' => 'tip tekst',

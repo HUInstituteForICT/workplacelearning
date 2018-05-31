@@ -19,7 +19,7 @@ class EvaluatedMomentTip implements EvaluatedTip
      */
     private $daysPercentage;
 
-    public function __construct(Tip $tip, int $daysPercentage, bool $passes)
+    public function __construct(Tip $tip, string $daysPercentage, bool $passes)
     {
         $this->tip = $tip;
         $this->daysPercentage = $daysPercentage;

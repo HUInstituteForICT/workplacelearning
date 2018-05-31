@@ -19,7 +19,7 @@ class PeriodMomentCalculator
         $this->workplaceLearningPeriod = $workplaceLearningPeriod;
     }
 
-    public function getMomentAsPercentage(): int
+    public function getMomentAsPercentage(): string
     {
 
         $startDate = new Carbon($this->workplaceLearningPeriod->startdate);
@@ -33,6 +33,10 @@ class PeriodMomentCalculator
             $percentage = $daysInPeriod / $totalDays;
         } else {
             $percentage = 0;
+        }
+
+        if ($percentage > 1) { // Use 100% whenever the WPLP is completed
+            $percentage = 1;
         }
 
         return number_format($percentage * 100);

@@ -25,7 +25,7 @@ class HomeController extends Controller
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher)
+    public function showProducingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
         /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
         $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();

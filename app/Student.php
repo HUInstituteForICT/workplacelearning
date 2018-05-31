@@ -9,10 +9,12 @@ use Illuminate\Notifications\Notifiable;
 /**
  * Class Student
  * @property int $student_id
+ * @property string $email
  * @property string $firstname
  * @property string $lastname
  * @property integer $userlevel
  * @property EducationProgram $educationProgram
+ * @property string $pw_hash
  *
  */
 class Student extends Authenticatable
@@ -205,5 +207,10 @@ class Student extends Authenticatable
     public function getAuthPassword()
     {
         return $this->pw_hash;
+    }
+
+    public function setActiveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod)
+    {
+        $this->setUserSetting('active_internship', $workplaceLearningPeriod->wplp_id);
     }
 }

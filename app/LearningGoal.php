@@ -5,8 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @property mixed learninggoal_id
- * @property mixed learninggoal_label
+ * @property int $learninggoal_id
+ * @property string $learninggoal_label
  */
 class LearningGoal extends Model
 {
