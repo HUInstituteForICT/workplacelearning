@@ -31,7 +31,7 @@ class LearningActivityProducing extends Model
     ];
 
     public function previousLearningActivityProducing() {
-        return $this->hasOne(LearningActivityProducing::class, 'prev_lap_id', 'lap_id');
+        return $this->belongsTo(LearningActivityProducing::class, 'prev_lap_id', 'lap_id');
     }
 
     public function nextLearningActivityProducing() {
@@ -135,8 +135,4 @@ class LearningActivityProducing extends Model
     }
 
     // Note: DND, object comparison
-    public function __toString()
-    {
-        return $this->lap_id;
-    }
 }
