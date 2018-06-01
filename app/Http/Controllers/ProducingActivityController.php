@@ -356,6 +356,10 @@ class ProducingActivityController extends Controller
         $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
             return $input->resource == "new";
         });
+        $validator->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function ($input) {
+            return $input->previous_wzh != "-1";
+        });
+
 
         $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
             return $input->aantaluren === "x";
@@ -402,6 +406,8 @@ class ProducingActivityController extends Controller
         $learningActivityProducing->category_id = $request['category_id'];
         $learningActivityProducing->difficulty_id = $request['moeilijkheid'];
         $learningActivityProducing->status_id = $request['status'];
+        $learningActivityProducing->prev_lap_id = ($request['previous_wzh'] != "-1") ? $request['previous_wzh'] : null;
+
         $learningActivityProducing->save();
 
         return redirect()->route('process-producing')->with('success', Lang::get('activity.saved-successfully'));
@@ -413,8 +419,12 @@ class ProducingActivityController extends Controller
             return redirect()->route('process-acting');
         }
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
+        }
+
+        if($activity->nextLearningActivityProducing()->first() !== null) {
+            return redirect()->route('process-producing')->withErrors([Lang::get('errors.activity-in-chain')]);
         }
 
         if(Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $activity->wplp_id) {
