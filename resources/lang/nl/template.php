@@ -13,5 +13,6 @@ return [
     'template_updated' => 'De template is geüpdatet',
     'template_not_updated' => 'De template kon niet geüpdatet worden',
     'template_removed' => 'De template is verwijderd',
-    'template_not_removed' => 'De template kon niet verwijderd worden'
+    'template_not_removed' => 'De template kon niet verwijderd worden',
+    'no_parameters' => 'Geen parameters gevonden'
 ];

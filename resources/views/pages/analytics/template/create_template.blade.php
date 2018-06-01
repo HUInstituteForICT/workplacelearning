@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-9">
                 <h1>{{Lang::get('template.template_create')}}</h1>
 
                 <form action="{{ route('template.save') }}" method="post" id="saveForm">
@@ -66,9 +66,9 @@
                         }
 
                         let rowTemplate = `<div name="param${i}" class="row">
-                                            <div class="col-md-3"><input type="text" placeholder="param ${i + 1}" id="param${i}" required="true" class="form-control"></div>
+                                            <div class="col-md-3"><input type="text" name="data[${i}]['parameter']" placeholder="param ${i + 1}" id="param${i}" required="true" class="form-control"></div>
 
-                                            <div class="col-md-3"><select class="form-control">
+                                            <div class="col-md-3"><select name="data[${i}]['type']" class="form-control column-type">
                                                     ${options}
                                                 </select></div>
                                             <div class="col-md-3 column-value"></div>
@@ -77,17 +77,39 @@
 
                         $('#paramGroup').append(rowTemplate);
 
-                        $('#paramGroup').on("change", 'select', function () {
-                            console.log($(this).val());
-                            $(this).parent().parent().find(".column-value input").remove();
-                            $(this).parent().parent().find(".display-column input").remove();
+                        $('#paramGroup').on("change", '.column-type', function () {
+                            $(this).parent().parent().find(".column-value").empty();
+                            $(this).parent().parent().find(".display-column").empty();
 
                             if ($(this).val().startsWith("Column")) {
-                                //TODO: change to select list and load all the database tables
-                                $(this).parent().parent().find(".column-value").append(`<input placeholder="Table" class="form-control">`);
+                                $(this).parent().parent().find(".column-value").append(`<select class="form-control table-select" name="data[${i}]['table']"></select>`);
+                                var self = this;
+                                $.getJSON("{{ route('template.tables') }}", function (data) {
+                                    var items = "";
+
+                                    $.each(data, function (key, val) {
+                                        items += "<option id='" + val + "'>" + val + "</option>";
+                                    });
+
+                                    $(self).parent().parent().find(".column-value select").empty();
+                                    $(self).parent().parent().find(".column-value select").append(items);
+                                });
+
                                 if ($(this).val() === "Column Value") {
-                                    //TODO: change to select list and load all the database columns for the selected table
-                                    $(this).parent().parent().find(".display-column").append(`<input placeholder="Display Column" class="form-control">`);
+                                    $(this).parent().parent().find(".display-column").append(`<select name="data[${i}]['column']" class="form-control col"></select>`);
+
+                                    $('.table-select').on("change", function () {
+                                        $.getJSON("{{ route('template.columns') }}/" + $(this).val(), function (data) {
+                                            $(self).parent().parent().find(".col").empty();
+
+                                            var items = "";
+                                            $.each(data, function (key, val) {
+                                                items += "<option id='" + val + "'>" + val + "</option>";
+                                            });
+                                            $(self).parent().parent().find(".col").append(items);
+                                        });
+                                    });
+
                                 }
                             }
                         });
