@@ -15,8 +15,8 @@
         <div class="relations">
             @foreach($relations as $relation => $type)
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_1" value="custom">
-                    <label class="form-check-label" for="analysis_relations_1">
+                    <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_{{ $relation }}" value="{{ $relation }}">
+                    <label class="form-check-label" for="analysis_relations_{{ $relation }}">
                         {{ $relation }}
                     </label>
                 </div>
@@ -31,8 +31,8 @@
                     var items = "";
                     $.each( data, function( key, val ) {
                         items += ` <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_1" value="custom">
-                <label class="form-check-label" for="analysis_relations_1">
+                <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_${key}" value="${key}">
+                <label class="form-check-label" for="analysis_relations_${key}">
                     ${key}
                             </label>
                         </div>`;
