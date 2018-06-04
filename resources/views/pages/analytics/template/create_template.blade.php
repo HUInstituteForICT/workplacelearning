@@ -3,7 +3,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-9">
                 <h1>{{Lang::get('template.template_create')}}</h1>
 
                 <form action="{{ route('template.save') }}" method="post" id="saveForm">
@@ -39,12 +39,12 @@
 
     <script>
         let lastCount = 0;
-        let dataTypes = ["String", "Integer", "Date"];
+        let dataTypes = JSON.parse('{!! json_encode($typeNames) !!}');
 
         function loadParams() {
             let textArea = document.getElementById("query");
             let textValue = textArea.value;
-            let count = countStr(textValue, "{?}");
+            let count = countStringOccurrences(textValue, "{?}");
 
             if (count !== lastCount) {
                 let paramGroup = document.getElementById('paramGroup');
@@ -59,50 +59,67 @@
                     }
                 } else {
                     for (let i = lastCount; i < count; i++) {
-                        let name = "param" + i;
 
-                        let inputField = document.createElement("input");
-                        inputField.setAttribute("type", "text");
-                        inputField.setAttribute("placeholder", "param " + (i + 1));
-                        inputField.setAttribute("id", name);
-                        inputField.setAttribute("required", "true");
-                        inputField.style.cssFloat = "left";
-                        inputField.className = "form-control";
-
-                        let selectList = document.createElement("select");
-                        selectList.className = "form-control";
-                        selectList.style.cssFloat = "right";
-                        selectList.style.marginTop = "2px";
-
+                        let options = [];
                         for (let y = 0; y < dataTypes.length; y++) {
-                            let option = document.createElement("option");
-                            option.value = dataTypes[y];
-                            option.text = dataTypes[y];
-                            selectList.appendChild(option);
+                            options.push(`<option value="${dataTypes[y]}">${dataTypes[y]}</option>`);
                         }
 
-                        let row = document.createElement("div");
-                        row.setAttribute("name", name);
-                        row.className = "row";
+                        let rowTemplate = `<div name="param${i}" class="row">
+                                            <div class="col-md-3"><input type="text" name="data[${i}]['parameter']" placeholder="param ${i + 1}" id="param${i}" required="true" class="form-control"></div>
 
-                        let div1 = getDiv();
-                        div1.appendChild(inputField);
+                                            <div class="col-md-3"><select name="data[${i}]['type']" class="form-control column-type">
+                                                    ${options}
+                                                </select></div>
+                                            <div class="col-md-3 column-value"></div>
+                                            <div class="col-md-3 display-column"></div>
+                                        </div>`;
 
-                        let div2 = getDiv();
-                        div2.appendChild(selectList);
+                        $('#paramGroup').append(rowTemplate);
 
-                        row.append(div1);
-                        row.append(div2);
-                        row.append(getDiv());
+                        $('#paramGroup').on("change", '.column-type', function () {
+                            $(this).parent().parent().find(".column-value").empty();
+                            $(this).parent().parent().find(".display-column").empty();
 
-                        document.getElementById('paramGroup').appendChild(row);
+                            if ($(this).val().startsWith("Column")) {
+                                $(this).parent().parent().find(".column-value").append(`<select class="form-control table-select" name="data[${i}]['table']"></select>`);
+                                var self = this;
+                                $.getJSON("{{ route('template.tables') }}", function (data) {
+                                    var items = "";
+
+                                    $.each(data, function (key, val) {
+                                        items += "<option id='" + val + "'>" + val + "</option>";
+                                    });
+
+                                    $(self).parent().parent().find(".column-value select").empty();
+                                    $(self).parent().parent().find(".column-value select").append(items);
+                                });
+
+                                if ($(this).val() === "Column Value") {
+                                    $(this).parent().parent().find(".display-column").append(`<select name="data[${i}]['column']" class="form-control col"></select>`);
+
+                                    $('.table-select').on("change", function () {
+                                        $.getJSON("{{ route('template.columns') }}/" + $(this).val(), function (data) {
+                                            $(self).parent().parent().find(".col").empty();
+
+                                            var items = "";
+                                            $.each(data, function (key, val) {
+                                                items += "<option id='" + val + "'>" + val + "</option>";
+                                            });
+                                            $(self).parent().parent().find(".col").append(items);
+                                        });
+                                    });
+
+                                }
+                            }
+                        });
                     }
                 }
                 lastCount = count;
             }
         }
 
-        function countStr(string, searchFor) {
+        function countStringOccurrences(string, searchFor) {
             let count = 0,
                 pos = string.indexOf(searchFor);
 
@@ -111,12 +128,6 @@
                 pos = string.indexOf(searchFor, ++pos);
             }
             return count;
-        }
-
-        function getDiv() {
-            let div = document.createElement("div");
-            div.className = "col-md-3";
-            return div;
         }
 
     </script>
