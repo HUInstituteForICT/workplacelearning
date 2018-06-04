@@ -133,14 +133,12 @@
         })
         ()
     </script>
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis">+</button>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis" onclick="Wizard.open()">+</button>
 
     <div id="addAnalysis" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
 
-            <div id="QueryBuilder" class="__reactRoot modal-content">
-                @include('pages.analytics.builder.step1-type')
-            </div>
+            <div id="QueryBuilder" class="modal-content"></div>
 
         </div>
     </div>
