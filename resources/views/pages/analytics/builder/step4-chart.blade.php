@@ -47,7 +47,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-seconday" onclick="(function() { $('#QueryBuilder').load('/dashboard/builder/step/3');})();">Vorige</button>
-    <button type="button" class="btn btn-primary">Toevoegen</button>
+    <button type="button" class="btn btn-seconday" onclick="Wizard.step(3);">Vorige</button>
+    <button type="button" class="btn btn-primary" onclick="Wizard.step(5);">Toevoegen</button>
 </div>
 

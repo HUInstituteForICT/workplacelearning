@@ -3,7 +3,7 @@
     <h4 class="modal-title">Stap 2: Voer query in</h4>
 </div>
 <div class="modal-body" style="height: 450px">
-    <form action="{{ route('analytics-store') }}" class="form-horizontal" accept-charset="UTF-8"
+    <form id="wizard-form" action="{{ route('analytics-store') }}" class="form-horizontal" accept-charset="UTF-8"
     method="post">
         <div class="form-group">
             <label for="query">Query</label>
@@ -24,8 +24,8 @@
 </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-seconday" onclick="(function() { $('#QueryBuilder').load('/dashboard/builder/step/1');})();">Vorige</button>
-    <button type="button" class="btn btn-primary" onclick="(function() { $('#QueryBuilder').load('/dashboard/builder/step/4');})();">Volgende</button>
+    <button type="button" class="btn btn-seconday" onclick="Wizard.step(1);">Vorige</button>
+    <button type="button" class="btn btn-primary" onclick="Wizard.step(4);">Volgende</button>
 </div>
 <script>
     // Real time query result in veld Resultaat

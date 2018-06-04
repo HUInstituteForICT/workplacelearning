@@ -40,7 +40,7 @@ class Models
 
             try {
                 $return = $method->invoke($model);
-                echo(get_class( $return));
+
                 if ($return instanceof Relation) {
                     $relationships[$method->getName()] = [
                         'type' => (new \ReflectionClass($return))->getShortName(),

@@ -30,7 +30,7 @@ class QueryBuilderController extends Controller
 
             switch($id) {
                 case 1: return view("pages.analytics.builder.step1-type"); break;
-                case 2: return $this->step2($data); break;
+                case 2: return view("pages.analytics.builder.step2-template"); break;
                 case 4: return view("pages.analytics.builder.step4-chart"); break;
             }
         } elseif($data['analysis_type'] == 'custom') {
@@ -50,7 +50,7 @@ class QueryBuilderController extends Controller
             $request->session()->put('builder', array_replace_recursive($request->session()->get('builder'), $request->all()));
         }
 
-        return json_encode(["step" => $id + 1]);
+        return json_encode(["step" => $id]);
     }
 
     private function step2($data) {
