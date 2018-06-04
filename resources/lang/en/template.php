@@ -13,5 +13,6 @@ return [
     'template_updated' => 'The template has been updated',
     'template_not_updated' => 'The template has not been updated',
     'template_removed' => 'The template got removed',
-    'template_not_removed' => 'The template has not been removed'
+    'template_not_removed' => 'The template has not been removed',
+    'no_parameters' => 'No parameters found'
 ];

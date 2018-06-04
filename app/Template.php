@@ -14,4 +14,9 @@ class Template extends Model
         'query'
     ];
 
+    public function parameters()
+    {
+        return $this->hasMany(Parameter::class);
+    }
+
 }
