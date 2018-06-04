@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Stap 2: Kies entiteit en relaties</h4>
+       <h4 class="modal-title">Stap 2: Kies entiteit en relaties</h4>
 </div>
 <div class="modal-body" style="height: 450px">
     <form>
