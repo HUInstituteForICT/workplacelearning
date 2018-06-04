@@ -3,27 +3,58 @@
 </div>
 <div class="modal-body" style="height: 450px">
     <form id="wizard-form">
-        <div class="form-group">
-            <label for="analysis_entity">Gegevens</label>
-            <select class="form-inline" name="query_data[]" id="analysis_entity">
-                <option>Column</option>
-                <option>Sum</option>
-                <option>Count</option>
-            </select>
-            <select class="form-inline" name="query_data[]" id="analysis_entity">
-                <option>Column</option>
-                <option>Sum</option>
-                <option>Count</option>
-            </select>
+        <label for="analysis_entity">Gegevens</label>
+        <div class="form-group row">
+            <div class="col-md-1" style="width: 25px;"><a href="#" style="line-height: 34px; text-decoration: none;">X</a></div>
+            <div class="col-md-2">
+                <select class="form-control" name="query_data[]" id="analysis_entity">
+                    <option>Column</option>
+                    <option>Sum</option>
+                    <option>Count</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" name="query_data[]" id="analysis_entity">
+                    <option>Table</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" name="query_data[]" id="analysis_entity">
+                    <option>Column</option>
+                </select>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="analysis_entity">Filters</label>
-            <select class="form-control" name="analysis_entity" id="analysis_entity">
-                <option>Column</option>
-                <option>Sum</option>
-                <option>Count</option>
-            </select>
+        <a style="font-size: 20px; text-decoration: none; display: block;" href="#">+</a>
+        <label for="analysis_entity">Filters</label>
+        <div class="form-group row">
+            <div class="col-md-1" style="width: 25px;"><a href="#" style="line-height: 34px; text-decoration: none;">X</a></div>
+            <div class="col-md-2">
+                <select class="form-control" name="query_data[]" id="analysis_entity">
+                    <option>Table Filter</option>
+                    <option>Between</option>
+                    <option>Equals</option>
+                    <option>Larger than</option>
+                    <option>Smaller than</option>
+                    <option>Group by</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" name="query_data[]" id="analysis_entity">
+                    <option>Table</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" name="query_data[]" id="analysis_entity">
+                    <option>Column</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-control" name="query_data[]" id="analysis_entity">
+                    <option>Value</option>
+                </select>
+            </div>
         </div>
+        <a style="font-size: 20px; text-decoration: none; display: block;" href="#">+</a>
     </form>
 </div>
 <div class="modal-footer">
