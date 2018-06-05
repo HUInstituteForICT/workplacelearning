@@ -99,7 +99,7 @@ return [
     ],
 
     'see-more' => 'Wil je meer tips of een analyse zien, klik hier',
-    'tip' => 'Tip',
+    'personal-tip' => 'Persoonlijke tip',
 
 
 ];

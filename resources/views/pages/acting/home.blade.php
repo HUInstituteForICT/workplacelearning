@@ -7,6 +7,20 @@
             <div class="row">
                 <div class="col-lg-7">
                     <h1>{{ Lang::get('dashboard.title') }}</h1>
+
+                    @if($evaluatedTip !== null)
+                        <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
+                            <h4>{{ __('tips.personal-tip') }}</h4>
+                            <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
+                            <br/>
+
+                            <p class="text-right">
+                                <a class="alert-link" style="color: white;"
+                                   href="{{ route('analysis-acting-detail', ['year' => 'all', 'month' => 'all']) }}">{{ __('tips.see-more') }}</a>
+                            </p>
+                        </div>
+                    @endif
+
                     <p>{{ Lang::get('home.welcome') }}
                         <br /><br />{{ Lang::get('home.see-menu') }}</p>
                     <ul>
@@ -20,22 +34,7 @@
                 </div>
             </div>
 
-            @if($evaluatedTip !== null)
-                <div class="row">
-                    <div class="col-lg-7">
-                        <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
-                            <h4>{{ __('tips.tip') }}</h4>
-                            <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
-                            <br/>
 
-                            <p class="text-right">
-                            <a class="alert-link" style="color: white;" href="{{ route('analysis-acting-detail', ['year' => 'all', 'month' => 'all']) }}">{{ __('tips.see-more') }}</a>
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-            @endif
 
             <div class="row">
                 <div class="col-lg-12">
