@@ -55,21 +55,26 @@ class TipEditPage extends React.Component {
         const {action, index, type} = tour;
 
         // Check if we need to open or close a modal, depending on which step we are
-        if (type === EVENTS.STEP_AFTER) {
-            if (index === 1) {
-                this.setState({showCoupleStatisticModal: true});
-            }
-            if (index === 2) {
-                this.setState({showNewStatisticModal: true});
-            }
-            if (index === 10) {
-                this.setState({showNewStatisticModal: false});
-            }
-            if (index === 14) {
-                this.setState({showCoupleStatisticModal: false});
+        if(type === EVENTS.STEP_AFTER) {
+            if (this.props.tip.trigger === 'statistic') {
+                if (index === 1) {
+                    this.setState({showCoupleStatisticModal: true});
+                }
+                if (index === 2) {
+                    this.setState({showNewStatisticModal: true});
+                }
+                if (index === 10) {
+                    this.setState({showNewStatisticModal: false});
+                }
+                if (index === 14) {
+                    this.setState({showCoupleStatisticModal: false});
+                }
             }
             this.setState({stepIndex: index + (action === ACTIONS.PREV ? -1 : 1)});
         }
+
+
+
 
         if(type === EVENTS.TOUR_END) {
             this.setState({runJoyride: false, stepIndex: 0});
@@ -77,7 +82,7 @@ class TipEditPage extends React.Component {
     };
 
     // The steps of tour guide
-    joyrideSteps = [
+    joyrideStepsStatisticTip = [
         {
             content: Lang.get('tips.help-steps.1'),
             target: "#step-1",
@@ -180,6 +185,40 @@ class TipEditPage extends React.Component {
         },
     ];
 
+    joyrideStepsMomentTip = [
+        {
+            content: Lang.get('tips.help-steps.1'),
+            target: "#step-1",
+            disableBeacon: true,
+        },
+        {
+            content: Lang.get('tips.help-steps.moment-2'),
+            target: "#step-moment-2",
+            disableBeacon: true,
+        },
+        {
+            content: Lang.get('tips.help-steps.moment-3'),
+            target: "#step-moment-3",
+            disableBeacon: true,
+        },
+
+        {
+            content: Lang.get('tips.help-steps.18'),
+            target: "#step-18",
+            disableBeacon: true,
+        },
+        {
+            content: Lang.get('tips.help-steps.19'),
+            target: "#step-19",
+            disableBeacon: true,
+        },
+        {
+            content: Lang.get('tips.help-steps.20'),
+            target: "#step-20",
+            disableBeacon: true,
+        },
+    ];
+
 
     toggleCoupleModal = () => {
         this.setState({showCoupleStatisticModal: !this.state.showCoupleStatisticModal});
@@ -194,10 +233,6 @@ class TipEditPage extends React.Component {
             this.setState({stepIndex: 3});
         }
     };
-
-    updateRange = (name, value) => {
-
-    }
 
     render = () => {
         const {
@@ -386,7 +421,7 @@ class TipEditPage extends React.Component {
                     <h3>{Lang.get('tips.moment-trigger')}</h3>
 
                     <p>{Lang.get('tips.moment-trigger-detail')}</p>
-                    <div className="row">
+                    <div className="row" id="step-moment-2">
 
                         <div className="col-lg-3">
                             <div className="form-group">
@@ -421,7 +456,7 @@ class TipEditPage extends React.Component {
                 </div>}
 
 
-                <div className="panel panel-default" id="step-17">
+                <div className="panel panel-default" id={tip.trigger === 'statistic' ? 'step-17' : 'step-moment-3'}>
                     <div className="panel-body">
                         <div className="form-group">
                             <label>{Lang.get('tips.tiptext')}</label>
@@ -541,7 +576,7 @@ class TipEditPage extends React.Component {
                 ref={ref => {
                     this.joyrideRef = ref
                 }}
-                steps={this.joyrideSteps}
+                steps={tip.trigger === 'statistic' ? this.joyrideStepsStatisticTip : this.joyrideStepsMomentTip}
                 run={this.state.runJoyride}
                 hideBackButton={true}
                 continuous={true}

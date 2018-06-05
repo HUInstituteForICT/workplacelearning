@@ -23,7 +23,7 @@ return [
     'rangeStart' => 'Start boundary',
     'rangeEnd' => 'End boundary',
     'type-moment' => 'Moment',
-    'type-statistic' => 'Statistiek',
+    'type-statistic' => 'Statistic',
     'back' => 'Back to index',
     'coupled-statistics' => 'Coupled statistics',
     'couple-statistic' => 'Couple a statistic',
@@ -86,20 +86,24 @@ return [
         '18' => 'Set whether or not this tip should be shown to students/',
         '19' => 'Select the cohorts that will use this tip.',
         '20' => 'Now as the final step, save the tip.',
+        'moment-2' => 'Define between which percentages the tip should become active.',
+        'moment-3' => 'Now define the tip text that will be shown to a student if the tip is applicable. You can insert the calculated days as a percentage by using "days-percentage" in the text.',
     ],
 
     'help' => [
         'help'             => 'Help',
         'how-does-it-work' => 'How does it work?',
-        'explain-tips' => 'Tips can help students at their workplace. These tips have to be created here first. A tip will be shown to a student if the tip is considered active. A tip is considered active if one or more of its calculated statistics pass a configured threshold and become active. If more than one statistic is coupled they all need to be active before the tip is considered active.',
+        'explain-tips' => 'Tips can help students at their workplace. These tips have to be created here first. A tip will be shown to a student if the tip is considered active. There are to types of tips: statistic driven tips, and moment driven tips. A statistic tip is considered active if one or more of its calculated statistics pass a configured threshold and become active. If more than one statistic is coupled they all need to be active before the tip is considered active. A moment driven tip becomes active if the student\'s workplace learning period is, for example, completed for 25% to 35%.',
         'explain-statistics' => 'A statistic is calculated with two learning activities. These variables have a value, either the total amount of learning activities for the student or the total sum of the hours of the learning activities. These variables can also be filtered by their attributes. It is for example possible to filter the first variable by the Resource Person attribute, setting it to "Alone", and leaving the filters for the second variable empty. The calculation will then give the percentage of learning activities with the resource person "Alone".',
         'explain-couple' => 'Statistics that have been created still need to be coupled to a tip. For this it is also necessary to configure the condition for when a statistic is considered active. For example when you want the statistic to be active when 50% of the learning activities are done alone you would enter 0.5 as the threshold and put the comparison on "greater than".',
-        'explain-tiptext' => 'The tip text is the text shown to the student. It is possible to insert the calculated statistic values by writing ":statistic-*" where * is the number of the statistic. This way a student can know what the percentage of work done "Alone" is and if necessary adjust his or her work.',
+        'explain-moment' => 'A moment is defined by a start boundary and an end boundary. Together they define when a moment is considered active. For example, filling in 25% and 35% means that the tip is active when the student is between 25% and 35% into his or her workplace learning period.',
+        'explain-tiptext' => 'The tip text is the text shown to the student. For a statistic tip, it is possible to insert the calculated statistic values by writing ":statistic-*" where * is the number of the statistic. This way a student can know what the percentage of work done "Alone" is and if necessary adjust his or her work. If the tip is a moment tip write ":days-percentage" to insert the days into the workplace learning period as a percentage.',
         'explain-footer' => 'To better understand the tips workflow it is possible to follow an interactive guide. For this first create a new tip and then click the "Guide" button in the top right corner of the webpage.'
     ],
 
     'see-more' => 'Want to see more tips or an analysis, click here',
     'personal-tip' => 'Personal tip',
+    'moments' => 'Moments'
 
 
 ];

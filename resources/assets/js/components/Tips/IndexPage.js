@@ -182,11 +182,15 @@ class IndexPage extends React.Component {
                     <p>
                         {Lang.get('tips.help.explain-statistics')}
                     </p>
-
-                    <strong>{Lang.get('tips.coupling-statistics')}</strong>
                     <p>
                         {Lang.get('tips.help.explain-couple')}
                     </p>
+
+                    <strong>{Lang.get('tips.moments')}</strong>
+                    <p>
+                        {Lang.get('tips.help.explain-moment')}
+                    </p>
+
 
                     <strong>{Lang.get('tips.tiptext')}</strong>
                     <p>
