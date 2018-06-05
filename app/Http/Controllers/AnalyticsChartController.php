@@ -169,13 +169,16 @@ class AnalyticsChartController extends Controller
 
     public function getChartDetails($label)
     {
-        $id = DB::connection('dashboard')->select("SELECT category_id FROM `category` WHERE category_label = '" . $label . "' AND cohort_id IS NOT NULL");
+        $id = Category::where('category_label', $label)
+            ->whereNotNull('cohort_id')
+            ->first();
 
-        $arrayId = json_decode(json_encode($id), true);
-        $id = $arrayId[0]['category_id'];
+        //$id = DB::connection('dashboard')->select("SELECT category_id FROM `category` WHERE category_label = '" . $label . "' AND cohort_id IS NOT NULL");
+        //$arrayId = json_decode(json_encode($id), true);
+        //$id = $arrayId[0]['category_id'];
 
-        if ($id != null) {
-            $descriptions = (new LearningActivityProducing)->where('category_id', $id)->get(['description']);
+        if ($id->category_id != null) {
+            $descriptions = (new LearningActivityProducing)->where('category_id', $id->category_id)->get(['description']);
             return $descriptions;
         }
         return [];
