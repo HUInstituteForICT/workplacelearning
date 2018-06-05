@@ -9,6 +9,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property integer $eptype_id
+ * @property string $eptype_name Name of the program type
+ */
 class EducationProgramType extends Model
 {
     // Override the table used for the User Model

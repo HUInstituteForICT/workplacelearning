@@ -2,10 +2,17 @@
 
 namespace App;
 
+use App\Tips\Tip;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * Class Cohort
+ * @property integer $id
+ * @property string $name
+ * @property Tip[]|Collection $tips
+ * @property Category[]|Collection $categories
  * @property EducationProgram $educationProgram
  * @property boolean $disabled
  *
@@ -54,6 +61,10 @@ class Cohort extends Model
     public function workplaceLearningPeriods()
     {
         return $this->hasMany(WorkplaceLearningPeriod::class, 'cohort_id', 'id');
+    }
+
+    public function tips() {
+        return $this->belongsToMany(Tip::class);
     }
 
 }

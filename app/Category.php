@@ -9,6 +9,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string category_label
+ */
 class Category extends Model
 {
     // Override the table used for the User Model

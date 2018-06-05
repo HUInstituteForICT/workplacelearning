@@ -14,6 +14,7 @@
 
 */
 
+use App\Http\Controllers\StatisticController;
 use App\Http\Middleware\CheckUserLevel;
 
 Auth::routes();
@@ -52,6 +53,21 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 
     }
 );
+
+Route::get('/manage/tips', function() {
+    return view('pages.tips.tips-app');
+})->middleware(['auth', CheckUserLevel::class])->name('tips-app');
+
+Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api/'], function() {
+
+    Route::resource('tip-coupled-statistics', 'TipApi\TipCoupledStatisticController');
+    Route::resource('statistics', 'TipApi\StatisticController');
+    Route::resource('tips', 'TipApi\TipsController');
+
+
+
+    Route::put('tips/{tip}/cohorts', 'TipApi\TipsController@updateCohorts')->name('tips.updateCohorts');
+});
 
 Route::group(['before' => 'auth'], function() {
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
@@ -152,6 +168,9 @@ Route::group([
                                 Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
                                 Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
                             });
+
+
+    Route::get('/tip/{tip}/like', 'TipApi\TipsController@likeTip')->name('tips.like');
 
     /* EP Type: Acting */
     Route::group([

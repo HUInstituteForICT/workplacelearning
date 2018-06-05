@@ -7,11 +7,13 @@
 
 namespace App;
 
+use App\EducationProgramType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int ep_id
+ * @property EducationProgramType $educationprogramType
+ * @property int $ep_id
  */
 class EducationProgram extends Model
 {
@@ -41,7 +43,7 @@ class EducationProgram extends Model
 
     public function educationprogramType()
     {
-        return $this->hasOne(\App\EducationProgramType::class, 'eptype_id', 'eptype_id');
+        return $this->hasOne(EducationProgramType::class, 'eptype_id', 'eptype_id');
     }
 
     public function student()

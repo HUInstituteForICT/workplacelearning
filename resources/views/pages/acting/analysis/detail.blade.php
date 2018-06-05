@@ -25,6 +25,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6">
+                <a href="{{ route('analysis-acting-choice') }}" class="btn">{{__('analyses.back-to-choice')}}</a>
                 <h1>{{ Lang::get('analyses.title') }}</h1>
                 <p>{{ trans('analysis.acting.description') }}</p>
 
@@ -205,38 +206,49 @@
                 @endif
 
 
-                <h3>Tips</h3>
+                @if($evaluatedTips->count() > 0)
+                    <h3>Tips</h3>
+                @endif
                 <?php $tipCounter = 1; ?>
 
-                {{--Percentage leermomenten bij leervraag zonder theorie--}}
+                @foreach($evaluatedTips as $evaluatedTip)
+                    <?php $tip = $evaluatedTip->getTip(); ?>
+                    @if($tip->likes->count() === 0 || $tip->likes[0]->type === 1)
+                        <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
+                        <div class="row">
+                            @if($tip->likes->count() === 0)
+                                <div class="col-md-1"
+                                     style="display: inline-block; vertical-align: middle;   float: none;">
 
-                @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals() as $learningGoal)
-
-                    @if($actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal) > 50)
-                        <strong>{{ Lang::get('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
-
-                        {{ Lang::get('analysis.tips.learninggoal-material', ["percentage" => $actingAnalysis->statistic('percentageLearningGoalWithoutMaterial', $learningGoal), "label" => $learningGoal->learninggoal_label]) }}
+                                    <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
+                                        onclick="likeTip({{ $tip->id }}, 1)"
+                                        target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
+                                    <h2 class="h2" style="cursor: pointer;color: #e2423b;" id="likeTip-{{ $tip->id }}"
+                                        onclick="likeTip({{ $tip->id }}, -1)"
+                                        target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h2>
+                                </div>@endif<!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
+                                --><div class="col-md-11"
+                                 style="display: inline-block; vertical-align: middle;   float: none;">
+                                <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
+                            </div>
+                        </div>
                         <br/><br/>
-
-                        <?php $tipCounter++ ?>
+                        <?php $tipCounter++; ?>
                     @endif
-
 
                 @endforeach
 
-                {{--Percentage leermomenten in tijdslot hoger dan 30% tip--}}
-                @foreach(Auth::user()->currentCohort()->timeslots()->get()->merge(Auth::user()->getCurrentWorkplaceLearningPeriod()->getTimeslots()) as $timeslot)
-                    @if($actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot) >= 30)
-                        <strong>{{ Lang::get('analysis.tip') }} {{ $tipCounter }}</strong>: <br/>
 
-                        {{ Lang::get('analysis.tips.activities-timeslot', ["percentage" => $actingAnalysis->statistic('percentageActivitiesInTimeslot', $timeslot), "label" => $timeslot->timeslot_text]) }}
-                        <br/><br/>
-                        <?php $tipCounter++ ?>
-                    @endif
-
-                @endforeach
             </div>
         </div>
     </div>
+    <script>
+        function likeTip(tipId, type) {
+            const url = "{{ route('tips.like', ['id' => ':id']) }}";
+            $.get(url.replace(':id', tipId) + '?type=' + type).then(function () {
+                $('#likeTip-' + tipId).parent().remove();
+            });
+        }
+    </script>
 
 @stop

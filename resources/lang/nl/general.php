@@ -55,6 +55,8 @@ return array (
         "entity-delete-references" => "Ander entiteiten hebben referenties naar deze entiteit, deze kan dus niet verwijderd worden om de integriteit van de data te behouden."
     ],
 
+    "saved" => "Opgeslagen",
+
     "bugreport-sent" => 'Bedankt voor je bijdrage! Je krijgt per email een reactie terug.',
     'startdate' => "Startdatum",
 

@@ -7,14 +7,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Chart;
-use App\LearningActivityProducing;
 use App\Analysis\Producing\ProducingAnalysis;
 use App\Analysis\Producing\ProducingAnalysisCollector;
+use App\Cohort;
+use App\Repository\Eloquent\LikeRepository;
+use App\Student;
+use App\Tips\ApplicableTipFetcher;
+use App\Tips\DataCollectors\Collector;
+use App\Tips\EvaluatedStatisticTip;
+use App\Tips\EvaluatedTip;
+use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
 class ProducingAnalysisController extends Controller
@@ -36,7 +41,7 @@ class ProducingAnalysisController extends Controller
             ->with('numdays', (new ProducingAnalysisCollector())->getFullWorkingDays("all", "all"));
     }
 
-    public function showDetail(Request $request, $year, $month)
+    public function showDetail(Request $request, $year, $month, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
         // If no data or not enough data, redirect to analysis choice page
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
@@ -53,6 +58,23 @@ class ProducingAnalysisController extends Controller
         // Create new Analysis for the producing student
         $producingAnalysis = new ProducingAnalysis(new ProducingAnalysisCollector(), $year, $month);
 
+        if($year === "all" || $month === "all") {
+            $year = null;
+            $month = null;
+        }
+        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
+
+        /** @var Cohort $cohort */
+        $cohort = $workplaceLearningPeriod->cohort;
+
+        $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($cohort));
+
+        /** @var Student $student */
+        $student = $request->user();
+        $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+            $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
+        });
+
         // If there are no chains, there are no activities therefore redirect user somewhere else
         if (count($producingAnalysis->chains()) == 0) {
             return redirect()->route('analysis-producing-choice')->withErrors([Lang::get('notifications.generic.nointernshiphoursmonth')]);
@@ -62,6 +84,7 @@ class ProducingAnalysisController extends Controller
         $analysisData = $producingAnalysis->analysisData;
 
         return view('pages.producing.analysis.detail')
+            ->with('evaluatedTips', $applicableEvaluatedTips)
             ->with('producingAnalysis', $producingAnalysis)
             ->with('analysis', $analysisData)
             ->with('year', $year)
