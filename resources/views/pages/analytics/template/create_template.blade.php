@@ -102,7 +102,7 @@
                                         $.getJSON("{{ route('template.columns') }}/" + $(this).val(), function (data) {
                                             $(self).parent().parent().find(".col").empty();
 
-                                            var items = "";
+                                            let items = "";
                                             $.each(data, function (key, val) {
                                                 items += "<option id='" + val + "'>" + val + "</option>";
                                             });

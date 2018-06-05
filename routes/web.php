@@ -69,6 +69,7 @@ Route::group([
     'middleware' => ['usernotifications'],
 ], function () {
 
+
     Route::group(['middleware' => CheckUserLevel::class], function () {
         Route::get('/education-programs', 'EducationProgramsController@index')
             ->name('education-programs');
@@ -94,6 +95,17 @@ Route::group([
             Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
 
             Route::get('/builder/step/{id}', 'QueryBuilderController@showStep')->name('querybuilder-step');
+
+
+            Route::get("/chart_details/{label?}", function($label)
+            {
+                $label = str_replace("_", " ", $label);
+                return View::make("pages.analytics.dashboard.chart_details", compact('label'));
+            });
+
+            Route::group(['prefix' => 'api'], function () {
+                Route::get('chart_details/{label?}', 'AnalyticsChartController@getChartDetails')->name('charts-details');
+            });
         });
 
         Route::group(['prefix' => 'template'], function () {
@@ -103,7 +115,14 @@ Route::group([
             Route::post('/', 'TemplateDashboardController@save')->name('template.save');
             Route::get('/create', 'TemplateDashboardController@create')->name('template.create');
             Route::delete('/{id}', 'TemplateDashboardController@destroy')->name('template.destroy')->where('id', '[0-9]+');
+
+            Route::group(['prefix' => 'api'], function () {
+                // Api routes
+                Route::get('tables', 'TemplateDashboardController@getTables')->name('template.tables');
+                Route::get('columns/{id?}', 'TemplateDashboardController@getColumns')->name('template.columns');
+            });
         });
+
 
     });
 

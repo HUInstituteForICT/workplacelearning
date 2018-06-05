@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Analysis;
 use App\AnalysisChart;
 use App\DashboardChart;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
 
 class AnalyticsDashboardController extends Controller
 {
@@ -31,11 +33,16 @@ class AnalyticsDashboardController extends Controller
 
     public function index()
     {
+        $labels = Category::all()->toArray();
+        $labels = array_map(function ($row) {
+            return $row['category_label'];
+        }, $labels);
+
         $charts = $this->dchart
             ->with('chart.type', 'chart.labels')
             ->orderBy('position', 'asc')
             ->get();
-        return view('pages.analytics.dashboard.index', compact('charts'));
+        return view('pages.analytics.dashboard.index', compact('charts', 'labels'));
     }
 
     public function add()

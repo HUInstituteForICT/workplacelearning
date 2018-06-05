@@ -30,7 +30,7 @@
             var ctxh = $('#myChart');
             var myCart = new Chart(ctxh, {
                 type: '{{ $chart->type->slug }}', // ideally have the type itself make something nice out?
-            data: {
+                data: {
                     labels: [<?php
                         $items = array_map(function ($key) use ($chart) {
                             return "'" . $key->{$chart->x_label->name} . "'";

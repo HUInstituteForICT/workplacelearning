@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Analysis;
 use App\AnalysisChart;
+use App\Category;
 use App\ChartType;
 use App\DashboardChart;
 use App\Label;
+use App\LearningActivityProducing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
 
 class AnalyticsChartController extends Controller
 {
@@ -161,6 +165,20 @@ class AnalyticsChartController extends Controller
 
         return redirect()->route('charts.index')
             ->with('success', Lang::get('charts.removed'));
+    }
+
+    public function getChartDetails($label)
+    {
+        $id = DB::connection('dashboard')->select("SELECT category_id FROM `category` WHERE category_label = '" . $label . "' AND cohort_id IS NOT NULL");
+
+        $arrayId = json_decode(json_encode($id), true);
+        $id = $arrayId[0]['category_id'];
+
+        if ($id != null) {
+            $descriptions = (new LearningActivityProducing)->where('category_id', $id)->get(['description']);
+            return $descriptions;
+        }
+        return [];
     }
 
 }
