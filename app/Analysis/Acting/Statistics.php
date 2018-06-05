@@ -78,7 +78,7 @@ class Statistics
     {
         $activities = $this->analysisCollector->getLearningActivities()->filter(
             function (LearningActivityActing $activity) use ($competence) {
-                return $activity->getCompetencies()->competence_id === $competence->competence_id;
+                return $activity->competence->first()->competence_id === $competence->competence_id;
             });
         if( $this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
@@ -181,7 +181,7 @@ class Statistics
         $this->analysisCollector->getLearningActivities()->each(function(LearningActivityActing $activity) use($combo) {
             // Find all activities with matching competence & timeslot
             $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function(LearningActivityActing $matchingActivity) use ($activity) {
-                return ($activity->getCompetencies()->competence_label === $matchingActivity->getCompetencies()->competence_label &&
+                return ($activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
                     $activity->timeslot->timeslot_id === $matchingActivity->timeslot->timeslot_id &&
                     $activity !== $matchingActivity);
             });
@@ -195,7 +195,7 @@ class Statistics
             if($percentage >= $combo->percentage) {
                 $combo->percentage = $percentage;
                 $combo->timeslot = $activity->timeslot;
-                $combo->competence = $activity->getCompetencies();
+                $combo->competence = $activity->competence->first();
             }
         });
 
@@ -215,7 +215,7 @@ class Statistics
         $this->analysisCollector->getLearningActivities()->each(function(LearningActivityActing $activity) use($combo) {
             // Find all activities with matching competence & learning goal
             $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function(LearningActivityActing $matchingActivity) use ($activity) {
-                return ($activity->getCompetencies()->competence_label === $matchingActivity->getCompetencies()->competence_label &&
+                return ($activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
                     $activity->learningGoal->learninggoal_id === $matchingActivity->learningGoal->learninggoal_id &&
                     $activity !== $matchingActivity);
             });
@@ -229,7 +229,7 @@ class Statistics
             if($percentage >= $combo->percentage) {
                 $combo->percentage = $percentage;
                 $combo->learningGoal = $activity->learningGoal;
-                $combo->competence = $activity->getCompetencies();
+                $combo->competence = $activity->competence->first();
             }
         });
 

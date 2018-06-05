@@ -229,6 +229,7 @@ if (env('APP_ENV') === 'local' || env('APP_ENV') === 'dev') {
     $config['providers'][] = Barryvdh\TranslationManager\ManagerServiceProvider::class;
     $config['providers'][] = Barryvdh\TranslationManager\TranslationServiceProvider::class;
     $config['providers'][] = Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class;
+    $config['providers'][] = Barryvdh\Debugbar\ServiceProvider::class;
 
 
 } else {

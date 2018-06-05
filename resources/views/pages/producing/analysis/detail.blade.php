@@ -35,6 +35,8 @@
         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
             <div class="row">
                 <div class="col-lg-12">
+                    <a href="{{ route('analysis-producing-choice') }}" class="btn">{{__('analyses.back-to-choice')}}</a>
+
                     <h1>{{ Lang::get('rapportages.pageheader') }}
                         <?php
                         $intlfmt = new IntlDateFormatter(
@@ -147,28 +149,54 @@
                 </div>
             </div>
 
+            <p>
+                {{ trans('analysis.tips.mostDifficultCategory', ["category" => __($producingAnalysis->statistic('mostDifficultCategoryName')), "percentage" => $producingAnalysis->statistic('persentageMostDifficultCategory')]) }}
+            </p>
+
+            @if(!!$producingAnalysis->statistic('averagePersonDifficultyName'))
+                <p>
+                    {{ trans('analysis.tips.averagePersonDifficultyName', ['person' => __($producingAnalysis->statistic('averagePersonDifficultyName'))]) }}
+                </p>
+            @endif
+
+
             <!-- Tips -->
             <div class="row">
                 <div class="col-md-12">
-                    <h2>{{ trans('analysis.tips.tips') }}</h2>
-                    @if($producingAnalysis->statistic('percentageAloneHours') > 75 && $producingAnalysis->statistic('percentageDifficultTasks') > 50)
-                        <p>{{ trans('analysis.tips.percentageAloneHours', ['percentage' => $producingAnalysis->statistic('percentageAloneHours'), 'percentageDifficultTasks' => $producingAnalysis->statistic('percentageDifficultTasks')]) }}</p>
-                    @endif
-                    @if($producingAnalysis->statistic('percentageEasyHours') > 65)
-                        <p>
-                            {{ trans('analysis.tips.percentageEasyHours', ["percentage" => $producingAnalysis->statistic('percentageEasyHours')]) }}
-                        </p>
-                    @endif
 
-                        <p>
-                            {{ trans('analysis.tips.mostDifficultCategory', ["category" => __($producingAnalysis->statistic('mostDifficultCategoryName')), "percentage" => $producingAnalysis->statistic('persentageMostDifficultCategory')]) }}
-                        </p>
 
-                    @if(!!$producingAnalysis->statistic('averagePersonDifficultyName'))
-                        <p>
-                            {{ trans('analysis.tips.averagePersonDifficultyName', ['person' => __($producingAnalysis->statistic('averagePersonDifficultyName'))]) }}
-                        </p>
+                    @if($evaluatedTips->count() > 0)
+                        <h3>Tips</h3>
                     @endif
+                    <?php $tipCounter = 1; ?>
+
+                    @foreach($evaluatedTips as $evaluatedTip)
+                        <?php $tip = $evaluatedTip->getTip(); ?>
+                            @if($tip->likes->count() === 0 || $tip->likes[0]->type === 1)
+                                <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
+                                <div class="row">
+                                    @if($tip->likes->count() === 0)
+                                        <div class="col-md-1"
+                                             style="display: inline-block; vertical-align: middle;   float: none;">
+
+                                            <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
+                                                onclick="likeTip({{ $tip->id }}, 1)"
+                                                target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
+                                            <h2 class="h2" style="cursor: pointer;color: #e2423b;" id="likeTip-{{ $tip->id }}"
+                                                onclick="likeTip({{ $tip->id }}, -1)"
+                                                target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h3>
+                                        </div>@endif<!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
+                                        --><div class="col-md-11"
+                                                style="display: inline-block; vertical-align: middle;   float: none;">
+                                        <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
+                                    </div>
+                                </div>
+                                <br/><br/>
+                                <?php $tipCounter++; ?>
+                            @endif
+
+                        @endforeach
+
 
                 </div>
             </div>
@@ -262,5 +290,13 @@
         @endif
 
     </div>
+    <script>
+        function likeTip(tipId, type) {
+            const url = "{{ route('tips.like', ['id' => ':id']) }}";
+            $.get(url.replace(':id', tipId) + '?type=' + type).then(function() {
+                $('#likeTip-' + tipId).parent().remove();
+            });
+        }
+    </script>
 
 @stop

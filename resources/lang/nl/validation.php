@@ -146,7 +146,11 @@ return array (
     'lastname' => 'achternaam',
     'email' => 'email address',
     'new_password' => 'nieuw wachtwoord',
-      'postalcode' => 'postcode'
+      'postalcode' => 'postcode',
+      'name' => 'naam',
+      'threshold' => 'grenswaarde',
+      'tipText' => 'tip tekst',
+      'showInAnalysis' => 'zichtbaar in analyse'
   ),
 
     "newnotfinished"                          => "De omschrijving is verplicht en mag maximaal 150 tekens zijn.",

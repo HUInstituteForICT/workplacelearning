@@ -17,6 +17,7 @@ return array (
       'settings' => 'Voortgang',
       'educationprograms' => 'Programma\'s',
       'logout' => 'Uitloggen',
+      'tips' => 'Tips',
     ),
   ),
   'alerts' => 
@@ -79,7 +80,6 @@ return array (
       'email' => 'E-Mail',
       'phone' => 'Telefoonnummer',
       'birthdate' => 'Geboortedatum',
-      'language' => "Taal",
       'password' => 'Wachtwoord',
       'new_password' => 'Nieuw wachtwoord',
       'password_repeat' => 'Wachtwoord (Bevestiging)',
@@ -90,6 +90,7 @@ return array (
         3 => 'Wat is je lievelingskleur?',
       ),
       'internship-assignment-error' => 'Dit veld moet minimaal 15 characters hebben en kan maximaal 500 characters bevatten.',
+      'language' => 'Taal',
     ),
     'placeholders' => 
     array (

@@ -3,7 +3,7 @@
 return array (
   'header' => 
   array (
-    'title' => 'Workplace Learning',
+    'title' => 'Workplace Assisted Learning',
   ),
   'sidebar' => 
   array (
@@ -17,6 +17,7 @@ return array (
       'settings' => 'Progress',
       'educationprograms' => 'Programs',
       'logout' => 'Log Out',
+      'tips' => 'Tips',
     ),
   ),
   'alerts' => 
@@ -79,17 +80,17 @@ return array (
       'email' => 'E-Mail',
       'phone' => 'Phone Number',
       'birthdate' => 'Date of Birth',
-      'language' => "Language",
       'password' => 'Password',
       'new_password' => 'New password',
       'password_repeat' => 'Password (Confirmation)',
-      'secretquestion' =>
+      'secretquestion' => 
       array (
         1 => 'Where were you born?',
         2 => 'What is or was the name of your first pet?',
         3 => 'What is your favorite color?',
       ),
       'internship-assignment-error' => 'This field should at least contain 15 characters and can have a maximum of 500.',
+      'language' => 'Language',
     ),
     'placeholders' => 
     array (

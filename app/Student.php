@@ -8,12 +8,13 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * Class Student
- * @package App
+ * @property int $student_id
+ * @property string $email
  * @property string $firstname
  * @property string $lastname
  * @property integer $userlevel
- * @property integer $student_id
  * @property EducationProgram $educationProgram
+ * @property string $pw_hash
  *
  */
 class Student extends Authenticatable
@@ -52,6 +53,10 @@ class Student extends Authenticatable
         'remember_token',
     ];
 
+    private $currentWorkplaceLearningPeriod = null;
+
+    private $userSettings = [];
+
     public function getInitials()
     {
         $initials = "";
@@ -78,7 +83,10 @@ class Student extends Authenticatable
 
     public function getUserSetting($label)
     {
-        return ($this->usersettings()->where('setting_label', '=', $label)->first());
+        if(!isset($this->userSettings[$label])) {
+            $this->userSettings[$label] = $this->usersettings()->where('setting_label', '=', $label)->first();
+        }
+        return $this->userSettings[$label];
     }
 
     public function setUserSetting($label, $value)
@@ -94,6 +102,7 @@ class Student extends Authenticatable
             $setting->setting_value = $value;
             $setting->save();
         }
+        $this->userSettings[$label] = $setting;
         return;
     }
 
@@ -135,10 +144,14 @@ class Student extends Authenticatable
      */
     public function getCurrentWorkplaceLearningPeriod()
     {
-        if (!$this->getUserSetting('active_internship')) {
-            return null;
+        if($this->currentWorkplaceLearningPeriod === null) {
+            if (!$this->getUserSetting('active_internship')) {
+                return null;
+            }
+            $this->currentWorkplaceLearningPeriod = $this->workplaceLearningPeriods()->where('wplp_id', '=', $this->getUserSetting('active_internship')->setting_value)->first();;
         }
-        return $this->workplaceLearningPeriods()->where('wplp_id', '=', $this->getUserSetting('active_internship')->setting_value)->first();
+
+        return $this->currentWorkplaceLearningPeriod;
     }
 
     public function getCurrentWorkplace()
@@ -194,5 +207,10 @@ class Student extends Authenticatable
     public function getAuthPassword()
     {
         return $this->pw_hash;
+    }
+
+    public function setActiveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod)
+    {
+        $this->setUserSetting('active_internship', $workplaceLearningPeriod->wplp_id);
     }
 }
