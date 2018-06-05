@@ -2,6 +2,7 @@
 
 return array (
     'postalcode' => ':value is not a valid postal code',
+    'date_in_wplp' => 'The date :date is not between start and end date of your workplace.',
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',

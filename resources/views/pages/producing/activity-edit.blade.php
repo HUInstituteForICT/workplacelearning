@@ -60,6 +60,23 @@
                     <input class="form-control fit-bs" type="date" name="datum" value="{{ (count($errors) > 0) ? old('datum') : $activity->date }}" /><br/>
                     <h5>{{ Lang::get('activity.description') }}:</h5>
                     <textarea class="form-control fit-bs" name="omschrijving" required maxlength="80" rows="5" cols="19">{{ (count($errors) > 0) ? old('omschrijving') : $activity->description }}</textarea>
+
+                    <h5>{{ Lang::get('activity.chain-to') }}:</h5>
+                    <select class="form-control fit-bs" name="previous_wzh">
+                        <option value="-1">- {{ Lang::get('no-chain') }}-</option>
+                        @if($activity->prev_lap_id !== null)
+                            <option selected value="{{ $activity->previousLearningActivityProducing->lap_id }}">{{ date('d-m', strtotime($activity->previousLearningActivityProducing->date)) ." - ".$activity->previousLearningActivityProducing->description }}</option>
+                        @endif
+                        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() !== null)
+                            @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getUnfinishedActivityProducing() as $unfinishedActivity)
+
+                                @if($unfinishedActivity->nextLearningActivityProducing === null && $unfinishedActivity->lap_id !== $activity->lap_id)
+                                    {{-- Only allow to chain activity if it hasn't been chained yet --}}
+                                    <option value="{{ $unfinishedActivity->lap_id }}">{{ date('d-m', strtotime($unfinishedActivity->date)) ." - ".$unfinishedActivity->description }}</option>
+                                @endif
+                            @endforeach
+                        @endif
+                    </select>
                 </div>
                 <div class="col-md-2 form-group buttons numpad">
                     <h4>{{ Lang::get('activity.hours') }}</h4>

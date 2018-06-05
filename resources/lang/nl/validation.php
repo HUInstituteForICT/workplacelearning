@@ -2,7 +2,7 @@
 
 return array (
     'postalcode' => ':value is niet een geldige postcode.',
-    'postalcode' => ':value is niet een geldige postcode.',
+    'date_in_wplp' => 'De datum :date valt niet binnen de start en einddatum van je werkplek.',
     'accepted' => ':attribute dient te worden geaccepteerd.',
     'active_url' => ':attribute is geen geldige URL.',
     'after' => ':attribute dient een datum te zijn na :date.',

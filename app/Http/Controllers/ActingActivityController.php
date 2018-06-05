@@ -123,7 +123,7 @@ class ActingActivityController extends Controller
 
         $validator = Validator::make($request->all(),
             [
-                'date'          => 'required|date|before:tomorrow', //after_or_equal:'. strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate), // TODO Date validation not working
+                'date'          => 'required|date|date_in_wplp',
                 'description'   => 'required|max:1000',
                 'learned'       => 'required|max:1000',
                 'support_wp'    => 'max:500',
@@ -236,7 +236,7 @@ class ActingActivityController extends Controller
         }
 
         $validator = Validator::make($req->all(), [
-            'date'                  => 'required|date|before:'.date('d-m-Y', strtotime('tomorrow')),
+            'date'                  => 'required|date|date_in_wplp',
             'description'           => 'required|max:1000',
             'timeslot'              => 'required|exists:timeslot,timeslot_id',
             'new_rp'                => 'required_if:res_person,new|max:45|',
@@ -269,6 +269,7 @@ class ActingActivityController extends Controller
                 ->withInput();
         }
 
+        /** @var LearningActivityActing $learningActivity */
         $learningActivity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityActingById($id);
 
         if ($req->hasFile('evidence')) {
@@ -293,7 +294,7 @@ class ActingActivityController extends Controller
         $learningActivity->support_wp = $req['support_wp'];
         $learningActivity->support_ed = $req['support_ed'];
         $learningActivity->res_person_id = $req['res_person'];
-        $learningActivity->res_material_id = ($req['res_material'] != 'none') ?  $req['res_material'] : null;
+        $learningActivity->res_material_id = ($req['res_material'] != 'none') ? $req['res_material'] : null;
         $learningActivity->res_material_detail = $req['res_material_detail'];
         $learningActivity->learninggoal_id = $req['learning_goal'];
         $learningActivity->save();

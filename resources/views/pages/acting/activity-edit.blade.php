@@ -41,14 +41,16 @@
                         <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ (old('res_person') == $value->rp_id) ? 'checked' : ($activity->res_person_id == $value->rp_id) ? 'checked' : null }} /><span>{{ $value->person_label }}</span></label>
                     @endforeach
                 </div>
+
                 <div class="col-md-2 from-group buttons">
                     <h4>{{ Lang::get('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_theory') }}"></i></h4>
-                    <label><input type="radio" name="res_material" id="rm_none" value="none" {{ (old('res_material') == 'none') ? 'checked' : (!$activity->res_material_id) ? 'checked' : null }}/><span>{{ Lang::get('activity.none') }}</span></label>
+                    <label><input type="radio" name="res_material" id="rm_none" value="none" {{ (old('res_material') === 'none' || !$activity->res_material_id) ? 'checked' : null }}/><span>{{ Lang::get('activity.none') }}</span></label>
                     @foreach ($resMaterials as $key => $value)
                         <label><input type="radio" name="res_material" value="{{ $value->rm_id }}" {{ (old('res_material') == $value->rm_id) ? 'checked' : ($activity->res_material_id == $value->rm_id) ? 'checked' : null }} /><span>{{ $value->rm_label }}</span></label>
                     @endforeach
-                    <input type="text" name="res_material_detail" id="res_material_detail" placeholder="{{ Lang::get('activity.source-description') }}" value="{{ $value->res_material_detail }}" />
+                    <input type="text" name="res_material_detail" id="res_material_detail" placeholder="{{ Lang::get('activity.source-description') }}" value="{{ $activity->res_material_detail }}" />
                 </div>
+
                 <div class="col-md-2 from-group">
                     <h4>{{ Lang::get('activity.learned') }}<br />{{ Lang::get('activity.whatnow') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
                     <textarea class="form-control fit-bs" name="learned" required rows="5" cols="19">{{ (count($errors) > 0) ? old('learned') : $activity->lessonslearned }}</textarea>

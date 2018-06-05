@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,14 +16,10 @@ class ValidationServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        // Validation for postal codes
-        Validator::extend('postalcode', function ($attribute, $value, $parameters, $validator) {
-            $value = preg_replace('/\s+/', '', $value);
-            $validator->addReplacer('postalcode', function ($message, $attribute, $rule, $parameters) use ($value) {
-                return str_replace(':value', $value, $message);
-            });
-            return (bool)preg_match('/^[a-zA-Z0-9]{3,10}$/', $value);
-        });
+        // Application specific validation rules
+        Validator::extend('postalcode', 'App\Validators\PostalValidator@validate');
+        Validator::extend('dateInWplp', 'App\Validators\DateInLearningPeriodValidator@validate');
+
     }
 
     /**
