@@ -94,9 +94,6 @@ Route::group([
             Route::resource('charts', 'AnalyticsChartController');
             Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
 
-            Route::get('/builder/step/{id}', 'QueryBuilderController@showStep')->name('querybuilder-step');
-
-
             Route::get("/chart_details/{label?}", function($label)
             {
                 $label = str_replace("_", " ", $label);
@@ -106,6 +103,10 @@ Route::group([
             Route::group(['prefix' => 'api'], function () {
                 Route::get('chart_details/{label?}', 'AnalyticsChartController@getChartDetails')->name('charts-details');
             });
+
+            Route::get('/builder/step/{id}', 'QueryBuilderController@showStep')->name('querybuilder.get');
+            Route::post('/builder/step/{id}', 'QueryBuilderController@saveStep')->name('querybuilder.post');
+            Route::get('/builder/relations/{model}', 'QueryBuilderController@getRelations')->name('querybuilder.relations');
         });
 
         Route::group(['prefix' => 'template'], function () {

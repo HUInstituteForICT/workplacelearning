@@ -6,9 +6,7 @@
             <div class="col-sm-12">
                 <h1>{{ Lang::get('dashboard.title') }}</h1>
 
-                <button type="button" id="graphBtn" class="btn btn-info" data-toggle="modal" data-target="#showDetails">
-                    +
-                </button>
+                <button type="button" id="graphBtn" style="display: none" class="btn btn-info" data-toggle="modal" data-target="#showDetails">+</button>
 
                 <div id="showDetails" class="modal fade" role="dialog">
                     <div class="modal-dialog modal-lg">
@@ -161,14 +159,13 @@
             }
         }
     </script>
-    <button type="button" id="myBtn" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis">+</button>
+
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis" onclick="Wizard.open()">+</button>
 
     <div id="addAnalysis" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
 
-            <div id="QueryBuilder" class="__reactRoot modal-content">
-                @include('pages.analytics.builder.step1-type')
-            </div>
+            <div id="QueryBuilder" class="modal-content"></div>
 
         </div>
     </div>
