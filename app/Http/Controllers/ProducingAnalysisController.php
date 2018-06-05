@@ -84,7 +84,7 @@ class ProducingAnalysisController extends Controller
         $analysisData = $producingAnalysis->analysisData;
 
         return view('pages.producing.analysis.detail')
-            ->with('evaluatedTips', $applicableEvaluatedTips)
+            ->with('evaluatedTips', $applicableEvaluatedTips->shuffle())
             ->with('producingAnalysis', $producingAnalysis)
             ->with('analysis', $analysisData)
             ->with('year', $year)
