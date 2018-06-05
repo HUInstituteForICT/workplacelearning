@@ -84,7 +84,7 @@ class Collector
     /**
      * @param StatisticVariable $statisticVariable
      * @param string $type
-     * @return int|mixed
+     * @return int
      */
     public function getValueForVariable(StatisticVariable $statisticVariable, string $type): int
     {

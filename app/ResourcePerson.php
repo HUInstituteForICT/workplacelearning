@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class ResourcePerson
- * @property string person_label
+ * @property string $person_label
  * @package App
  */
 class ResourcePerson extends Model

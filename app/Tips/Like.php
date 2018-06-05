@@ -4,6 +4,7 @@
 namespace App\Tips;
 
 use App\Student;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $student_id
@@ -12,7 +13,7 @@ use App\Student;
  * @property Tip $tip
  * @property int $type
  */
-class Like extends \Eloquent
+class Like extends Model
 {
     public $timestamps = false;
 

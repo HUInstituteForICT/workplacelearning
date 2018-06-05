@@ -15,7 +15,7 @@ class EvaluatedMomentTip implements EvaluatedTip
      */
     private $passes;
     /**
-     * @var int
+     * @var string
      */
     private $daysPercentage;
 

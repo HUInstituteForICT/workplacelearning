@@ -53,7 +53,7 @@ class PredefinedStatisticCollector implements CollectorInterface
 
 
         if ($result !== null && !empty($result->category_id) && !empty($result->category_difficulty)) {
-            $category = (new Category)->find($result->category_id);
+            $category = (new \App\Category)->find($result->category_id);
         } else {
             throw new \RuntimeException('Unable to get category id');
         }

@@ -5,8 +5,6 @@ namespace App\Tips;
 
 
 use App\Student;
-use App\Tips\Statistics\CustomStatistic;
-use App\Tips\Statistics\Statistic;
 
 class TipManager
 {
@@ -32,39 +30,6 @@ class TipManager
         return $tip;
     }
 
-    public function coupleStatistic(Tip $tip, Statistic $statistic, array $tipCoupledStatisticData)
-    {
-        $tip->statistics()->attach($statistic, $tipCoupledStatisticData);
-    }
-
-    public function decoupleStatistic(Tip $tip, $tipCoupledStatisticId)
-    {
-        return $tip->statistics()->wherePivot('id', '=', $tipCoupledStatisticId)->detach();
-    }
-
-    /**
-     * Update a tip based on the data passed
-     *
-     * @param Tip $tip
-     * @param array $data
-     * @return Tip
-     */
-    public function setTipData(Tip $tip, array $data)
-    {
-        $tip->name = $data['name'];
-        $tip->tipText = $data['tipText'];
-        $tip->showInAnalysis = isset($data['showInAnalysis']);
-
-        if($tip->trigger === 'moment') {
-            $tip->rangeStart = (int) $data['rangeStart'];
-            $tip->rangeEnd = (int) $data['rangeEnd'];
-        }
-
-        $tip->save();
-
-        return $tip;
-    }
-
     /**
      * Enable this tip for selected cohorts
      *
@@ -85,21 +50,6 @@ class TipManager
     }
 
     /**
-     * Couple the selected statistics to the Tip
-     *
-     * @param Tip $tip
-     * @param array $statisticsData
-     * @return void
-     */
-    public function coupleStatistics(Tip $tip, array $statisticsData)
-    {
-        foreach ($statisticsData as $statisticId => $couplingData) {
-            $statistic = (new CustomStatistic)->findOrFail($statisticId);
-            $tip->statistics()->attach($statistic, $couplingData);
-        }
-    }
-
-    /**
      * Add a new Like to a Tip given by a Student
      *
      * @param Tip $tip
@@ -109,7 +59,7 @@ class TipManager
      */
     public function likeTip(Tip $tip, $type, Student $student)
     {
-        if (Like::
+        if ((new Like)->
                 where('tip_id', '=', $tip->id)
                 ->where('student_id', '=', $student->student_id)
                 ->count() > 0) {

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
  * @property StatisticVariable $statisticVariableOne
  * @property StatisticVariable $statisticVariableTwo
  * @property integer $operator the operator that will be used for the two statisticVariables
+ * @property string $select_type
  * @property string $type
  */
 class CustomStatistic extends Statistic
