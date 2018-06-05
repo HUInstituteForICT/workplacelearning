@@ -2,6 +2,8 @@
 
 namespace App\Analysis\QueryBuilder;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 /**
  * Class Builder provides the query builder functionality.
  * It can be used to generate a query and get the sql query or data from it.
@@ -26,10 +28,19 @@ class Builder
             $name = 'App\\'.$r;
             $join = new $name;
 
-            $this->query->join($join->getTable(),
-                $join->getTable().'.'.$join->getKeyName(),
-                '=',
-                $mainModel->$r()->getQualifiedParentKeyName());
+            if($mainModel->$r() instanceof BelongsTo) {
+
+                $this->query->join($join->getTable(),
+                    $join->getTable().'.'.$join->getKeyName(),
+                    '=',
+                    $mainModel->$r()->getQualifiedForeignKey());
+            } else {
+
+                $this->query->join($join->getTable(),
+                    $join->getTable() . '.' . $join->getKeyName(),
+                    '=',
+                    $mainModel->$r()->getQualifiedParentKeyName());
+            }
         }
 
         if(!empty($groupBy)) {
