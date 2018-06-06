@@ -87,10 +87,10 @@
                     return false
                 }
             });
-            @foreach($charts as $key => $dchart)<?php $chart = $dchart->chart ?>
+            let analysisIDs = [];
 
-            // The analysis id for the chart, need to find a way to use it inside graphClickEvent function.
-            {{--console.log(JSON.parse('{!! json_encode($charts[$key]) !!}')['chart']['analysis_id']);--}}
+            @foreach($charts as $key => $dchart)<?php $chart = $dchart->chart ?>
+            analysisIDs.push(JSON.parse('{!! json_encode($charts[$key]) !!}')['chart']['analysis_id']);
 
             let ctx{{ $key }} = $('#chart-{{ $key }}');
             let chart{{ $key }} = new Chart(ctx{{  $key }}, {
@@ -125,7 +125,30 @@
                     }]
                 },
                 options: {
-                    onClick: graphClickEvent,
+                    onClick : function (event, array) {
+                        let labels = JSON.parse('{!! json_encode($labels) !!}');
+
+                        if (array[0]) {
+                            let index = array[0]['_index'];
+                            if (index != null && index >= 0) {
+                                let label = array[0]['_chart']['config']['data']['labels'][index];
+
+                                let i = array[0]['_chart']['controller']['id'];
+                                let analysisID = analysisIDs[i];
+                                console.log(analysisID);
+
+                                // The label is a description
+                                if (analysisID != null && $.inArray(label, labels) >= 0) {
+                                    label = label.replace(/ /g, '_');
+
+                                    $('#GraphDetails').load('dashboard/chart_details/' + analysisID + "/" + label, function () {
+                                        document.getElementById("graphBtn").click();
+                                    });
+                                }
+                            }
+                        }
+
+                    },
                     scales: {
                         yAxes: [{
                             ticks: {
@@ -138,26 +161,6 @@
             @endforeach
         })
         ();
-
-        function graphClickEvent(event, array) {
-            let labels = JSON.parse('{!! json_encode($labels) !!}');
-
-            if (array[0]) {
-                let index = array[0]['_index'];
-                if (index != null && index >= 0) {
-                    let label = array[0]['_chart']['config']['data']['labels'][index];
-
-                    // The label is a description
-                    if ($.inArray(label, labels) >= 0) {
-                        label = label.replace(/ /g, '_');
-
-                        $('#GraphDetails').load('dashboard/chart_details/' + label, function () {
-                            document.getElementById("graphBtn").click();
-                        });
-                    }
-                }
-            }
-        }
     </script>
 
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis" onclick="Wizard.open()">+</button>

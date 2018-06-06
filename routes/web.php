@@ -94,10 +94,11 @@ Route::group([
             Route::resource('charts', 'AnalyticsChartController');
             Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
 
-            Route::get("/chart_details/{label?}", function($label)
+            Route::get("/chart_details/{id}/{label}", function($id, $label)
             {
                 $label = str_replace("_", " ", $label);
-                return View::make("pages.analytics.dashboard.chart_details", compact('label'));
+                $idLabel = $id . ";" . $label;
+                return View::make("pages.analytics.dashboard.chart_details", compact( 'label', 'idLabel'));
             });
 
             Route::group(['prefix' => 'api'], function () {
