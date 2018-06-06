@@ -28,20 +28,30 @@ class TemplateDashboardController extends Controller
 
     public function create()
     {
-        $paramTypes = $this->paramManager->getAllTypes();
-        $typeNames = array_map(function ($type) {
-            return $type->getName();
-        }, $paramTypes);
-        return view('pages.analytics.template.create_template', compact('paramTypes', 'typeNames'));
+        return $this->show(null);
     }
 
     public function show($id)
     {
-        $template = (new \App\Template)->findOrFail($id);
+        Log::debug("show");
+        $template = null;
+        $parameters = [];
 
-        if ($template != null) {
-            return view('pages.analytics.template.show_template', compact('template'));
+        $paramTypes = $this->paramManager->getAllTypes();
+        $typeNames = array_map(function ($type) {
+            return $type->getName();
+        }, $paramTypes);
+
+        if ($id != null) {
+            $template = (new \App\Template)->findOrFail($id);
+            $parameters = (new \App\Parameter())->where('template_id', $id)->get();
+            if ($parameters == null) {
+                $parameters = [];
+            }
         }
+        Log::debug(json_encode($parameters));
+
+        return view('pages.analytics.template.create_template', compact('paramTypes', 'typeNames', 'template', 'parameters'));
     }
 
     public function save(Request $request)
