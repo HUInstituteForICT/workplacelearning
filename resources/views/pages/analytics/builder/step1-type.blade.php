@@ -6,19 +6,19 @@
     <form id="wizard-form">
         <p>Wat voor soort analyse wil je toevoegen?</p>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="analysis_type" id="analysis_type_build" value="build" checked>
+            <input class="form-check-input" type="radio" name="analysis_type" id="analysis_type_build" value="build" {{ isset($data['analysis_type']) && $data['analysis_type'] == "build" ? "checked" : "" }}>
             <label class="form-check-label" for="analysis_type_build">
                 Query bouwen
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="analysis_type" id="analysis_type_template" value="template" disabled>
+            <input class="form-check-input" type="radio" name="analysis_type" id="analysis_type_template" value="template" {{ isset($data['analysis_type']) && $data['analysis_type'] == "template" ? "checked" : "" }}>
             <label class="form-check-label" for="analysis_type_template">
                 Analyse op basis van template
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="analysis_type" id="analysis_type_custom" value="custom">
+            <input class="form-check-input" type="radio" name="analysis_type" id="analysis_type_custom" value="custom" {{ isset($data['analysis_type']) && $data['analysis_type'] == "custom" ? "checked" : "" }}>
             <label class="form-check-label" for="analysis_type_custom">
                 Eigen SQL Query
             </label>

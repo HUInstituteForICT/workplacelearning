@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     @if ($chart === $charts->last())
-                        <a href="{{ route('dashboard.add') }}" class="btn btn-primary" title="Add a chart">+</a>
+                        <!--a href="{{ route('dashboard.add') }}" class="btn btn-primary" title="Add a chart">+</a-->
                     @endif
                 @empty
                     <p>{{ Lang::get('dashboard.empty') }}</p>

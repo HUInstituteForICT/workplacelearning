@@ -7,7 +7,7 @@
             <label for="analysis_entity">Entiteit</label>
             <select class="form-control" name="analysis_entity" id="analysis_entity">
                 @foreach($models as $model => $class)
-                    <option>{{ $model }}</option>
+                    <option {{ isset($data['analysis_entity']) && $data['analysis_entity'] == $model ? "selected" : "" }}>{{ $model }}</option>
                 @endforeach
             </select>
         </div>
@@ -15,7 +15,8 @@
         <div class="relations">
             @foreach($relations as $relation => $type)
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_{{ $relation }}" value="{{ $relation }}">
+                    <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_{{ $relation }}" value="{{ $relation }}"
+                            {{ isset($data['analysis_relation']) && in_array($relation, $data['analysis_relation']) ? "checked" : "" }}>
                     <label class="form-check-label" for="analysis_relations_{{ $relation }}">
                         {{ $relation }}
                     </label>

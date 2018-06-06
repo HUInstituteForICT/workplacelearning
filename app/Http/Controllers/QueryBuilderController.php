@@ -10,10 +10,11 @@ class QueryBuilderController extends Controller
 
     public function showStep(Request $request, $id) {
 
-        if($id == 1 && $request->isMethod('get')) {
+        if($id == 0 && $request->isMethod('get')) {
 
             $request->session()->put('builder', []);
-            return view("pages.analytics.builder.step1-type");
+            $data = [];
+            return view("pages.analytics.builder.step1-type", compact("data"));
         }
 
         $data = $request->session()->get('builder');
@@ -21,24 +22,24 @@ class QueryBuilderController extends Controller
         if($data['analysis_type'] == 'build') {
 
             switch($id) {
-
+                case 1: return view("pages.analytics.builder.step1-type", compact("data")); break;
                 case 2: return $this->step2($data); break;
-                case 3: return view("pages.analytics.builder.step3-builder-filters"); break;
-                case 4: return view("pages.analytics.builder.step4-chart"); break;
+                case 3: return view("pages.analytics.builder.step3-builder-filters", compact("data")); break;
+                case 4: return view("pages.analytics.builder.step4-chart", compact("data")); break;
             }
         } elseif($data['analysis_type'] == 'template') {
 
             switch($id) {
-                case 1: return view("pages.analytics.builder.step1-type"); break;
-                case 2: return view("pages.analytics.builder.step2-template"); break;
-                case 4: return view("pages.analytics.builder.step4-chart"); break;
+                case 1: return view("pages.analytics.builder.step1-type", compact("data")); break;
+                case 2: return view("pages.analytics.builder.step2-template", compact("data")); break;
+                case 4: return view("pages.analytics.builder.step4-chart", compact("data")); break;
             }
         } elseif($data['analysis_type'] == 'custom') {
 
             switch($id) {
-                case 1: return view("pages.analytics.builder.step1-type"); break;
-                case 2: return view("pages.analytics.builder.step2-custom"); break;
-                case 4: return view("pages.analytics.builder.step4-chart"); break;
+                case 1: return view("pages.analytics.builder.step1-type", compact("data")); break;
+                case 2: return view("pages.analytics.builder.step2-custom", compact("data")); break;
+                case 4: return view("pages.analytics.builder.step4-chart", compact("data")); break;
             }
         }
     }
@@ -61,7 +62,7 @@ class QueryBuilderController extends Controller
 
         $relations = $model->getRelations('Cohort');
 
-        return view("pages.analytics.builder.step2-builder", compact('models', 'relations'));
+        return view("pages.analytics.builder.step2-builder", compact('models', 'relations', 'data'));
     }
 
     public function getRelations($modelString) {

@@ -43,7 +43,7 @@ var Wizard =  {
 
     open: function() {
 
-        $('#QueryBuilder').load("/dashboard/builder/step/1/");
+        $('#QueryBuilder').load("/dashboard/builder/step/0/");
     }
 }
 
