@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Analysis\QueryBuilder\Builder;
 use App\Analysis\QueryBuilder\Models;
 use Illuminate\Http\Request;
 
@@ -25,21 +26,21 @@ class QueryBuilderController extends Controller
                 case 1: return view("pages.analytics.builder.step1-type", compact("data")); break;
                 case 2: return $this->step2($data); break;
                 case 3: return view("pages.analytics.builder.step3-builder-filters", compact("data")); break;
-                case 4: return view("pages.analytics.builder.step4-chart", compact("data")); break;
+                case 4: return $this->step4($data); break;
             }
         } elseif($data['analysis_type'] == 'template') {
 
             switch($id) {
                 case 1: return view("pages.analytics.builder.step1-type", compact("data")); break;
                 case 2: return view("pages.analytics.builder.step2-template", compact("data")); break;
-                case 4: return view("pages.analytics.builder.step4-chart", compact("data")); break;
+                case 4: return $this->step4($data); break;
             }
         } elseif($data['analysis_type'] == 'custom') {
 
             switch($id) {
                 case 1: return view("pages.analytics.builder.step1-type", compact("data")); break;
                 case 2: return view("pages.analytics.builder.step2-custom", compact("data")); break;
-                case 4: return view("pages.analytics.builder.step4-chart", compact("data")); break;
+                case 4: return $this->step4($data); break;
             }
         }
     }
@@ -63,6 +64,19 @@ class QueryBuilderController extends Controller
         $relations = $model->getRelations('Cohort');
 
         return view("pages.analytics.builder.step2-builder", compact('models', 'relations', 'data'));
+    }
+
+    private function step4($data) {
+
+        $table = $data['analysis_entity'];
+        $relations = $data['analysis_relation'];
+        $select = ['category.category_label', \DB::raw('SUM(LearningActivityProducing.duration)')];
+        $filters = [['WorkplaceLearningPeriod.cohort_id', '=', '1']];
+        $groupBy = ['category.category_label'];
+
+        $result = (new Builder())->getQuery($table, $relations, $select, $filters, $groupBy);
+
+        return view("pages.analytics.builder.step4-chart", compact("data", "result"));
     }
 
     public function getRelations($modelString) {

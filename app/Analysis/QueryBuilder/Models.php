@@ -14,9 +14,24 @@ class Models
 {
 
     private $models = [
-        "Category" => \App\Category::class,
-        "Cohort" => \App\Cohort::class
-
+        "AccessLog",
+        "Analysis",
+        "Category",
+        "Chart",
+        "Competence",
+        "Deadline",
+        "Difficulty",
+        "EducationProgram",
+        "EducationProgramType",
+        "LearningActivityActing",
+        "LearningActivityProducing",
+        "LearningGoal",
+        "Parameter",
+        "ResourceMaterial",
+        "Status",
+        "UserSetting",
+        "Workplace",
+        "WorkplaceLearningPeriod"
     ];
 
     public function getAll() {
@@ -31,23 +46,18 @@ class Models
 
         $relationships = [];
 
-        foreach((new \ReflectionClass($model))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->class != get_class($model) ||
-                !empty($method->getParameters()) ||
-                $method->getName() == __FUNCTION__) {
-                continue;
+        if(method_exists($model, 'getRelationships')) {
+
+            $tmpRelations = $model->getRelationships();
+
+            foreach($tmpRelations as $relation) {
+                $className = class_basename(get_class($model->$relation()->getRelated()));
+                if(in_array($className, $this->models) && $className != $string) {
+
+                    $relationships[] = $className;
+                }
             }
 
-            try {
-                $return = $method->invoke($model);
-
-                if ($return instanceof Relation) {
-                    $relationships[$method->getName()] = [
-                        'type' => (new \ReflectionClass($return))->getShortName(),
-                        'model' => (new \ReflectionClass($return->getRelated()))->getName()
-                    ];
-                }
-            } catch(ErrorException $e) {}
         }
 
         return $relationships;

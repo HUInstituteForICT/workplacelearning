@@ -4,6 +4,8 @@
 </div>
 <div class="modal-body" style="height: 450px">
     <form id="wizard-form">
+        {!! json_encode($data) !!}<br><br>
+        {!! json_encode($result) !!}<br><br>
         <label for="name">Naam:</label><br>
         <div class="form-group row">
             <div class="col-sm-6">
