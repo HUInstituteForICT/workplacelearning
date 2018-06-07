@@ -71,12 +71,9 @@ class TemplateDashboardController extends Controller
         $query = $request->input('query');
 
         if ($templateID != null) {
-            Log::debug("ID Not null");
-
             $template = (new \App\Template)->find($templateID);
-            if ($template != null) {
-                Log::debug("Not null, updating template");
 
+            if ($template != null) {
                 $template->update(['name' => $name, 'query' => $query]);
 
                 $parameters = (new \App\Parameter())->where('template_id', $templateID)->get();
@@ -90,8 +87,6 @@ class TemplateDashboardController extends Controller
             return redirect()->action('TemplateDashboardController@index')
                 ->with('success', Lang::get('template.template_updated'));
         }
-
-        Log::debug("Creating template");
 
         $template = new Template(['name' => $name, 'query' => $query]);
         $template->save();

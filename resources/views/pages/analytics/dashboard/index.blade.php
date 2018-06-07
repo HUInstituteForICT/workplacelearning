@@ -135,7 +135,6 @@
 
                                 let i = array[0]['_chart']['controller']['id'];
                                 let analysisID = analysisIDs[i];
-                                console.log(analysisID);
 
                                 // The label is a description
                                 if (analysisID != null && $.inArray(label, labels) >= 0) {
