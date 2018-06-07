@@ -74,7 +74,7 @@ class TipsController extends Controller
      */
     public function store(Request $request, TipManager $service)
     {
-        $tip = $service->createTip(['name'            => trans('general.new') . ' Tip',
+        $tip = $service->createTip(['name'            => trans('tips.new'),
                                     'shownInAnalysis' => true,
                                     'trigger'         => $request->get('trigger', 'statistic'),
         ]);

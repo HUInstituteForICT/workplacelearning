@@ -86,7 +86,7 @@ class Collector
      * @param string $type
      * @return int
      */
-    public function getValueForVariable(StatisticVariable $statisticVariable, string $type): int
+    public function getValueForVariable(StatisticVariable $statisticVariable, string $type): float
     {
         $builder = $this->getQueryBuilder($type);
 
