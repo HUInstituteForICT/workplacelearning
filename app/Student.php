@@ -81,9 +81,9 @@ class Student extends Authenticatable
         return ($this->userlevel > 0);
     }
 
-    public function getUserSetting($label)
+    public function getUserSetting($label, $forceRefresh = false)
     {
-        if(!isset($this->userSettings[$label])) {
+        if($forceRefresh || !isset($this->userSettings[$label])) {
             $this->userSettings[$label] = $this->usersettings()->where('setting_label', '=', $label)->first();
         }
         return $this->userSettings[$label];
