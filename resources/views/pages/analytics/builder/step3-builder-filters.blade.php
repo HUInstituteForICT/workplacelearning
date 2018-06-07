@@ -5,7 +5,7 @@
     <form id="wizard-form">
         <label for="analysis_entity">Gegevens</label>
         @for($i=0; $i<2; $i++)
-        <div class="form-group row">
+        <div class="form-group row query-data-container">
             <!--div class="col-md-1" style="width: 25px;"><a href="#" style="line-height: 34px; text-decoration: none;">X</a></div-->
             <div class="col-md-2">
                 <select class="form-control query-data-table" name="query_data[{{ $i }}][table]">
@@ -16,9 +16,7 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-control query-data-column" name="query_data[{{ $i }}][column]">
-                    <option>Column</option>
-                </select>
+                <select class="form-control query-data-column" name="query_data[{{ $i }}][column]"></select>
             </div>
             <div class="col-md-2">
                 <select class="form-control" name="query_data[{{ $i }}][type]">
@@ -31,37 +29,39 @@
         @endfor
         <!--a style="font-size: 20px; text-decoration: none; display: block;" href="#">+</a-->
         <label for="analysis_entity">Filters</label>
-        <div class="form-group row">
-            <div class="col-md-1" style="width: 25px;"><a href="#" style="line-height: 34px; text-decoration: none;">X</a></div>
-            <div class="col-md-2">
-                <select class="form-control" name="query_filter[1][]" id="analysis_entity">
-                    <option>Table Filter</option>
-                    <option>Between</option>
-                    <option>Equals</option>
-                    <option>Larger than</option>
-                    <option>Smaller than</option>
-                    <option>Group by</option>
-                    <option>Limit</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select class="form-control" name="query_filter[1][]" id="analysis_entity">
-                    <option>Table</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select class="form-control" name="query_filter[1][]" id="analysis_entity">
-                    <option>Column</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <!--select class="form-control" name="query_data[]" id="analysis_entity">
-                    <option>Value</option>
-                </select-->
-                <input name="query_filter[1][]" class="form-control" placeholder="Value">
+        <div class="query-filter-container">
+            <div class="form-group row" data-id="1">
+                <div class="col-md-1" style="width: 25px;"><a href="#" class="query-delete-filter" style="line-height: 34px; text-decoration: none;">X</a></div>
+                <div class="col-md-2">
+                    <select class="form-control query-data-type" name="query_filter[1][type]" id="analysis_entity">
+                        <option>Table Filter</option>
+                        <option>Between</option>
+                        <option>Equals</option>
+                        <option>Larger than</option>
+                        <option>Smaller than</option>
+                        <option>Group by</option>
+                        <option>Limit</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control query-data-table" name="query_filter[1][table]" id="analysis_entity">
+                        @foreach($data['analysis_relation'] as $r)
+                            <option value="{{ $r }}">{{ $r }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control query-data-column" name="query_filter[1][column]" id="analysis_entity"></select>
+                </div>
+                <div class="col-md-2">
+                    <!--select class="form-control" name="query_data[]" id="analysis_entity">
+                        <option>Value</option>
+                    </select-->
+                    <input name="query_filter[1][value]" class="form-control" placeholder="Value">
+                </div>
             </div>
         </div>
-        <a style="font-size: 20px; text-decoration: none; display: block;" href="#">+</a>
+        <a style="font-size: 20px; text-decoration: none; display: block;" class="query-add-filter" href="#">+</a>
     </form>
     <div style="
     position: absolute;
