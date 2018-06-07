@@ -96,6 +96,7 @@ var Wizard =  {
             </div>`);
 
             Wizard.resetListeners();
+            $('.query-filter-container .row:last-child .query-data-table').change();
         });
 
         $('.query-data-table').change();
