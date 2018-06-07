@@ -66,7 +66,7 @@ class TipEvaluator
     {
         // By default statistic fails unless one of the calculations passes. Mark the results that passed so we can loop over them later
         $resultable->doThresholdComparison(
-            (int)$tipCoupledStatistic->threshold,
+            $tipCoupledStatistic->threshold,
             $tipCoupledStatistic->comparison_operator
         );
 
