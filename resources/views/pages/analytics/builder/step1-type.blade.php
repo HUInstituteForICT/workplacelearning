@@ -6,7 +6,7 @@
     <form id="wizard-form">
         <p>Wat voor soort analyse wil je toevoegen?</p>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="analysis_type" id="analysis_type_build" value="build" {{ isset($data['analysis_type']) && $data['analysis_type'] == "build" ? "checked" : "" }}>
+            <input class="form-check-input" type="radio" name="analysis_type" id="analysis_type_build" value="build" {{ isset($data['analysis_type']) ? $data['analysis_type'] == "build" ? "checked" : "" : "checked" }}>
             <label class="form-check-label" for="analysis_type_build">
                 Query bouwen
             </label>
