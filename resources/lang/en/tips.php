@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'none' => 'Currently there are no personal tips for you',
     'tips' => "Tips",
     'create-new' => "Create new tip",
     "edit" => "Edit tip",

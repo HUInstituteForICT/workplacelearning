@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'none' => 'Er zijn op dit moment geen persoonlijke tips voor jou',
     'tips' => "Tips",
     'create-new' => "Maak nieuwe tip aan",
     "edit" => "Tip aanpassen",

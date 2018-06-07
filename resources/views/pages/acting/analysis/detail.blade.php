@@ -25,48 +25,50 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <a href="{{ route('analysis-acting-choice') }}" class="btn">{{__('analyses.back-to-choice')}}</a>
-                <h1>{{ Lang::get('analyses.title') }}</h1>
+                <h1>{{ __('tips.personal-tip') }}s</h1>
                 <p>{{ trans('analysis.acting.description') }}</p>
                 <p>{{ Lang::get('general.tip_request') }}
                     <a href="{{ route('bugreport') }}">{{ Lang::get('general.this_page') }}</a>.</p>
 
 
                 @if($evaluatedTips->count() > 0)
-                    <h3>{{ __('tips.personal-tip') }}s</h3>
-                @endif
-                <?php $tipCounter = 1; ?>
+                    <?php $tipCounter = 1; ?>
 
-                @foreach($evaluatedTips as $evaluatedTip)
-                    <?php $tip = $evaluatedTip->getTip(); ?>
+                    @foreach($evaluatedTips as $evaluatedTip)
+                        <?php $tip = $evaluatedTip->getTip(); ?>
                         @if($tipCounter <= 3 && ($tip->likes->count() === 0 || $tip->likes[0]->type === 1))
-                        <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
-                        <div class="row">
-                            @if($tip->likes->count() === 0)
-                                <div class="col-md-1"
-                                     style="display: inline-block; vertical-align: middle;   float: none;">
+                            <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
+                            <div class="row">
+                                @if($tip->likes->count() === 0)
+                                    <div class="col-md-1"
+                                         style="display: inline-block; vertical-align: middle;   float: none;">
 
-                                    <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
-                                        onclick="likeTip({{ $tip->id }}, 1)"
-                                        target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
-                                    <h2 class="h2" style="cursor: pointer;color: #e2423b;" id="likeTip-{{ $tip->id }}"
-                                        onclick="likeTip({{ $tip->id }}, -1)"
-                                        target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h2>
-                                </div>@endif<!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
-                                --><div class="col-md-11"
-                                        style="display: inline-block; vertical-align: middle;   float: none;">
-                                <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
+                                        <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
+                                            onclick="likeTip({{ $tip->id }}, 1)"
+                                            target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
+                                        <h2 class="h2" style="cursor: pointer;color: #e2423b;" id="likeTip-{{ $tip->id }}"
+                                            onclick="likeTip({{ $tip->id }}, -1)"
+                                            target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h2>
+                                    </div>@endif<!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
+                                    --><div class="col-md-11"
+                                            style="display: inline-block; vertical-align: middle;   float: none;">
+                                    <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
+                                </div>
                             </div>
-                        </div>
-                        <br/><br/>
-                        <?php $tipCounter++; ?>
-                    @endif
+                            <br/><br/>
+                            <?php $tipCounter++; ?>
+                        @endif
 
-                @endforeach
+                    @endforeach
+                @else
+                            <p>{{ __('tips.none') }}</p>
+                @endif
 
 
 
+                <h1>{{ Lang::get('analyses.analyses-statistics-title') }}</h1>
 
                 <h3>{{ Lang::get('analysis.graphs.categories') }}</h3>
                 <canvas id="chart_timeslots"></canvas>

@@ -23,7 +23,7 @@ return array (
   array (
     'most_occurring_combo' => 'Most often occurring combinations',
   ),
-  'tip' => 'Hint',
+  'tip' => 'Tip',
   'tips' => 
   array (
       "tips" => "tips",
