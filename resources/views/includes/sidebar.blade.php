@@ -42,7 +42,7 @@
         <a class="nav-tile" href="{{ route('dashboard.index') }}">
             <div class="tile blue_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/graph_wit.svg', true) }}"/>
-                <div class="nav-title">Analytics Dashboard</div>
+                <div class="nav-title">{{ Lang::get('elements.sidebar.labels.analytics_board') }}</div>
             </div>
         </a>
         <a class="nav-tile" href="{{ route('analytics-index') }}">
