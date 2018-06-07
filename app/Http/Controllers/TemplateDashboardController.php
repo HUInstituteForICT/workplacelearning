@@ -33,7 +33,6 @@ class TemplateDashboardController extends Controller
 
     public function show($id)
     {
-        Log::debug("show");
         $template = null;
         $parameters = [];
 
@@ -49,8 +48,6 @@ class TemplateDashboardController extends Controller
                 $parameters = [];
             }
         }
-        Log::debug(json_encode($parameters));
-
         return view('pages.analytics.template.create_template', compact('paramTypes', 'typeNames', 'template', 'parameters'));
     }
 
@@ -69,12 +66,43 @@ class TemplateDashboardController extends Controller
                 ->withErrors([Lang::get('template.no_parameters')]);
         }
 
+        $templateID = $request->input('templateID');
         $name = $request->input('name');
         $query = $request->input('query');
 
+        if ($templateID != null) {
+            Log::debug("ID Not null");
+
+            $template = (new \App\Template)->find($templateID);
+            if ($template != null) {
+                Log::debug("Not null, updating template");
+
+                $template->update(['name' => $name, 'query' => $query]);
+
+                $parameters = (new \App\Parameter())->where('template_id', $templateID)->get();
+                foreach ($parameters as $param) {
+                    $param->delete();
+                }
+
+                $this->saveParameters($data, $template);
+            }
+
+            return redirect()->action('TemplateDashboardController@index')
+                ->with('success', Lang::get('template.template_updated'));
+        }
+
+        Log::debug("Creating template");
+
         $template = new Template(['name' => $name, 'query' => $query]);
         $template->save();
+        $this->saveParameters($data, $template);
 
+        return redirect()->action('TemplateDashboardController@index')
+            ->with('success', Lang::get('template.template_saved'));
+    }
+
+    private function saveParameters($data, $template)
+    {
         foreach ($data as $values) {
             while (count($values) < 4) {
                 array_push($values, null);
@@ -89,9 +117,6 @@ class TemplateDashboardController extends Controller
             ]);
             $template->parameters()->save($parameter);
         }
-
-        return redirect()->action('TemplateDashboardController@index')
-            ->with('success', Lang::get('template.template_saved'));
     }
 
     public function update(Request $request, $id)

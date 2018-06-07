@@ -14,6 +14,9 @@
                 <form action="{{ route('template.save') }}" method="post" id="saveForm">
 
                     <div class="form-group">
+                        <input type="hidden" id="templateID" name="templateID" class="form-control"
+                               value="{{ $template == null ? null : $template->id}}">
+
                         <label for="name">{{Lang::get('template.name')}}</label>
                         <input type="text" id="name" name="name" class="form-control"
                                value="{{ $template == null ? old('name') : $template->name}}">
@@ -57,11 +60,7 @@
 
                 for (let i = 0; i < parameters.length; i++) {
                     let param = parameters[i];
-                    let name = param['name'];
-                    let type_name = param['type_name'];
-                    let table = param['table'];
-                    let column = param['column'];
-                    addParamRow(i, name, type_name, table, column);
+                    addParamRow(i, param['name'], param['type_name'], param['table'], param['column']);
                 }
             }
 
@@ -105,11 +104,11 @@
 
             let rowTemplate = `<div name="param${i}" class="row">
                                     <div class="col-md-3">
-                                        <input type="text" placeholder="param ${i + 1}" id="param${i}" required="true" class="form-control">
+                                        <input type="text" name="data[${i}]['parameter']" placeholder="param ${i + 1}" id="param${i}" required="true" class="form-control">
                                     </div>
 
                                     <div class="col-md-3">
-                                        <select class="form-control column-type">
+                                        <select name="data[${i}]['type']" class="form-control column-type" data-counter="${i}">
                                                     ${options}
                                         </select>
                                     </div>
@@ -128,7 +127,7 @@
             if (table != null) {
                 let name = 'table-div-' + i;
                 let selectName = 'table-data-' + i;
-                $('.' + name).append(`<select class="form-control table-select ${selectName}" name="${selectName}"></select>`);
+                $('.' + name).append(`<select name="data[${i}]['table']" class="form-control table-select ${selectName}" name="${selectName}"></select>`);
 
                 $.getJSON("{{ route('template.tables') }}", function (data) {
                     let items = "<option id='" + table + "'>" + table + "</option>";
@@ -143,7 +142,7 @@
                 if (column != null) {
                     let name = 'column-div-' + i;
                     let selectName = 'column-data-' + i;
-                    $('.' + name).append(`<select class="form-control col-select ${selectName}"></select>`);
+                    $('.' + name).append(`<select name="data[${i}]['column']" class="form-control col-select ${selectName}"></select>`);
 
                     $.getJSON("{{ route('template.columns') }}/" + table, function (data) {
                         let items = "<option id='" + column + "'>" + column + "</option>";;
@@ -162,9 +161,11 @@
             $(this).parent().parent().find(".table-div").empty();
             $(this).parent().parent().find(".column-div").empty();
 
+            let counter = $(this).attr("data-counter");
+
             if ($(this).val().startsWith("Column")) {
 
-                $(this).parent().parent().find(".table-div").append(`<select class="form-control table-select"></select>`);
+                $(this).parent().parent().find(".table-div").append(`<select name="data[${counter}]['table']" class="form-control table-select"></select>`);
                 let self = this;
 
                 $.getJSON("{{ route('template.tables') }}", function (data) {
@@ -184,7 +185,7 @@
                 });
 
                 if ($(this).val() === "Column Value") {
-                    $(this).parent().parent().find(".column-div").append(`<select class="form-control col-select"></select>`);
+                    $(this).parent().parent().find(".column-div").append(`<select name="data[${counter}]['column']" class="form-control col-select"></select>`);
                     let self = this;
 
                     $(this).parent().parent().find('.table-select').on("change", function () {
