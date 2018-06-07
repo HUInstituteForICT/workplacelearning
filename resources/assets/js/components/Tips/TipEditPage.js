@@ -26,11 +26,36 @@ class TipEditPage extends React.Component {
             coupleRequestBusy: false,
             showNewStatisticModal: false,
             runJoyride: false,
-            stepIndex: 0
+            stepIndex: 0,
+            selectedEducationProgramId: null,
 
         }
 
     }
+
+    toggleVisibleCohorts = (enable) => {
+        const visibleCohorts = Object.values(this.props.cohorts).filter(cohort => this.state.selectedEducationProgramId === cohort.ep_id || this.state.selectedEducationProgramId === null);
+
+        const enabledCohorts = [...this.props.tip.enabled_cohorts];
+
+
+        visibleCohorts.forEach(cohort => {
+            if (enabledCohorts.includes(cohort.id)) {
+                if (!enable) {
+                    enabledCohorts.splice(enabledCohorts.indexOf(cohort.id), 1);
+                }
+            } else {
+                if (enable) {
+                    enabledCohorts.push(cohort.id);
+                }
+            }
+        });
+
+        this.props.updateEntity('tips', this.props.tip.id, {
+            ...this.props.tip,
+            enabled_cohorts: enabledCohorts
+        });
+    };
 
     coupleStatistic = () => {
         const {tip, coupleStatisticForm, statistics, storeNewCoupledStatistic} = this.props;
@@ -238,7 +263,7 @@ class TipEditPage extends React.Component {
         const {
             match,
             tip, coupledStatistics,
-            statistics, educationProgramTypes,
+            statistics, educationProgramTypes, educationPrograms,
             variableFilters, cohorts,
             coupleStatisticForm, updateCoupleStatisticFormProperty,
             coupledStatisticsInEditMode, storeNewCoupledStatistic,
@@ -493,7 +518,7 @@ class TipEditPage extends React.Component {
                                                 <span>
                                     <strong>:statistic-name-{coupledStatistic.id}</strong>
                                     <br/>
-                                                    {statistic.type === 'predefinedstatistic' && Lang.get('statistics.predefined-value-name-params.' + statistic.valueParameterDescription)}
+                                                    {statistic.type === 'predefinedstatistic' && statistic.valueParameterDescription}
 
                                 </span>
                                             }
@@ -520,20 +545,47 @@ class TipEditPage extends React.Component {
 
                 <div>
                     <div className="row" style={{background: 'white', marginBottom: '20px'}} id="step-19">
-                        <div className="col-md-10">
-                            <label>{Lang.get('tips.form.enabledCohorts')}</label>
+                        <div className="col-lg-2">
+                            <h5>{Lang.get('tips.education-programs')}</h5>
+                            <button
+                                className={'btn ' + (this.state.selectedEducationProgramId === null ? 'btn-primary' : 'btn-default')}
+                                style={{width: '100%', marginTop: '5px', marginBottom: '5px'}}
+                                type='button'
+                                onClick={e => this.setState({selectedEducationProgramId: null})}
+                            >{Lang.get('tips.education-programs-all')}</button>
+                            {Object.values(educationPrograms).map(educationProgram => <button
+                                key={educationProgram.ep_id}
+                                className={'btn ' + (this.state.selectedEducationProgramId === educationProgram.ep_id ? 'btn-primary' : 'btn-default')}
+                                style={{width: '100%', marginTop: '5px', marginBottom: '5px', whiteSpace: 'normal'}}
+                                type='button'
+                                onClick={e => this.setState({selectedEducationProgramId: educationProgram.ep_id})}
+                            >{educationProgram.ep_name}</button>)}
+                        </div>
+
+                        <div className="col-lg-10">
+                            <div className="row" style={{paddingBottom: '20px'}}>
+                                <div className="col-lg-6">
+                                    <label>{Lang.get('tips.form.enabledCohorts')}</label>
+                                </div>
+                                <div className="col-lg-6 text-right">
+                                    <div className="btn-group">
+                                        <button onClick={e => this.toggleVisibleCohorts(true)} type='button'
+                                                className='btn btn-success'><span
+                                            className='glyphicon glyphicon-ok'/>&nbsp;{Lang.get('tips.form.cohorts-enable-all')}
+                                        </button>
+                                        <button onClick={e => this.toggleVisibleCohorts(false)} type='button'
+                                                className='btn btn-danger'><span
+                                            className='glyphicon glyphicon-remove'/>&nbsp;{Lang.get('tips.form.cohorts-disable-all')}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="row">
-                                {Object.values(cohorts).filter(cohort => {
-                                    if (tip.coupled_statistics.length === 0) return true;
-                                    const epMapping = {
-                                        2: 'acting',
-                                        1: 'producing',
-                                    };
-                                    const firstCoupledStatistic = coupledStatistics[0];
-                                    const statistic = statistics[firstCoupledStatistic.statistic];
-                                    const epTypeName = statistic.education_program_type;
-                                    return epMapping[cohort.ep_id] === epTypeName;
-                                }).sort().map(cohort => {
+                                {Object.values(cohorts)
+                                    .filter(cohort => this.state.selectedEducationProgramId === cohort.ep_id || this.state.selectedEducationProgramId === null)
+                                    .sort()
+                                    .map(cohort => {
                                     return <div className="col-md-2" key={cohort.id}>
                                         <div className="form-group"><p className="checkbox">
                                             <label><input type="checkbox"
@@ -595,10 +647,9 @@ class TipEditPage extends React.Component {
 
     save = () => {
         const {tip} = this.props;
-        this.setState({submitting: true, saveButtonText: "..."});
+        this.setState({submitting: true});
         axios.put(`/api/tips/${tip.id}`, tip).then(response => {
-            this.setState({submitting: false, saveButtonText: Lang.get('general.saved')});
-            setTimeout(() => this.setState({saveButtonText: Lang.get('general.save')}), 2000);
+            this.setState({submitting: false,});
         });
     }
 
@@ -713,6 +764,7 @@ const mapping = {
             coupledStatistics,
             statistics: state.entities.statistics,
             educationProgramTypes: state.entities.educationProgramTypes,
+            educationPrograms: state.entities.educationPrograms,
             variableFilters: state.tipEditPageUi.variableFilters,
             cohorts: state.entities.cohorts,
             coupleStatisticForm: state.coupleStatistic,

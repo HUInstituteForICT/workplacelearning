@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\TipApi;
 
 use App\Cohort;
+use App\EducationProgram;
 use App\EducationProgramType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipUpdateRequest;
@@ -15,33 +16,6 @@ use Illuminate\Http\Request;
 
 class TipsController extends Controller
 {
-    private function getStatisticVariables()
-    {
-        // We prepend the id of collectableVariables with "c-" and the already existing statistics that can be used as variables with "s-"
-        // This way we can easily filter them from already in use variables in the front end without complicating with different lists, as I tried before 🙃
-
-
-//        // Collectable statisticVariables available
-//        $collectibleDataStatisticVariables = [];
-//        EducationProgramType::all()->each(
-//            function (EducationProgramType $type) use (&$collectibleDataStatisticVariables, $collectorFactory) {
-//                $collector = $collectorFactory->buildCollector((new EducationProgramType)->find($type->eptype_id));
-//
-//                $info = array_map(function ($infoItem) use ($type) {
-//                    $infoItem['education_program_type'] = $type->eptype_id;
-//                    $infoItem['id'] = 'c-' . md5($type->eptype_id . $infoItem['name']);
-//                    $infoItem['findable_id'] = $infoItem['method'] . '-' . $type->eptype_id;
-//
-//                    return $infoItem;
-//                }, (new CollectorDataAggregator($collector))->getInformation());
-//
-//                $collectibleDataStatisticVariables = array_merge($collectibleDataStatisticVariables,
-//                    $info);
-//            }
-//        );
-
-        return StatisticVariable::$availableFilters;
-    }
 
     private function getStatistics()
     {
@@ -85,8 +59,9 @@ class TipsController extends Controller
             'educationProgramTypes' => EducationProgramType::all(),
             'tips'                  => $tips,
             'cohorts'               => Cohort::all(),
+            'educationPrograms'     => (new EducationProgram)->orderBy('ep_name', 'ASC')->get(),
             'statistics'            => $statistics,
-            'statisticVariables'    => $this->getStatisticVariables(),
+            'statisticVariables'    => StatisticVariable::$availableFilters,
         ];
     }
 
@@ -99,7 +74,7 @@ class TipsController extends Controller
      */
     public function store(Request $request, TipManager $service)
     {
-        $tip = $service->createTip(['name'            => trans('general.new') . ' Tip',
+        $tip = $service->createTip(['name'            => trans('tips.new'),
                                     'shownInAnalysis' => true,
                                     'trigger'         => $request->get('trigger', 'statistic'),
         ]);

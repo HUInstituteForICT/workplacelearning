@@ -90,8 +90,9 @@ class ActingAnalysisController extends Controller
         });
 
 
+
         return view('pages.acting.analysis.detail')
-            ->with('evaluatedTips', $applicableEvaluatedTips)
+            ->with('evaluatedTips', $applicableEvaluatedTips->shuffle())
             ->with('actingAnalysis', $analysis);
     }
 }

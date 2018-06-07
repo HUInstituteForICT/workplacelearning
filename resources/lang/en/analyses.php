@@ -1,6 +1,7 @@
 <?php
 return [
     "title" => "Analyses",
+    'analyses-statistics-title' => 'Analyses and statistics',
     "time-per-category" => "Time per category",
     "statistic" => "Statistic",
     "average-difficulty" => "Average difficulty",

@@ -23,6 +23,6 @@ class LikeRepository implements LikeRepositoryInterface
 
     public function loadForTipByStudent(Tip $tip, Student $student)
     {
-        $tip->likes()->where('student_id', '=', $student->student_id)->get();
+        $tip->likes = $tip->likes()->where('student_id', '=', $student->student_id)->get();
     }
 }

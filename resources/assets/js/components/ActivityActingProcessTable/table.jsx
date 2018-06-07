@@ -158,12 +158,13 @@ export default class ActivityActingProcessTable extends React.Component {
         }
     }
 
+    isOnProgressPage = () => window.location.href.includes("/acting/progress");
 
     render() {
         let filteredActivities = this.filterActivities(this.state.activities);
         return <div>
             <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> {Lang.get('react.filters')}</h3>
-            <div className="filters row" style={{display:"none"}}>
+            <div className="filters row" style={this.isOnProgressPage() ? {} : {display:"none"}}>
                 <div className="date col-md-3">
                     <h4>{Lang.get('react.date')}</h4>
                     <div>
