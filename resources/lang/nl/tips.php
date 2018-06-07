@@ -2,6 +2,8 @@
 
 return [
     'none' => 'Er zijn op dit moment geen persoonlijke tips voor jou',
+    'education-programs' => 'Opleidingen',
+    'education-programs-all' => 'Alle opleidingen',
     'tips' => "Tips",
     'create-new' => "Maak nieuwe tip aan",
     "edit" => "Tip aanpassen",
@@ -36,6 +38,8 @@ return [
     'statistics' => 'Statistieken',
     'delete-confirm' => 'Weet je zeker dat je deze tip helemaal wilt verwijderen?',
     "form" => [
+        'cohorts-enable-all' => 'Selecteer alle cohorten',
+        'cohorts-disable-all' => 'Deselecteer alle cohorten',
         "name" => "Tip naam",
         "selecting-statistic" => "Statistiek selecteren",
         "threshold" => "De grenswaarde voor deze statistiek. Bijv. 40%, dan 0.4 invoeren. Voor niet-percentages gewoon volle getallen.",

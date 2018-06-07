@@ -2,6 +2,8 @@
 
 return [
     'none' => 'Currently there are no personal tips for you',
+    'education-programs' => 'Education programs',
+    'education-programs-all' => 'All programs',
     'tips' => "Tips",
     'create-new' => "Create new tip",
     "edit" => "Edit tip",
@@ -38,6 +40,8 @@ return [
     'statistics' => 'Statistics',
 
     "form" => [
+        'cohorts-enable-all' => 'Select all cohorts',
+        'cohorts-disable-all' => 'Deselect all cohorts',
         "name" => "Tip name",
         "selecting-statistic" => "Select statistic",
         "threshold" => "The threshold value for this statistic. E.g. 40%, fill in 0.4. For non-percentage values fill in whole number.",
