@@ -66,6 +66,8 @@
                             <p>{{ __('tips.none') }}</p>
                 @endif
 
+            </div>
+            <div class="col-lg-6">
 
 
                 <h1>{{ Lang::get('analyses.analyses-statistics-title') }}</h1>

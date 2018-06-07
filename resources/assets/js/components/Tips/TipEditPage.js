@@ -582,9 +582,10 @@ class TipEditPage extends React.Component {
                             </div>
 
                             <div className="row">
-                                {Object.values(cohorts).filter(cohort => {
-                                    return this.state.selectedEducationProgramId === cohort.ep_id || this.state.selectedEducationProgramId === null;
-                                }).sort().map((cohort => {
+                                {Object.values(cohorts)
+                                    .filter(cohort => this.state.selectedEducationProgramId === cohort.ep_id || this.state.selectedEducationProgramId === null)
+                                    .sort()
+                                    .map(cohort => {
                                     return <div className="col-md-2" key={cohort.id}>
                                         <div className="form-group"><p className="checkbox">
                                             <label><input type="checkbox"
@@ -646,10 +647,9 @@ class TipEditPage extends React.Component {
 
     save = () => {
         const {tip} = this.props;
-        this.setState({submitting: true, saveButtonText: "..."});
+        this.setState({submitting: true});
         axios.put(`/api/tips/${tip.id}`, tip).then(response => {
-            this.setState({submitting: false, saveButtonText: Lang.get('general.saved')});
-            setTimeout(() => this.setState({saveButtonText: Lang.get('general.save')}), 2000);
+            this.setState({submitting: false,});
         });
     }
 
