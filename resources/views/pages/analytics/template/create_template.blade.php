@@ -165,10 +165,15 @@
             if ($(this).val().startsWith("Column")) {
 
                 $(this).parent().parent().find(".table-div").append(`<select class="form-control table-select"></select>`);
-                var self = this;
+                let self = this;
 
                 $.getJSON("{{ route('template.tables') }}", function (data) {
                     let items = "";
+
+                    let firstTable = data[0];
+                    if (firstTable != null) {
+                        loadColumns(self, firstTable);
+                    }
 
                     $.each(data, function (key, val) {
                         items += "<option id='" + val + "'>" + val + "</option>";
@@ -183,21 +188,23 @@
                     let self = this;
 
                     $(this).parent().parent().find('.table-select').on("change", function () {
-                        $.getJSON("{{ route('template.columns') }}/" + $(this).val(), function (data) {
-                            $(self).parent().parent().find(".col-select").empty();
-
-                            let items = "";
-                            $.each(data, function (key, val) {
-                                items += "<option id='" + val + "'>" + val + "</option>";
-                            });
-                            $(self).parent().parent().find(".col-select").append(items);
-                            console.log($(self).parent().parent().find(".col-select").length);
-                        });
+                        loadColumns(self, $(this).val())
                     });
-
                 }
             }
         });
+
+        function loadColumns(self, table) {
+            $.getJSON("{{ route('template.columns') }}/" + table, function (data) {
+                $(self).parent().parent().find(".col-select").empty();
+
+                let items = "";
+                $.each(data, function (key, val) {
+                    items += "<option id='" + val + "'>" + val + "</option>";
+                });
+                $(self).parent().parent().find(".col-select").append(items);
+            });
+        }
 
         function countStringOccurrences(string, searchFor) {
             let count = 0,
