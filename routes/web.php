@@ -107,6 +107,7 @@ Route::group([
 
             Route::get('/builder/step/{id}', 'QueryBuilderController@showStep')->name('querybuilder.get');
             Route::post('/builder/step/{id}', 'QueryBuilderController@saveStep')->name('querybuilder.post');
+            Route::get('/builder/tables', 'QueryBuilderController@getTables')->name('querybuilder.tables');
             Route::get('/builder/columns/{table?}', 'QueryBuilderController@getColumns')->name('querybuilder.columns');
             Route::get('/builder/relations/{model}', 'QueryBuilderController@getRelations')->name('querybuilder.relations');
         });

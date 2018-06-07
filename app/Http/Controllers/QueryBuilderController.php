@@ -79,8 +79,20 @@ class QueryBuilderController extends Controller
         return view("pages.analytics.builder.step4-chart", compact("data", "result"));
     }
 
-    public function getColumns($table)
-    {
+    public function getTables(Request $request) {
+        $data = $request->session()->get('builder');
+
+        $entities[] = $data['analysis_entity'];
+
+        foreach($data['analysis_relation'] as $relation) {
+
+            $entities[] = $relation;
+        }
+
+        return json_encode($entities);
+    }
+
+    public function getColumns($table) {
         return \DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
     }
 
