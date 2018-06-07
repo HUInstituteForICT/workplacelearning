@@ -9,6 +9,9 @@
 namespace App\Analysis\Template;
 
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
 class ColumnValueParameterType extends ParameterType
 {
 
@@ -19,12 +22,22 @@ class ColumnValueParameterType extends ParameterType
 
     /*
      * types[0] = the parameterTable from the Template model.
-     * types[1] = the display column
+     * types[1] = the column
      * types[2] = the value chosen by the user
      * */
     public function isOfType(array $types)
     {
-        //TODO: do sql query to check if the column and display column exists.  return true if display column type == chosen type
+        if (count($types) < 3 || !Schema::connection('dashboard')->hasTable($types[0])
+            || !Schema::connection('dashboard')->hasColumn($types[0], $types[1])) {
+            return false;
+        }
+        $result = DB::connection('dashboard')->select('select ' . $types[1] . ' from ' . $types[0] . ' where ' . $types[1] . " = '" . $types[2] . "'");
+        return (count($result) > 0);
+    }
+
+    public function getErrorMsg()
+    {
+        return Lang::get('template.error.column');
     }
 
 }

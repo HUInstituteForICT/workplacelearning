@@ -9,6 +9,8 @@
 namespace App\Analysis\Template;
 
 
+use Illuminate\Support\Facades\Schema;
+
 class ColumnParameterType extends ParameterType
 {
 
@@ -23,7 +25,13 @@ class ColumnParameterType extends ParameterType
      * */
     public function isOfType(array $types)
     {
-        //TODO: do sql query to check if the column exists.
+        return count($types) >= 2 && Schema::connection('dashboard')->hasTable($types[0])
+            && Schema::connection('dashboard')->hasColumn($types[0], $types[1]);
+    }
+
+    public function getErrorMsg()
+    {
+        return Lang::get('template.error.table');
     }
 
 }

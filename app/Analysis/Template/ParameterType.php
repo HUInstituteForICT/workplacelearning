@@ -32,4 +32,6 @@ abstract class ParameterType
 
     public abstract function isOfType(array $types);
 
+    public abstract function getErrorMsg();
+
 }
