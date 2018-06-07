@@ -101,7 +101,7 @@
                 data: {
                     labels: [<?php
                         $items = array_map(function ($k) use ($chart) {
-                            return "'" . $k->{$chart->x_label->name} . "'";
+                            return "'" . substr($k->{$chart->x_label->name}, 0, 37) . "'";
                         }, $chart->analysis->data['data']);
                         echo join(', ', $items);
                         ?>],
@@ -127,7 +127,34 @@
                             ?>]
                     }]
                 },
-                options: defaultOptions
+                options: {
+                    tooltips: {
+                        callbacks: {
+                            @if($chart->type->slug == 'pie')
+                            label: function(tooltipItem, data) {
+                                var dataset = data.datasets[tooltipItem.datasetIndex];
+                                var meta = dataset._meta[Object.keys(dataset._meta)[0]];
+                                var total = meta.total;
+                                var currentValue = dataset.data[tooltipItem.index];
+                                var percentage = parseFloat((currentValue/total*100).toFixed(1));
+                                return currentValue + ' (' + percentage + '%)';
+                            },
+                            title: function(tooltipItem, data) {
+                                return data.labels[tooltipItem[0].index];
+                            },
+                            @endif
+                            scales: {
+                                @if($chart->type->slug != 'pie')
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                                @endif
+                            }
+                        }
+                    }
+            }
             });
             @endforeach
         })

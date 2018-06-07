@@ -20,9 +20,16 @@ class QueryBuilderController extends Controller
     {
         switch($id) {
             case 1: return view("pages.analytics.builder.step1-type"); break;
-            case 2: return view("pages.analytics.builder.step2-builder"); break;
+            case 2: return view("pages.analytics.builder.step2-custom"); break;
             case 3: return view("pages.analytics.builder.step3-builder-filters"); break;
             case 4: return view("pages.analytics.builder.step4-chart"); break;
+            case 5: return view("pages.analytics.builder.step3-custom.data"); break;
         }
     }
+
+    public function save(Request $request)
+    {
+        // Zie voorbeeld in TemplateBuilderController, nog maken.
+    }
+
 }

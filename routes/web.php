@@ -105,6 +105,10 @@ Route::group([
             Route::delete('/{id}', 'TemplateDashboardController@destroy')->name('template.destroy')->where('id', '[0-9]+');
         });
 
+        Route::group(['prefix' => 'query'], function () {
+            Route::post('/', 'QueryBuilderController@save')->name('query.save');
+        });
+
     });
 
 
