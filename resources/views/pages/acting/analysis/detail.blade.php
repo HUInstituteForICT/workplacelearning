@@ -27,10 +27,13 @@
         <div class="row">
             <div class="col-lg-12">
                 <a href="{{ route('analysis-acting-choice') }}" class="btn">{{__('analyses.back-to-choice')}}</a>
-                <h1>{{ __('tips.personal-tip') }}s</h1>
+                <br/><br/>
+
                 <p>{{ trans('analysis.acting.description') }}</p>
                 <p>{{ Lang::get('general.tip_request') }}
                     <a href="{{ route('bugreport') }}">{{ Lang::get('general.this_page') }}</a>.</p>
+                <h1>{{ __('tips.personal-tip') }}s</h1>
+
 
 
                 @if($evaluatedTips->count() > 0)
