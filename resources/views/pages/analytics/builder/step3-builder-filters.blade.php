@@ -45,6 +45,7 @@
                 </div>
                 <div class="col-md-2">
                     <select class="form-control query-data-table" name="query_filter[1][table]" id="analysis_entity">
+                        <option value="{{ $data['analysis_entity'] }}">{{ $data['analysis_entity'] }}</option>
                         @foreach($data['analysis_relation'] as $r)
                             <option value="{{ $r }}">{{ $r }}</option>
                         @endforeach
