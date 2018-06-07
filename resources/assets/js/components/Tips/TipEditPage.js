@@ -518,7 +518,7 @@ class TipEditPage extends React.Component {
                                                 <span>
                                     <strong>:statistic-name-{coupledStatistic.id}</strong>
                                     <br/>
-                                                    {statistic.type === 'predefinedstatistic' && Lang.get('statistics.predefined-value-name-params.' + statistic.valueParameterDescription)}
+                                                    {statistic.type === 'predefinedstatistic' && statistic.valueParameterDescription}
 
                                 </span>
                                             }
