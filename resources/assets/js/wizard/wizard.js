@@ -24,6 +24,8 @@ var Wizard =  {
 
                 $('#QueryBuilder').load("/dashboard/builder/step/" + data.step + "/", function(response, status, xhr) {
 
+                    Wizard['step_' + data.step]();
+
                     if(xhr.status == 403) {
 
                         window.location = '/';
@@ -44,6 +46,24 @@ var Wizard =  {
     open: function() {
 
         $('#QueryBuilder').load("/dashboard/builder/step/0/");
+    },
+
+    step_3: function() {
+
+        $('.query-data-table').on('change', function () {
+
+            var self = this;
+
+            $.getJSON("/dashboard/builder/columns/" + this.value, function (data) {
+                $(self).parent().parent().find(".query-data-column").empty();
+                console.log($(self).parent().parent().find(".query-data-column"));
+                let items = "";
+                $.each(data, function (key, val) {
+                    items += "<option id='" + val + "'>" + val + "</option>";
+                });
+                $(self).parent().parent().find(".query-data-column").append(items);
+            });
+        });
     }
 }
 

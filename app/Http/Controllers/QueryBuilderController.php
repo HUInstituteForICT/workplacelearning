@@ -79,6 +79,11 @@ class QueryBuilderController extends Controller
         return view("pages.analytics.builder.step4-chart", compact("data", "result"));
     }
 
+    public function getColumns($table)
+    {
+        return \DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
+    }
+
     public function getRelations($modelString) {
 
         //TODO: check if model exists in models array

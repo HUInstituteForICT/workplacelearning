@@ -8,18 +8,21 @@
         <div class="form-group row">
             <!--div class="col-md-1" style="width: 25px;"><a href="#" style="line-height: 34px; text-decoration: none;">X</a></div-->
             <div class="col-md-2">
-                <select class="form-control" name="query_data[{{ $i }}][table]" id="analysis_entity">
-                    <option>Table</option>
+                <select class="form-control query-data-table" name="query_data[{{ $i }}][table]">
+                    <option value="{{ $data['analysis_entity'] }}">{{ $data['analysis_entity'] }}</option>
+                    @foreach($data['analysis_relation'] as $r)
+                        <option value="{{ $r }}">{{ $r }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-control" name="query_data[{{ $i }}][column]" id="analysis_entity">
+                <select class="form-control query-data-column" name="query_data[{{ $i }}][column]">
                     <option>Column</option>
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-control" name="query_data[{{ $i }}][type]" id="analysis_entity">
-                    <option>Column</option>
+                <select class="form-control" name="query_data[{{ $i }}][type]">
+                    <option>Data</option>
                     <option>Sum</option>
                     <option>Count</option>
                 </select>
