@@ -84,9 +84,12 @@ class QueryBuilderController extends Controller
 
         $entities[] = $data['analysis_entity'];
 
-        foreach($data['analysis_relation'] as $relation) {
+        if(isset($data['analysis_relation'])) {
 
-            $entities[] = $relation;
+            foreach($data['analysis_relation'] as $relation) {
+
+                $entities[] = $relation;
+            }
         }
 
         return json_encode($entities);
