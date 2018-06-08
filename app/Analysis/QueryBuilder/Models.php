@@ -39,6 +39,14 @@ class Models
         return $this->models;
     }
 
+    public function getColumns($string) {
+
+        $modelString = 'App\\' . $string;
+        $model = new $modelString();
+
+        return \DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($model->getTable());
+    }
+
     public function getRelations($string) {
 
         $modelString = 'App\\' . $string;
