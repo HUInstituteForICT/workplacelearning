@@ -63,20 +63,14 @@ var Wizard =  {
 
             var previous = $('.query-filter-container .row:last-child').data('id');
 
+            if(isNaN(previous)) {
+
+                previous = -1;
+            }
+
             $('.query-filter-container').append(`
             <div class="form-group row" data-id="${previous+1}">
                 <div class="col-md-1" style="width: 25px;"><a href="#" class="query-delete-filter" style="line-height: 34px; text-decoration: none;">X</a></div>
-                <div class="col-md-2">
-                    <select class="form-control query-data-type" name="query_filter[${previous+1}][type]">
-                        <option>Table Filter</option>
-                        <option>Between</option>
-                        <option>Equals</option>
-                        <option>Larger than</option>
-                        <option>Smaller than</option>
-                        <option>Group by</option>
-                        <option>Limit</option>
-                    </select>
-                </div>
                 <div class="col-md-2">
                     <select class="form-control query-data-table" name="query_filter[${previous+1}][table]">
                        ${Object.keys(tables).map(function (key) {
@@ -86,6 +80,17 @@ var Wizard =  {
                 </div>
                 <div class="col-md-2">
                     <select class="form-control query-data-column" name="query_filter[${previous+1}][column]"></select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control query-data-type" name="query_filter[${previous+1}][type]">
+                        <option value="table">Table Filter</option>
+                        <option value="equals" selected>Equals</option>
+                        <option value="between">Between</option>
+                        <option value="largerthan">Larger than</option>
+                        <option value="smallerthan">Smaller than</option>
+                        <option value="group">Group by</option>
+                        <option value="limit">Limit</option>
+                    </select>
                 </div>
                 <div class="col-md-2">
                     <!--select class="form-control" name="query_data[]" id="analysis_entity">
@@ -134,7 +139,7 @@ var Wizard =  {
 
             type: "POST",
 
-            url: "/dashboard/builder/step/" + id + "/",
+            url: "/dashboard/builder/query/",
 
             data: $("#wizard-form").serialize(),
 
@@ -143,6 +148,37 @@ var Wizard =  {
         request.done(function( response ) {
 
             var responseData = JSON.parse(response);
+
+            var headers = "";
+
+            for(var header in responseData[0]) {
+
+                headers += `<th>${header}</th>`;
+            }
+
+            var rows = "";
+
+            for(var i = 0; i < responseData.length; i++) {
+
+                var row = "<tr>";
+
+                for(var column in responseData[i]) {
+
+                    row += `<td>${responseData[i][column]}</td>`;
+                }
+
+                row += "</tr>";
+                rows += row;
+            }
+
+            $('#query-result').html(`<table class="table table-striped">
+                    <thead>
+                        ${headers}
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>`);
 
         });
     }

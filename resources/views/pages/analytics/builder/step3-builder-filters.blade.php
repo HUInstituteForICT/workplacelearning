@@ -10,9 +10,11 @@
             <div class="col-md-2">
                 <select class="form-control query-data-table" name="query_data[{{ $i }}][table]">
                     <option value="{{ $data['analysis_entity'] }}">{{ $data['analysis_entity'] }}</option>
+                    @if(isset($data['analysis_relation']))
                     @foreach($data['analysis_relation'] as $r)
                         <option value="{{ $r }}">{{ $r }}</option>
                     @endforeach
+                    @endif
                 </select>
             </div>
             <div class="col-md-2">
@@ -20,9 +22,9 @@
             </div>
             <div class="col-md-2">
                 <select class="form-control" name="query_data[{{ $i }}][type]">
-                    <option>Data</option>
-                    <option>Sum</option>
-                    <option>Count</option>
+                    <option value="data">Data</option>
+                    <option value="sum">Sum</option>
+                    <option value="count">Count</option>
                 </select>
             </div>
         </div>
@@ -30,29 +32,33 @@
         <!--a style="font-size: 20px; text-decoration: none; display: block;" href="#">+</a-->
         <label for="analysis_entity">Filters</label>
         <div class="query-filter-container">
+            @if(isset($data['query_filter']))
+            @foreach($data['query_filter'] as $filter)
             <div class="form-group row" data-id="1">
                 <div class="col-md-1" style="width: 25px;"><a href="#" class="query-delete-filter" style="line-height: 34px; text-decoration: none;">X</a></div>
                 <div class="col-md-2">
-                    <select class="form-control query-data-type" name="query_filter[1][type]" id="analysis_entity">
-                        <option>Table Filter</option>
-                        <option>Between</option>
-                        <option>Equals</option>
-                        <option>Larger than</option>
-                        <option>Smaller than</option>
-                        <option>Group by</option>
-                        <option>Limit</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select class="form-control query-data-table" name="query_filter[1][table]" id="analysis_entity">
+                    <select class="form-control query-data-table" name="query_filter[1][table]">
                         <option value="{{ $data['analysis_entity'] }}">{{ $data['analysis_entity'] }}</option>
+                        @if(isset($data['analysis_relation']))
                         @foreach($data['analysis_relation'] as $r)
                             <option value="{{ $r }}">{{ $r }}</option>
                         @endforeach
+                        @endif
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select class="form-control query-data-column" name="query_filter[1][column]" id="analysis_entity"></select>
+                    <select class="form-control query-data-column" name="query_filter[1][column]"></select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control query-data-type" name="query_filter[1][type]">
+                        <option value="table">Table Filter</option>
+                        <option value="equals" selected>Equals</option>
+                        <option value="between">Between</option>
+                        <option value="largerthan">Larger than</option>
+                        <option value="smallerthan">Smaller than</option>
+                        <option value="group">Group by</option>
+                        <option value="limit">Limit</option>
+                    </select>
                 </div>
                 <div class="col-md-2">
                     <!--select class="form-control" name="query_data[]" id="analysis_entity">
@@ -61,6 +67,8 @@
                     <input name="query_filter[1][value]" class="form-control" placeholder="Value">
                 </div>
             </div>
+            @endforeach
+            @endif
         </div>
         <a style="font-size: 20px; text-decoration: none; display: block;" class="query-add-filter" href="#">+</a>
     </form>
@@ -72,20 +80,8 @@
     width: 25%;
     border-left: 1px solid #ddd;
     background: #fff;">
-        <table class="table table-striped">
-            <thead>
-                <th scope="col">Kolom 1</th>
-                <th scope="col">Kolom 2</th>
-            </thead>
-            <tbody>
-                @for($i = 0; $i < 10; $i++)
-                <tr>
-                    <td>Waarde 1</td>
-                    <td>Waarde 2</td>
-                </tr>
-                @endfor
-            </tbody>
-        </table>
+        <div id="query-result"></div>
+        <button type="button" class="btn btn-primary" onclick="Wizard.executeBuilderQuery();">Test query</button>
     </div>
 </div>
 <div class="modal-footer">

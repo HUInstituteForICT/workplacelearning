@@ -110,6 +110,7 @@ Route::group([
             Route::get('/builder/tables', 'QueryBuilderController@getTables')->name('querybuilder.tables');
             Route::get('/builder/columns/{table?}', 'QueryBuilderController@getColumns')->name('querybuilder.columns');
             Route::get('/builder/relations/{model}', 'QueryBuilderController@getRelations')->name('querybuilder.relations');
+            Route::post('/builder/query', 'QueryBuilderController@executeQuery')->name('querybuilder.query');
         });
 
         Route::group(['prefix' => 'template'], function () {

@@ -98,12 +98,66 @@ class QueryBuilderController extends Controller
 
     public function getRelations($modelString) {
 
-        //TODO: check if model exists in models array
-
         $model = new Models();
 
         $relations = $model->getRelations($modelString);
 
         return json_encode($relations);
+    }
+
+    public function executeQuery(Request $request) {
+
+        $sessionData = $request->session()->get('builder');
+
+        $table = (isset($sessionData['analysis_entity']) ? $sessionData['analysis_entity'] : []);
+        $relations = (isset($sessionData['analysis_relation']) ? $sessionData['analysis_relation'] : []);
+
+        $select = [];
+        $filters = [];
+        $groupBy = [];
+        $limit = null;
+
+        foreach($request->input('query_data') as $data) {
+
+            switch($data['type']) {
+
+                case "data":
+                    $select[] = $data['table'].'.'.$data['column'];
+                    break;
+
+                case "sum":
+                    $select[] = \DB::raw('SUM('.$data['table'].'.'.$data['column'].') as '.$data['column']);
+                    break;
+
+                case "count":
+                    $select[] = \DB::raw('COUNT('.$data['table'].'.'.$data['column'].') as amount_of_'.$data['column']);
+                    break;
+            }
+        }
+
+        if($request->input('query_filter')) {
+
+            foreach($request->input('query_filter') as $filter) {
+
+                switch($filter['type']) {
+
+                    case "limit":
+                        $limit = $filter['value'];
+                        break;
+
+                    case "group":
+                        $groupBy[] = $filter['table'].'.'.$filter['column'];
+                        break;
+
+                    case "equals":
+                        $filters[] = [$filter['table'].'.'.$filter['column'], '=', $filter['value']];
+                        break;
+                }
+            }
+        }
+
+        $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy);
+
+        return json_encode($result);
     }
 }
