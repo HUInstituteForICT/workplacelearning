@@ -15,22 +15,18 @@ class Models
 
     private $models = [
         "AccessLog",
-        "Analysis",
         "Category",
-        "Chart",
+        "Cohort",
         "Competence",
-        "Deadline",
         "Difficulty",
         "EducationProgram",
-        "EducationProgramType",
         "LearningActivityActing",
         "LearningActivityProducing",
         "LearningGoal",
-        "Parameter",
         "ResourceMaterial",
+        "ResourcePerson",
         "Status",
-        "UserSetting",
-        "Workplace",
+        "TimeSlot",
         "WorkplaceLearningPeriod"
     ];
 
