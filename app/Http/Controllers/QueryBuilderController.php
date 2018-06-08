@@ -127,7 +127,12 @@ class QueryBuilderController extends Controller
     }
 
     public function getColumns($table) {
-        return \DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
+
+        $model = new Models();
+
+        $columns = $model->getColumns($table);
+
+        return $columns;
     }
 
     public function getRelations($modelString) {
@@ -199,6 +204,11 @@ class QueryBuilderController extends Controller
     {
         $query = "select " . $column . " from " . $table . ";";
         return DB::connection('dashboard')->select($query);
+    }
+
+    public function save(Request $request)
+    {
+        // Zie voorbeeld in TemplateBuilderController, nog maken.
     }
 
 }

@@ -15,28 +15,32 @@ class Models
 
     private $models = [
         "AccessLog",
-        "Analysis",
         "Category",
-        "Chart",
+        "Cohort",
         "Competence",
-        "Deadline",
         "Difficulty",
         "EducationProgram",
-        "EducationProgramType",
         "LearningActivityActing",
         "LearningActivityProducing",
         "LearningGoal",
-        "Parameter",
         "ResourceMaterial",
+        "ResourcePerson",
         "Status",
-        "UserSetting",
-        "Workplace",
+        "TimeSlot",
         "WorkplaceLearningPeriod"
     ];
 
     public function getAll() {
 
         return $this->models;
+    }
+
+    public function getColumns($string) {
+
+        $modelString = 'App\\' . $string;
+        $model = new $modelString();
+
+        return \DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($model->getTable());
     }
 
     public function getRelations($string) {
