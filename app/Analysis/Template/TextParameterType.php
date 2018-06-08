@@ -22,4 +22,9 @@ class TextParameterType extends ParameterType
         return is_string($types[0]);
     }
 
+    public function getErrorMsg()
+    {
+        return Lang::get('template.error.text');
+    }
+
 }

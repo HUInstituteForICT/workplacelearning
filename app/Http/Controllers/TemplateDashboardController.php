@@ -28,20 +28,27 @@ class TemplateDashboardController extends Controller
 
     public function create()
     {
-        $paramTypes = $this->paramManager->getAllTypes();
-        $typeNames = array_map(function ($type) {
-            return $type->getName();
-        }, $paramTypes);
-        return view('pages.analytics.template.create_template', compact('paramTypes', 'typeNames'));
+        return $this->show(null);
     }
 
     public function show($id)
     {
-        $template = (new \App\Template)->findOrFail($id);
+        $template = null;
+        $parameters = [];
 
-        if ($template != null) {
-            return view('pages.analytics.template.show_template', compact('template'));
+        $paramTypes = $this->paramManager->getAllTypes();
+        $typeNames = array_map(function ($type) {
+            return $type->getName();
+        }, $paramTypes);
+
+        if ($id != null) {
+            $template = (new \App\Template)->findOrFail($id);
+            $parameters = (new \App\Parameter())->where('template_id', $id)->get();
+            if ($parameters == null) {
+                $parameters = [];
+            }
         }
+        return view('pages.analytics.template.create_template', compact('paramTypes', 'typeNames', 'template', 'parameters'));
     }
 
     public function save(Request $request)
@@ -59,12 +66,38 @@ class TemplateDashboardController extends Controller
                 ->withErrors([Lang::get('template.no_parameters')]);
         }
 
+        $templateID = $request->input('templateID');
         $name = $request->input('name');
         $query = $request->input('query');
 
+        if ($templateID != null) {
+            $template = (new \App\Template)->find($templateID);
+
+            if ($template != null) {
+                $template->update(['name' => $name, 'query' => $query]);
+
+                $parameters = (new \App\Parameter())->where('template_id', $templateID)->get();
+                foreach ($parameters as $param) {
+                    $param->delete();
+                }
+
+                $this->saveParameters($data, $template);
+            }
+
+            return redirect()->action('TemplateDashboardController@index')
+                ->with('success', Lang::get('template.template_updated'));
+        }
+
         $template = new Template(['name' => $name, 'query' => $query]);
         $template->save();
+        $this->saveParameters($data, $template);
 
+        return redirect()->action('TemplateDashboardController@index')
+            ->with('success', Lang::get('template.template_saved'));
+    }
+
+    private function saveParameters($data, $template)
+    {
         foreach ($data as $values) {
             while (count($values) < 4) {
                 array_push($values, null);
@@ -79,9 +112,6 @@ class TemplateDashboardController extends Controller
             ]);
             $template->parameters()->save($parameter);
         }
-
-        return redirect()->action('TemplateDashboardController@index')
-            ->with('success', Lang::get('template.template_saved'));
     }
 
     public function update(Request $request, $id)

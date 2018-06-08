@@ -69,6 +69,7 @@ Route::group([
     'middleware' => ['usernotifications'],
 ], function () {
 
+
     Route::group(['middleware' => CheckUserLevel::class], function () {
         Route::get('/education-programs', 'EducationProgramsController@index')
             ->name('education-programs');
@@ -93,7 +94,23 @@ Route::group([
             Route::resource('charts', 'AnalyticsChartController');
             Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
 
-            Route::get('/builder/step/{id}', 'QueryBuilderController@showStep')->name('querybuilder-step');
+            Route::get("/chart_details/{id}/{label}", function($id, $label)
+            {
+                $label = str_replace("_", " ", $label);
+                $idLabel = $id . ";" . $label;
+                return View::make("pages.analytics.dashboard.chart_details", compact( 'label', 'idLabel'));
+            });
+
+            Route::group(['prefix' => 'api'], function () {
+                Route::get('chart_details/{label?}', 'AnalyticsChartController@getChartDetails')->name('charts-details');
+            });
+
+            Route::get('/builder/step/{id}', 'QueryBuilderController@showStep')->name('querybuilder.get');
+            Route::post('/builder/step/{id}', 'QueryBuilderController@saveStep')->name('querybuilder.post');
+            Route::get('/builder/tables', 'QueryBuilderController@getTables')->name('querybuilder.tables');
+            Route::get('/builder/columns/{table?}', 'QueryBuilderController@getColumns')->name('querybuilder.columns');
+            Route::get('/builder/relations/{model}', 'QueryBuilderController@getRelations')->name('querybuilder.relations');
+            Route::post('/builder/query', 'QueryBuilderController@executeQuery')->name('querybuilder.query');
         });
 
         Route::group(['prefix' => 'template'], function () {
@@ -103,10 +120,12 @@ Route::group([
             Route::post('/', 'TemplateDashboardController@save')->name('template.save');
             Route::get('/create', 'TemplateDashboardController@create')->name('template.create');
             Route::delete('/{id}', 'TemplateDashboardController@destroy')->name('template.destroy')->where('id', '[0-9]+');
-        });
 
-        Route::group(['prefix' => 'query'], function () {
-            Route::post('/', 'QueryBuilderController@save')->name('query.save');
+            Route::group(['prefix' => 'api'], function () {
+                // Api routes
+                Route::get('tables', 'TemplateDashboardController@getTables')->name('template.tables');
+                Route::get('columns/{id?}', 'TemplateDashboardController@getColumns')->name('template.columns');
+            });
         });
 
     });

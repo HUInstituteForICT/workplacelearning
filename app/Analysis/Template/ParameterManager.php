@@ -22,7 +22,7 @@ class ParameterManager
     public function getParameterType($name)
     {
         foreach ($this->parameterTypes as $type) {
-            if ($type->getName()->equalToIgnoringCase($name)) {
+            if (strcasecmp($type->getName(), $name) == 0) {
                 return $type;
             }
         }

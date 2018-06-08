@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Analysis;
 use App\AnalysisChart;
+use App\Category;
 use App\ChartType;
 use App\DashboardChart;
 use App\Label;
+use App\LearningActivityActing;
+use App\LearningActivityProducing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
 
 class AnalyticsChartController extends Controller
 {
@@ -161,6 +166,59 @@ class AnalyticsChartController extends Controller
 
         return redirect()->route('charts.index')
             ->with('success', Lang::get('charts.removed'));
+    }
+
+    public function getChartDetails($idLabel)
+    {
+        $array = explode(";", $idLabel);
+        $analysisID = $array[0];
+        $label = $array[1];
+
+        $queryResult = (new \App\Analysis)->where('id', $analysisID)->get(['query']);
+        if ($queryResult[0] != null) {
+            $query = $queryResult[0]['query'];
+            if ($query != null) {
+
+                // Splitting the query on new line and space
+                $queryArray = preg_split('/[\s]+/', $query);
+
+                // Trying to get the EducationProgramType from the query
+                $programTypeID = null;
+                foreach ($queryArray as $part) {
+                    $index = stripos($part, 'learningactivityproducing');
+                    if ($index > -1) {
+                        $programTypeID = 2;
+                        break;
+                    }
+                    $index = stripos($part, 'learningactivityacting');
+                    if ($index > -1) {
+                        $programTypeID = 1;
+                        break;
+                    }
+                }
+                if ($programTypeID == null || $programTypeID == 2) {
+                    $id = (new \App\Category)->where('category_label', $label)
+                        ->whereNull("ep_id")->orWhere("ep_id", $programTypeID)
+                        ->first();
+
+                    if ($id->category_id != null) {
+                        $details = (new LearningActivityProducing)->where('category_id', $id->category_id)->get(['description', 'duration']);
+                        return $details;
+                    }
+                }
+              /*  else {
+
+                    $id = (new \App\LearningGoal())->where('learninggoal_label', $label)
+                        ->where("ep_id", $programTypeID)
+                        ->first();
+
+                    if ($id->category_id != null) {
+                        $details = (new LearningActivityActing())->where('category_id', $id->category_id)
+                    }
+                }*/
+            }
+        }
+        return [];
     }
 
 }

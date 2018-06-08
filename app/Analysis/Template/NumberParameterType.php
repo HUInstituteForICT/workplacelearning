@@ -19,7 +19,12 @@ class NumberParameterType extends ParameterType
 
     public function isOfType(array $types)
     {
-        return is_integer($types[0]) || is_double($types[0]) || is_float($types[0]);
+        return is_numeric($types[0]);
+    }
+
+    public function getErrorMsg()
+    {
+        return Lang::get('template.error.number');
     }
 
 }

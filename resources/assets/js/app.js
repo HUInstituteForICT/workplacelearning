@@ -1,6 +1,7 @@
 
 
 import "./bootstrap";
+import Wizard from "./wizard/wizard";
 
 import React from "react";
 import DOM from "react-dom";
@@ -18,8 +19,7 @@ const Apps = {
     ActivityActingProcessTable,
     ActivityProducingProcessTable,
     EducationProgramsApp,
-    ProducingWeekStatesExport,
-//    QueryBuilder,
+    ProducingWeekStatesExport
 };
 
 // Automatically mount if one of the above declared Apps exist in the DOM

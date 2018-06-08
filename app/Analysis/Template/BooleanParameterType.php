@@ -16,9 +16,19 @@ class BooleanParameterType extends ParameterType
         parent::__construct("Boolean", 0);
     }
 
+    // returns null if not true or false
     public function isOfType(array $types)
     {
-        return is_bool($types[0]);
+        if (is_bool($types[0])) {
+            return true;
+        }
+        $boolStr = strtolower($types[0]);
+        return $boolStr == 'true' || $boolStr == 'false';
+    }
+
+    public function getErrorMsg()
+    {
+        return Lang::get('template.error.boolean');
     }
 
 }

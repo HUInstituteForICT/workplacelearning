@@ -5,6 +5,17 @@
         <div class="row">
             <div class="col-sm-12">
                 <h1>{{ Lang::get('dashboard.title') }}</h1>
+
+                <button type="button" id="graphBtn" style="display: none" class="btn btn-info" data-toggle="modal" data-target="#showDetails">+</button>
+
+                <div id="showDetails" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div id="GraphDetails" class="__reactRoot modal-content">
+                            {{--Loading graph details page here--}}
+                        </div>
+                    </div>
+                </div>
+
                 @forelse($charts as $key => $chart)
                     <div class="col-sm-6">
                         <div class="panel panel-default">
@@ -36,7 +47,7 @@
                         </div>
                     </div>
                     @if ($chart === $charts->last())
-                        <a href="{{ route('dashboard.add') }}" class="btn btn-primary" title="Add a chart">+</a>
+                        <!--a href="{{ route('dashboard.add') }}" class="btn btn-primary" title="Add a chart">+</a-->
                     @endif
                 @empty
                     <p>{{ Lang::get('dashboard.empty') }}</p>
@@ -69,7 +80,6 @@
             return colors[lastColorIndex++];
         }
 
-
         (function () {
             $('.frmDelete').on('submit', function (e) {
                 if (!confirm('{{ Lang::get('dashboard.warning') }}')) {
@@ -77,26 +87,13 @@
                     return false
                 }
             });
-            var defaultOptions = {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            };
-            var defaultColours = [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ];
-                    @foreach($charts as $key => $dchart)<?php $chart = $dchart->chart ?>
-            var ctx{{ $key }} = $('#chart-{{ $key }}');
-            var chart{{ $key }} = new Chart(ctx{{  $key }}, {
+            let analysisIDs = [];
+
+            @foreach($charts as $key => $dchart)<?php $chart = $dchart->chart ?>
+            analysisIDs.push(JSON.parse('{!! json_encode($charts[$key]) !!}')['chart']['analysis_id']);
+
+            let ctx{{ $key }} = $('#chart-{{ $key }}');
+            let chart{{ $key }} = new Chart(ctx{{  $key }}, {
                 type: '{{ $chart->type->slug }}',
                 data: {
                     labels: [<?php
@@ -153,21 +150,51 @@
                                 @endif
                             }
                         }
+                    },
+
+                    onClick : function (event, array) {
+                        let labels = JSON.parse('{!! json_encode($labels) !!}');
+
+                        if (array[0]) {
+                            let index = array[0]['_index'];
+                            if (index != null && index >= 0) {
+                                let label = array[0]['_chart']['config']['data']['labels'][index];
+
+                                let i = array[0]['_chart']['controller']['id'];
+                                let analysisID = analysisIDs[i];
+
+                                // The label is a description
+                                if (analysisID != null && $.inArray(label, labels) >= 0) {
+                                    label = label.replace(/ /g, '_');
+
+                                    $('#GraphDetails').load('dashboard/chart_details/' + analysisID + "/" + label, function () {
+                                        document.getElementById("graphBtn").click();
+                                    });
+                                }
+                            }
+                        }
+
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
                     }
-            }
+                }
             });
             @endforeach
         })
-        ()
+        ();
     </script>
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis">+</button>
+
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis" onclick="Wizard.open()">+</button>
 
     <div id="addAnalysis" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
 
-            <div id="QueryBuilder" class="__reactRoot modal-content">
-                @include('pages.analytics.builder.step1-type')
-            </div>
+            <div id="QueryBuilder" class="modal-content"></div>
 
         </div>
     </div>

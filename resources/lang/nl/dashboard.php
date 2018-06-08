@@ -45,5 +45,12 @@ return array (
   "chart-added-fail" => "Niet gelukt op te slaan",
   "chart-added" => "Grafiek toegevoegd",
   "chart-removed-fail" => "Niet gelukt grafiek te verwijderen",
+
   "chart-removed" => "Grafiek verwijderd van dashboard.",
+
+  "category" => "Categorie",
+  "no-descriptions" => "Geen beschrijvingen gevonden",
+  "description" => "Beschrijving",
+  "details-title" => "Grafiek details",
+
 );
