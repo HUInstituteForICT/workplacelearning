@@ -43,7 +43,7 @@ class TemplateDashboardController extends Controller
 
         if ($id != null) {
             $template = (new \App\Template)->findOrFail($id);
-            $parameters = (new \App\Parameter())->where('template_id', $id)->get();
+            $parameters = $template->getParameters();
             if ($parameters == null) {
                 $parameters = [];
             }
@@ -76,7 +76,7 @@ class TemplateDashboardController extends Controller
             if ($template != null) {
                 $template->update(['name' => $name, 'query' => $query]);
 
-                $parameters = (new \App\Parameter())->where('template_id', $templateID)->get();
+                $parameters = $template->getParameters();
                 foreach ($parameters as $param) {
                     $param->delete();
                 }
@@ -168,6 +168,15 @@ class TemplateDashboardController extends Controller
     public function getColumns($table)
     {
         return DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
+    }
+
+    public function getParameters($templateID)
+    {
+        $template = (new \App\Template)->find($templateID);
+        if ($template == null) {
+            return [];
+        }
+        return $template->getParameters();
     }
 
 }

@@ -103,6 +103,7 @@ Route::group([
 
             Route::group(['prefix' => 'api'], function () {
                 Route::get('chart_details/{label?}', 'AnalyticsChartController@getChartDetails')->name('charts-details');
+                Route::get('column_values/{table?}/{column?}', 'QueryBuilderController@getColumnValues')->name('column-values');
             });
 
             Route::get('/builder/step/{id}', 'QueryBuilderController@showStep')->name('querybuilder.get');
@@ -125,6 +126,8 @@ Route::group([
                 // Api routes
                 Route::get('tables', 'TemplateDashboardController@getTables')->name('template.tables');
                 Route::get('columns/{id?}', 'TemplateDashboardController@getColumns')->name('template.columns');
+                Route::get('parameters/{id?}', 'TemplateDashboardController@getParameters')->name('template.parameters');
+                Route::get('param_html/{id?}', 'TemplateDashboardController@getHTML')->name('template.param-html');
             });
         });
 
