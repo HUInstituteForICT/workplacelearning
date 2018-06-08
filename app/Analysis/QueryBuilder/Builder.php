@@ -46,10 +46,10 @@ class Builder
         if(!empty($groupBy)) {
 
             $this->query->groupBy($groupBy);
-        } else if(empty($groupBy) && $hasCount) {
+        } /*else if(empty($groupBy) && $hasCount) {
 
             $this->query->groupBy($mainModel->getTable().'.'.$mainModel->getKeyName());
-        }
+        }*/
         $this->query->select($select);
 
         foreach($filters as $filter) {
