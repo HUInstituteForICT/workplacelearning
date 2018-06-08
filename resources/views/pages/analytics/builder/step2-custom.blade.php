@@ -1,4 +1,3 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">&times;</button>
     <h4 class="modal-title">Stap 2: Voer query in</h4>
@@ -8,8 +7,7 @@
         <div class="col-md-9">
             <h1>{{Lang::get('custom_query.custom_query')}}</h1>
 
-            <form action="#" method="post" id="saveForm" onsubmit="return false">
-            <!--<form action="{{ route('Query-store') }}" method="post" id="saveForm" onsubmit="return false">-->
+            <form id="wizard-form">
 
                 <div class="form-group">
                     <label for="Query">{{Lang::get('custom_query.query')}}</label>

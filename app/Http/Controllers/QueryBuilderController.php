@@ -96,7 +96,12 @@ class QueryBuilderController extends Controller
     }
 
     public function getColumns($table) {
-        return \DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
+
+        $model = new Models();
+
+        $columns = $model->getColumns($table);
+
+        return $columns;
     }
 
     public function getRelations($modelString) {
