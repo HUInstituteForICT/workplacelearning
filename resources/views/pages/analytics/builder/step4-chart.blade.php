@@ -1,53 +1,53 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <h4 class="modal-title">Stap 4: Grafiek maken</h4>
+    <h4 class="modal-title">@lang('querybuilder.step4.title')</h4>
 </div>
 <div class="modal-body" style="height: 450px">
     <form id="wizard-form">
-        <label for="name">Naam:</label><br>
+        <label for="name">@lang('querybuilder.step4.name'):</label><br>
         <div class="form-group row">
             <div class="col-sm-6">
-                <input type="text" class="form-control" id="name" name="name" placeholder="Naam analyse"
+                <input type="text" class="form-control" id="name" name="name" placeholder="@lang('querybuilder.step4.name-caption')"
                        required="required"
                        value="{{ isset($data['name']) ? $data['name'] : "" }}">
             </div>
         </div>
 
-        <label for="type_id">Cache voor:</label><br>
+        <label for="type_id">@lang('querybuilder.step4.cache'):</label><br>
         <div class="form-group row">
             <div class="col-sm-3">
-                <input type="number" class="form-control" id="cache_duration" name="cache_duration" placeholder="Cache voor X"
+                <input type="number" class="form-control" id="cache_duration" name="cache_duration" placeholder="@lang('querybuilder.step4.cache-caption')"
                        required="required" value="{{ isset($data['cache_duration']) ? $data['cache_duration'] : "" }}">
             </div>
             <div class="col-sm-2">
                 <select class="form-control" name="type_time" id="type_time" required="required" title="Time type">
                     <option></option>
-                    <option value="seconds" {{ isset($data['type_time']) && $data['type_time'] == "seconds" ? "checked" : "" }}>Seconden</option>
-                    <option value="minutes" {{ isset($data['type_time']) && $data['type_time'] == "minutes" ? "checked" : "" }}>Minuten</option>
-                    <option value="hours" {{ isset($data['type_time']) && $data['type_time'] == "hours" ? "checked" : "" }}>Uren</option>
-                    <option value="days" {{ isset($data['type_time']) && $data['type_time'] == "days" ? "checked" : "" }}>Dagen</option>
-                    <option value="weeks" {{ isset($data['type_time']) && $data['type_time'] == "weeks" ? "checked" : "" }}>Weken</option>
-                    <option value="months" {{ isset($data['type_time']) && $data['type_time'] == "months" ? "checked" : "" }}>Maanden</option>
-                    <option value="years" {{ isset($data['type_time']) && $data['type_time'] == "years" ? "checked" : "" }}>Jaren</option>
+                    <option value="seconds" {{ isset($data['type_time']) && $data['type_time'] == "seconds" ? "checked" : "" }}>@lang('querybuilder.step4.seconds')</option>
+                    <option value="minutes" {{ isset($data['type_time']) && $data['type_time'] == "minutes" ? "checked" : "" }}>@lang('querybuilder.step4.minutes')</option>
+                    <option value="hours" {{ isset($data['type_time']) && $data['type_time'] == "hours" ? "checked" : "" }}>@lang('querybuilder.step4.hours')</option>
+                    <option value="days" {{ isset($data['type_time']) && $data['type_time'] == "days" ? "checked" : "" }}>@lang('querybuilder.step4.days')</option>
+                    <option value="weeks" {{ isset($data['type_time']) && $data['type_time'] == "weeks" ? "checked" : "" }}>@lang('querybuilder.step4.weeks')</option>
+                    <option value="months" {{ isset($data['type_time']) && $data['type_time'] == "months" ? "checked" : "" }}>@lang('querybuilder.step4.months')</option>
+                    <option value="years" {{ isset($data['type_time']) && $data['type_time'] == "years" ? "checked" : "" }}>@lang('querybuilder.step4.years')</option>
                 </select>
             </div>
         </div>
 
-        <label for="type_id">Kies een grafiek:</label><br>
+        <label for="type_id">@lang('querybuilder.step4.graph-type'):</label><br>
         <div class="form-group row">
             <div class="col-md-3">
                 <select class="form-control" id="type_id" name="type_id" required="required">
                     <option></option>
-                    <option value="pie" {{ isset($data['type_id']) && $data['type_id'] == "pie" ? "checked" : "" }}>Pie chart</option>
-                    <option value="bar" {{ isset($data['type_id']) && $data['type_id'] == "bar" ? "checked" : "" }}>Bar chart</option>
-                    <option value="line" {{ isset($data['type_id']) && $data['type_id'] == "line" ? "checked" : "" }}>Line chart</option>
+                    <option value="pie" {{ isset($data['type_id']) && $data['type_id'] == "pie" ? "checked" : "" }}>@lang('querybuilder.step4.pie')</option>
+                    <option value="bar" {{ isset($data['type_id']) && $data['type_id'] == "bar" ? "checked" : "" }}>@lang('querybuilder.step4.bar')</option>
+                    <option value="line" {{ isset($data['type_id']) && $data['type_id'] == "line" ? "checked" : "" }}>@lang('querybuilder.step4.line')</option>
                 </select>
             </div>
         </div>
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-seconday" onclick="Wizard.step(3);">Vorige</button>
-    <button type="button" class="btn btn-primary" onclick="Wizard.step(5);">Toevoegen</button>
+    <button type="button" class="btn btn-seconday" onclick="Wizard.step(3);">@lang('querybuilder.previous')</button>
+    <button type="button" class="btn btn-primary" onclick="Wizard.step(5);">@lang('querybuilder.save')</button>
 </div>
 

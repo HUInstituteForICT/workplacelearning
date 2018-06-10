@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Stap 2: Kies en vul een template in</h4>
+    <h4 class="modal-title">@lang('querybuilder.step2.template')</h4>
 </div>
 <div class="modal-body" style="height: 450px">
     <form id="wizard-form">

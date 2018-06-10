@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <h4 class="modal-title">Stap 2: Voer query in</h4>
+    <h4 class="modal-title">@lang('querybuilder.step2.custom')</h4>
 </div>
 <div class="container-fluid">
     <div class="row">

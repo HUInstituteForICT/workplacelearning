@@ -11,7 +11,6 @@ import ActivityActingProcessTable from "./components/ActivityActingProcessTable/
 import EducationProgramsApp from "./components/EducationProgramsApp/educationProgramsApp";
 import ActivityProducingProcessTable from "./components/ActivityProducingProcessTable/table";
 import ProducingWeekStatesExport from "./components/ProducingWeekStatesExport";
-//import QueryBuilder from "./components/QueryBuilder/QueryBuilder";
 
 
 

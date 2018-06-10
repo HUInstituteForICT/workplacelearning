@@ -1,17 +1,17 @@
 <div class="modal-header">
-    <h4 class="modal-title">Stap 2: Kies entiteit en relaties</h4>
+    <h4 class="modal-title">@lang('querybuilder.step2.builder')</h4>
 </div>
 <div class="modal-body" style="height: 450px">
     <form id="wizard-form">
         <div class="form-group">
-            <label for="analysis_entity">Entiteit</label>
+            <label for="analysis_entity">@lang('querybuilder.step2.entity')</label>
             <select class="form-control" name="analysis_entity" id="analysis_entity">
                 @foreach($models as $model)
                     <option {{ isset($data['analysis_entity']) && $data['analysis_entity'] == $model ? "selected" : "" }} value="{{ $model }}">{{ Lang::get('querybuilder.'.$model) }}</option>
                 @endforeach
             </select>
         </div>
-        <p style="font-weight: bold;">Relaties</p>
+        <p style="font-weight: bold;">@lang('querybuilder.step2.relations')</p>
         <div class="relations">
             @foreach($relations as $relation => $type)
                 <div class="form-check">
@@ -46,6 +46,6 @@
     </script>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-seconday" onclick="Wizard.step(1);">Vorige</button>
-    <button type="button" class="btn btn-primary" onclick="Wizard.step(3);">Volgende</button>
+    <button type="button" class="btn btn-seconday" onclick="Wizard.step(1);">@lang('querybuilder.previous')</button>
+    <button type="button" class="btn btn-primary" onclick="Wizard.step(3);">@lang('querybuilder.next')</button>
 </div>

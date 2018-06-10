@@ -64,7 +64,7 @@ var Wizard =  {
             tables = data;
         });
 
-        $('.query-add-filter').on('click', function (e) {
+        $('.query-add-filter').on('click', function () {
 
             var previous = $('.query-filter-container .row:last-child').data('id');
 
@@ -88,20 +88,16 @@ var Wizard =  {
                 </div>
                 <div class="col-md-2">
                     <select class="form-control query-filter-type" name="query_filter[${previous+1}][type]">
-                        <option value="table">Table Filter</option>
-                        <option value="equals" selected>Equals</option>
-                        <option value="between">Between</option>
-                        <option value="largerthan">Larger than</option>
-                        <option value="smallerthan">Smaller than</option>
-                        <option value="group">Group by</option>
-                        <option value="limit">Limit</option>
+                        <option value="equals" selected>${Lang.get('querybuilder.step3.filter-equals')}</option>
+                        <option value="between">${Lang.get('querybuilder.step3.filter-between')}</option>
+                        <option value="largerthan">${Lang.get('querybuilder.step3.filter-largerthan')}</option>
+                        <option value="smallerthan">${Lang.get('querybuilder.step3.filter-smallerthan')}</option>
+                        <option value="group">${Lang.get('querybuilder.step3.filter-groupby')}</option>
+                        <option value="limit">${Lang.get('querybuilder.step3.filter-limit')}</option>
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <!--select class="form-control" name="query_data[]" id="analysis_entity">
-                        <option>Value</option>
-                    </select-->
-                    <input name="query_filter[${previous+1}][value]" class="form-control query-filter-value" placeholder="Value">
+                    <input name="query_filter[${previous+1}][value]" class="form-control query-filter-value" placeholder="${Lang.get('querybuilder.step3.value')}">
                 </div>
             </div>`);
 
