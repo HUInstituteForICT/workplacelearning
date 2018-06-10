@@ -48,6 +48,11 @@ var Wizard =  {
         $('#QueryBuilder').load("/dashboard/builder/step/0/");
     },
 
+    step_2: function() {
+
+
+    },
+
     step_3: function() {
 
         this.resetListeners();
@@ -74,7 +79,7 @@ var Wizard =  {
                 <div class="col-md-2">
                     <select class="form-control query-data-table" name="query_filter[${previous+1}][table]">
                        ${Object.keys(tables).map(function (key) {
-                            return "<option value='" + tables[key] + "'>" + tables[key] + "</option>"
+                            return "<option value='" + key + "'>" + tables[key] + "</option>"
                         })}
                     </select>
                 </div>
@@ -82,7 +87,7 @@ var Wizard =  {
                     <select class="form-control query-data-column" name="query_filter[${previous+1}][column]"></select>
                 </div>
                 <div class="col-md-2">
-                    <select class="form-control query-data-type" name="query_filter[${previous+1}][type]">
+                    <select class="form-control query-filter-type" name="query_filter[${previous+1}][type]">
                         <option value="table">Table Filter</option>
                         <option value="equals" selected>Equals</option>
                         <option value="between">Between</option>
@@ -96,7 +101,7 @@ var Wizard =  {
                     <!--select class="form-control" name="query_data[]" id="analysis_entity">
                         <option>Value</option>
                     </select-->
-                    <input name="query_filter[${previous+1}][value]" class="form-control" placeholder="Value">
+                    <input name="query_filter[${previous+1}][value]" class="form-control query-filter-value" placeholder="Value">
                 </div>
             </div>`);
 
@@ -125,6 +130,16 @@ var Wizard =  {
                 });
                 $(self).parent().parent().find(".query-data-column").append(items);
             });
+        });
+
+        $('.query-filter-type').on('change', function () {
+
+           if(this.value =="group") {
+
+               $(this).parent().parent().find('query-filter-value').css('display', 'none');
+           } else {
+               $(this).parent().parent().find('query-filter-value').css('display', 'block');
+           }
         });
 
         $('.query-delete-filter').on('click', function () {

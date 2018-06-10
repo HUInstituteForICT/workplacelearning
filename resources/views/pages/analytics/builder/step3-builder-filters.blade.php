@@ -9,10 +9,10 @@
             <!--div class="col-md-1" style="width: 25px;"><a href="#" style="line-height: 34px; text-decoration: none;">X</a></div-->
             <div class="col-md-2">
                 <select class="form-control query-data-table" name="query_data[{{ $i }}][table]">
-                    <option value="{{ $data['analysis_entity'] }}">{{ $data['analysis_entity'] }}</option>
+                    <option value="{{ $data['analysis_entity'] }}">{{ Lang::get('querybuilder.'.$data['analysis_entity']) }}</option>
                     @if(isset($data['analysis_relation']))
                     @foreach($data['analysis_relation'] as $r)
-                        <option value="{{ $r }}">{{ $r }}</option>
+                        <option value="{{ $r }}">{{ Lang::get('querybuilder.'.$r) }}</option>
                     @endforeach
                     @endif
                 </select>
@@ -38,10 +38,10 @@
                 <div class="col-md-1" style="width: 25px;"><a href="#" class="query-delete-filter" style="line-height: 34px; text-decoration: none;">X</a></div>
                 <div class="col-md-2">
                     <select class="form-control query-data-table" name="query_filter[1][table]">
-                        <option value="{{ $data['analysis_entity'] }}">{{ $data['analysis_entity'] }}</option>
+                        <option value="{{ $data['analysis_entity'] }}">{{ Lang::get('querybuilder.'.$data['analysis_entity']) }}</option>
                         @if(isset($data['analysis_relation']))
                         @foreach($data['analysis_relation'] as $r)
-                            <option value="{{ $r }}">{{ $r }}</option>
+                            <option value="{{ $r }}">{{ Lang::get('querybuilder.'.$r) }}</option>
                         @endforeach
                         @endif
                     </select>
@@ -50,7 +50,7 @@
                     <select class="form-control query-data-column" name="query_filter[1][column]"></select>
                 </div>
                 <div class="col-md-2">
-                    <select class="form-control query-data-type" name="query_filter[1][type]">
+                    <select class="form-control query-filter-type" name="query_filter[1][type]">
                         <option value="table">Table Filter</option>
                         <option value="equals" selected>Equals</option>
                         <option value="between">Between</option>
@@ -64,7 +64,7 @@
                     <!--select class="form-control" name="query_data[]" id="analysis_entity">
                         <option>Value</option>
                     </select-->
-                    <input name="query_filter[1][value]" class="form-control" placeholder="Value">
+                    <input name="query_filter[1][value]" class="form-control query-filter-value" placeholder="Value">
                 </div>
             </div>
             @endforeach

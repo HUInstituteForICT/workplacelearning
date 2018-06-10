@@ -7,7 +7,7 @@
             <label for="analysis_entity">Entiteit</label>
             <select class="form-control" name="analysis_entity" id="analysis_entity">
                 @foreach($models as $model)
-                    <option {{ isset($data['analysis_entity']) && $data['analysis_entity'] == $model ? "selected" : "" }}>{{ $model }}</option>
+                    <option {{ isset($data['analysis_entity']) && $data['analysis_entity'] == $model ? "selected" : "" }} value="{{ $model }}">{{ Lang::get('querybuilder.'.$model) }}</option>
                 @endforeach
             </select>
         </div>
@@ -32,8 +32,8 @@
                     var items = "";
                     $.each( data, function( key, val ) {
                         items += ` <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_${val}" value="${val}">
-                <label class="form-check-label" for="analysis_relations_${val}">
+                <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_${key}" value="${key}">
+                <label class="form-check-label" for="analysis_relations_${key}">
                     ${val}
                             </label>
                         </div>`;

@@ -82,13 +82,13 @@ class QueryBuilderController extends Controller
     public function getTables(Request $request) {
         $data = $request->session()->get('builder');
 
-        $entities[] = $data['analysis_entity'];
+        $entities[$data['analysis_entity']] = \Lang::get('querybuilder.'.$data['analysis_entity']);
 
         if(isset($data['analysis_relation'])) {
 
             foreach($data['analysis_relation'] as $relation) {
 
-                $entities[] = $relation;
+                $entities[$relation] = \Lang::get('querybuilder.'.$relation);
             }
         }
 
