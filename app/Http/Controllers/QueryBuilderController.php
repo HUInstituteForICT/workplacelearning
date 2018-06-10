@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Analysis\QueryBuilder\Builder;
 use App\Analysis\QueryBuilder\Models;
+use App\Template;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class QueryBuilderController extends Controller
 {
@@ -32,7 +35,35 @@ class QueryBuilderController extends Controller
 
             switch($id) {
                 case 1: return view("pages.analytics.builder.step1-type", compact("data")); break;
-                case 2: return view("pages.analytics.builder.step2-template", compact("data")); break;
+                case 2: {
+                    $templates = Template::all();
+                    $needle = "?";
+
+                    foreach ($templates as $template) {
+                        $query = $template->query;
+                        $parameters = $template->getParameters();
+
+                        foreach($parameters as $parameter) {
+                            $pos = strpos($query, $needle);
+                            if ($pos !== false) {
+                                $query = substr_replace($query, $parameter->name, $pos, strlen($needle));
+                            }
+                        }
+                        $template->query = $query;
+                    }
+                    $tables = DB::connection('dashboard')->select('SHOW TABLES');
+                    $tableNames = array_map(function ($object) {
+                        return $object->{'Tables_in_' . DB::connection('dashboard')->getDatabaseName()};
+                    }, $tables);
+
+
+                    $columnNames = [];
+                    foreach ($tableNames as $table) {
+                        $columnNames[$table] = DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
+                    }
+
+                    return view("pages.analytics.builder.step2-template", compact("data", "templates", "tableNames", "columnNames")); break;
+                }
                 case 4: return $this->step4($data); break;
             }
         } elseif($data['analysis_type'] == 'custom') {
@@ -167,6 +198,12 @@ class QueryBuilderController extends Controller
         $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy);
 
         return json_encode($result);
+    }
+
+    public function getColumnValues($table, $column)
+    {
+        $query = "select " . $column . " from " . $table . ";";
+        return DB::connection('dashboard')->select($query);
     }
 
     public function save(Request $request)
