@@ -100,7 +100,13 @@ class QueryBuilderController extends Controller
     private function step4($data) {
 
         $table = $data['analysis_entity'];
-        $relations = $data['analysis_relation'];
+
+        $relations = [];
+
+        if(!empty($data['analysis_relation'])) {
+            $relations = $data['analysis_relation'];
+        }
+
         $select = ['category.category_label', \DB::raw('SUM(LearningActivityProducing.duration)')];
         $filters = [['WorkplaceLearningPeriod.cohort_id', '=', '1']];
         $groupBy = ['category.category_label'];

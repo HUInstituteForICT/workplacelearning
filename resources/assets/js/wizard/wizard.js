@@ -130,11 +130,11 @@ var Wizard =  {
 
         $('.query-filter-type').on('change', function () {
 
-           if(this.value =="group") {
+           if($(this).val() == "group") {
 
-               $(this).parent().parent().find('query-filter-value').css('display', 'none');
+               $(this).parent().parent().find('.query-filter-value').css('display', 'none');
            } else {
-               $(this).parent().parent().find('query-filter-value').css('display', 'block');
+               $(this).parent().parent().find('.query-filter-value').css('display', 'block');
            }
         });
 
