@@ -23,12 +23,15 @@ class QueryBuilderController extends Controller
 
         $data = $request->session()->get('builder');
 
+        if(empty($data['analysis_type']))
+            die;
+
         if($data['analysis_type'] == 'build') {
 
             switch($id) {
                 case 1: return view("pages.analytics.builder.step1-type", compact("data")); break;
                 case 2: return $this->step2($data); break;
-                case 3: return view("pages.analytics.builder.step3-builder-filters", compact("data")); break;
+                case 3: return $this->step3($data); break;
                 case 4: return $this->step4($data); break;
             }
         } elseif($data['analysis_type'] == 'template') {
@@ -92,9 +95,34 @@ class QueryBuilderController extends Controller
 
         $models = $model->getAll();
 
-        $relations = $model->getRelations('Cohort');
+        $relations = [];
+
+        $relationData = $model->getRelations((isset($data['analysis_entity'])) ? $data['analysis_entity'] : $models[0]);
+
+        if(isset($relationData)) {
+
+            foreach($relationData as $relation) {
+
+                $relations[$relation] = \Lang::get('querybuilder.'.$relation);
+            }
+        }
 
         return view("pages.analytics.builder.step2-builder", compact('models', 'relations', 'data'));
+    }
+
+    private function step3($data) {
+
+        $modelString = 'App\\' . $data['analysis_entity'];
+        $mainModel = new $modelString();
+
+        $relations = [];
+
+        foreach($data['analysis_relation'] as $r) {
+
+            $relations[] = class_basename(get_class($mainModel->$r()->getRelated()));
+        }
+
+        return view("pages.analytics.builder.step3-builder-filters", compact('data', 'relations'));
     }
 
     private function step4($data) {
@@ -125,7 +153,11 @@ class QueryBuilderController extends Controller
 
             foreach($data['analysis_relation'] as $relation) {
 
-                $entities[$relation] = \Lang::get('querybuilder.'.$relation);
+                $tableString = 'App\\' .$data['analysis_entity'];
+                $tableModel = new $tableString();
+                $r = class_basename(get_class($tableModel->$relation()->getRelated()));
+
+                $entities[$relation] = \Lang::get('querybuilder.'.$r);
             }
         }
 

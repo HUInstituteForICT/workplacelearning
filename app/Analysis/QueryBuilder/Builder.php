@@ -16,8 +16,6 @@ class Builder
 
     private function build($model, $relations, $selectData, $filterData, $groupBy, $limit = null) {
 
-        $hasCount = true;
-
         $select = [];
         $filters = [];
         $groupBy = [];
@@ -29,23 +27,30 @@ class Builder
 
         foreach($selectData as $data) {
 
+            $tableString = 'App\\' . $data['table'];
+            $tableModel = (new $tableString())->getTable();
+
             switch($data['type']) {
 
                 case "data":
-                    $select[] = $data['table'].'.'.$data['column'];
+                    $select[] = $tableModel.'.'.$data['column'];
+
                     break;
 
                 case "sum":
-                    $select[] = \DB::raw('SUM('.$data['table'].'.'.$data['column'].') as '.$data['column']);
+                    $select[] = \DB::raw('SUM('.$tableModel.'.'.$data['column'].') as '.$data['column']);
                     break;
 
                 case "count":
-                    $select[] = \DB::raw('COUNT('.$data['table'].'.'.$data['column'].') as amount_of_'.$data['column']);
+                    $select[] = \DB::raw('COUNT('.$tableModel.'.'.$data['column'].') as amount_of_'.$data['column']);
                     break;
             }
         }
 
         foreach($filterData as $filter) {
+
+            $tableString = 'App\\' . $filter['table'];
+            $tableModel = (new $tableString())->getTable();
 
             switch($filter['type']) {
 
@@ -54,19 +59,18 @@ class Builder
                     break;
 
                 case "group":
-                    $groupBy[] = $filter['table'].'.'.$filter['column'];
+                    $groupBy[] = $tableModel.'.'.$filter['column'];
                     break;
 
                 case "equals":
-                    $filters[] = [$filter['table'].'.'.$filter['column'], '=', $filter['value']];
+                    $filters[] = [$tableModel.'.'.$filter['column'], '=', $filter['value']];
                     break;
             }
         }
 
         foreach($relations as $r) {
 
-            $name = 'App\\'.$r;
-            $join = new $name;
+            $join = $mainModel->$r()->getRelated();
 
             if($mainModel->$r() instanceof BelongsTo) {
 
@@ -77,7 +81,7 @@ class Builder
             } else {
 
                 $this->query->join($join->getTable(),
-                    $join->getTable() . '.' . $join->getKeyName(),
+                    $mainModel->$r()->getQualifiedForeignKeyName(),
                     '=',
                     $mainModel->$r()->getQualifiedParentKeyName());
             }
@@ -86,10 +90,8 @@ class Builder
         if(!empty($groupBy)) {
 
             $this->query->groupBy($groupBy);
-        } /*else if(empty($groupBy) && $hasCount) {
+        }
 
-            $this->query->groupBy($mainModel->getTable().'.'.$mainModel->getKeyName());
-        }*/
         $this->query->select($select);
 
         foreach($filters as $filter) {

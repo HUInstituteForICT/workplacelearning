@@ -10,8 +10,8 @@
             <div class="col-md-3">
                 <select class="form-control query-data-table" name="query_data[{{ $i }}][table]">
                     <option value="{{ $data['analysis_entity'] }}">@lang('querybuilder.'.$data['analysis_entity'])</option>
-                    @if(isset($data['analysis_relation']))
-                    @foreach($data['analysis_relation'] as $r)
+                    @if(isset($relations))
+                    @foreach($relations as $r)
                         <option value="{{ $r }}">{{ Lang::get('querybuilder.'.$r) }}</option>
                     @endforeach
                     @endif
@@ -39,8 +39,8 @@
                 <div class="col-md-3">
                     <select class="form-control query-data-table" name="query_filter[1][table]">
                         <option value="{{ $data['analysis_entity'] }}">@lang('querybuilder.'.$data['analysis_entity'])</option>
-                        @if(isset($data['analysis_relation']))
-                        @foreach($data['analysis_relation'] as $r)
+                        @if(isset($relations))
+                        @foreach($relations as $r)
                             <option value="{{ $r }}">{{ Lang::get('querybuilder.'.$r) }}</option>
                         @endforeach
                         @endif

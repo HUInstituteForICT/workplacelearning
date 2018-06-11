@@ -65,8 +65,6 @@ var Wizard =  {
                 $('.relations').html(items);
             });
         });
-
-        $('#analysis_entity').change();
     },
 
     step_3: function() {

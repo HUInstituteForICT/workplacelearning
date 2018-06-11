@@ -58,7 +58,7 @@ class Models
                 $className = class_basename(get_class($model->$relation()->getRelated()));
                 if(in_array($className, $this->models) && $className != $string) {
 
-                    $relationships[$className] = \Lang::get('querybuilder.'.$className);
+                    $relationships[$relation] = \Lang::get('querybuilder.'.$className);
                 }
             }
 
