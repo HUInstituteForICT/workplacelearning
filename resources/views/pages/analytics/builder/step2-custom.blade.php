@@ -33,22 +33,17 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-seconday" onclick="Wizard.step(1);">Vorige</button>
-    <button type="button" class="btn btn-primary" onclick="Wizard.step(4);">Volgende</button>
+    <button type="button" class=" " onclick="Wizard.step(4);">Volgende</button>
 </div>
 <script>
     // Real time query result in veld Resultaat
 
-    //$analyse = new Analysis();
-    //$analyse=>query = $("#customQuery").val();
-    //$analyse=>save();
-
     $("#testQuery").click(function(){
-        var $query = $('#customQuery').val();
+        var query = $('#customQuery').val();
+        $.post('/dashboard/builder/testQuery', query, function(data) {
+            $('#dataCustomQuery').val(JSON.stringify(data, null, 2));
+        });
 
-        // Voer hier analyse uit op database, i.p.v. statisch antwoord
-        var $DataResultQuery = $query;
-
-        window.alert("query = " + $query + " query 2 = " + $DataResultQuery + "");
-        $('#dataCustomQuery').val($DataResultQuery);
+        return false;
     });
 </script>
