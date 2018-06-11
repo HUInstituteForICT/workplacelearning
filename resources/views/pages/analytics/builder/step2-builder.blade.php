@@ -13,12 +13,12 @@
         </div>
         <p style="font-weight: bold;">@lang('querybuilder.step2.relations')</p>
         <div class="relations">
-            @foreach($relations as $relation => $type)
+            @foreach($relations as $relation => $value)
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_{{ $relation }}" value="{{ $relation }}"
                             {{ isset($data['analysis_relation']) && in_array($relation, $data['analysis_relation']) ? "checked" : "" }}>
                     <label class="form-check-label" for="analysis_relations_{{ $relation }}">
-                        {{ $relation }}
+                        {{ $value }}
                     </label>
                 </div>
             @endforeach

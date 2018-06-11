@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <h1>{{ Lang::get('dashboard.title') }}</h1>
+                <h1>@lang('dashboard.title')</h1>
 
                 <button type="button" id="graphBtn" style="display: none" class="btn btn-info" data-toggle="modal" data-target="#showDetails">+</button>
 
@@ -50,12 +50,20 @@
                         <!--a href="{{ route('dashboard.add') }}" class="btn btn-primary" title="Add a chart">+</a-->
                     @endif
                 @empty
-                    <p>{{ Lang::get('dashboard.empty') }}</p>
-                    <p>
-                        <a href="{{ route('dashboard.add') }}"
-                           class="btn btn-primary">{{ Lang::get('dashboard.add-chart') }}</a>
-                    </p>
+                    <p>@lang('dashboard.empty')</p>
                 @endforelse
+
+                <p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAnalysis" onclick="Wizard.open()">@lang('dashboard.add-chart')</button>
+                </p>
+
+                <div id="addAnalysis" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <div id="QueryBuilder" class="modal-content"></div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -188,14 +196,4 @@
         })
         ();
     </script>
-
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addAnalysis" onclick="Wizard.open()">+</button>
-
-    <div id="addAnalysis" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
-
-            <div id="QueryBuilder" class="modal-content"></div>
-
-        </div>
-    </div>
 @stop

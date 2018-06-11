@@ -104,15 +104,7 @@ class QueryBuilderController extends Controller
 
         $relations = [];
 
-        $relationData = $model->getRelations((isset($data['analysis_entity'])) ? $data['analysis_entity'] : $models[0]);
-
-        if(isset($relationData)) {
-
-            foreach($relationData as $relation) {
-
-                $relations[$relation] = \Lang::get('querybuilder.'.$relation);
-            }
-        }
+        $relations = $model->getRelations((isset($data['analysis_entity'])) ? $data['analysis_entity'] : $models[0]);
 
         return view("pages.analytics.builder.step2-builder", compact('models', 'relations', 'data'));
     }
