@@ -41,7 +41,7 @@
     $("#testQuery").click(function(){
         var query = $('#customQuery').val();
         $.post('/dashboard/builder/testQuery', query, function(data) {
-            $('#dataCustomQuery').val(JSON.stringify(data));
+            $('#dataCustomQuery').val(JSON.stringify(data, null, 2));
         });
 
         return false;
