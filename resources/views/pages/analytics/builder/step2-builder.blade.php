@@ -24,26 +24,6 @@
             @endforeach
         </div>
     </form>
-    <script>
-
-        $(document).ready(function() {
-            $('#analysis_entity').on('change', function(data) {
-                $.getJSON( "/dashboard/builder/relations/" + $(this).val(), function( data ) {
-                    var items = "";
-                    $.each( data, function( key, val ) {
-                        items += ` <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="analysis_relation[]" id="analysis_relations_${key}" value="${key}">
-                <label class="form-check-label" for="analysis_relations_${key}">
-                    ${val}
-                            </label>
-                        </div>`;
-                    });
-
-                    $('.relations').html(items);
-                });
-            });
-        });
-    </script>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-seconday" onclick="Wizard.step(1);">@lang('querybuilder.previous')</button>
