@@ -8,9 +8,16 @@ use App\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Analysis;
 
 class QueryBuilderController extends Controller
 {
+    public function testQuery(Request $request) {
+        $analyse = new Analysis();
+        $analyse->query = $request->getContent();
+        $DataResultQuery = $analyse->execute();
+        return $DataResultQuery;
+    }
 
     public function showStep(Request $request, $id) {
 
