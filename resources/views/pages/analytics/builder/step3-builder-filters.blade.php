@@ -7,7 +7,7 @@
         @for($i=0; $i<2; $i++)
         <div class="form-group row query-data-container">
             <!--div class="col-md-1" style="width: 25px;"><a href="#" style="line-height: 34px; text-decoration: none;">X</a></div-->
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <select class="form-control query-data-table" name="query_data[{{ $i }}][table]">
                     <option value="{{ $data['analysis_entity'] }}">@lang('querybuilder.'.$data['analysis_entity'])</option>
                     @if(isset($data['analysis_relation']))
@@ -36,7 +36,7 @@
             @foreach($data['query_filter'] as $filter)
             <div class="form-group row" data-id="1">
                 <div class="col-md-1" style="width: 25px;"><a href="#" class="query-delete-filter" style="line-height: 34px; text-decoration: none;">X</a></div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <select class="form-control query-data-table" name="query_filter[1][table]">
                         <option value="{{ $data['analysis_entity'] }}">@lang('querybuilder.'.$data['analysis_entity'])</option>
                         @if(isset($data['analysis_relation']))
@@ -59,7 +59,7 @@
                         <option value="limit">@lang('querybuilder.step3.filter-limit')</option>
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" style="width: 12%;">
                     <input name="query_filter[1][value]" class="form-control query-filter-value" placeholder="@lang('querybuilder.step3.value')">
                 </div>
             </div>

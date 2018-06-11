@@ -14,14 +14,54 @@ class Builder
 {
     private $query;
 
-    private function build($model, $relations, $select, $filters, $groupBy) {
+    private function build($model, $relations, $selectData, $filterData, $groupBy, $limit = null) {
 
         $hasCount = true;
+
+        $select = [];
+        $filters = [];
+        $groupBy = [];
 
         $modelString = 'App\\' . $model;
         $mainModel = new $modelString();
 
         $this->query = \DB::connection("dashboard")->table($mainModel->getTable());
+
+        foreach($selectData as $data) {
+
+            switch($data['type']) {
+
+                case "data":
+                    $select[] = $data['table'].'.'.$data['column'];
+                    break;
+
+                case "sum":
+                    $select[] = \DB::raw('SUM('.$data['table'].'.'.$data['column'].') as '.$data['column']);
+                    break;
+
+                case "count":
+                    $select[] = \DB::raw('COUNT('.$data['table'].'.'.$data['column'].') as amount_of_'.$data['column']);
+                    break;
+            }
+        }
+
+        foreach($filterData as $filter) {
+
+            switch($filter['type']) {
+
+                case "limit":
+                    $limit = $filter['value'];
+                    break;
+
+                case "group":
+                    $groupBy[] = $filter['table'].'.'.$filter['column'];
+                    break;
+
+                case "equals":
+                    $filters[] = [$filter['table'].'.'.$filter['column'], '=', $filter['value']];
+                    break;
+            }
+        }
 
         foreach($relations as $r) {
 
@@ -56,18 +96,23 @@ class Builder
 
             $this->query->where($filter[0], $filter[1], $filter[2]);
         }
+
+        if($limit != null) {
+
+            $this->query->limit($limit);
+        }
     }
 
-    public function getData($model, $relations, $select, $filters, $groupBy) {
+    public function getData($model, $relations, $select, $filters, $groupBy, $limit = null) {
 
-        $this->build($model, $relations, $select, $filters, $groupBy);
+        $this->build($model, $relations, $select, $filters, $groupBy, $limit);
 
         return $this->query->get();
     }
 
-    public function getQuery($model, $relations, $select, $filters, $groupBy) {
+    public function getQuery($model, $relations, $select, $filters, $groupBy, $limit = null) {
 
-        $this->build($model, $relations, $select, $filters, $groupBy);
+        $this->build($model, $relations, $select, $filters, $groupBy, $limit);
 
         return $this->query->toSQL();
     }

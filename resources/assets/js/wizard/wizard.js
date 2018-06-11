@@ -76,7 +76,7 @@ var Wizard =  {
             $('.query-filter-container').append(`
             <div class="form-group row" data-id="${previous+1}">
                 <div class="col-md-1" style="width: 25px;"><a href="#" class="query-delete-filter" style="line-height: 34px; text-decoration: none;">X</a></div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <select class="form-control query-data-table" name="query_filter[${previous+1}][table]">
                        ${Object.keys(tables).map(function (key) {
                             return "<option value='" + key + "'>" + tables[key] + "</option>"
@@ -96,7 +96,7 @@ var Wizard =  {
                         <option value="limit">${Lang.get('querybuilder.step3.filter-limit')}</option>
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" style="width: 12%;">
                     <input name="query_filter[${previous+1}][value]" class="form-control query-filter-value" placeholder="${Lang.get('querybuilder.step3.value')}">
                 </div>
             </div>`);

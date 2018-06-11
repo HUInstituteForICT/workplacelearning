@@ -162,46 +162,17 @@ class QueryBuilderController extends Controller
         $groupBy = [];
         $limit = null;
 
-        foreach($request->input('query_data') as $data) {
+        if($request->input('query_data')) {
 
-            switch($data['type']) {
-
-                case "data":
-                    $select[] = $data['table'].'.'.$data['column'];
-                    break;
-
-                case "sum":
-                    $select[] = \DB::raw('SUM('.$data['table'].'.'.$data['column'].') as '.$data['column']);
-                    break;
-
-                case "count":
-                    $select[] = \DB::raw('COUNT('.$data['table'].'.'.$data['column'].') as amount_of_'.$data['column']);
-                    break;
-            }
+            $select = $request->input('query_data');
         }
 
         if($request->input('query_filter')) {
 
-            foreach($request->input('query_filter') as $filter) {
-
-                switch($filter['type']) {
-
-                    case "limit":
-                        $limit = $filter['value'];
-                        break;
-
-                    case "group":
-                        $groupBy[] = $filter['table'].'.'.$filter['column'];
-                        break;
-
-                    case "equals":
-                        $filters[] = [$filter['table'].'.'.$filter['column'], '=', $filter['value']];
-                        break;
-                }
-            }
+            $filters = $request->input('query_filter');
         }
 
-        $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy);
+        $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy, 10);
 
         return json_encode($result);
     }
