@@ -49,7 +49,7 @@
         <div class="form-group row">
             <div class="col-sm-3">
                 <input class="form-control" id="x_axis" name="x_axis" placeholder="@lang('querybuilder.step4.y-axis')"
-                       required="required" value="{{ isset($data['x_axis']) ? $data['cache_duration'] : $labels[0] }}">
+                       required="required" value="{{ isset($data['x_axis']) ? $data['x_axis'] : $labels[0] }}">
             </div>
         </div>
 

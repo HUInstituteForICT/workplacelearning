@@ -137,32 +137,55 @@ class QueryBuilderController extends Controller
 
     private function step4($data) {
 
-        $table = $data['analysis_entity'];
+        switch($data['analysis_type']) {
 
-        $relations = [];
+            case 'builder':
 
-        if(!empty($data['analysis_relation'])) {
-            $relations = $data['analysis_relation'];
+                $table = $data['analysis_entity'];
+
+                $relations = [];
+
+                if(isset($data['analysis_relation'])) {
+                    $relations = $data['analysis_relation'];
+                }
+
+                $select = [];
+                $filters = [];
+                $groupBy = [];
+                $limit = null;
+
+                if(isset($data['query_data'])) {
+
+                    $select = $data['query_data'];
+                }
+
+                if(isset($data['query_filter'])) {
+
+                    $filters = $data['query_filter'];
+                }
+
+                $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy, 10);
+
+                $labels = array_keys(get_object_vars($result[0]));
+
+                break;
+
+            case 'template':
+
+                $result = 'query resultaat';
+                $labels[0] = 'standaard x';
+                $labels[1] = 'standaard y';
+
+                break;
+
+            case 'custom':
+
+                $result = 'query resultaat';
+                $labels[0] = 'standaard x';
+                $labels[1] = 'standaard y';
+
+                break;
         }
-
-        $select = [];
-        $filters = [];
-        $groupBy = [];
-        $limit = null;
-
-        if(isset($data['query_data'])) {
-
-            $select = $data['query_data'];
-        }
-
-        if(isset($data['query_filter'])) {
-
-            $filters = $data['query_filter'];
-        }
-
-        $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy, 10);
-
-        $labels = array_keys(get_object_vars($result[0]));
 
         return view("pages.analytics.builder.step4-chart", compact("data", "result", "labels"));
     }
@@ -291,7 +314,7 @@ class QueryBuilderController extends Controller
 
         $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy, 10);
 
-        return json_encode($result);
+        return $result;
     }
 
     public function getChart() {

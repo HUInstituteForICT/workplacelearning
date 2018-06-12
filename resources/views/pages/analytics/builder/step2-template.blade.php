@@ -199,5 +199,5 @@
 
 <div class="modal-footer">
     <button type="button" class="btn btn-seconday" onclick="Wizard.step(1);">Vorige</button>
-    <button type="button" class="btn btn-primary" onclick="Wizard.step(3);">Volgende</button>
+    <button type="button" class="btn btn-primary" onclick="Wizard.step(4);">Volgende</button>
 </div>
