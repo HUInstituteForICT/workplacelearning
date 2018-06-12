@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Analysis\QueryBuilder\Builder;
 use App\Analysis\QueryBuilder\Models;
+use App\DashboardChart;
 use App\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Analysis;
+use App\ChartType;
+use App\AnalysisChart;
+use App\Label;
 
 class QueryBuilderController extends Controller
 {
@@ -93,6 +96,11 @@ class QueryBuilderController extends Controller
             $request->session()->put('builder', array_replace_recursive($request->session()->get('builder'), $request->all()));
         }
 
+        if($id == 5) {
+
+            $this->step5($request->session()->get('builder'));
+        }
+
         return json_encode(["step" => $id]);
     }
 
@@ -116,9 +124,12 @@ class QueryBuilderController extends Controller
 
         $relations = [];
 
-        foreach($data['analysis_relation'] as $r) {
+        if(isset($data['analysis_relation'])) {
 
-            $relations[] = class_basename(get_class($mainModel->$r()->getRelated()));
+            foreach($data['analysis_relation'] as $r) {
+
+                $relations[] = class_basename(get_class($mainModel->$r()->getRelated()));
+            }
         }
 
         return view("pages.analytics.builder.step3-builder-filters", compact('data', 'relations'));
@@ -134,13 +145,88 @@ class QueryBuilderController extends Controller
             $relations = $data['analysis_relation'];
         }
 
-        $select = ['category.category_label', \DB::raw('SUM(LearningActivityProducing.duration)')];
-        $filters = [['WorkplaceLearningPeriod.cohort_id', '=', '1']];
-        $groupBy = ['category.category_label'];
+        $select = [];
+        $filters = [];
+        $groupBy = [];
+        $limit = null;
 
-        $result = (new Builder())->getQuery($table, $relations, $select, $filters, $groupBy);
+        if(isset($data['query_data'])) {
 
-        return view("pages.analytics.builder.step4-chart", compact("data", "result"));
+            $select = $data['query_data'];
+        }
+
+        if(isset($data['query_filter'])) {
+
+            $filters = $data['query_filter'];
+        }
+
+        $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy, 10);
+
+        $labels = array_keys(get_object_vars($result[0]));
+
+        return view("pages.analytics.builder.step4-chart", compact("data", "result", "labels"));
+    }
+
+    private function step5($data) {
+
+        $table = $data['analysis_entity'];
+
+        $relations = [];
+
+        if(!empty($data['analysis_relation'])) {
+            $relations = $data['analysis_relation'];
+        }
+
+        $select = [];
+        $filters = [];
+        $groupBy = [];
+        $limit = null;
+
+        if(isset($data['query_data'])) {
+
+            $select = $data['query_data'];
+        }
+
+        if(isset($data['query_filter'])) {
+
+            $filters = $data['query_filter'];
+        }
+
+        $query = (new Builder())->getQuery($table, $relations, $select, $filters, $groupBy);
+
+        $analysis = new Analysis();
+        $analysis->name = $data['name'];
+        $analysis->cache_duration = $data['cache_duration'];
+        $analysis->type_time = $data['cache_duration'];
+        $analysis->query = $query;
+        $analysis->save();
+
+        $type = ChartType::findOrFail(4);
+
+        $chart = new AnalysisChart();
+        $chart->analysis_id = $analysis->id;
+        $chart->type_id = $type->id;
+        $chart->label = $data['name'];
+
+        $saved = false;
+        \DB::transaction(function () use ($chart, $data, &$saved) {
+            if ($chart->save()) {
+                $chart->labels()->saveMany([
+                    new Label(['chart_id' => $chart->id, 'name' => $data['x_axis'], 'type' => 'x']),
+                    new Label(['chart_id' => $chart->id, 'name' => $data['y_axis'], 'type' => 'y'])
+                ]);
+                $saved = true;
+            }
+        });
+
+        $position = DB::table('dashboard_charts')->max('position') + 1;
+
+        $dchart = new DashboardChart();
+        $dchart->position = $position;
+        $dchart->chart_id = $chart->id;
+        $dchart->save();
+
+        return true;
     }
 
     public function getTables(Request $request) {
@@ -206,6 +292,13 @@ class QueryBuilderController extends Controller
         $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy, 10);
 
         return json_encode($result);
+    }
+
+    public function getChart() {
+
+        $chart = \App\AnalysisChart::find(7);
+        $chart->load('analysis', 'type', 'labels');
+        return view('pages.analytics.builder.step4-getchart', compact('chart'));
     }
 
     public function getColumnValues($table, $column)

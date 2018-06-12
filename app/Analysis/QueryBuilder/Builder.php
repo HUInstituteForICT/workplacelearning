@@ -116,6 +116,9 @@ class Builder
 
         $this->build($model, $relations, $select, $filters, $groupBy, $limit);
 
-        return $this->query->toSQL();
+        $query = $this->query->toSQL();
+        $bindings = $this->query->getBindings();
+
+        return vsprintf(str_replace("?", "%s", $query), $bindings);
     }
 }

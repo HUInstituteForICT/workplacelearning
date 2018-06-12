@@ -3,6 +3,7 @@
     <h4 class="modal-title">@lang('querybuilder.step4.title')</h4>
 </div>
 <div class="modal-body" style="height: 450px">
+
     <form id="wizard-form">
         <label for="name">@lang('querybuilder.step4.name'):</label><br>
         <div class="form-group row">
@@ -44,7 +45,24 @@
                 </select>
             </div>
         </div>
+
+        <div class="form-group row">
+            <div class="col-sm-3">
+                <input class="form-control" id="x_axis" name="x_axis" placeholder="@lang('querybuilder.step4.y-axis')"
+                       required="required" value="{{ isset($data['x_axis']) ? $data['cache_duration'] : $labels[0] }}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-3">
+                <input class="form-control" id="y_axis" name="y_axis" placeholder="@lang('querybuilder.step4.y-axis')"
+                       required="required" value="{{ isset($data['y_axis']) ? $data['y_axis'] : $labels[1] }}">
+            </div>
+        </div>
+
+        <div class="chart-container"></div>
     </form>
+
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-seconday" onclick="Wizard.step(3);">@lang('querybuilder.previous')</button>
