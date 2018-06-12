@@ -11,6 +11,7 @@ use App\Analysis\Producing\ProducingAnalysis;
 use App\Analysis\Producing\ProducingAnalysisCollector;
 use App\Cohort;
 use App\Repository\Eloquent\LikeRepository;
+use App\Repository\StudentTipViewRepositoryInterface;
 use App\Student;
 use App\Tips\ApplicableTipFetcher;
 use App\Tips\DataCollectors\Collector;
@@ -41,7 +42,7 @@ class ProducingAnalysisController extends Controller
             ->with('numdays', (new ProducingAnalysisCollector())->getFullWorkingDays("all", "all"));
     }
 
-    public function showDetail(Request $request, $year, $month, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
+    public function showDetail(Request $request, $year, $month, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, StudentTipViewRepositoryInterface $studentTipViewRepository)
     {
         // If no data or not enough data, redirect to analysis choice page
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
@@ -71,9 +72,28 @@ class ProducingAnalysisController extends Controller
 
         /** @var Student $student */
         $student = $request->user();
-        $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+
+        $evaluatedTips = $applicableEvaluatedTips->filter(function (EvaluatedTip $evaluatedTip) use (
+            $student,
+            $likeRepository
+        ) {
             $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
+
+            // If not liked by this student yet, allow it to be shown
+            if ($evaluatedTip->getTip()->likes->count() === 0) {
+                return true;
+            }
+
+            // If liked, allow, if disliked filter it out
+            return $evaluatedTip->getTip()->likes[0]->type === 1;
+        })->shuffle()->take(3);
+
+
+        // Register that the tip will be viewed by the student
+        $evaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $studentTipViewRepository) {
+            $studentTipViewRepository->createForTip($evaluatedTip->getTip(), $student);
         });
+
 
         // If there are no chains, there are no activities therefore redirect user somewhere else
         if (count($producingAnalysis->chains()) == 0) {
@@ -84,7 +104,7 @@ class ProducingAnalysisController extends Controller
         $analysisData = $producingAnalysis->analysisData;
 
         return view('pages.producing.analysis.detail')
-            ->with('evaluatedTips', $applicableEvaluatedTips->shuffle())
+            ->with('evaluatedTips', $evaluatedTips)
             ->with('producingAnalysis', $producingAnalysis)
             ->with('analysis', $analysisData)
             ->with('year', $year)

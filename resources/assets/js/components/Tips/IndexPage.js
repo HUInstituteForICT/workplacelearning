@@ -118,8 +118,9 @@ class IndexPage extends React.Component {
                         <tr>
                             <th>{Lang.get('react.tips.name')}</th>
                             <th>Trigger</th>
-                            <th>{Lang.get('react.tips.statistics')}</th>
                             <th>Likes</th>
+                            <th>{Lang.get('tips.views')}</th>
+                            <th>{Lang.get('tips.active')}</th>
                             <th/>
                         </tr>
                         </thead>
@@ -290,18 +291,23 @@ const statisticItemMapping = {
 const StatisticItemContainer = connect(statisticItemMapping.state, statisticItemMapping.dispatch)(statisticItem);
 
 const tipItem = ({tip, onClickDelete}) => {
-
     return <tr>
         <td>{tip.name}</td>
         <td>
             {tip.trigger === 'moment' && Lang.get('tips.type-moment') }
             {tip.trigger === 'statistic' && Lang.get('tips.type-statistic') }
         </td>
-        <td>{tip.trigger === 'statistic' && tip.coupled_statistics.length}</td>
         <td>
             <span
                 className="glyphicon glyphicon-thumbs-up"/>&nbsp;{tip.likes.filter(like => like.type === 1).length}&nbsp;/&nbsp;
             <span className="glyphicon glyphicon-thumbs-down"/>&nbsp;{tip.likes.filter(like => like.type === -1).length}
+        </td>
+        <td>
+            {tip.student_tip_views.length}
+        </td>
+        <td>
+            {tip.showInAnalysis && <span className="glyphicon glyphicon-ok" style={{color: 'green'}}/>}
+            {!tip.showInAnalysis && <span className="glyphicon glyphicon-remove" style={{color:'red'}}/>}
         </td>
         <td>
             <Link to={`/tip/${tip.id}`}>

@@ -3,13 +3,12 @@
 
 namespace App\Tips;
 
-
 use App\Cohort;
 use App\Student;
 use App\Tips\Statistics\Statistic;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Tip
@@ -27,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Tip extends Model
 {
-
     public $timestamps = false;
 
 
@@ -63,17 +61,22 @@ class Tip extends Model
         return $this->hasMany(TipCoupledStatistic::class);
     }
 
-    public function dislikedByStudent(Student $student)
+    public function dislikedByStudent(Student $student): bool
     {
         return $this->likes()->where('student_id', '=', $student->student_id)
             ->where('type', '=', -1)
             ->count() > 0;
     }
 
-    public function likedByStudent(Student $student)
+    public function likedByStudent(Student $student): bool
     {
         return $this->likes()->where('student_id', '=', $student->student_id)
                 ->where('type', '=', 1)
                 ->count() > 0;
+    }
+
+    public function studentTipViews(): HasMany
+    {
+        return $this->hasMany(StudentTipView::class);
     }
 }

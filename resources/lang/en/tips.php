@@ -4,6 +4,8 @@ return [
     'none' => 'Currently there are no personal tips for you',
     'education-programs' => 'Education programs',
     'education-programs-all' => 'All programs',
+    'views' => 'Views',
+    'active' => 'Active',
     'tips' => "Tips",
     'create-new' => "Create new tip",
     "edit" => "Edit tip",
