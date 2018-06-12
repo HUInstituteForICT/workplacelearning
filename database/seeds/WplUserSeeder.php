@@ -27,6 +27,9 @@ class WplUserSeeder extends Seeder
         \DB::select("GRANT SELECT ON resourcematerial TO 'wpldashboard'@'%';");
         \DB::select("GRANT SELECT ON status TO 'wpldashboard'@'%';");
         \DB::select("GRANT SELECT ON activityforcompetence TO 'wpldashboard'@'%';");
+        \DB::select("GRANT SELECT ON cohorts TO 'wpldashboard'@'%';");
+        \DB::select("GRANT SELECT ON resourceperson TO 'wpldashboard'@'%';");
+        \DB::select("GRANT SELECT ON timeslot TO 'wpldashboard'@'%';");
 
         \DB::select("GRANT SELECT (access_id) ON accesslog TO 'wpldashboard'@'%';");
         \DB::select("GRANT SELECT (session_id) ON accesslog TO 'wpldashboard'@'%';");

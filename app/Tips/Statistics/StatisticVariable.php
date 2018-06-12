@@ -3,11 +3,9 @@
 
 namespace App\Tips\Statistics;
 
-
-use App\Tips\DataCollectors\Collector;
-use App\Tips\DataCollectors\DataCollectorContainer;
 use App\Tips\Statistics\Filters\CategoryFilter;
 use App\Tips\Statistics\Filters\DifficultyFilter;
+use App\Tips\Statistics\Filters\ResourceMaterialFilter;
 use App\Tips\Statistics\Filters\ResourcePersonFilter;
 use App\Tips\Statistics\Filters\TimeslotFilter;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +36,13 @@ class StatisticVariable extends Model
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'timeslot_text']
                 ]
+            ],
+            [
+                'class'      => ResourceMaterialFilter::class,
+                'name'       => 'Theory / resource material',
+                'parameters' => [
+                    ['name' => 'Label', 'propertyName' => 'rm_label'],
+                ],
             ]
         ],
         'producing' => [
@@ -68,5 +73,4 @@ class StatisticVariable extends Model
     protected $casts = [
         'filters' => 'array',
     ];
-
 }
