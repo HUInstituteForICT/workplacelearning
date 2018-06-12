@@ -33,7 +33,9 @@ return array (
     
         'template' => 'Stap 2: Kies en vul een template in',
     
-        'custom' => 'Stap 2: Voer query in'
+        'custom' => 'Stap 2: Voer query in',
+        'no-data' => 'Geen data gevonden.',
+        'sql-error' => 'De SQL query is niet valide.'
     ],
 
     'step3' => [
