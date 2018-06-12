@@ -45,7 +45,7 @@
 
                         @foreach($evaluatedTips as $evaluatedTip)
                             <?php $tip = $evaluatedTip->getTip(); ?>
-                            @if($tipCounter <= 3 && ($tip->likes->count() === 0 || $tip->likes[0]->type === 1))
+
                                 <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
                                 <div class="row">
                                     @if($tip->likes->count() === 0)
@@ -67,7 +67,6 @@
                                 </div>
                                 <br/><br/>
                                 <?php $tipCounter++; ?>
-                            @endif
 
                         @endforeach
                     @else
