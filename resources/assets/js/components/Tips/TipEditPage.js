@@ -264,7 +264,7 @@ class TipEditPage extends React.Component {
             match,
             tip, coupledStatistics,
             statistics, educationProgramTypes, educationPrograms,
-            variableFilters, cohorts,
+            cohorts,
             coupleStatisticForm, updateCoupleStatisticFormProperty,
             coupledStatisticsInEditMode, storeNewCoupledStatistic,
             storeNewStatisticVariable, updateEntity,
@@ -422,15 +422,8 @@ class TipEditPage extends React.Component {
                            classNames={{'modal': "panel panel-default"}}>
                         <div className="panel-body" id="step-8">
                             <h3>{Lang.get('react.statistic.create-statistic')}</h3>
-                            <CreateForm variableFilters={variableFilters}
-                                        joyrideStepIndex={this.state.stepIndex}
-                                        educationProgramTypes={educationProgramTypes}
-                                        operators={[
-                                            {type: 0, label: "+"},
-                                            {type: 1, label: "-"},
-                                            {type: 2, label: "*"},
-                                            {type: 3, label: "/"},
-                                        ]}
+                            <CreateForm
+                                joyrideStepIndex={this.state.stepIndex}
                                         onCreated={newEntity => {
                                             storeNewStatisticVariable(normalize(newEntity, Schema.statistic));
                                             if (this.state.runJoyride) {

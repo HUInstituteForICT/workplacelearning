@@ -5,6 +5,8 @@ return [
     'education-programs' => 'Opleidingen',
     'education-programs-all' => 'Alle opleidingen',
     'tips' => "Tips",
+    'views' => 'Aantal keer bekeken',
+    'active' => 'Actief',
     'create-new' => "Maak nieuwe tip aan",
     "edit" => "Tip aanpassen",
     'all-tips' => "Alle tips",

@@ -3,13 +3,14 @@
 namespace App\Providers;
 
 use App\Repository\Eloquent\LikeRepository;
+use App\Repository\Eloquent\StudentTipViewRepository;
 use App\Repository\LikeRepositoryInterface;
+use App\Repository\StudentTipViewRepositoryInterface;
 use App\Tips\DataCollectors\Collector;
 use App\Tips\PeriodMomentCalculator;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,12 +38,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-            LikeRepositoryInterface::class,
-            LikeRepository::class
-        );
+        // Bind repository interfaces
+        $this->app->bind(LikeRepositoryInterface::class, LikeRepository::class);
+        $this->app->bind(StudentTipViewRepositoryInterface::class, StudentTipViewRepository::class);
 
-        $this->app->bind(Collector::class, function(Container $app) {
+
+
+        $this->app->bind(Collector::class, function (Container $app) {
             $request = $app->make(Request::class);
 
             $year = $request->get('year') === 'all' ? null : $request->get('year', null);
@@ -53,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
             return new Collector($year, $month, $learningPeriod);
         });
 
-        $this->app->bind(PeriodMomentCalculator::class, function(Container $app) {
+        $this->app->bind(PeriodMomentCalculator::class, function (Container $app) {
             $request = $app->make(Request::class);
             $learningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod() ?? new WorkplaceLearningPeriod();
 

@@ -52,7 +52,7 @@ class TipsController extends Controller
      */
     public function index()
     {
-        $tips = Tip::with('coupledStatistics', 'enabledCohorts', 'likes')->get();
+        $tips = Tip::with('coupledStatistics', 'enabledCohorts', 'likes', 'studentTipViews')->get();
         $statistics = $this->getStatistics();
 
         return [

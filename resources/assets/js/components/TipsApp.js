@@ -44,7 +44,6 @@ class TipsApp extends React.Component {
 
     render = () => <Switch>
         <Route exact path={'/tip/:id'} component={TipEditPage}/>
-        <Route exact path={'/statistic/:id'} component={UpdateForm} />
         <Route exact path={'/'} render={() => <IndexPage history={this.props.history} currentPage={this.state.currentPage} setCurrentPage={(page) => this.setState({currentPage: page})} />}/>
     </Switch>
 }
