@@ -290,12 +290,21 @@ const statisticItemMapping = {
 
 const StatisticItemContainer = connect(statisticItemMapping.state, statisticItemMapping.dispatch)(statisticItem);
 
-const tipItem = ({tip, onClickDelete}) => {
+const tipItem = ({tip, onClickDelete, coupledStatistics, statistics}) => {
+
+    let hasActingCoupled, hasProducingCoupled = false;
+    coupledStatistics.forEach(coupled => {
+        const stat = statistics[coupled.statistic];
+        if (stat.education_program_type === 'acting') hasActingCoupled = true;
+        if (stat.education_program_type === 'producing') hasProducingCoupled = true;
+    });
+
     return <tr>
         <td>{tip.name}</td>
         <td>
             {tip.trigger === 'moment' && Lang.get('tips.type-moment') }
-            {tip.trigger === 'statistic' && Lang.get('tips.type-statistic') }
+            {tip.trigger === 'statistic' &&
+            <span>{Lang.get('tips.type-statistic')} ({hasActingCoupled && 'acting'}{hasActingCoupled && hasProducingCoupled && ', '}{hasProducingCoupled && 'producing'})</span>}
         </td>
         <td>
             <span
@@ -321,8 +330,11 @@ const tipItem = ({tip, onClickDelete}) => {
 
 const TipItemMapping = {
     state: (state, props) => {
+        const tip = props.tip;
         return {
-            ...props
+            ...props,
+            coupledStatistics: tip.coupled_statistics.sort().map(id => state.entities.coupledStatistics[id]),
+            statistics: state.entities.statistics,
         }
     },
 
