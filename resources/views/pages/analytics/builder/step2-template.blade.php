@@ -74,7 +74,7 @@
                 if (paramType === 'column value') {
 
                     $.getJSON("{{ route('column-values') }}/" + tableName + "/" + columnName, function (data) {
-                        field += `<select class="form-control table-select">`;
+                        field += `<select name="${i}" class="form-control table-select">`;
 
                         $.each(data, function (key, val) {
                             if (val != null) {
@@ -91,7 +91,7 @@
                     if (paramType === 'column') {
                         let colNames = columnNames[tableName];
                         if (colNames != null) {
-                            field += `<select class="form-control table-select">`;
+                            field += `<select name="${i}" class="form-control table-select">`;
 
                             for (let j = 0; j < colNames.length; j++) {
                                 let colName = colNames[j];
@@ -100,7 +100,7 @@
                             field += `</select>`;
                         }
                     } else {
-                        field = `<input type="text" id="param-${i}-input" name="param-${i}-input"
+                        field = `<input type="text" id="param-${i}-input" name="${i}"
                                value="" placeholder="${paramType}" required="true" class="form-control field-${i}">`;
                     }
                     addParamRow(i, paramName, field);
@@ -125,14 +125,16 @@
         rowTemplate += `</row>`;
 
         paramGroup.append(rowTemplate);
-        paramGroup.on("change", '.field', onInputChange);
     }
+
+    paramGroup.on("change", '.field', onInputChange);
 
     function onInputChange() {
         let templateQuery = $('#tempQuery').val();
 
         paramGroup.children().find(".field").each(function () {
             if (this.children != null && this.children.length > 0) {
+                console.log(this.children[0].getAttribute("name"));
                 let val = $(this.children[0]).val();
                 let paramName = this.getAttribute("name");
                 if (val != null && paramName != null) {
