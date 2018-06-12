@@ -1,7 +1,8 @@
 import * as React from "react";
 import axios from "axios";
+import {connect} from "react-redux";
 
-export default class CreateForm extends React.Component {
+class CreateForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -212,6 +213,19 @@ export default class CreateForm extends React.Component {
 
         </div>;
     }
-
-
 }
+
+const mapping = {
+    state: state => ({
+        variableFilters: state.tipEditPageUi.variableFilters,
+        educationProgramTypes: state.entities.educationProgramTypes,
+        operators: [
+            {type: 0, label: "+"},
+            {type: 1, label: "-"},
+            {type: 2, label: "*"},
+            {type: 3, label: "/"},
+        ],
+    }),
+};
+
+export default connect(mapping.state, mapping.dispatch)(CreateForm);

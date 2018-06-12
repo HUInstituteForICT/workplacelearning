@@ -3,9 +3,10 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {normalize} from "normalizr";
 import {Schema} from "../../Schema";
-import {actions} from "./redux/entities";
+import {actions as entityActions, actions} from "./redux/entities";
 import axios from "axios";
 import Modal from "react-responsive-modal";
+import CreateForm from "../Statistics/CreateForm";
 
 class IndexPage extends React.Component {
 
@@ -18,10 +19,9 @@ class IndexPage extends React.Component {
             deleteTipId: null,
             deleteStatisticId: null,
             showStatisticDeleteModal: false,
+            showNewStatisticModal: false,
         }
     }
-
-    setPage = (page) => this.setState({page: page});
 
     deleteTip = () => {
         axios.delete(`/api/tips/${this.state.deleteTipId}`).then(response => {
@@ -135,7 +135,12 @@ class IndexPage extends React.Component {
                 this.props.currentPage === 'statistics' &&
                 <div>
                     <h3>{Lang.get('tips.statistics')}</h3>
-
+                    <button type="button" className="btn btn-primary"
+                            onClick={() => this.setState({showNewStatisticModal: true})}>
+                        {Lang.get('statistics.create-new')}
+                    </button>
+                    &nbsp;
+                    <br/><br/>
                     <div className="row">
 
                         <div className="col-lg-6">
@@ -165,6 +170,20 @@ class IndexPage extends React.Component {
                         })}
                         </tbody>
                     </table>
+
+                    <Modal open={this.state.showNewStatisticModal} little
+                           onClose={() => this.setState({showNewStatisticModal: false})}
+                           classNames={{'modal': "panel panel-default"}}>
+                        <div className="panel-body" id="step-8">
+                            <h3>{Lang.get('react.statistic.create-statistic')}</h3>
+                            <CreateForm
+                                onCreated={newEntity => {
+                                    this.props.storeNewStatisticVariable(normalize(newEntity, Schema.statistic));
+                                    this.setState({showNewStatisticModal: false});
+                                }}
+                            />
+                        </div>
+                    </Modal>
                 </div>
             }
 
@@ -218,6 +237,9 @@ const mapping = {
         newTip: entities => dispatch(actions.addEntities(entities)),
         removeTip: id => dispatch(actions.removeTip(id)),
         removeStatistic: id => dispatch(actions.removeStatistic(id)),
+        storeNewStatisticVariable: normalized => {
+            dispatch(entityActions.addEntities(normalized.entities));
+        },
     })
 };
 export default connect(mapping.state, mapping.dispatch)(IndexPage);
