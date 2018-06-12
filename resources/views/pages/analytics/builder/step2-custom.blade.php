@@ -15,13 +15,12 @@
                               class="form-control"></textarea>
                 </div>
 
-                <button class="btn btn-primary" style="float: right" type=""
+                <button class="btn btn-primary" style="float: right"
                         title="testQuery" id="testQuery">Test Query</button>
 
                 <div class="form-group">
                     <label for="dataFromQuery">{{Lang::get('custom_query.dataQuery')}}</label>
-                    <textarea readonly rows="10" cols="50" maxlength="5000" id="dataCustomQuery" name="dataCustomQuery"
-                              class="form-control"></textarea>
+                    <div id="dataCustomQuery"></div>
                 </div>
 
                 <!--https://stackoverflow.com/questions/5207160/what-is-a-csrf-token-what-is-its-importance-and-how-does-it-work/33829607#33829607-->
@@ -32,17 +31,13 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-seconday" onclick="Wizard.step(1);">Vorige</button>
-    <button type="button" class=" " onclick="Wizard.step(4);">Volgende</button>
+    <button type="button" class="btn btn-secondary" onclick="Wizard.step(1);">Vorige</button>
+    <button type="button" class="btn btn-primary " onclick="Wizard.step(4);">Volgende</button>
 </div>
 <script>
-    // Real time query result in veld Resultaat
-
     $("#testQuery").click(function(){
         var query = $('#customQuery').val();
-        $.post('/dashboard/builder/testQuery', query, function(data) {
-            $('#dataCustomQuery').val(JSON.stringify(data, null, 2));
-        });
+        $uitkomst = Wizard.executeCustomBuilderQuery(query);
 
         return false;
     });

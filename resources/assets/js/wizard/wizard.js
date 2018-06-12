@@ -172,7 +172,7 @@ var Wizard =  {
 
         request.done(function( response ) {
 
-            var responseData = JSON.parse(response);
+            var responseData = response;
 
             var headers = "";
 
@@ -197,6 +197,56 @@ var Wizard =  {
             }
 
             $('#query-result').html(`<table class="table table-striped">
+                    <thead>
+                        ${headers}
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>`);
+
+        });
+    },
+
+    executeCustomBuilderQuery: function(data) {
+
+        var request = $.ajax({
+
+            type: "POST",
+
+            url: "/dashboard/builder/testQuery",
+
+            data: data,
+
+        });
+
+        request.done(function( response ) {
+
+            var responseData = response;
+
+            var headers = "";
+
+            for(var header in responseData[0]) {
+
+                headers += `<th>${header}</th>`;
+            }
+
+            var rows = "";
+
+            for(var i = 0; i < responseData.length; i++) {
+
+                var row = "<tr>";
+
+                for(var column in responseData[i]) {
+
+                    row += `<td>${responseData[i][column]}</td>`;
+                }
+
+                row += "</tr>";
+                rows += row;
+            }
+
+            $('#dataCustomQuery').html(`<table class="table table-striped">
                     <thead>
                         ${headers}
                     </thead>
