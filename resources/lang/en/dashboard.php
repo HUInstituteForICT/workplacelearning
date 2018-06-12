@@ -52,6 +52,6 @@ return array(
     "description" => "Description",
     "details-title" => "Graph details",
 
-    "Analysis-removed-fail" => "Failed to remove analysis",
-    "Analysis-removed" => "Analysis removed."
+    "analysis-removed-fail" => "Failed to remove analysis",
+    "analysis-removed" => "Analysis removed."
 );
