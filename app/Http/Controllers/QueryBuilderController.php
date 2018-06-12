@@ -93,7 +93,7 @@ class QueryBuilderController extends Controller
 
         if($request->isMethod('post')) {
 
-            $request->session()->put('builder', array_replace_recursive($request->session()->get('builder'), $request->all()));
+            $request->session()->put('builder', array_replace($request->session()->get('builder'), $request->all()));
         }
 
         if($id == 5) {
@@ -197,7 +197,7 @@ class QueryBuilderController extends Controller
         $analysis = new Analysis();
         $analysis->name = $data['name'];
         $analysis->cache_duration = $data['cache_duration'];
-        $analysis->type_time = $data['cache_duration'];
+        $analysis->type_time = $data['type_time'];
         $analysis->query = $query;
         $analysis->save();
 
