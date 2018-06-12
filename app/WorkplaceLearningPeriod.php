@@ -49,7 +49,8 @@ class WorkplaceLearningPeriod extends Model
         'hours_per_day'
     ];
 
-    public function cohort() {
+    public function cohort()
+    {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
     }
 
@@ -159,7 +160,6 @@ class WorkplaceLearningPeriod extends Model
     public function getTimeslots()
     {
         return $this->timeslot()->orderBy('timeslot_id', 'asc')->get();
-
     }
 
     /**
