@@ -53,6 +53,6 @@ return array (
   "description" => "Beschrijving",
   "details-title" => "Grafiek details",
 
-    "Analysis-removed-fail" => "Niet gelukt om analyse te verwijderen",
-    "Analysis-removed" => "Analyse is verwijderd."
+    "analysis-removed-fail" => "Niet gelukt om analyse te verwijderen",
+    "analysis-removed" => "Analyse is verwijderd."
 );

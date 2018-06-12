@@ -108,18 +108,16 @@ class AnalyticsDashboardController extends Controller
 
     Public function destroy($id)
     {
-        $dbchart = $this->dchart->findOrFail($id); // het dashboard_chart object in de DB
-        $chartId = $dbchart->chart_id; // krijg chart object in de DB
-        $chart = $this->chart->findOrFail($chartId);
-        $analysisId = $chart->analysis_id;
-        $analysis = $this->analysis->findOrFail($analysisId);;
+        $dbchart = $this->dchart->findOrFail($id);
+        $chart = $this->chart->findOrFail($dbchart->chart_id);
+        $analysis = $this->analysis->findOrFail($chart->analysis_id);
 
         if (!$analysis->delete())
             return redirect()
                 ->back()
-                ->withErrors(['error', Lang::get('dashboard.Analysis-removed-fail')]);
+                ->withErrors(['error', Lang::get('dashboard.analysis-removed-fail')]);
 
         return redirect()->back()
-            ->with('success', Lang::get('dashboard.Analysis-removed'));
+            ->with('success', Lang::get('dashboard.analysis-removed'));
     }
 }
