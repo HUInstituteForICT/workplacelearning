@@ -7,6 +7,7 @@ import {actions as entityActions, actions} from "./redux/entities";
 import axios from "axios";
 import Modal from "react-responsive-modal";
 import CreateForm from "../Statistics/CreateForm";
+import UpdateForm from "../Statistics/UpdateForm";
 
 class IndexPage extends React.Component {
 
@@ -20,6 +21,8 @@ class IndexPage extends React.Component {
             deleteStatisticId: null,
             showStatisticDeleteModal: false,
             showNewStatisticModal: false,
+            showUpdateStatisticModal: false,
+            updateStatisticId: null,
         }
     }
 
@@ -166,7 +169,10 @@ class IndexPage extends React.Component {
                             // If an id contains p-p- or p-a- it is not a statistic of a tip but rather a statistic that can be chosen for coupling to a tip, thus skip
                             // Also skip predefined statistics that have embodied a Statistic (they are but mere wrappers, no content)
                             if (String(statistic.id).includes(['p-p-', 'p-a-']) || statistic.type === 'predefinedstatistic') return null;
-                            return <StatisticItemContainer onClickDelete={() => this.setState({showStatisticDeleteModal: true, deleteStatisticId: statistic.id})} key={statistic.id} statistic={statistic}/>
+                            return <StatisticItemContainer key={statistic.id} statistic={statistic}
+                                                           onClickDelete={() => this.setState({showStatisticDeleteModal: true, deleteStatisticId: statistic.id})}
+                                                           onClickUpdate={() => this.setState({showUpdateStatisticModal: true, updateStatisticId: statistic.id})}
+                            />
                         })}
                         </tbody>
                     </table>
@@ -182,6 +188,15 @@ class IndexPage extends React.Component {
                                     this.setState({showNewStatisticModal: false});
                                 }}
                             />
+                        </div>
+                    </Modal>
+
+                    <Modal open={this.state.showUpdateStatisticModal} little
+                           onClose={() => this.setState({showUpdateStatisticModal: false})}
+                           classNames={{'modal': "panel panel-default"}}>
+                        <div className="panel-body" id="step-8">
+                            <h3>{Lang.get('statistics.edit')}</h3>
+                            <UpdateForm id={this.state.updateStatisticId}/>
                         </div>
                     </Modal>
                 </div>
@@ -247,14 +262,12 @@ export default connect(mapping.state, mapping.dispatch)(IndexPage);
 
 
 
-const statisticItem = ({statistic, onClickDelete}) => {
+const statisticItem = ({statistic, onClickDelete, onClickUpdate}) => {
     return <tr>
         <td>{statistic.name}</td>
         <td>{statistic.education_program_type || '-'}</td>
         <td>
-            <Link to={`/statistic/${statistic.id}`}>
-                <span className="btn btn-primary">{Lang.get('react.edit')}</span>
-            </Link>
+            <button className="btn btn-primary" onClick={onClickUpdate}>{Lang.get('react.edit')}</button>
             &nbsp;&nbsp;&nbsp;
             <button className="btn btn-default" onClick={onClickDelete}>{Lang.get('react.delete')}</button>
         </td>

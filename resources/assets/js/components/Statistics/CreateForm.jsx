@@ -218,7 +218,6 @@ class CreateForm extends React.Component {
 const mapping = {
     state: state => ({
         variableFilters: state.tipEditPageUi.variableFilters,
-        educationProgramTypes: state.entities.educationProgramTypes,
         operators: [
             {type: 0, label: "+"},
             {type: 1, label: "-"},
