@@ -52,8 +52,9 @@
         let templates = JSON.parse('{!! json_encode($templates) !!}');
         let columnNames = JSON.parse('{!! json_encode($columnNames) !!}');
         let paramGroup = $('#paramGroup');
+        let tempSelect = $('.template-select');
 
-        $('.template-select').on("change", function () {
+        tempSelect.on("change", function () {
             let optionIndex = $(this).find('option:selected').attr("name");
             let query = templates[optionIndex]['query'];
             if (query != null) {
@@ -67,8 +68,9 @@
             let templateID = templates[optionIndex]['id'];
             $.getJSON("{{ route('template.parameters') }}/" + templateID, function (data) {
                 paramGroup.empty();
+                let length = data.length;
 
-                for (let i = 0; i < data.length; i++) {
+                for (let i = 0; i < length; i++) {
                     let param = data[i];
                     let paramName = param['name'];
                     let paramType = param['type_name'].toString().toLowerCase();
@@ -90,7 +92,7 @@
                             });
 
                             field += `</select>`;
-                            addParamRow(i, paramName, field);
+                            addParamRow(i, length, paramName, field);
                         });
 
                     } else {
@@ -109,15 +111,15 @@
                             field = `<input type="text" id="param-${i}-input" name="${i}"
                                value="" placeholder="${paramType}" required="true" class="form-control field-${i}">`;
                         }
-                        addParamRow(i, paramName, field);
+                        addParamRow(i, length, paramName, field);
                     }
                 }
             });
         });
 
-        $('.template-select').trigger("change");
+        tempSelect.trigger("change");
 
-        function addParamRow(i, paramName, field) {
+        function addParamRow(i, totalSize, paramName, field) {
             let rowTemplate =
                 `<div name="param${i}" class="row" style="margin-top: 10px">
                             <div class="col-md-6">
@@ -130,8 +132,11 @@
                         </div>`;
 
             rowTemplate += `</row>`;
-
             paramGroup.append(rowTemplate);
+
+            if (i === (totalSize - 1)) {
+                onInputChange();
+            }
         }
 
         paramGroup.on("change", '.field', onInputChange);
