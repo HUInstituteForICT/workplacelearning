@@ -62,6 +62,8 @@ class QueryBuilderController extends Controller
                                 $query = substr_replace($query, $parameter->name, $pos, strlen($needle));
                             }
                         }
+                        $query = str_replace(["\r", "\n"], '@', $query);
+                        $query = str_replace("'", "š", $query);
                         $template->query = $query;
                     }
                     $tables = DB::connection('dashboard')->select('SHOW TABLES');
@@ -69,13 +71,12 @@ class QueryBuilderController extends Controller
                         return $object->{'Tables_in_' . DB::connection('dashboard')->getDatabaseName()};
                     }, $tables);
 
-
                     $columnNames = [];
                     foreach ($tableNames as $table) {
                         $columnNames[$table] = DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
                     }
 
-                    return view("pages.analytics.builder.step2-template", compact("data", "templates", "tableNames", "columnNames")); break;
+                    return view("pages.analytics.builder.step2-template", compact("data", "templates", "columnNames")); break;
                 }
                 case 4: return $this->step4($data); break;
             }

@@ -12,7 +12,7 @@
                         <label for="chosen_template">Template</label>
                         <select class="form-control template-select" name="chosen_template" id="chosen_template">
                             @foreach($templates as $template)
-                                <option name="{{$loop->index}}" {{ isset($data['chosen_template'])
+                                <option value="{{$loop->index}}" name="{{$loop->index}}" {{ isset($data['chosen_template'])
                                 && $data['chosen_template'] == $template ? "selected" : "" }}>{{ $template->name }}</option>
                             @endforeach
                         </select>
@@ -49,14 +49,19 @@
 </form>
 <script>
     let templates = JSON.parse('{!! json_encode($templates) !!}');
-    let tableNames = JSON.parse('{!! json_encode($tableNames) !!}');
     let columnNames = JSON.parse('{!! json_encode($columnNames) !!}');
     let paramGroup = $('#paramGroup');
-    //TODO support tableName as parameter
 
     $('.template-select').on("change", function () {
         let optionIndex = $(this).find('option:selected').attr("name");
-        $('.query-area').val(templates[optionIndex]['query']);
+        let query = templates[optionIndex]['query'];
+        if (query != null) {
+            query = query.replace(/@@/g, '\n');
+            query = query.replace(/@/g, '\n');
+            query = query.replace(/š/g, "'");
+        }
+
+        $('.query-area').val(query);
 
         let templateID = templates[optionIndex]['id'];
         $.getJSON("{{ route('template.parameters') }}/" + templateID, function (data) {
@@ -134,7 +139,11 @@
 
         paramGroup.children().find(".field").each(function () {
             if (this.children != null && this.children.length > 0) {
-                console.log(this.children[0].getAttribute("name"));
+               /* let paramIndex = $('.template-select').find(":selected").attr("name");
+                if (paramIndex != null) {
+
+                }*/
+
                 let val = $(this.children[0]).val();
                 let paramName = this.getAttribute("name");
                 if (val != null && paramName != null) {
