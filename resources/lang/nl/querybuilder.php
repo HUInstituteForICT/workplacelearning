@@ -46,9 +46,9 @@ return array (
         'action-data' => 'Data',
         'action-sum' => 'Som',
         'action-count' => 'Aantal',
+        'action-avg' => 'Gemiddelde',
 
         'filter-equals' => 'Is gelijk aan',
-        'filter-between' => 'Is tussen',
         'filter-largerthan' => 'Groter dan',
         'filter-smallerthan' => 'Kleiner dan',
         'filter-groupby' => 'Groepeer op',

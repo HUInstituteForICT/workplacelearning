@@ -14,7 +14,7 @@ class Builder
 {
     private $query;
 
-    private function build($model, $relations, $selectData, $filterData, $groupBy, $limit = null) {
+    private function build($model, $relations, $selectData, $filterData, $sort = null, $limit = null) {
 
         $select = [];
         $filters = [];
@@ -34,7 +34,6 @@ class Builder
 
                 case "data":
                     $select[] = $tableModel.'.'.$data['column'];
-
                     break;
 
                 case "sum":
@@ -43,6 +42,10 @@ class Builder
 
                 case "count":
                     $select[] = \DB::raw('COUNT('.$tableModel.'.'.$data['column'].') as amount_of_'.$data['column']);
+                    break;
+
+                case "avg":
+                    $select[] = \DB::raw('AVG('.$tableModel.'.'.$data['column'].') as average_of_'.$data['column']);
                     break;
             }
         }
@@ -64,6 +67,14 @@ class Builder
 
                 case "equals":
                     $filters[] = [$tableModel.'.'.$filter['column'], '=', $filter['value']];
+                    break;
+
+                case "largerthan":
+                    $filters[] = [$tableModel.'.'.$filter['column'], '>', $filter['value']];
+                    break;
+
+                case "smallerthan":
+                    $filters[] = [$tableModel.'.'.$filter['column'], '<', $filter['value']];
                     break;
             }
         }
@@ -99,22 +110,27 @@ class Builder
             $this->query->where($filter[0], $filter[1], $filter[2]);
         }
 
+        if($sort != null) {
+
+            $this->query->orderBy($sort['field'], $sort['type']);
+        }
+
         if($limit != null) {
 
             $this->query->limit($limit);
         }
     }
 
-    public function getData($model, $relations, $select, $filters, $groupBy, $limit = null) {
+    public function getData($model, $relations, $select, $filters, $sort, $limit = null) {
 
-        $this->build($model, $relations, $select, $filters, $groupBy, $limit);
+        $this->build($model, $relations, $select, $filters, $sort, $limit);
 
         return $this->query->get();
     }
 
-    public function getQuery($model, $relations, $select, $filters, $groupBy, $limit = null) {
+    public function getQuery($model, $relations, $select, $filters, $sort, $limit = null) {
 
-        $this->build($model, $relations, $select, $filters, $groupBy, $limit);
+        $this->build($model, $relations, $select, $filters, $sort, $limit);
 
         $query = $this->query->toSQL();
         $bindings = $this->query->getBindings();

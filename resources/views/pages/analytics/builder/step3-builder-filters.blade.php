@@ -25,6 +25,7 @@
                     <option value="data">@lang('querybuilder.step3.action-data')</option>
                     <option value="sum">@lang('querybuilder.step3.action-sum')</option>
                     <option value="count">@lang('querybuilder.step3.action-count')</option>
+                    <option value="avg">@lang('querybuilder.step3.action-avg')</option>
                 </select>
             </div>
         </div>
@@ -38,10 +39,15 @@
                 <div class="col-md-1" style="width: 25px;"><a href="#" class="query-delete-filter" style="line-height: 34px; text-decoration: none;">X</a></div>
                 <div class="col-md-3">
                     <select class="form-control query-data-table" name="query_filter[1][table]">
-                        <option value="{{ $data['analysis_entity'] }}">@lang('querybuilder.'.$data['analysis_entity'])</option>
+                        <option value="{{ $data['analysis_entity'] }}" {{ ($filter['table'] == $data['analysis_entity']) ? 'selected' : '' }}>
+                            @lang('querybuilder.'.$data['analysis_entity'])
+                        </option>
+
                         @if(isset($relations))
                         @foreach($relations as $r)
-                            <option value="{{ $r }}">{{ Lang::get('querybuilder.'.$r) }}</option>
+                            <option value="{{ $r }}" {{ ($filter['table'] == $r) ? 'selected' : '' }}>
+                                {{ Lang::get('querybuilder.'.$r) }}
+                            </option>
                         @endforeach
                         @endif
                     </select>
@@ -51,12 +57,11 @@
                 </div>
                 <div class="col-md-2">
                     <select class="form-control query-filter-type" name="query_filter[1][type]">
-                        <option value="equals" selected>@lang('querybuilder.step3.filter-equals')</option>
-                        <option value="between">@lang('querybuilder.step3.filter-between')</option>
-                        <option value="largerthan">@lang('querybuilder.step3.filter-largerthan')</option>
-                        <option value="smallerthan">@lang('querybuilder.step3.filter-smallerthan')</option>
-                        <option value="group">@lang('querybuilder.step3.filter-groupby')</option>
-                        <option value="limit">@lang('querybuilder.step3.filter-limit')</option>
+                        <option value="equals" {{ ($filter['type'] == 'equals') ? 'selected' : '' }}>@lang('querybuilder.step3.filter-equals')</option>
+                        <option value="largerthan" {{ ($filter['type'] == 'largerthan') ? 'selected' : '' }}>@lang('querybuilder.step3.filter-largerthan')</option>
+                        <option value="smallerthan" {{ ($filter['type'] == 'smallerthan') ? 'selected' : '' }}>@lang('querybuilder.step3.filter-smallerthan')</option>
+                        <option value="group" {{ ($filter['type'] == 'group') ? 'selected' : '' }}>@lang('querybuilder.step3.filter-groupby')</option>
+                        <option value="limit" {{ ($filter['type'] == 'limit') ? 'selected' : '' }}>@lang('querybuilder.step3.filter-limit')</option>
                     </select>
                 </div>
                 <div class="col-md-2" style="width: 12%;">
