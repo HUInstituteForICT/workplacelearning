@@ -100,17 +100,38 @@ class QueryBuilderController extends Controller
 
             $data = $request->session()->get('builder');
 
-            $table = (isset($data['analysis_entity']) ? $data['analysis_entity'] : []);
-            $relations = (isset($data['analysis_relation']) ? $data['analysis_relation'] : []);
+            switch($data['analysis_type']) {
 
-            $select = (isset($data['query_data']) ? $data['query_data'] : []);;
-            $filters = (isset($data['query_filter']) ? $data['query_filter'] : []);;
-            $groupBy = [];
-            $limit = null;
+                case 'build':
+                    $table = (isset($data['analysis_entity']) ? $data['analysis_entity'] : []);
+                    $relations = (isset($data['analysis_relation']) ? $data['analysis_relation'] : []);
 
-            $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy)->toArray();
+                    $select = (isset($data['query_data']) ? $data['query_data'] : []);;
+                    $filters = (isset($data['query_filter']) ? $data['query_filter'] : []);;
+                    $groupBy = [];
+                    $limit = null;
 
-            $request->session()->put('builder', array_replace($request->session()->get('builder') , ['result' => $result]));
+                    $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy)->toArray();
+
+                    $request->session()->put('builder', array_replace($request->session()->get('builder') , ['result' => $result]));
+
+                break;
+
+                case 'template':
+
+                    $result = [];
+
+                    $request->session()->put('builder', array_replace($request->session()->get('builder') , ['result' => $result]));
+                    break;
+
+
+                case 'custom':
+
+                    $result = [];
+
+                    $request->session()->put('builder', array_replace($request->session()->get('builder') , ['result' => $result]));
+                    break;
+            }
         }
 
         if($id == 5) {
@@ -154,55 +175,22 @@ class QueryBuilderController extends Controller
 
     private function step4($data) {
 
-        $labels = [];
+        $labels = [0 => '', 1 => ''];
 
         switch($data['analysis_type']) {
 
             case 'build':
 
-                $table = $data['analysis_entity'];
-
-                $relations = [];
-
-                if(!empty($data['analysis_relation'])) {
-                    $relations = $data['analysis_relation'];
-                }
-
-                $select = [];
-                $filters = [];
-                $groupBy = [];
-                $limit = null;
-
-                if(isset($data['query_data'])) {
-
-                    $select = $data['query_data'];
-                }
-
-                if(isset($data['query_filter'])) {
-
-                    $filters = $data['query_filter'];
-                }
-
-                $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy, 10);
-
-                if(isset($result[0]))
-                    $labels = array_keys(get_object_vars($result[0]));
+                if(isset($data['result'][0]))
+                    $labels = array_keys(get_object_vars($data['result'][0]));
 
                 break;
 
             case 'template':
 
-                $result = 'query resultaat';
-                $labels[0] = 'standaard x';
-                $labels[1] = 'standaard y';
-
                 break;
 
             case 'custom':
-
-                $result = 'query resultaat';
-                $labels[0] = 'standaard x';
-                $labels[1] = 'standaard y';
 
                 break;
         }
