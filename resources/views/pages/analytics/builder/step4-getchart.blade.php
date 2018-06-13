@@ -1,5 +1,3 @@
-@extends('layout.HUdefault')
-@section('content')
 <canvas id="myChart"></canvas>
 
 <script>
@@ -12,16 +10,16 @@
 
         var ctxh = $('#myChart');
         var myChart = new Chart(ctxh, {
-            type: '{{ $chart->type->slug }}', // ideally have the type itself make something nice out?
+            type: '{{ $slug }}', // ideally have the type itself make something nice out?
             data: {
                 labels: [<?php
-                    $items = array_map(function ($key) use ($chart) {
-                        return "'" . substr($key->{$chart->x_label->name}, 0, 33) . "'";
-                    }, $chart->analysis->data['data']);
+                    $items = array_map(function ($key) use ($x_label) {
+                        return "'" . substr($key->{$x_label}, 0, 33) . "'";
+                    }, $result);
                     echo join(', ', $items);
                     ?>],
                 datasets: [{
-                    label: '{{ $chart->label }}',
+                    label: '{{ $title }}',
                     backgroundColor: [
                         'rgba(255,99,132,1)',
                         'rgba(54, 162, 235, 1)',
@@ -43,9 +41,9 @@
                         'rgba(255, 159, 64, 1)',
                     ],
                     data: [<?php
-                        $x_items = array_map(function ($key) use ($chart) {
-                            return "'" . $key->{$chart->y_label->name} . "'";
-                        }, $chart->analysis->data['data']);
+                        $x_items = array_map(function ($key) use ($y_label) {
+                            return "'" . $key->{$y_label} . "'";
+                        }, $result);
                         echo join(', ', $x_items);
                         ?>]
                 }]
@@ -53,7 +51,7 @@
             options: {
                 tooltips: {
                     callbacks: {
-                        @if($chart->type->slug == 'pie')
+                        @if($slug == 'pie')
                         label: function(tooltipItem, data) {
                             var dataset = data.datasets[tooltipItem.datasetIndex];
                             var meta = dataset._meta[Object.keys(dataset._meta)[0]];
@@ -67,7 +65,7 @@
                         },
                         @endif
                         scales: {
-                            @if($chart->type->slug != 'pie')
+                            @if($slug != 'pie')
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true
@@ -81,4 +79,3 @@
         })
     })()
 </script>
-@stop

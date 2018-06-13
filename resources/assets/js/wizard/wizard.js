@@ -122,6 +122,19 @@ var Wizard =  {
         $('.query-data-table').change();
     },
 
+    step_4: function() {
+
+        $('#type_id, #x_axis, #y_axis').on('change', function() {
+
+            $('.chart-container').load('https://localhost/dashboard/builder/chart', {
+                'type': $('#type_id').val(),
+                'x':  $('#x_axis').val(),
+                'y':  $('#y_axis').val(),
+                'name': $('#name').val()
+            });
+        });
+    },
+
     resetListeners: function() {
 
         $('.query-data-table').off('change');

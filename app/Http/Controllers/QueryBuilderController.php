@@ -96,6 +96,23 @@ class QueryBuilderController extends Controller
             $request->session()->put('builder', array_replace($request->session()->get('builder'), $request->all()));
         }
 
+        if($id == 4) {
+
+            $data = $request->session()->get('builder');
+
+            $table = (isset($data['analysis_entity']) ? $data['analysis_entity'] : []);
+            $relations = (isset($data['analysis_relation']) ? $data['analysis_relation'] : []);
+
+            $select = (isset($data['query_data']) ? $data['query_data'] : []);;
+            $filters = (isset($data['query_filter']) ? $data['query_filter'] : []);;
+            $groupBy = [];
+            $limit = null;
+
+            $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy)->toArray();
+
+            $request->session()->put('builder', array_replace($request->session()->get('builder') , ['result' => $result]));
+        }
+
         if($id == 5) {
 
             $this->step5($request->session()->get('builder'));
@@ -137,15 +154,17 @@ class QueryBuilderController extends Controller
 
     private function step4($data) {
 
+        $labels = [];
+
         switch($data['analysis_type']) {
 
-            case 'builder':
+            case 'build':
 
                 $table = $data['analysis_entity'];
 
                 $relations = [];
 
-                if(isset($data['analysis_relation'])) {
+                if(!empty($data['analysis_relation'])) {
                     $relations = $data['analysis_relation'];
                 }
 
@@ -166,7 +185,8 @@ class QueryBuilderController extends Controller
 
                 $result = (new Builder())->getData($table, $relations, $select, $filters, $groupBy, 10);
 
-                $labels = array_keys(get_object_vars($result[0]));
+                if(isset($result[0]))
+                    $labels = array_keys(get_object_vars($result[0]));
 
                 break;
 
@@ -187,7 +207,9 @@ class QueryBuilderController extends Controller
                 break;
         }
 
-        return view("pages.analytics.builder.step4-chart", compact("data", "result", "labels"));
+        $chartTypes = ChartType::whereNotNull('slug')->get();
+
+        return view("pages.analytics.builder.step4-chart", compact("data", "result", "labels", "chartTypes"));
     }
 
     private function step5($data) {
@@ -224,11 +246,9 @@ class QueryBuilderController extends Controller
         $analysis->query = $query;
         $analysis->save();
 
-        $type = ChartType::findOrFail(4);
-
         $chart = new AnalysisChart();
         $chart->analysis_id = $analysis->id;
-        $chart->type_id = $type->id;
+        $chart->type_id = $data['type_id'];
         $chart->label = $data['name'];
 
         $saved = false;
@@ -317,11 +337,25 @@ class QueryBuilderController extends Controller
         return $result;
     }
 
-    public function getChart() {
+    public function getChart(Request $request) {
 
-        $chart = \App\AnalysisChart::find(7);
-        $chart->load('analysis', 'type', 'labels');
-        return view('pages.analytics.builder.step4-getchart', compact('chart'));
+        $result = $request->session()->get('builder')['result'];
+
+        $chartType = ChartType::find($request->input('type'));
+
+        $slug = 'pie';
+
+        if($chartType) {
+
+            $slug = $chartType->slug;
+        }
+
+        $x_label = $request->input('x');
+        $y_label = $request->input('y');
+
+        $title = $request->input('name');
+
+        return view('pages.analytics.builder.step4-getchart', compact('slug', 'x_label', 'y_label', 'result', 'title'));
     }
 
     public function getColumnValues($table, $column)

@@ -75,7 +75,9 @@ return array (
         'graph-type' => 'Kies een grafiek',
         'pie' => 'Cirkeldiagram',
         'bar' => 'Staafdiagram',
-        'line' => 'Lijngrafiek'
+        'line' => 'Lijngrafiek',
+        'x-axis' => 'X-as',
+        'y-axis' => 'Y-as'
     ],
 
     'next' => 'Volgende',

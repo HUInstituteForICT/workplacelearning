@@ -16,11 +16,11 @@
 
         <label for="type_id">@lang('querybuilder.step4.cache'):</label><br>
         <div class="form-group row">
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <input type="number" class="form-control" id="cache_duration" name="cache_duration" placeholder="@lang('querybuilder.step4.cache-caption')"
                        required="required" value="{{ isset($data['cache_duration']) ? $data['cache_duration'] : "" }}">
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <select class="form-control" name="type_time" id="type_time" required="required" title="Time type">
                     <option></option>
                     <option value="seconds" {{ isset($data['type_time']) && $data['type_time'] == "seconds" ? "checked" : "" }}>@lang('querybuilder.step4.seconds')</option>
@@ -39,28 +39,42 @@
             <div class="col-md-3">
                 <select class="form-control" id="type_id" name="type_id" required="required">
                     <option></option>
-                    <option value="pie" {{ isset($data['type_id']) && $data['type_id'] == "pie" ? "checked" : "" }}>@lang('querybuilder.step4.pie')</option>
-                    <option value="bar" {{ isset($data['type_id']) && $data['type_id'] == "bar" ? "checked" : "" }}>@lang('querybuilder.step4.bar')</option>
-                    <option value="line" {{ isset($data['type_id']) && $data['type_id'] == "line" ? "checked" : "" }}>@lang('querybuilder.step4.line')</option>
+                    @foreach($chartTypes as $type)
+                        <option value="{{ $type->id }}" {{ isset($data['type_id']) && $data['type_id'] == $type->id ? "checked" : "" }}>@lang('querybuilder.step4.'.$type->slug)</option>
+                    @endforeach
                 </select>
             </div>
         </div>
-
         <div class="form-group row">
             <div class="col-sm-3">
-                <input class="form-control" id="x_axis" name="x_axis" placeholder="@lang('querybuilder.step4.y-axis')"
-                       required="required" value="{{ isset($data['x_axis']) ? $data['x_axis'] : $labels[0] }}">
-            </div>
-        </div>
+                <label for="type_id">@lang('querybuilder.step4.x-axis'):</label><br>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <select class="form-control" id="x_axis" name="x_axis"
+                                required="required" value="{{ isset($data['x_axis']) ? $data['x_axis'] : $labels[0] }}">
+                            @foreach($labels as $label)
+                                <option value="{{ $label }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
 
-        <div class="form-group row">
-            <div class="col-sm-3">
-                <input class="form-control" id="y_axis" name="y_axis" placeholder="@lang('querybuilder.step4.y-axis')"
-                       required="required" value="{{ isset($data['y_axis']) ? $data['y_axis'] : $labels[1] }}">
+                <label for="type_id">@lang('querybuilder.step4.y-axis'):</label><br>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <select class="form-control" id="y_axis" name="y_axis"
+                               required="required" value="{{ isset($data['y_axis']) ? $data['y_axis'] : $labels[1] }}">
+                            @foreach($labels as $label)
+                                <option value="{{ $label }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
+        <div class="col-sm-5">
+            <div class="chart-container" style="width: 300px; height: 200px;"></div>
         </div>
-
-        <div class="chart-container"></div>
+        </div>
     </form>
 
 </div>

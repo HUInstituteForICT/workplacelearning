@@ -112,7 +112,7 @@ Route::group([
             Route::get('/builder/columns/{table?}', 'QueryBuilderController@getColumns')->name('querybuilder.columns');
             Route::get('/builder/relations/{model}', 'QueryBuilderController@getRelations')->name('querybuilder.relations');
             Route::post('/builder/query', 'QueryBuilderController@executeQuery')->name('querybuilder.query');
-            Route::get('/builder/chart', 'QueryBuilderController@getChart')->name('querybuilder.chart');
+            Route::post('/builder/chart', 'QueryBuilderController@getChart')->name('querybuilder.chart');
             Route::post('/builder/testQuery', 'QueryBuilderController@testQuery')->name('querybuilder.test');
         });
 
