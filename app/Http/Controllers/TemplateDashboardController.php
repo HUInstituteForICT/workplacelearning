@@ -68,19 +68,18 @@ class TemplateDashboardController extends Controller
 
         $templateID = $request->input('templateID');
         $name = $request->input('name');
+        $description = $request->input('description');
+        if ($description == null) {
+            $description = "";
+        }
         $query = $request->input('query');
 
         if ($templateID != null) {
             $template = (new \App\Template)->find($templateID);
 
             if ($template != null) {
-                $template->update(['name' => $name, 'query' => $query]);
-
-                $parameters = $template->getParameters();
-                foreach ($parameters as $param) {
-                    $param->delete();
-                }
-
+                $template->update(['name' => $name, 'description' => $description]);
+                $template->update(['name' => $name, 'description' => $description, 'query' => $query]);
                 $this->saveParameters($data, $template);
             }
 
@@ -88,7 +87,7 @@ class TemplateDashboardController extends Controller
                 ->with('success', Lang::get('template.template_updated'));
         }
 
-        $template = new Template(['name' => $name, 'query' => $query]);
+        $template = new Template(['name' => $name, 'description' => $description, 'query' => $query]);
         $template->save();
         $this->saveParameters($data, $template);
 
@@ -98,19 +97,63 @@ class TemplateDashboardController extends Controller
 
     private function saveParameters($data, $template)
     {
+        $existingParams = $template->getParameters();
+
+        if ($existingParams != null && count($existingParams) > count($data)) {
+            $ids = array_map(function ($values) {
+                $values = array_values($values);
+                return intval($values[0]);
+            }, $data);
+            Log::debug($ids);
+
+            foreach ($existingParams as $param) {
+                $id = $param['id'];
+                if (!in_array($id, $ids, false)) {
+                    $param->delete();
+                    Log::debug("Deleting:");
+                    Log::debug(json_encode($param));
+                }
+            }
+        }
+
+        $parameters = [];
         foreach ($data as $values) {
-            while (count($values) < 4) {
+            while (count($values) < 5) {
                 array_push($values, null);
             }
             $values = array_values($values);
 
-            $parameter = new Parameter([
-                'name' => $values[0],
-                'type_name' => $values[1],
-                'table' => $values[2],
-                'column' => $values[3]
-            ]);
-            $template->parameters()->save($parameter);
+            $id = intval($values[0]);
+            if ($id != null && $id > 0) {
+                $existingPar = (new \App\Parameter)->find($id);
+                if ($existingPar != null) {
+                    $existingPar->update([
+                        'name' => $values[1],
+                        'type_name' => $values[2],
+                        'table' => $values[3],
+                        'column' => $values[4]
+                    ]);
+                    Log::debug('not null, updating');
+                    continue;
+                }
+
+            } else {
+                $parameter = new Parameter([
+                    'id' => $values[0],
+                    'template_id' => $template->id,
+                    'name' => $values[1],
+                    'type_name' => $values[2],
+                    'table' => $values[3],
+                    'column' => $values[4]
+                ]);
+
+                Log::debug(json_encode($parameter));
+                array_push($parameters, $parameter);
+            }
+        }
+
+        if (count($parameters) > 0) {
+            $template->parameters()->saveMany($parameters);
         }
     }
 
@@ -122,11 +165,14 @@ class TemplateDashboardController extends Controller
         ]);
 
         $name = $request->input('name');
+        $description = $request->input('description', '');
         $query = $request->input('query');
 
         $template = (new \App\Template)->find($id);
-        if (!$template->update(['name' => $name,
-            'query' => $query])) {
+        if (!$template->update(
+            ['name' => $name,
+                'description' => $description,
+                'query' => $query])) {
             return redirect()
                 ->back()
                 ->withInput()

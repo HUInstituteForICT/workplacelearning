@@ -20,15 +20,17 @@
                         <label for="name">{{Lang::get('template.name')}}</label>
                         <input type="text" id="name" name="name" class="form-control"
                                value="{{ $template == null ? old('name') : $template->name}}">
-                    </div>
 
-                    <div class="form-group">
-                        <label for="query">Query</label>
+                        <label for="description" style="margin-top: 20px">{{Lang::get('template.description')}}</label>
+                        <textarea rows="4" cols="50" maxlength="500" id="description" name="description"
+                                  class="form-control">{{ $template == null ? old('description') : $template->description}}</textarea>
+
+                        <label for="query" style="margin-top: 20px">Query</label>
                         <textarea rows="4" cols="50" onkeyup="loadParams()" maxlength="1000" id="query" name="query"
                                   class="form-control">{{ $template == null ? old('query') : $template->query}}</textarea>
                     </div>
 
-                    <div class="form" id="paramGroup" style="margin-bottom: 20px">
+                    <div class="form" id="paramGroup" style="margin: 20px 0px 20px 0px;">
                         {{--JS will load parameters here--}}
                     </div>
 
@@ -60,7 +62,7 @@
 
                 for (let i = 0; i < parameters.length; i++) {
                     let param = parameters[i];
-                    addParamRow(i, param['name'], param['type_name'], param['table'], param['column']);
+                    addParamRow(i, param['name'], param['type_name'], param['table'], param['column'], param['id']);
                 }
             }
 
@@ -88,7 +90,7 @@
             }
         }
 
-        function addParamRow(i, name, type_name, table, column) {
+        function addParamRow(i, name, type_name, table, column, id = -1) {
             let options = [];
 
             if (type_name != null) {
@@ -102,7 +104,10 @@
                 options.push(`<option value="${type}">${type}</option>`);
             }
 
-            let rowTemplate = `<div name="param${i}" class="row">
+
+            let rowTemplate = `<div name="param${i}" class="row" style="margin-top: 10px">
+                                    <input type="hidden" name="data[${i}]['id']" class="form-control" value="${id}">
+
                                     <div class="col-md-3">
                                         <input type="text" name="data[${i}]['parameter']" placeholder="param ${i + 1}" id="param${i}" required="true" class="form-control">
                                     </div>

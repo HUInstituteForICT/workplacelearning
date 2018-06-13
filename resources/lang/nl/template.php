@@ -7,6 +7,7 @@ return [
     'create_button' => 'Maak een template',
     'save' => 'Opslaan',
     'name' => 'Naam',
+    'description' => 'Beschrijving',
     'template_create' => 'Template maken',
     'edit_template' => 'Template aanpassen',
     'template_saved' => 'De template is opgeslagen',

@@ -7,6 +7,7 @@ return [
     'create_button' => 'Create a template',
     'save' => 'Save',
     'name' => 'Name',
+    'description' => 'Description',
     'template_create' => 'Create template',
     'edit_template' => 'Edit template',
     'template_saved' => 'The template has been saved',
