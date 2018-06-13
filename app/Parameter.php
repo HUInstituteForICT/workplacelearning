@@ -8,7 +8,7 @@ class Parameter extends Model
 {
 
     protected $table = 'parameters';
-    public $primaryKey = 'id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',

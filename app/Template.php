@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Template extends Model
 {
     protected $table = 'templates';
-    public $primaryKey = 'id';
+    protected $primaryKey = 'id';
     public $parameters = [];
 
     protected $fillable = [
         'name',
+        'description',
         'query'
     ];
 
