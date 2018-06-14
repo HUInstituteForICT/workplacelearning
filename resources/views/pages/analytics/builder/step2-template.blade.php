@@ -18,7 +18,11 @@
                         </select>
                     </div>
 
-                    <p style="font-weight: bold;">Template Query</p>
+                    {{--<p style="font-weight: bold;">{{Lang::get('template.description')}}</p>--}}
+                    <textarea disabled rows="4" cols=4 maxlength="500" id="tempDesc" name="tempDesc"
+                              class="form-control"></textarea>
+
+                    <p style="font-weight: bold; margin-top: 15px;">Template Query</p>
                     <div class="test-query">
                         <textarea disabled rows="4" cols=100 maxlength="1000" id="tempQuery" name="tempQuery"
                                   class="form-control query-area"></textarea>
@@ -65,7 +69,10 @@
 
             $('.query-area').val(query);
 
-            let templateID = templates[optionIndex]['id'];
+            let template = templates[optionIndex];
+            let templateID = template['id'];
+            $('#tempDesc').val(template['description']);
+
             $.getJSON("{{ route('template.parameters') }}/" + templateID, function (data) {
                 paramGroup.empty();
                 let length = data.length;
