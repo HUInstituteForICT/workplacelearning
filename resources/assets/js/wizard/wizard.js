@@ -126,7 +126,7 @@ var Wizard =  {
 
         $('#type_id, #x_axis, #y_axis').on('change', function() {
 
-            $('.chart-container').load('https://localhost/dashboard/builder/chart', {
+            $('.chart-container').load('/dashboard/builder/chart', {
                 'type': $('#type_id').val(),
                 'x':  $('#x_axis').val(),
                 'y':  $('#y_axis').val(),
