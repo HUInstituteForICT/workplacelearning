@@ -15,15 +15,21 @@
 
     $.getJSON("{{ route('charts-details', $idLabel) }}", function (data) {
         if (data.length <= 0) {
-            $('#values').append(`<p> {{Lang::get('dashboard.no-descriptions')}} </P>`);
+            $('#values').append(`<p> @lang('dashboard.no-descriptions') </p>`);
             return;
         }
+
+        let duration = '';
+
+        if(data[0]['duration'] != undefined)
+            duration = `<th scope="col"> @lang('dashboard.hour') </th>`;
+
         $('#values').append(
             `<table class="table" id="table">
                  <thead>
                     <tr>
-                      <th scope="col"> {{Lang::get('dashboard.description')}} </th>
-                      <th scope="col"> {{Lang::get('dashboard.hour')}} </th>
+                      <th scope="col"> @lang('dashboard.description') </th>
+                      ${duration}
                     </tr>
                   </thead>
                   <tbody id="table_body">
@@ -36,12 +42,18 @@
             let desc = entry['description'];
             let duration = entry['duration'];
 
-            $('#table_body').append(
-                `<tr>
+            let template = `<tr>
                     <td>${desc}</td>
                     <td>${duration}</td>
-                </tr>`
-            );
+                </tr>`;
+
+            if(duration === undefined) {
+                template = `<tr>
+                    <td>${desc}</td>
+                </tr>`;
+            }
+
+            $('#table_body').append(template);
         });
     });
 

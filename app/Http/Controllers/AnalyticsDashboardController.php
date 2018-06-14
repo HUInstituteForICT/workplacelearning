@@ -38,6 +38,13 @@ class AnalyticsDashboardController extends Controller
             return $row['category_label'];
         }, $labels);
 
+        $tlabels = \App\TimeSlot::all()->toArray();
+        $tlabels = array_map(function ($row) {
+            return $row['timeslot_text'];
+        }, $tlabels);
+
+        $labels = array_merge($labels, $tlabels);
+
         $charts = $this->dchart
             ->with('chart.type', 'chart.labels')
             ->orderBy('position', 'asc')

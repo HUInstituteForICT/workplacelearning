@@ -96,7 +96,7 @@
                 }
             });
             let analysisIDs = [];
-
+            let labels = JSON.parse('{!! json_encode($labels) !!}');
             @foreach($charts as $key => $dchart)<?php $chart = $dchart->chart ?>
             analysisIDs.push(JSON.parse('{!! json_encode($charts[$key]) !!}')['chart']['analysis_id']);
 
@@ -161,7 +161,6 @@
                     },
 
                     onClick : function (event, array) {
-                        let labels = JSON.parse('{!! json_encode($labels) !!}');
 
                         if (array[0]) {
                             let index = array[0]['_index'];

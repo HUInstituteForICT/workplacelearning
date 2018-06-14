@@ -184,38 +184,60 @@ class AnalyticsChartController extends Controller
 
                 // Trying to get the EducationProgramType from the query
                 $programTypeID = null;
-                foreach ($queryArray as $part) {
-                    $index = stripos($part, 'learningactivityproducing');
-                    if ($index > -1) {
+
+                $cohort = null;
+
+                for ($i = 0; $i < count($queryArray); $i++) {
+                    $index = stripos($queryArray[$i], 'FROM');
+                    if ($index > -1 && strtolower($queryArray[$i+1]) == 'learningactivityproducing') {
                         $programTypeID = 2;
                         break;
                     }
-                    $index = stripos($part, 'learningactivityacting');
-                    if ($index > -1) {
+                    $index = stripos($queryArray[$i], 'FROM');
+                    if ($index > -1 && strtolower($queryArray[$i+1]) == 'learningactivityacting') {
                         $programTypeID = 1;
                         break;
                     }
+
+                    $index = stripos($queryArray[$i], 'cohort_id');
+
+                    if ($index > -1 && $queryArray[$i+1] == '=' && is_numeric($queryArray[$i+2])) {
+
+                        $cohort = $queryArray[$i+2];
+                    }
                 }
+
                 if ($programTypeID == null || $programTypeID == 2) {
                     $id = (new \App\Category)->where('category_label', $label)
-                        ->whereNull("ep_id")->orWhere("ep_id", $programTypeID)
-                        ->first();
+                        ->where(function ($query) use ($cohort) {
+                            if($cohort != null)
+                                $query->where('cohort_id', $cohort);
 
-                    if ($id->category_id != null) {
-                        $details = (new LearningActivityProducing)->where('category_id', $id->category_id)->get(['description', 'duration']);
+                        })
+                        ->pluck('category_id')->toArray();
+
+                    if (!empty($id)) {
+                        $details = (new LearningActivityProducing)->whereIn('category_id', $id)->get(['description', 'duration']);
+
                         return $details;
                     }
                 }
-              /*  else {
+                else {
 
-                    $id = (new \App\LearningGoal())->where('learninggoal_label', $label)
-                        ->where("ep_id", $programTypeID)
-                        ->first();
+                    $id = (new \App\Timeslot)->where('timeslot_text', $label)
+                        ->where(function ($query) use ($cohort) {
+                            if($cohort != null)
+                                $query->where('cohort_id', $cohort);
 
-                    if ($id->category_id != null) {
-                        $details = (new LearningActivityActing())->where('category_id', $id->category_id)
+                        })
+                        ->pluck('timeslot_id')->toArray();
+
+                    if (!empty($id)) {
+                        $details = (new LearningActivityActing)->whereIn('timeslot_id', $id)->get(['situation as description']);
+
+                        return $details;
                     }
-                }*/
+                }
             }
         }
         return [];
