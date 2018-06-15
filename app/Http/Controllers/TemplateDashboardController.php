@@ -48,7 +48,19 @@ class TemplateDashboardController extends Controller
                 $parameters = [];
             }
         }
-        return view('pages.analytics.template.create_template', compact('paramTypes', 'typeNames', 'template', 'parameters'));
+
+        $tables = DB::connection('dashboard')->select('SHOW TABLES');
+        $tableNames = array_map(function ($object) {
+            return $object->{'Tables_in_' . DB::connection('dashboard')->getDatabaseName()};
+        }, $tables);
+
+        $columnNames = [];
+        foreach ($tableNames as $table) {
+            $columnNames[$table] = DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
+        }
+
+        return view('pages.analytics.template.create_template', compact('paramTypes', 'typeNames', 'template', 'parameters',
+            'tableNames', 'columnNames'));
     }
 
     public function save(Request $request)

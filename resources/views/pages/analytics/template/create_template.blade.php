@@ -50,8 +50,10 @@
 
     <script>
         let parameters = JSON.parse('{!! json_encode($parameters) !!}');
-        let lastCount = 0;
         let dataTypes = JSON.parse('{!! json_encode($typeNames) !!}');
+        let columnNames = JSON.parse('{!! json_encode($columnNames) !!}');
+        let tableNames = JSON.parse('{!! json_encode($tableNames) !!}');
+        let lastCount = 0;
         let paramsLoaded = false;
         loadParams();
 
@@ -104,7 +106,6 @@
                 options.push(`<option value="${type}">${type}</option>`);
             }
 
-
             let rowTemplate = `<div name="param${i}" class="row" style="margin-top: 10px">
                                     <input type="hidden" name="data[${i}]['id']" class="form-control" value="${id}">
 
@@ -134,30 +135,30 @@
                 let selectName = 'table-data-' + i;
                 $('.' + name).append(`<select name="data[${i}]['table']" class="form-control table-select ${selectName}" name="${selectName}"></select>`);
 
-                $.getJSON("{{ route('template.tables') }}", function (data) {
-                    let items = "<option id='" + table + "'>" + table + "</option>";
+                let items = "<option id='" + table + "'>" + table + "</option>";
 
-                    $.each(data, function (key, val) {
-                        if (val !== table)
-                            items += "<option id='" + val + "'>" + val + "</option>";
-                    });
-                    $("." + selectName).append(items);
-                });
+                for (let j = 0; j < tableNames.length; j++) {
+                    let val = tableNames[j];
+                    if (val !== table)
+                        items += "<option id='" + val + "'>" + val + "</option>";
+                }
+                $("." + selectName).append(items);
 
                 if (column != null) {
                     let name = 'column-div-' + i;
                     let selectName = 'column-data-' + i;
                     $('.' + name).append(`<select name="data[${i}]['column']" class="form-control col-select ${selectName}"></select>`);
 
-                    $.getJSON("{{ route('template.columns') }}/" + table, function (data) {
-                        let items = "<option id='" + column + "'>" + column + "</option>";;
-
-                        $.each(data, function (key, val) {
+                    let items = "<option id='" + column + "'>" + column + "</option>";
+                    let columns = columnNames[table];
+                    if (columns != null) {
+                        for (let i = 0; i < columns.length; i++) {
+                            let val = columns[i];
                             if (val !== column)
                                 items += "<option id='" + val + "'>" + val + "</option>";
-                        });
-                        $("." + selectName).append(items);
-                    });
+                        }
+                    }
+                    $("." + selectName).append(items);
                 }
             }
         }
@@ -173,21 +174,17 @@
                 $(this).parent().parent().find(".table-div").append(`<select name="data[${counter}]['table']" class="form-control table-select"></select>`);
                 let self = this;
 
-                $.getJSON("{{ route('template.tables') }}", function (data) {
-                    let items = "";
+                if (tableNames.length > 0) {
+                    $(self).parent().parent().find(".table-div select").empty();
 
-                    let firstTable = data[0];
-                    if (firstTable != null) {
-                        loadColumns(self, firstTable);
+                    let items = "";
+                    for (let i = 0; i < tableNames.length; i++) {
+                        let val = tableNames[i];
+                        items += "<option id='" + val + "'>" + val + "</option>";
                     }
 
-                    $.each(data, function (key, val) {
-                        items += "<option id='" + val + "'>" + val + "</option>";
-                    });
-
-                    $(self).parent().parent().find(".table-div select").empty();
                     $(self).parent().parent().find(".table-div select").append(items);
-                });
+                }
 
                 if ($(this).val() === "Column Value") {
                     $(this).parent().parent().find(".column-div").append(`<select name="data[${counter}]['column']" class="form-control col-select"></select>`);
@@ -197,19 +194,25 @@
                         loadColumns(self, $(this).val())
                     });
                 }
+
+                loadColumns(self, tableNames[0]);
             }
         });
 
         function loadColumns(self, table) {
-            $.getJSON("{{ route('template.columns') }}/" + table, function (data) {
-                $(self).parent().parent().find(".col-select").empty();
+            let colElement = $(self).parent().parent().find(".col-select");
+            colElement.empty();
 
-                let items = "";
-                $.each(data, function (key, val) {
+            let columns = columnNames[table];
+            let items = "";
+            if (columns != null) {
+                for (let i = 0; i < columns.length; i++) {
+                    let val = columns[i];
                     items += "<option id='" + val + "'>" + val + "</option>";
-                });
-                $(self).parent().parent().find(".col-select").append(items);
-            });
+                }
+            }
+
+            colElement.append(items);
         }
 
         function countStringOccurrences(string, searchFor) {
