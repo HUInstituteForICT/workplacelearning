@@ -1,7 +1,7 @@
 <div class="modal-header">
     <h4 class="modal-title">@lang('querybuilder.step2.template')</h4>
 </div>
-<div class="modal-body" style="height: 450px">
+<div class="modal-body" style="height: 500px">
     <form id="wizard-form">
 
         <div class="container-fluid">
@@ -19,7 +19,8 @@
                     </div>
 
                     {{--<p style="font-weight: bold;">{{Lang::get('template.description')}}</p>--}}
-                    <textarea disabled rows="4" cols=4 maxlength="500" id="tempDesc" name="tempDesc"
+                    <textarea style="height: 60px;" disabled rows="4" cols=4 maxlength="500" id="tempDesc"
+                              name="tempDesc"
                               class="form-control"></textarea>
 
                     <p style="font-weight: bold; margin-top: 15px;">Template Query</p>
@@ -28,7 +29,7 @@
                                   class="form-control query-area"></textarea>
                     </div>
 
-                    <div id="paramGroup" style="margin-top: 15px">
+                    <div id="paramGroup" style="margin-top: 15px; margin-bottom: 15px;">
                         {{--JS will load parameters here--}}
                     </div>
                 </div>
@@ -89,7 +90,7 @@
                     if (paramType === 'column value') {
 
                         $.getJSON("{{ route('column-values') }}/" + tableName + "/" + columnName, function (data) {
-                            field += `<select name="${i}" class="form-control table-select">`;
+                            field += `<select class="form-control table-select">`;
 
                             $.each(data, function (key, val) {
                                 if (val != null) {
@@ -106,7 +107,7 @@
                         if (paramType === 'column') {
                             let colNames = columnNames[tableName];
                             if (colNames != null) {
-                                field += `<select name="${i}" class="form-control table-select">`;
+                                field += `<select class="form-control table-select">`;
 
                                 for (let j = 0; j < colNames.length; j++) {
                                     let colName = colNames[j];
@@ -115,8 +116,18 @@
                                 field += `</select>`;
                             }
                         } else {
-                            field = `<input type="text" id="param-${i}-input" name="${i}"
+                            if (paramType === "number") {
+                                field = `<input type="number" id="param-${i}-input"
                                value="" placeholder="${paramType}" required="true" class="form-control field-${i}">`;
+                            } else if (paramType === "boolean") {
+                                field += `<select class="form-control table-select">`;
+                                field += `<option class='field-${i}'>` + `True` + `</option>`;
+                                field += `<option class='field-${i}'>` + `False` + `</option>`;
+                                field += `</select>`;
+                            } else {
+                                field = `<input type="text" id="param-${i}-input"
+                               value="" placeholder="${paramType}" required="true" class="form-control field-${i}">`;
+                            }
                         }
                         addParamRow(i, length, paramName, field);
                     }
@@ -153,10 +164,6 @@
 
             paramGroup.children().find(".field").each(function () {
                 if (this.children != null && this.children.length > 0) {
-                    /* let paramIndex = $('.template-select').find(":selected").attr("name");
-                     if (paramIndex != null) {
-
-                     }*/
 
                     let val = $(this.children[0]).val();
                     let paramName = this.getAttribute("name");
@@ -168,7 +175,7 @@
             });
         }
 
-        function onQueryTestClick() {
+        function handleQueryResponse(callback) {
             let request = $.ajax({
                 type: "POST",
                 url: "/dashboard/builder/testQuery",
@@ -176,38 +183,49 @@
             });
 
             request.done(function (response) {
-                if (response.length <= 0) {
-                    $('#query-result').html(`<p>{{Lang::get('querybuilder.step2.no-data')}}</p>`)
-                    return;
+                callback(response);
+            });
+        }
+
+        function onQueryTestClick() {
+            $('#query-result').html(`<p></p>`);
+            handleQueryResponse(handleTestClick);
+        }
+
+        function handleTestClick(response) {
+            let resultDiv = $('#query-result');
+            if (response.length <= 0) {
+                resultDiv.html(`<p>@lang('querybuilder.step2.no-data')</p>`);
+                return;
+            }
+            if (response['error'] != null) {
+                resultDiv.html(`<p>@lang('querybuilder.step2.sql-error')</p>`);
+                return;
+            }
+
+            let headers = "";
+            let headerNames = [];
+
+            let first = response[0];
+            for (let key in first) {
+                headers += `<th>` + key + `</th>`;
+                headerNames.push(key);
+            }
+
+            let rows = "";
+            for (let i = 0; i < response.length; i++) {
+                let row = "<tr>";
+                let obj = response[i];
+
+                for (let index in headerNames) {
+                    row += `<td>` + obj[headerNames[index]] + `</td>`;
                 }
-                if (response['error'] != null) {
-                    $('#query-result').html(`<p>{{Lang::get('querybuilder.step2.sql-error')}}</p>`)
-                    return;
-                }
 
-                let headers = "";
-                let headerNames = [];
+                row += "</tr>";
+                rows += row;
+            }
 
-                let first = response[0];
-                for (let key in first) {
-                    headers += `<th>` + key + `</th>`;
-                    headerNames.push(key);
-                }
-
-                let rows = "";
-                for (let i = 0; i < response.length; i++) {
-                    let row = "<tr>";
-                    let obj = response[i];
-
-                    for (let index in headerNames) {
-                        row += `<td>` + obj[headerNames[index]] + `</td>`;
-                    }
-
-                    row += "</tr>";
-                    rows += row;
-                }
-
-                $('#query-result').html(`<table class="table table-striped">
+            resultDiv.html(`<table class="table table-striped">
                     <thead>
                         ${headers}
                     </thead>
@@ -215,13 +233,29 @@
                         ${rows}
                     </tbody>
                 </table>`);
-            });
         }
+
+        function nextStep() {
+            handleQueryResponse(handleNextClick);
+        }
+
+        function handleNextClick(response) {
+            if (response == null || response.length <= 0) {
+                alert("@lang('querybuilder.step2.no-data')");
+                return;
+            }
+            if (response['error'] != null) {
+                alert("@lang('querybuilder.step2.sql-error')");
+                return;
+            }
+            Wizard.step(4);
+        }
+
     </script>
 
     <div class="modal-footer">
         <button type="button" class="btn btn-seconday" onclick="Wizard.step(1);">Vorige</button>
-        <button type="button" class="btn btn-primary" onclick="Wizard.step(4);">Volgende</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Volgende</button>
     </div>
 
 </div>
