@@ -11,6 +11,9 @@ return [
      *     'forum/thread',
      * ],
      */
+//    'messages' => [
+//        'react'
+//    ],
 
     /*
      * The default path to use for the generated javascript.

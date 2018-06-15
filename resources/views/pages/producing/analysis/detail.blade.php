@@ -24,35 +24,65 @@
 
     <div class="container-fluid">
         <script>
-            $(document).ready(function(){
-                $(".expand-detail").click(function(e){
-                    $("#detail-"+($(this).attr("data-id"))).toggle();
+            $(document).ready(function () {
+                $(".expand-detail").click(function (e) {
+                    $("#detail-" + ($(this).attr("data-id"))).toggle();
                     e.preventDefault();
                 });
             });
         </script>
 
         @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
+
             <div class="row">
-                <div class="col-lg-12">
-                    <h1>{{ Lang::get('rapportages.pageheader') }}
-                        <?php
-                        $intlfmt = new IntlDateFormatter(
-                                (LaravelLocalization::getCurrentLocale() == "en") ? "en_US" : "nl_NL",
-                                IntlDateFormatter::GREGORIAN,
-                                IntlDateFormatter::NONE,
-                                NULL,
-                                NULL,
-                                "MMMM YYYY"
-                        );
-                        echo $intlfmt->format(strtotime($year."-".$monthno."-01"));
-                        ?>
-                    </h1>
+                <div class="col-lg-6">
+                    <a href="{{ route('analysis-producing-choice') }}" class="btn">{{__('analyses.back-to-choice')}}</a>
+                    <h1>{{ __('tips.personal-tip') }}s</h1>
+
+
+                    @if($evaluatedTips->count() > 0)
+                        <?php $tipCounter = 1; ?>
+
+                        @foreach($evaluatedTips as $evaluatedTip)
+                            <?php $tip = $evaluatedTip->getTip(); ?>
+                            @if($tipCounter <= 3 && ($tip->likes->count() === 0 || $tip->likes[0]->type === 1))
+                                <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
+                                <div class="row">
+                                    @if($tip->likes->count() === 0)
+                                        <div class="col-md-1"
+                                             style="display: inline-block; vertical-align: middle;   float: none;">
+
+                                            <h2 class="h2" style="cursor: pointer;color: #00A1E2;"
+                                                id="likeTip-{{ $tip->id }}"
+                                                onclick="likeTip({{ $tip->id }}, 1)"
+                                                target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
+                                            <h2 class="h2" style="cursor: pointer;color: #e2423b;"
+                                                id="likeTip-{{ $tip->id }}"
+                                                onclick="likeTip({{ $tip->id }}, -1)"
+                                                target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h2>
+                                        </div>@endif<!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯, dont move it --}}
+                                        --><div class="col-md-11" style="display: inline-block; vertical-align: middle;   float: none;">
+                                        <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
+                                    </div>
+                                </div>
+                                <br/><br/>
+                                <?php $tipCounter++; ?>
+                            @endif
+
+                        @endforeach
+                    @else
+                        <p>{{ __('tips.none') }}</p>
+                    @endif
+
                 </div>
             </div>
 
+
+
             <div class="row">
                 <div class="col-md-6">
+                    <h1>{{ Lang::get('analyses.analyses-statistics-title') }}</h1>
+
                     <h2>{{ Lang::get('analyses.time-per-category') }}</h2>
                     <canvas id="chart_hours"></canvas>
                     <script>
@@ -76,7 +106,7 @@
                                     enabled: true,
                                     mode: 'single',
                                     callbacks: {
-                                        label: function(tooltipItem, data) {
+                                        label: function (tooltipItem, data) {
                                             var tooltipLabel = data.labels[tooltipItem.index];
                                             var tooltipData = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                             return tooltipLabel + ' ' + tooltipData + '%';
@@ -103,7 +133,7 @@
                         {!! Form::label('', Lang::get('analyses.percentage-difficult'), array('class' => 'col-sm-3 control-label')) !!}
                         <div class="col-sm-9"><p
                                     class="form-control-static">{{ $producingAnalysis->statistic('percentageDifficultTasks') }}
-                                 <b>{{ Lang::get('general.moeilijk') }}</b></p></div>
+                                <b>{{ Lang::get('general.moeilijk') }}</b></p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('', Lang::get('analyses.percentage-work-on-own'), array('class' => 'col-sm-3 control-label')) !!}
@@ -136,42 +166,17 @@
                                 scales: {
                                     yAxes: [{
                                         ticks: {
-                                            beginAtZero:true
+                                            beginAtZero: true
                                         }
                                     }]
                                 }
                             }
                         });
                     </script>
-                    <hr />
+                    <hr/>
                 </div>
             </div>
 
-            <!-- Tips -->
-            <div class="row">
-                <div class="col-md-12">
-                    <h2>{{ trans('analysis.tips.tips') }}</h2>
-                    @if($producingAnalysis->statistic('percentageAloneHours') > 75 && $producingAnalysis->statistic('percentageDifficultTasks') > 50)
-                        <p>{{ trans('analysis.tips.percentageAloneHours', ['percentage' => $producingAnalysis->statistic('percentageAloneHours'), 'percentageDifficultTasks' => $producingAnalysis->statistic('percentageDifficultTasks')]) }}</p>
-                    @endif
-                    @if($producingAnalysis->statistic('percentageEasyHours') > 65)
-                        <p>
-                            {{ trans('analysis.tips.percentageEasyHours', ["percentage" => $producingAnalysis->statistic('percentageEasyHours')]) }}
-                        </p>
-                    @endif
-
-                        <p>
-                            {{ trans('analysis.tips.mostDifficultCategory', ["category" => __($producingAnalysis->statistic('mostDifficultCategoryName')), "percentage" => $producingAnalysis->statistic('persentageMostDifficultCategory')]) }}
-                        </p>
-
-                    @if(!!$producingAnalysis->statistic('averagePersonDifficultyName'))
-                        <p>
-                            {{ trans('analysis.tips.averagePersonDifficultyName', ['person' => __($producingAnalysis->statistic('averagePersonDifficultyName'))]) }}
-                        </p>
-                    @endif
-
-                </div>
-            </div>
 
             @if(count($producingAnalysis->chains()) > 0)
                 <div class="row">
@@ -207,7 +212,8 @@
                                 </td>
                                 <td>
                                     @if($chain->hasDetail())
-                                        <a data-id="{{ $chain->first()->lap_id }}" href="#" class="expand-detail">{{ trans('analysis.producing.show-details') }}</a>
+                                        <a data-id="{{ $chain->first()->lap_id }}" href="#"
+                                           class="expand-detail">{{ trans('analysis.producing.show-details') }}</a>
                                     @else
                                         <p>{{ trans('general.not-applicable') }}</p>
                                     @endif
@@ -216,7 +222,7 @@
 
 
                             @if($chain->count() >= 1)
-                                <tr class="odd-row" id="detail-{{ $chain->first()->lap_id }}" style="display:none;" >
+                                <tr class="odd-row" id="detail-{{ $chain->first()->lap_id }}" style="display:none;">
                                     <td colspan="5">
                                         <table class="table blockTable col-md-12">
                                             <tbody>
@@ -235,7 +241,8 @@
 
                                                 ?>
                                                 <tr>
-                                                    <td>{{ date('d-m', strtotime($learningActProd->date)) }}<br/><br/></td>
+                                                    <td>{{ date('d-m', strtotime($learningActProd->date)) }}<br/><br/>
+                                                    </td>
                                                     <td>{{ $learningActProd->description }}</td>
                                                     <td>{{ ($feedback != null) ? $learningActProd->getDifficulty().": ".$feedback->notfinished : $learningActProd->getDifficulty() }}</td>
                                                     <td>{{ $learningActProd->getDurationString() }}</td>
@@ -262,5 +269,13 @@
         @endif
 
     </div>
+    <script>
+        function likeTip(tipId, type) {
+            const url = "{{ route('tips.like', ['id' => ':id']) }}";
+            $.get(url.replace(':id', tipId) + '?type=' + type).then(function () {
+                $('#likeTip-' + tipId).parent().remove();
+            });
+        }
+    </script>
 
 @stop

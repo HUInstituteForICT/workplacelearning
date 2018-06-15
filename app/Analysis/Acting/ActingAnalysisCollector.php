@@ -57,7 +57,7 @@ class ActingAnalysisCollector
      */
     public function getLearningActivities() {
         if($this->learningActivities === null) {
-            $this->learningActivities = $this->limitCollectionByDate(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()->get(), $this->year, $this->month);
+            $this->learningActivities = $this->limitCollectionByDate(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()->with(['competence', 'timeslot', 'learningGoal', 'resourcePerson'])->get(), $this->year, $this->month);
         }
         return $this->learningActivities;
     }

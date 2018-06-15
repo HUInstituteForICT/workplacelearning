@@ -9,9 +9,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Nette\Utils\DateTime;
 
 /**
  * @property int $wplp_id
+ * @property Cohort $cohort
+ * @property Category[]|Collection categories
+ * @property LearningGoal[]|Collection learningGoals
+ * @property LearningActivityActing[]|Collection learningActivityActing
  * @property int student_id
  * @property int $wp_id
  * @property \DateTime $startdate
@@ -20,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property int $cohort_id
  * @property double $hours_per_day
+ * @property Workplace $workplace
  */
 class WorkplaceLearningPeriod extends Model
 {

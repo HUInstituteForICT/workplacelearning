@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'http' => 
+  'http' =>
   array (
     404 => 
     array (
@@ -24,5 +24,6 @@ return array (
     "activity-no-internship" => "Je kan geen activiteiten registreren zonder (actieve) stage.",
     "no-activity-found" => "Helaas, er is geen activiteit gevonden.",
     "internship-no-permission" => 'Deze stage bestaat niet, of je hebt geen toegang om deze in te zien.',
-    "feedback-permission" => "Je hebt geen rechten om deze feedback te versturen."
+    "feedback-permission" => "Je hebt geen rechten om deze feedback te versturen.",
+    'activity-in-chain' => 'Een andere activiteit wijst naar deze activiteit en kan daarom niet verwijderd worden. Verwijder de link tussen de activiteiten op de wijzigpagina van de activiteit'
 );

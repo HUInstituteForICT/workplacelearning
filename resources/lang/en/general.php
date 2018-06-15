@@ -41,6 +41,7 @@ return array (
 
     "edit-saved"         => "The edits have been saved.",
     "profile-permission" => "You do not have permission to do this for this profile.",
+    "saved" => "Saved",
 
     "calendar-deadline-saved"      => "The deadline has been saved",
     "calendar-deadline-permission" => "This deadline does not exist, or you do not have permission to edit it.",

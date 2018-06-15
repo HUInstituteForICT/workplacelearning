@@ -121,7 +121,7 @@
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_theory') }}"></i></h4>
-                    <label><input type="radio" name="res_material" id="rm_none" value="none" {{ (old('res_material') == 'none') ? 'checked' : 'checked' }}><span>{{ Lang::get('activity.none') }}</span></label>
+                    <label><input type="radio" name="res_material" id="rm_none" value="none" {{ (old('res_material') === 'none') ? 'checked' : null }}><span>{{ Lang::get('activity.none') }}</span></label>
                     @foreach ($resMaterials as $key => $value)
                         <label><input type="radio" name="res_material" value="{{ $value->rm_id }}" {{ (old('res_material') != null && old('res_material') == $value->rm_id) ? "checked" : null }} /><span>{{ $value->rm_label }}</span></label>
                     @endforeach

@@ -9,11 +9,17 @@ namespace App\Http\Controllers;
 
 use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
-use App\LearningActivityActing;
+use App\Cohort;
+use App\Repository\LikeRepositoryInterface;
+use App\Student;
+use App\Tips\ApplicableTipFetcher;
+use App\Tips\DataCollectors\Collector;
+use App\Tips\EvaluatedStatisticTip;
+use App\Tips\EvaluatedTip;
+use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
 class ActingAnalysisController extends Controller
@@ -34,8 +40,21 @@ class ActingAnalysisController extends Controller
         return view('pages.acting.analysis.choice');
     }
 
-    public function showDetail(Request $request, $year, $month)
-    {
+    /**
+     * @param Request $request
+     * @param $year
+     * @param $month
+     * @param ApplicableTipFetcher $applicableTipFetcher
+     * @param LikeRepositoryInterface $likeRepository
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function showDetail(
+        Request $request,
+        $year,
+        $month,
+        ApplicableTipFetcher $applicableTipFetcher,
+        LikeRepositoryInterface $likeRepository
+    ) {
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null || Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count() === 0) {
             return redirect()->route('home-acting')
                 ->withErrors([Lang::get('analysis.no-activity')]);
@@ -48,10 +67,32 @@ class ActingAnalysisController extends Controller
             return redirect()->route('analysis-producing-choice');
         }
 
-        // TODO: add month year filter so we can show monthly stuff etc
+
+        // The analysis for the charts etc.
         $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
 
+        if ($year === "all" || $month === "all") {
+            $year = null;
+            $month = null;
+        }
+
+        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
+
+        /** @var Cohort $cohort */
+        $cohort = $workplaceLearningPeriod->cohort;
+
+        $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($cohort));
+
+        /** @var Student $student */
+        $student = $request->user();
+        $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+            $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
+        });
+
+
+
         return view('pages.acting.analysis.detail')
+            ->with('evaluatedTips', $applicableEvaluatedTips->shuffle())
             ->with('actingAnalysis', $analysis);
     }
 }

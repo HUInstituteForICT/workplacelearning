@@ -2,6 +2,7 @@
 
 return array (
     'postalcode' => ':value is niet een geldige postcode.',
+    'date_in_wplp' => 'De datum :date valt niet binnen de start en einddatum van je werkplek.',
     'accepted' => ':attribute dient te worden geaccepteerd.',
     'active_url' => ':attribute is geen geldige URL.',
     'after' => ':attribute dient een datum te zijn na :date.',
@@ -145,7 +146,11 @@ return array (
     'lastname' => 'achternaam',
     'email' => 'email address',
     'new_password' => 'nieuw wachtwoord',
-      'postalcode' => 'postcode'
+      'postalcode' => 'postcode',
+      'name' => 'naam',
+      'threshold' => 'grenswaarde',
+      'tipText' => 'tip tekst',
+      'showInAnalysis' => 'zichtbaar in analyse'
   ),
 
     "newnotfinished"                          => "De omschrijving is verplicht en mag maximaal 150 tekens zijn.",

@@ -4,6 +4,10 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @property int $competence_id
+ * @property string $competence_label
+ */
 class Competence extends Model
 {
     // Override the table used for the User Model
