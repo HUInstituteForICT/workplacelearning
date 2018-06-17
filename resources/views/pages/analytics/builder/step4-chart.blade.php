@@ -79,7 +79,7 @@
 
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-seconday" onclick="Wizard.step(3);">@lang('querybuilder.previous')</button>
+    <button type="button" class="btn btn-seconday" onclick="{{ $data['analysis_type'] == 'build' ? 'Wizard.step(3);' : 'Wizard.step(2);' }}">@lang('querybuilder.previous')</button>
     <button type="button" class="btn btn-primary" onclick="Wizard.step(5);">@lang('querybuilder.save')</button>
 </div>
 

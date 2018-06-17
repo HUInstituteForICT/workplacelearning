@@ -147,15 +147,22 @@ class QueryBuilderController extends Controller
 
         $relations = [];
 
+        $columns[$data['analysis_entity']] = $this->getColumns($data['analysis_entity']);
+        $selectedModels = null;
+
         if(isset($data['analysis_relation'])) {
 
             foreach($data['analysis_relation'] as $r) {
 
-                $relations[] = class_basename(get_class($mainModel->$r()->getRelated()));
+                $class = class_basename(get_class($mainModel->$r()->getRelated()));
+
+                $relations[] = $class;
+                $columns[$class] = $this->getColumns($class);
             }
         }
 
-        return view("pages.analytics.builder.step3-builder-filters", compact('data', 'relations'));
+        return view("pages.analytics.builder.step3-builder-filters",
+            compact('data', 'relations', 'columns', 'selectedModels'));
     }
 
     private function step4($data)
@@ -259,7 +266,7 @@ class QueryBuilderController extends Controller
                 $tableModel = new $tableString();
                 $r = class_basename(get_class($tableModel->$relation()->getRelated()));
 
-                $entities[$relation] = \Lang::get('querybuilder.'.$r);
+                $entities[$r] = \Lang::get('querybuilder.'.$r);
             }
         }
 

@@ -119,7 +119,6 @@ var Wizard =  {
             $('.query-filter-container .row:last-child .query-data-table').change();
         });
 
-        $('.query-data-table').change();
     },
 
     step_4: function() {
