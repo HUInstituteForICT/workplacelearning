@@ -42,6 +42,9 @@ return array (
         'title' => 'Stap 3: filters, sortering en groepering',
         'data' => 'Gegevens',
         'filters' => 'Filters',
+        'sort' => 'Sorteer',
+        'limit' => 'Limiteer',
+        'limit-caption' => 'aantal',
 
         'action-data' => 'Data',
         'action-sum' => 'Som',
@@ -51,15 +54,13 @@ return array (
         'filter-equals' => 'Is gelijk aan',
         'filter-largerthan' => 'Groter dan',
         'filter-smallerthan' => 'Kleiner dan',
-        'filter-groupby' => 'Groepeer op',
+        'filter-groupby' => 'Groepeer',
         'filter-limit' => 'Limiteer resultaten',
 
         'asc' => 'Oplopend',
         'desc' => 'Aflopend',
 
-        'limit' => 'Aantal',
-
-        'value' => 'Waarde'
+        'limit-caption' => 'Aantal'
     ],
 
     'step4' => [

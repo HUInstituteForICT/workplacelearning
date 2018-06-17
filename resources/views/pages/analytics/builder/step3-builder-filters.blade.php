@@ -34,7 +34,7 @@
         </div>
         @endfor
         <!--a style="font-size: 20px; text-decoration: none; display: block;" href="#">+</a-->
-        <label for="analysis_entity">Filters</label>
+        <label for="analysis_entity">@lang('querybuilder.step3.filters')</label>
         <div class="query-filter-container">
             @if(isset($data['query_filter']))
             @for($i = 0; $i < count($data['query_filter']); $i++)
@@ -83,11 +83,11 @@
         </div>
         <a style="font-size: 20px; text-decoration: none; display: block;" class="query-add-filter" href="#">+</a>
 
-        <label>Sorteer</label>
+        <label>@lang('querybuilder.step3.sort')</label>
         @for($i=0; $i<1; $i++)
         <div class="form-group row query-data-container">
             <div class="col-md-3">
-                <select class="form-control query-sort-table" name="query_sort[{{ $i }}][table]">
+                <select class="form-control query-data-table" name="query_sort[{{ $i }}][table]">
                     <option {{ isset($data['query_sort'][$i]['table']) ? ($data['query_sort'][$i]['table'] == $data['analysis_entity'] ? 'selected' : '') : '' }}
                             value="{{ $data['analysis_entity'] }}">@lang('querybuilder.'.$data['analysis_entity'])</option>
                     @if(isset($relations))
@@ -99,7 +99,7 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-control query-sort-column" name="query_sort[{{ $i }}][column]">
+                <select class="form-control query-data-column" name="query_sort[{{ $i }}][column]">
                     @foreach($columns[isset($data['query_sort']) ? $data['query_sort'][$i]['table'] : $data['analysis_entity']] as $c)
                         <option {{ isset($data['query_sort'][$i]['column']) ? ($data['query_sort'][$i]['column'] == $c ? 'selected' : '') : '' }}
                                 value="{{ $c }}">{{ $c }}</option>
@@ -127,11 +127,11 @@
         </div>
         @endfor
 
-        <label>Limiteer</label>
+        <label>@lang('querybuilder.step3.limit')</label>
         <div class="form-group row query-limit-container">
             <div class="col-md-3">
                 <input type="number" name="query_limit" class="form-control query-filter-value"
-                       placeholder="@lang('querybuilder.step3.limit')" value="{{ isset($data['query_limit']) ? $data['query_limit'] : '' }}">
+                       placeholder="@lang('querybuilder.step3.limit-caption')" value="{{ isset($data['query_limit']) ? $data['query_limit'] : '' }}">
             </div>
         </div>
     </form>

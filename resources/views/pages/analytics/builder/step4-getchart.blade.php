@@ -64,16 +64,16 @@
                             return data.labels[tooltipItem[0].index];
                         },
                         @endif
-                        scales: {
-                            @if($slug != 'pie')
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
-                            @endif
-                        }
                     }
+                },
+                scales: {
+                    @if($slug != 'pie')
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                    @endif
                 }
             }
         })

@@ -103,11 +103,9 @@ var Wizard =  {
                 <div class="col-md-2">
                     <select class="form-control query-filter-type" name="query_filter[${previous+1}][type]">
                         <option value="equals" selected>${Lang.get('querybuilder.step3.filter-equals')}</option>
-                        <option value="between">${Lang.get('querybuilder.step3.filter-between')}</option>
                         <option value="largerthan">${Lang.get('querybuilder.step3.filter-largerthan')}</option>
                         <option value="smallerthan">${Lang.get('querybuilder.step3.filter-smallerthan')}</option>
                         <option value="group">${Lang.get('querybuilder.step3.filter-groupby')}</option>
-                        <option value="limit">${Lang.get('querybuilder.step3.filter-limit')}</option>
                     </select>
                 </div>
                 <div class="col-md-2" style="width: 12%;">

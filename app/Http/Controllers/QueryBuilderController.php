@@ -198,15 +198,17 @@ class QueryBuilderController extends Controller
                 $sort = [];
                 $limit = null;
 
-                if(isset($data['query_data'])) {
-
+                if(isset($data['query_data']))
                     $select = $data['query_data'];
-                }
 
-                if(isset($data['query_filter'])) {
-
+                if(isset($data['query_filter']))
                     $filters = $data['query_filter'];
-                }
+
+                if(isset($data['query_sort']))
+                    $sort = $data['query_sort'];
+
+                if(isset($data['query_limit']) && $data['query_limit'])
+                    $limit = $data['query_limit'];
 
                 $query = (new Builder())->getQuery($table, $relations, $select, $filters, $sort, $limit);
                 break;

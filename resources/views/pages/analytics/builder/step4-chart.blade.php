@@ -4,7 +4,7 @@
 </div>
 <div class="modal-body" style="height: 450px">
 
-    <form id="wizard-form">
+    <form id="wizard-form" novalidate>
         <label for="name">@lang('querybuilder.step4.name'):</label><br>
         <div class="form-group row">
             <div class="col-sm-6">
@@ -23,13 +23,13 @@
             <div class="col-sm-3">
                 <select class="form-control" name="type_time" id="type_time" required="required" title="Time type">
                     <option></option>
-                    <option value="seconds" {{ isset($data['type_time']) && $data['type_time'] == "seconds" ? "checked" : "" }}>@lang('querybuilder.step4.seconds')</option>
-                    <option value="minutes" {{ isset($data['type_time']) && $data['type_time'] == "minutes" ? "checked" : "" }}>@lang('querybuilder.step4.minutes')</option>
-                    <option value="hours" {{ isset($data['type_time']) && $data['type_time'] == "hours" ? "checked" : "" }}>@lang('querybuilder.step4.hours')</option>
-                    <option value="days" {{ isset($data['type_time']) && $data['type_time'] == "days" ? "checked" : "" }}>@lang('querybuilder.step4.days')</option>
-                    <option value="weeks" {{ isset($data['type_time']) && $data['type_time'] == "weeks" ? "checked" : "" }}>@lang('querybuilder.step4.weeks')</option>
-                    <option value="months" {{ isset($data['type_time']) && $data['type_time'] == "months" ? "checked" : "" }}>@lang('querybuilder.step4.months')</option>
-                    <option value="years" {{ isset($data['type_time']) && $data['type_time'] == "years" ? "checked" : "" }}>@lang('querybuilder.step4.years')</option>
+                    <option value="seconds" {{ isset($data['type_time']) && $data['type_time'] == "seconds" ? "selected" : "" }}>@lang('querybuilder.step4.seconds')</option>
+                    <option value="minutes" {{ isset($data['type_time']) && $data['type_time'] == "minutes" ? "selected" : "" }}>@lang('querybuilder.step4.minutes')</option>
+                    <option value="hours" {{ isset($data['type_time']) && $data['type_time'] == "hours" ? "selected" : "" }}>@lang('querybuilder.step4.hours')</option>
+                    <option value="days" {{ isset($data['type_time']) && $data['type_time'] == "days" ? "selected" : "" }}>@lang('querybuilder.step4.days')</option>
+                    <option value="weeks" {{ isset($data['type_time']) && $data['type_time'] == "weeks" ? "selected" : "" }}>@lang('querybuilder.step4.weeks')</option>
+                    <option value="months" {{ isset($data['type_time']) && $data['type_time'] == "months" ? "selected" : "" }}>@lang('querybuilder.step4.months')</option>
+                    <option value="years" {{ isset($data['type_time']) && $data['type_time'] == "years" ? "selected" : "" }}>@lang('querybuilder.step4.years')</option>
                 </select>
             </div>
         </div>
