@@ -74,7 +74,9 @@
                     </select>
                 </div>
                 <div class="col-md-2" style="width: 12%;">
-                    <input name="query_filter[{{ $i }}][value]" style="{{ $data['query_filter'][$i]['type'] == 'group' ? 'display: none;': '' }}" class="form-control query-filter-value" placeholder="@lang('querybuilder.step3.value')">
+                    <input name="query_filter[{{ $i }}][value]" style="{{ $data['query_filter'][$i]['type'] == 'group' ? 'display: none;': '' }}"
+                           class="form-control query-filter-value" placeholder="@lang('querybuilder.step3.value')"
+                            value="{{ $data['query_filter'][$i]['value'] }}">
                 </div>
 
             </div>

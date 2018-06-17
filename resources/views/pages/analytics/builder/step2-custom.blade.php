@@ -10,7 +10,7 @@
                 <div class="form-group">
                     <label for="Query">{{Lang::get('custom_query.query')}}</label>
                     <textarea rows="4" cols="50" maxlength="1000" id="customQuery" name="customQuery"
-                              class="form-control"></textarea>
+                              class="form-control">{{ (isset($data['customQuery'])) ? $data['customQuery'] : '' }}</textarea>
                 </div>
 
                 <button class="btn btn-primary" style="float: right"
@@ -28,7 +28,7 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" onclick="Wizard.step(1);">Vorige</button>
-    <button type="button" class="btn btn-primary " onclick="Wizard.step(4);">Volgende</button>
+    <button type="button" class="btn btn-primary" onclick="Wizard.step(4);">Volgende</button>
 </div>
 <script>
     $("#testQuery").click(function(){
