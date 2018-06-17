@@ -197,7 +197,8 @@
                 return;
             }
             if (response['error'] != null) {
-                resultDiv.html(`<p>@lang('querybuilder.step2.sql-error')</p>`);
+                let error = response['error'];
+                resultDiv.html(`<p>@lang('querybuilder.step2.sql-error') ${error}</p>`);
                 return;
             }
 
@@ -243,7 +244,7 @@
                 return;
             }
             if (response['error'] != null) {
-                alert("@lang('querybuilder.step2.sql-error')");
+                alert("@lang('querybuilder.step2.sql-error')" + "(" + response['error'] + ")");
                 return;
             }
             Wizard.step(4);
