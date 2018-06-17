@@ -37,15 +37,15 @@ class Builder
                     break;
 
                 case "sum":
-                    $select[] = \DB::raw('SUM('.$tableModel.'.'.$data['column'].') as '.$data['column']);
+                    $select[] = \DB::raw('SUM('.$tableModel.'.'.$data['column'].')');
                     break;
 
                 case "count":
-                    $select[] = \DB::raw('COUNT('.$tableModel.'.'.$data['column'].') as amount_of_'.$data['column']);
+                    $select[] = \DB::raw('COUNT('.$tableModel.'.'.$data['column'].')');
                     break;
 
                 case "avg":
-                    $select[] = \DB::raw('AVG('.$tableModel.'.'.$data['column'].') as average_of_'.$data['column']);
+                    $select[] = \DB::raw('AVG('.$tableModel.'.'.$data['column'].')');
                     break;
             }
         }
@@ -56,10 +56,6 @@ class Builder
             $tableModel = (new $tableString())->getTable();
 
             switch($filter['type']) {
-
-                case "limit":
-                    $limit = $filter['value'];
-                    break;
 
                 case "group":
                     $groupBy[] = $tableModel.'.'.$filter['column'];
@@ -112,7 +108,29 @@ class Builder
 
         if($sort != null) {
 
-            $this->query->orderBy($sort['field'], $sort['type']);
+            foreach($sort as $s) {
+
+                switch($s['type']) {
+
+                        case "data":
+                            $this->query->orderBy($s['table'].'.'.$s['column'], $s['order']);
+                            break;
+
+                        case "sum":
+                            $this->query->orderBy(\DB::raw('SUM('.$s['table'].'.'.$s['column'].')'), $s['order']);
+                            break;
+
+                        case "count":
+                            $this->query->orderBy(\DB::raw('COUNT('.$s['table'].'.'.$s['column'].')'), $s['order']);
+
+                            break;
+
+                        case "avg":
+                            $this->query->orderBy(\DB::raw('AVG('.$s['table'].'.'.$s['column'].')'), $s['order']);
+                            break;
+                    }
+
+            }
         }
 
         if($limit != null) {

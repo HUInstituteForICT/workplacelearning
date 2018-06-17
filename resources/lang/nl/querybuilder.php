@@ -54,6 +54,11 @@ return array (
         'filter-groupby' => 'Groepeer op',
         'filter-limit' => 'Limiteer resultaten',
 
+        'asc' => 'Oplopend',
+        'desc' => 'Aflopend',
+
+        'limit' => 'Aantal',
+
         'value' => 'Waarde'
     ],
 

@@ -304,6 +304,7 @@ class QueryBuilderController extends Controller
         $select = [];
         $filters = [];
         $sort = [];
+        $limit = 10;
 
         if($request->input('query_data'))
             $select = $request->input('query_data');
@@ -311,7 +312,13 @@ class QueryBuilderController extends Controller
         if($request->input('query_filter'))
             $filters = $request->input('query_filter');
 
-        $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, 10);
+        if($request->input('query_sort'))
+            $sort = $request->input('query_sort');
+
+        if($request->input('query_limit') && $request->input('query_limit') < 10)
+            $limit = $request->input('query_limit');
+
+        $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, $limit);
 
         return $result;
     }

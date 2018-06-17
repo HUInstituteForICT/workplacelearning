@@ -132,6 +132,8 @@ var Wizard =  {
                 'name': $('#name').val()
             });
         });
+
+        $('#type_id').change();
     },
 
     resetListeners: function() {
@@ -190,7 +192,7 @@ var Wizard =  {
 
             for(var header in responseData[0]) {
 
-                headers += `<th>${header}</th>`;
+                headers += `<th style="max-width: 111px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${header}</th>`;
             }
 
             var rows = "";
@@ -201,7 +203,7 @@ var Wizard =  {
 
                 for(var column in responseData[i]) {
 
-                    row += `<td>${responseData[i][column]}</td>`;
+                    row += `<td style="max-width: 111px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${responseData[i][column]}</td>`;
                 }
 
                 row += "</tr>";
