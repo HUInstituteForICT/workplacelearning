@@ -19,13 +19,13 @@
                     </div>
 
                     {{--<p style="font-weight: bold;">{{Lang::get('template.description')}}</p>--}}
-                    <textarea style="height: 60px;" disabled rows="4" cols=4 maxlength="500" id="tempDesc"
+                    <textarea style="height: 60px;" readonly rows="4" cols=4 maxlength="500" id="tempDesc"
                               name="tempDesc"
                               class="form-control"></textarea>
 
                     <p style="font-weight: bold; margin-top: 15px;">Template Query</p>
                     <div class="test-query">
-                        <textarea disabled rows="4" cols=100 maxlength="1000" id="tempQuery" name="tempQuery"
+                        <textarea readonly rows="4" cols=100 maxlength="1000" id="tempQuery" name="tempQuery"
                                   class="form-control query-area"></textarea>
                     </div>
 
@@ -37,7 +37,7 @@
                 <div class="col-md-6">
                     <div id="final-query" style="margin-top: 15px">
                         <p style="font-weight: bold;">Query</p>
-                        <textarea disabled rows="4" cols=100 maxlength="1000" id="realQuery" name="realQuery"
+                        <textarea readonly rows="4" cols=100 maxlength="1000" id="realQuery" name="realQuery"
                                   class="form-control query-area"></textarea>
                     </div>
 

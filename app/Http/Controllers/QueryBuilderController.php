@@ -110,6 +110,10 @@ class QueryBuilderController extends Controller
 
                 case 'template':
 
+                    $analyse = new Analysis();
+                    $analyse->query = $data['realQuery'];
+                    $result = $analyse->execute();
+
                     break;
 
                 case 'custom':
@@ -208,7 +212,7 @@ class QueryBuilderController extends Controller
                 break;
 
             case 'template':
-
+                $query = $data['realQuery'];
                 break;
 
             case 'custom':
