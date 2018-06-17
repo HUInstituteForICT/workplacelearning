@@ -92,4 +92,11 @@ class EducationProgram extends Model
     public function cohorts() {
         return $this->hasMany(Cohort::class, 'ep_id', 'ep_id');
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["competenceDescription", "category", "educationprogramType", "student",
+                "competence", "timeslot", "resourcePerson"];
+    }
 }

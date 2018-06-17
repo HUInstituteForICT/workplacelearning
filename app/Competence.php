@@ -34,4 +34,10 @@ class Competence extends Model
     {
         return $this->belongsToMany(\App\LearningActivityActing::class, 'activityforcompetence', 'competence_id', 'learningactivity_id');
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["cohort", "educationProgram", "learningActivityActing"];
+    }
 }

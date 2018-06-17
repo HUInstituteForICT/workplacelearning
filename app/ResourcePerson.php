@@ -45,4 +45,10 @@ class ResourcePerson extends Model
     {
         return $this->belongsTo(\App\EducationProgram::class, 'ep_id', 'ep_id');
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["cohort", "workplaceLearningPeriod", "learningActivityProducing", "educationProgram"];
+    }
 }

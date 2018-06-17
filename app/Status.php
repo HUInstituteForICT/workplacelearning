@@ -28,4 +28,10 @@ class Status extends Model
     {
         $this->belongsTo(\App\LearningActivityProducing::class);
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["learningActivityProducing"];
+    }
 }

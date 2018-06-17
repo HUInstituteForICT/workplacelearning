@@ -30,4 +30,10 @@ class Timeslot extends Model
     {
         return $this->belongsTo(\App\EducationProgram::class);
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["cohort", "educationProgram"];
+    }
 }

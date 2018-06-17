@@ -203,4 +203,11 @@ class WorkplaceLearningPeriod extends Model
             ->get();
         return $x;
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["cohort", "student", "workplace", "categories", "learningGoals", "resourcePerson", "timeslot",
+                "resourceMaterial", "learningActivityProducing", "learningActivityActing"];
+    }
 }
