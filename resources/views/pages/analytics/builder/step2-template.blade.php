@@ -19,9 +19,7 @@
                     </div>
 
                     {{--<p style="font-weight: bold;">{{Lang::get('template.description')}}</p>--}}
-                    <textarea style="height: 60px;" readonly rows="4" cols=4 maxlength="500" id="tempDesc"
-                              name="tempDesc"
-                              class="form-control"></textarea>
+                    <div id="tempDesc"></div>
 
                     <p style="font-weight: bold; margin-top: 15px;">Template Query</p>
                     <div class="test-query">
@@ -68,11 +66,11 @@
                 query = query.replace(/š/g, "'");
             }
 
-            $('.query-area').val(query);
+            $('.query-area').text(query);
 
             let template = templates[optionIndex];
             let templateID = template['id'];
-            $('#tempDesc').val(template['description']);
+            $('#tempDesc').text(template['description']);
 
             $.getJSON("{{ route('template.parameters') }}/" + templateID, function (data) {
                 paramGroup.empty();
@@ -199,7 +197,8 @@
                 return;
             }
             if (response['error'] != null) {
-                resultDiv.html(`<p>@lang('querybuilder.step2.sql-error')</p>`);
+                let error = response['error'];
+                resultDiv.html(`<p>@lang('querybuilder.step2.sql-error') ${error}</p>`);
                 return;
             }
 
@@ -245,7 +244,7 @@
                 return;
             }
             if (response['error'] != null) {
-                alert("@lang('querybuilder.step2.sql-error')");
+                alert("@lang('querybuilder.step2.sql-error')" + "(" + response['error'] + ")");
                 return;
             }
             Wizard.step(4);
