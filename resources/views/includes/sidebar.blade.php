@@ -39,18 +39,18 @@
 
     @if(Auth::user()->getUserLevel() === 1)
 
-        <a class="nav-tile" href="{{ route('dashboard.index') }}">
+        <a class="nav-tile" href="{{ '/education-programs' }}">
             <div class="tile blue_tile">
-                <img class="icon" src="{{ URL::asset('assets/img/graph_wit.svg', true) }}"/>
-                <div class="nav-title">{{ Lang::get('elements.sidebar.labels.analytics_board') }}</div>
+                <img class="icon" src="{{ URL::asset('assets/img/nieuws_wit.svg', true) }}"/>
+                <div class="nav-title"
+                     style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.educationprograms') }}</div>
             </div>
         </a>
 
-        <a class="nav-tile" href="{{ '/education-programs' }}">
+        <a class="nav-tile" href="{{ route('dashboard.index') }}">
             <div class="tile white_tile">
-                <img class="icon" src="{{ URL::asset('assets/img/nieuws_blauw.svg', true) }}"/>
-                <div class="nav-title"
-                     style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.educationprograms') }}</div>
+                <img class="icon" src="{{ URL::asset('assets/img/graph_blauw.svg', true) }}"/>
+                <div class="nav-title">{{ Lang::get('elements.sidebar.labels.analytics_board') }}</div>
             </div>
         </a>
 
