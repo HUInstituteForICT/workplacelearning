@@ -60,7 +60,7 @@ return array (
         'asc' => 'Oplopend',
         'desc' => 'Aflopend',
 
-        'limit-caption' => 'Aantal'
+        'value' => 'Waarde'
     ],
 
     'step4' => [

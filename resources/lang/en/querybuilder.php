@@ -60,7 +60,7 @@ return array (
         'asc' => 'Ascending',
         'desc' => 'Descending',
 
-        'limit-caption' => 'Limit number of results '
+        'value' => 'Value'
     ],
 
     'step4' => [
