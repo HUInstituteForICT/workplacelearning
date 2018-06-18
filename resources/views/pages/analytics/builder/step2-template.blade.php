@@ -1,7 +1,7 @@
 <div class="modal-header">
     <h4 class="modal-title">@lang('querybuilder.step2.template')</h4>
 </div>
-<div class="modal-body" style="height: 500px">
+<div class="modal-body">
     <form id="wizard-form">
 
         <div class="container-fluid">
@@ -212,7 +212,8 @@
             }
 
             let rows = "";
-            for (let i = 0; i < response.length; i++) {
+            let length = response.length < 3 ? response.length : 3;
+            for (let i = 0; i < length; i++) {
                 let row = "<tr>";
                 let obj = response[i];
 
