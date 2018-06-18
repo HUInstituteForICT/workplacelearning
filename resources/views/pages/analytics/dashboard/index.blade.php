@@ -34,7 +34,7 @@
                                     </form>
                                     <form action="{{ route('dashboard.delete', $chart->id) }}"
 
-                                          style="display: inline-block;" method="post" accept-charset="UTF-8">
+                                          style="display: inline-block;" method="post" accept-charset="UTF-8" class="frmDelete">
                                         {{ csrf_field() }}
                                         {{ method_field('delete') }}
                                         <button class="btn btn-danger" title="Remove">&times;</button>
