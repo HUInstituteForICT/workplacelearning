@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Lang;
  * @property int $chain_id
  * @property string $description
  * @property Chain $chain
+ * @property int $wplp_id
  */
 class LearningActivityProducing extends Model
 {

@@ -381,6 +381,8 @@
                     $("#chain-row-" + id + " td:first-child").text(data.name);
 
                     $('#chainUpdateModal').modal('hide');
+
+                    window.location.reload();
                 });
             });
 
