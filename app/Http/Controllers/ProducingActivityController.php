@@ -416,7 +416,7 @@ class ProducingActivityController extends Controller
     public function delete(LearningActivityProducing $activity)
     {
         if($activity === null) {
-            return redirect()->route('process-acting');
+            return redirect()->route('process-producing');
         }
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {

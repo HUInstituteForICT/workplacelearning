@@ -29,12 +29,12 @@ class ProducingAnalysisController extends Controller
     public function showChoiceScreen()
     {
         // Check if user has active workplace
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('home')->withErrors([Lang::get('notifications.generic.nointernshipactive')]);
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+            return redirect()->route('home-producing')->withErrors([Lang::get('notifications.generic.nointernshipactive')]);
         }
         // Check if for the workplace the user has hours registered
         if (!Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
-            return redirect()->route('home')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
+            return redirect()->route('home-producing')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
         }
 
 

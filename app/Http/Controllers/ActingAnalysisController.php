@@ -25,12 +25,12 @@ class ActingAnalysisController extends Controller
     public function showChoiceScreen()
     {
         // Check if user has active workplace
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('home')->withErrors([Lang::get('notifications.generic.nointernshipactive')]);
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+            return redirect()->route('home-acting')->withErrors([Lang::get('notifications.generic.nointernshipactive')]);
         }
         // Check if for the workplace the user has hours registered
         if (!Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
-            return redirect()->route('home')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
+            return redirect()->route('home-acting')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
         }
 
 
@@ -62,7 +62,7 @@ class ActingAnalysisController extends Controller
         if (($year != "all" && $month != "all")
             && (0 == preg_match('/^(20)([0-9]{2})$/', $year) || 0 == preg_match('/^([0-1]{1}[0-9]{1})$/', $month))
         ) {
-            return redirect()->route('analysis-producing-choice');
+            return redirect()->route('analysis-acting-choice');
         }
 
 
