@@ -41,6 +41,7 @@ export default class Row extends React.Component {
                 {activity.difficulty}
             </td>
             <td>{activity.status}</td>
+            <td>{activity.chain}</td>
             <td>
                 <a href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
                 &nbsp;
