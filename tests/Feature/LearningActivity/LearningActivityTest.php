@@ -62,7 +62,6 @@ class LearningActivityTest extends \Tests\TestCase
         $response = $this->actingAs($user)->post('/producing/process/create', [
             'datum'        => Carbon::now()->format('d-m-Y'),
             'omschrijving' => 'Some test activity!',
-            'previous_wzh' => '-1',
             'aantaluren'   => '2',
             'category_id'  => 'new',
             'newcat'       => 'some new category',
@@ -71,6 +70,7 @@ class LearningActivityTest extends \Tests\TestCase
             'newswv'       => 'new test person',
             'status'       => '1',
             'moeilijkheid' => '1',
+            'chain_id'     => '-1'
         ]);
 
         // Controller redirects back to process creation page -- consider that success

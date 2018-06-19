@@ -29,7 +29,7 @@ class ChainManager
         return $chain;
     }
 
-    public function saveChain(Chain $chain, string $name, int $status)
+    public function updateChain(Chain $chain, string $name, int $status)
     {
         $chain->name = $name;
         $chain->status = $status;
