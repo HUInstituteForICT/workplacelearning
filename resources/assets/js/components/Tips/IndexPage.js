@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {normalize} from "normalizr";
 import {Schema} from "../../Schema";
 import {actions as entityActions, actions} from "./redux/entities";
+import {actions as tipEditPageActions} from "./redux/tipPageUi";
 import axios from "axios";
 import Modal from "react-responsive-modal";
 import CreateForm from "../Statistics/CreateForm";
@@ -238,7 +239,12 @@ class IndexPage extends React.Component {
                 </div>
             }
 
-
+            {
+                Object.keys(this.props.errors).length > 0 &&
+                <div style={{position: 'fixed', right: 10, bottom: 40}}>
+                        {Object.keys(this.props.errors).map(id => <div className='alert alert-error' key={id}>{this.props.errors[id]}</div>)}
+                </div>
+            }
         </div>
     }
 }
@@ -248,6 +254,7 @@ const mapping = {
         entities: state.entities,
         tips: state.entities.tips,
         statistics: state.entities.statistics,
+        errors: state.tipEditPageUi.errors,
     }),
     dispatch: dispatch => ({
         newTip: entities => dispatch(actions.addEntities(entities)),
@@ -346,6 +353,12 @@ const TipItemMapping = {
 
                 axios.put(`/api/tips/${tip.id}`, toggledTip).then(() => {
                     dispatch(entityActions.updateEntity('tips', toggledTip.id, toggledTip));
+                }).catch(error => {
+                    Object.values(error.response.data).forEach(err => {
+                        const id = Math.floor(Math.random() * 10000); // Just a random id necessary so it can be removed later on
+                        dispatch(tipEditPageActions.errorAdd(id, err));
+                        setTimeout(() => dispatch(tipEditPageActions.errorRemove(id)), 2500);
+                    });
                 });
             }
         }
