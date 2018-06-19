@@ -96,7 +96,7 @@ class TipsController extends Controller
         $tip = (new Tip)->findOrFail($id);
         $tip->name = $request->get('name');
         $tip->tipText = $request->get('tipText');
-        $tip->showInAnalysis = $request->has('showInAnalysis');
+        $tip->showInAnalysis = $request->has('showInAnalysis') ? $request->get('showInAnalysis') : false;
         if($tip->trigger === 'moment') {
             $tip->rangeStart = (int) $request->get('rangeStart');
             $tip->rangeEnd = (int) $request->get('rangeEnd');

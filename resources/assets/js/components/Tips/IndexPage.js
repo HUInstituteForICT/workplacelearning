@@ -290,7 +290,7 @@ const statisticItemMapping = {
 
 const StatisticItemContainer = connect(statisticItemMapping.state, statisticItemMapping.dispatch)(statisticItem);
 
-const tipItem = ({tip, onClickDelete, coupledStatistics, statistics}) => {
+const tipItem = ({tip, onClickDelete, coupledStatistics, statistics, toggleAvailability}) => {
 
     let hasActingCoupled, hasProducingCoupled = false;
     coupledStatistics.forEach(coupled => {
@@ -314,9 +314,9 @@ const tipItem = ({tip, onClickDelete, coupledStatistics, statistics}) => {
         <td>
             {tip.student_tip_views.length}
         </td>
-        <td>
-            {tip.showInAnalysis && <span className="glyphicon glyphicon-ok" style={{color: 'green'}}/>}
-            {!tip.showInAnalysis && <span className="glyphicon glyphicon-remove" style={{color:'red'}}/>}
+        <td style={{cursor: 'pointer'}} onClick={toggleAvailability}>
+            {tip.showInAnalysis === 1 && <span className="glyphicon glyphicon-ok" style={{color: 'green'}}/>}
+            {tip.showInAnalysis === 0 && <span className="glyphicon glyphicon-remove" style={{color:'red'}}/>}
         </td>
         <td>
             <Link to={`/tip/${tip.id}`}>
@@ -338,8 +338,16 @@ const TipItemMapping = {
         }
     },
 
-    dispatch: (dispatch) => {
+    dispatch: (dispatch, props) => {
         return {
+            toggleAvailability: () => {
+                const {tip} = props;
+                const toggledTip = {...tip, showInAnalysis: !tip.showInAnalysis};
+
+                axios.put(`/api/tips/${tip.id}`, toggledTip).then(() => {
+                    dispatch(entityActions.updateEntity('tips', toggledTip.id, toggledTip));
+                });
+            }
         }
     }
 };
