@@ -8,7 +8,7 @@ return [
         'chain-activity' => 'Chain activity',
         'create-new'     => 'Create new chain',
         'manage'         => 'Manage chains',
-        'name'           => 'New chain name',
+        'name'           => 'Chain name',
         'create'         => 'Create',
         'none'           => 'Don\'t chain',
         'chains'         => 'Chains',

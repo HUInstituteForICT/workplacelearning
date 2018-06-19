@@ -8,7 +8,7 @@ return [
         'chain-activity' => 'Keten activiteit',
         'create-new'     => 'Maak nieuwe keten aan',
         'manage'         => 'Beheer ketens',
-        'name'           => 'Nieuwe ketennaam',
+        'name'           => 'Ketennaam',
         'create'         => 'Maak aan',
         'none'           => 'Niet ketenen',
         'chains'         => 'Ketens',
