@@ -20,7 +20,7 @@ class ChainController extends Controller
 
     public function save(SaveRequest $request, ChainManager $chainManager, Chain $chain)
     {
-        $chainManager->saveChain($chain, $request->get('name'), $request->get('status'));
+        $chainManager->updateChain($chain, $request->get('name'), $request->get('status'));
 
         return $chain;
     }
