@@ -3,10 +3,10 @@
 @section('content')
     <div class="container">
 
-        <h1>{{Lang::get('template.dashboard_title')}}</h1>
+        <h1>@lang('template.dashboard_title')</h1>
 
         @if (count($templates) <= 0)
-            <p>{{Lang::get('template.no_templates_error')}}</p>
+            <p>@lang('template.no_templates_error')</p>
         @else
             @foreach($templates as $template)
                 <div class="row">
@@ -29,7 +29,7 @@
 
         <form action="{{route('template.create')}}" method="get">
             <button class="btn btn-primary" style="margin-top: 10px"
-                    title="CreateTemplate">{{Lang::get('template.create_button')}}
+                    title="CreateTemplate">@lang('template.create_button')
             </button>
         </form>
 
@@ -37,7 +37,7 @@
 
     <script>
         $('.frmDelete').click(function (event) {
-            if (!confirm('{{ Lang::get('dashboard.warning') }}')) {
+            if (!confirm('@lang('dashboard.warning')')) {
                 event.preventDefault();
                 return false
             }

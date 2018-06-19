@@ -6,9 +6,9 @@
             <div class="col-md-9">
 
                 @if ($template == null)
-                    <h1>{{Lang::get('template.template_create')}}</h1>
+                    <h1>@lang('template.template_create')</h1>
                 @else
-                    <h1>{{Lang::get('template.edit_template')}}</h1>
+                    <h1>@lang('template.edit_template')</h1>
                 @endif
 
                 <form action="{{ route('template.save') }}" method="post" id="saveForm">
@@ -17,11 +17,11 @@
                         <input type="hidden" id="templateID" name="templateID" class="form-control"
                                value="{{ $template == null ? null : $template->id}}">
 
-                        <label for="name">{{Lang::get('template.name')}}</label>
+                        <label for="name">@lang('template.name')</label>
                         <input type="text" id="name" name="name" class="form-control"
                                value="{{ $template == null ? old('name') : $template->name}}">
 
-                        <label for="description" style="margin-top: 20px">{{Lang::get('template.description')}}</label>
+                        <label for="description" style="margin-top: 20px">@lang('template.description')</label>
                         <textarea rows="4" cols="50" maxlength="500" id="description" name="description"
                                   class="form-control">{{ $template == null ? old('description') : $template->description}}</textarea>
 
@@ -35,12 +35,12 @@
                     </div>
 
                     <button class="btn btn-primary" style="float: right" type="submit"
-                            title="Opslaan">{{Lang::get('template.save')}}</button>
+                            title="Opslaan">@lang('template.save')</button>
                     {{ csrf_field() }}
                 </form>
 
                 <form action="{{ route('template.index') }}" method="get">
-                    <button class="btn btn-default" title="Terug">{{Lang::get('template.back')}}
+                    <button class="btn btn-default" title="Terug">@lang('template.back')
                     </button>
                 </form>
 
