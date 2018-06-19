@@ -35,7 +35,8 @@ return array (
 
         'custom' => 'Step 2: Enter query',
         'no-data' => 'No data found.',
-        'sql-error' => 'The SQL query is not valid.'
+        'sql-error' => 'The SQL query is not valid.',
+        'show-query' => 'Show query'
     ],
 
     'step3' => [

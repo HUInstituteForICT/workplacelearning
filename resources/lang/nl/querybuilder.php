@@ -35,7 +35,8 @@ return array (
     
         'custom' => 'Stap 2: Voer query in',
         'no-data' => 'Geen data gevonden.',
-        'sql-error' => 'De SQL query is niet valide.'
+        'sql-error' => 'De SQL query is niet valide.',
+        'show-query' => 'Geef query weer',
     ],
 
     'step3' => [

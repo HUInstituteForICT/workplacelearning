@@ -18,13 +18,18 @@
                         </select>
                     </div>
 
-                    {{--<p style="font-weight: bold;">{{Lang::get('template.description')}}</p>--}}
                     <div id="tempDesc"></div>
 
-                    <p style="font-weight: bold; margin-top: 15px;">Template Query</p>
-                    <div class="test-query">
+                    <button type="button" style="margin-top: 15px" class="btn btn-default" onclick="showQueryClick()">
+                        @lang('querybuilder.step2.show-query')
+                    </button>
+
+                    <div class="option-element">
+                        <p style="font-weight: bold; margin-top: 15px;">Template Query</p>
+                        <div class="test-query">
                         <textarea readonly rows="4" cols=100 maxlength="1000" id="tempQuery" name="tempQuery"
                                   class="form-control query-area"></textarea>
+                        </div>
                     </div>
 
                     <div id="paramGroup" style="margin-top: 15px; margin-bottom: 15px;">
@@ -33,7 +38,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div id="final-query" style="margin-top: 15px">
+                    <div id="final-query" class="option-element" style="margin-top: 15px">
                         <p style="font-weight: bold;">Query</p>
                         <textarea readonly rows="4" cols=100 maxlength="1000" id="realQuery" name="realQuery"
                                   class="form-control query-area"></textarea>
@@ -56,6 +61,18 @@
         let columnNames = JSON.parse('{!! json_encode($columnNames) !!}');
         let paramGroup = $('#paramGroup');
         let tempSelect = $('.template-select');
+        let queryIsHidden = true;
+
+        function showQueryClick() {
+            if (queryIsHidden) {
+                $('.option-element').show();
+            } else {
+                $('.option-element').hide();
+            }
+            queryIsHidden = !queryIsHidden;
+        }
+
+        $('.option-element').hide();
 
         tempSelect.on("change", function () {
             let optionIndex = $(this).find('option:selected').attr("name");
