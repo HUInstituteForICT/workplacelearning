@@ -14,7 +14,6 @@ class ChainManager
 
     public function __construct(WorkplaceLearningPeriod $workplaceLearningPeriod)
     {
-
         $this->workplaceLearningPeriod = $workplaceLearningPeriod;
     }
 
@@ -28,6 +27,14 @@ class ChainManager
         $chain->save();
 
         return $chain;
+    }
+
+    public function saveChain(Chain $chain, string $name, int $status)
+    {
+        $chain->name = $name;
+        $chain->status = $status;
+
+        $chain->save();
     }
 
     public function attachActivity(LearningActivityProducing $learningActivityProducing, Chain $chain)

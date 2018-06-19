@@ -310,6 +310,8 @@ Route::group([
 
 
         Route::post('/chain/create', 'ChainController@create')->name('chain-create');
+        Route::put('/chain/{chain}', 'ChainController@save')->name('chain-save');
+
         //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
     });
 });
