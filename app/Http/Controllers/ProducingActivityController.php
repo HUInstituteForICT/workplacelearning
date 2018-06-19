@@ -12,7 +12,6 @@ use App\Chain;
 use App\ChainManager;
 use App\Difficulty;
 use App\Feedback;
-use App\Http\Requests;
 use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
 use App\ResourcePerson;
@@ -44,7 +43,7 @@ class ProducingActivityController extends Controller
         );
 
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
-            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
+            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial', 'chain')
             ->take(8)
             ->orderBy('date', 'DESC')
             ->orderBy('lap_id', 'DESC')
@@ -308,8 +307,11 @@ class ProducingActivityController extends Controller
 //            $learningActivityProducing->prev_lap_id             = ($request['previous_wzh'] != "-1") ? $request['previous_wzh'] : null;
             $learningActivityProducing->date                    = date_format(date_create($request->datum, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
 
-            $chain = (new Chain)->find($request->get('chain_id'));
-            $chainManager->attachActivity($learningActivityProducing, $chain);
+
+            if (((int)$request->get('chain_id')) !== -1) {
+                $chain = (new Chain)->find($request->get('chain_id'));
+                $chainManager->attachActivity($learningActivityProducing, $chain);
+            }
 
             $learningActivityProducing->save();
 

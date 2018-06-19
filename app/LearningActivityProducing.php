@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Lang;
 /**
  * @property int $lap_id
  * @property int $chain_id
+ * @property string $description
+ * @property Chain $chain
  */
 class LearningActivityProducing extends Model
 {

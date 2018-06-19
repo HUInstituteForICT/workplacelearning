@@ -14,6 +14,7 @@ return [
     'time'                    => 'Duration',
     'aid'                     => 'Support',
     'category'                => 'Category',
+    'chain'                   => 'Chain',
     'complexity'              => 'Complexity',
     'export-to'               => 'Export to',
     'mail-to'                 => 'Mail to',
