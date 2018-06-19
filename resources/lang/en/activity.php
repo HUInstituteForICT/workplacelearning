@@ -80,7 +80,7 @@ return array (
       "person" => "Person",
       'steps'  =>
     array (
-      1 => 'Pick the date on which you performed the activity. In cannot be in the future.',
+      1 => 'Pick the date on which you performed the activity. It cannot be in the future.',
       2 => 'Describe the activity you performed.',
       3 => 'Supply the hours you spent on this activity.',
       4 => 'Select the category for the activity.',
