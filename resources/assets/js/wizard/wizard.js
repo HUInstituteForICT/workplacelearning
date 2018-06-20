@@ -31,12 +31,11 @@ var Wizard =  {
                         window.location = '/';
                     }
 
-                    if(data.message != undefined) {
+                    if(data.error != undefined) {
 
-                        $('#wizard-error').html(data.message);
+                        alert(data.error);
                     }
 
-                    //Wizard['add_step_' + data.step](data);
                 });
             }
 
@@ -185,6 +184,11 @@ var Wizard =  {
         request.done(function( response ) {
 
             var responseData = response;
+
+            if(responseData.error != undefined) {
+
+                alert(responseData.error);
+            }
 
             var headers = "";
 

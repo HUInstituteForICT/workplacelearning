@@ -25,31 +25,18 @@ class Builder
 
         $this->query = \DB::connection("dashboard")->table($mainModel->getTable());
 
+        //Select fields
         foreach($selectData as $data) {
 
             $tableString = 'App\\' . $data['table'];
             $tableModel = (new $tableString())->getTable();
 
-            switch($data['type']) {
-
-                case "data":
-                    $select[] = $tableModel.'.'.$data['column'];
-                    break;
-
-                case "sum":
-                    $select[] = \DB::raw('SUM('.$tableModel.'.'.$data['column'].')');
-                    break;
-
-                case "count":
-                    $select[] = \DB::raw('COUNT('.$tableModel.'.'.$data['column'].')');
-                    break;
-
-                case "avg":
-                    $select[] = \DB::raw('AVG('.$tableModel.'.'.$data['column'].')');
-                    break;
-            }
+            $select[] = $this->getFunctionNames($data['type'], $tableModel, $data['column']);
         }
 
+        $this->query->select($select);
+
+        //Where & GroupBy fields
         foreach($filterData as $filter) {
 
             $tableString = 'App\\' . $filter['table'];
@@ -75,6 +62,17 @@ class Builder
             }
         }
 
+        foreach($filters as $filter) {
+
+            $this->query->where($filter[0], $filter[1], $filter[2]);
+        }
+
+        if(!empty($groupBy)) {
+
+            $this->query->groupBy($groupBy);
+        }
+
+        //Joins
         foreach($relations as $r) {
 
             $join = $mainModel->$r()->getRelated();
@@ -94,42 +92,11 @@ class Builder
             }
         }
 
-        if(!empty($groupBy)) {
-
-            $this->query->groupBy($groupBy);
-        }
-
-        $this->query->select($select);
-
-        foreach($filters as $filter) {
-
-            $this->query->where($filter[0], $filter[1], $filter[2]);
-        }
-
         if($sort != null) {
 
             foreach($sort as $s) {
 
-                switch($s['type']) {
-
-                        case "data":
-                            $this->query->orderBy($s['table'].'.'.$s['column'], $s['order']);
-                            break;
-
-                        case "sum":
-                            $this->query->orderBy(\DB::raw('SUM('.$s['table'].'.'.$s['column'].')'), $s['order']);
-                            break;
-
-                        case "count":
-                            $this->query->orderBy(\DB::raw('COUNT('.$s['table'].'.'.$s['column'].')'), $s['order']);
-
-                            break;
-
-                        case "avg":
-                            $this->query->orderBy(\DB::raw('AVG('.$s['table'].'.'.$s['column'].')'), $s['order']);
-                            break;
-                    }
-
+                $this->query->orderBy($this->getFunctionNames($s['type'], $s['table'], $s['column']), $s['order']);
             }
         }
 
@@ -139,11 +106,42 @@ class Builder
         }
     }
 
+    private function getFunctionNames($type, $table, $column) {
+
+        $string = '';
+
+        switch($type) {
+
+            case "data":
+                $string = $table.'.'.$column;
+                break;
+
+            case "sum":
+                $string = \DB::raw('SUM('.$table.'.'.$column.')');
+                break;
+
+            case "count":
+                $string = \DB::raw('COUNT('.$table.'.'.$column.')');
+                break;
+
+            case "avg":
+                $string = \DB::raw('AVG('.$table.'.'.$column.')');
+                break;
+        }
+
+        return $string;
+    }
+
     public function getData($model, $relations, $select, $filters, $sort, $limit = null) {
 
         $this->build($model, $relations, $select, $filters, $sort, $limit);
 
-        return $this->query->get();
+        try {
+            return $this->query->get();
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            return ['error' => \Lang::get('querybuilder.query-error')];
+        }
     }
 
     public function getQuery($model, $relations, $select, $filters, $sort, $limit = null) {

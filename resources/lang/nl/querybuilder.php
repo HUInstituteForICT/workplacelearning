@@ -90,5 +90,7 @@ return array (
     'next' => 'Volgende',
     'previous' => 'Vorige',
     'cancel' => 'Annuleren',
-    'save' => 'Opslaan'
+    'save' => 'Opslaan',
+
+    'query-error' => 'Er is iets mis gegaan bij het uitvoeren van de query.'
 );

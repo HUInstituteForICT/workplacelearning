@@ -42,36 +42,7 @@ class QueryBuilderController extends Controller
 
             switch($id) {
                 case 1: return view("pages.analytics.builder.step1-type", compact("data")); break;
-                case 2: {
-                    $templates = Template::all();
-                    $needle = "?";
-
-                    foreach ($templates as $template) {
-                        $query = $template->query;
-                        $parameters = $template->getParameters();
-
-                        foreach($parameters as $parameter) {
-                            $pos = strpos($query, $needle);
-                            if ($pos !== false) {
-                                $query = substr_replace($query, $parameter->name, $pos, strlen($needle));
-                            }
-                        }
-                        $query = str_replace(["\r", "\n"], '@', $query);
-                        $query = str_replace("'", "š", $query);
-                        $template->query = $query;
-                    }
-                    $tables = DB::connection('dashboard')->select('SHOW TABLES');
-                    $tableNames = array_map(function ($object) {
-                        return $object->{'Tables_in_' . DB::connection('dashboard')->getDatabaseName()};
-                    }, $tables);
-
-                    $columnNames = [];
-                    foreach ($tableNames as $table) {
-                        $columnNames[$table] = DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
-                    }
-
-                    return view("pages.analytics.builder.step2-template", compact("data", "templates", "columnNames")); break;
-                }
+                case 2: return $this->step2template($data); break;
                 case 4: return $this->step4($data); break;
             }
         } elseif($data['analysis_type'] == 'custom') {
@@ -86,50 +57,70 @@ class QueryBuilderController extends Controller
 
     public function saveStep(Request $request, $id)
     {
-        if($request->isMethod('post'))
-            $request->session()->put('builder', array_replace($request->session()->get('builder'), $request->all()));
+        $oldData = $request->session()->get('builder');
 
-        if($id == 4) {
-            $data = $request->session()->get('builder');
+        $request->session()->put('builder', array_replace($request->session()->get('builder'), $request->all()));
 
-            $result = [];
+        switch($id) {
 
-            switch($data['analysis_type']) {
+            case 3:
 
-                case 'build':
-                    $table = (isset($data['analysis_entity']) ? $data['analysis_entity'] : []);
-                    $relations = (isset($data['analysis_relation']) ? $data['analysis_relation'] : []);
+                if(isset($oldData['analysis_entity']) && $oldData['step'] == 2) {
 
-                    $select = (isset($data['query_data']) ? $data['query_data'] : []);
-                    $filters = (isset($data['query_filter']) ? $data['query_filter'] : []);
-                    $sort = (isset($data['query_sort']) ? $data['query_sort'] : []);
-                    $limit = null;
+                    if($request->input('analysis_entity') != $oldData['analysis_entity']) {
 
-                    $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, $limit)->toArray();
+                        $request->session()->put('builder', array_merge($request->all(), ['analysis_type' => $oldData['analysis_type']]));
+                    }
+                }
                 break;
 
-                case 'template':
+            case 4:
 
-                    $analyse = new Analysis();
-                    $analyse->query = $data['realQuery'];
-                    $result = $analyse->execute();
+                $data = $request->session()->get('builder');
 
-                    break;
+                $result = [];
 
-                case 'custom':
-                    $analyse = new Analysis();
-                    $analyse->query = $data['customQuery'];
-                    $result = $analyse->execute();
-                    break;
-            }
+                switch($data['analysis_type']) {
 
-            $request->session()->put('builder', array_replace($request->session()->get('builder') , ['result' => $result]));
+                    case 'build':
+                        $table = (isset($data['analysis_entity']) ? $data['analysis_entity'] : []);
+                        $relations = (isset($data['analysis_relation']) ? $data['analysis_relation'] : []);
+
+                        $select = (isset($data['query_data']) ? $data['query_data'] : []);
+                        $filters = (isset($data['query_filter']) ? $data['query_filter'] : []);
+                        $sort = (isset($data['query_sort']) ? $data['query_sort'] : []);
+                        $limit = null;
+
+                        $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, $limit)->toArray();
+                        break;
+
+                    case 'template':
+
+                        $analyse = new Analysis();
+                        $analyse->query = $data['realQuery'];
+                        $result = $analyse->execute();
+
+                        break;
+
+                    case 'custom':
+                        $analyse = new Analysis();
+                        $analyse->query = $data['customQuery'];
+                        $result = $analyse->execute();
+                        break;
+                }
+
+                $request->session()->put('builder', array_replace($request->session()->get('builder') , ['result' => $result]));
+                break;
+
+            case 5:
+                if($request->isMethod('post'))
+                    $request->session()->put('builder', array_replace($request->session()->get('builder'), $request->all()));
+
+                $this->step5($request->session()->get('builder'));
+                break;
         }
 
-        if($id == 5) {
-            $this->step5($request->session()->get('builder'));
-        }
-
+        $request->session()->put('builder', array_replace($request->session()->get('builder'), ['step' => $id]));
         return json_encode(["step" => $id]);
     }
 
@@ -142,6 +133,38 @@ class QueryBuilderController extends Controller
         $relations = $model->getRelations((isset($data['analysis_entity'])) ? $data['analysis_entity'] : $models[0]);
 
         return view("pages.analytics.builder.step2-builder", compact('models', 'relations', 'data'));
+    }
+
+    private function step2template($data) {
+
+        $templates = Template::all();
+        $needle = "?";
+
+        foreach ($templates as $template) {
+            $query = $template->query;
+            $parameters = $template->getParameters();
+
+            foreach($parameters as $parameter) {
+                $pos = strpos($query, $needle);
+                if ($pos !== false) {
+                    $query = substr_replace($query, $parameter->name, $pos, strlen($needle));
+                }
+            }
+            $query = str_replace(["\r", "\n"], '@', $query);
+            $query = str_replace("'", "š", $query);
+            $template->query = $query;
+        }
+        $tables = DB::connection('dashboard')->select('SHOW TABLES');
+        $tableNames = array_map(function ($object) {
+            return $object->{'Tables_in_' . DB::connection('dashboard')->getDatabaseName()};
+        }, $tables);
+
+        $columnNames = [];
+        foreach ($tableNames as $table) {
+            $columnNames[$table] = DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($table);
+        }
+
+        return view("pages.analytics.builder.step2-template", compact("data", "templates", "columnNames"));
     }
 
     private function step3($data)
@@ -320,7 +343,7 @@ class QueryBuilderController extends Controller
         if($request->input('query_limit') && $request->input('query_limit') < 10)
             $limit = $request->input('query_limit');
 
-        $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, $limit);
+    $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, $limit);
 
         return $result;
     }

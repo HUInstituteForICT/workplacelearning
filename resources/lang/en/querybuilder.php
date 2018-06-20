@@ -90,5 +90,7 @@ return array (
     'next' => 'Next',
     'previous' => 'Back',
     'cancel' => 'Cancel',
-    'save' => 'Save'
+    'save' => 'Save',
+
+    'query-error' => 'Something went wrong while executing the query.'
 );
