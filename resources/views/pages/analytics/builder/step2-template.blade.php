@@ -132,7 +132,7 @@
                             }
                         } else {
                             if (paramType === "number") {
-                                field = `<input type="number" id="param-${i}-input"
+                                field = `<input type="number" maxlength="16" oninput="maxLengthCheck(this)" id="param-${i}-input"
                                value="" placeholder="${paramType}" required="true" class="form-control field-${i}">`;
                             } else if (paramType === "boolean") {
                                 field += `<select class="form-control table-select">`;
@@ -141,7 +141,7 @@
                                 field += `</select>`;
                             } else {
                                 field = `<input type="text" id="param-${i}-input"
-                               value="" placeholder="${paramType}" required="true" class="form-control field-${i}">`;
+                               value="" placeholder="${paramType}" required="true" maxlength="20" class="form-control field-${i}">`;
                             }
                         }
                         addParamRow(i, length, paramName, field);
@@ -149,6 +149,11 @@
                 }
             });
         });
+
+        function maxLengthCheck(object) {
+            if (object.value.length > object.maxLength)
+                object.value = object.value.slice(0, object.maxLength)
+        }
 
         tempSelect.trigger("change");
 
@@ -179,15 +184,24 @@
 
             paramGroup.children().find(".field").each(function () {
                 if (this.children != null && this.children.length > 0) {
-
                     let val = $(this.children[0]).val();
                     let paramName = this.getAttribute("name");
+
                     if (val != null && paramName != null) {
+                        val = filterParameter(val);
                         templateQuery = templateQuery.replace("{" + paramName + "}", val);
                         $('#realQuery').val(templateQuery);
+                        $(this.children[0]).val(val);
                     }
                 }
             });
+        }
+
+        // Only allow letters and numbers and remove all spaces.
+        function filterParameter(paramVal) {
+            paramVal = paramVal.replace(/[^a-zA-Z0-9]+/g, '');
+            paramVal = paramVal.replace(/ /g, '');
+            return paramVal.toLowerCase() === 'or' ? '' : paramVal;
         }
 
         function handleQueryResponse(callback) {
