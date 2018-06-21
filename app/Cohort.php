@@ -67,4 +67,10 @@ class Cohort extends Model
         return $this->belongsToMany(Tip::class);
     }
 
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["categories", "competencies", "competenceDescription", "educationProgram", "resourcePersons", "timeSlots", "workplaceLearningPeriods"];
+    }
+
 }

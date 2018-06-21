@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Analysis;
 use App\AnalysisChart;
+use App\Category;
 use App\ChartType;
 use App\DashboardChart;
 use App\Label;
+use App\LearningActivityActing;
+use App\LearningActivityProducing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
 
 class AnalyticsChartController extends Controller
 {
@@ -161,6 +166,81 @@ class AnalyticsChartController extends Controller
 
         return redirect()->route('charts.index')
             ->with('success', Lang::get('charts.removed'));
+    }
+
+    public function getChartDetails($idLabel)
+    {
+        $array = explode(";", $idLabel);
+        $analysisID = $array[0];
+        $label = $array[1];
+
+        $queryResult = (new \App\Analysis)->where('id', $analysisID)->get(['query']);
+        if ($queryResult[0] != null) {
+            $query = $queryResult[0]['query'];
+            if ($query != null) {
+
+                // Splitting the query on new line and space
+                $queryArray = preg_split('/[\s]+/', $query);
+
+                // Trying to get the EducationProgramType from the query
+                $programTypeID = null;
+
+                $cohort = null;
+
+                for ($i = 0; $i < count($queryArray); $i++) {
+                    $index = stripos($queryArray[$i], 'FROM');
+                    if ($index > -1 && strtolower($queryArray[$i+1]) == 'learningactivityproducing') {
+                        $programTypeID = 2;
+                        break;
+                    }
+                    $index = stripos($queryArray[$i], 'FROM');
+                    if ($index > -1 && strtolower($queryArray[$i+1]) == 'learningactivityacting') {
+                        $programTypeID = 1;
+                        break;
+                    }
+
+                    $index = stripos($queryArray[$i], 'cohort_id');
+
+                    if ($index > -1 && $queryArray[$i+1] == '=' && is_numeric($queryArray[$i+2])) {
+
+                        $cohort = $queryArray[$i+2];
+                    }
+                }
+
+                if ($programTypeID == null || $programTypeID == 2) {
+                    $id = (new \App\Category)->where('category_label', $label)
+                        ->where(function ($query) use ($cohort) {
+                            if($cohort != null)
+                                $query->where('cohort_id', $cohort);
+
+                        })
+                        ->pluck('category_id')->toArray();
+
+                    if (!empty($id)) {
+                        $details = (new LearningActivityProducing)->whereIn('category_id', $id)->get(['description', 'duration']);
+
+                        return $details;
+                    }
+                }
+                else {
+
+                    $id = (new \App\Timeslot)->where('timeslot_text', $label)
+                        ->where(function ($query) use ($cohort) {
+                            if($cohort != null)
+                                $query->where('cohort_id', $cohort);
+
+                        })
+                        ->pluck('timeslot_id')->toArray();
+
+                    if (!empty($id)) {
+                        $details = (new LearningActivityActing)->whereIn('timeslot_id', $id)->get(['situation as description']);
+
+                        return $details;
+                    }
+                }
+            }
+        }
+        return [];
     }
 
 }

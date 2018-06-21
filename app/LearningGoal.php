@@ -38,4 +38,10 @@ class LearningGoal extends Model
     public function learningActivityActing() {
         return $this->belongsTo('App\learningActivityActing', 'learninggoal_id', 'learninggoal_id');
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["workplaceLearningPeriod", "learningActivityActing"];
+    }
 }

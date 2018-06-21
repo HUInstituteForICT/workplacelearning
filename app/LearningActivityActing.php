@@ -118,4 +118,10 @@ class LearningActivityActing extends Model
     {
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["learningGoal", "competence", "timeslot", "resourcePerson", "resourceMaterial"];
+    }
 }

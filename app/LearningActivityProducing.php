@@ -134,5 +134,20 @@ class LearningActivityProducing extends Model
         return Feedback::where('learningactivity_id', $this->lap_id)->first();
     }
 
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["previousLearningActivityProducing",
+                "nextLearningActivityProducing",
+                "workplaceLearningPeriod",
+                "feedback",
+                "resourcePerson",
+                "resourceMaterial",
+                "category",
+                "difficulty",
+                "status"
+                ];
+    }
+
     // Note: DND, object comparison
 }

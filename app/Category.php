@@ -56,4 +56,10 @@ class Category extends Model
     {
         $this->category_label = $label;
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["cohort", "educationProgram", "InternshipPeriods", "learningactivitiesproducing"];
+    }
 }

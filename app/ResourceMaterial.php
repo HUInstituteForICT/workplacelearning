@@ -28,4 +28,10 @@ class ResourceMaterial extends Model
     {
         return $this->belongsTo(\App\LearningActivityProducing::class);
     }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["workplaceLearningPeriod", "learningActivityProducing"];
+    }
 }
