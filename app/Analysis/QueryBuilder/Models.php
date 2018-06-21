@@ -55,8 +55,8 @@ class Models
             $tmpRelations = $model->getRelationships();
 
             foreach($tmpRelations as $relation) {
-                $className = class_basename(get_class($model->$relation()->getRelated()));
-                if(in_array($className, $this->models) && $className != $string) {
+                $className = class_basename(\get_class($model->$relation()->getRelated()));
+                if($className !== $string && \in_array($className, $this->models, true)) {
 
                     $relationships[$relation] = \Lang::get('querybuilder.'.$className);
                 }

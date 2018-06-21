@@ -1,7 +1,7 @@
 <div class="modal-header">
     <h4 class="modal-title">{{Lang::get('dashboard.details-title')}}</h4>
 </div>
-<div class="modal-body" style="height: 450px">
+<div class="modal-body" style="height: 450px; overflow-y:scroll;">
     {{Lang::get('dashboard.category')}}: {{$label}}
     <ul class="list-group" id="values" style="margin-top: 10px">
 
