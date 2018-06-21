@@ -38,13 +38,13 @@
         </div>
     </div>
     <script>
-      (function () {
-        $('.frmDelete').on('submit', function (e) {
-          if (!confirm('{{Lang::get('dashboard.warning')}}')) {
-            e.preventDefault()
-            return false
-          }
-        })
-      })()
+        (function () {
+            $('.frmDelete').on('submit', function (e) {
+                if (!confirm('{{Lang::get('dashboard.warning')}}')) {
+                    e.preventDefault();
+                    return false
+                }
+            })
+        })()
     </script>
 @stop

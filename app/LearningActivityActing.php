@@ -59,7 +59,7 @@ class LearningActivityActing extends Model
 
     public function timeslot()
     {
-        return $this->hasOne(\App\Timeslot::class, 'timeslot_id', 'timeslot_id');
+        return $this->belongsTo(\App\Timeslot::class, 'timeslot_id', 'timeslot_id');
     }
 
     public function resourcePerson()
@@ -117,5 +117,11 @@ class LearningActivityActing extends Model
     public function workplaceLearningPeriod()
     {
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
+    }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["learningGoal", "competence", "timeslot", "resourcePerson", "resourceMaterial"];
     }
 }
