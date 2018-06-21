@@ -26,7 +26,7 @@ class Models
         "ResourceMaterial",
         "ResourcePerson",
         "Status",
-        "TimeSlot",
+        "Timeslot",
         "WorkplaceLearningPeriod"
     ];
 

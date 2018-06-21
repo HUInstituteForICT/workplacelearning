@@ -65,7 +65,7 @@ class LearningActivityProducing extends Model
 
     public function difficulty()
     {
-        return $this->hasOne(\App\Difficulty::class, 'difficulty_id', 'difficulty_id');
+        return $this->belongsTo(\App\Difficulty::class, 'difficulty_id', 'difficulty_id');
     }
 
     public function getDifficulty()

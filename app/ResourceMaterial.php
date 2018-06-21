@@ -21,12 +21,12 @@ class ResourceMaterial extends Model
 
     public function workplaceLearningPeriod()
     {
-        return $this->belongsTo(\App\WorkplaceLearningPeriod::class);
+        return $this->belongsTo(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityProducing()
     {
-        return $this->belongsTo(\App\LearningActivityProducing::class);
+        return $this->belongsTo(\App\LearningActivityProducing::class, 'rm_id', 'res_material_id');
     }
 
     // Relations for query builder

@@ -13,7 +13,7 @@ return array (
     'ResourceMaterial' => 'Materiaal Hulpbron',
     'ResourcePerson' => 'Persoon Hulpbron',
     'Status' => 'Status',
-    'TimeSlot' => 'Categorie (leermoment)',
+    'Timeslot' => 'Categorie (leermoment)',
     'WorkplaceLearningPeriod' => 'Stageperiode',
 
     'step1' => [

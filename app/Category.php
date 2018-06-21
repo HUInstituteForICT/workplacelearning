@@ -39,12 +39,12 @@ class Category extends Model
 
     public function InternshipPeriods()
     {
-        return $this->belongsTo(\App\WorkplaceLearningPeriod::class);
+        return $this->belongsTo(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningactivitiesproducing()
     {
-        return $this->belongsTo(\App\LearningActivityProducing::class);
+        return $this->belongsTo(\App\LearningActivityProducing::class, 'category_id', 'category_id');
     }
 
     public function getCategoryLabel()

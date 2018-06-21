@@ -96,7 +96,10 @@ class Builder
 
             foreach($sort as $s) {
 
-                $this->query->orderBy($this->getFunctionNames($s['type'], $s['table'], $s['column']), $s['order']);
+                $modelString = 'App\\' . $s['table'];
+                $table = new $modelString();
+
+                $this->query->orderBy($this->getFunctionNames($s['type'], $table->getTable(), $s['column']), $s['order']);
             }
         }
 

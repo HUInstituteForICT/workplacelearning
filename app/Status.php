@@ -26,7 +26,7 @@ class Status extends Model
 
     public function learningActivityProducing()
     {
-        $this->belongsTo(\App\LearningActivityProducing::class);
+        return $this->belongsTo(\App\LearningActivityProducing::class, 'status_id', 'status_id');
     }
 
     // Relations for query builder

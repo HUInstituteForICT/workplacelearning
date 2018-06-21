@@ -38,12 +38,12 @@ class ResourcePerson extends Model
 
     public function workplaceLearningPeriod()
     {
-        return $this->belongsTo(\App\WorkplaceLearningPeriod::class);
+        return $this->belongsTo(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityProducing()
     {
-        return $this->belongsTo(\App\LearningActivityProducing::class);
+        return $this->belongsTo(\App\LearningActivityProducing::class, 'rp_id', 'res_person_id');
     }
 
     public function educationProgram()

@@ -13,7 +13,7 @@ return array (
     'ResourceMaterial' => 'Resource material',
     'ResourcePerson' => 'Resource person',
     'Status' => 'Status',
-    'TimeSlot' => 'Category (learning moment)',
+    'Timeslot' => 'Category (learning moment)',
     'WorkplaceLearningPeriod' => 'Workplace learning period',
 
     'step1' => [
