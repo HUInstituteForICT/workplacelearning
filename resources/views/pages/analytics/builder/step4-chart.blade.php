@@ -5,6 +5,7 @@
 <div class="modal-body" style="height: 450px">
 
     <form id="wizard-form" novalidate>
+        <div id="wizard-error"></div>
         <label for="name">@lang('querybuilder.step4.name'):</label><br>
         <div class="form-group row">
             <div class="col-sm-6">
@@ -33,27 +34,29 @@
                 </select>
             </div>
         </div>
-
-        <label for="type_id">@lang('querybuilder.step4.graph-type'):</label><br>
-        <div class="form-group row">
-            <div class="col-md-3">
-                <select class="form-control" id="type_id" name="type_id" required="required">
-                    @foreach($chartTypes as $type)
-                        <option value="{{ $type->id }}" {{ isset($data['type_id']) && $data['type_id'] == $type->id ? "checked" : "" }}>@lang('querybuilder.step4.'.$type->slug)</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
         <div class="form-group row">
             <div class="col-sm-3">
+                <label for="type_id">@lang('querybuilder.step4.graph-type'):</label><br>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <select class="form-control" id="type_id" name="type_id" required="required">
+                            @foreach($chartTypes as $type)
+                                <option value="{{ $type->id }}" {{ isset($data['type_id']) && $data['type_id'] == $type->id ? "checked" : "" }}>@lang('querybuilder.step4.'.$type->slug)</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
                 <label for="type_id">@lang('querybuilder.step4.x-axis'):</label><br>
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <select class="form-control" id="x_axis" name="x_axis"
-                                required="required" value="{{ isset($data['x_axis']) ? $data['x_axis'] : $labels[0] }}">
+                                required="required" value="{{ isset($data['x_axis']) ? $data['x_axis'] : (isset($labels[0]) ? $labels[0] : '') }}">
+                            @if(isset($labels[0]))
                             @foreach($labels as $label)
                                 <option value="{{ $label }}" {{ (preg_match("/(sum|count|avg)/i", $label) === 0) ? 'selected': '' }}>{{ $label }}</option>
                             @endforeach
+                            @endif
                         </select>
                     </div>
                 </div>
@@ -62,10 +65,12 @@
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <select class="form-control" id="y_axis" name="y_axis"
-                               required="required" value="{{ isset($data['y_axis']) ? $data['y_axis'] : $labels[1] }}">
+                               required="required" value="{{ isset($data['y_axis']) ? $data['y_axis'] : (isset($labels[1])) ? $labels[1] : (isset($labels[0]) ? $labels[0] : '') }}">
+                            @if(isset($labels[0]))
                             @foreach($labels as $label)
                                 <option value="{{ $label }}" {{ (preg_match("/(sum|count|avg)/i", $label) === 1) ? 'selected': '' }}>{{ $label }}</option>
                             @endforeach
+                            @endif
                         </select>
                     </div>
                 </div>

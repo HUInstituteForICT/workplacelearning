@@ -14,7 +14,7 @@ return array (
     'ResourcePerson' => 'Resource person',
     'Status' => 'Status',
     'TimeSlot' => 'Category (learning moment)',
-    'WorkplaceLearningPeriod' => 'Workplace learning moment',
+    'WorkplaceLearningPeriod' => 'Workplace learning period',
 
     'step1' => [
 
@@ -84,7 +84,12 @@ return array (
         'bar' => 'Bar chart',
         'line' => 'Line graph',
         'x-axis' => 'X-axis',
-        'y-axis' => 'Y-axis'
+        'y-axis' => 'Y-axis',
+
+        'error-name' => 'Name field is required.',
+        'error-cache-duration' => 'Cache field is required.',
+        'error-chart-id' => 'Please choose a chart type',
+        'error-axis' => 'X- en Y-as can\'t be empty'
     ],
 
     'next' => 'Next',

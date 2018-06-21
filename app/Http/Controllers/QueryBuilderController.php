@@ -91,7 +91,10 @@ class QueryBuilderController extends Controller
                         $sort = (isset($data['query_sort']) ? $data['query_sort'] : []);
                         $limit = null;
 
-                        $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, $limit)->toArray();
+                        $result = (new Builder)->getData($table, $relations, $select, $filters, $sort, $limit)->toArray();
+
+                        if(isset($result['error']))
+                            return json_encode($result);
                         break;
 
                     case 'template':
@@ -113,8 +116,26 @@ class QueryBuilderController extends Controller
                 break;
 
             case 5:
-                if($request->isMethod('post'))
-                    $request->session()->put('builder', array_replace($request->session()->get('builder'), $request->all()));
+                $data = $request->session()->get('builder');
+
+                $errors = [];
+
+                if(empty($data['name']))
+                    $errors[] = \Lang::get('querybuilder.step4.error-name');
+
+                if(empty($data['cache_duration']) || empty($data['type_time']))
+                    $errors[] = \Lang::get('querybuilder.step4.error-cache-duration');
+
+                if(empty($data['type_id']))
+                    $errors[] = \Lang::get('querybuilder.step4.error-chart-id');
+
+                if(empty($data['x_axis']) || empty($data['y_axis']))
+                    $errors[] = \Lang::get('querybuilder.step4.error-axis');
+
+                if(!empty($errors)) {
+
+                    return json_encode(['error' => $errors]);
+                }
 
                 $this->step5($request->session()->get('builder'));
                 break;
@@ -126,7 +147,7 @@ class QueryBuilderController extends Controller
 
     private function step2($data)
     {
-        $model = new Models();
+        $model = new Models;
 
         $models = $model->getAll();
 
@@ -194,10 +215,15 @@ class QueryBuilderController extends Controller
 
     private function step4($data)
     {
-        $labels = [0 => '', 1 => ''];
+        $labels = [];
 
         if(isset($data['result'][0]))
             $labels = array_keys(get_object_vars($data['result'][0]));
+        elseif($data['analysis_type'] == 'build') {
+
+            $select = (isset($data['query_data']) ? $data['query_data'] : []);
+            $labels = array_unique((new Builder)->getSelectFields($select));
+        }
 
         $chartTypes = ChartType::whereNotNull('slug')->get();
 
@@ -343,7 +369,7 @@ class QueryBuilderController extends Controller
         if($request->input('query_limit') && $request->input('query_limit') < 10)
             $limit = $request->input('query_limit');
 
-    $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, $limit);
+        $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, $limit);
 
         return $result;
     }

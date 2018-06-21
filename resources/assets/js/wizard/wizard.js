@@ -22,21 +22,29 @@ var Wizard =  {
 
             } else {
 
-                $('#QueryBuilder').load("/dashboard/builder/step/" + data.step + "/", function(response, status, xhr) {
+                if(data.error != undefined) {
 
-                    Wizard['step_' + data.step]();
+                    var errors = '';
 
-                    if(xhr.status == 403) {
+                    for(var e in data.error) {
 
-                        window.location = '/';
+                        errors += `<li>${data.error[e]}</li>`;
                     }
 
-                    if(data.error != undefined) {
+                    $('#wizard-error').html(`<ul>${errors}</ul>`);
+                } else {
 
-                        alert(data.error);
-                    }
+                    $('#QueryBuilder').load("/dashboard/builder/step/" + data.step + "/", function(response, status, xhr) {
 
-                });
+                        Wizard['step_' + data.step]();
+
+                        if(xhr.status == 403) {
+
+                            window.location.reload();
+                        }
+
+                    });
+                }
             }
 
         });

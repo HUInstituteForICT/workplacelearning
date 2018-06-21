@@ -140,7 +140,7 @@ class Builder
             return $this->query->get();
         } catch (\Illuminate\Database\QueryException $e) {
 
-            return ['error' => \Lang::get('querybuilder.query-error')];
+            return collect(['error' => \Lang::get('querybuilder.query-error')]);
         }
     }
 
@@ -152,5 +152,18 @@ class Builder
         $bindings = $this->query->getBindings();
 
         return vsprintf(str_replace("?", "%s", $query), $bindings);
+    }
+
+    public function getSelectFields($selectData) {
+
+        foreach($selectData as $data) {
+
+            $tableString = 'App\\' . $data['table'];
+            $tableModel = (new $tableString())->getTable();
+
+            $select[] = $this->getFunctionNames($data['type'], $tableModel, $data['column']);
+        }
+
+        return $select;
     }
 }

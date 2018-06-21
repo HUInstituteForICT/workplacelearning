@@ -84,7 +84,12 @@ return array (
         'bar' => 'Staafdiagram',
         'line' => 'Lijngrafiek',
         'x-axis' => 'X-as',
-        'y-axis' => 'Y-as'
+        'y-axis' => 'Y-as',
+
+        'error-name' => 'Naam mag niet leeg zijn.',
+        'error-cache-duration' => 'Cache mag niet leeg zijn',
+        'error-chart-id' => 'Chart mag niet leeg zijn',
+        'error-axis' => 'X- en Y-as mogen niet leeg zijn'
     ],
 
     'next' => 'Volgende',
