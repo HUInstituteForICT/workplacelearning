@@ -11,14 +11,17 @@ import ActivityActingProcessTable from "./components/ActivityActingProcessTable/
 import EducationProgramsApp from "./components/EducationProgramsApp/educationProgramsApp";
 import ActivityProducingProcessTable from "./components/ActivityProducingProcessTable/table";
 import ProducingWeekStatesExport from "./components/ProducingWeekStatesExport";
-
+import TipsApp from "./components/TipsApp";
+import CreateForm from "./components/Statistics/CreateForm";
 
 
 const Apps = {
     ActivityActingProcessTable,
     ActivityProducingProcessTable,
     EducationProgramsApp,
-    ProducingWeekStatesExport
+    ProducingWeekStatesExport,
+    TipsApp,
+    CreateForm,
 };
 
 // Automatically mount if one of the above declared Apps exist in the DOM

@@ -38,19 +38,19 @@
     </a>
     @if(Auth::user()->getUserLevel() === 1)
 
-        <a class="nav-tile" href="{{ '/education-programs' }}">
+        <a class="nav-tile" href="{{ route('tips-app') }}">
             <div class="tile blue_tile">
-                <img class="icon" src="{{ URL::asset('assets/img/nieuws_wit.svg', true) }}"/>
+                <img class="icon" src="{{ URL::asset('assets/img/cursus_wit.svg', true) }}"/>
                 <div class="nav-title"
-                     style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.educationprograms') }}</div>
+                     style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.tips') }}</div>
             </div>
         </a>
 
-        <a class="nav-tile" href="{{ route('tips-app') }}">
+        <a class="nav-tile" href="{{ '/education-programs' }}">
             <div class="tile white_tile">
-                <img class="icon" src="{{ URL::asset('assets/img/cursus_blauw.svg', true) }}"/>
+                <img class="icon" src="{{ URL::asset('assets/img/nieuws_blauw.svg', true) }}"/>
                 <div class="nav-title"
-                 style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.tips') }}</div>
+                     style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.educationprograms') }}</div>
             </div>
         </a>
 

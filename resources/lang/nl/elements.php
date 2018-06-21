@@ -18,6 +18,8 @@ return array (
       'educationprograms' => 'Programma\'s',
       'logout' => 'Uitloggen',
       'tips' => 'Tips',
+      'template' => 'Template Beheer',
+      'analytics_dashboard' => 'Analyse Dashboard'
     ),
   ),
   'alerts' => 
