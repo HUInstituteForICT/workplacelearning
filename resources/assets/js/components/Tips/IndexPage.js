@@ -349,7 +349,7 @@ const TipItemMapping = {
         return {
             toggleAvailability: () => {
                 const {tip} = props;
-                const toggledTip = {...tip, showInAnalysis: !tip.showInAnalysis};
+                const toggledTip = {...tip, showInAnalysis: tip.showInAnalysis === 0 ? 1 : 0};
 
                 axios.put(`/api/tips/${tip.id}`, toggledTip).then(() => {
                     dispatch(entityActions.updateEntity('tips', toggledTip.id, toggledTip));
