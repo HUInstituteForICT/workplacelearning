@@ -38,7 +38,7 @@ class AnalyticsDashboardController extends Controller
             return $row['category_label'];
         }, $labels);
 
-        $tlabels = \App\TimeSlot::all()->toArray();
+        $tlabels = \App\Timeslot::all()->toArray();
         $tlabels = array_map(function ($row) {
             return $row['timeslot_text'];
         }, $tlabels);
