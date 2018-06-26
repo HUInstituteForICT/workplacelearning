@@ -1,15 +1,10 @@
 var Wizard = {
 
     step: function (id) {
-
         var request = $.ajax({
-
             type: "POST",
-
             url: "/dashboard/builder/step/" + id,
-
             data: $("#wizard-form").serialize(),
-
         });
 
         request.done(function (response) {
@@ -34,7 +29,7 @@ var Wizard = {
                     $('#wizard-error').html(`<ul>${errors}</ul>`);
                 } else {
 
-                    $('#QueryBuilder').load("/dashboard/builder/step/" + data.step + "/", function (response, status, xhr) {
+                    $('#QueryBuilder').load("/dashboard/builder/step/" + data.step, function (response, status, xhr) {
 
                         Wizard['step_' + data.step]();
 
@@ -52,7 +47,7 @@ var Wizard = {
 
     open: function () {
 
-        $('#QueryBuilder').load("/dashboard/builder/step/0/");
+        $('#QueryBuilder').load("/dashboard/builder/step/0");
     },
 
     step_2: function () {
@@ -80,7 +75,7 @@ var Wizard = {
 
         var tables;
 
-        $.getJSON("/dashboard/builder/tables/", function (data) {
+        $.getJSON("/dashboard/builder/tables", function (data) {
 
             tables = data;
         });
@@ -183,7 +178,7 @@ var Wizard = {
 
             type: "POST",
 
-            url: "/dashboard/builder/query/",
+            url: "/dashboard/builder/query",
 
             data: $("#wizard-form").serialize(),
 
