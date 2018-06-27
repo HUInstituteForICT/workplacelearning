@@ -45,5 +45,14 @@ return array (
   "chart-added-fail" => "Niet gelukt op te slaan",
   "chart-added" => "Grafiek toegevoegd",
   "chart-removed-fail" => "Niet gelukt grafiek te verwijderen",
+
   "chart-removed" => "Grafiek verwijderd van dashboard.",
+
+  "category" => "Categorie",
+  "no-descriptions" => "Geen beschrijvingen gevonden",
+  "description" => "Beschrijving",
+  "details-title" => "Grafiek details",
+
+    "analysis-removed-fail" => "Niet gelukt om analyse te verwijderen",
+    "analysis-removed" => "Analyse is verwijderd."
 );

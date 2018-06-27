@@ -29,7 +29,7 @@ class HomeController extends Controller
         /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
         $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
 
-        if ($workplaceLearningPeriod !== null) {
+        if ($workplaceLearningPeriod !== null && $workplaceLearningPeriod->hasLoggedHours()) {
 
             $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
 
@@ -52,7 +52,7 @@ class HomeController extends Controller
         /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
         $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
 
-        if ($workplaceLearningPeriod !== null) {
+        if ($workplaceLearningPeriod !== null && $workplaceLearningPeriod->hasLoggedHours()) {
             $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
 
             /** @var Student $student */

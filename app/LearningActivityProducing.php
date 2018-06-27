@@ -65,7 +65,7 @@ class LearningActivityProducing extends Model
 
     public function difficulty()
     {
-        return $this->hasOne(\App\Difficulty::class, 'difficulty_id', 'difficulty_id');
+        return $this->belongsTo(\App\Difficulty::class, 'difficulty_id', 'difficulty_id');
     }
 
     public function getDifficulty()
@@ -132,6 +132,21 @@ class LearningActivityProducing extends Model
     public function getFeedback()
     {
         return Feedback::where('learningactivity_id', $this->lap_id)->first();
+    }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["previousLearningActivityProducing",
+                "nextLearningActivityProducing",
+                "workplaceLearningPeriod",
+                "feedback",
+                "resourcePerson",
+                "resourceMaterial",
+                "category",
+                "difficulty",
+                "status"
+                ];
     }
 
     // Note: DND, object comparison

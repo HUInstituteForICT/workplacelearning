@@ -33,6 +33,17 @@ class Timeslot extends Model
 
     public function educationProgram()
     {
-        return $this->belongsTo(\App\EducationProgram::class);
+        return $this->belongsTo(\App\EducationProgram::class, 'edprog_id', 'ep_id');
+    }
+
+    public function learningActivitiesActing()
+    {
+        return $this->hasMany(\App\LearningActivityActing::class, 'timeslot_id', 'timeslot_id');
+    }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["cohort", "educationProgram"];
     }
 }

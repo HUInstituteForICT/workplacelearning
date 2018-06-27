@@ -3,9 +3,12 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {normalize} from "normalizr";
 import {Schema} from "../../Schema";
-import {actions} from "./redux/entities";
+import {actions as entityActions, actions} from "./redux/entities";
+import {actions as tipEditPageActions} from "./redux/tipPageUi";
 import axios from "axios";
 import Modal from "react-responsive-modal";
+import CreateForm from "../Statistics/CreateForm";
+import UpdateForm from "../Statistics/UpdateForm";
 
 class IndexPage extends React.Component {
 
@@ -18,10 +21,11 @@ class IndexPage extends React.Component {
             deleteTipId: null,
             deleteStatisticId: null,
             showStatisticDeleteModal: false,
+            showNewStatisticModal: false,
+            showUpdateStatisticModal: false,
+            updateStatisticId: null,
         }
     }
-
-    setPage = (page) => this.setState({page: page});
 
     deleteTip = () => {
         axios.delete(`/api/tips/${this.state.deleteTipId}`).then(response => {
@@ -115,8 +119,9 @@ class IndexPage extends React.Component {
                         <tr>
                             <th>{Lang.get('react.tips.name')}</th>
                             <th>Trigger</th>
-                            <th>{Lang.get('react.tips.statistics')}</th>
                             <th>Likes</th>
+                            <th>{Lang.get('tips.views')}</th>
+                            <th>{Lang.get('tips.active')}</th>
                             <th/>
                         </tr>
                         </thead>
@@ -135,7 +140,12 @@ class IndexPage extends React.Component {
                 this.props.currentPage === 'statistics' &&
                 <div>
                     <h3>{Lang.get('tips.statistics')}</h3>
-
+                    <button type="button" className="btn btn-primary"
+                            onClick={() => this.setState({showNewStatisticModal: true})}>
+                        {Lang.get('statistics.create-new')}
+                    </button>
+                    &nbsp;
+                    <br/><br/>
                     <div className="row">
 
                         <div className="col-lg-6">
@@ -161,10 +171,36 @@ class IndexPage extends React.Component {
                             // If an id contains p-p- or p-a- it is not a statistic of a tip but rather a statistic that can be chosen for coupling to a tip, thus skip
                             // Also skip predefined statistics that have embodied a Statistic (they are but mere wrappers, no content)
                             if (String(statistic.id).includes(['p-p-', 'p-a-']) || statistic.type === 'predefinedstatistic') return null;
-                            return <StatisticItemContainer onClickDelete={() => this.setState({showStatisticDeleteModal: true, deleteStatisticId: statistic.id})} key={statistic.id} statistic={statistic}/>
+                            return <StatisticItemContainer key={statistic.id} statistic={statistic}
+                                                           onClickDelete={() => this.setState({showStatisticDeleteModal: true, deleteStatisticId: statistic.id})}
+                                                           onClickUpdate={() => this.setState({showUpdateStatisticModal: true, updateStatisticId: statistic.id})}
+                            />
                         })}
                         </tbody>
                     </table>
+
+                    <Modal open={this.state.showNewStatisticModal} little
+                           onClose={() => this.setState({showNewStatisticModal: false})}
+                           classNames={{'modal': "panel panel-default"}}>
+                        <div className="panel-body" id="step-8">
+                            <h3>{Lang.get('react.statistic.create-statistic')}</h3>
+                            <CreateForm
+                                onCreated={newEntity => {
+                                    this.props.storeNewStatisticVariable(normalize(newEntity, Schema.statistic));
+                                    this.setState({showNewStatisticModal: false});
+                                }}
+                            />
+                        </div>
+                    </Modal>
+
+                    <Modal open={this.state.showUpdateStatisticModal} little
+                           onClose={() => this.setState({showUpdateStatisticModal: false})}
+                           classNames={{'modal': "panel panel-default"}}>
+                        <div className="panel-body" id="step-8">
+                            <h3>{Lang.get('statistics.edit')}</h3>
+                            <UpdateForm id={this.state.updateStatisticId}/>
+                        </div>
+                    </Modal>
                 </div>
             }
 
@@ -203,7 +239,12 @@ class IndexPage extends React.Component {
                 </div>
             }
 
-
+            {
+                Object.keys(this.props.errors).length > 0 &&
+                <div style={{position: 'fixed', right: 10, bottom: 40}}>
+                        {Object.keys(this.props.errors).map(id => <div className='alert alert-error' key={id}>{this.props.errors[id]}</div>)}
+                </div>
+            }
         </div>
     }
 }
@@ -213,11 +254,15 @@ const mapping = {
         entities: state.entities,
         tips: state.entities.tips,
         statistics: state.entities.statistics,
+        errors: state.tipEditPageUi.errors,
     }),
     dispatch: dispatch => ({
         newTip: entities => dispatch(actions.addEntities(entities)),
         removeTip: id => dispatch(actions.removeTip(id)),
         removeStatistic: id => dispatch(actions.removeStatistic(id)),
+        storeNewStatisticVariable: normalized => {
+            dispatch(entityActions.addEntities(normalized.entities));
+        },
     })
 };
 export default connect(mapping.state, mapping.dispatch)(IndexPage);
@@ -225,14 +270,12 @@ export default connect(mapping.state, mapping.dispatch)(IndexPage);
 
 
 
-const statisticItem = ({statistic, onClickDelete}) => {
+const statisticItem = ({statistic, onClickDelete, onClickUpdate}) => {
     return <tr>
         <td>{statistic.name}</td>
         <td>{statistic.education_program_type || '-'}</td>
         <td>
-            <Link to={`/statistic/${statistic.id}`}>
-                <span className="btn btn-primary">{Lang.get('react.edit')}</span>
-            </Link>
+            <button className="btn btn-primary" onClick={onClickUpdate}>{Lang.get('react.edit')}</button>
             &nbsp;&nbsp;&nbsp;
             <button className="btn btn-default" onClick={onClickDelete}>{Lang.get('react.delete')}</button>
         </td>
@@ -254,19 +297,33 @@ const statisticItemMapping = {
 
 const StatisticItemContainer = connect(statisticItemMapping.state, statisticItemMapping.dispatch)(statisticItem);
 
-const tipItem = ({tip, onClickDelete}) => {
+const tipItem = ({tip, onClickDelete, coupledStatistics, statistics, toggleAvailability}) => {
+
+    let hasActingCoupled, hasProducingCoupled = false;
+    coupledStatistics.forEach(coupled => {
+        const stat = statistics[coupled.statistic];
+        if (stat.education_program_type === 'acting') hasActingCoupled = true;
+        if (stat.education_program_type === 'producing') hasProducingCoupled = true;
+    });
 
     return <tr>
         <td>{tip.name}</td>
         <td>
             {tip.trigger === 'moment' && Lang.get('tips.type-moment') }
-            {tip.trigger === 'statistic' && Lang.get('tips.type-statistic') }
+            {tip.trigger === 'statistic' &&
+            <span>{Lang.get('tips.type-statistic')} ({hasActingCoupled && 'acting'}{hasActingCoupled && hasProducingCoupled && ', '}{hasProducingCoupled && 'producing'})</span>}
         </td>
-        <td>{tip.trigger === 'statistic' && tip.coupled_statistics.length}</td>
         <td>
             <span
                 className="glyphicon glyphicon-thumbs-up"/>&nbsp;{tip.likes.filter(like => like.type === 1).length}&nbsp;/&nbsp;
             <span className="glyphicon glyphicon-thumbs-down"/>&nbsp;{tip.likes.filter(like => like.type === -1).length}
+        </td>
+        <td>
+            {tip.student_tip_views.length}
+        </td>
+        <td style={{cursor: 'pointer'}} onClick={toggleAvailability}>
+            {tip.showInAnalysis === 1 && <span className="glyphicon glyphicon-ok" style={{color: 'green'}}/>}
+            {tip.showInAnalysis === 0 && <span className="glyphicon glyphicon-remove" style={{color:'red'}}/>}
         </td>
         <td>
             <Link to={`/tip/${tip.id}`}>
@@ -280,13 +337,30 @@ const tipItem = ({tip, onClickDelete}) => {
 
 const TipItemMapping = {
     state: (state, props) => {
+        const tip = props.tip;
         return {
-            ...props
+            ...props,
+            coupledStatistics: tip.coupled_statistics.sort().map(id => state.entities.coupledStatistics[id]),
+            statistics: state.entities.statistics,
         }
     },
 
-    dispatch: (dispatch) => {
+    dispatch: (dispatch, props) => {
         return {
+            toggleAvailability: () => {
+                const {tip} = props;
+                const toggledTip = {...tip, showInAnalysis: tip.showInAnalysis === 0 ? 1 : 0};
+
+                axios.put(`/api/tips/${tip.id}`, toggledTip).then(() => {
+                    dispatch(entityActions.updateEntity('tips', toggledTip.id, toggledTip));
+                }).catch(error => {
+                    Object.values(error.response.data).forEach(err => {
+                        const id = Math.floor(Math.random() * 10000); // Just a random id necessary so it can be removed later on
+                        dispatch(tipEditPageActions.errorAdd(id, err));
+                        setTimeout(() => dispatch(tipEditPageActions.errorRemove(id)), 2500);
+                    });
+                });
+            }
         }
     }
 };

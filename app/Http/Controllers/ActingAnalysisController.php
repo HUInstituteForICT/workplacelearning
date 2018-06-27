@@ -11,12 +11,10 @@ use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
 use App\Cohort;
 use App\Repository\LikeRepositoryInterface;
+use App\Repository\StudentTipViewRepositoryInterface;
 use App\Student;
 use App\Tips\ApplicableTipFetcher;
-use App\Tips\DataCollectors\Collector;
-use App\Tips\EvaluatedStatisticTip;
 use App\Tips\EvaluatedTip;
-use App\Tips\Tip;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -24,16 +22,15 @@ use Illuminate\Support\Facades\Lang;
 
 class ActingAnalysisController extends Controller
 {
-
     public function showChoiceScreen()
     {
         // Check if user has active workplace
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
-            return redirect()->route('home')->withErrors([Lang::get('notifications.generic.nointernshipactive')]);
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+            return redirect()->route('home-acting')->withErrors([Lang::get('notifications.generic.nointernshipactive')]);
         }
         // Check if for the workplace the user has hours registered
         if (!Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
-            return redirect()->route('home')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
+            return redirect()->route('home-acting')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
         }
 
 
@@ -53,7 +50,8 @@ class ActingAnalysisController extends Controller
         $year,
         $month,
         ApplicableTipFetcher $applicableTipFetcher,
-        LikeRepositoryInterface $likeRepository
+        LikeRepositoryInterface $likeRepository,
+        StudentTipViewRepositoryInterface $studentTipViewRepository
     ) {
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null || Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count() === 0) {
             return redirect()->route('home-acting')
@@ -64,7 +62,7 @@ class ActingAnalysisController extends Controller
         if (($year != "all" && $month != "all")
             && (0 == preg_match('/^(20)([0-9]{2})$/', $year) || 0 == preg_match('/^([0-1]{1}[0-9]{1})$/', $month))
         ) {
-            return redirect()->route('analysis-producing-choice');
+            return redirect()->route('analysis-acting-choice');
         }
 
 
@@ -83,16 +81,34 @@ class ActingAnalysisController extends Controller
 
         $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($cohort));
 
+
+        // Load likes for each tip and check if it should be shown to user
         /** @var Student $student */
         $student = $request->user();
-        $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+        $evaluatedTips = $applicableEvaluatedTips->filter(function (EvaluatedTip $evaluatedTip) use (
+            $student,
+            $likeRepository
+        ) {
             $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
+
+            // If not liked by this student yet, allow it to be shown
+            if ($evaluatedTip->getTip()->likes->count() === 0) {
+                return true;
+            }
+
+            // If liked, allow, if disliked filter it out
+            return $evaluatedTip->getTip()->likes[0]->type === 1;
+        })->shuffle()->take(3);
+
+
+        // Register that the tip will be viewed by the student
+        $evaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $studentTipViewRepository) {
+            $studentTipViewRepository->createForTip($evaluatedTip->getTip(), $student);
         });
 
 
-
         return view('pages.acting.analysis.detail')
-            ->with('evaluatedTips', $applicableEvaluatedTips->shuffle())
+            ->with('evaluatedTips', $evaluatedTips)
             ->with('actingAnalysis', $analysis);
     }
 }

@@ -20,6 +20,12 @@ class Difficulty extends Model
 
     public function learningActivityProducing()
     {
-        $this->belongsTo(\App\LearningActivityProducing::class);
+        return $this->hasMany(\App\LearningActivityProducing::class, 'difficulty_id', 'difficulty_id');
+    }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["learningActivityProducing"];
     }
 }

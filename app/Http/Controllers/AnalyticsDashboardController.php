@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Analysis;
 use App\AnalysisChart;
 use App\DashboardChart;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
 
 class AnalyticsDashboardController extends Controller
 {
@@ -31,11 +33,23 @@ class AnalyticsDashboardController extends Controller
 
     public function index()
     {
+        $labels = Category::all()->toArray();
+        $labels = array_map(function ($row) {
+            return $row['category_label'];
+        }, $labels);
+
+        $tlabels = \App\Timeslot::all()->toArray();
+        $tlabels = array_map(function ($row) {
+            return $row['timeslot_text'];
+        }, $tlabels);
+
+        $labels = array_merge($labels, $tlabels);
+
         $charts = $this->dchart
             ->with('chart.type', 'chart.labels')
             ->orderBy('position', 'asc')
             ->get();
-        return view('pages.analytics.dashboard.index', compact('charts'));
+        return view('pages.analytics.dashboard.index', compact('charts', 'labels'));
     }
 
     public function add()
@@ -99,15 +113,18 @@ class AnalyticsDashboardController extends Controller
         return redirect()->route('dashboard.index')->with('success', Lang::get('dashboard.chart-added'));
     }
 
-    public function destroy($id)
+    Public function destroy($id)
     {
-        $chart = $this->dchart->findOrFail($id);
-        if (!$chart->delete())
+        $dbchart = $this->dchart->findOrFail($id);
+        $chart = $this->chart->findOrFail($dbchart->chart_id);
+        $analysis = $this->analysis->findOrFail($chart->analysis_id);
+
+        if (!$analysis->delete())
             return redirect()
                 ->back()
-                ->withErrors(['error', Lang::get('dashboard.chart-removed-fail')]);
+                ->withErrors(['error', Lang::get('dashboard.analysis-removed-fail')]);
 
         return redirect()->back()
-            ->with('success', Lang::get('dashboard.chart-removed'));
+            ->with('success', Lang::get('dashboard.analysis-removed'));
     }
 }

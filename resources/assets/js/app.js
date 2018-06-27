@@ -1,6 +1,7 @@
 
 
 import "./bootstrap";
+import Wizard from "./wizard/wizard";
 
 import React from "react";
 import DOM from "react-dom";
@@ -12,7 +13,6 @@ import ActivityProducingProcessTable from "./components/ActivityProducingProcess
 import ProducingWeekStatesExport from "./components/ProducingWeekStatesExport";
 import TipsApp from "./components/TipsApp";
 import CreateForm from "./components/Statistics/CreateForm";
-
 
 
 const Apps = {

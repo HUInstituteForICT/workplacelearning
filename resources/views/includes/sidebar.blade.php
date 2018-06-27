@@ -38,23 +38,11 @@
     </a>
     @if(Auth::user()->getUserLevel() === 1)
 
-
-        <a class="nav-tile" href="{{ route('dashboard.index') }}">
+        <a class="nav-tile" href="{{ route('tips-app') }}">
             <div class="tile blue_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/cursus_wit.svg', true) }}"/>
-                <div class="nav-title">Analytics Dashboard</div>
-            </div>
-        </a>
-        <a class="nav-tile" href="{{ route('analytics-index') }}">
-            <div class="tile white_tile">
-                <img class="icon" src="{{ URL::asset('assets/img/Studievoortgang_blauw.svg', true) }}"/>
-                <div class="nav-title">Analytics</div>
-            </div>
-        </a>
-        <a class="nav-tile" href="{{ route('charts.index') }}">
-            <div class="tile blue_tile">
-                <img class="icon" src="{{ URL::asset('assets/img/cursus_wit.svg', true) }}"/>
-                <div class="nav-title">Analytics Charts</div>
+                <div class="nav-title"
+                     style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.tips') }}</div>
             </div>
         </a>
 
@@ -66,11 +54,17 @@
             </div>
         </a>
 
-        <a class="nav-tile" href="{{ route('tips-app') }}">
+        <a class="nav-tile" href="{{ route('dashboard.index') }}">
             <div class="tile blue_tile">
-                <img class="icon" src="{{ URL::asset('assets/img/cursus_wit.svg', true) }}"/>
-                <div class="nav-title"
-                     style="word-break: break-all">{{ Lang::get('elements.sidebar.labels.tips') }}</div>
+                <img class="icon" src="{{ URL::asset('assets/img/graph_wit.svg', true) }}"/>
+                <div class="nav-title">{{ Lang::get('elements.sidebar.labels.analytics_dashboard') }}</div>
+            </div>
+        </a>
+
+        <a class="nav-tile" href="{{ route('template.index') }}">
+            <div class="tile white_tile">
+                <img class="icon" src="{{ URL::asset('assets/img/agenda_blauw.svg', true) }}"/>
+                <div class="nav-title">{{ Lang::get('elements.sidebar.labels.template') }}</div>
             </div>
         </a>
     @endif

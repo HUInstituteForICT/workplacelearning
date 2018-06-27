@@ -50,9 +50,9 @@ class TipsController extends Controller
      * @return array
      * @throws \Exception
      */
-    public function index()
+    public function index(): array
     {
-        $tips = Tip::with('coupledStatistics', 'enabledCohorts', 'likes')->get();
+        $tips = Tip::with('coupledStatistics', 'enabledCohorts', 'likes', 'studentTipViews')->get();
         $statistics = $this->getStatistics();
 
         return [
@@ -80,7 +80,7 @@ class TipsController extends Controller
         ]);
         $tip->save();
 
-        return Tip::with('coupledStatistics', 'enabledCohorts', 'likes')->findOrFail($tip->id);
+        return Tip::with('coupledStatistics', 'enabledCohorts', 'likes', 'studentTipViews')->findOrFail($tip->id);
     }
 
     /**
@@ -90,13 +90,13 @@ class TipsController extends Controller
      * @param  int $id
      * @return Tip
      */
-    public function update(TipUpdateRequest $request, $id)
+    public function update(TipUpdateRequest $request, $id): Tip
     {
         /** @var Tip $tip */
-        $tip = (new Tip)->findOrFail($id);
+        $tip = (new Tip)->with('coupledStatistics', 'enabledCohorts', 'likes', 'studentTipViews')->findOrFail($id);
         $tip->name = $request->get('name');
         $tip->tipText = $request->get('tipText');
-        $tip->showInAnalysis = $request->has('showInAnalysis');
+        $tip->showInAnalysis = $request->has('showInAnalysis') ? $request->get('showInAnalysis') : false;
         if($tip->trigger === 'moment') {
             $tip->rangeStart = (int) $request->get('rangeStart');
             $tip->rangeEnd = (int) $request->get('rangeEnd');
@@ -114,7 +114,7 @@ class TipsController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\Response
     {
         /** @var Tip $tip */
         $tip = (new Tip)->findOrFail($id);

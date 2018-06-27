@@ -18,6 +18,8 @@ return array (
       'educationprograms' => 'Programs',
       'logout' => 'Log Out',
       'tips' => 'Tips',
+      'template' => 'Template Management',
+      'analytics_dashboard' => 'Analytics Dashboard'
     ),
   ),
   'alerts' => 

@@ -40,7 +40,8 @@ return [
         'Resource person' => 'Bronpersoon',
         'Category' => 'Categorie',
         'Difficulty' => 'Moeilijkheidsgraad',
-        'Timeslot/Category' => 'Tijdslot/Categorie'
+        'Timeslot/Category' => 'Tijdslot/Categorie',
+        'Theory / resource material' => 'Theorie'
     ]
 
 ];

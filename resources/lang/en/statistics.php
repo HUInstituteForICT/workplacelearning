@@ -38,6 +38,7 @@ return [
         'Resource person' => 'Resource person',
         'Category' => 'Category',
         'Difficulty' => 'Difficulty',
-        'Timeslot/Category' => 'Timeslot/Category'
+        'Timeslot/Category' => 'Timeslot/Category',
+        'Theory / resource material' => 'Theory / resource material'
     ]
 ];

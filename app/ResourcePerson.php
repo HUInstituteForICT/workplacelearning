@@ -38,16 +38,22 @@ class ResourcePerson extends Model
 
     public function workplaceLearningPeriod()
     {
-        return $this->belongsTo(\App\WorkplaceLearningPeriod::class);
+        return $this->belongsTo(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityProducing()
     {
-        return $this->belongsTo(\App\LearningActivityProducing::class);
+        return $this->belongsTo(\App\LearningActivityProducing::class, 'rp_id', 'res_person_id');
     }
 
     public function educationProgram()
     {
         return $this->belongsTo(\App\EducationProgram::class, 'ep_id', 'ep_id');
+    }
+
+    // Relations for query builder
+    public function getRelationships()
+    {
+        return ["cohort", "workplaceLearningPeriod", "learningActivityProducing", "educationProgram"];
     }
 }
