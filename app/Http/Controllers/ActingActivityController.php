@@ -130,7 +130,7 @@ class ActingActivityController extends Controller
                 'support_ed'    => 'max:500',
                 'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
                 'competence'    => 'required|exists:competence,competence_id',
-                'evidence' => "file|max:2000000"
+                'evidence' => "file|max:5000"
             ]);
 
         // Conditional validation
