@@ -11,8 +11,8 @@ class SaveRequest extends \Illuminate\Foundation\Http\FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255|min:1',
-            'status' => 'required|digits_between:0,1'
+            'name' => 'max:255|min:1',
+            'status' => 'digits_between:0,1'
         ];
     }
 }

@@ -17,5 +17,9 @@ return [
         'finished'       => 'Finished',
         'finish'         => 'Finish',
         'rename'         => 'Rename',
+        'delete'         => 'Delete',
+        'delete-confirm' => 'Are you sure you want to delete this chain? The activities will not be chained anymore.',
+        'cancel'         => 'Cancel',
+        'reopen'         => 'Reopen',
     ],
 ];

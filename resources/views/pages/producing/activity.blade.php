@@ -101,109 +101,15 @@
                         <option value="-1">{{ Lang::get('process.chain.none') }}</option>
                         @foreach($chains as $chain)
                             <option id="chain-select-{{ $chain->id }}"
-                                    value="{{ $chain->id }}">{{ $chain->name }}</option>
+                                    @if($chain->status === \App\Chain::STATUS_FINISHED) disabled @endif
+                                    value="{{ $chain->id }}">
+                                {{ $chain->name }} @if($chain->status === \App\Chain::STATUS_FINISHED) ({{ strtolower(__('process.chain.finished')) }}) @endif
+                            </option>
                         @endforeach
 
                     </select>
 
-                    <a id="chainModalOpen">
-                        {{ __('process.chain.manage') }}
-                    </a>
-
-
-                    {{-- Modal used for enlarging fields --}}
-                    <div class="modal fade" id="chainModal">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                                    </button>
-                                    <h4 class="modal-title">{{ __('process.chain.chain-activity') }}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-lg-12 ">
-                                            <label for="chainName">{{ __('process.chain.name') }}</label>
-                                            <input type="text" class="form-control" id="chainName"/>
-                                            <br/>
-                                            <a type="button" class="btn btn-primary"
-                                               id="createChainButton">{{ Lang::get('process.chain.create') }}</a>
-                                        </div>
-                                    </div>
-
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <table class="table table-responsive table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th>{{ __('process.chain.chains') }}</th>
-                                                    <th/>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="chainTableBody">
-                                                @foreach($chains as $chain)
-                                                    <tr id="chain-row-{{$chain->id}}">
-                                                        <td>{{ $chain->name }}</td>
-                                                        <td
-                                                                data-id="{{$chain->id}}"
-                                                                data-name="{{ $chain->name }}"
-                                                        >
-                                                            <button class="chainFinishButton btn btn-success"
-                                                                    type="button">
-                                                                {{ __('process.chain.finish') }}
-                                                            </button>
-                                                            <button id="chainUpdate-{{$chain->id}}" type="button"
-                                                                    class="btn btn-primary chainUpdateModalOpen">
-                                                                {{ __('process.chain.rename') }}
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">{{ Lang::get('general.close') }}</button>
-
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-
-                    <div class="modal fade" id="chainUpdateModal">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                                    </button>
-                                    <h4 class="modal-title">{{ __('process.chain.chain-activity') }}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <label for="chainUpdateName">{{ __('process.chain.name') }}</label>
-                                            <input type="text" class="form-control" id="chainUpdateName"/>
-                                            <br/>
-                                            <a type="button" class="btn btn-primary"
-                                               id="chainUpdateSaveButton">{{ Lang::get('process.chain.save') }}</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">{{ Lang::get('general.close') }}</button>
-
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-
+                    @include('pages.producing.chain-partial')
                 </div>
                 <div class="col-md-2 form-group buttons numpad">
                     <h4>{{ Lang::get('activity.hours') }}</h4>
@@ -337,106 +243,8 @@
                 useCurrent: false,
             });
 
-            $('#chainModalOpen').click(function() {
-                $('#chainModal').modal('show');
-            });
-
-            $('#chainUpdateModal').on('hide.bs.modal', function (e) {
-                $('#chainModal').modal('show');
-            });
-
-            $('body').on('click', '.chainUpdateModalOpen', function () {
-                $('#chainModal').modal('hide');
-                $('#chainUpdateModal').modal('show');
-
-                $('#chainUpdateName').val($(this).parent().data('name'));
-                $('#chainUpdateSaveButton').data('id', $(this).parent().data('id'));
 
 
-            });
-
-
-            const chainSaveUrl = '{{ route('chain-save', ['chain' => ':id']) }}';
-
-
-            // Save finish
-            $('body').on('click', '.chainFinishButton', function () {
-                const id = $(this).parent().data('id');
-                const data = {name: $(this).parent().data('name'), status: 1};
-
-                saveChain(id, data).then(function () {
-                    $("#chainSelect option#chain-select-" + id).remove();
-                    $("#chain-row-" + id).remove();
-                });
-            });
-
-
-            // Save rename
-            $('body').on('click', '#chainUpdateSaveButton', function () {
-                const id = $(this).data('id');
-                const data = {name: $('#chainUpdateName').val(), status: 0};
-
-                saveChain(id, data).then(function () {
-                    $("#chainSelect option#chain-select-" + id).text(data.name);
-                    $("#chain-row-" + id + " td:first-child").text(data.name);
-
-                    $('#chainUpdateModal').modal('hide');
-
-                    window.location.reload();
-                });
-            });
-
-            function saveChain(id, data) {
-                return $.ajax({
-                    type: 'PUT',
-                    url: chainSaveUrl.replace(':id', id),
-                    data
-                })
-            }
-
-            $('#createChainButton').click(function() {
-                const name = $('#chainName').val();
-                $.post('{{ route('chain-create') }}', {name: name}).then(function (chain) {
-                    const newChainOption = document.createElement('option');
-                    newChainOption.value = chain.id;
-                    newChainOption.text = chain.name;
-                    newChainOption.selected = true;
-                    newChainOption.id = 'chain-select-' + chain.id;
-                    document.getElementById('chainSelect').add(newChainOption);
-
-                    createNewChainRow(chain);
-                    $('#chainName').val('');
-                    $('#chainModal').modal('hide');
-                })
-            });
-
-            function createNewChainRow(chain) {
-                const row = $('<tr>');
-                row.prop('id', 'chain-row-' + chain.id);
-
-                const nameCell = $('<td>');
-                nameCell.text(chain.name);
-
-                const actionsCell = $('<td>');
-                actionsCell.data('id', chain.id);
-                actionsCell.data('name', chain.name);
-
-                const finishButton = $('<button class="chainFinishButton btn btn-success" type="button">');
-                finishButton.text("{{ __('process.chain.finish') }}");
-
-                const renameButton = $('<button class="btn btn-primary chainUpdateModalOpen" type="button">');
-                renameButton.prop('id', "chainUpdate-" + chain.id);
-                renameButton.text("{{ __('process.chain.rename') }}");
-
-                actionsCell.append(finishButton);
-                actionsCell.append('&nbsp;');
-                actionsCell.append(renameButton);
-
-                row.append(nameCell);
-                row.append(actionsCell);
-
-                $('#chainTableBody').append(row);
-            }
 
         }).on('dp.change', function(e) {
             $('#datum').attr('value', moment(e.date).format("DD-MM-YYYY"));

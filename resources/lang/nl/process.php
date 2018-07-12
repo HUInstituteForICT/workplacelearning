@@ -17,5 +17,9 @@ return [
         'finished'       => 'Afgerond',
         'finish'         => 'Afronden',
         'rename'         => 'Hernoemen',
+        'delete'         => 'Verwijderen',
+        'delete-confirm' => 'Weet je zeker dat je deze keten wil verwijderen? De activiteiten zullen dan niet meer geketend zijn.',
+        'cancel'         => 'Annuleren',
+        'reopen'         => 'Heropenen',
     ],
 ];

@@ -44,7 +44,7 @@ class PredefinedStatisticCollector implements CollectorInterface
      * @return Resultable
      * @throws \Exception
      */
-    public function categoryWithHighestDifficulty() {
+    public function categoryWithHighestDifficulty():Resultable {
 
         $result = $this->wherePeriod($this->learningPeriod->learningActivityProducing()
             ->selectRaw('category_id, AVG(difficulty_id) as category_difficulty')

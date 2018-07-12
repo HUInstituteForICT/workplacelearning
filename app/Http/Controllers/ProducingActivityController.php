@@ -55,9 +55,7 @@ class ProducingActivityController extends Controller
 
         $wplp = $request->user()->getCurrentWorkplaceLearningPeriod();
 
-        $chains = $wplp->chains->filter(function (Chain $chain) {
-            return $chain->status === Chain::STATUS_BUSY;
-        });
+        $chains = $wplp->chains;
 
         return view('pages.producing.activity')
             ->with('learningWith', $resourcePersons)

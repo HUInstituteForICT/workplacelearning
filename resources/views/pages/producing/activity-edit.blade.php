@@ -72,6 +72,7 @@
                         @endforeach
 
                     </select>
+                    @include('pages.producing.chain-partial')
 
                 </div>
                 <div class="col-md-2 form-group buttons numpad">

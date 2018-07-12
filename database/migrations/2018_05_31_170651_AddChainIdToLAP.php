@@ -14,7 +14,11 @@ class AddChainIdToLAP extends Migration
     public function up()
     {
         Schema::table('learningactivityproducing', function(Blueprint $table) {
-            $table->integer('chain_id')->nullable();
+            $table->integer('chain_id')->unsigned()->nullable();
+        });
+
+        Schema::table('learningactivityproducing', function(Blueprint $table) {
+            $table->foreign('chain_id', 'chain_to_lap')->references('id')->on('chains')->onUpdate('CASCADE')->onDelete('SET NULL');
         });
     }
 
@@ -26,6 +30,7 @@ class AddChainIdToLAP extends Migration
     public function down()
     {
         Schema::table('learningactivityproducing', function(Blueprint $table) {
+            $table->dropForeign('chain_to_lap');
             $table->dropColumn('chain_id');
         });
 

@@ -3,9 +3,6 @@
 
 namespace App\Tips\Statistics;
 
-use App\Tips\CollectorDataAggregator;
-
-
 /**
  * @property string $name
  */

@@ -4,6 +4,8 @@
 namespace App;
 
 
+use Illuminate\Auth\Access\AuthorizationException;
+
 class ChainManager
 {
 
@@ -29,10 +31,10 @@ class ChainManager
         return $chain;
     }
 
-    public function updateChain(Chain $chain, string $name, int $status)
+    public function updateChain(Chain $chain, ?string $name, ?int $status)
     {
-        $chain->name = $name;
-        $chain->status = $status;
+        $chain->name = $name ?? $chain->name;
+        $chain->status = $status ?? $chain->status;
 
         $chain->save();
     }
@@ -45,5 +47,18 @@ class ChainManager
     public function detachActivity(LearningActivityProducing $learningActivityProducing)
     {
         $learningActivityProducing->chain()->dissociate();
+    }
+
+    /**
+     * @throws AuthorizationException
+     * @throws \Exception
+     */
+    public function deleteChain(Chain $chain):bool
+    {
+        if($this->workplaceLearningPeriod->wplp_id !== $chain->wplp_id) {
+            throw new AuthorizationException('No access to this chain');
+        }
+
+        return $chain->delete();
     }
 }
