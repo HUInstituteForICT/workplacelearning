@@ -41,6 +41,14 @@ export default class Cohorts extends React.Component {
         });
     }
 
+    cloneCohort(id) {
+        EducationProgramService.cloneCohort(id, response => {
+            const cohorts = this.state.cohorts.slice();
+            cohorts.push(response.data);
+            this.setState({cohorts: cohorts});
+        })
+    }
+
     render() {
         const selectedCohort = this.state.cohorts[this.cohortIndex(this.state.selectedCohortId)];
         return <div>
@@ -87,7 +95,7 @@ export default class Cohorts extends React.Component {
                             </label>
                         </div>
                     </div>
-                    <div className={"col-md-6"}>
+                    <div className={"col-md-4"}>
                         <div className="form-group">
                             <label>
                                 {Lang.get('react.cohort-desc')}
@@ -103,6 +111,9 @@ export default class Cohorts extends React.Component {
                                        }}/>
                             </label>
                         </div>
+                    </div>
+                    <div className="col-md-2">
+                        <button onClick={() => this.cloneCohort(selectedCohort.id)} className="btn btn-success">{Lang.get('react.clone')} cohort</button>
                     </div>
                 </div>
                 <div className={"row"}>
