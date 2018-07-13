@@ -139,16 +139,44 @@
 
 <script>
     $(document).ready(function () {
-        $('#chainModalOpen').click(function () {
-            $('#chainModal').modal('show');
-        });
 
-        $('#chainUpdateModal').on('hide.bs.modal', function (e) {
+        function openChainModal() {
             $('#chainModal').modal('show');
-        });
-        $('#chainDeleteModal').on('hide.bs.modal', function (e) {
-            $('#chainModal').modal('show');
-        });
+        }
+
+        function closeChainModal() {
+            $('#chainModal').modal('hide');
+        }
+
+        function openChainUpdateModal() {
+            $('#chainUpdateModal').modal('show');
+        }
+
+        function closeChainUpdateModal() {
+            $('#chainUpdateModal').modal('hide');
+        }
+
+        function openChainDeleteModal() {
+            $('#chainDeleteModal').modal('show');
+        }
+
+        function closeChainDeleteModal() {
+            $('#chainDeleteModal').modal('hide');
+        }
+
+        function reloadAndReopen() {
+            location.replace(location.pathname + '#chains');
+            location.reload();
+        }
+
+        if (location.hash === '#chains') {
+            openChainModal();
+            history.replaceState({}, document.title, location.pathname);
+        }
+
+        $('#chainModalOpen').click(openChainModal);
+        $('#chainUpdateModal').on('hide.bs.modal', openChainModal);
+        $('#chainDeleteModal').on('hide.bs.modal', openChainModal);
 
         $('.chainDeleteModalButton').click(function () {
             $('#chainModal').modal('hide');
@@ -156,18 +184,16 @@
         });
 
         $('body').on('click', '.chainUpdateModalOpen', function () {
-            $('#chainModal').modal('hide');
-            $('#chainUpdateModal').modal('show');
+            closeChainModal();
+            openChainUpdateModal();
 
             $('#chainUpdateName').val($(this).parent().data('name'));
             $('#chainUpdateSaveButton').data('id', $(this).parent().data('id'));
-
-
         });
 
         $('body').on('click', '.chainDeleteModalButton', function () {
-            $('#chainModal').modal('hide');
-            $('#chainDeleteModal').modal('show');
+            closeChainModal();
+            openChainDeleteModal();
 
             $('#chainDeleteButton').data('id', $(this).parent().data('id'));
         });
@@ -180,7 +206,7 @@
             const id = $(this).parent().data('id');
 
             updateStatus(id, 1).then(function () {
-                window.location.reload();
+                reloadAndReopen();
             });
         });
 
@@ -191,7 +217,7 @@
         $('body').on('click', '.chainReopenButton', function () {
             const id = $(this).parent().data('id');
             updateStatus(id, 0).then(function () {
-                window.location.reload();
+                reloadAndReopen();
             });
         });
 
@@ -206,7 +232,7 @@
                 $("#chainSelect option#chain-select-" + id).text(data.name);
                 $("#chain-row-" + id + " td:first-child").text(data.name);
 
-                window.location.reload();
+                reloadAndReopen();
             });
         });
 
