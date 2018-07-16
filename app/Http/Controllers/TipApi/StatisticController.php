@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\TipApi;
 
-use App\Http\Requests\StatisticStoreRequest;
-use App\Tips\Statistics\CustomStatistic;
-use App\Tips\Statistics\Statistic;
-use App\Tips\StatisticService;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StatisticStoreRequest;
+use App\Tips\Models\CustomStatistic;
+use App\Tips\Models\Statistic;
+use App\Tips\Services\StatisticService;
 
 class StatisticController extends Controller
 {
@@ -16,7 +15,7 @@ class StatisticController extends Controller
      *
      * @param StatisticStoreRequest $request
      * @param StatisticService $statisticService
-     * @return \App\Tips\Statistics\CustomStatistic
+     * @return \App\Tips\Models\CustomStatistic
      * @throws \Exception
      */
     public function store(StatisticStoreRequest $request, StatisticService $statisticService)

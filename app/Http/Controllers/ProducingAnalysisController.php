@@ -13,11 +13,8 @@ use App\Cohort;
 use App\Repository\Eloquent\LikeRepository;
 use App\Repository\StudentTipViewRepositoryInterface;
 use App\Student;
-use App\Tips\ApplicableTipFetcher;
-use App\Tips\DataCollectors\Collector;
-use App\Tips\EvaluatedStatisticTip;
-use App\Tips\EvaluatedTip;
-use App\Tips\Tip;
+use App\Tips\EvaluatedTipInterface;
+use App\Tips\Services\ApplicableTipFetcher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +70,7 @@ class ProducingAnalysisController extends Controller
         /** @var Student $student */
         $student = $request->user();
 
-        $evaluatedTips = $applicableEvaluatedTips->filter(function (EvaluatedTip $evaluatedTip) use (
+        $evaluatedTips = $applicableEvaluatedTips->filter(function (EvaluatedTipInterface $evaluatedTip) use (
             $student,
             $likeRepository
         ) {
@@ -90,7 +87,7 @@ class ProducingAnalysisController extends Controller
 
 
         // Register that the tip will be viewed by the student
-        $evaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $studentTipViewRepository) {
+        $evaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $studentTipViewRepository) {
             $studentTipViewRepository->createForTip($evaluatedTip->getTip(), $student);
         });
 

@@ -4,11 +4,59 @@
 namespace App\Tips;
 
 
-interface EvaluatedTip
+use App\Tips\Models\Tip;
+
+class EvaluatedTip implements EvaluatedTipInterface
 {
-    public function getTip(): Tip;
 
-    public function getTipText(): string;
+    /**
+     * @var Tip
+     */
+    private $tip;
+    /**
+     * @var TextParameter[]|array
+     */
+    private $textParameters = [];
 
-    public function isPassing(): bool;
+    /**
+     * @var bool[]|array
+     */
+    private $evaluationResults = [];
+
+    public function __construct(Tip $tip)
+    {
+        $this->tip = $tip;
+    }
+
+    public function getTip(): Tip
+    {
+        return $this->tip;
+    }
+
+    public function getTipText(): string
+    {
+        $tipText = $this->tip->tipText;
+        array_walk($this->textParameters, function (TextParameter $parameter) use (&$tipText) {
+            $tipText = $parameter->apply($tipText);
+        });
+
+        return $tipText;
+    }
+
+    public function isPassing(): bool
+    {
+        return collect($this->evaluationResults)->every(function (bool $result) {
+            return $result === true;
+        });
+    }
+
+    public function addTextParameter(TextParameter $textParameter): void
+    {
+        $this->textParameters[] = $textParameter;
+    }
+
+    public function addEvaluationResult(bool $passed): void
+    {
+        $this->evaluationResults[] = $passed;
+    }
 }

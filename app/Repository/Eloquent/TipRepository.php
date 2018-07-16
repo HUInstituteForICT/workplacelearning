@@ -2,7 +2,7 @@
 namespace App\Repository\Eloquent;
 
 use App\Repository\TipRepositoryInterface;
-use App\Tips\Tip;
+use App\Tips\Models\Tip;
 
 class TipRepository implements TipRepositoryInterface
 {

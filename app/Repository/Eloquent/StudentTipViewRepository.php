@@ -5,8 +5,8 @@ namespace App\Repository\Eloquent;
 
 use App\Repository\StudentTipViewRepositoryInterface;
 use App\Student;
-use App\Tips\StudentTipView;
-use App\Tips\Tip;
+use App\Tips\Models\StudentTipView;
+use App\Tips\Models\Tip;
 
 class StudentTipViewRepository implements StudentTipViewRepositoryInterface
 {

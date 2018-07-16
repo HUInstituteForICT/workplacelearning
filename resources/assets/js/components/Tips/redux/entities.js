@@ -1,21 +1,30 @@
 const types = {
     ADD_ENTITIES: 'ADD_ENTITIES',
     UPDATE_ENTITY: 'UPDATE_ENTITY',
+    REMOVE_ENTITY: 'REMOVE_ENTITY',
     ADD_COUPLED_STATISTIC_TO_TIP: 'ADD_COUPLED_STATISTIC_TO_TIP',
     DECOUPLE_STATISTIC_FROM_TIP: 'DECOUPLE_STATISTIC_FROM_TIP',
     REMOVE_TIP: 'REMOVE_TIP',
     STATISTIC_DELETED: 'STATISTIC_DELETED',
+    ADD_MOMENT_TO_TIP: 'ADD_MOMENT_TO_TIP',
+    DECOUPLE_MOMENT_FROM_TIP: 'DECOUPLE_MOMENT_FROM_TIP',
 };
 
 const actions = {
     addEntities: entities => ({type: types.ADD_ENTITIES, entities}),
     updateEntity: (name, key, entity) => ({type: types.UPDATE_ENTITY, name, key, entity}),
+    removeEntity: (name, key) => ({type: types.REMOVE_ENTITY, name, key}),
     addCoupledStatisticToTip: (coupledStatisticId, tipId) => ({
         type: types.ADD_COUPLED_STATISTIC_TO_TIP,
         coupledStatisticId,
         tipId
     }),
+    addMomentToTip: (momentId, tipId)=> ({
+        type: types.ADD_MOMENT_TO_TIP,
+        momentId, tipId
+    }),
     decoupleStatisticFromTip: (coupledStatistic) => ({type: types.DECOUPLE_STATISTIC_FROM_TIP, coupledStatistic}),
+    decoupleMomentFromTip: (id, tipId) => ({type: types.DECOUPLE_MOMENT_FROM_TIP, id, tipId}),
     removeTip: id => ({type: types.REMOVE_TIP, id}),
     removeStatistic: id => ({type: types.STATISTIC_DELETED, id}),
 };
@@ -42,6 +51,21 @@ const reducer = (state = defaultState, action) => {
             return {...state, [action.name]: {...state[action.name], [action.key]: action.entity}};
         }
 
+        case types.REMOVE_ENTITY: {
+            const entities = {...state[action.name]};
+            delete entities[action.key];
+            return {...state, [action.name]: entities};
+        }
+
+        case types.ADD_MOMENT_TO_TIP: {
+            const tip = {...state.tips[action.tipId]};
+            tip.moments = [...tip.moments, action.momentId];
+
+            return {
+                ...state, tips: {...state.tips, [tip.id]: tip}
+            };
+        }
+
         case types.ADD_COUPLED_STATISTIC_TO_TIP: {
             const tip = {...state.tips[action.tipId]};
             tip.coupled_statistics = [...tip.coupled_statistics, action.coupledStatisticId];
@@ -66,6 +90,18 @@ const reducer = (state = defaultState, action) => {
             }
         }
 
+        case types.DECOUPLE_MOMENT_FROM_TIP: {
+            console.log(action);
+            const tip = {...state.tips[action.tipId]};
+            console.log(tip);
+            tip.moments.splice(tip.moments.indexOf(action.id), 1);
+
+            return {
+                ...state,
+                tips: {...state.tips, [tip.id]: tip},
+            }
+        }
+
         case types.REMOVE_TIP: {
             const tips = {...state.tips};
             delete tips[action.id];
@@ -77,16 +113,15 @@ const reducer = (state = defaultState, action) => {
             delete statistics[action.id];
 
             let coupledIds = []; // Collect the ids of coupledStatistics that used this statistic, they need to be removed from tips and from entitycollection
-            const coupledStatistics = Object.values(state.coupledStatistics).filter(cStat => {
-                if(cStat.statistic === action.id) {
-                    coupledIds.push(cStat.id);
+            const coupledStatistics = Object.values(state.coupledStatistics).filter(coupledStatistic => {
+                if (coupledStatistic.statistic === action.id) {
+                    coupledIds.push(coupledStatistic.id);
                 }
-                return cStat.statistic !== action.id
-            }).reduce((carry, cStat) => {
-                carry[cStat.id] = cStat;
+                return coupledStatistic.statistic !== action.id
+            }).reduce((carry, coupledStatistic) => {
+                carry[coupledStatistic.id] = coupledStatistic;
                 return carry;
             }, {});
-            console.log(coupledIds);
 
             const tips = [...Object.values(state.tips)].map(tip => {
                 const newTip = {...tip};

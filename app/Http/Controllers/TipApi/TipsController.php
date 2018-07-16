@@ -7,11 +7,11 @@ use App\EducationProgram;
 use App\EducationProgramType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipUpdateRequest;
-use App\Tips\Statistics\CustomStatistic;
+use App\Tips\Models\CustomStatistic;
+use App\Tips\Models\StatisticVariable;
+use App\Tips\Models\Tip;
+use App\Tips\Services\TipManager;
 use App\Tips\Statistics\PredefinedStatisticHelper;
-use App\Tips\Statistics\StatisticVariable;
-use App\Tips\Tip;
-use App\Tips\TipManager;
 use Illuminate\Http\Request;
 
 class TipsController extends Controller
@@ -52,7 +52,7 @@ class TipsController extends Controller
      */
     public function index(): array
     {
-        $tips = Tip::with('coupledStatistics', 'enabledCohorts', 'likes', 'studentTipViews')->get();
+        $tips = Tip::with('coupledStatistics', 'enabledCohorts', 'likes', 'studentTipViews', 'moments')->get();
         $statistics = $this->getStatistics();
 
         return [
@@ -76,11 +76,10 @@ class TipsController extends Controller
     {
         $tip = $service->createTip(['name'            => trans('tips.new'),
                                     'shownInAnalysis' => true,
-                                    'trigger'         => $request->get('trigger', 'statistic'),
         ]);
         $tip->save();
 
-        return Tip::with('coupledStatistics', 'enabledCohorts', 'likes', 'studentTipViews')->findOrFail($tip->id);
+        return Tip::with('coupledStatistics', 'enabledCohorts', 'likes', 'studentTipViews', 'moments')->findOrFail($tip->id);
     }
 
     /**

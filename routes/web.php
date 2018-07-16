@@ -64,6 +64,10 @@ Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api
     Route::resource('statistics', 'TipApi\StatisticController');
     Route::resource('tips', 'TipApi\TipsController');
 
+    Route::post('moments/create/{tip}', 'TipApi\MomentController@create');
+    Route::put('moments/{moment}', 'TipApi\MomentController@update');
+    Route::delete('moments/{moment}', 'TipApi\MomentController@delete');
+
 
 
     Route::put('tips/{tip}/cohorts', 'TipApi\TipsController@updateCohorts')->name('tips.updateCohorts');

@@ -4,8 +4,8 @@
 namespace App\Tips\DataCollectors;
 
 
+use App\Tips\Models\StatisticVariable;
 use App\Tips\Statistics\Filters\Filter;
-use App\Tips\Statistics\StatisticVariable;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Query\Builder;
 use InvalidArgumentException;

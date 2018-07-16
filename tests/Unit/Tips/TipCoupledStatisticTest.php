@@ -1,16 +1,16 @@
 <?php
 
 
-use App\Tips\Statistics\CustomStatistic;
-use App\Tips\Tip;
-use App\Tips\TipCoupledStatistic;
+use App\Tips\Models\CustomStatistic;
+use App\Tips\Models\Tip;
+use App\Tips\Models\TipCoupledStatistic;
 
 
 class TipCoupledStatisticTest extends \Tests\TestCase
 {
     public function testTipRelation() {
-        /** @var \App\Tips\Tip $tip */
-        $tip = factory(\App\Tips\Tip::class)->create();
+        /** @var \App\Tips\Models\Tip $tip */
+        $tip = factory(\App\Tips\Models\Tip::class)->create();
         /** @var CustomStatistic $statistic */
         $statistic = factory(CustomStatistic::class)->create();
 
@@ -37,7 +37,7 @@ class TipCoupledStatisticTest extends \Tests\TestCase
     }
 
     public function testTipServiceCoupling() {
-        $tipService = new \App\Tips\TipManager();
+        $tipService = new \App\Tips\Services\TipManager();
 
         /** @var Tip $tip */
         $tip = factory(Tip::class)->create();

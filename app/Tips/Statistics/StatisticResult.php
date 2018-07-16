@@ -3,7 +3,7 @@
 
 namespace App\Tips\Statistics;
 
-use App\Tips\TipCoupledStatistic;
+use App\Tips\Models\TipCoupledStatistic;
 
 /**
  * Class StatisticResult

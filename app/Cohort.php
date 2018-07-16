@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Tips\Tip;
+use App\Tips\Models\Tip;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

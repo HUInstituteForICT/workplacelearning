@@ -4,7 +4,7 @@
 namespace App\Tips\Statistics;
 
 
-use App\Tips\CollectorDataAggregator;
+use App\Tips\DataCollectors\CollectorDataAggregator;
 use App\Tips\DataCollectors\PredefinedStatisticCollector;
 use App\WorkplaceLearningPeriod;
 

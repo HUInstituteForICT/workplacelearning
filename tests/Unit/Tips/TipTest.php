@@ -2,9 +2,8 @@
 
 
 use App\Student;
-use App\Tips\Tip;
-use App\Tips\TipCoupledStatistic;
-use App\Tips\TipManager;
+use App\Tips\Models\Tip;
+use App\Tips\Services\TipManager;
 
 
 class TipTest extends \Tests\TestCase

@@ -5,11 +5,10 @@ namespace App\Http\Controllers\TipApi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipCoupledStatisticCreateRequest;
 use App\Http\Requests\TipCoupledStatisticUpdateRequest;
-use App\Tips\Statistics\CustomStatistic;
-use App\Tips\Statistics\PredefinedStatisticHelper;
-use App\Tips\StatisticService;
-use App\Tips\Tip;
-use App\Tips\TipCoupledStatistic;
+use App\Tips\Models\CustomStatistic;
+use App\Tips\Models\Tip;
+use App\Tips\Models\TipCoupledStatistic;
+use App\Tips\Services\StatisticService;
 
 class TipCoupledStatisticController extends Controller
 {
