@@ -75,7 +75,7 @@ Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api
 });
 
 // Admin
-Route::get('/reactlogs', 'ReactLogController@index')->middleware(CheckUserLevel::class);
+Route::get('/reactlogs', 'ReactLogController@index')->middleware(CheckUserLevel::class)->name('reactlogs');
 Route::get('/reactlogs/{reactLog}/fix', 'ReactLogController@fix')->middleware(CheckUserLevel::class)->name('fix-reactlog');
 
 Route::group(['before' => 'auth'], function () {

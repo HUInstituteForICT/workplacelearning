@@ -23,6 +23,7 @@ class ReactLogController
 
     public function fix(ReactLog $reactLog) {
         $reactLog->update(['fixed' => true]);
+        return redirect()->route('reactlogs');
     }
 
 }

@@ -19,8 +19,8 @@ class MomentItem extends React.Component {
         axios.delete(`/api/moments/${this.props.moment.id}`).then(response => {
             const id = this.props.moment.id;
             const tipId = this.props.moment.tip_id;
-            this.props.removeEntity('moments', id);
             this.props.decoupleMomentFromTip(id, tipId);
+            this.props.removeEntity('moments', id);
         });
     };
 
