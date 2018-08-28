@@ -8,5 +8,5 @@ return array (
     "nointernshipregisteredactivities" => "You haven't registered any hours for this internship.",
     "nointernshiphoursmonth" => 'You have not registered any activities for this month.'
   ),
-    "feedback-hard" => "You found this activity hard, can you describe how?"
+    "feedback-hard" => "You did not find this activity easy, can you describe how?"
 );
