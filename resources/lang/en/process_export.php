@@ -19,6 +19,7 @@ return array (
   'supportEd' => 'support Hogeschool Utrecht',
   'learningGoalDescription' => 'learning goal description',
   'evidence' => 'bewijsstuk',
+  'chain' => 'chain',
   'mail-subject' => 'Learning activities export shared',
   'text-mail' => 'Good day,
 

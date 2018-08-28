@@ -24,17 +24,8 @@ class Statistic extends Model
 
     protected static $persisted = ['name', 'education_program_type'];
 
-
     // Disable timestamps
     public $timestamps = false;
-
-    /**
-     * @throws \Exception
-     */
-    public function calculate()
-    {
-        throw new \RuntimeException('Should be called in subclass');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

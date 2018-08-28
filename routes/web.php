@@ -33,6 +33,7 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 
         Route::post('education-program/{program}/cohort/create', 'EducationProgramsController@createCohort');
         Route::put('education-program/cohort/{cohort}/update', 'EducationProgramsController@updateCohort');
+        Route::get('education-program/cohort/{cohort}/clone', 'EducationProgramsController@cloneCohort');
         Route::get('education-program/cohort/{cohort}', 'EducationProgramsController@getCohort');
         Route::delete('education-program/cohort/{cohort}', 'EducationProgramsController@deleteCohort');
         Route::get('education-program/cohort/{cohort}/disable', 'EducationProgramsController@toggleDisabledCohort');
@@ -317,6 +318,11 @@ Route::group([
         Route::post('period/create', 'ProducingWorkplaceLearningController@create')->name('period-producing-create');
         Route::post('period/update/{id}',
             'ProducingWorkplaceLearningController@update')->name('period-producing-update')->where('id', '[0-9]*');
+
+
+        Route::post('/chain/create', 'ChainController@create')->name('chain-create');
+        Route::put('/chain/{chain}', 'ChainController@save')->name('chain-save');
+        Route::get('/chain/{chain}/delete', 'ChainController@delete')->name('chain-delete');
 
         //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
     });

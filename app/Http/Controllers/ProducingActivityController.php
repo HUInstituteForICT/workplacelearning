@@ -8,9 +8,10 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Chain;
+use App\ChainManager;
 use App\Difficulty;
 use App\Feedback;
-use App\Http\Requests;
 use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
 use App\ResourcePerson;
@@ -25,7 +26,7 @@ use Validator;
 class ProducingActivityController extends Controller
 {
 
-    public function show()
+    public function show(Request $request)
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
@@ -42,7 +43,7 @@ class ProducingActivityController extends Controller
         );
 
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
-            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
+            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial', 'chain')
             ->take(8)
             ->orderBy('date', 'DESC')
             ->orderBy('lap_id', 'DESC')
@@ -52,7 +53,9 @@ class ProducingActivityController extends Controller
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
+        $wplp = $request->user()->getCurrentWorkplaceLearningPeriod();
 
+        $chains = $wplp->chains;
 
         return view('pages.producing.activity')
             ->with('learningWith', $resourcePersons)
@@ -61,10 +64,11 @@ class ProducingActivityController extends Controller
             ->with('statuses', Status::all())
             ->with('activitiesJson', $activitiesJson)
             ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
-            ->with('workplacelearningperiod', Auth::user()->getCurrentWorkplaceLearningPeriod());
+            ->with('workplacelearningperiod', Auth::user()->getCurrentWorkplaceLearningPeriod())
+            ->with('chains', $chains);
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
@@ -86,10 +90,15 @@ class ProducingActivityController extends Controller
             Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
         );
 
+        $wplp = $request->user()->getCurrentWorkplaceLearningPeriod();
+
+        $chains = $wplp->chains;
+
         return view('pages.producing.activity-edit')
             ->with('activity', $activity)
             ->with('learningWith', $resourcePersons)
-            ->with('categories', $categories);
+            ->with('categories', $categories)
+            ->with('chains', $chains);
     }
 
     public function feedback($id)
@@ -202,7 +211,7 @@ class ProducingActivityController extends Controller
         }
     }
 
-    public function create(Request $request)
+    public function create(Request $request, ChainManager $chainManager)
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
@@ -210,18 +219,19 @@ class ProducingActivityController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'datum'         => 'required|date|date_in_wplp',
-            'omschrijving'  => 'required',
-            'aantaluren'    => 'required',
-            'resource'      => 'required|in:persoon,alleen,internet,boek,new',
-            'moeilijkheid'  => 'required|exists:difficulty,difficulty_id',
-            'status'        => 'required|exists:status,status_id',
+            'datum'        => 'required|date|date_in_wplp',
+            'omschrijving' => 'required',
+            'aantaluren'   => 'required',
+            'resource'     => 'required|in:persoon,alleen,internet,boek,new',
+            'moeilijkheid' => 'required|exists:difficulty,difficulty_id',
+            'status'       => 'required|exists:status,status_id',
+            'chain_id'        => 'required|canChain',
         ]);
 
         // Conditional Validators
-        $validator->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function ($input) {
-            return $input->previous_wzh != "-1";
-        });
+//        $validator->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function ($input) {
+//            return $input->previous_wzh != "-1";
+//        });
         $validator->sometimes('newcat', 'sometimes|max:50', function ($input) {
             return $input->category_id == "new";
         });
@@ -297,8 +307,15 @@ class ProducingActivityController extends Controller
             $learningActivityProducing->category_id             = ($request['category_id'] == "new") ? $category->category_id : $request['category_id'];
             $learningActivityProducing->difficulty_id           = $request['moeilijkheid'];
             $learningActivityProducing->status_id               = $request['status'];
-            $learningActivityProducing->prev_lap_id             = ($request['previous_wzh'] != "-1") ? $request['previous_wzh'] : null;
+//            $learningActivityProducing->prev_lap_id             = ($request['previous_wzh'] != "-1") ? $request['previous_wzh'] : null;
             $learningActivityProducing->date                    = date_format(date_create($request->datum, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
+
+
+            if (((int)$request->get('chain_id')) !== -1) {
+                $chain = (new Chain)->find($request->get('chain_id'));
+                $chainManager->attachActivity($learningActivityProducing, $chain);
+            }
+
             $learningActivityProducing->save();
 
             if (($learningActivityProducing->difficulty_id == 2 || $learningActivityProducing->difficulty_id == 3)
@@ -314,7 +331,7 @@ class ProducingActivityController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, ChainManager $chainManager, $id)
     {
         // Allow only to view this page if an internship exists.
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
@@ -323,12 +340,13 @@ class ProducingActivityController extends Controller
 
         // TODO shouldn't these fields be in English?
         $validator = Validator::make($request->all(), [
-            'datum'         => 'required|date|date_in_wplp',
-            'omschrijving'  => 'required',
-            'aantaluren'    => 'required',
-            'resource'      => 'required|in:persoon,alleen,internet,boek,new',
-            'moeilijkheid'  => 'required|exists:difficulty,difficulty_id',
-            'status'        => 'required|exists:status,status_id',
+            'datum'        => 'required|date|date_in_wplp',
+            'omschrijving' => 'required',
+            'aantaluren'   => 'required',
+            'resource'     => 'required|in:persoon,alleen,internet,boek,new',
+            'moeilijkheid' => 'required|exists:difficulty,difficulty_id',
+            'status'       => 'required|exists:status,status_id',
+            'chain_id'     => 'canChain',
         ]);
 
         // Conditional Validators
@@ -356,9 +374,6 @@ class ProducingActivityController extends Controller
         $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
             return $input->resource == "new";
         });
-        $validator->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function ($input) {
-            return $input->previous_wzh != "-1";
-        });
 
 
         $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
@@ -372,6 +387,7 @@ class ProducingActivityController extends Controller
         }
 
         // Todo refactor model->fill()
+        /** @var LearningActivityProducing $learningActivityProducing */
         $learningActivityProducing = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
         $learningActivityProducing->date = $request['datum'];
         $learningActivityProducing->description = $request['omschrijving'];
@@ -403,12 +419,28 @@ class ProducingActivityController extends Controller
                 break;
         }
 
+
         $learningActivityProducing->category_id = $request['category_id'];
         $learningActivityProducing->difficulty_id = $request['moeilijkheid'];
         $learningActivityProducing->status_id = $request['status'];
         $learningActivityProducing->prev_lap_id = ($request['previous_wzh'] != "-1") ? $request['previous_wzh'] : null;
 
+
+        $chainId = $request->get('chain_id', null);
+
+        if ($chainId !== null) {
+            if (((int)$chainId) === -1) {
+                $learningActivityProducing->chain_id = null;
+            } elseif (((int)$chainId) !== -1) {
+                $chain = (new Chain)->find($chainId);
+                if ($chain->status !== Chain::STATUS_FINISHED) {
+                    $chainManager->attachActivity($learningActivityProducing, $chain);
+                }
+            }
+        }
+
         $learningActivityProducing->save();
+
 
         return redirect()->route('process-producing')->with('success', Lang::get('activity.saved-successfully'));
     }

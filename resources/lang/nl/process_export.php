@@ -19,6 +19,7 @@ return array(
   'supportEd' => 'hulp Hogeschool Utrecht',
   'learningGoalDescription' => 'omschrijving leerdoel',
   'evidence' => 'bewijsstuk',
+  'chain' => 'keten',
   'mail-subject' => 'Leermomenten export gedeeld met u',
   'text-mail' => 'Goedendag,
 

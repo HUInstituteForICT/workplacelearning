@@ -19,22 +19,21 @@ class LearningActivityProducingExportBuilder
         $this->learningActivityProducingCollection= $learningActivityProducingCollection;
     }
 
-
-
     public function getJson()
     {
         $jsonArray = [];
         $this->learningActivityProducingCollection->each(function(LearningActivityProducing $activity) use (&$jsonArray) {
             $jsonArray[] = [
-                "id" => $activity->lap_id,
-                "date" => Carbon::createFromFormat("Y-m-d", $activity->date)->format("d-m-Y"),
-                "duration" => $activity->getDurationString(),
-                "description" => $activity->description,
-                "resourceDetail" => $activity->getResourceDetail(),
-                "category" => $activity->getCategory(),
-                "difficulty" => Lang::get('general.' . strtolower($activity->getDifficulty())),
-                "status" => $activity->getStatus(),
-                "url" => route('process-producing-edit', ['id' => $activity->lap_id])
+                'id'             => $activity->lap_id,
+                'date'           => Carbon::createFromFormat('Y-m-d', $activity->date)->format('d-m-Y'),
+                'duration'       => $activity->getDurationString(),
+                'description'    => $activity->description,
+                'resourceDetail' => $activity->getResourceDetail(),
+                'category'       => $activity->getCategory(),
+                'difficulty'     => Lang::get('general.' . strtolower($activity->getDifficulty())),
+                'status'         => $activity->getStatus(),
+                'url'            => route('process-producing-edit', ['id' => $activity->lap_id]),
+                'chain'          => $activity->chain->name ?? '-'
             ];
         });
 
@@ -51,7 +50,8 @@ class LearningActivityProducingExportBuilder
              "resourceDetail",
              "category",
              "difficulty",
-             "status"
+             "status",
+             "chain"
         ])->each(function($field) use(&$mapping, $translator) { $mapping[$field] = $translator->get('process_export.' . $field); });
          return $mapping;
     }

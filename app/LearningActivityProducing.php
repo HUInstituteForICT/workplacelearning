@@ -2,9 +2,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
+/**
+ * @property int $lap_id
+ * @property int $chain_id
+ * @property string $description
+ * @property Chain $chain
+ * @property int $wplp_id
+ */
 class LearningActivityProducing extends Model
 {
     // Override the table used for the User Model
@@ -150,4 +158,13 @@ class LearningActivityProducing extends Model
     }
 
     // Note: DND, object comparison
+    public function __toString()
+    {
+        return $this->lap_id;
+    }
+
+    public function chain(): BelongsTo
+    {
+        return $this->belongsTo(Chain::class, 'chain_id', 'id');
+    }
 }

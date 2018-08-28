@@ -14,6 +14,7 @@ use App\Http\Requests\EducationProgram\CreateEntityRequest;
 use App\Http\Requests\EducationProgram\DeleteEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateRequest;
+use App\Services\CohortCloner;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Lang;
@@ -218,5 +219,17 @@ class EducationProgramsController extends Controller
 
         return response()->json(["status" => "success"]);
 
+    }
+
+    public function cloneCohort(Cohort $cohort, CohortCloner $cohortCloner)
+    {
+        $clonedCohort = $cohortCloner->clone($cohort);
+
+        return response()->json([
+            'description' => $clonedCohort->description,
+            'ep_id'       => $clonedCohort->ep_id,
+            'id'          => $clonedCohort->id,
+            'name'        => $clonedCohort->name,
+        ]);
     }
 }
