@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Models;
 
 use App\Student;
 use Illuminate\Database\Eloquent\Model;

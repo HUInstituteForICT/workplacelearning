@@ -1,16 +1,12 @@
 import {connect} from "react-redux";
 import React from "react";
-import {actions as coupleStatisticActions} from "./redux/coupleStatistic";
 import {actions as entityActions} from "./redux/entities";
-import {actions as uiActions} from "./redux/tipPageUi";
 import axios from "axios/index";
-import {Schema} from "../../Schema";
-import {normalize} from "normalizr";
-import CreateForm from "../Statistics/CreateForm";
 import {Link} from "react-router-dom";
-import Modal from 'react-responsive-modal';
 import Joyride from "react-joyride";
 import {ACTIONS, EVENTS} from 'react-joyride/es/constants';
+import CoupledStatistics from "./CoupledStatistics";
+import Moments from "./Moments";
 
 
 class TipEditPage extends React.Component {
@@ -22,9 +18,6 @@ class TipEditPage extends React.Component {
         this.state = {
             submitting: false,
             saveButtonText: Lang.get('statistics.couple'),
-            showCoupleStatisticModal: false,
-            coupleRequestBusy: false,
-            showNewStatisticModal: false,
             runJoyride: false,
             stepIndex: 0,
             selectedEducationProgramId: null,
@@ -57,49 +50,13 @@ class TipEditPage extends React.Component {
         });
     };
 
-    coupleStatistic = () => {
-        const {tip, coupleStatisticForm, statistics, storeNewCoupledStatistic} = this.props;
-        this.setState({coupleRequestBusy: true});
-        axios.post('/api/tip-coupled-statistics', {
-            tip_id: tip.id,
-            statistic_id: coupleStatisticForm.statistic,
-            threshold: coupleStatisticForm.threshold,
-            method: statistics[coupleStatisticForm.statistic].hasOwnProperty('method') ? statistics[coupleStatisticForm.statistic].method : null,
-            comparisonOperator: coupleStatisticForm.comparisonOperator,
-
-        }).then(response => {
-            storeNewCoupledStatistic(normalize(response.data, Schema.coupledStatistic));
-            if (this.state.runJoyride) {
-                this.joyrideRef.helpers.next();
-            }
-            this.setState({showCoupleStatisticModal: false, coupleRequestBusy: false});
-        })
-    };
-
     joyrideCallback = (tour) => {
         const {action, index, type} = tour;
 
         // Check if we need to open or close a modal, depending on which step we are
         if(type === EVENTS.STEP_AFTER) {
-            if (this.props.tip.trigger === 'statistic') {
-                if (index === 1) {
-                    this.setState({showCoupleStatisticModal: true});
-                }
-                if (index === 2) {
-                    this.setState({showNewStatisticModal: true});
-                }
-                if (index === 10) {
-                    this.setState({showNewStatisticModal: false});
-                }
-                if (index === 14) {
-                    this.setState({showCoupleStatisticModal: false});
-                }
-            }
             this.setState({stepIndex: index + (action === ACTIONS.PREV ? -1 : 1)});
         }
-
-
-
 
         if(type === EVENTS.TOUR_END) {
             this.setState({runJoyride: false, stepIndex: 0});
@@ -210,77 +167,22 @@ class TipEditPage extends React.Component {
         },
     ];
 
-    joyrideStepsMomentTip = [
-        {
-            content: Lang.get('tips.help-steps.1'),
-            target: "#step-1",
-            disableBeacon: true,
-        },
-        {
-            content: Lang.get('tips.help-steps.moment-2'),
-            target: "#step-moment-2",
-            disableBeacon: true,
-        },
-        {
-            content: Lang.get('tips.help-steps.moment-3'),
-            target: "#step-moment-3",
-            disableBeacon: true,
-        },
-
-        {
-            content: Lang.get('tips.help-steps.18'),
-            target: "#step-18",
-            disableBeacon: true,
-        },
-        {
-            content: Lang.get('tips.help-steps.19'),
-            target: "#step-19",
-            disableBeacon: true,
-        },
-        {
-            content: Lang.get('tips.help-steps.20'),
-            target: "#step-20",
-            disableBeacon: true,
-        },
-    ];
+    setStepIndex = stepIndex => this.setState({stepIndex});
 
 
-    toggleCoupleModal = () => {
-        this.setState({showCoupleStatisticModal: !this.state.showCoupleStatisticModal});
-        if (this.state.runJoyride && this.state.stepIndex === 1) {
-            this.setState({stepIndex: 2});
-        }
-    };
 
-    toggleNewStatisticModal = () => {
-        this.setState({showNewStatisticModal: !this.state.showNewStatisticModal});
-        if (this.state.runJoyride && this.state.stepIndex === 2) {
-            this.setState({stepIndex: 3});
-        }
-    };
+
 
     render = () => {
         const {
             match,
             tip, coupledStatistics,
-            statistics, educationProgramTypes, educationPrograms,
-            cohorts,
-            coupleStatisticForm, updateCoupleStatisticFormProperty,
-            coupledStatisticsInEditMode, storeNewCoupledStatistic,
-            storeNewStatisticVariable, updateEntity,
-            toggleEditModeForCoupledStatistic, decoupleStatistic
+            statistics, educationPrograms,
+            cohorts, updateEntity, moments,
         } = this.props;
 
         if (tip === undefined) return <div>Loading...</div>;
 
-
-        // Check if user has two different Educ types statistics coupled, should be discouraged
-        let hasActingCoupled, hasProducingCoupled = false;
-        coupledStatistics.forEach(coupled => {
-            const stat = statistics[coupled.statistic];
-            if (stat.education_program_type === 'acting') hasActingCoupled = true;
-            if (stat.education_program_type === 'producing') hasProducingCoupled = true;
-        });
 
         return <div>
 
@@ -302,189 +204,47 @@ class TipEditPage extends React.Component {
             </div>
 
 
-                {tip.trigger === 'statistic' && <div>
+                <div>
                     {/* The list op coupled statistics for this tip */}
 
-                    <h3>{Lang.get('tips.coupled-statistics')}</h3>
+                    <CoupledStatistics
+                        setStepIndex={this.setStepIndex}
+                        joyRide={this.state.runJoyride}
+                        joyRideRef={this.joyrideRef}
+                        stepIndex={this.state.stepIndex}
+                        tip={tip}
+                        statistics={statistics}
+                        coupledStatistics={coupledStatistics}
+                    />
 
-                    <button id="step-2" className="btn btn-primary"
-                            onClick={this.toggleCoupleModal}>{Lang.get('statistics.couple')}
-                    </button>
-                    <br/><br/>
-
-                    <div className="row" style={{background: 'white', marginBottom: '10px', marginTop: '10px'}}
-                         id="step-16">
-                        {hasProducingCoupled && hasActingCoupled &&
-                        <div className="alert alert-danger text-danger" role="alert">
-                            {Lang.get('statistics.acting-producing-coupled')}
-                        </div>}
-                        <div>
-                            {
-                                coupledStatistics.map(coupledStatistic => {
-                                    const statistic = statistics[coupledStatistic.statistic];
-
-                                    return <div className="col-md-4" key={coupledStatistic.id}><CoupledStatisticItem
-                                        coupledStatistic={coupledStatistic}
-                                        tip={tip}
-                                        statistic={statistic}
-                                        educationProgramType={educationProgramTypes[statistic.education_program_type]}
-                                        editMode={coupledStatisticsInEditMode.includes(coupledStatistic.id)}
-                                        updateEntity={updateEntity}
-                                        toggleEditModeForCoupledStatistic={toggleEditModeForCoupledStatistic}
-                                        decoupleStatistic={decoupleStatistic}
-                                    /></div>
-                                })
-                            }
-                        </div>
-
-                    </div>
+                </div>
 
 
-                    <Modal open={this.state.showCoupleStatisticModal} little
-                           onClose={() => this.setState({showCoupleStatisticModal: false})}
-                           classNames={{'modal': "panel panel-default"}}>
-                        <div className="panel-body">
-                            <h3 style={{display: 'inline-block'}}>{Lang.get('tips.couple-statistic')}</h3>
-                            <br/>
+                <div id='step-17' style={{backgroundColor: 'white'}}>
+                    <Moments
+                        tip={tip}
+                        setStepIndex={this.setStepIndex}
+                        joyRide={this.state.runJoyride}
+                        joyRideRef={this.joyrideRef}
+                        stepIndex={this.state.stepIndex}
+                    />
 
 
-                            <strong>{Lang.get('statistics.select-statistic')}</strong>
-                            <div className="row">
-                                <div className="col-lg-6" id="step-12">
-                                    <select value={coupleStatisticForm.statistic} className="form-control"
-                                            onChange={e => updateCoupleStatisticFormProperty('statistic', e.target.value)}>
-                                        <option disabled={true}/>
-                                        {
+                </div>
 
-                                            allowedStatistics(tip, statistics, coupledStatistics).map(
-                                                statistic => <option key={statistic.id}
-                                                                     value={statistic.id}>
+                <hr/>
 
-                                                    {statistic.type === 'predefinedstatistic' && Lang.get('statistics.predefined-stats.' + statistic.name)}
-                                                    {statistic.type !== 'predefinedstatistic' && statistic.name}
-
-                                                    &nbsp;-&nbsp;
-                                                    ({statistic.education_program_type})
-                                                    {statistic.type === 'predefinedstatistic' && ' - (' + Lang.get('statistics.predefined') + ')'}
-                                                </option>
-                                            )
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-
-                            <br/>
-
-                            <strong>{Lang.get('statistics.when-active')}</strong>
-                            <div className="row">
-                                <div className="col-lg-3" id="step-13">
-                                    <select value={coupleStatisticForm.comparisonOperator} className="form-control"
-                                            onChange={e => updateCoupleStatisticFormProperty('comparisonOperator', e.target.value)}>
-                                        <option value="1">{Lang.get('statistics.greater-than')}</option>
-                                        <option value="0">{Lang.get('statistics.less-than')}</option>
-                                    </select>
-                                </div>
-                                <div className="col-lg-3" id="step-14">
-                                    <input type="number" className="form-control" step="any"
-                                           value={coupleStatisticForm.threshold}
-                                           onChange={e => updateCoupleStatisticFormProperty('threshold', e.target.value)}/>
-                                </div>
-                            </div>
-
-                            <br/><br/>
-
-                            <div>
-                                <button className="btn btn-primary" id="step-15"
-                                        disabled={coupleStatisticForm.statistic === '' || coupleStatisticForm.threshold === '' || coupleStatisticForm.comparisonOperator > '2' || this.state.coupleRequestBusy}
-                                        onClick={this.coupleStatistic}>
-                                    {this.state.coupleRequestBusy &&
-                                    <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"/>}
-                                    {!this.state.coupleRequestBusy && <span>{Lang.get('statistics.couple')}</span>}
-
-                                </button>
-
-                                &nbsp;
-
-                                <button className="btn btn-danger"
-                                        onClick={() => this.setState({showCoupleStatisticModal: false})}>
-                                    {Lang.get('statistics.cancel')}
-                                </button>
-
-                                <button className="pull-right btn btn-default" id="step-3"
-                                        onClick={this.toggleNewStatisticModal}>{Lang.get('react.statistic.create-statistic')}
-                                </button>
-                            </div>
-                        </div>
-                    </Modal>
-
-                    <Modal open={this.state.showNewStatisticModal} little
-                           onClose={() => this.setState({showNewStatisticModal: false})}
-                           classNames={{'modal': "panel panel-default"}}>
-                        <div className="panel-body" id="step-8">
-                            <h3>{Lang.get('react.statistic.create-statistic')}</h3>
-                            <CreateForm
-                                joyrideStepIndex={this.state.stepIndex}
-                                        onCreated={newEntity => {
-                                            storeNewStatisticVariable(normalize(newEntity, Schema.statistic));
-                                            if (this.state.runJoyride) {
-                                                this.joyrideRef.helpers.next();
-                                            }
-                                            this.setState({showNewStatisticModal: false});
-                                        }}
-                            />
-                        </div>
-                    </Modal>
-                </div>}
-                {tip.trigger === 'moment' && <div>
-                    <h3>{Lang.get('tips.moment-trigger')}</h3>
-
-                    <p>{Lang.get('tips.moment-trigger-detail')}</p>
-                    <div className="row" id="step-moment-2">
-
-                        <div className="col-lg-3">
-                            <div className="form-group">
-                                <label>{Lang.get('tips.rangeStart')}</label>
-                                <div className="input-group">
-                                    <input min={0} max={100} value={tip.rangeStart} type="number" step={1}
-                                           className="form-control" onChange={e => updateEntity('tips', tip.id, {
-                                        ...tip,
-                                        rangeStart: e.target.value
-                                    })}/>
-                                    <span className="input-group-addon">%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="col-lg-3">
-                            <div className="form-group">
-                                <label>{Lang.get('tips.rangeEnd')}</label>
-                                <div className="input-group">
-                                    <input min={0} max={100} value={tip.rangeEnd} type="number" step={1}
-                                           className="form-control" onChange={e => updateEntity('tips', tip.id, {
-                                        ...tip,
-                                        rangeEnd: e.target.value
-                                    })}/>
-                                    <span className="input-group-addon">%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>}
-
-
-                <div className="panel panel-default" id={tip.trigger === 'statistic' ? 'step-17' : 'step-moment-3'}>
+                <div className="panel panel-default" id='step-18' style={{margin: '50px 0'}}>
                     <div className="panel-body">
                         <div className="form-group">
                             <label>{Lang.get('tips.tiptext')}</label>
                             <textarea className="form-control" value={tip.tipText} maxLength={1000} rows={3}
                                       onChange={e => updateEntity('tips', tip.id, {...tip, tipText: e.target.value})}/>
                         </div>
-                        {tip.trigger === 'statistic' && <p>{Lang.get('tips.form.statistic-value-parameters')}</p>}
-                        {tip.trigger === 'moment' && <p>{Lang.get('tips.form.moment-value-parameters')}</p>}
+                        {coupledStatistics.length > 0 && <p>{Lang.get('tips.form.statistic-value-parameters')}</p>}
+                        {tip.moments.length > 0 && <p>{Lang.get('tips.form.moment-value-parameters')}</p>}
 
-                        {tip.trigger === 'statistic' &&
+
                         <table className="table">
                             <thead>
                             <tr>
@@ -494,6 +254,11 @@ class TipEditPage extends React.Component {
                             </tr>
                             </thead>
                             <tbody>
+                            {tip.moments.length > 0 && <tr>
+                                <td>{moments.map(moment => `(${moment.rangeStart}% - ${moment.rangeEnd}%)`).join(` ${Lang.get('tips.or')} `)}</td>
+                                <td><strong>:days-percentage</strong></td>
+                                <td/>
+                            </tr>}
                             {
                                 coupledStatistics.map(coupledStatistic => {
 
@@ -506,14 +271,12 @@ class TipEditPage extends React.Component {
                                         </td>
                                         <td><strong>:statistic-{coupledStatistic.id}</strong></td>
                                         <td>
-                                            {
-                                                statistic.type === 'predefinedstatistic' &&
-                                                <span>
-                                    <strong>:statistic-name-{coupledStatistic.id}</strong>
-                                    <br/>
-                                                    {statistic.type === 'predefinedstatistic' && statistic.valueParameterDescription}
-
-                                </span>
+                                            {statistic.type === 'predefinedstatistic' &&
+                                            <span>
+                                                <strong>:statistic-name-{coupledStatistic.id}</strong>
+                                                <br/>
+                                                {statistic.type === 'predefinedstatistic' && statistic.valueParameterDescription}
+                                            </span>
                                             }
                                         </td>
                                     </tr>
@@ -521,12 +284,12 @@ class TipEditPage extends React.Component {
                             }
                             </tbody>
                         </table>
-                        }
+
                     </div>
                 </div>
             <hr/>
 
-                <div className="form-group" style={{background: 'white'}} id="step-18">
+                <div className="form-group" style={{background: 'white'}} id="step-19">
                     <input id='analysisvisible' type="checkbox" checked={tip.showInAnalysis}
                        onChange={e => updateEntity('tips', tip.id, {...tip, showInAnalysis: e.target.checked})}/>
                     <label htmlFor='analysisvisible'>&nbsp;{Lang.get('tips.form.showInAnalysis')}</label>
@@ -537,7 +300,7 @@ class TipEditPage extends React.Component {
             <h3>{Lang.get('tips.form.cohorts-enable')}</h3>
 
                 <div>
-                    <div className="row" style={{background: 'white', marginBottom: '20px'}} id="step-19">
+                    <div className="row" style={{background: 'white', marginBottom: '20px'}} id="step-20">
                         <div className="col-lg-2">
                             <h5>{Lang.get('tips.education-programs')}</h5>
                             <button
@@ -605,7 +368,7 @@ class TipEditPage extends React.Component {
                     </div>
 
 
-                    <div style={{background: 'white'}} id="step-20">
+                    <div style={{background: 'white'}} id="step-21">
                         <button disabled={tip.name === '' || tip.tipText === '' || this.state.submitting}
                                 className="btn btn-primary" onClick={this.save}>
                             {this.state.submitting &&
@@ -621,7 +384,7 @@ class TipEditPage extends React.Component {
                 ref={ref => {
                     this.joyrideRef = ref
                 }}
-                steps={tip.trigger === 'statistic' ? this.joyrideStepsStatisticTip : this.joyrideStepsMomentTip}
+                steps={this.joyrideStepsStatisticTip}
                 run={this.state.runJoyride}
                 hideBackButton={true}
                 continuous={true}
@@ -649,103 +412,6 @@ class TipEditPage extends React.Component {
 }
 
 
-const CoupledStatisticItem = ({tip, coupledStatistic, statistic, educationProgramType, editMode, updateEntity, toggleEditModeForCoupledStatistic, decoupleStatistic}) => {
-
-    const saveCoupledStatistic = () => {
-        axios.put(`/api/tip-coupled-statistics/${coupledStatistic.id}`, {
-            threshold: coupledStatistic.threshold,
-            comparison_operator: coupledStatistic.comparison_operator,
-
-        }).then(response => {
-            const normalizedCoupledStatistic = normalize(response.data, Schema.coupledStatistic).entities.coupledStatistics[coupledStatistic.id];
-            updateEntity('coupledStatistics', coupledStatistic.id, normalizedCoupledStatistic);
-            toggleEditModeForCoupledStatistic(coupledStatistic.id);
-        });
-    };
-
-    const decouple = () => {
-        axios.delete(`/api/tip-coupled-statistics/${coupledStatistic.id}`).then(response => {
-            decoupleStatistic(coupledStatistic);
-        });
-    };
-
-    // Render the normal display form
-    if (!editMode) {
-        return <div className="panel panel-default" style={{flex: '1'}}>
-            <div className="panel-body">
-                <div>
-                    <h5>
-                        {statistic.type === 'predefinedstatistic' && Lang.get('statistics.predefined-stats.' + statistic.name)}
-                        {statistic.type !== 'predefinedstatistic' && statistic.name}
-                    </h5>
-
-                    <strong>{Lang.get('tips.ep-type')}:</strong> {statistic.education_program_type}<br/>
-                    <strong>{Lang.get('tips.condition')}: </strong>{coupledStatistic.condition}<br/>
-                </div>
-                <br/>
-                <button className="btn btn-primary"
-                        onClick={() => toggleEditModeForCoupledStatistic(coupledStatistic.id)}>{Lang.get('general.edit')}</button>
-            </div>
-        </div>;
-    }
-
-    // Render the edit form for a coupled statistic
-    return <div className="panel panel-default" style={{flex: '1'}}>
-        <div className="panel-body">
-            <div>
-                <h5>
-                    {statistic.type === 'predefinedstatistic' && Lang.get('statistics.predefined-stats.' + statistic.name)}
-                    {statistic.type !== 'predefinedstatistic' && statistic.name}
-                </h5>
-
-                <strong>{Lang.get('statistics.when-active')}</strong>
-                <div className="row">
-                    <div className="col-lg-6" id="step-13">
-                        <select
-                            value={coupledStatistic.comparison_operator} className="form-control"
-                            onChange={e => updateEntity('coupledStatistics', parseInt(coupledStatistic.id), {
-                                ...coupledStatistic,
-                                comparison_operator: e.target.value
-                            })}>
-                            <option value="1">{Lang.get('statistics.greater-than')}</option>
-                            <option value="0">{Lang.get('statistics.less-than')}</option>
-                        </select>
-                    </div>
-                    <div className="col-lg-6">
-                        <input type="number" className="form-control" step="any" value={coupledStatistic.threshold}
-                               onChange={e => updateEntity('coupledStatistics', parseInt(coupledStatistic.id), {
-                                   ...coupledStatistic,
-                                   threshold: e.target.value
-                               })}/>
-                    </div>
-                </div>
-
-            </div>
-            <br/>
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-                <button className="btn btn-primary" onClick={saveCoupledStatistic}>{Lang.get('tips.save')}</button>
-                &nbsp;
-                <button className="btn btn-danger" onClick={decouple}>{Lang.get('tips.decouple')}</button>
-                &nbsp;
-                <button className="btn"
-                        onClick={() => toggleEditModeForCoupledStatistic(coupledStatistic.id)}>{Lang.get('tips.cancel')}</button>
-            </div>
-        </div>
-
-    </div>;
-
-
-};
-
-/**
- * Get the selectable statistics for this tip.
- */
-const allowedStatistics = (tip, statistics) => Object.values(statistics)
-    .filter(statistic =>
-        String(statistic.id).startsWith('p-p-') ||
-        String(statistic.id).startsWith('p-a-') ||
-        statistic.type === 'customstatistic');
-
 const mapping = {
     state: (state, props) => {
         const tip = state.entities.tips[props.match.params.id];
@@ -761,22 +427,12 @@ const mapping = {
             variableFilters: state.tipEditPageUi.variableFilters,
             cohorts: state.entities.cohorts,
             coupleStatisticForm: state.coupleStatistic,
-            coupledStatisticsInEditMode: state.tipEditPageUi.inEditMode
+            coupledStatisticsInEditMode: state.tipEditPageUi.inEditMode,
+            moments: tip.moments.map(id => state.entities.moments[id]),
         };
     },
     dispatch: dispatch => ({
-        updateCoupleStatisticFormProperty: (property, value) => dispatch(coupleStatisticActions.updateCoupleStatisticFormProperty(property, value)),
-        storeNewCoupledStatistic: normalized => {
-
-            dispatch(entityActions.addEntities(normalized.entities));
-            dispatch(entityActions.addCoupledStatisticToTip(normalized.result, normalized.entities.coupledStatistics[normalized.result].tip_id));
-        },
-        storeNewStatisticVariable: normalized => {
-            dispatch(entityActions.addEntities(normalized.entities));
-        },
         updateEntity: (name, key, entity) => dispatch(entityActions.updateEntity(name, key, entity)),
-        toggleEditModeForCoupledStatistic: id => dispatch(uiActions.toggleEditModeCoupledStatistic(id)),
-        decoupleStatistic: coupledStatistic => dispatch(entityActions.decoupleStatisticFromTip(coupledStatistic)),
     })
 };
 

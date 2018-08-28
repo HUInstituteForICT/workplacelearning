@@ -41,8 +41,8 @@ class IndexPage extends React.Component {
         });
     };
 
-    createTip = (trigger) => {
-        axios.post('/api/tips', {trigger}).then(response => {
+    createTip = () => {
+        axios.post('/api/tips').then(response => {
             const normalized = normalize(response.data, Schema.tip);
             this.props.newTip(normalized.entities);
             this.props.history.push(`/tip/${normalized.result}`)
@@ -96,11 +96,8 @@ class IndexPage extends React.Component {
 
                 <div>
                     <h3>{Lang.get('tips.tips')}</h3>
-                    <button type="button" className="btn btn-primary" onClick={() => {this.createTip('statistic')}}>
-                        {Lang.get('tips.new-statistic-driven')}
-                    </button>&nbsp;
-                    <button type="button" className="btn btn-primary" onClick={() => {this.createTip('moment')}}>
-                        {Lang.get('tips.new-moment-driven')}
+                    <button type="button" className="btn btn-primary" onClick={this.createTip}>
+                        {Lang.get('tips.new')}
                     </button>
                     <br/><br/>
 
@@ -309,8 +306,9 @@ const tipItem = ({tip, onClickDelete, coupledStatistics, statistics, toggleAvail
     return <tr>
         <td>{tip.name}</td>
         <td>
-            {tip.trigger === 'moment' && Lang.get('tips.type-moment') }
-            {tip.trigger === 'statistic' &&
+            {tip.moments.length > 0 && Lang.get('tips.type-moment') }
+            {tip.moments.length > 0 && tip.coupled_statistics.length > 0 && ', '}
+            {tip.coupled_statistics.length > 0 &&
             <span>{Lang.get('tips.type-statistic')} ({hasActingCoupled && 'acting'}{hasActingCoupled && hasProducingCoupled && ', '}{hasProducingCoupled && 'producing'})</span>}
         </td>
         <td>

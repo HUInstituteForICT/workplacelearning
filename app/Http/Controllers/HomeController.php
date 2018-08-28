@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
 use App\Student;
-use App\Tips\ApplicableTipFetcher;
-use App\Tips\EvaluatedTip;
+use App\Tips\EvaluatedTipInterface;
+use App\Tips\Services\ApplicableTipFetcher;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
@@ -35,7 +35,7 @@ class HomeController extends Controller
 
             /** @var Student $student */
             $student = $request->user();
-            $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository) {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 
@@ -57,7 +57,7 @@ class HomeController extends Controller
 
             /** @var Student $student */
             $student = $request->user();
-            $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository) {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 

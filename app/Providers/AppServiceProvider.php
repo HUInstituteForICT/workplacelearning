@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Require annotation manually
-        require_once app_path('Tips/DataUnitAnnotation.php');
+        require_once app_path('Tips/DataCollectors/DataUnitAnnotation.php');
     }
 
     /**

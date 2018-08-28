@@ -1,11 +1,8 @@
 <?php
 
 
-namespace App\Tips\Statistics;
+namespace App\Tips\Models;
 
-
-use DivisionByZeroError;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * @property StatisticVariable $statisticVariableOne

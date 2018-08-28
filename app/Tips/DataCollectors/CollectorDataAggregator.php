@@ -1,14 +1,9 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\DataCollectors;
 
 
-use App\Tips\DataCollectors\ActingPredefinedStatisticCollector;
-use App\Tips\DataCollectors\CollectorInterface;
-use App\Tips\Statistics\Statistic;
-use App\Tips\Statistics\StatisticVariable;
-use App\Tips\Statistics\Variables\CollectedDataStatisticVariable;
 use Doctrine\Common\Annotations\AnnotationReader;
 
 class CollectorDataAggregator

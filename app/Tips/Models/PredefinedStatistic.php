@@ -1,7 +1,10 @@
 <?php
 
 
-namespace App\Tips\Statistics;
+namespace App\Tips\Models;
+
+
+use App\Tips\Statistics\PredefinedStatisticHelper;
 
 /**
  * @property string $name

@@ -1,10 +1,12 @@
 <?php
 
 
-namespace App\Tips;
-
+namespace App\Tips\Services;
 
 use App\Cohort;
+use App\Tips\EvaluatedStatisticTip;
+use App\Tips\EvaluatedTipInterface;
+use App\Tips\Models\Tip;
 
 class ApplicableTipFetcher
 {
@@ -30,7 +32,7 @@ class ApplicableTipFetcher
 
         $applicableEvaluatedTips = $cohort->tips->map(function (Tip $tip) {
             return $this->tipEvaluator->evaluate($tip);
-        })->filter(function(EvaluatedTip $evaluatedTip) {
+        })->filter(function (EvaluatedTipInterface $evaluatedTip) {
             return $evaluatedTip->isPassing();
         });
 

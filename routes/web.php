@@ -61,14 +61,23 @@ Route::get('/manage/tips', function() {
 
 Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api/'], function() {
 
+
     Route::resource('tip-coupled-statistics', 'TipApi\TipCoupledStatisticController');
     Route::resource('statistics', 'TipApi\StatisticController');
     Route::resource('tips', 'TipApi\TipsController');
+
+    Route::post('moments/create/{tip}', 'TipApi\MomentController@create');
+    Route::put('moments/{moment}', 'TipApi\MomentController@update');
+    Route::delete('moments/{moment}', 'TipApi\MomentController@delete');
 
 
 
     Route::put('tips/{tip}/cohorts', 'TipApi\TipsController@updateCohorts')->name('tips.updateCohorts');
 });
+
+// Admin
+Route::get('/reactlogs', 'ReactLogController@index')->middleware(CheckUserLevel::class)->name('reactlogs');
+Route::get('/reactlogs/{reactLog}/fix', 'ReactLogController@fix')->middleware(CheckUserLevel::class)->name('fix-reactlog');
 
 Route::group(['before' => 'auth'], function () {
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
@@ -76,6 +85,7 @@ Route::group(['before' => 'auth'], function () {
     Route::get('/download/activity-export-doc/{fileName}', "ActivityExportController@downloadWordExport")->name('docx-export-download');
     // Catch the stat registration post
     Route::post('/log', 'LogController@log');
+    Route::post('/reactlog', 'ReactLogController@store');
 });
 
 

@@ -4,14 +4,12 @@
 namespace App\Tips\DataCollectors;
 
 
-use App\Category;
 use App\LearningGoal;
 use App\ResourcePerson;
-use App\Tips\DataUnitAnnotation;
 use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
-use App\Tips\Statistics\StatisticResultCollection;
 use App\Tips\Statistics\StatisticResult;
+use App\Tips\Statistics\StatisticResultCollection;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Query\Builder;
 

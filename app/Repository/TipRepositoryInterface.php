@@ -1,7 +1,7 @@
 <?php
 namespace App\Repository;
 
-use App\Tips\Tip;
+use App\Tips\Models\Tip;
 
 interface TipRepositoryInterface
 {

@@ -43,28 +43,28 @@ $factory->define(\App\EducationProgram::class, function(Faker\Generator $faker) 
 
 
 
-$factory->define(\App\Tips\Statistics\StatisticVariable::class, function () {
+$factory->define(\App\Tips\Models\StatisticVariable::class, function () {
     return [
-        'filters'   => \App\Tips\Statistics\StatisticVariable::$availableFilters['acting'],
+        'filters'   => \App\Tips\Models\StatisticVariable::$availableFilters['acting'],
     ];
 });
 
-$factory->define(\App\Tips\Statistics\CustomStatistic::class, function () {
+$factory->define(\App\Tips\Models\CustomStatistic::class, function () {
     return [
-        'operator'                  => \App\Tips\Statistics\CustomStatistic::OPERATOR_ADD,
+        'operator'                  => \App\Tips\Models\CustomStatistic::OPERATOR_ADD,
         'name'                      => 'Total learning activity + Total learning activity',
         'education_program_type'    => 'acting',
         'select_type'               => 'count',
         'statistic_variable_one_id' => function () {
-            return factory(\App\Tips\Statistics\StatisticVariable::class)->create()->id;
+            return factory(\App\Tips\Models\StatisticVariable::class)->create()->id;
         },
         'statistic_variable_two_id' => function () {
-            return factory(\App\Tips\Statistics\StatisticVariable::class)->create()->id;
+            return factory(\App\Tips\Models\StatisticVariable::class)->create()->id;
         },
     ];
 });
 
-$factory->define(\App\Tips\Tip::class, function () {
+$factory->define(\App\Tips\Models\Tip::class, function () {
     return [
         'name'           => 'Total learning activities times 2',
         'tipText'        => 'Your total learning activities are :percentage',

@@ -1,12 +1,8 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Models;
 
-
-use App\Tips\Statistics\PredefinedStatistic;
-use App\Tips\Statistics\Statistic;
-use App\Tips\Statistics\StatisticCalculationResult;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -72,6 +68,4 @@ class TipCoupledStatistic extends Model
 
         return $expression;
     }
-
-
 }

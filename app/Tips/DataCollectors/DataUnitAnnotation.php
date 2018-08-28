@@ -1,8 +1,7 @@
 <?php
 
 
-namespace App\Tips;
-
+namespace App\Tips\DataCollectors;
 
 /**
  * @Annotation

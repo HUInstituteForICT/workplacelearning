@@ -1,14 +1,12 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Services;
 
-
-use App\Tips\Statistics\StatisticVariable;
+use App\Tips\Models\StatisticVariable;
 
 class StatisticVariableService
 {
-
     public function updateStatisticVariable(array $data, StatisticVariable $variable)
     {
         $variable->filters = $data['filters'];

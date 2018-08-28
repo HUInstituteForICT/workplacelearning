@@ -1,10 +1,12 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Services;
 
 
 use App\Student;
+use App\Tips\Models\Like;
+use App\Tips\Models\Tip;
 
 class TipManager
 {
@@ -20,12 +22,6 @@ class TipManager
         $tip = new Tip;
         $tip->name = $tipData['name'];
         $tip->showInAnalysis = isset($tipData['showInAnalysis']);
-        $tip->trigger = $tipData['trigger'];
-
-        if($tip->trigger === 'moment') {
-            $tip->rangeStart = 10;
-            $tip->rangeEnd = 20;
-        }
 
         return $tip;
     }

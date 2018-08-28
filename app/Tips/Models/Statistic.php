@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Tips\Statistics;
+namespace App\Tips\Models;
 
 
-use App\Tips\DataCollectors\Collector;
-use App\Tips\TipCoupledStatistic;
 use Illuminate\Database\Eloquent\Model;
 use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 

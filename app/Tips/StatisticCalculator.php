@@ -5,10 +5,11 @@ namespace App\Tips;
 
 
 use App\Tips\DataCollectors\Collector;
-use App\Tips\Statistics\CustomStatistic;
-use App\Tips\Statistics\PredefinedStatistic;
+use App\Tips\DataCollectors\CollectorDataAggregator;
+use App\Tips\Models\CustomStatistic;
+use App\Tips\Models\PredefinedStatistic;
+use App\Tips\Models\Statistic;
 use App\Tips\Statistics\Resultable;
-use App\Tips\Statistics\Statistic;
 use App\Tips\Statistics\StatisticCalculationResult;
 use DivisionByZeroError;
 

@@ -5,8 +5,8 @@ namespace App\Repository\Eloquent;
 
 
 use App\Student;
-use App\Tips\StudentTipView;
-use App\Tips\Tip;
+use App\Tips\Models\StudentTipView;
+use App\Tips\Models\Tip;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Tests\TestCase;

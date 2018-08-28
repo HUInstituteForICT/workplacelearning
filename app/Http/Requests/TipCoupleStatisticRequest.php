@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Tips\Models\TipCoupledStatistic;
 use App\Tips\Statistics\PredefinedStatisticHelper;
-use App\Tips\TipCoupledStatistic;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;

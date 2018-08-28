@@ -1,14 +1,13 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Services;
 
 
-use App\EducationProgramType;
-use App\Tips\Statistics\CustomStatistic;
-use App\Tips\Statistics\PredefinedStatistic;
+use App\Tips\Models\CustomStatistic;
+use App\Tips\Models\PredefinedStatistic;
+use App\Tips\Models\StatisticVariable;
 use App\Tips\Statistics\PredefinedStatisticHelper;
-use App\Tips\Statistics\StatisticVariable;
 
 class StatisticService
 {

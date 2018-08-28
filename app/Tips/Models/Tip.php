@@ -1,18 +1,15 @@
 <?php
 
 
-namespace App\Tips;
+namespace App\Tips\Models;
 
 use App\Cohort;
 use App\Student;
-use App\Tips\Statistics\Statistic;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Tip
- *
  * @property string $name Name of the tip
  * @property boolean $showInAnalysis Whether or not the tip should be displayed in analyses
  * @property integer $id ID of the tip
@@ -23,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $trigger
  * @property int $rangeStart
  * @property int $rangeEnd
+ * @property Moment[]|Collection $moments
  */
 class Tip extends Model
 {
@@ -78,5 +76,10 @@ class Tip extends Model
     public function studentTipViews(): HasMany
     {
         return $this->hasMany(StudentTipView::class);
+    }
+
+    public function moments(): HasMany
+    {
+        return $this->hasMany(Moment::class);
     }
 }

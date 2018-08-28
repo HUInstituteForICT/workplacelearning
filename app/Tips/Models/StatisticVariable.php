@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Tips\Statistics;
+namespace App\Tips\Models;
 
 use App\Tips\Statistics\Filters\CategoryFilter;
 use App\Tips\Statistics\Filters\DifficultyFilter;
