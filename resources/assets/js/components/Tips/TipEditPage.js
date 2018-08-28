@@ -51,7 +51,6 @@ class TipEditPage extends React.Component {
     };
 
     joyrideCallback = (tour) => {
-        console.log(tour);
         const {action, index, type} = tour;
 
         // Check if we need to open or close a modal, depending on which step we are

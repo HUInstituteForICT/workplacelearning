@@ -3,7 +3,6 @@
 
 namespace App\Tips\Services;
 
-
 use App\Tips\EvaluatedTip;
 use App\Tips\Models\Moment;
 use App\Tips\PeriodMomentCalculator;
@@ -40,14 +39,15 @@ class MomentTriggerEvaluator
      * @param Moment[]|array
      * @return bool
      */
-    private function hasFittingMoment(array $moments, float $percentage):bool
+    private function hasFittingMoment(array $moments, float $percentage): bool
     {
         /** @var Moment $moment */
-        foreach($moments as $moment) {
-            if($moment->rangeStart <= $percentage && $percentage <= $moment->rangeEnd) {
+        foreach ($moments as $moment) {
+            if ($moment->rangeStart <= $percentage && $percentage <= $moment->rangeEnd) {
                 return true;
             }
         }
+
         return false;
     }
 }

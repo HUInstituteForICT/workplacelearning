@@ -36,8 +36,8 @@ class EvaluatedTip implements EvaluatedTipInterface
     public function getTipText(): string
     {
         $tipText = $this->tip->tipText;
-        array_walk($this->textParameters, function (TextParameter $parameter) use (&$tipText) {
-            $tipText = $parameter->apply($tipText);
+        array_walk($this->textParameters, function (TextParameter $textParameter) use (&$tipText) {
+            $tipText = $textParameter->apply($tipText);
         });
 
         return $tipText;
@@ -45,6 +45,10 @@ class EvaluatedTip implements EvaluatedTipInterface
 
     public function isPassing(): bool
     {
+        if(\count($this->evaluationResults) === 0) {
+            return false;
+        }
+
         return collect($this->evaluationResults)->every(function (bool $result) {
             return $result === true;
         });

@@ -91,9 +91,7 @@ const reducer = (state = defaultState, action) => {
         }
 
         case types.DECOUPLE_MOMENT_FROM_TIP: {
-            console.log(action);
             const tip = {...state.tips[action.tipId]};
-            console.log(tip);
             tip.moments.splice(tip.moments.indexOf(action.id), 1);
 
             return {
