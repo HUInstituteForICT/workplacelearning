@@ -8,5 +8,5 @@ return array (
       "nointernshipregisteredactivities" => "Je hebt nog geen uren geregistreerd voor deze stage.",
       "nointernshiphoursmonth" => 'Je hebt geen activiteiten ingevuld voor deze maand.'
   ),
-  "feedback-hard" => 'Je vond deze activiteit moeilijk. Kan je aangeven wat je lastig vond?'
+  "feedback-hard" => 'Je vond deze activiteit minder makkelijk. Kan je aangeven wat je lastig vond?'
 );
