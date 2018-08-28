@@ -84,5 +84,6 @@ return array (
       'program' => 'Opleidingsprogramma',
       'statistics' => 'Statistieken'
   ],
-    'edit' => 'Wijzigen'
+    'edit' => 'Wijzigen',
+    'clone' => 'Kloon'
 );

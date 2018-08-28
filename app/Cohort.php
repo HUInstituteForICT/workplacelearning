@@ -13,8 +13,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property Tip[]|Collection $tips
  * @property Category[]|Collection $categories
+ * @property Competence[]|Collection $competencies
  * @property EducationProgram $educationProgram
  * @property boolean $disabled
+ * @property ResourcePerson[]|Collection $resourcePersons
+ * @property Timeslot[]|Collection $timeslots
+ * @property string $description
+ * @property int $ep_id
  *
  */
 class Cohort extends Model
@@ -47,7 +52,7 @@ class Cohort extends Model
         return $this->belongsTo(EducationProgram::class, "ep_id", "ep_id");
     }
 
-    public function resourcePersons()
+    public function resourcePersons(): HasMany
     {
         // Tap so we can apply the where clause but still return the relationship
         return tap($this->hasMany(ResourcePerson::class, 'cohort_id', 'id'))->where('wplp_id', '0');
@@ -70,7 +75,7 @@ class Cohort extends Model
     // Relations for query builder
     public function getRelationships()
     {
-        return ["categories", "competencies", "competenceDescription", "educationProgram", "resourcePersons", "timeSlots", "workplaceLearningPeriods"];
+        return ["categories", "competencies", "competenceDescription", "educationProgram", "resourcePersons", "timeslots", "workplaceLearningPeriods"];
     }
 
 }

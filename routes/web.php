@@ -33,6 +33,7 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
 
         Route::post('education-program/{program}/cohort/create', 'EducationProgramsController@createCohort');
         Route::put('education-program/cohort/{cohort}/update', 'EducationProgramsController@updateCohort');
+        Route::get('education-program/cohort/{cohort}/clone', 'EducationProgramsController@cloneCohort');
         Route::get('education-program/cohort/{cohort}', 'EducationProgramsController@getCohort');
         Route::delete('education-program/cohort/{cohort}', 'EducationProgramsController@deleteCohort');
         Route::get('education-program/cohort/{cohort}/disable', 'EducationProgramsController@toggleDisabledCohort');
