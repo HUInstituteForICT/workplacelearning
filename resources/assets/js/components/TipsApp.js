@@ -10,7 +10,6 @@ import axios from "axios";
 import {normalize} from "normalizr";
 import {Schema} from "../Schema";
 import TipEditPage from "./Tips/TipEditPage";
-import UpdateForm from "./Statistics/UpdateForm";
 
 
 const rootReducer = combineReducers({entities, coupleStatistic, tipEditPageUi});
@@ -53,8 +52,42 @@ const ConnectedTipsApp = withRouter(connect(mapping.state, mapping.dispatch)(Tip
 
 const root = () => <Provider store={store}>
     <HashRouter>
-        <ConnectedTipsApp/>
+        <ErrorBoundary>
+            <ConnectedTipsApp/>
+        </ErrorBoundary>
     </HashRouter>
 </Provider>;
 
 export default root;
+
+
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {hasError: false, error: '', logged: false};
+    }
+
+    componentDidCatch(error, info) {
+        // Display fallback UI
+        this.setState({hasError: true});
+        console.log(error, info);
+        error.componentStack = info.componentStack;
+        axios.post('/reactlog', {log: JSON.stringify(error, Object.getOwnPropertyNames(error))}).then(() => this.setState({logged: true}));
+
+        // You can also log the error to an error reporting service
+    }
+
+    render() {
+        if (this.state.hasError) {
+            // You can render any custom fallback UI
+            return <div>
+                <h3>Whoops...</h3>
+                <p>Something that should not have happened happened.</p>
+                {this.state.logged && <p>
+                    The error has been logged and will be fixed as soon as possible
+                </p>}
+            </div>;
+        }
+        return this.props.children;
+    }
+}
