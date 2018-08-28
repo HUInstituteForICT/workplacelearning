@@ -19,8 +19,6 @@ class LearningActivityProducingExportBuilder
         $this->learningActivityProducingCollection= $learningActivityProducingCollection;
     }
 
-
-
     public function getJson()
     {
         $jsonArray = [];
@@ -52,7 +50,8 @@ class LearningActivityProducingExportBuilder
              "resourceDetail",
              "category",
              "difficulty",
-             "status"
+             "status",
+             "chain"
         ])->each(function($field) use(&$mapping, $translator) { $mapping[$field] = $translator->get('process_export.' . $field); });
          return $mapping;
     }
