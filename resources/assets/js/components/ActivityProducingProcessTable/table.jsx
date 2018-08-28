@@ -297,6 +297,7 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <td>{Lang.get('react.complexity')}</td>
                     <td>{Lang.get('react.status')}</td>
                     <td>{Lang.get('react.chain')}</td>
+                    <td>Feedback</td>
                     <td>{/* Edit URL, no table header */}</td>
                 </tr>
                 </thead>

@@ -142,13 +142,14 @@ class Student extends Authenticatable
     /**
      * @return null|WorkplaceLearningPeriod
      */
-    public function getCurrentWorkplaceLearningPeriod()
+    public function getCurrentWorkplaceLearningPeriod(): ?WorkplaceLearningPeriod
     {
         if($this->currentWorkplaceLearningPeriod === null) {
             if (!$this->getUserSetting('active_internship')) {
                 return null;
             }
-            $this->currentWorkplaceLearningPeriod = $this->workplaceLearningPeriods()->where('wplp_id', '=', $this->getUserSetting('active_internship')->setting_value)->first();;
+            $this->currentWorkplaceLearningPeriod = $this->workplaceLearningPeriods()->where('wplp_id', '=',
+                $this->getUserSetting('active_internship')->setting_value)->first();
         }
 
         return $this->currentWorkplaceLearningPeriod;

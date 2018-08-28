@@ -7,8 +7,11 @@
 
 namespace App;
 
+use App\LearningActivityProducing;
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * @property string $status_label
+ */
 class Status extends Model
 {
     // Override the table used for the User Model
@@ -26,12 +29,27 @@ class Status extends Model
 
     public function learningActivityProducing()
     {
-        return $this->belongsTo(\App\LearningActivityProducing::class, 'status_id', 'status_id');
+        return $this->hasMany(LearningActivityProducing::class, 'status_id', 'status_id');
     }
 
     // Relations for query builder
     public function getRelationships()
     {
         return ["learningActivityProducing"];
+    }
+
+    public function isFinished():bool
+    {
+        return \in_array(strtolower($this->status_label), ['afgerond', 'finished']);
+    }
+
+    public function isBusy():bool
+    {
+        return \in_array(strtolower($this->status_label), ['mee bezig', 'busy']);
+    }
+
+    public function isTransferred():bool
+    {
+        return \in_array(strtolower($this->status_label), ['overgedragen', 'transferred']);
     }
 }

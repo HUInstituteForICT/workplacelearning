@@ -1,10 +1,10 @@
 <?php
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Lang;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property int $lap_id
@@ -12,6 +12,18 @@ use Illuminate\Support\Facades\Lang;
  * @property string $description
  * @property Chain $chain
  * @property int $wplp_id
+ * @property WorkplaceLearningPeriod $workplaceLearningPeriod
+ * @property int duration
+ * @property string $res_material_id
+ * @property string $res_material_detail
+ * @property Category $category
+ * @property Difficulty $difficulty
+ * @property Status $status
+ * @property ResourceMaterial $resourceMaterial
+ * @property ResourcePerson $resourcePerson
+ * @property int $status_id
+ * @property Carbon $date
+ * @property Feedback $feedback
  */
 class LearningActivityProducing extends Model
 {
@@ -24,8 +36,6 @@ class LearningActivityProducing extends Model
 
     // Default
     protected $fillable = [
-        'lap_id',
-        'wplp_id',
         'duration',
         'description',
         'date',
@@ -38,112 +48,53 @@ class LearningActivityProducing extends Model
         'status_id'
     ];
 
-    public function previousLearningActivityProducing() {
+    public function previousLearningActivityProducing(): BelongsTo
+    {
         return $this->belongsTo(LearningActivityProducing::class, 'prev_lap_id', 'lap_id');
     }
 
-    public function nextLearningActivityProducing() {
+    public function nextLearningActivityProducing(): BelongsTo
+    {
         return $this->belongsTo(LearningActivityProducing::class, 'lap_id', 'prev_lap_id');
     }
 
-    public function workplaceLearningPeriod()
+    public function workplaceLearningPeriod(): BelongsTo
     {
-        return $this->belongsTo(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
+        return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id');
     }
 
-    public function feedback()
+    public function feedback(): HasOne
     {
-        return $this->hasOne(\App\Feedback::class, 'learningactivity_id', 'lap_id');
+        return $this->hasOne(Feedback::class, 'learningactivity_id');
     }
 
-    public function resourcePerson()
+    public function resourcePerson(): BelongsTo
     {
-        return $this->hasOne(\App\ResourcePerson::class, 'rp_id', 'res_person_id');
+        return $this->belongsTo(ResourcePerson::class, 'res_person_id');
     }
 
-    public function resourceMaterial()
+    public function resourceMaterial(): BelongsTo
     {
-        return $this->hasOne(\App\ResourceMaterial::class, 'rm_id', 'res_material_id');
+        return $this->belongsTo(ResourceMaterial::class, 'res_material_id');
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
-        return $this->hasOne(\App\Category::class, 'category_id', 'category_id');
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
-    public function difficulty()
+    public function difficulty(): BelongsTo
     {
-        return $this->belongsTo(\App\Difficulty::class, 'difficulty_id', 'difficulty_id');
+        return $this->belongsTo(Difficulty::class, 'difficulty_id', 'difficulty_id');
     }
 
-    public function getDifficulty()
+    public function status(): BelongsTo
     {
-        return Lang::get('general.'.strtolower($this->difficulty->difficulty_label));
-    }
-
-    public function getCategory()
-    {
-        // Note the translation below. This means never trust the return value to refer to anything in the system
-        return __($this->category()->first()->category_label);
-    }
-
-    public function getDurationString()
-    {
-        switch ($this->duration) {
-            case 0.25:
-                return "15 min";
-            case 0.5:
-                return "30 min";
-            case 0.75:
-                return "45 min";
-            case ($this->duration < 1):
-                return round($this->duration * 60) . " min";
-            default:
-                return $this->duration." " . Lang::get('general.hour');
-        }
-    }
-
-    public function getResourceDetail()
-    {
-        // Note the translation(s) below. This means never trust the return value to refer to anything in the system
-        if ($this->res_material_id) {
-            return __($this->resourceMaterial()
-                ->first()
-                ->rm_label) . ': ' . $this->res_material_detail;
-        } else if ($this->res_person_id) {
-            return Lang::get('activity.producing.person').': ' . __($this->resourcePerson()->first()->person_label);
-        } else {
-            return __('activity.alone');
-        }
-    }
-
-    public function getPrevousLearningActivity()
-    {
-        return LearningActivityProducing::where('lap_id', $this->prev_lap_id)->first();
-    }
-
-    public function getNextLearningActivity()
-    {
-        return LearningActivityProducing::where('prev_lap_id', $this->lap_id)->first();
-    }
-
-    public function status() {
-        return $this->hasOne(Status::class, 'status_id', 'status_id');
-    }
-
-    public function getStatus()
-    {
-        $st = DB::table("status")->where('status_id', $this->status_id)->first();
-        return Lang::get('general.'. strtolower($st->status_label));
-    }
-
-    public function getFeedback()
-    {
-        return Feedback::where('learningactivity_id', $this->lap_id)->first();
+        return $this->belongsTo(Status::class, 'status_id', 'status_id');
     }
 
     // Relations for query builder
-    public function getRelationships()
+    public function getRelationships(): array
     {
         return ["previousLearningActivityProducing",
                 "nextLearningActivityProducing",
@@ -160,11 +111,16 @@ class LearningActivityProducing extends Model
     // Note: DND, object comparison
     public function __toString()
     {
-        return $this->lap_id;
+        return $this->lap_id . '';
     }
 
     public function chain(): BelongsTo
     {
         return $this->belongsTo(Chain::class, 'chain_id', 'id');
+    }
+
+    public function getResourceDetail():string
+    {
+
     }
 }

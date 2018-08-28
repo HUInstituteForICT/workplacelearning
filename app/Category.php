@@ -10,7 +10,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property string category_label
+ * @property string $category_label
+ * @property int $wplp_id
  */
 class Category extends Model
 {

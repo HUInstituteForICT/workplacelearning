@@ -2,7 +2,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property string $difficulty_label
+ * @property int $difficulty_id
+ */
 class Difficulty extends Model
 {
     // Override the table used for the User Model
@@ -18,7 +23,7 @@ class Difficulty extends Model
         'difficulty_label'
     ];
 
-    public function learningActivityProducing()
+    public function learningActivityProducing(): HasMany
     {
         return $this->hasMany(\App\LearningActivityProducing::class, 'difficulty_id', 'difficulty_id');
     }
@@ -28,4 +33,20 @@ class Difficulty extends Model
     {
         return ["learningActivityProducing"];
     }
+
+    public function isEasy():bool
+    {
+        return \in_array(strtolower($this->difficulty_label), ['makkelijk', 'easy']);
+    }
+
+    public function isHard(): bool
+    {
+        return \in_array(strtolower($this->difficulty_label), ['moeilijk', 'hard']);
+    }
+
+    public function isAverage(): bool
+    {
+        return \in_array(strtolower($this->difficulty_label), ['gemiddeld', 'average']);
+    }
+
 }

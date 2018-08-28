@@ -10,6 +10,7 @@ namespace App;
 use App\EducationProgramType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property EducationProgramType $educationprogramType
@@ -41,9 +42,9 @@ class EducationProgram extends Model
         return $this->hasMany(Category::class, 'ep_id', 'ep_id');
     }
 
-    public function educationprogramType()
+    public function educationprogramType():BelongsTo
     {
-        return $this->hasOne(EducationProgramType::class, 'eptype_id', 'eptype_id');
+        return $this->belongsTo(EducationProgramType::class, 'eptype_id', 'eptype_id');
     }
 
     public function student()

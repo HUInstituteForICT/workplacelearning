@@ -18,7 +18,8 @@ use Nette\Utils\DateTime;
  * @property Category[]|Collection categories
  * @property LearningGoal[]|Collection learningGoals
  * @property LearningActivityActing[]|Collection learningActivityActing
- * @property int student_id
+ * @property int $student_id
+ * @property Student $student
  * @property int $wp_id
  * @property \DateTime $startdate
  * @property \DateTime $enddate

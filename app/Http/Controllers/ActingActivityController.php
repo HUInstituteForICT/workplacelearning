@@ -89,7 +89,7 @@ class ActingActivityController extends Controller
             ->with('competencies', Auth::user()->currentCohort()->competencies()->get());
     }
 
-    public function progress($pagenr)
+    public function progress()
     {
         if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
             return redirect()->route('profile')->withErrors([Lang::get("notifications.generic.nointernshipprogress")]);
@@ -106,8 +106,7 @@ class ActingActivityController extends Controller
 
         return view('pages.acting.progress')
             ->with('activitiesJson', $activitiesJson)
-            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
-            ->with('page', $pagenr);
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping));
     }
 
     public function create(Request $request)

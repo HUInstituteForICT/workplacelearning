@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class ResourcePerson
  * @property string $person_label
- * @package App
+ * @property int $wplp_id
+ * @property int $ep_id
  */
 class ResourcePerson extends Model
 {

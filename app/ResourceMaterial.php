@@ -3,6 +3,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string $rm_label
+ */
 class ResourceMaterial extends Model
 {
     // Override the table used for the User Model

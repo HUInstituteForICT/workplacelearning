@@ -7,32 +7,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
 use App\Chain;
 use App\ChainManager;
 use App\Difficulty;
 use App\Feedback;
+use App\Http\Requests\LearningActivity\ProducingCreateRequest;
 use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
-use App\ResourcePerson;
+use App\Services\LAPFactory;
 use App\Status;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Translation\Translator;
 use Illuminate\Validation\UnauthorizedException;
 use Validator;
 
 class ProducingActivityController extends Controller
 {
-
-    public function show(Request $request)
+    public function show(Request $request, Translator $translator)
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
-
 
         $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
@@ -43,11 +42,11 @@ class ProducingActivityController extends Controller
         );
 
         $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
-            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial', 'chain')
+            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial', 'chain', 'feedback')
             ->take(8)
             ->orderBy('date', 'DESC')
             ->orderBy('lap_id', 'DESC')
-            ->get());
+            ->get(), $translator);
 
         $activitiesJson = $exportBuilder->getJson();
 
@@ -71,7 +70,7 @@ class ProducingActivityController extends Controller
     public function edit(Request $request, $id)
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (null == Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
@@ -101,29 +100,24 @@ class ProducingActivityController extends Controller
             ->with('chains', $chains);
     }
 
-    public function feedback($id)
+    public function feedback(Feedback $feedback)
     {
-        $feedback = Feedback::find($id);
-        if ($feedback != null) {
-            $learningActivityProducing = LearningActivityProducing::find($feedback->learningactivity_id);
-        }
-
         return view('pages.producing.feedback')
-            ->with('lap', $learningActivityProducing)
-            ->with('fb', $feedback);
+            ->with('lap', $feedback->learningActivityProducing)
+            ->with('feedback', $feedback);
     }
 
-    public function progress($pageNr)
+    public function progress(Translator $translator)
     {
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
-            return redirect()->route('profile')->withErrors([Lang::get("notifications.generic.nointernshipprogress")]);
+        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
+            return redirect()->route('profile')->withErrors([Lang::get('notifications.generic.nointernshipprogress')]);
         }
 
         $activities = Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->orderBy('date', 'DESC')
             ->get();
-        $exportBuilder = new LearningActivityProducingExportBuilder($activities);
+        $exportBuilder = new LearningActivityProducingExportBuilder($activities, $translator);
 
         $activitiesJson = $exportBuilder->getJson();
 
@@ -132,13 +126,13 @@ class ProducingActivityController extends Controller
         /** @var Carbon $latest */
         $latest = null;
 
-        $activities->each(function(LearningActivityProducing $activity) use(&$earliest, &$latest) {
+        $activities->each(function (LearningActivityProducing $activity) use (&$earliest, &$latest) {
             $activityDate = Carbon::createFromTimestamp(strtotime($activity->date));
 
-            if($earliest === null || $activityDate->lessThan($earliest)) {
+            if (null === $earliest || $activityDate->lessThan($earliest)) {
                 $earliest = $activityDate;
             }
-            if($latest === null || $activityDate->greaterThan($latest)) {
+            if (null === $latest || $activityDate->greaterThan($latest)) {
                 $latest = $activityDate;
             }
         });
@@ -149,235 +143,136 @@ class ProducingActivityController extends Controller
         $latest = $latest ?? Carbon::now();
 
         return view('pages.producing.progress')
-            ->with("activitiesJson", $activitiesJson)
-            ->with("exportTranslatedFieldMapping", json_encode($exportTranslatedFieldMapping))
-            ->with('page', $pageNr)
-            ->with('weekStatesDates', ["earliest" => $earliest->format("Y-m-d"), "latest" => $latest->format("Y-m-d")])
-            ;
+            ->with('activitiesJson', $activitiesJson)
+            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
+            ->with('weekStatesDates', ['earliest' => $earliest->format('Y-m-d'), 'latest' => $latest->format('Y-m-d')]);
     }
 
-    public function updateFeedback(Request $request, $id)
+    public function updateFeedback(Request $request, Feedback $feedback)
     {
-        $feedback = Feedback::find($id);
         $wzh = null;
-        if ($feedback != null) {
-            $learningActivityProducing = LearningActivityProducing::find($feedback->learningactivity_id);
-            if (is_null($learningActivityProducing) || $learningActivityProducing->wplp_id != Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id) {
-                return redirect()->route('home')->withErrors([Lang::get('errors.feedback-permission')]);
-            }
+        $learningActivityProducing = $feedback->learningActivityProducing;
+
+        if ($learningActivityProducing->wplp_id !== Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id) {
+            return redirect()->route('home')->withErrors([Lang::get('errors.feedback-permission')]);
         }
 
         $messages = [
-            "newnotfinished" => Lang::get('validation.newnotfinished'),
-            "ondersteuning_werkplek.required_unless" => Lang::get('validation.ondersteuning_werkplek.required_unless'),
-            "ondersteuning_opleiding.required_unless" => Lang::get('validation.ondersteuning_opleiding.required_unless')
+            'newnotfinished' => Lang::get('validation.newnotfinished'),
+            'ondersteuning_werkplek.required_unless' => Lang::get('validation.ondersteuning_werkplek.required_unless'),
+            'ondersteuning_opleiding.required_unless' => Lang::get('validation.ondersteuning_opleiding.required_unless'),
         ];
 
         $validator = Validator::make($request->all(), [
-            'notfinished'               => 'required',
-            'support_requested'         => 'required|in:0,1,2',
-            'supported_provided_wp'     => 'required_unless:support_requested,0|max:150',
-            'initiatief'                => 'required|max:500',
-            'progress_satisfied'        => 'required|in:1,2',
-            'vervolgstap_zelf'          => 'required|max:150',
-            'ondersteuning_werkplek'    => 'required_unless:ondersteuningWerkplek,Geen|max:150',
-            'ondersteuning_opleiding'   => 'required_unless:ondersteuningOpleiding,Geen|max:150',
+            'notfinished' => 'required',
+            'support_requested' => 'required|in:0,1,2',
+            'supported_provided_wp' => 'required_unless:support_requested,0|max:150',
+            'initiatief' => 'required|max:500',
+            'progress_satisfied' => 'required|in:1,2',
+            'vervolgstap_zelf' => 'required|max:150',
+            'ondersteuning_werkplek' => 'required_unless:ondersteuningWerkplek,Geen|max:150',
+            'ondersteuning_opleiding' => 'required_unless:ondersteuningOpleiding,Geen|max:150',
         ]);
 
-
-        $validator->sometimes("newnotfinished", "required|max:150", function ($input) {
-            return $input->notfinished === "Anders";
+        $validator->sometimes('newnotfinished', 'required|max:150', function ($input) {
+            return 'Anders' === $input->notfinished;
         });
 
-
         if ($validator->fails()) {
-            return redirect()->route('feedback-producing', ["id" => $id])
+            return redirect()->route('feedback-producing', ['id' => $feedback->fb_id])
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-            // Todo refactor with model->fill($request)
-            $feedback->notfinished = ($request['notfinished'] == "Anders") ? $request['newnotfinished'] : $request['notfinished'];
-            $feedback->initiative = $request['initiatief'];
-            $feedback->progress_satisfied = $request['progress_satisfied'];
-            $feedback->support_requested = $request['support_requested'];
-            $feedback->supported_provided_wp = $request['supported_provided_wp'];
-            $feedback->nextstep_self = $request['vervolgstap_zelf'];
-            $feedback->support_needed_wp = (!isset($request['ondersteuningWerkplek'])) ? $request['ondersteuning_werkplek'] : "Geen";
-            $feedback->support_needed_ed = (!isset($request['ondersteuningOpleiding'])) ? $request['ondersteuning_opleiding'] : "Geen";
-            $feedback->save();
-
-            return redirect()->route('process-producing')->with('success',
-                Lang::get('activity.feedback-activity-saved'));
         }
+
+        $feedback->notfinished = ('Anders' === $request['notfinished']) ? $request['newnotfinished'] : $request['notfinished'];
+        $feedback->initiative = $request['initiatief'];
+        $feedback->progress_satisfied = $request['progress_satisfied'];
+        $feedback->support_requested = $request['support_requested'];
+        $feedback->supported_provided_wp = $request['supported_provided_wp'];
+        $feedback->nextstep_self = $request['vervolgstap_zelf'];
+        $feedback->support_needed_wp = !isset($request['ondersteuningWerkplek']) ? $request['ondersteuning_werkplek'] : 'Geen';
+        $feedback->support_needed_ed = !isset($request['ondersteuningOpleiding']) ? $request['ondersteuning_opleiding'] : 'Geen';
+        $feedback->save();
+
+        return redirect()->route('process-producing')->with(
+            'success',
+            Lang::get('activity.feedback-activity-saved')
+        );
     }
 
-    public function create(Request $request, ChainManager $chainManager)
+    public function create(ProducingCreateRequest $request, LAPFactory $LAPManager)
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.internship-no-permission')]);
         }
 
-        $validator = Validator::make($request->all(), [
-            'datum'        => 'required|date|date_in_wplp',
-            'omschrijving' => 'required',
-            'aantaluren'   => 'required',
-            'resource'     => 'required|in:persoon,alleen,internet,boek,new',
-            'moeilijkheid' => 'required|exists:difficulty,difficulty_id',
-            'status'       => 'required|exists:status,status_id',
-            'chain_id'        => 'required|canChain',
-        ]);
+        $learningActivityProducing = $LAPManager->createLAP($request->all());
 
-        // Conditional Validators
-//        $validator->sometimes('previous_wzh', 'required|exists:learningactivityproducing,lap_id', function ($input) {
-//            return $input->previous_wzh != "-1";
-//        });
-        $validator->sometimes('newcat', 'sometimes|max:50', function ($input) {
-            return $input->category_id == "new";
-        });
-        $validator->sometimes('category_id', 'required|exists:category,category_id', function ($input) {
-            return $input->category_id != "new";
-        });
-        $validator->sometimes('newswv', 'required|max:50', function ($input) {
-            return ($input->personsource == "new" && $input->resource == "persoon");
-        });
-        $validator->sometimes('personsource', 'required|exists:resourceperson,rp_id', function ($input) {
-            return ($input->personsource != "new" && $input->resource == "persoon");
-        });
-        //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
-        $validator->sometimes('internetsource', 'required|max:250', function ($input) {
-            return $input->resource == "internet";
-        });
-        $validator->sometimes('booksource', 'required|max:250', function ($input) {
-            return $input->resource == "book";
-        });
-        $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
-            return $input->resource == "new";
-        });
+        $difficulty = $learningActivityProducing->difficulty;
+        $status = $learningActivityProducing->status;
 
-        $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
-            return $input->aantaluren === "x";
-        });
+        if ($status->isBusy() && ($difficulty->isHard() || $difficulty->isAverage())) {
+            // Create Feedback object and redirect
+            $feedback = new Feedback();
+            $feedback->learningActivityProducing()->associate($learningActivityProducing);
+            $feedback->save();
 
-        // Validate the input
-        if ($validator->fails()) {
-            return redirect()->route('process-producing')
-                ->withErrors($validator)
-                ->withInput();
-        } else {
-            // All ok.
-            if ($request['resource'] == "new") {
-                $request['resource'] = "other";
-            }
-            if ($request['category_id'] == "new") {
-                $category                  = new Category;
-                $category->category_label  = $request['newcat'];
-                $category->wplp_id         = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-                $category->save();
-            }
-            if ($request['personsource'] == "new" && $request['resource'] === 'persoon') { //
-                $resourcePerson                = new ResourcePerson;
-                $resourcePerson->person_label  = $request['newswv'];
-                $resourcePerson->wplp_id       = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-                $resourcePerson->ep_id         = Auth::user()->getEducationProgram()->ep_id; //deprecated, not necessary, bound to wplp..?
-                $resourcePerson->save();
-            }
-
-            // Todo mass assign
-            $learningActivityProducing = new LearningActivityProducing;
-            $learningActivityProducing->wplp_id            = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-            $learningActivityProducing->description        = $request['omschrijving'];
-            $learningActivityProducing->duration = $request['aantaluren'] !== "x" ? $request['aantaluren'] : (round(((int)$request['aantaluren_custom']) / 60,
-                2));
-
-            switch ($request['resource']) {
-                case 'persoon':
-                    $learningActivityProducing->res_person_id = $request['personsource'] == 'new' ? $resourcePerson->rp_id : $request['personsource'];
-                    break;
-                case 'internet':
-                    $learningActivityProducing->res_material_id = 1;
-                    $learningActivityProducing->res_material_detail = $request['internetsource'];
-                    break;
-                case 'boek':
-                    $learningActivityProducing->res_material_id = 2;
-                    $learningActivityProducing->res_material_detail = $request['booksource'];
-                    break;
-            }
-
-            $learningActivityProducing->category_id             = ($request['category_id'] == "new") ? $category->category_id : $request['category_id'];
-            $learningActivityProducing->difficulty_id           = $request['moeilijkheid'];
-            $learningActivityProducing->status_id               = $request['status'];
-//            $learningActivityProducing->prev_lap_id             = ($request['previous_wzh'] != "-1") ? $request['previous_wzh'] : null;
-            $learningActivityProducing->date                    = date_format(date_create($request->datum, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
-
-
-            if (((int)$request->get('chain_id')) !== -1) {
-                $chain = (new Chain)->find($request->get('chain_id'));
-                $chainManager->attachActivity($learningActivityProducing, $chain);
-            }
-
-            $learningActivityProducing->save();
-
-            if (($learningActivityProducing->difficulty_id == 2 || $learningActivityProducing->difficulty_id == 3)
-                && ($learningActivityProducing->status_id == 2)
-            ) {
-                // Create Feedback object and redirect
-                $feedback = new Feedback;
-                $feedback->learningactivity_id = $learningActivityProducing->lap_id;
-                $feedback->save();
-                return redirect()->route('feedback-producing', ['id' => $feedback->fb_id])->with('notification', Lang::get('notifications.feedback-hard'));
-            }
-            return redirect()->route('process-producing')->with('success', Lang::get('activity.saved-successfully'));
+            return redirect()
+                ->route('feedback-producing', ['id' => $feedback->fb_id])
+                ->with('notification', Lang::get('notifications.feedback-hard'));
         }
+
+        return redirect()
+            ->route('process-producing')
+            ->with('success', Lang::get('activity.saved-successfully'));
     }
 
     public function update(Request $request, ChainManager $chainManager, $id)
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.internship-no-permission')]);
         }
 
         // TODO shouldn't these fields be in English?
         $validator = Validator::make($request->all(), [
-            'datum'        => 'required|date|date_in_wplp',
+            'datum' => 'required|date|date_in_wplp',
             'omschrijving' => 'required',
-            'aantaluren'   => 'required',
-            'resource'     => 'required|in:persoon,alleen,internet,boek,new',
+            'aantaluren' => 'required',
+            'resource' => 'required|in:persoon,alleen,internet,boek,new',
             'moeilijkheid' => 'required|exists:difficulty,difficulty_id',
-            'status'       => 'required|exists:status,status_id',
-            'chain_id'     => 'canChain',
+            'status' => 'required|exists:status,status_id',
+            'chain_id' => 'canChain',
         ]);
 
         // Conditional Validators
         $validator->sometimes('newcat', 'sometimes|max:50', function ($input) {
-
-            return $input->category_id == "new";
+            return 'new' == $input->category_id;
         });
         $validator->sometimes('category_id', 'required|exists:category,category_id', function ($input) {
-            return $input->category_id != "new";
+            return 'new' != $input->category_id;
         });
         $validator->sometimes('newswv', 'required|max:50', function ($input) {
-            return ($input->personsource == "new" && $input->resource == "persoon");
+            return 'new' == $input->personsource && 'persoon' == $input->resource;
         });
         $validator->sometimes('personsource', 'required|exists:resourceperson,rp_id', function ($input) {
-            return ($input->personsource != "new" && $input->resource == "persoon");
+            return 'new' != $input->personsource && 'persoon' == $input->resource;
         });
         //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
 
         $validator->sometimes('internetsource', 'required|url|max:75', function ($input) {
-            return $input->resource == "internet";
+            return 'internet' == $input->resource;
         });
         $validator->sometimes('booksource', 'required|max:75', function ($input) {
-            return $input->resource == "book";
+            return 'book' == $input->resource;
         });
         $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
-            return $input->resource == "new";
+            return 'new' == $input->resource;
         });
 
-
         $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
-            return $input->aantaluren === "x";
+            return 'x' === $input->aantaluren;
         });
 
         if ($validator->fails()) {
@@ -391,9 +286,10 @@ class ProducingActivityController extends Controller
         $learningActivityProducing = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
         $learningActivityProducing->date = $request['datum'];
         $learningActivityProducing->description = $request['omschrijving'];
-        $learningActivityProducing->duration = $request['aantaluren'] !== "x" ? $request['aantaluren'] : (round(((int)$request['aantaluren_custom']) / 60,
-            2));
-
+        $learningActivityProducing->duration = 'x' !== $request['aantaluren'] ? $request['aantaluren'] : round(
+            ((int) $request['aantaluren_custom']) / 60,
+            2
+        );
 
         // Todo refactor extract method?
         switch ($request['resource']) {
@@ -419,21 +315,19 @@ class ProducingActivityController extends Controller
                 break;
         }
 
-
         $learningActivityProducing->category_id = $request['category_id'];
         $learningActivityProducing->difficulty_id = $request['moeilijkheid'];
         $learningActivityProducing->status_id = $request['status'];
-        $learningActivityProducing->prev_lap_id = ($request['previous_wzh'] != "-1") ? $request['previous_wzh'] : null;
-
+        $learningActivityProducing->prev_lap_id = ('-1' != $request['previous_wzh']) ? $request['previous_wzh'] : null;
 
         $chainId = $request->get('chain_id', null);
 
-        if ($chainId !== null) {
-            if (((int)$chainId) === -1) {
+        if (null !== $chainId) {
+            if (((int) $chainId) === -1) {
                 $learningActivityProducing->chain_id = null;
-            } elseif (((int)$chainId) !== -1) {
-                $chain = (new Chain)->find($chainId);
-                if ($chain->status !== Chain::STATUS_FINISHED) {
+            } elseif (((int) $chainId) !== -1) {
+                $chain = (new Chain())->find($chainId);
+                if (Chain::STATUS_FINISHED !== $chain->status) {
                     $chainManager->attachActivity($learningActivityProducing, $chain);
                 }
             }
@@ -441,26 +335,25 @@ class ProducingActivityController extends Controller
 
         $learningActivityProducing->save();
 
-
         return redirect()->route('process-producing')->with('success', Lang::get('activity.saved-successfully'));
     }
 
     public function delete(LearningActivityProducing $activity)
     {
-        if($activity === null) {
+        if (null === $activity) {
             return redirect()->route('process-producing');
         }
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
-        if($activity->nextLearningActivityProducing()->first() !== null) {
+        if (null !== $activity->nextLearningActivityProducing()->first()) {
             return redirect()->route('process-producing')->withErrors([Lang::get('errors.activity-in-chain')]);
         }
 
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $activity->wplp_id) {
-            throw new UnauthorizedException("No access");
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $activity->wplp_id) {
+            throw new UnauthorizedException('No access');
         }
 
         $activity->feedback()->delete();
