@@ -86,4 +86,5 @@ return [
         'statistics' => 'Statistieken',
     ],
     'edit'                    => 'Wijzigen',
+    'clone' => 'Kloon'
 ];

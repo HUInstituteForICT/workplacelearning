@@ -88,4 +88,5 @@ return [
         ],
 
     'edit'   => 'Edit',
+    'clone' => 'Clone'
 ];

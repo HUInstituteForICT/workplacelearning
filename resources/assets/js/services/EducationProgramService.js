@@ -116,4 +116,8 @@ export default class EducationProgramService {
             .then(callback)
             .catch(error => {console.log("Unable to toggle disabled state of cohort: " + error)});
     }
+
+    static cloneCohort(id, callback) {
+        axios.get(base + 'education-program/cohort/' + id + '/clone').then(callback);
+    }
 }
