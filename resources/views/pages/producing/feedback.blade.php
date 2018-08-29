@@ -45,7 +45,7 @@
                         : {{ date('d-m', strtotime($lap->date)) }}, {{ __('activity.feedback.duration') }}
                         <strong>
                             @if($lap->duration < 1)
-                                {{ $lap->duration }} {{ __('minutes') }}
+                                {{ round($lap->duration * 60) }} {{ __('minutes') }}
                             @else
                                 {{ $lap->duration }} {{ __('hours') }}
                             @endif

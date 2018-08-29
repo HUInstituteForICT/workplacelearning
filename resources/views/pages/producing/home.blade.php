@@ -58,7 +58,15 @@
                                 <div class="dash-description">
                                     <b>{{ $a->description }}</b>
                                 </div>
-                                <div class="dash-hours"><b>({{ $a->getDurationString() }})</b></div>
+                                <div class="dash-hours">
+                                    <strong>
+                                        @if($a->duration < 1)
+                                            ({{ round($a->duration * 60) }} {{ __('minutes') }})
+                                        @else
+                                            ({{ $a->duration }} {{ __('hours') }})
+                                        @endif
+                                    </strong>
+                                </div>
                             </div>
                         @endforeach
                     @endif
