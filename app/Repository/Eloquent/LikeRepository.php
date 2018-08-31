@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repository\Eloquent;
 
 use App\Repository\LikeRepositoryInterface;
@@ -8,11 +9,11 @@ use App\Tips\Models\Tip;
 
 class LikeRepository implements LikeRepositoryInterface
 {
-
     public function get(int $id): Like
     {
         /** @var Like $like */
-        $like = (new \App\Tips\Models\Like)->findOrFail($id);
+        $like = (new \App\Tips\Models\Like())->findOrFail($id);
+
         return $like;
     }
 

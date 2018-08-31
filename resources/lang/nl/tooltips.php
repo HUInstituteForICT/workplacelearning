@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'producing_category' => 'Kies hieronder in welke categorie de activiteit die je toe wilt voegen het beste past. Als geen enkele categorie geschikt lijkt, kun je zelf een categorie toevoegen met de knop “Anders (Toevoegen)”.',
   'producing_with' => 'Werken en leren doe je soms alleen, en soms juist niet. Hier kun je aangeven welke personen je als hulpbronnen hebt ingeschakeld. Later kun je dan analyseren met wie je veel samenwerkt, of juist niet.',
   'producing_theory' => 'Om complexe problemen op te lossen, moet je soms de theorie er weer even bij pakken of moet je zaken (grondig) uitzoeken. Hier kun je aangeven welke bronnen je hebt geraadpleegd. Later kun je dit dan weer terugvinden, wat je natuurlijk goed kan helpen bij het schrijven van je stageverslag.',

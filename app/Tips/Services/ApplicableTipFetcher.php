@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tips\Services;
 
 use App\Cohort;
@@ -10,7 +9,6 @@ use App\Tips\Models\Tip;
 
 class ApplicableTipFetcher
 {
-
     /**
      * @var TipEvaluator
      */
@@ -23,12 +21,12 @@ class ApplicableTipFetcher
 
     /**
      * @param Cohort $cohort
+     *
      * @return EvaluatedStatisticTip[]
      */
     public function fetchForCohort(Cohort $cohort): array
     {
         $cohort->load('tips.coupledStatistics.statistic');
-
 
         $applicableEvaluatedTips = $cohort->tips->map(function (Tip $tip) {
             return $this->tipEvaluator->evaluate($tip);

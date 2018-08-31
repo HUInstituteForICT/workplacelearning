@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property integer $eptype_id
+ * @property int    $eptype_id
  * @property string $eptype_name Name of the program type
  */
 class EducationProgramType extends Model
@@ -43,6 +43,4 @@ class EducationProgramType extends Model
     {
         return \in_array(strtolower($this->eptype_name), ['producing']);
     }
-
-
 }

@@ -12,8 +12,9 @@ class UserNotifications
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -21,7 +22,7 @@ class UserNotifications
         if (Auth::guest()) {
             return redirect('login');
         }
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             $request->session()->flash('notification', str_replace('%s', route('period'), Lang::get('notifications.generic.nointernshipactive')));
         }
 

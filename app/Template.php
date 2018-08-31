@@ -13,7 +13,7 @@ class Template extends Model
     protected $fillable = [
         'name',
         'description',
-        'query'
+        'query',
     ];
 
     public function getParameters()
@@ -25,5 +25,4 @@ class Template extends Model
     {
         return $this->hasMany(Parameter::class);
     }
-
 }

@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Tips\DataCollectors;
-
 
 use Doctrine\Common\Annotations\AnnotationReader;
 
 class CollectorDataAggregator
 {
-
     /** @var CollectorInterface $collector */
     private $collector;
 
@@ -19,8 +16,10 @@ class CollectorDataAggregator
 
     /**
      * Get the information of all DataUnit methods of a collector
-     * Used for displaying
+     * Used for displaying.
+     *
      * @param bool $variableStatistic
+     *
      * @return array
      */
     public function getInformation($variableStatistic = true)
@@ -29,8 +28,8 @@ class CollectorDataAggregator
 
         $information = [];
 
-        foreach($methods as $method) {
-            if(in_array($method, ["__construct"])) {
+        foreach ($methods as $method) {
+            if (in_array($method, ['__construct'])) {
                 continue;
             }
 
@@ -43,9 +42,10 @@ class CollectorDataAggregator
     }
 
     /**
-     * Get the methods for a collector
+     * Get the methods for a collector.
      *
      * @param CollectorInterface $collector
+     *
      * @return array
      */
     private function methodsForObject(CollectorInterface $collector)
@@ -56,10 +56,11 @@ class CollectorDataAggregator
     }
 
     /**
-     * Get the DataUnitAnnotation information for a method in a collector
+     * Get the DataUnitAnnotation information for a method in a collector.
      *
      * @param CollectorInterface $collector
-     * @param string $method Method to get annotations for
+     * @param string             $method    Method to get annotations for
+     *
      * @return DataUnitAnnotation
      */
     private function informationForMethod(CollectorInterface $collector, $method)
@@ -73,5 +74,4 @@ class CollectorDataAggregator
 
         return $dataUnitAnnotation;
     }
-
 }

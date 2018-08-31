@@ -6,7 +6,8 @@ use App\Student;
 
 trait GenericUserTrait
 {
-    public function getUser($type): Student {
+    public function getUser($type): Student
+    {
         /** @var \App\EducationProgram $ep */
         $ep = factory(\App\EducationProgram::class)->states($type)->create();
         /** @var Student $user */
@@ -25,10 +26,10 @@ trait GenericUserTrait
         $user->workplaceLearningPeriods()->save($wplp);
         $user->setActiveWorkplaceLearningPeriod($wplp);
 
-        if($type === 'acting') {
+        if ('acting' === $type) {
             $user->getCurrentWorkplaceLearningPeriod()->learningGoals()->create([
                 'learninggoal_label' => 'Test',
-                'description'        => 'some test label',
+                'description' => 'some test label',
             ]);
 
             $wplp->cohort->competencies()->create(['competence_label' => 'Test competence']);

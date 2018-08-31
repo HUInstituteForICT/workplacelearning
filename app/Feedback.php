@@ -12,15 +12,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property learningActivityProducing $learningActivityProducing
- * @property int $fb_id
- * @property int $notfinished
- * @property string $initiative
- * @property string $progress_satisfied
- * @property string $support_requested
- * @property string $supported_provided_wp
- * @property string $nextstep_self
- * @property string $support_needed_wp
- * @property string $support_needed_ed
+ * @property int                       $fb_id
+ * @property int                       $notfinished
+ * @property string                    $initiative
+ * @property string                    $progress_satisfied
+ * @property string                    $support_requested
+ * @property string                    $supported_provided_wp
+ * @property string                    $nextstep_self
+ * @property string                    $support_needed_wp
+ * @property string                    $support_needed_ed
  */
 class Feedback extends Model
 {

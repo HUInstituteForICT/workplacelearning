@@ -16,7 +16,6 @@ use Validator;
 
 class HomeController extends Controller
 {
-
     public function showHome()
     {
         return view('pages.home');
@@ -25,12 +24,10 @@ class HomeController extends Controller
     /* Placeholder Templates */
     public function showProducingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
-
         /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
         $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
 
-        if ($workplaceLearningPeriod !== null && $workplaceLearningPeriod->hasLoggedHours()) {
-
+        if (null !== $workplaceLearningPeriod && $workplaceLearningPeriod->hasLoggedHours()) {
             $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
 
             /** @var Student $student */
@@ -41,8 +38,6 @@ class HomeController extends Controller
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
-
-
 
         return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
@@ -52,7 +47,7 @@ class HomeController extends Controller
         /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
         $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
 
-        if ($workplaceLearningPeriod !== null && $workplaceLearningPeriod->hasLoggedHours()) {
+        if (null !== $workplaceLearningPeriod && $workplaceLearningPeriod->hasLoggedHours()) {
             $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
 
             /** @var Student $student */
@@ -63,7 +58,6 @@ class HomeController extends Controller
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
-
 
         return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
@@ -82,7 +76,7 @@ class HomeController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'onderwerp' => 'required|max:40|min:3',
-            'uitleg'    => 'required|max:800|min:5',
+            'uitleg' => 'required|max:800|min:5',
         ]);
 
         if ($validator->fails()) {

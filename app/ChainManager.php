@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App;
-
 
 use Illuminate\Auth\Access\AuthorizationException;
 
 class ChainManager
 {
-
     /**
      * @var WorkplaceLearningPeriod
      */
@@ -53,9 +50,9 @@ class ChainManager
      * @throws AuthorizationException
      * @throws \Exception
      */
-    public function deleteChain(Chain $chain):bool
+    public function deleteChain(Chain $chain): bool
     {
-        if($this->workplaceLearningPeriod->wplp_id !== $chain->wplp_id) {
+        if ($this->workplaceLearningPeriod->wplp_id !== $chain->wplp_id) {
             throw new AuthorizationException('No access to this chain');
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Carbon\Carbon;
@@ -7,23 +8,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @property int $lap_id
- * @property int $chain_id
- * @property string $description
- * @property Chain $chain
- * @property int $wplp_id
+ * @property int                     $lap_id
+ * @property int                     $chain_id
+ * @property string                  $description
+ * @property Chain                   $chain
+ * @property int                     $wplp_id
  * @property WorkplaceLearningPeriod $workplaceLearningPeriod
  * @property int duration
- * @property string $res_material_id
- * @property string $res_material_detail
- * @property Category $category
- * @property Difficulty $difficulty
- * @property Status $status
+ * @property string           $res_material_id
+ * @property string           $res_material_detail
+ * @property Category         $category
+ * @property Difficulty       $difficulty
+ * @property Status           $status
  * @property ResourceMaterial $resourceMaterial
- * @property ResourcePerson $resourcePerson
- * @property int $status_id
- * @property Carbon $date
- * @property Feedback $feedback
+ * @property ResourcePerson   $resourcePerson
+ * @property int              $status_id
+ * @property Carbon           $date
+ * @property Feedback         $feedback
  */
 class LearningActivityProducing extends Model implements LearningActivityInterface
 {
@@ -45,7 +46,7 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
         'res_material_detail',
         'category_id',
         'difficulty_id',
-        'status_id'
+        'status_id',
     ];
 
     public function previousLearningActivityProducing(): BelongsTo
@@ -96,22 +97,22 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
     // Relations for query builder
     public function getRelationships(): array
     {
-        return ["previousLearningActivityProducing",
-                "nextLearningActivityProducing",
-                "workplaceLearningPeriod",
-                "feedback",
-                "resourcePerson",
-                "resourceMaterial",
-                "category",
-                "difficulty",
-                "status"
+        return ['previousLearningActivityProducing',
+                'nextLearningActivityProducing',
+                'workplaceLearningPeriod',
+                'feedback',
+                'resourcePerson',
+                'resourceMaterial',
+                'category',
+                'difficulty',
+                'status',
                 ];
     }
 
     // Note: DND, object comparison
     public function __toString()
     {
-        return $this->lap_id . '';
+        return $this->lap_id.'';
     }
 
     public function chain(): BelongsTo
@@ -119,8 +120,7 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
         return $this->belongsTo(Chain::class, 'chain_id', 'id');
     }
 
-    public function getResourceDetail():string
+    public function getResourceDetail(): string
     {
-
     }
 }

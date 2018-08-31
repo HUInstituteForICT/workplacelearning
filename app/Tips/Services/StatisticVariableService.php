@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tips\Services;
 
 use App\Tips\Models\StatisticVariable;

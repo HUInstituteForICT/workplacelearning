@@ -7,15 +7,14 @@
 
 namespace App;
 
-use App\EducationProgramType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property EducationProgramType $educationprogramType
- * @property int $ep_id
- * @property int $eptype_id
+ * @property int                  $ep_id
+ * @property int                  $eptype_id
  */
 class EducationProgram extends Model
 {
@@ -28,22 +27,24 @@ class EducationProgram extends Model
 
     // Default
     protected $fillable = [
-        'ep_name', 'eptype_id'
+        'ep_name', 'eptype_id',
     ];
 
     protected $casts = [
         'eptype_id' => 'int',
     ];
 
-    public function competenceDescription() {
+    public function competenceDescription()
+    {
         return $this->hasOne(CompetenceDescription::class, 'education_program_id', 'ep_id');
     }
 
-    public function category() {
+    public function category()
+    {
         return $this->hasMany(Category::class, 'ep_id', 'ep_id');
     }
 
-    public function educationprogramType():BelongsTo
+    public function educationprogramType(): BelongsTo
     {
         return $this->belongsTo(EducationProgramType::class, 'eptype_id', 'eptype_id');
     }
@@ -93,14 +94,15 @@ class EducationProgram extends Model
             ->get();
     }
 
-    public function cohorts() {
+    public function cohorts()
+    {
         return $this->hasMany(Cohort::class, 'ep_id', 'ep_id');
     }
 
     // Relations for query builder
     public function getRelationships()
     {
-        return ["competenceDescription", "category", "educationprogramType", "student",
-                "competence", "timeslot", "resourcePerson"];
+        return ['competenceDescription', 'category', 'educationprogramType', 'student',
+                'competence', 'timeslot', 'resourcePerson', ];
     }
 }

@@ -14,7 +14,7 @@
             data: {
                 labels: [<?php
                     $items = array_map(function ($key) use ($x_label) {
-                        return "'" . substr($key->{$x_label}, 0, 33) . "'";
+                        return "'".substr($key->{$x_label}, 0, 33)."'";
                     }, $result);
                     echo join(', ', $items);
                     ?>],
@@ -42,7 +42,7 @@
                     ],
                     data: [<?php
                         $x_items = array_map(function ($key) use ($y_label) {
-                            return "'" . $key->{$y_label} . "'";
+                            return "'".$key->{$y_label}."'";
                         }, $result);
                         echo join(', ', $x_items);
                         ?>]

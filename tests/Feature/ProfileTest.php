@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature;
-
 
 use App\Student;
 use Illuminate\Support\Facades\Hash;
@@ -20,20 +18,20 @@ class ProfileTest extends TestCase
             ->post('/profiel/update',
                 [
                     'student_id' => $user->student_id,
-                    'firstname'  => 'John',
-                    'lastname'   => 'Doe',
-                    'email'      => 'john@doe.com',
-                    'locale'     => 'nl',
+                    'firstname' => 'John',
+                    'lastname' => 'Doe',
+                    'email' => 'john@doe.com',
+                    'locale' => 'nl',
                 ])
             ->assertRedirect('/profiel')
             ->assertSessionMissing('errors');
 
         $this->assertDatabaseHas('student', [
             'student_id' => $user->student_id,
-            'firstname'  => 'John',
-            'lastname'   => 'Doe',
-            'email'      => 'john@doe.com',
-            'locale'     => 'nl',
+            'firstname' => 'John',
+            'lastname' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'nl',
         ]);
     }
 
@@ -46,7 +44,7 @@ class ProfileTest extends TestCase
         $this->actingAs($user)
             ->put('/profiel/change-password', [
                 'current_password' => $currentPassword,
-                'new_password'     => 'johndoe',
+                'new_password' => 'johndoe',
                 'confirm_password' => 'johndoe',
             ])
 
@@ -56,6 +54,5 @@ class ProfileTest extends TestCase
         $user->refresh();
 
         $this->assertTrue(Hash::check('johndoe', $user->pw_hash)); // Check if password has been updated
-
     }
 }

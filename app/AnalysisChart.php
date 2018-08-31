@@ -4,9 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AnalysisChart extends Model 
+class AnalysisChart extends Model
 {
-
     protected $table = 'chart';
     public $timestamps = false;
     protected $fillable = array('label');
@@ -27,8 +26,10 @@ class AnalysisChart extends Model
     }
 
     /**
-     * $this->x_label
+     * $this->x_label.
+     *
      * @param $value
+     *
      * @return mixed
      */
     public function getXLabelAttribute($value)
@@ -37,13 +38,14 @@ class AnalysisChart extends Model
     }
 
     /**
-     * $this->y_label
+     * $this->y_label.
+     *
      * @param $value
+     *
      * @return mixed
      */
     public function getYLabelAttribute($value)
     {
         return $this->labels()->where('type', 'y')->first();
     }
-
 }

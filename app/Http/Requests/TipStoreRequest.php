@@ -28,7 +28,6 @@ class TipStoreRequest extends FormRequest
 //            "threshold" => 'required|numeric|min:0.1|max:1',
 //            "tipText" => "required",
 //            "statistic.id" => "exists:statistics,id"
-
         ];
     }
 }

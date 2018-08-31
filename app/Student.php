@@ -2,22 +2,21 @@
 
 namespace App;
 
-use App\EducationProgram;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * Class Student
- * @property int $student_id
- * @property string $email
- * @property string $firstname
- * @property string $lastname
- * @property integer $userlevel
- * @property EducationProgram $educationProgram
- * @property string $pw_hash
+ * Class Student.
  *
+ * @property int              $student_id
+ * @property string           $email
+ * @property string           $firstname
+ * @property string           $lastname
+ * @property int              $userlevel
+ * @property EducationProgram $educationProgram
+ * @property string           $pw_hash
  */
 class Student extends Authenticatable
 {
@@ -42,13 +41,12 @@ class Student extends Authenticatable
         'registrationdate',
         'answer',
         'pw_hash',
-        'locale'
+        'locale',
     ];
 
-
     public static $locales = [
-        "nl" => "Nederlands",
-        "en" => "English",
+        'nl' => 'Nederlands',
+        'en' => 'English',
     ];
 
     protected $hidden = [
@@ -61,15 +59,16 @@ class Student extends Authenticatable
 
     public function getInitials()
     {
-        $initials = "";
+        $initials = '';
         if (preg_match('/\s/', $this->firstname)) {
             $names = explode(' ', $this->lastname);
             foreach ($names as $name) {
-                $initials = (strlen($initials) == 0) ? substr($name, 0, 1)."." : $initials." ".substr($name, 0, 1).".";
+                $initials = (0 == strlen($initials)) ? substr($name, 0, 1).'.' : $initials.' '.substr($name, 0, 1).'.';
             }
         } else {
-            $initials = substr($this->firstname, 0, 1).".";
+            $initials = substr($this->firstname, 0, 1).'.';
         }
+
         return $initials;
     }
 
@@ -80,14 +79,15 @@ class Student extends Authenticatable
 
     public function isAdmin()
     {
-        return ($this->userlevel > 0);
+        return $this->userlevel > 0;
     }
 
     public function getUserSetting($label, $forceRefresh = false)
     {
-        if($forceRefresh || !isset($this->userSettings[$label])) {
+        if ($forceRefresh || !isset($this->userSettings[$label])) {
             $this->userSettings[$label] = $this->usersettings()->where('setting_label', '=', $label)->first();
         }
+
         return $this->userSettings[$label];
     }
 
@@ -96,8 +96,8 @@ class Student extends Authenticatable
         $setting = $this->getUserSetting($label);
         if (!$setting) {
             $setting = UserSetting::create([
-                'student_id'    => $this->student_id,
-                'setting_label'  => $label,
+                'student_id' => $this->student_id,
+                'setting_label' => $label,
                 'setting_value' => $value,
             ]);
         } else {
@@ -105,10 +105,11 @@ class Student extends Authenticatable
             $setting->save();
         }
         $this->userSettings[$label] = $setting;
+
         return;
     }
 
-    public function educationProgram():BelongsTo
+    public function educationProgram(): BelongsTo
     {
         return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
     }
@@ -136,7 +137,7 @@ class Student extends Authenticatable
     public function getWorkplaceLearningPeriods()
     {
         return $this->workplaceLearningPeriods()
-            ->join("workplace", 'workplacelearningperiod.wp_id', '=', 'workplace.wp_id')
+            ->join('workplace', 'workplacelearningperiod.wp_id', '=', 'workplace.wp_id')
             ->orderBy('startdate', 'desc')
             ->get();
     }
@@ -146,7 +147,7 @@ class Student extends Authenticatable
      */
     public function getCurrentWorkplaceLearningPeriod(): ?WorkplaceLearningPeriod
     {
-        if($this->currentWorkplaceLearningPeriod === null) {
+        if (null === $this->currentWorkplaceLearningPeriod) {
             if (!$this->getUserSetting('active_internship')) {
                 return null;
             }
@@ -159,9 +160,10 @@ class Student extends Authenticatable
 
     public function getCurrentWorkplace()
     {
-        if (($wplp = $this->getCurrentWorkplaceLearningPeriod()) == null) {
+        if (null == ($wplp = $this->getCurrentWorkplaceLearningPeriod())) {
             return null;
         }
+
         return $this->workplaces()->where('workplace.wp_id', '=', $wplp->wp_id)->first();
     }
 
@@ -191,13 +193,16 @@ class Student extends Authenticatable
     {
         return null;
     }
+
     public function setRememberToken($value)
     {
     }
+
     public function getRememberTokenName()
     {
         return null;
     }
+
     public function setAttribute($key, $value)
     {
         $isRememberTokenAttribute = $key == $this->getRememberTokenName();

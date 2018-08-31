@@ -11,8 +11,9 @@ class TaskTypeRedirect
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -21,48 +22,48 @@ class TaskTypeRedirect
             return redirect('login');
         }
 
-        if (Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name == "Acting") {
+        if ('Acting' == Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name) {
             switch ($request->route()->getName()) {
-                case "home":
-                case "default":
+                case 'home':
+                case 'default':
                     return redirect()->route('home-acting');
                     break;
-                case "process":
+                case 'process':
                     return redirect()->route('process-acting');
                     break;
-                case "analysis":
+                case 'analysis':
                     return redirect()->route('analysis-acting-choice');
                     break;
-                case "progress":
+                case 'progress':
                     return redirect()->route('progress-acting', ['page' => $request->page]);
                     break;
-                case "period":
+                case 'period':
                     return redirect()->route('period-acting');
                     break;
-                case "period-edit":
+                case 'period-edit':
                     return redirect()->route('period-acting-edit', ['id' => $request->id]);
                     break;
             }
         } else {
             // Assume the user follows an EP of type 'Producing'
             switch ($request->route()->getName()) {
-                case "home":
-                case "default":
+                case 'home':
+                case 'default':
                     return redirect()->route('home-producing');
                     break;
-                case "process":
+                case 'process':
                     return redirect()->route('process-producing');
                     break;
-                case "analysis":
+                case 'analysis':
                     return redirect()->route('analysis-producing-choice');
                     break;
-                case "progress":
+                case 'progress':
                     return redirect()->route('progress-producing', ['page' => $request->page]);
                     break;
-                case "period":
+                case 'period':
                     return redirect()->route('period-producing');
                     break;
-                case "period-edit":
+                case 'period-edit':
                     return redirect()->route('period-producing-edit', ['id' => $request->id]);
                     break;
             }

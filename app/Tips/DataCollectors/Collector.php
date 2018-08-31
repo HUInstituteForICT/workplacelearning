@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\DataCollectors;
-
 
 use App\Tips\Models\StatisticVariable;
 use App\Tips\Statistics\Filters\Filter;
@@ -12,7 +10,6 @@ use InvalidArgumentException;
 
 class Collector
 {
-
     /** @var string|int $year */
     protected $year;
     /** @var string|int $month */
@@ -22,7 +19,6 @@ class Collector
 
     /** @var PredefinedStatisticCollector $predefinedStatisticCollector */
     public $predefinedStatisticCollector;
-
 
     public function __construct($year, $month, WorkplaceLearningPeriod $learningPeriod)
     {
@@ -36,7 +32,7 @@ class Collector
 
     protected function applyPeriod(Builder $queryBuilder)
     {
-        if ($this->year === null || $this->month === null) {
+        if (null === $this->year || null === $this->month) {
             return $queryBuilder;
         }
 
@@ -46,11 +42,11 @@ class Collector
     private function getQueryBuilder(string $educationProgramType): Builder
     {
         // Get the base query from the correct Model
-        if ($educationProgramType === 'acting') {
+        if ('acting' === $educationProgramType) {
             return $this->learningPeriod->learningActivityActing()->getBaseQuery();
         }
 
-        if ($educationProgramType === 'producing') {
+        if ('producing' === $educationProgramType) {
             return $this->learningPeriod->learningActivityProducing()->getBaseQuery();
         }
 
@@ -60,7 +56,6 @@ class Collector
     private function applyFilters(Builder $builder, array $filters)
     {
         array_walk($filters, function ($filterData) use ($builder) {
-
             // Get an array of the parameters for the filter
             $parameters = collect($filterData['parameters'])->reduce(function ($carry, $parameter) {
                 if (isset($parameter['value'])) {
@@ -83,7 +78,8 @@ class Collector
 
     /**
      * @param StatisticVariable $statisticVariable
-     * @param string $type
+     * @param string            $type
+     *
      * @return int
      */
     public function getValueForVariable(StatisticVariable $statisticVariable, string $type): float
@@ -95,7 +91,7 @@ class Collector
         $this->applyPeriod($builder);
 
         // Hours select can onle be used on a statistic variable
-        if ($statisticVariable->selectType === 'hours' && $statisticVariable->type === 'producing') {
+        if ('hours' === $statisticVariable->selectType && 'producing' === $statisticVariable->type) {
             return $builder->sum('duration');
         }
 

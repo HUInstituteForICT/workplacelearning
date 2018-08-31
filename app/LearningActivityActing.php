@@ -1,26 +1,25 @@
 <?php
+
 namespace App;
 
-use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 /**
- * @property int $laa_id
- * @property int $wplp_id
+ * @property int       $laa_id
+ * @property int       $wplp_id
  * @property \DateTime $date
- * @property int $timeslot_id
- * @property string $situation
- * @property string $lessonslearned
- * @property string $support_wp
- * @property string $support_ed
- * @property int $res_person_id
- * @property int $res_material_id
- * @property string $res_material_detail
- * @property int $learninggoal_id
- * @property string $evidence_filename
- * @property string $evidence_disk_filename
- * @property string $evidence_mime
+ * @property int       $timeslot_id
+ * @property string    $situation
+ * @property string    $lessonslearned
+ * @property string    $support_wp
+ * @property string    $support_ed
+ * @property int       $res_person_id
+ * @property int       $res_material_id
+ * @property string    $res_material_detail
+ * @property int       $learninggoal_id
+ * @property string    $evidence_filename
+ * @property string    $evidence_disk_filename
+ * @property string    $evidence_mime
  */
 class LearningActivityActing extends Model implements LearningActivityInterface
 {
@@ -44,7 +43,7 @@ class LearningActivityActing extends Model implements LearningActivityInterface
         'res_person_id',
         'res_material_id',
         'res_material_detail',
-        'learninggoal_id'
+        'learninggoal_id',
     ];
 
     public function learningGoal()
@@ -73,7 +72,8 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     }
 
     /**
-     * Used for display purposes
+     * Used for display purposes.
+     *
      * @return string
      */
     public function getTimeslot()
@@ -82,7 +82,8 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     }
 
     /**
-     * Used for display purposes
+     * Used for display purposes.
+     *
      * @return string
      */
     public function getResourcePerson()
@@ -91,17 +92,20 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     }
 
     /**
-     * Used for display purposes
+     * Used for display purposes.
+     *
      * @return string
      */
     public function getResourceMaterial()
     {
         $label = $this->resourceMaterial()->first();
+
         return ($label) ? __($label->rm_label) : __('activity.none');
     }
 
     /**
-     * Used for display purposes
+     * Used for display purposes.
+     *
      * @return string
      */
     public function getLearningGoal()
@@ -122,6 +126,6 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     // Relations for query builder
     public function getRelationships()
     {
-        return ["learningGoal", "competence", "timeslot", "resourcePerson", "resourceMaterial"];
+        return ['learningGoal', 'competence', 'timeslot', 'resourcePerson', 'resourceMaterial'];
     }
 }

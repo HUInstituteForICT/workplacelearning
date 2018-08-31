@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips;
-
 
 class TextParameter
 {
@@ -17,7 +15,6 @@ class TextParameter
 
     public function __construct(string $placeholder, $value)
     {
-
         $this->placeholder = $placeholder;
         $this->value = $value;
     }

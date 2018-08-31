@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class ChainValidator
 {
-
     /** @var Student */
     private $user;
 
@@ -21,20 +20,20 @@ class ChainValidator
     public function validate($attribute, $value, $parameters, Validator $validator): bool
     {
         // We can consider absence to mean no chaining
-        if($value === null) {
+        if (null === $value) {
             return true;
         }
 
-        $chainId = (int)$value;
+        $chainId = (int) $value;
 
         // Student selected "don't chain", always allow
-        if ($chainId === -1) {
+        if (-1 === $chainId) {
             return true;
         }
 
-        $chain = (new Chain)->find($chainId);
+        $chain = (new Chain())->find($chainId);
 
-        if ($chain === null) {
+        if (null === $chain) {
             return false;
         }
 

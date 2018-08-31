@@ -8,26 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Cohort
- * @property integer $id
- * @property string $name
- * @property Tip[]|Collection $tips
- * @property Category[]|Collection $categories
- * @property Competence[]|Collection $competencies
- * @property EducationProgram $educationProgram
- * @property boolean $disabled
- * @property ResourcePerson[]|Collection $resourcePersons
- * @property Timeslot[]|Collection $timeslots
- * @property string $description
- * @property int $ep_id
+ * Class Cohort.
  *
+ * @property int                         $id
+ * @property string                      $name
+ * @property Tip[]|Collection            $tips
+ * @property Category[]|Collection       $categories
+ * @property Competence[]|Collection     $competencies
+ * @property EducationProgram            $educationProgram
+ * @property bool                        $disabled
+ * @property ResourcePerson[]|Collection $resourcePersons
+ * @property Timeslot[]|Collection       $timeslots
+ * @property string                      $description
+ * @property int                         $ep_id
  */
 class Cohort extends Model
 {
-
-    protected $fillable = ["name", "description", "ep_id"];
+    protected $fillable = ['name', 'description', 'ep_id'];
     public $timestamps = false;
-
 
     /**
      * @return HasMany
@@ -49,7 +47,7 @@ class Cohort extends Model
 
     public function educationProgram()
     {
-        return $this->belongsTo(EducationProgram::class, "ep_id", "ep_id");
+        return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
     }
 
     public function resourcePersons(): HasMany
@@ -68,14 +66,14 @@ class Cohort extends Model
         return $this->hasMany(WorkplaceLearningPeriod::class, 'cohort_id', 'id');
     }
 
-    public function tips() {
+    public function tips()
+    {
         return $this->belongsToMany(Tip::class);
     }
 
     // Relations for query builder
     public function getRelationships()
     {
-        return ["categories", "competencies", "competenceDescription", "educationProgram", "resourcePersons", "timeslots", "workplaceLearningPeriods"];
+        return ['categories', 'competencies', 'competenceDescription', 'educationProgram', 'resourcePersons', 'timeslots', 'workplaceLearningPeriods'];
     }
-
 }

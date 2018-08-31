@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tips\Models;
 
 use App\Cohort;
@@ -10,25 +9,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property string $name Name of the tip
- * @property boolean $showInAnalysis Whether or not the tip should be displayed in analyses
- * @property integer $id ID of the tip
+ * @property string                 $name              Name of the tip
+ * @property bool                   $showInAnalysis    Whether or not the tip should be displayed in analyses
+ * @property int                    $id                ID of the tip
  * @property Statistic[]|Collection $coupledStatistics of the tip
- * @property string $tipText The text including placeholders used for displaying the tip
- * @property Cohort[]|Collection $enabledCohorts
- * @property Like[]|Collection $likes
- * @property string $trigger
- * @property int $rangeStart
- * @property int $rangeEnd
- * @property Moment[]|Collection $moments
+ * @property string                 $tipText           The text including placeholders used for displaying the tip
+ * @property Cohort[]|Collection    $enabledCohorts
+ * @property Like[]|Collection      $likes
+ * @property string                 $trigger
+ * @property int                    $rangeStart
+ * @property int                    $rangeEnd
+ * @property Moment[]|Collection    $moments
  */
 class Tip extends Model
 {
     public $timestamps = false;
 
-
     /**
-     * The likes this Tip has given by Students
+     * The likes this Tip has given by Students.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function likes()
@@ -42,7 +41,8 @@ class Tip extends Model
     }
 
     /**
-     * The cohorts this Tip is enabled for
+     * The cohorts this Tip is enabled for.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function enabledCohorts()
@@ -51,7 +51,8 @@ class Tip extends Model
     }
 
     /**
-     * The coupled statistics used for this tip
+     * The coupled statistics used for this tip.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function coupledStatistics()

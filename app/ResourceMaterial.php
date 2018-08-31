@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,7 @@ class ResourceMaterial extends Model
     protected $fillable = [
         'rm_id',
         'rm_label',
-        'wplp_id'
+        'wplp_id',
     ];
 
     public function workplaceLearningPeriod()
@@ -35,6 +36,6 @@ class ResourceMaterial extends Model
     // Relations for query builder
     public function getRelationships()
     {
-        return ["workplaceLearningPeriod", "learningActivityProducing"];
+        return ['workplaceLearningPeriod', 'learningActivityProducing'];
     }
 }

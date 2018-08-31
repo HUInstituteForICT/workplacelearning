@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DashboardChart extends Model
 {
-
     protected $table = 'dashboard_charts';
     protected $fillable = array('label', 'position');
 

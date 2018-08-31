@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use App\Chain;
 use App\ChainManager;
@@ -13,8 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ChainController extends Controller
 {
-
-
     public function create(CreateRequest $request, ChainManager $chainManager)
     {
         return $chainManager->createChain($request->get('name'));
@@ -30,9 +26,10 @@ class ChainController extends Controller
     public function delete(Chain $chain, ChainManager $chainManager, Request $request)
     {
         $chainManager->deleteChain($chain);
-        if($request->headers->has('referer')) {
+        if ($request->headers->has('referer')) {
             return redirect($request->headers->get('referer'));
         }
+
         return new Response('', 200);
     }
 }

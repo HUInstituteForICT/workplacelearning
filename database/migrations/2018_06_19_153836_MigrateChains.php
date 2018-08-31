@@ -7,8 +7,6 @@ class MigrateChains extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -20,28 +18,25 @@ class MigrateChains extends Migration
         echo "\nConverting old LAP chains to new format... \n";
         /** @var \App\LearningActivityProducing $activity */
         foreach ($laps as $activity) {
-
             $chain = null;
-            if ($activity->previousLearningActivityProducing !== null) {
+            if (null !== $activity->previousLearningActivityProducing) {
                 $chain = $activity->previousLearningActivityProducing->chain;
-            } else if ($activity->nextLearningActivityProducing !== null) {
+            } elseif (null !== $activity->nextLearningActivityProducing) {
                 $chain = $this->createChainForLap($activity);
-                $startingLaps++;
+                ++$startingLaps;
             }
-            if ($chain !== null) {
+            if (null !== $chain) {
                 $activity->chain_id = $chain->id;
                 $activity->save();
-                $lapsWithChain++;
+                ++$lapsWithChain;
 
-                if(($lapsWithChain % 25) === 0) {
+                if (0 === ($lapsWithChain % 25)) {
                     echo '.';
                 }
-                if(($lapsWithChain % 250) === 0) {
+                if (0 === ($lapsWithChain % 250)) {
                     echo " - ${lapsWithChain} \n";
                 }
             }
-
-
         }
 
         echo "\n{$laps->count()} checked, {$lapsWithChain} in a chain, {$startingLaps} chains created\n";
@@ -53,17 +48,16 @@ class MigrateChains extends Migration
         $wplp = $learningActivityProducing->workplaceLearningPeriod;
         $locale = $wplp->student->locale;
         $chain = new Chain();
-        $chain->name = ($locale === 'nl' ? 'Keten' : 'Chain') . ' ' . $learningActivityProducing->description;
+        $chain->name = ('nl' === $locale ? 'Keten' : 'Chain').' '.$learningActivityProducing->description;
         $chain->status = Chain::STATUS_BUSY;
         $chain->wplp_id = $learningActivityProducing->wplp_id;
         $chain->save();
+
         return $chain;
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

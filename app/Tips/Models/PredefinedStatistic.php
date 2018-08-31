@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\Models;
-
 
 use App\Tips\Statistics\PredefinedStatisticHelper;
 
@@ -19,12 +17,11 @@ class PredefinedStatistic extends Statistic
 
     public function getValueParameterDescriptionAttribute()
     {
-        $data = PredefinedStatisticHelper::getData();// ($this->educationProgramType->eptype_id === 1 ? PredefinedStatisticHelper::getData() : PredefinedStatisticHelper::getProducingData());
+        $data = PredefinedStatisticHelper::getData(); // ($this->educationProgramType->eptype_id === 1 ? PredefinedStatisticHelper::getData() : PredefinedStatisticHelper::getProducingData());
         foreach ($data as $entry) {
             if ($entry['name'] === $this->name) {
                 return $entry['valueParameterDescription'];
             }
         }
     }
-
 }

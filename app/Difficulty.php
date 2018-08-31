@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -6,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $difficulty_label
- * @property int $difficulty_id
+ * @property int    $difficulty_id
  */
 class Difficulty extends Model
 {
@@ -20,7 +21,7 @@ class Difficulty extends Model
     // Default
     protected $fillable = [
         'difficulty_id',
-        'difficulty_label'
+        'difficulty_label',
     ];
 
     public function learningActivityProducing(): HasMany
@@ -31,10 +32,10 @@ class Difficulty extends Model
     // Relations for query builder
     public function getRelationships()
     {
-        return ["learningActivityProducing"];
+        return ['learningActivityProducing'];
     }
 
-    public function isEasy():bool
+    public function isEasy(): bool
     {
         return \in_array(strtolower($this->difficulty_label), ['makkelijk', 'easy']);
     }
@@ -48,5 +49,4 @@ class Difficulty extends Model
     {
         return \in_array(strtolower($this->difficulty_label), ['gemiddeld', 'average']);
     }
-
 }

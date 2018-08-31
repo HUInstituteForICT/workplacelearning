@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tips\Statistics\Filters;
 
 use Illuminate\Database\Query\Builder;
@@ -30,7 +29,7 @@ class ResourceMaterialFilter implements Filter
 
     /**
      * Checks whether the parameters contain values that require a OR WHERE IS NULL clause in the query.
-     * If they are present they are applied in a correct manner, if not, a normal WHERE IN clause is applied
+     * If they are present they are applied in a correct manner, if not, a normal WHERE IN clause is applied.
      */
     private function applyOptionalNullFilter(Builder $builder, array $labels)
     {

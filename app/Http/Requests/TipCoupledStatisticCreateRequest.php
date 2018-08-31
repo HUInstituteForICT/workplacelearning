@@ -27,7 +27,7 @@ class TipCoupledStatisticCreateRequest extends FormRequest
             'statistic_id' => 'required',
             'tip_id' => 'required',
             'comparisonOperator' => 'required',
-            'threshold' => 'required|numeric'
+            'threshold' => 'required|numeric',
         ];
     }
 }

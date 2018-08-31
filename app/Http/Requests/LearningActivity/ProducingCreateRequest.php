@@ -15,48 +15,48 @@ class ProducingCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'datum'        => 'required|date|date_in_wplp',
+            'datum' => 'required|date|date_in_wplp',
             'omschrijving' => 'required',
-            'aantaluren'   => 'required',
-            'resource'     => 'required|in:persoon,alleen,internet,boek,new',
+            'aantaluren' => 'required',
+            'resource' => 'required|in:persoon,alleen,internet,boek,new',
             'moeilijkheid' => 'required|exists:difficulty,difficulty_id',
-            'status'       => 'required|exists:status,status_id',
-            'chain_id'     => 'required|canChain',
+            'status' => 'required|exists:status,status_id',
+            'chain_id' => 'required|canChain',
         ];
     }
 
     public function withValidator(Validator $validator): void
     {
         $validator->sometimes('newcat', 'sometimes|max:50', function ($input) {
-            return $input->category_id === 'new';
+            return 'new' === $input->category_id;
         });
 
         $validator->sometimes('category_id', 'required|exists:category,category_id', function ($input) {
-            return $input->category_id !== 'new';
+            return 'new' !== $input->category_id;
         });
 
         $validator->sometimes('newswv', 'required|max:50', function ($input) {
-            return ($input->personsource === 'new' && $input->resource === 'persoon');
+            return 'new' === $input->personsource && 'persoon' === $input->resource;
         });
 
         $validator->sometimes('personsource', 'required|exists:resourceperson,rp_id', function ($input) {
-            return ($input->personsource !== 'new' && $input->resource === 'persoon');
+            return 'new' !== $input->personsource && 'persoon' === $input->resource;
         });
 
         $validator->sometimes('internetsource', 'required|max:250', function ($input) {
-            return $input->resource === 'internet';
+            return 'internet' === $input->resource;
         });
 
         $validator->sometimes('booksource', 'required|max:250', function ($input) {
-            return $input->resource === 'book';
+            return 'book' === $input->resource;
         });
 
         $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
-            return $input->resource === 'new';
+            return 'new' === $input->resource;
         });
 
         $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
-            return $input->aantaluren === 'x';
+            return 'x' === $input->aantaluren;
         });
     }
 }

@@ -2,14 +2,13 @@
 
 namespace App\Tips\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 
 /**
- * @property integer $id The id of the statistic
- * @property string $name The name of this statistic
- * @property string $education_program_type the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
+ * @property int                 $id                     The id of the statistic
+ * @property string              $name                   The name of this statistic
+ * @property string              $education_program_type the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
  * @property TipCoupledStatistic $pivot
  */
 class Statistic extends Model
@@ -30,8 +29,8 @@ class Statistic extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function coupledStatistics() {
+    public function coupledStatistics()
+    {
         return $this->hasMany(TipCoupledStatistic::class, 'statistic_id');
     }
-
 }

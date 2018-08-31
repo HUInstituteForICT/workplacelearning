@@ -7,8 +7,8 @@
 
 namespace App;
 
-use App\LearningActivityProducing;
 use Illuminate\Database\Eloquent\Model;
+
 /**
  * @property string $status_label
  */
@@ -35,20 +35,20 @@ class Status extends Model
     // Relations for query builder
     public function getRelationships()
     {
-        return ["learningActivityProducing"];
+        return ['learningActivityProducing'];
     }
 
-    public function isFinished():bool
+    public function isFinished(): bool
     {
         return \in_array(strtolower($this->status_label), ['afgerond', 'finished']);
     }
 
-    public function isBusy():bool
+    public function isBusy(): bool
     {
         return \in_array(strtolower($this->status_label), ['mee bezig', 'busy']);
     }
 
-    public function isTransferred():bool
+    public function isTransferred(): bool
     {
         return \in_array(strtolower($this->status_label), ['overgedragen', 'transferred']);
     }

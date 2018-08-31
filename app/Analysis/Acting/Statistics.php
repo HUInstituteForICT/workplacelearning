@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Analysis\Acting;
-
 
 use App\Competence;
 use App\LearningActivityActing;
@@ -13,10 +11,7 @@ use App\Timeslot;
 use stdClass;
 
 /**
- * Class Statistics provides easy access to statistics of user's activities
- * @package App\Analysis\Acting
- *
- * TODO: could be improved by caching statistics that are resource intensive (loops etc.)
+ * Class Statistics provides easy access to statistics of user's activities.
  */
 class Statistics
 {
@@ -27,11 +22,11 @@ class Statistics
         $this->analysisCollector = $analysisCollector;
     }
 
-
     /**
-     * Get the percentage of activities in this timeslot
+     * Get the percentage of activities in this timeslot.
      *
      * @param Timeslot $timeslot
+     *
      * @return float
      */
     public function percentageActivitiesInTimeslot(Timeslot $timeslot)
@@ -41,17 +36,18 @@ class Statistics
                 return $activity->timeslot->timeslot_id === $timeslot->timeslot_id;
             });
 
-        if($this->analysisCollector->getLearningActivities()->count() > 0) {
-            return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count())*100, 1);
+        if ($this->analysisCollector->getLearningActivities()->count() > 0) {
+            return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
         } else {
             return 0;
         }
     }
 
     /**
-     * Get the percentage of activities with this learning goal
+     * Get the percentage of activities with this learning goal.
      *
      * @param LearningGoal $learningGoal
+     *
      * @return float
      */
     public function percentageActivityForLearningGoal(LearningGoal $learningGoal)
@@ -61,7 +57,7 @@ class Statistics
                 return $activity->learningGoal->learninggoal_id === $learningGoal->learninggoal_id;
             });
 
-        if($this->analysisCollector->getLearningActivities()->count() > 0) {
+        if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
         } else {
             return 0;
@@ -69,9 +65,10 @@ class Statistics
     }
 
     /**
-     * Get the percentage of activities with this competence
+     * Get the percentage of activities with this competence.
      *
      * @param Competence $competence
+     *
      * @return float
      */
     public function percentageActivityForCompetence(Competence $competence)
@@ -80,7 +77,7 @@ class Statistics
             function (LearningActivityActing $activity) use ($competence) {
                 return $activity->competence->first()->competence_id === $competence->competence_id;
             });
-        if( $this->analysisCollector->getLearningActivities()->count() > 0) {
+        if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
         } else {
             return 0;
@@ -88,9 +85,10 @@ class Statistics
     }
 
     /**
-     * Get the percentage of activities with a person
+     * Get the percentage of activities with a person.
      *
      * @param ResourcePerson $person
+     *
      * @return float
      */
     public function percentageActivityWithResourcePerson(ResourcePerson $person)
@@ -99,7 +97,7 @@ class Statistics
             function (LearningActivityActing $activity) use ($person) {
                 return $activity->resourcePerson->rp_id === $person->rp_id;
             });
-        if($this->analysisCollector->getLearningActivities()->count() > 0) {
+        if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
         } else {
             return 0;
@@ -107,61 +105,62 @@ class Statistics
     }
 
     /**
-     * Get the percentage of activities with a theory
+     * Get the percentage of activities with a theory.
      *
      * @param ResourceMaterial $material
+     *
      * @return float
      */
-    public function percentageActivityWithTheory(ResourceMaterial $material) {
+    public function percentageActivityWithTheory(ResourceMaterial $material)
+    {
         $activities = $this->analysisCollector->getLearningActivities()->filter(
-            function(LearningActivityActing $activity) use ($material) {
+            function (LearningActivityActing $activity) use ($material) {
                 // There is no resourceMaterial for the "none" option, bypass a NullRef this way because in the analysisCollector we spoof the $material with a non-persisted material "none"
-                if($activity->resourceMaterial === null) {
-                    return $material->rm_id === null;
+                if (null === $activity->resourceMaterial) {
+                    return null === $material->rm_id;
                 }
+
                 return $activity->resourceMaterial->rm_id === $material->rm_id;
             });
 
-        if($this->analysisCollector->getLearningActivities()->count() > 0) {
+        if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
         } else {
             return 0;
         }
     }
 
-
     /**
-     * Get the most often occurring combination of timeslot & learning goal for activities
+     * Get the most often occurring combination of timeslot & learning goal for activities.
      *
      * @return stdClass
      */
-    public function mostOftenCombinationTimeslotLearningGoal() {
-        $combo = new StdClass;
+    public function mostOftenCombinationTimeslotLearningGoal()
+    {
+        $combo = new StdClass();
         $combo->timeslot = null;
         $combo->percentage = 0;
         $combo->learningGoal = null;
 
-
         // Loop over all the activities
-        $this->analysisCollector->getLearningActivities()->each(function(LearningActivityActing $activity) use($combo) {
+        $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo) {
             // Find all activities with matching learning goal & timeslot
-            $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function(LearningActivityActing $matchingActivity) use ($activity) {
-                return ($activity->learningGoal->learninggoal_id === $matchingActivity->learningGoal->learninggoal_id &&
+            $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function (LearningActivityActing $matchingActivity) use ($activity) {
+                return $activity->learningGoal->learninggoal_id === $matchingActivity->learningGoal->learninggoal_id &&
                 $activity->timeslot->timeslot_id === $matchingActivity->timeslot->timeslot_id &&
-                $activity !== $matchingActivity);
+                $activity !== $matchingActivity;
             });
             // Determine percentage of total
-            if($this->analysisCollector->getLearningActivities()->count() > 0) {
+            if ($this->analysisCollector->getLearningActivities()->count() > 0) {
                 $percentage = ($matchingActivities->count() / $this->analysisCollector->getLearningActivities()->count());
             } else {
                 $percentage = 0;
             }
             // Update combo->percentage if it's higher
-            if($percentage >= $combo->percentage) {
+            if ($percentage >= $combo->percentage) {
                 $combo->percentage = $percentage;
                 $combo->timeslot = $activity->timeslot;
                 $combo->learningGoal = $activity->learningGoal;
-
             }
         });
 
@@ -171,28 +170,29 @@ class Statistics
         return $combo;
     }
 
-    public function mostOftenCombinationTimeslotCompetence() {
-        $combo = new StdClass;
+    public function mostOftenCombinationTimeslotCompetence()
+    {
+        $combo = new StdClass();
         $combo->timeslot = null;
         $combo->percentage = 0;
         $combo->competence = null;
 
         // Loop over all the activities
-        $this->analysisCollector->getLearningActivities()->each(function(LearningActivityActing $activity) use($combo) {
+        $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo) {
             // Find all activities with matching competence & timeslot
-            $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function(LearningActivityActing $matchingActivity) use ($activity) {
-                return ($activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
+            $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function (LearningActivityActing $matchingActivity) use ($activity) {
+                return $activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
                     $activity->timeslot->timeslot_id === $matchingActivity->timeslot->timeslot_id &&
-                    $activity !== $matchingActivity);
+                    $activity !== $matchingActivity;
             });
             // Determine percentage of total
-            if($this->analysisCollector->getLearningActivities()->count() > 0) {
+            if ($this->analysisCollector->getLearningActivities()->count() > 0) {
                 $percentage = ($matchingActivities->count() / $this->analysisCollector->getLearningActivities()->count());
             } else {
                 $percentage = 0;
             }
             // Update combo->percentage if it's higher
-            if($percentage >= $combo->percentage) {
+            if ($percentage >= $combo->percentage) {
                 $combo->percentage = $percentage;
                 $combo->timeslot = $activity->timeslot;
                 $combo->competence = $activity->competence->first();
@@ -205,28 +205,29 @@ class Statistics
         return $combo;
     }
 
-    public function mostOftenCombinationLearningGoalCompetence() {
-        $combo = new StdClass;
+    public function mostOftenCombinationLearningGoalCompetence()
+    {
+        $combo = new StdClass();
         $combo->learningGoal = null;
         $combo->percentage = 0;
         $combo->competence = null;
 
         // Loop over all the activities
-        $this->analysisCollector->getLearningActivities()->each(function(LearningActivityActing $activity) use($combo) {
+        $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo) {
             // Find all activities with matching competence & learning goal
-            $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function(LearningActivityActing $matchingActivity) use ($activity) {
-                return ($activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
+            $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function (LearningActivityActing $matchingActivity) use ($activity) {
+                return $activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
                     $activity->learningGoal->learninggoal_id === $matchingActivity->learningGoal->learninggoal_id &&
-                    $activity !== $matchingActivity);
+                    $activity !== $matchingActivity;
             });
             // Determine percentage of total
-            if($this->analysisCollector->getLearningActivities()->count() > 0) {
+            if ($this->analysisCollector->getLearningActivities()->count() > 0) {
                 $percentage = ($matchingActivities->count() / $this->analysisCollector->getLearningActivities()->count());
             } else {
                 $percentage = 0;
             }
             // Update combo->percentage if it's higher
-            if($percentage >= $combo->percentage) {
+            if ($percentage >= $combo->percentage) {
                 $combo->percentage = $percentage;
                 $combo->learningGoal = $activity->learningGoal;
                 $combo->competence = $activity->competence->first();
@@ -239,15 +240,16 @@ class Statistics
         return $combo;
     }
 
-    public function percentageLearningGoalWithoutMaterial(LearningGoal $learningGoal) {
+    public function percentageLearningGoalWithoutMaterial(LearningGoal $learningGoal)
+    {
         $activities = $this->analysisCollector->getLearningActivities();
         $activities = $activities->filter(function (LearningActivityActing $activity) use (&$learningGoal) {
-            return (int)$activity->learninggoal_id == (int)$learningGoal->learninggoal_id;
+            return (int) $activity->learninggoal_id == (int) $learningGoal->learninggoal_id;
         });
-        $noTheory = $activities->filter(function(LearningActivityActing $activity) {
-            return $activity->resourceMaterial === null;
+        $noTheory = $activities->filter(function (LearningActivityActing $activity) {
+            return null === $activity->resourceMaterial;
         });
-        if($noTheory->count() === 0) {
+        if (0 === $noTheory->count()) {
             return 0;
         }
 
@@ -257,6 +259,4 @@ class Statistics
             return 0;
         }
     }
-
-
 }

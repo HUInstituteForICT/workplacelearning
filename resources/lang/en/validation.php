@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
     'postalcode' => ':value is not a valid postal code',
     'can_chain' => 'The activity cannot be attached to this chain',
     'date_in_wplp' => 'The date :date is not between start and end date of your workplace.',
@@ -12,8 +12,7 @@ return array (
     'alpha_num' => 'The :attribute may only contain letters and numbers.',
     'array' => 'The :attribute must be an array.',
     'before' => 'The :attribute must be a date before :date.',
-    'between' =>
-  array (
+    'between' => array(
     'numeric' => 'The :attribute must be between :min and :max.',
     'file' => 'The :attribute must be between :min and :max kilobytes.',
     'string' => 'The :attribute must be between :min and :max characters.',
@@ -38,8 +37,7 @@ return array (
     'integer' => 'The :attribute must be an integer.',
     'ip' => 'The :attribute must be a valid IP address.',
     'json' => 'The :attribute must be a valid JSON string.',
-    'max' =>
-  array (
+    'max' => array(
     'numeric' => 'The :attribute may not be greater than :max.',
     'file' => 'The :attribute may not be greater than :max kilobytes.',
     'string' => 'The :attribute may not be greater than :max characters.',
@@ -47,8 +45,7 @@ return array (
   ),
     'mimes' => 'The :attribute must be a file of type: :values.',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
-    'min' =>
-  array (
+    'min' => array(
     'numeric' => 'The :attribute must be at least :min.',
     'file' => 'The :attribute must be at least :min kilobytes.',
     'string' => 'The :attribute must be at least :min characters.',
@@ -66,8 +63,7 @@ return array (
     'required_without' => 'The :attribute field is required when :values is not present.',
     'required_without_all' => 'The :attribute field is required when none of :values are present.',
     'same' => 'The :attribute and :other must match.',
-    'size' =>
-  array (
+    'size' => array(
     'numeric' => 'The :attribute must be :size.',
     'file' => 'The :attribute must be :size kilobytes.',
     'string' => 'The :attribute must be :size characters.',
@@ -78,45 +74,36 @@ return array (
     'unique' => 'The :attribute has already been taken.',
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
-    'custom' =>
-  array (
-    'res_person' => 
-    array (
+    'custom' => array(
+    'res_person' => array(
       'required' => 'The "with whom?" field is required.',
       'exists' => 'This "with whom?" does not exist.',
     ),
-    'new_rp' => 
-    array (
+    'new_rp' => array(
       'required' => 'The description for the "with whom?" field is required.',
       'max' => 'The description for the "with whom?" field can only be 45 characters long.',
       'regex' => 'The description for the "with whom?" field has an invalid format.',
     ),
-    'res_material' => 
-    array (
+    'res_material' => array(
       'required' => 'The "with which theory?" field is required.',
       'exists' => 'This "with which theory?" does not exist.',
     ),
-    'new_rm' => 
-    array (
+    'new_rm' => array(
       'required' => 'The description for the "with which theory?" field is required.',
       'max' => 'The description for the "with which theory?" field  can only be 45 characters long.',
       'regex' => 'The description for the "with which theory?" field  has an invalid format.',
     ),
-    'competence' => 
-    array (
+    'competence' => array(
       'exists' => 'The selected :attribute is invalid',
     ),
-    'learning_goal' => 
-    array (
+    'learning_goal' => array(
       'exists' => 'The selected :attribute is invalid',
     ),
-    'res_material_detail' => 
-    array (
+    'res_material_detail' => array(
       'required_unless' => 'The :attribute field is required.',
     ),
   ),
-    'attributes' =>
-  array (
+    'attributes' => array(
     'learned' => '"what did you learn?"',
     'description' => 'situation',
     'support_wp' => '"what do you need from your workplace?"',
@@ -148,8 +135,8 @@ return array (
     'after_or_equal' => 'The :attribute should be a date equal to or after :date',
     'before_or_equal' => 'The :attribute should be a date equal to or before :date',
 
-    "newnotfinished"                          => "The description is required and can be up to 150 characters.",
-    "ondersteuning_werkplek.required_unless"  => "Describing the support from your workplace is required, unless you say to not need any.",
-    "ondersteuning_opleiding.required_unless" => "Describing the support form your program is required, unless you say to not need any.",
-    "valid_password"                          => "Invalid current password.",
+    'newnotfinished' => 'The description is required and can be up to 150 characters.',
+    'ondersteuning_werkplek.required_unless' => 'Describing the support from your workplace is required, unless you say to not need any.',
+    'ondersteuning_opleiding.required_unless' => 'Describing the support form your program is required, unless you say to not need any.',
+    'valid_password' => 'Invalid current password.',
 );

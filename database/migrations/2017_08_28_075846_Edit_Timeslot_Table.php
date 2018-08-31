@@ -8,8 +8,6 @@ class EditTimeslotTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -21,13 +19,11 @@ class EditTimeslotTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
         Schema::table('timeslot', function (Blueprint $table) {
-            $table->dropForeign("fk_Timeslot_Wplp1");
+            $table->dropForeign('fk_Timeslot_Wplp1');
             $table->dropColumn('wplp_id');
         });
     }

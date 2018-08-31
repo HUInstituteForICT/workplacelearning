@@ -1,13 +1,12 @@
 <?php
+
 namespace App;
 
-use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\DB;
 
 /**
- * @property int $learninggoal_id
+ * @property int    $learninggoal_id
  * @property string $learninggoal_label
  */
 class LearningGoal extends Model
@@ -23,7 +22,7 @@ class LearningGoal extends Model
     protected $fillable = [
         'learninggoal_id',
         'learninggoal_label',
-        'wplp_id'
+        'wplp_id',
     ];
 
     public function __construct(array $attributes = [])
@@ -37,13 +36,14 @@ class LearningGoal extends Model
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningActivityActing() {
+    public function learningActivityActing()
+    {
         return $this->belongsTo('App\learningActivityActing', 'learninggoal_id', 'learninggoal_id');
     }
 
     // Relations for query builder
     public function getRelationships()
     {
-        return ["workplaceLearningPeriod", "learningActivityActing"];
+        return ['workplaceLearningPeriod', 'learningActivityActing'];
     }
 }

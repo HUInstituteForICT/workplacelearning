@@ -8,12 +8,10 @@ class CreateStatisticsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-        Schema::create('statistics', function(Blueprint $table) {
+        Schema::create('statistics', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type');
             $table->string('name');
@@ -27,8 +25,6 @@ class CreateStatisticsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

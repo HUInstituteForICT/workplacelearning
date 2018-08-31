@@ -18,11 +18,10 @@ return [
     'no_parameters' => 'No parameters found',
 
     'error' => [
-        'boolean' => "Error: Not of type boolean (True/False)",
+        'boolean' => 'Error: Not of type boolean (True/False)',
         'table' => "Error: Table doesn't exist in the database",
         'column' => "Error: Column doesn't exist in the database",
         'number' => "Error: The value isn't a number",
         'text' => "Error: The value isn't text",
-    ]
-
+    ],
 ];

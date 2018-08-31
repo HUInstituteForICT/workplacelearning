@@ -7,8 +7,6 @@ class AddTypeColumnToLabelsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -16,15 +14,13 @@ class AddTypeColumnToLabelsTable extends Migration
             $table->string('type')->nullable();
         });
 
-        collect(["pie", "bar", "line"])->each(function($type) {
-            (new \App\ChartType(["name" => ucfirst($type), "slug" => $type]))->save();
+        collect(['pie', 'bar', 'line'])->each(function ($type) {
+            (new \App\ChartType(['name' => ucfirst($type), 'slug' => $type]))->save();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

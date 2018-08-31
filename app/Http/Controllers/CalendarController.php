@@ -25,31 +25,31 @@ class CalendarController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-           'nameDeadline'   => 'required|max:255|min:3',
-           'dateDeadline'   => 'required|date|after:'.date('Y-m-d', strtotime("now")),
+           'nameDeadline' => 'required|max:255|min:3',
+           'dateDeadline' => 'required|date|after:'.date('Y-m-d', strtotime('now')),
         ]);
         if ($validator->fails()) {
             return redirect()->route('deadline')
                 ->withErrors($validator->errors())
                 ->withInput();
         }
-        
-        $deadline = new Deadline;
-        $deadline->student_id      = Auth::user()->student_id;
-        $deadline->dl_value        = $request['nameDeadline'];
-        $deadline->dl_datetime     = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
+
+        $deadline = new Deadline();
+        $deadline->student_id = Auth::user()->student_id;
+        $deadline->dl_value = $request['nameDeadline'];
+        $deadline->dl_datetime = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
         $deadline->save();
-        
+
         return redirect()->route('deadline')->with('success', Lang::get('general.calendar-deadline-saved'));
     }
 
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id'                => 'required|exists:deadline,dl_id',
-            'action'            => 'required|in:submit,delete',
-            'nameDeadline'      => 'required|max:255|min:3',
-            'dateDeadline'      => 'required|date_format:d-m-Y H:i'
+            'id' => 'required|exists:deadline,dl_id',
+            'action' => 'required|in:submit,delete',
+            'nameDeadline' => 'required|max:255|min:3',
+            'dateDeadline' => 'required|date_format:d-m-Y H:i',
         ]);
         if ($validator->fails()) {
             return redirect('deadline')
@@ -60,19 +60,21 @@ class CalendarController extends Controller
         $deadline = Deadline::find($request['id']);
         if (is_null($deadline) || $deadline->student_id != Auth::user()->student_id) {
             return redirect('deadline')->withErrors(['error', Lang::get('general.calendar-deadline-permission')]);
-        } elseif ($request->input('action') === "submit") {
-            $deadline->dl_value        = $request['nameDeadline'];
-            $deadline->dl_datetime     = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
+        } elseif ('submit' === $request->input('action')) {
+            $deadline->dl_value = $request['nameDeadline'];
+            $deadline->dl_datetime = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
             $deadline->save();
             $msg = Lang::get('general.calendar-deadline-edited');
-        } elseif ($request->input('action') === "delete") {
+        } elseif ('delete' === $request->input('action')) {
             $deadline->delete();
             $msg = Lang::get('general.calendar-deadline-removed');
         } else {
             return redirect()->route('deadline')->withErrors(['error', Lang::get('errors.occurred')]);
         }
+
         return redirect()->route('deadline')->with('success', $msg);
     }
+
     public function __construct()
     {
         $this->middleware('auth');

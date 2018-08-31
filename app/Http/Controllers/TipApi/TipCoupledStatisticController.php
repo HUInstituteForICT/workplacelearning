@@ -12,13 +12,14 @@ use App\Tips\Services\StatisticService;
 
 class TipCoupledStatisticController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      *
      * @param TipCoupledStatisticCreateRequest $request
-     * @param StatisticService $statisticService
+     * @param StatisticService                 $statisticService
+     *
      * @return TipCoupledStatistic
+     *
      * @throws \Exception
      */
     public function store(TipCoupledStatisticCreateRequest $request, StatisticService $statisticService)
@@ -31,13 +32,13 @@ class TipCoupledStatisticController extends Controller
         } else {
             $statistic = $statisticService->createPredefinedStatistic($request->get('method'));
         }
-        $tip = (new Tip)->findOrFail($request->get('tip_id'));
+        $tip = (new Tip())->findOrFail($request->get('tip_id'));
 
         $coupledStatistic = new TipCoupledStatistic([
-            'statistic_id'        => $statistic->id,
-            'tip_id'              => $tip->id,
+            'statistic_id' => $statistic->id,
+            'tip_id' => $tip->id,
             'comparison_operator' => $request->get('comparisonOperator'),
-            'threshold'           => $request->get('threshold'),
+            'threshold' => $request->get('threshold'),
         ]);
 
         $coupledStatistic->statistic()->associate($statistic);
@@ -51,7 +52,8 @@ class TipCoupledStatisticController extends Controller
      * Update the specified resource in storage.
      *
      * @param TipCoupledStatisticUpdateRequest $request
-     * @param int $id
+     * @param int                              $id
+     *
      * @return TipCoupledStatistic
      */
     public function update(TipCoupledStatisticUpdateRequest $request, $id)
@@ -65,13 +67,15 @@ class TipCoupledStatisticController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function destroy($id)
     {
-        $coupledStatisic = (new TipCoupledStatistic)->findOrFail($id);
+        $coupledStatisic = (new TipCoupledStatistic())->findOrFail($id);
         $coupledStatisic->delete();
 
         return response()->json([], 200);

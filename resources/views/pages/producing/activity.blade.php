@@ -133,11 +133,13 @@
 
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
-                    <?php $checkedFirst = false ?>
+                    <?php $checkedFirst = false; ?>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach($categories as $cat)
                             <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($checkedFirst === false) ? "checked" : "" }}/><span>{{ __($cat->category_label) }}</span></label>
-                            <?php if($checkedFirst === false) $checkedFirst = true; ?>
+                            <?php if (false === $checkedFirst) {
+    $checkedFirst = true;
+} ?>
                         @endforeach
                     @endif
                     <div>

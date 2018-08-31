@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\Services;
-
 
 use App\Tips\Models\CustomStatistic;
 use App\Tips\Models\PredefinedStatistic;
@@ -21,14 +19,17 @@ class StatisticService
 
     /**
      * @param array $data
+     *
      * @return CustomStatistic
+     *
      * @throws \Exception
      */
-    public function createStatistic(array $data) {
+    public function createStatistic(array $data)
+    {
         $statistic = new CustomStatistic();
 
-        $statistic->statisticVariableOne = new StatisticVariable;
-        $statistic->statisticVariableTwo = new StatisticVariable;
+        $statistic->statisticVariableOne = new StatisticVariable();
+        $statistic->statisticVariableTwo = new StatisticVariable();
         $this->updateStatistic($statistic, $data);
 
         return $statistic;
@@ -36,8 +37,10 @@ class StatisticService
 
     /**
      * @param CustomStatistic $statistic
-     * @param array $data
+     * @param array           $data
+     *
      * @return CustomStatistic
+     *
      * @throws \Exception
      */
     public function updateStatistic(CustomStatistic $statistic, array $data)
@@ -47,7 +50,6 @@ class StatisticService
 
         $variableOne->save();
         $variableTwo->save();
-
 
         $statistic->name = $data['name'];
 
@@ -63,18 +65,19 @@ class StatisticService
         return $statistic;
     }
 
-    public function createPredefinedStatistic($methodName) {
+    public function createPredefinedStatistic($methodName)
+    {
         $statistic = new PredefinedStatistic();
 
-        if(PredefinedStatisticHelper::isActingMethod($methodName)) {
+        if (PredefinedStatisticHelper::isActingMethod($methodName)) {
             $statistic->education_program_type = 'acting';
-            $statistic->name = collect(PredefinedStatisticHelper::getData())->first(function($annotation) use($methodName) {
-                return $methodName === $annotation['method'] && $annotation['epType'] === 'Acting';
+            $statistic->name = collect(PredefinedStatisticHelper::getData())->first(function ($annotation) use ($methodName) {
+                return $methodName === $annotation['method'] && 'Acting' === $annotation['epType'];
             })['name'];
-        } elseif(PredefinedStatisticHelper::isProducingMethod($methodName)) {
+        } elseif (PredefinedStatisticHelper::isProducingMethod($methodName)) {
             $statistic->education_program_type = 'producing';
-            $statistic->name = collect(PredefinedStatisticHelper::getData())->first(function($annotation) use($methodName) {
-                return $methodName === $annotation['method']  && $annotation['epType'] === 'Producing';
+            $statistic->name = collect(PredefinedStatisticHelper::getData())->first(function ($annotation) use ($methodName) {
+                return $methodName === $annotation['method'] && 'Producing' === $annotation['epType'];
             })['name'];
         } else {
             throw new \RuntimeException("Method not found in a PredefinedStatisticCollector: {$methodName}");
@@ -85,12 +88,12 @@ class StatisticService
         return $statistic;
     }
 
-    private function getOperator($operator) {
-        if(!isset(CustomStatistic::OPERATORS[$operator])) {
+    private function getOperator($operator)
+    {
+        if (!isset(CustomStatistic::OPERATORS[$operator])) {
             throw new \RuntimeException("Operator with id {$operator} not found in Statistic::OPERATORS");
         }
 
         return $operator;
     }
-
 }

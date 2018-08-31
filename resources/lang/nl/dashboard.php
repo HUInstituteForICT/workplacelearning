@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'title' => 'Dashboard',
   'body' => 'Welkom op het subdomein van de werkplekleren applicatie van de Hogeschool Utrecht.',
   'lastWZHtitle' => 'Laatste Activiteit',
@@ -39,20 +39,20 @@ return array (
   'axis' => 'as',
   'error-create-no-data' => 'Kan geen grafiek aanmaken, er is geen data',
 
-  "cant-move-further" => "Kan niet verder verplaatsen!",
-  "failed-to-move" => 'Niet gelukt te verplaatsen',
+  'cant-move-further' => 'Kan niet verder verplaatsen!',
+  'failed-to-move' => 'Niet gelukt te verplaatsen',
 
-  "chart-added-fail" => "Niet gelukt op te slaan",
-  "chart-added" => "Grafiek toegevoegd",
-  "chart-removed-fail" => "Niet gelukt grafiek te verwijderen",
+  'chart-added-fail' => 'Niet gelukt op te slaan',
+  'chart-added' => 'Grafiek toegevoegd',
+  'chart-removed-fail' => 'Niet gelukt grafiek te verwijderen',
 
-  "chart-removed" => "Grafiek verwijderd van dashboard.",
+  'chart-removed' => 'Grafiek verwijderd van dashboard.',
 
-  "category" => "Categorie",
-  "no-descriptions" => "Geen beschrijvingen gevonden",
-  "description" => "Beschrijving",
-  "details-title" => "Grafiek details",
+  'category' => 'Categorie',
+  'no-descriptions' => 'Geen beschrijvingen gevonden',
+  'description' => 'Beschrijving',
+  'details-title' => 'Grafiek details',
 
-    "analysis-removed-fail" => "Niet gelukt om analyse te verwijderen",
-    "analysis-removed" => "Analyse is verwijderd."
+    'analysis-removed-fail' => 'Niet gelukt om analyse te verwijderen',
+    'analysis-removed' => 'Analyse is verwijderd.',
 );

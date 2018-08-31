@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tips\Statistics\Filters;
 
 use App\LearningActivityProducing;
@@ -25,7 +24,6 @@ class ResourcePersonFilter implements Filter
 
         $builder
             ->leftJoin('resourceperson', 'res_person_id', '=', 'rp_id');
-            
 
         // Because a LAP will not use a ResourcePerson model when the RP is alone we need to filter on null instead
         if (str_contains($builder->from, (new LearningActivityProducing())->getTable())) {
@@ -45,11 +43,10 @@ class ResourcePersonFilter implements Filter
         if ($labelsInLower->contains('alleen') || $labelsInLower->contains('alone')) {
             $builder->where(function (Builder $query) use ($labels) {
                 $query->whereIn('person_label', $labels) // Where the label is Alleen / Alone etc.
-                    ->orWhere(function(Builder $query) { // Or where res_person_id is null AND material is also null, because a book could've been used
+                    ->orWhere(function (Builder $query) { // Or where res_person_id is null AND material is also null, because a book could've been used
                         $query->whereNull('res_person_id')
                             ->whereNull('res_material_id');
-                });
-
+                    });
             });
         } else {
             $builder->whereIn('person_label', $labels);

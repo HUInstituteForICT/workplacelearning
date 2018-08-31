@@ -14,22 +14,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @property int $wplp_id
+ * @property int    $wplp_id
  * @property Cohort $cohort
  * @property Category[]|Collection categories
  * @property LearningGoal[]|Collection learningGoals
  * @property LearningActivityActing[]|Collection learningActivityActing
- * @property int $student_id
- * @property Student $student
- * @property int $wp_id
- * @property \DateTime $startdate
- * @property \DateTime $enddate
- * @property int $nrofdays
- * @property string $description
- * @property int $cohort_id
- * @property float $hours_per_day
+ * @property int        $student_id
+ * @property Student    $student
+ * @property int        $wp_id
+ * @property \DateTime  $startdate
+ * @property \DateTime  $enddate
+ * @property int        $nrofdays
+ * @property string     $description
+ * @property int        $cohort_id
+ * @property float      $hours_per_day
  * @property Collection $chains
- * @property Workplace $workplace
+ * @property Workplace  $workplace
  */
 class WorkplaceLearningPeriod extends Model
 {

@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'sendreset' => 'Stuur link',
   'password' => 'Passwords must be at least six characters and match the confirmation.',
   'reset' => 'Your password has been reset!',
@@ -15,5 +15,5 @@ return array (
   'reset-not-me' => 'Heb je geen nieuw wachtwoord aangevraagd? dan kan je deze email als niet verzonden beschouwen.',
   'new' => 'Nieuw wachtwoord',
   'confirm' => 'Bevestig wachtwoord',
-    'change' => 'Wachtwoord veranderen'
+    'change' => 'Wachtwoord veranderen',
 );

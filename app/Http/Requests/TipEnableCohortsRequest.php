@@ -24,7 +24,7 @@ class TipEnableCohortsRequest extends FormRequest
     public function rules()
     {
         return [
-            "enabledCohorts.*" => "exists:cohorts"
+            'enabledCohorts.*' => 'exists:cohorts',
         ];
     }
 }

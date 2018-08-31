@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repository\Eloquent;
-
 
 use App\Student;
 use App\Tips\Models\StudentTipView;
@@ -13,7 +11,6 @@ use Tests\TestCase;
 
 class StudentTipViewRepositoryTest extends TestCase
 {
-
     public function testCreateForTip()
     {
         /** @var Student|\PHPUnit_Framework_MockObject_MockObject $studentMock */
@@ -34,7 +31,6 @@ class StudentTipViewRepositoryTest extends TestCase
         $repo = new StudentTipViewRepository();
         $repo->createForTip($tipMock, $studentMock);
         $repo->createForTip($tipMock, $studentMock);
-
     }
 
     public function testSave()

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tips\Services;
 
 use App\Tips\EvaluatedTip;
@@ -10,7 +9,6 @@ use App\Tips\TextParameter;
 
 class MomentTriggerEvaluator
 {
-
     /**
      * @var PeriodMomentCalculator
      */
@@ -27,7 +25,7 @@ class MomentTriggerEvaluator
 
         $percentage = $this->periodMomentCalculator->getMomentAsPercentage();
 
-        $textParameter = new TextParameter(':days-percentage', $percentage . '%');
+        $textParameter = new TextParameter(':days-percentage', $percentage.'%');
 
         $passes = $this->hasFittingMoment($tip->moments->all(), $percentage);
 
@@ -37,6 +35,7 @@ class MomentTriggerEvaluator
 
     /**
      * @param Moment[]|array
+     *
      * @return bool
      */
     private function hasFittingMoment(array $moments, float $percentage): bool

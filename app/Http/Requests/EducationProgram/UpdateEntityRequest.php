@@ -25,7 +25,7 @@ class UpdateEntityRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'type' => 'required'
+            'type' => 'required',
         ];
     }
 }

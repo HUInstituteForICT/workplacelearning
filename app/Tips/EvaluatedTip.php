@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Tips;
-
 
 use App\Tips\Models\Tip;
 
 class EvaluatedTip implements EvaluatedTipInterface
 {
-
     /**
      * @var Tip
      */
@@ -45,12 +42,12 @@ class EvaluatedTip implements EvaluatedTipInterface
 
     public function isPassing(): bool
     {
-        if(\count($this->evaluationResults) === 0) {
+        if (0 === \count($this->evaluationResults)) {
             return false;
         }
 
         return collect($this->evaluationResults)->every(function (bool $result) {
-            return $result === true;
+            return true === $result;
         });
     }
 

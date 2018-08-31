@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips;
-
 
 use App\Cohort;
 use App\Tips\Models\Tip;
@@ -12,7 +10,6 @@ use Illuminate\Support\Collection;
 
 class ApplicableTipFetcherTest extends \PHPUnit\Framework\TestCase
 {
-
     private function getTipMock()
     {
         /** @var Tip|\PHPUnit_Framework_MockObject_MockObject $mock */
@@ -48,7 +45,6 @@ class ApplicableTipFetcherTest extends \PHPUnit\Framework\TestCase
 
         return $mock;
     }
-
 
     public function testFetchForWorkplaceLearningPeriod()
     {

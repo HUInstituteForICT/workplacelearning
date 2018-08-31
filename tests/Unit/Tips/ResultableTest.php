@@ -1,6 +1,5 @@
 <?php
 
-
 class ResultableTest extends \Tests\TestCase
 {
     public function testStatisticResult()
@@ -13,8 +12,6 @@ class ResultableTest extends \Tests\TestCase
 
         $result->doThresholdComparison(0.5, \App\Tips\Models\TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN);
         $this->assertFalse($result->hasPassed());
-
-
     }
 
     public function testStatisticCalculationResult()

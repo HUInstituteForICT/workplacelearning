@@ -213,9 +213,9 @@ class ProducingActivityController extends Controller
         $chainId = $request->get('chain_id', null);
 
         if (null !== $chainId) {
-            if (((int) $chainId) === -1) {
+            if (-1 === ((int) $chainId)) {
                 $learningActivityProducing->chain_id = null;
-            } elseif (((int) $chainId) !== -1) {
+            } elseif (-1 !== ((int) $chainId)) {
                 $chain = (new Chain())->find($chainId);
                 if (Chain::STATUS_FINISHED !== $chain->status) {
                     $chainManager->attachActivity($learningActivityProducing, $chain);

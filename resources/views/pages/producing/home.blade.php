@@ -44,12 +44,12 @@
                             <div class="dash-bar">
                                 <?php
                                 $fmt = new IntlDateFormatter(
-                                        (LaravelLocalization::getCurrentLocale() == "en") ? "en_US" : "nl_NL",
+                                        ('en' == LaravelLocalization::getCurrentLocale()) ? 'en_US' : 'nl_NL',
                                         IntlDateFormatter::GREGORIAN,
                                         IntlDateFormatter::NONE,
-                                        NULL,
-                                        NULL,
-                                        "EEEE dd-MM"
+                                        null,
+                                        null,
+                                        'EEEE dd-MM'
                                 );
                                 ?>
                                 <div class="dash-date">

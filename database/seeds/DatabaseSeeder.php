@@ -6,8 +6,6 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
@@ -15,7 +13,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SetupSeeder::class);
         $this->call(ChartTypesSeeder::class);
         $this->call(WplUserSeeder::class);
-        if(class_exists(AccountSeeder::class)) {
+        if (class_exists(AccountSeeder::class)) {
             $this->call(AccountSeeder::class);
         }
     }

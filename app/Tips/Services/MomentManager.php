@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tips\Services;
 
 use App\Tips\Models\Moment;
@@ -15,7 +14,7 @@ class MomentManager
         $moment->tip()->associate($tip);
 
         $this->updateMoment($moment, $request);
-        
+
         return $moment;
     }
 

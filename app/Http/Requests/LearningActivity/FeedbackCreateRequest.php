@@ -1,15 +1,12 @@
 <?php
 
-
 namespace App\Http\Requests\LearningActivity;
-
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FeedbackCreateRequest extends FormRequest
 {
-
     public function authorize(): bool
     {
         return true;

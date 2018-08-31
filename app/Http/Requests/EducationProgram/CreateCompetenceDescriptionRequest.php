@@ -24,7 +24,7 @@ class CreateCompetenceDescriptionRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required'
+            'file' => 'required',
         ];
     }
 }

@@ -8,27 +8,23 @@ class AddEvidenceToLAA extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-        Schema::table('learningactivityacting', function(Blueprint $table) {
-            $table->string("evidence_filename")->nullable();
-            $table->string("evidence_disk_filename")->nullable();
-            $table->string("evidence_mime")->nullable();
+        Schema::table('learningactivityacting', function (Blueprint $table) {
+            $table->string('evidence_filename')->nullable();
+            $table->string('evidence_disk_filename')->nullable();
+            $table->string('evidence_mime')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
-        Schema::table('learningactivityacting', function(Blueprint $table) {
-            $table->dropColumn(["evidence_filename", "evidence_disk_filename", "evidence_mime"]);
+        Schema::table('learningactivityacting', function (Blueprint $table) {
+            $table->dropColumn(['evidence_filename', 'evidence_disk_filename', 'evidence_mime']);
         });
     }
 }

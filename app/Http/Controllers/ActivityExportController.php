@@ -1,11 +1,9 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use App\Mail\TxtExport;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpWord\PhpWord;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,26 +15,25 @@ class ActivityExportController extends Controller
     {
         Mail::to($request->get('email'))->send(new TxtExport($request->get('txt'), $request->get('comment')));
 
-        return \response(json_encode(["status" => "success"]));
+        return \response(json_encode(['status' => 'success']));
     }
 
     public function exportActivitiesToWord(Request $request)
     {
         $w = new PhpWord();
-        $s = $w->addSection("Hoi");
+        $s = $w->addSection('Hoi');
         $text = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $request->get('exportText'));
         $s->addText($text);
 
-
         $fileName = md5(time());
-        $filePath = storage_path('app/word-exports/') . $fileName . '.docx';
+        $filePath = storage_path('app/word-exports/').$fileName.'.docx';
         try {
             $w->save($filePath);
         } catch (\Exception $e) {
             die($e->getMessage());
         }
 
-        return response()->json(["download" => route('docx-export-download', ['fileName' => $fileName])]);
+        return response()->json(['download' => route('docx-export-download', ['fileName' => $fileName])]);
     }
 
     public function downloadWordExport($fileName)
@@ -44,13 +41,13 @@ class ActivityExportController extends Controller
         $validator = Validator::make(['filename' => $fileName], ['filename' => 'required|size:32|alpha_num']);
 
         if ($validator->fails()) {
-            throw new \Exception("Unknown export ");
+            throw new \Exception('Unknown export ');
         }
 
         $filePath = storage_path("app/word-exports/{$fileName}.docx");
 
         if (!file_exists($filePath)) {
-            throw new \Exception("Unknown export");
+            throw new \Exception('Unknown export');
         }
 
         $filePath = storage_path("app/word-exports/{$fileName}.docx");

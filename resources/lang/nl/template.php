@@ -18,11 +18,10 @@ return [
     'no_parameters' => 'Geen parameters gevonden',
 
     'error' => [
-        'boolean' => "Error: Niet van type boolean (True/False)",
-        'table' => "Error: Tabel bestaat niet in de database",
-        'column' => "Error: Kolom bestaat niet in de database",
-        'number' => "Error: De waarde is geen nummer",
-        'text' => "Error: De waarde is geen tekst",
-    ]
-
+        'boolean' => 'Error: Niet van type boolean (True/False)',
+        'table' => 'Error: Tabel bestaat niet in de database',
+        'column' => 'Error: Kolom bestaat niet in de database',
+        'number' => 'Error: De waarde is geen nummer',
+        'text' => 'Error: De waarde is geen tekst',
+    ],
 ];

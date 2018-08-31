@@ -23,19 +23,19 @@
                                 App::getLocale(),
                                 IntlDateFormatter::GREGORIAN,
                                 IntlDateFormatter::NONE,
-                                NULL,
-                                NULL,
-                                "MMMM YYYY"
+                                null,
+                                null,
+                                'MMMM YYYY'
                         );
-                        $begin  = strtotime((new DateTime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate))->modify("first day of this month")->format('Y-m-d'));
-                        $end    = strtotime((new DateTime(Auth::user()->getCurrentWorkplaceLearningPeriod()->enddate))->format('Y-m-d'));
+                        $begin = strtotime((new DateTime(Auth::user()->getCurrentWorkplaceLearningPeriod()->startdate))->modify('first day of this month')->format('Y-m-d'));
+                        $end = strtotime((new DateTime(Auth::user()->getCurrentWorkplaceLearningPeriod()->enddate))->format('Y-m-d'));
                     ?>
                     <a href="{{ route('analysis-acting-detail', ["month" => "all", "year" => "all"]) }}">{{ Lang::get('elements.analysis.showall') }}</a><br />
                     @while($end > $begin)
                         @if($end <= strtotime((new DateTime("now"))->modify("last day of this month")->format('Y-m-d')))
                             <a href="{{ route('analysis-acting-detail', ["month" => date('m', $end), "year" => date('Y', $end)]) }}">{{ ucwords($intlfmt->format($end)) }}</a><br />
                         @endif
-                        <?php $end = strtotime("last day of previous month", $end); ?>
+                        <?php $end = strtotime('last day of previous month', $end); ?>
                     @endwhile
                 </div>
             </div>

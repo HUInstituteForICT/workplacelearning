@@ -2,20 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\LearningActivityActing;
-use App\LearningActivityProducingExportBuilder;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PostalCodeValidationTest extends TestCase
 {
-
     public function testValidPostalCodes()
     {
-
         $validPostalCodes = collect(['1111aa', '1111 aa', '1111 AA', '1111AA', '']);
         $validPostalCodes->each(function ($postalCode) {
             $validator = Validator::make(['postalCode' => $postalCode], ['postalCode' => 'postalcode']);

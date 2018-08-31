@@ -13,8 +13,9 @@ class FeedbackPolicy
     /**
      * Determine whether the Student can view the feedback.
      *
-     * @param  \App\Student $student
-     * @param  \App\Feedback $feedback
+     * @param \App\Student  $student
+     * @param \App\Feedback $feedback
+     *
      * @return mixed
      */
     public function view(Student $student, Feedback $feedback)
@@ -25,7 +26,8 @@ class FeedbackPolicy
     /**
      * Determine whether the Student can create feedback.
      *
-     * @param  \App\Student $student
+     * @param \App\Student $student
+     *
      * @return mixed
      */
     public function create(Student $student)
@@ -36,8 +38,9 @@ class FeedbackPolicy
     /**
      * Determine whether the Student can update the feedback.
      *
-     * @param  \App\Student $student
-     * @param  \App\Feedback $feedback
+     * @param \App\Student  $student
+     * @param \App\Feedback $feedback
+     *
      * @return mixed
      */
     public function update(Student $student, Feedback $feedback)
@@ -48,8 +51,9 @@ class FeedbackPolicy
     /**
      * Determine whether the Student can delete the feedback.
      *
-     * @param  \App\Student $student
-     * @param  \App\Feedback $feedback
+     * @param \App\Student  $student
+     * @param \App\Feedback $feedback
+     *
      * @return mixed
      */
     public function delete(Student $student, Feedback $feedback)

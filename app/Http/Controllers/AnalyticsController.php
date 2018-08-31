@@ -13,6 +13,7 @@ class AnalyticsController extends Controller
 
     /**
      * AnalysisController constructor.
+     *
      * @param \App\Analysis $analysis
      */
     public function __construct(\App\Analysis $analysis)
@@ -29,6 +30,7 @@ class AnalyticsController extends Controller
     public function index()
     {
         $analyses = $this->analysis->all();
+
         return view('pages.analytics.index', compact('analyses'));
     }
 
@@ -46,6 +48,7 @@ class AnalyticsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function store(Request $request)
@@ -53,10 +56,11 @@ class AnalyticsController extends Controller
         $data = $request->all();
         $analysis = new $this->analysis($data);
 
-        if (!$analysis->save())
+        if (!$analysis->save()) {
             return redirect()
                 ->back()
                 ->withErrors(['error', Lang::get('analysis.create-error')]);
+        }
 
         return redirect()->route('analytics-show', $analysis->id)->with('success', Lang::get('analysis.create'));
     }
@@ -64,7 +68,8 @@ class AnalyticsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -72,9 +77,10 @@ class AnalyticsController extends Controller
         $analysis = $this->analysis->findOrFail($id);
         $analysis_result = null;
 
-        if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
+        if (!\Cache::has(Analysis::CACHE_KEY.$analysis->id)) {
             $analysis->refresh();
-        $analysis_result = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
+        }
+        $analysis_result = \Cache::get(Analysis::CACHE_KEY.$analysis->id);
 
         return view('pages.analytics.show', compact('analysis', 'analysis_result'));
     }
@@ -84,13 +90,15 @@ class AnalyticsController extends Controller
         $analysis = $this->analysis->findOrFail($id);
         $data = null;
 
-        if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
+        if (!\Cache::has(Analysis::CACHE_KEY.$analysis->id)) {
             $analysis->refresh();
+        }
 
-        $data = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
+        $data = \Cache::get(Analysis::CACHE_KEY.$analysis->id);
 
-        if (isset($data['error']) && $data === null)
+        if (isset($data['error']) && null === $data) {
             return abort(404);
+        }
 
         $d = \Excel::create('Analyse data', function ($excel) use ($data) {
             $excel->sheet('New sheet', function ($sheet) use ($data) {
@@ -102,9 +110,10 @@ class AnalyticsController extends Controller
     }
 
     /**
-     * Expire a cached analys
+     * Expire a cached analys.
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function expire(Request $request)
@@ -112,14 +121,16 @@ class AnalyticsController extends Controller
         $data = $request->all();
         $analysis = $this->analysis->findOrFail($data['id']);
         $analysis->refresh();
+
         return redirect()->back()->with('success', Lang::get('analysis.query-data-expired'));
     }
 
     /**
-     * Expire all cached analyses
+     * Expire all cached analyses.
      */
-    public function expireAll() {
-        $this->analysis->all()->each(function(Analysis $analysis) {
+    public function expireAll()
+    {
+        $this->analysis->all()->each(function (Analysis $analysis) {
             $analysis->refresh();
         });
 
@@ -129,7 +140,8 @@ class AnalyticsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -137,9 +149,10 @@ class AnalyticsController extends Controller
         $analysis = $this->analysis->findOrFail($id);
         $analysis_result = null;
 
-        if (!\Cache::has(Analysis::CACHE_KEY . $analysis->id))
+        if (!\Cache::has(Analysis::CACHE_KEY.$analysis->id)) {
             $analysis->refresh();
-        $analysis_result = \Cache::get(Analysis::CACHE_KEY . $analysis->id);
+        }
+        $analysis_result = \Cache::get(Analysis::CACHE_KEY.$analysis->id);
 
         return view('pages.analytics.edit', compact('analysis', 'analysis_result'));
     }
@@ -148,7 +161,8 @@ class AnalyticsController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int $id
+     * @param int     $id
+     *
      * @return Response
      */
     public function update(Request $request, $id)
@@ -157,7 +171,7 @@ class AnalyticsController extends Controller
             'name' => 'required',
             'query' => 'required',
             'cache_duration' => 'required',
-            'type_time' => 'required'
+            'type_time' => 'required',
         ]);
 
         $analysis = $this->analysis->findOrFail($id);
@@ -171,7 +185,7 @@ class AnalyticsController extends Controller
             'name' => $name,
             'query' => $query,
             'cache_duration' => $cache_duration,
-            'type_time' => $type_time
+            'type_time' => $type_time,
         ))
         ) {
             return redirect()
@@ -180,29 +194,28 @@ class AnalyticsController extends Controller
                 ->withErrors(['The analysis has not been updated']);
         }
         $analysis->refresh();
+
         return redirect()->action('AnalyticsController@show', [$analysis['id']])
             ->with('success', 'The analysis has been updated');
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)
     {
         $analysis = $this->analysis->findOrFail($id);
-        if (!$analysis->delete())
+        if (!$analysis->delete()) {
             return redirect()
                 ->back()
                 ->withErrors(['error', Lang::get('analysis.remove-error')]);
+        }
 
         return redirect()->route('analytics-index')
             ->with('success', Lang::get('analysis.removed'));
     }
-
 }
-
-?>

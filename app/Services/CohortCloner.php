@@ -6,9 +6,8 @@ use App\Cohort;
 
 class CohortCloner
 {
-
     /**
-     * Clone a cohort and its core relationships deeply
+     * Clone a cohort and its core relationships deeply.
      */
     public function clone(Cohort $cohort): Cohort
     {
@@ -30,7 +29,7 @@ class CohortCloner
     {
         /** @var Cohort $clone */
         $clone = $cohort->replicate();
-        $clone->name = 'Copy ' . $clone->name;
+        $clone->name = 'Copy '.$clone->name;
 
         $clone->save();
 

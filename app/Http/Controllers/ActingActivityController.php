@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\LearningActivityActing;
@@ -18,11 +19,10 @@ use Validator;
 
 class ActingActivityController extends Controller
 {
-
     public function show()
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
+        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
@@ -61,7 +61,7 @@ class ActingActivityController extends Controller
     public function edit($id)
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (null == Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
@@ -91,8 +91,8 @@ class ActingActivityController extends Controller
 
     public function progress()
     {
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() === null) {
-            return redirect()->route('profile')->withErrors([Lang::get("notifications.generic.nointernshipprogress")]);
+        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
+            return redirect()->route('profile')->withErrors([Lang::get('notifications.generic.nointernshipprogress')]);
         }
 
         $exportBuilder = new LearningActivityActingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
@@ -112,45 +112,43 @@ class ActingActivityController extends Controller
     public function create(Request $request)
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (null == Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
-        $activityActing = new LearningActivityActing;
-
-
+        $activityActing = new LearningActivityActing();
 
         $validator = Validator::make($request->all(),
             [
-                'date'          => 'required|date|date_in_wplp',
-                'description'   => 'required|max:1000',
-                'learned'       => 'required|max:1000',
-                'support_wp'    => 'max:500',
-                'support_ed'    => 'max:500',
+                'date' => 'required|date|date_in_wplp',
+                'description' => 'required|max:1000',
+                'learned' => 'required|max:1000',
+                'support_wp' => 'max:500',
+                'support_ed' => 'max:500',
                 'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
-                'competence'    => 'required|exists:competence,competence_id',
-                'evidence' => "file|max:5000"
+                'competence' => 'required|exists:competence,competence_id',
+                'evidence' => 'file|max:5000',
             ]);
 
         // Conditional validation
         $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function ($input) {
-            return $input->res_person != 'new';
+            return 'new' != $input->res_person;
         });
-        $validator->sometimes('timeslot', 'required|exists:timeslot,timeslot_id', function($input) {
-            return $input->timeslot != 'new';
+        $validator->sometimes('timeslot', 'required|exists:timeslot,timeslot_id', function ($input) {
+            return 'new' != $input->timeslot;
         });
         $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function ($input) {
-            return $input->res_material != 'new' && $input->res_material != 'none';
+            return 'new' != $input->res_material && 'none' != $input->res_material;
         });
 
         $validator->sometimes('new_rp', 'required|max:45', function ($input) {
-            return $input->res_person === 'new';
+            return 'new' === $input->res_person;
         });
         $validator->sometimes('new_timeslot', 'required|max:45', function ($input) {
-            return $input->timeslot === 'new';
+            return 'new' === $input->timeslot;
         });
         $validator->sometimes('new_rm', 'required|max:45', function ($input) {
-            return $input->res_material === 'new';
+            return 'new' === $input->res_material;
         });
 
         /*$validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
@@ -167,8 +165,8 @@ class ActingActivityController extends Controller
                 ->withInput();
         }
 
-        if ($request['res_person'] == 'new') {
-            $resourcePerson = new ResourcePerson;
+        if ('new' == $request['res_person']) {
+            $resourcePerson = new ResourcePerson();
             $resourcePerson->person_label = $request['new_rp'];
             $resourcePerson->ep_id = Auth::user()->getEducationProgram()->ep_id; //deprecated, bound to wplp?
             $resourcePerson->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
@@ -177,8 +175,8 @@ class ActingActivityController extends Controller
             $request['res_person'] = $resourcePerson->rp_id;
         }
 
-        if ($request['res_material'] == 'new') {
-            $resourceMaterial = new ResourceMaterial;
+        if ('new' == $request['res_material']) {
+            $resourceMaterial = new ResourceMaterial();
             $resourceMaterial->rm_label = $request['new_rm'];
             $resourceMaterial->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
             $resourceMaterial->save();
@@ -186,8 +184,8 @@ class ActingActivityController extends Controller
             $request['res_material'] = $resourceMaterial->rm_id;
         }
 
-        if($request['timeslot'] == 'new') {
-            $timeslot = new Timeslot;
+        if ('new' == $request['timeslot']) {
+            $timeslot = new Timeslot();
             $timeslot->timeslot_text = $request['new_timeslot'];
             $timeslot->edprog_id = Auth::user()->getEducationProgram()->ep_id; //deprecated, bound to wplp?
             $timeslot->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
@@ -196,28 +194,27 @@ class ActingActivityController extends Controller
             $request['timeslot'] = $timeslot->timeslot_id;
         }
 
-        if($request->hasFile('evidence')) {
+        if ($request->hasFile('evidence')) {
             $evidence = $request->file('evidence');
             $diskFileName = Uuid::uuid4();
-            if(!$evidence->storeAs("activity-evidence", $diskFileName)) {
-                throw new UploadException("Unable to upload file");
+            if (!$evidence->storeAs('activity-evidence', $diskFileName)) {
+                throw new UploadException('Unable to upload file');
             }
             $activityActing->evidence_filename = $evidence->getClientOriginalName();
             $activityActing->evidence_disk_filename = $diskFileName;
             $activityActing->evidence_mime = $evidence->getClientMimeType();
         }
 
-
         // Todo refactor into model->fill($request), all fillable
         $activityActing->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
-        $activityActing->date = date_format(date_create($request->date, timezone_open("Europe/Amsterdam")), 'Y-m-d H:i:s');
+        $activityActing->date = date_format(date_create($request->date, timezone_open('Europe/Amsterdam')), 'Y-m-d H:i:s');
         $activityActing->timeslot_id = $request['timeslot'];
         $activityActing->situation = $request['description'];
         $activityActing->lessonslearned = $request['learned'];
         $activityActing->support_wp = $request['support_wp'];
         $activityActing->support_ed = $request['support_ed'];
         $activityActing->res_person_id = $request['res_person'];
-        ($request['res_material'] != 'none') ? $activityActing->res_material_id = $request['res_material'] : null;
+        ('none' != $request['res_material']) ? $activityActing->res_material_id = $request['res_material'] : null;
         $activityActing->res_material_detail = $request['res_material_detail'];
         $activityActing->learninggoal_id = $request['learning_goal'];
         $activityActing->save();
@@ -230,29 +227,29 @@ class ActingActivityController extends Controller
     public function update(Request $req, $id)
     {
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (null == Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
         $validator = Validator::make($req->all(), [
-            'date'                  => 'required|date|date_in_wplp',
-            'description'           => 'required|max:1000',
-            'timeslot'              => 'required|exists:timeslot,timeslot_id',
-            'new_rp'                => 'required_if:res_person,new|max:45|',
-            'new_rm'                => 'required_if:res_material,new|max:45',
-            'learned'               => 'required|max:1000',
-            'support_wp'            => 'max:500',
-            'support_ed'            => 'max:500',
-            'learning_goal'         => 'required|exists:learninggoal,learninggoal_id',
-            'competence'            => 'required|exists:competence,competence_id'
+            'date' => 'required|date|date_in_wplp',
+            'description' => 'required|max:1000',
+            'timeslot' => 'required|exists:timeslot,timeslot_id',
+            'new_rp' => 'required_if:res_person,new|max:45|',
+            'new_rm' => 'required_if:res_material,new|max:45',
+            'learned' => 'required|max:1000',
+            'support_wp' => 'max:500',
+            'support_ed' => 'max:500',
+            'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
+            'competence' => 'required|exists:competence,competence_id',
         ]);
 
         // Conditional validation
         $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function ($input) {
-            return $input->res_person != 'new';
+            return 'new' != $input->res_person;
         });
         $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function ($input) {
-            return $input->res_material != 'new' && $input->res_material != 'none';
+            return 'new' != $input->res_material && 'none' != $input->res_material;
         });
         /*$validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75|url', function($input) {
             return $input->res_material == 1;
@@ -274,10 +271,10 @@ class ActingActivityController extends Controller
         if ($req->hasFile('evidence')) {
             $evidence = $req->file('evidence');
             $diskFileName = Uuid::uuid4();
-            if (!$evidence->storeAs("activity-evidence", $diskFileName)) {
-                throw new UploadException("Unable to upload file");
+            if (!$evidence->storeAs('activity-evidence', $diskFileName)) {
+                throw new UploadException('Unable to upload file');
             }
-            if ($learningActivity->evidence_disk_filename !== null && Storage::exists("activity-evidence/{$learningActivity->evidence_disk_filename}")) {
+            if (null !== $learningActivity->evidence_disk_filename && Storage::exists("activity-evidence/{$learningActivity->evidence_disk_filename}")) {
                 Storage::delete("activity-evidence/{$learningActivity->evidence_disk_filename}");
             }
 
@@ -293,7 +290,7 @@ class ActingActivityController extends Controller
         $learningActivity->support_wp = $req['support_wp'];
         $learningActivity->support_ed = $req['support_ed'];
         $learningActivity->res_person_id = $req['res_person'];
-        $learningActivity->res_material_id = ($req['res_material'] != 'none') ? $req['res_material'] : null;
+        $learningActivity->res_material_id = ('none' != $req['res_material']) ? $req['res_material'] : null;
         $learningActivity->res_material_detail = $req['res_material_detail'];
         $learningActivity->learninggoal_id = $req['learning_goal'];
         $learningActivity->save();
@@ -305,16 +302,16 @@ class ActingActivityController extends Controller
 
     public function delete(LearningActivityActing $activity)
     {
-        if($activity === null) {
+        if (null === $activity) {
             return redirect()->route('process-acting');
         }
         // Allow only to view this page if an internship exists.
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod() == null) {
+        if (null == Auth::user()->getCurrentWorkplaceLearningPeriod()) {
             return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
         }
 
-        if(Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $activity->wplp_id) {
-            throw new UnauthorizedException("No access");
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $activity->wplp_id) {
+            throw new UnauthorizedException('No access');
         }
 
         $activity->competence()->detach($activity->competence()->first()->competence_id);

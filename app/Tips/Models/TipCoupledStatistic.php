@@ -1,17 +1,16 @@
 <?php
 
-
 namespace App\Tips\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $tip_id
- * @property Tip $tip
- * @property int $statistic_id
- * @property int $comparison_operator
- * @property float $threshold
+ * @property int       $id
+ * @property int       $tip_id
+ * @property Tip       $tip
+ * @property int       $statistic_id
+ * @property int       $comparison_operator
+ * @property float     $threshold
  * @property Statistic $statistic
  */
 class TipCoupledStatistic extends Model
@@ -20,7 +19,7 @@ class TipCoupledStatistic extends Model
     const COMPARISON_OPERATOR_GREATER_THAN = 1;
 
     const COMPARISON_OPERATORS = [
-        self::COMPARISON_OPERATOR_LESS_THAN    => ['type' => self::COMPARISON_OPERATOR_LESS_THAN, 'label' => '<'],
+        self::COMPARISON_OPERATOR_LESS_THAN => ['type' => self::COMPARISON_OPERATOR_LESS_THAN, 'label' => '<'],
         self::COMPARISON_OPERATOR_GREATER_THAN => ['type' => self::COMPARISON_OPERATOR_GREATER_THAN, 'label' => '>'],
     ];
     public $timestamps = false;
@@ -51,19 +50,19 @@ class TipCoupledStatistic extends Model
     }
 
     /**
-     * Get the condition for when this TipCoupledStatistic passes
+     * Get the condition for when this TipCoupledStatistic passes.
      *
      * @return string
      */
     public function condition()
     {
         if ($this->statistic instanceof PredefinedStatistic) {
-            $expression = __('statistics.predefined-stats.' . $this->statistic->name) . ' ';
+            $expression = __('statistics.predefined-stats.'.$this->statistic->name).' ';
         } else {
-            $expression = $this->statistic->name . ' ';
+            $expression = $this->statistic->name.' ';
         }
 
-        $expression .= self::COMPARISON_OPERATORS[$this->comparison_operator]['label'] . ' ';
+        $expression .= self::COMPARISON_OPERATORS[$this->comparison_operator]['label'].' ';
         $expression .= $this->threshold;
 
         return $expression;

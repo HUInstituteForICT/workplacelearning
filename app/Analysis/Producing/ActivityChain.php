@@ -1,11 +1,9 @@
 <?php
 
-
 namespace App\Analysis\Producing;
 
 /**
- * Class ActivityChain wraps around activity chains and provides easily accessible methods for them
- * @package App\Analysis\Producing
+ * Class ActivityChain wraps around activity chains and provides easily accessible methods for them.
  */
 class ActivityChain
 {
@@ -13,6 +11,7 @@ class ActivityChain
 
     /**
      * ActivityChain constructor.
+     *
      * @param array $chain
      */
     public function __construct(array $chain)
@@ -21,7 +20,7 @@ class ActivityChain
     }
 
     /**
-     * Get the date (range) of an activity chain
+     * Get the date (range) of an activity chain.
      *
      * @return string
      */
@@ -30,28 +29,30 @@ class ActivityChain
         $date = date('d-m', strtotime(reset($this->chain)->date));
 
         if (reset($this->chain) != end($this->chain)) {
-            $date .= " t/m " . date('d-m', strtotime(end($this->chain)->date));
+            $date .= ' t/m '.date('d-m', strtotime(end($this->chain)->date));
         }
 
         return $date;
     }
 
     /**
-     * Get the description text of an activity chain
+     * Get the description text of an activity chain.
+     *
      * @return string
      */
     public function descriptionText()
     {
         $description = reset($this->chain)->description;
         if (reset($this->chain) != end($this->chain)) {
-            $description .= ' - ' . end($this->chain)->description;
+            $description .= ' - '.end($this->chain)->description;
         }
 
         return $description;
     }
 
     /**
-     * Get the summed hours text of an activity chain
+     * Get the summed hours text of an activity chain.
+     *
      * @return float|int
      */
     public function hoursText()
@@ -62,7 +63,8 @@ class ActivityChain
     }
 
     /**
-     * Get the status text of an activity chain
+     * Get the status text of an activity chain.
+     *
      * @return mixed
      */
     public function statusText()
@@ -71,7 +73,8 @@ class ActivityChain
     }
 
     /**
-     * Check if the activity chain has more than one activity
+     * Check if the activity chain has more than one activity.
+     *
      * @return bool
      */
     public function hasDetail()
@@ -85,7 +88,8 @@ class ActivityChain
     }
 
     /**
-     * Get the first activity of the chain
+     * Get the first activity of the chain.
+     *
      * @return mixed
      */
     public function first()
@@ -94,7 +98,8 @@ class ActivityChain
     }
 
     /**
-     * Get the last activity of the chain
+     * Get the last activity of the chain.
+     *
      * @return mixed
      */
     public function last()
@@ -103,7 +108,8 @@ class ActivityChain
     }
 
     /**
-     * Get the amount of activities in the chain
+     * Get the amount of activities in the chain.
+     *
      * @return int
      */
     public function count()
@@ -113,7 +119,8 @@ class ActivityChain
 
     /**
      * Get the activity chain in a raw array
-     * Used when the wrapper is not enough
+     * Used when the wrapper is not enough.
+     *
      * @return array
      */
     public function raw()

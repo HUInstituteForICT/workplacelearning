@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * @property integer id
+ * @property int id
  * @property string name Analysis name
  * @property string query SQL query
- * @property integer cache_duration Duration in given time type
+ * @property int cache_duration Duration in given time type
  * @property string type_time
  * @property string time_type
  */
@@ -33,24 +33,29 @@ class Analysis extends Model
     }
 
     /**
-     * Get cached data if any
+     * Get cached data if any.
+     *
      * @param $value
+     *
      * @return mixed
      */
     public function getDataAttribute($value)
     {
-        if (!\Cache::has(self::CACHE_KEY . $this->id))
+        if (!\Cache::has(self::CACHE_KEY.$this->id)) {
             $this->refresh();
-        return \Cache::get(self::CACHE_KEY . $this->id);
+        }
+
+        return \Cache::get(self::CACHE_KEY.$this->id);
     }
 
     /**
-     * Refresh the cached data, if any
+     * Refresh the cached data, if any.
      */
     public function refresh()
     {
-        if (\Cache::has(self::CACHE_KEY . $this->id))
-            \Cache::forget(self::CACHE_KEY . $this->id);
+        if (\Cache::has(self::CACHE_KEY.$this->id)) {
+            \Cache::forget(self::CACHE_KEY.$this->id);
+        }
 
         $now = Carbon::now();
         $expiry = $now->copy();
@@ -82,14 +87,15 @@ class Analysis extends Model
                 break;
         }
 
-        \Cache::put(self::CACHE_KEY . $this->id, [
+        \Cache::put(self::CACHE_KEY.$this->id, [
             'id' => $this->id,
-            'data' => $this->execute()
+            'data' => $this->execute(),
         ], $expiry);
     }
 
     /**
-     * Return data from the query or an error
+     * Return data from the query or an error.
+     *
      * @return array|null
      */
     public function execute()
@@ -97,15 +103,16 @@ class Analysis extends Model
         $data = null;
         try {
             $query = $this->query;
-            if (Str::contains($query, "wplp_id") && !Str::contains($query, "is_in_analytics")) {
-                $query = Str::replaceFirst("WHERE", "WHERE is_in_analytics = 1 AND", $query);
+            if (Str::contains($query, 'wplp_id') && !Str::contains($query, 'is_in_analytics')) {
+                $query = Str::replaceFirst('WHERE', 'WHERE is_in_analytics = 1 AND', $query);
             }
             $data = \DB::connection('dashboard')->select($query);
         } catch (\Exception $e) {
             $data = [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ];
         }
+
         return $data;
     }
 }

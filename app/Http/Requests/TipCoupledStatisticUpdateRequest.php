@@ -25,7 +25,7 @@ class TipCoupledStatisticUpdateRequest extends FormRequest
     {
         return [
             'threshold' => 'required|numeric',
-            'comparison_operator' => 'required|numeric'
+            'comparison_operator' => 'required|numeric',
         ];
     }
 }

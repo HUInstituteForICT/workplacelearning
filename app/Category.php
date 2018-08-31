@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string $category_label
- * @property int $wplp_id
+ * @property int    $wplp_id
  */
 class Category extends Model
 {
@@ -27,14 +27,16 @@ class Category extends Model
         'category_id',
         'category_label',
         'wplp_id',
-        'cohort_id'
+        'cohort_id',
     ];
 
-    public function cohort() {
+    public function cohort()
+    {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
     }
 
-    public function educationProgram() {
+    public function educationProgram()
+    {
         return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
     }
 
@@ -61,6 +63,6 @@ class Category extends Model
     // Relations for query builder
     public function getRelationships()
     {
-        return ["cohort", "educationProgram", "InternshipPeriods", "learningactivitiesproducing"];
+        return ['cohort', 'educationProgram', 'InternshipPeriods', 'learningactivitiesproducing'];
     }
 }

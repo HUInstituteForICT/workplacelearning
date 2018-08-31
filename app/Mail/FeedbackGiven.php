@@ -8,7 +8,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class FeedbackGiven extends Mailable
 {
@@ -43,11 +42,11 @@ class FeedbackGiven extends Mailable
         return $this->view('templates.bugreport-email')
             ->with(
                 [
-                    'student_name'  => $this->user->getInitials()." ".$this->user->lastname." (".$this->user->firstname.")",
+                    'student_name' => $this->user->getInitials().' '.$this->user->lastname.' ('.$this->user->firstname.')',
                     'student_email' => $this->user->email,
-                    'education'     => EducationProgram::find($this->user->ep_id),
-                    'subject'       => $this->request->get('onderwerp'),
-                    'content'       => $this->request->get('uitleg'),
+                    'education' => EducationProgram::find($this->user->ep_id),
+                    'subject' => $this->request->get('onderwerp'),
+                    'content' => $this->request->get('uitleg'),
                 ]
             );
     }

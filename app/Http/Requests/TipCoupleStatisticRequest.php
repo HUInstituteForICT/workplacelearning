@@ -27,7 +27,6 @@ class TipCoupleStatisticRequest extends FormRequest
      */
     public function rules()
     {
-
         $idRule = 'required|exists:statistics';
         if (starts_with($this->request->get('id'),
                 'predefined-') && $this->doesPredefinedExist($this->request->get('id'))) {
@@ -35,15 +34,14 @@ class TipCoupleStatisticRequest extends FormRequest
         }
 
         return [
-            'id'                  => $idRule,
+            'id' => $idRule,
             'comparison_operator' => ['required', Rule::in(array_keys(TipCoupledStatistic::COMPARISON_OPERATORS))],
-            'threshold'           => 'required|numeric',
+            'threshold' => 'required|numeric',
         ];
     }
 
     private function doesPredefinedExist($predefinedString)
     {
-
         $methodName = Str::after($predefinedString, 'predefined-');
 
         // Get all predefined statistics (producing, acting..)

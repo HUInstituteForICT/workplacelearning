@@ -1,13 +1,12 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 /**
- * @property int $timeslot_id
+ * @property int    $timeslot_id
  * @property string $timeslot_text
- *
  */
 class Timeslot extends Model
 {
@@ -24,10 +23,11 @@ class Timeslot extends Model
         'timeslot_text',
         'edprog_id',
         'wplp_id',
-        'cohort_id'
+        'cohort_id',
     ];
 
-    public function cohort() {
+    public function cohort()
+    {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
     }
 
@@ -44,6 +44,6 @@ class Timeslot extends Model
     // Relations for query builder
     public function getRelationships()
     {
-        return ["cohort", "educationProgram"];
+        return ['cohort', 'educationProgram'];
     }
 }

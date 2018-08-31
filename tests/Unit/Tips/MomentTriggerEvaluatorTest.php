@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Unit\Tips;
-
 
 use App\Tips\EvaluatedTip;
 use App\Tips\Models\Moment;
@@ -13,7 +11,6 @@ use Tests\TestCase;
 
 class MomentTriggerEvaluatorTest extends TestCase
 {
-
     /** @var EvaluatedTip */
     private $evaluatedTip;
 
@@ -21,7 +18,7 @@ class MomentTriggerEvaluatorTest extends TestCase
     {
         parent::setUp();
 
-        $moment = new Moment;
+        $moment = new Moment();
         $moment->rangeStart = 20;
         $moment->rangeEnd = 50;
 
@@ -34,11 +31,9 @@ class MomentTriggerEvaluatorTest extends TestCase
 
     public function testEvaluate()
     {
-
         /** @var PeriodMomentCalculator|\PHPUnit_Framework_MockObject_MockObject $periodMomentCalculator */
         $periodMomentCalculator = $this->createMock(PeriodMomentCalculator::class);
         $periodMomentCalculator->expects(self::once())->method('getMomentAsPercentage')->willReturn('40');
-
 
         $momentTriggerEvaluator = new MomentTriggerEvaluator($periodMomentCalculator);
 
@@ -47,7 +42,5 @@ class MomentTriggerEvaluatorTest extends TestCase
         $momentTriggerEvaluator->evaluate($this->evaluatedTip);
 
         $this->assertTrue($this->evaluatedTip->isPassing());
-
-
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tips\Services;
 
 use App\Tips\EvaluatedTip;
@@ -43,13 +42,14 @@ class StatisticTriggerEvaluator
 
     /**
      * @param Resultable[]|array $tipCoupledStatisticResults
+     *
      * @return TextParameter[]|array
      */
     private function addParameters(EvaluatedTip $evaluatedTip, array $tipCoupledStatisticResults): void
     {
         $tipCoupledStatistics = $evaluatedTip->getTip()->coupledStatistics->all();
 
-        /**
+        /*
          * For each TipCoupledStatistic create the corresponding parameter
          * If the coupledStatistic is a predefined also add the name of the predefined statistic entity (e.g. category)
          */

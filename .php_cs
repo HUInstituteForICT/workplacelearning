@@ -2,6 +2,9 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->exclude('./resources')
+    ->exclude('./storage')
+    ->exclude('./vendor')
+    ->exclude('./node_modules')
     ->in(__DIR__)
 ;
 

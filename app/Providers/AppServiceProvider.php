@@ -18,10 +18,7 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-
     public function boot()
     {
         if (!\App::environment('debug')) {
@@ -34,14 +31,12 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register()
     {
         $this->app->bind(ChainManager::class, function (Container $app) {
-
             $request = $app->make(Request::class);
+
             return new ChainManager($request->user()->getCurrentWorkplaceLearningPeriod());
         });
 
@@ -53,13 +48,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(LikeRepositoryInterface::class, LikeRepository::class);
         $this->app->bind(StudentTipViewRepositoryInterface::class, StudentTipViewRepository::class);
 
-
-
         $this->app->bind(Collector::class, function (Container $app) {
             $request = $app->make(Request::class);
 
-            $year = $request->get('year') === 'all' ? null : $request->get('year', null);
-            $month = $request->get('month') === 'all' ? null : $request->get('month', null);
+            $year = 'all' === $request->get('year') ? null : $request->get('year', null);
+            $month = 'all' === $request->get('month') ? null : $request->get('month', null);
 
             $learningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod() ?? new WorkplaceLearningPeriod();
 

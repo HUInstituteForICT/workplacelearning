@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Tips\Statistics\Filters;
-
 
 use Illuminate\Database\Query\Builder;
 
 class TimeslotFilter implements Filter
 {
-
     private $parameters;
 
     public function __construct($parameters)

@@ -8,8 +8,6 @@ class StudentTipViews extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -30,8 +28,6 @@ class StudentTipViews extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -39,7 +35,7 @@ class StudentTipViews extends Migration
             try {
                 $table->dropForeign('student_tip_views_to_student');
                 $table->dropForeign('student_tip_views_to_tip');
-            } catch(\Exception $exception) {
+            } catch (\Exception $exception) {
                 // do nothing, foreign doesnt exist
             }
         });

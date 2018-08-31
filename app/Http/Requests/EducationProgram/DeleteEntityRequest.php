@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests\EducationProgram;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeleteEntityRequest extends FormRequest
@@ -23,7 +24,7 @@ class DeleteEntityRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required'
+            'type' => 'required',
         ];
     }
 }

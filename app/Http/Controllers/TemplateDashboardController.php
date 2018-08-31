@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Log;
 
 class TemplateDashboardController extends Controller
 {
-
     private $paramManager;
 
     public function __construct()
@@ -23,6 +22,7 @@ class TemplateDashboardController extends Controller
     public function index()
     {
         $templates = Template::all();
+
         return view('pages.analytics.template.dashboard', compact('templates'));
     }
 
@@ -41,17 +41,17 @@ class TemplateDashboardController extends Controller
             return $type->getName();
         }, $paramTypes);
 
-        if ($id != null) {
-            $template = (new \App\Template)->findOrFail($id);
+        if (null != $id) {
+            $template = (new \App\Template())->findOrFail($id);
             $parameters = $template->getParameters();
-            if ($parameters == null) {
+            if (null == $parameters) {
                 $parameters = [];
             }
         }
 
         $tables = DB::connection('dashboard')->select('SHOW TABLES');
         $tableNames = array_map(function ($object) {
-            return $object->{'Tables_in_' . DB::connection('dashboard')->getDatabaseName()};
+            return $object->{'Tables_in_'.DB::connection('dashboard')->getDatabaseName()};
         }, $tables);
 
         $columnNames = [];
@@ -72,7 +72,7 @@ class TemplateDashboardController extends Controller
             'query' => 'required',
         ]);
 
-        if ($data == null) {
+        if (null == $data) {
             return redirect()
                 ->back()
                 ->withErrors([Lang::get('template.no_parameters')]);
@@ -81,15 +81,15 @@ class TemplateDashboardController extends Controller
         $templateID = $request->input('templateID');
         $name = $request->input('name');
         $description = $request->input('description');
-        if ($description == null) {
-            $description = "";
+        if (null == $description) {
+            $description = '';
         }
         $query = $request->input('query');
 
-        if ($templateID != null) {
-            $template = (new \App\Template)->find($templateID);
+        if (null != $templateID) {
+            $template = (new \App\Template())->find($templateID);
 
-            if ($template != null) {
+            if (null != $template) {
                 $template->update(['name' => $name, 'description' => $description]);
                 $template->update(['name' => $name, 'description' => $description, 'query' => $query]);
                 $this->saveParameters($data, $template);
@@ -111,9 +111,10 @@ class TemplateDashboardController extends Controller
     {
         $existingParams = $template->getParameters();
 
-        if ($existingParams != null && count($existingParams) > count($data)) {
+        if (null != $existingParams && count($existingParams) > count($data)) {
             $ids = array_map(function ($values) {
                 $values = array_values($values);
+
                 return intval($values[0]);
             }, $data);
             Log::debug($ids);
@@ -122,7 +123,7 @@ class TemplateDashboardController extends Controller
                 $id = $param['id'];
                 if (!in_array($id, $ids, false)) {
                     $param->delete();
-                    Log::debug("Deleting:");
+                    Log::debug('Deleting:');
                     Log::debug(json_encode($param));
                 }
             }
@@ -136,19 +137,18 @@ class TemplateDashboardController extends Controller
             $values = array_values($values);
 
             $id = intval($values[0]);
-            if ($id != null && $id > 0) {
-                $existingPar = (new \App\Parameter)->find($id);
-                if ($existingPar != null) {
+            if (null != $id && $id > 0) {
+                $existingPar = (new \App\Parameter())->find($id);
+                if (null != $existingPar) {
                     $existingPar->update([
                         'name' => $values[1],
                         'type_name' => $values[2],
                         'table' => $values[3],
-                        'column' => $values[4]
+                        'column' => $values[4],
                     ]);
                     Log::debug('not null, updating');
                     continue;
                 }
-
             } else {
                 $parameter = new Parameter([
                     'id' => $values[0],
@@ -156,7 +156,7 @@ class TemplateDashboardController extends Controller
                     'name' => $values[1],
                     'type_name' => $values[2],
                     'table' => $values[3],
-                    'column' => $values[4]
+                    'column' => $values[4],
                 ]);
 
                 Log::debug(json_encode($parameter));
@@ -180,11 +180,11 @@ class TemplateDashboardController extends Controller
         $description = $request->input('description', '');
         $query = $request->input('query');
 
-        $template = (new \App\Template)->find($id);
+        $template = (new \App\Template())->find($id);
         if (!$template->update(
             ['name' => $name,
                 'description' => $description,
-                'query' => $query])) {
+                'query' => $query, ])) {
             return redirect()
                 ->back()
                 ->withInput()
@@ -192,14 +192,14 @@ class TemplateDashboardController extends Controller
         }
 
         $template->refresh();
+
         return redirect()->action('TemplateDashboardController@show', [$template['id']])
             ->with('success', Lang::get('template.template_updated'));
     }
 
-
     public function destroy($id)
     {
-        $template = (new \App\Template)->find($id);
+        $template = (new \App\Template())->find($id);
         try {
             $template->delete();
         } catch (\Exception $e) {
@@ -217,7 +217,7 @@ class TemplateDashboardController extends Controller
         $tables = DB::connection('dashboard')->select('SHOW TABLES');
 
         $tableNames = array_map(function ($object) {
-            return $object->{'Tables_in_' . DB::connection('dashboard')->getDatabaseName()};
+            return $object->{'Tables_in_'.DB::connection('dashboard')->getDatabaseName()};
         }, $tables);
 
         return $tableNames;
@@ -230,11 +230,11 @@ class TemplateDashboardController extends Controller
 
     public function getParameters($templateID)
     {
-        $template = (new \App\Template)->find($templateID);
-        if ($template == null) {
+        $template = (new \App\Template())->find($templateID);
+        if (null == $template) {
             return [];
         }
+
         return $template->getParameters();
     }
-
 }

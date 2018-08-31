@@ -97,7 +97,7 @@
             });
             let analysisIDs = [];
             let labels = JSON.parse('{!! json_encode($labels) !!}');
-            @foreach($charts as $key => $dchart)<?php $chart = $dchart->chart ?>
+            @foreach($charts as $key => $dchart)<?php $chart = $dchart->chart; ?>
             analysisIDs.push(JSON.parse('{!! json_encode($charts[$key]) !!}')['chart']['analysis_id']);
 
             let ctx{{ $key }} = $('#chart-{{ $key }}');
@@ -106,7 +106,7 @@
                 data: {
                     labels: [<?php
                         $items = array_map(function ($k) use ($chart) {
-                            return "'" . substr($k->{$chart->x_label->name}, 0, 37) . "'";
+                            return "'".substr($k->{$chart->x_label->name}, 0, 37)."'";
                         }, $chart->analysis->data['data']);
                         echo join(', ', $items);
                         ?>],
@@ -126,7 +126,7 @@
                         // backgroundColor: defaultColours,
                         data: [<?php
                             $x_items = array_map(function ($k) use ($chart) {
-                                return "'" . $k->{$chart->y_label->name} . "'";
+                                return "'".$k->{$chart->y_label->name}."'";
                             }, $chart->analysis->data['data']);
                             echo join(', ', $x_items);
                             ?>]
