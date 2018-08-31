@@ -33,7 +33,7 @@ class EvaluatedTip implements EvaluatedTipInterface
     public function getTipText(): string
     {
         $tipText = $this->tip->tipText;
-        array_walk($this->textParameters, function (TextParameter $textParameter) use (&$tipText) {
+        array_walk($this->textParameters, function (TextParameter $textParameter) use (&$tipText): void {
             $tipText = $textParameter->apply($tipText);
         });
 

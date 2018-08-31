@@ -8,9 +8,9 @@ class AddSlugColumnToChartTypesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('chart_types', function (Blueprint $table) {
+        Schema::table('chart_types', function (Blueprint $table): void {
             $table->string('slug')->nullable();
         });
     }
@@ -18,9 +18,9 @@ class AddSlugColumnToChartTypesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('chart_types', function (Blueprint $table) {
+        Schema::table('chart_types', function (Blueprint $table): void {
             $table->dropColumn('slug');
         });
     }

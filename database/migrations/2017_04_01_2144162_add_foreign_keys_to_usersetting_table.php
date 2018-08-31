@@ -8,9 +8,9 @@ class AddForeignKeysToUsersettingTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('usersetting', function (Blueprint $table) {
+        Schema::table('usersetting', function (Blueprint $table): void {
             $table->foreign('student_id', 'fk_UserSetting_Student1')->references('student_id')->on('student')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -18,9 +18,9 @@ class AddForeignKeysToUsersettingTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('usersetting', function (Blueprint $table) {
+        Schema::table('usersetting', function (Blueprint $table): void {
             $table->dropForeign('fk_UserSetting_Student1');
         });
     }

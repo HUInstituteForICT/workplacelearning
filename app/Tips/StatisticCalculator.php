@@ -25,10 +25,6 @@ class StatisticCalculator
 
     /**
      * @throws \ErrorException
-     *
-     * @param Statistic $statistic
-     *
-     * @return Resultable
      */
     public function calculate(Statistic $statistic): Resultable
     {
@@ -43,10 +39,6 @@ class StatisticCalculator
 
     /**
      * @throws \ErrorException
-     *
-     * @param CustomStatistic $statistic
-     *
-     * @return Resultable
      */
     private function calculateCustomStatistic(CustomStatistic $statistic): Resultable
     {

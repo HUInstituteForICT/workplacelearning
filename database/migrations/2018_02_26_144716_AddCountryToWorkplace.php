@@ -9,9 +9,9 @@ class AddCountryToWorkplace extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('workplace', function (Blueprint $table) {
+        Schema::table('workplace', function (Blueprint $table): void {
             $table->string('country')->default('');
         });
     }
@@ -19,9 +19,9 @@ class AddCountryToWorkplace extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('workplace', function (Blueprint $table) {
+        Schema::table('workplace', function (Blueprint $table): void {
             $table->dropColumn('country');
         });
     }

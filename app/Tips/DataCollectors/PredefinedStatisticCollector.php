@@ -36,8 +36,6 @@ class PredefinedStatisticCollector implements CollectorInterface
     /**
      * @DataUnitAnnotation(name="Category with highest difficulty", method="categoryWithHighestDifficulty", valueParameterDescription="The found category's name", epType="Producing")
      *
-     * @return Resultable
-     *
      * @throws \Exception
      */
     public function categoryWithHighestDifficulty(): Resultable
@@ -58,8 +56,6 @@ class PredefinedStatisticCollector implements CollectorInterface
 
     /**
      * @DataUnitAnnotation(name="Person easiest to work with", method="personWithEasiestDifficulty", valueParameterDescription="The found person's name", epType="Producing")
-     *
-     * @return Resultable
      *
      * @throws \Exception When unable to find ResourcePerson
      */
@@ -86,8 +82,6 @@ class PredefinedStatisticCollector implements CollectorInterface
     /**
      * @DataUnitAnnotation(name="Percentage learning moments for every learning question without use of theory", method="percentageLearningMomentsWithoutTheory", valueParameterDescription="The comma separated names of the learning moments (e.g. 'Unplanned moment, individual session')", epType="Acting")
      *
-     * @return Resultable
-     *
      * @throws \Exception
      */
     public function percentageLearningMomentsWithoutTheory(): Resultable
@@ -97,7 +91,7 @@ class PredefinedStatisticCollector implements CollectorInterface
         $learningQuestions = $this->learningPeriod->learningGoals;
         $this->learningPeriod->learningActivityActing;
 
-        $learningQuestions->each(function (LearningGoal $goal) use ($resultCollection) {
+        $learningQuestions->each(function (LearningGoal $goal) use ($resultCollection): void {
             $totalCount = $this->wherePeriod(
                 $this->learningPeriod->learningActivityActing()->where('learninggoal_id', '=', $goal->learninggoal_id)->getBaseQuery()
             )->count();

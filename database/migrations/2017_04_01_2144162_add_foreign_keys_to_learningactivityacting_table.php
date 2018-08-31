@@ -8,9 +8,9 @@ class AddForeignKeysToLearningactivityactingTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('learningactivityacting', function (Blueprint $table) {
+        Schema::table('learningactivityacting', function (Blueprint $table): void {
             $table->foreign('learninggoal_id', 'fk_LearningActivityActing_LearningGoal1')->references('learninggoal_id')->on('learninggoal')->onUpdate('NO ACTION')->onDelete('NO ACTION');
             $table->foreign('res_material_id', 'fk_LearningActivityActing_ResourceMaterial1')->references('rm_id')->on('resourcematerial')->onUpdate('NO ACTION')->onDelete('NO ACTION');
             $table->foreign('res_person_id', 'fk_LearningActivityActing_ResourcePerson1')->references('rp_id')->on('resourceperson')->onUpdate('NO ACTION')->onDelete('NO ACTION');
@@ -22,9 +22,9 @@ class AddForeignKeysToLearningactivityactingTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('learningactivityacting', function (Blueprint $table) {
+        Schema::table('learningactivityacting', function (Blueprint $table): void {
             $table->dropForeign('fk_LearningActivityActing_LearningGoal1');
             $table->dropForeign('fk_LearningActivityActing_ResourceMaterial1');
             $table->dropForeign('fk_LearningActivityActing_ResourcePerson1');

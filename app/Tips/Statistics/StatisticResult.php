@@ -35,7 +35,7 @@ class StatisticResult implements Resultable
         return $this->passed;
     }
 
-    public function doThresholdComparison(float $threshold, int $operator)
+    public function doThresholdComparison(float $threshold, int $operator): void
     {
         if (TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN === $operator) {
             $this->passed = $this->result < $threshold;

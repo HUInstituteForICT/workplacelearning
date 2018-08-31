@@ -2,7 +2,7 @@
 
 class ResultableTest extends \Tests\TestCase
 {
-    public function testStatisticResult()
+    public function testStatisticResult(): void
     {
         $result = new \App\Tips\Statistics\StatisticResult(1, 'SomeEntity');
         $result->doThresholdComparison(0.5, \App\Tips\Models\TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN);
@@ -14,7 +14,7 @@ class ResultableTest extends \Tests\TestCase
         $this->assertFalse($result->hasPassed());
     }
 
-    public function testStatisticCalculationResult()
+    public function testStatisticCalculationResult(): void
     {
         $result = new \App\Tips\Statistics\StatisticCalculationResult(1, 'SomeEntity');
         $result->doThresholdComparison(0.5, \App\Tips\Models\TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN);
@@ -26,7 +26,7 @@ class ResultableTest extends \Tests\TestCase
         $this->assertFalse($result->hasPassed());
     }
 
-    public function testStatisticResultCollection()
+    public function testStatisticResultCollection(): void
     {
         $collection = new \App\Tips\Statistics\StatisticResultCollection();
 

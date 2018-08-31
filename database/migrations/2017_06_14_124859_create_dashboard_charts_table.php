@@ -8,9 +8,9 @@ class CreateDashboardChartsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('dashboard_charts', function (Blueprint $table) {
+        Schema::create('dashboard_charts', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('position');
             $table->unsignedInteger('chart_id');
@@ -21,7 +21,7 @@ class CreateDashboardChartsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('dashboard_charts');
     }

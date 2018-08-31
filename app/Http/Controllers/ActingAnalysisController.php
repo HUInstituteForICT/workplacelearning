@@ -37,11 +37,8 @@ class ActingAnalysisController extends Controller
     }
 
     /**
-     * @param Request $request
      * @param $year
      * @param $month
-     * @param ApplicableTipFetcher    $applicableTipFetcher
-     * @param LikeRepositoryInterface $likeRepository
      *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
@@ -99,7 +96,7 @@ class ActingAnalysisController extends Controller
         })->shuffle()->take(3);
 
         // Register that the tip will be viewed by the student
-        $evaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $studentTipViewRepository) {
+        $evaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $studentTipViewRepository): void {
             $studentTipViewRepository->createForTip($evaluatedTip->getTip(), $student);
         });
 

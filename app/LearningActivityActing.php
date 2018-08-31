@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int       $laa_id
@@ -118,7 +119,7 @@ class LearningActivityActing extends Model implements LearningActivityInterface
         return $this->competence()->first();
     }
 
-    public function workplaceLearningPeriod()
+    public function workplaceLearningPeriod(): BelongsTo
     {
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }

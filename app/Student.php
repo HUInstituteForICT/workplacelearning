@@ -91,7 +91,7 @@ class Student extends Authenticatable
         return $this->userSettings[$label];
     }
 
-    public function setUserSetting($label, $value)
+    public function setUserSetting($label, $value): void
     {
         $setting = $this->getUserSetting($label);
         if (!$setting) {
@@ -142,9 +142,6 @@ class Student extends Authenticatable
             ->get();
     }
 
-    /**
-     * @return null|WorkplaceLearningPeriod
-     */
     public function getCurrentWorkplaceLearningPeriod(): ?WorkplaceLearningPeriod
     {
         if (null === $this->currentWorkplaceLearningPeriod) {
@@ -194,7 +191,7 @@ class Student extends Authenticatable
         return null;
     }
 
-    public function setRememberToken($value)
+    public function setRememberToken($value): void
     {
     }
 
@@ -203,7 +200,7 @@ class Student extends Authenticatable
         return null;
     }
 
-    public function setAttribute($key, $value)
+    public function setAttribute($key, $value): void
     {
         $isRememberTokenAttribute = $key == $this->getRememberTokenName();
         if (!$isRememberTokenAttribute) {
@@ -217,7 +214,7 @@ class Student extends Authenticatable
         return $this->pw_hash;
     }
 
-    public function setActiveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod)
+    public function setActiveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod): void
     {
         $this->setUserSetting('active_internship', $workplaceLearningPeriod->wplp_id);
     }

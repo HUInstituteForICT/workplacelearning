@@ -12,51 +12,32 @@ class LearningActivityPolicy
 
     /**
      * Determine whether the Student can view the learningActivityInterface.
-     *
-     * @param \App\Student                   $student
-     * @param \App\LearningActivityInterface $learningActivityInterface
-     *
-     * @return mixed
      */
-    public function view(Student $student, LearningActivityInterface $learningActivityInterface)
+    public function view(Student $student, LearningActivityInterface $learningActivityInterface): bool
     {
         return $learningActivityInterface->workplaceLearningPeriod->is($student->getCurrentWorkplaceLearningPeriod());
     }
 
     /**
      * Determine whether the Student can create learningActivityInterfaces.
-     *
-     * @param \App\Student $student
-     *
-     * @return mixed
      */
-    public function create(Student $student)
+    public function create(Student $student): bool
     {
         return null !== $student->getCurrentWorkplaceLearningPeriod();
     }
 
     /**
      * Determine whether the Student can update the learningActivityInterface.
-     *
-     * @param \App\Student                   $student
-     * @param \App\LearningActivityInterface $learningActivityInterface
-     *
-     * @return mixed
      */
-    public function update(Student $student, LearningActivityInterface $learningActivityInterface)
+    public function update(Student $student, LearningActivityInterface $learningActivityInterface): bool
     {
         return $learningActivityInterface->workplaceLearningPeriod->is($student->getCurrentWorkplaceLearningPeriod());
     }
 
     /**
      * Determine whether the Student can delete the learningActivityInterface.
-     *
-     * @param \App\Student                   $student
-     * @param \App\LearningActivityInterface $learningActivityInterface
-     *
-     * @return mixed
      */
-    public function delete(Student $student, LearningActivityInterface $learningActivityInterface)
+    public function delete(Student $student, LearningActivityInterface $learningActivityInterface): bool
     {
         return $learningActivityInterface->workplaceLearningPeriod->is($student->getCurrentWorkplaceLearningPeriod());
     }

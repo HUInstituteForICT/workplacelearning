@@ -8,9 +8,9 @@ class CreateStudentTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('student', function (Blueprint $table) {
+        Schema::create('student', function (Blueprint $table): void {
             $table->integer('student_id', true);
             $table->integer('studentnr')->unique('studentnr_UNIQUE');
             $table->string('firstname', 45);
@@ -30,7 +30,7 @@ class CreateStudentTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('student');
     }

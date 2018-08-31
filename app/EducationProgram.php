@@ -34,7 +34,7 @@ class EducationProgram extends Model
         'eptype_id' => 'int',
     ];
 
-    public function competenceDescription()
+    public function competenceDescription(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(CompetenceDescription::class, 'education_program_id', 'ep_id');
     }

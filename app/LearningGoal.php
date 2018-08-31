@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int    $learninggoal_id
  * @property string $learninggoal_label
+ * @property string $description
  */
 class LearningGoal extends Model
 {

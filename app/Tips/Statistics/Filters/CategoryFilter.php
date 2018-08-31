@@ -13,7 +13,7 @@ class CategoryFilter implements Filter
         $this->parameters = $parameters;
     }
 
-    public function filter(Builder $builder)
+    public function filter(Builder $builder): void
     {
         if (empty($this->parameters['category_label'])) {
             return;

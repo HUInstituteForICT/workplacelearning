@@ -8,9 +8,9 @@ class CreateAccesslogTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('accesslog', function (Blueprint $table) {
+        Schema::create('accesslog', function (Blueprint $table): void {
             $table->integer('access_id', true);
             $table->integer('student_id')->index('fk_AccessLog_Student1_idx');
             $table->string('session_id', 64);
@@ -27,7 +27,7 @@ class CreateAccesslogTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('accesslog');
     }

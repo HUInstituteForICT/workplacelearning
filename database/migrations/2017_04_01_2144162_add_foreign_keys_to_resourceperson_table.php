@@ -8,9 +8,9 @@ class AddForeignKeysToResourcepersonTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('resourceperson', function (Blueprint $table) {
+        Schema::table('resourceperson', function (Blueprint $table): void {
             $table->foreign('ep_id', 'fk_ResourcePerson_EducationProgram1')->references('ep_id')->on('educationprogram')->onUpdate('NO ACTION')->onDelete('NO ACTION');
             $table->foreign('wplp_id', 'fk_ResourcePerson_WorkplaceLearningPeriod1')->references('wplp_id')->on('workplacelearningperiod')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
@@ -19,9 +19,9 @@ class AddForeignKeysToResourcepersonTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('resourceperson', function (Blueprint $table) {
+        Schema::table('resourceperson', function (Blueprint $table): void {
             $table->dropForeign('fk_ResourcePerson_EducationProgram1');
             $table->dropForeign('fk_ResourcePerson_WorkplaceLearningPeriod1');
         });

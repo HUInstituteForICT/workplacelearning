@@ -55,7 +55,6 @@ class AnalyticsChartController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param Request $request
      *
      * @return Response
      */
@@ -76,7 +75,6 @@ class AnalyticsChartController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
      *
      * @return Response
      */
@@ -93,7 +91,7 @@ class AnalyticsChartController extends Controller
         $chart->label = $data['label'];
 
         $saved = false;
-        \DB::transaction(function () use ($chart, $data, &$saved) {
+        \DB::transaction(function () use ($chart, $data, &$saved): void {
             if ($chart->save()) {
                 $chart->labels()->saveMany([
                     new Label(['chart_id' => $chart->id, 'name' => $data['x_axis'], 'type' => 'x']),
@@ -213,7 +211,7 @@ class AnalyticsChartController extends Controller
 
                 if (null == $programTypeID || 2 == $programTypeID) {
                     $id = (new \App\Category())->where('category_label', $label)
-                        ->where(function ($query) use ($cohort) {
+                        ->where(function ($query) use ($cohort): void {
                             if (null != $cohort) {
                                 $query->where('cohort_id', $cohort);
                             }
@@ -227,7 +225,7 @@ class AnalyticsChartController extends Controller
                     }
                 } else {
                     $id = (new \App\Timeslot())->where('timeslot_text', $label)
-                        ->where(function ($query) use ($cohort) {
+                        ->where(function ($query) use ($cohort): void {
                             if (null != $cohort) {
                                 $query->where('cohort_id', $cohort);
                             }

@@ -8,9 +8,9 @@ class CreateResourcepersonTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('resourceperson', function (Blueprint $table) {
+        Schema::create('resourceperson', function (Blueprint $table): void {
             $table->integer('rp_id', true);
             $table->string('person_label', 45);
             $table->integer('ep_id')->index('fk_ResourcePerson_EducationProgram1_idx');
@@ -21,7 +21,7 @@ class CreateResourcepersonTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('resourceperson');
     }

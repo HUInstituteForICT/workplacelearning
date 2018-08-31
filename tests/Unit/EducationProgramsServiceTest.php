@@ -20,7 +20,7 @@ class EducationProgramsServiceTest extends TestCase
     /** @var $cohort Cohort */
     private $cohort;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         /** @var EducationProgramType $type */
@@ -30,7 +30,7 @@ class EducationProgramsServiceTest extends TestCase
         $this->programsService = new EducationProgramsService();
     }
 
-    public function testCreateEntity()
+    public function testCreateEntity(): void
     {
         $entity = $this->programsService->createEntity('competence', 'Test program', $this->cohort);
         $this->assertInstanceOf(Competence::class, $entity);
@@ -42,7 +42,7 @@ class EducationProgramsServiceTest extends TestCase
         $this->assertInstanceOf(ResourcePerson::class, $entity);
     }
 
-    public function testDeleteEntity()
+    public function testDeleteEntity(): void
     {
         $createdEntity = $this->programsService->createEntity('resourcePerson', 'Test program', $this->cohort);
         $this->assertInstanceOf(ResourcePerson::class, $createdEntity);
@@ -51,7 +51,7 @@ class EducationProgramsServiceTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function testUpdateEntity()
+    public function testUpdateEntity(): void
     {
         $createdEntity = $this->programsService->createEntity('resourcePerson', 'Test program', $this->cohort);
         $this->assertInstanceOf(ResourcePerson::class, $createdEntity);

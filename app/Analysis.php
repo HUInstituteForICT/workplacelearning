@@ -4,15 +4,18 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
- * @property int id
- * @property string name Analysis name
- * @property string query SQL query
- * @property int cache_duration Duration in given time type
- * @property string type_time
- * @property string time_type
+ * @property int $id
+ * @property string $name Analysis name
+ * @property string $query SQL query
+ * @property int $cache_duration Duration in given time type
+ * @property string $type_time
+ * @property string $time_type
  */
 class Analysis extends Model
 {
@@ -21,13 +24,13 @@ class Analysis extends Model
     protected $table = 'analyses';
     protected $fillable = array('name', 'query', 'type_time', 'cache_duration');
 
-    public function charts()
+    public function charts(): HasMany
     {
         return $this->hasMany('App\AnalysisChart');
     }
 
     // Who named this? It now works both ways.
-    public function getTimeTypeAttribute($value)
+    public function getTimeTypeAttribute($value): string
     {
         return $this->type_time;
     }
@@ -36,25 +39,23 @@ class Analysis extends Model
      * Get cached data if any.
      *
      * @param $value
-     *
-     * @return mixed
      */
     public function getDataAttribute($value)
     {
-        if (!\Cache::has(self::CACHE_KEY.$this->id)) {
+        if (!Cache::has(self::CACHE_KEY.$this->id)) {
             $this->refresh();
         }
 
-        return \Cache::get(self::CACHE_KEY.$this->id);
+        return Cache::get(self::CACHE_KEY.$this->id);
     }
 
     /**
      * Refresh the cached data, if any.
      */
-    public function refresh()
+    public function refresh(): void
     {
-        if (\Cache::has(self::CACHE_KEY.$this->id)) {
-            \Cache::forget(self::CACHE_KEY.$this->id);
+        if (Cache::has(self::CACHE_KEY.$this->id)) {
+            Cache::forget(self::CACHE_KEY.$this->id);
         }
 
         $now = Carbon::now();
@@ -87,7 +88,7 @@ class Analysis extends Model
                 break;
         }
 
-        \Cache::put(self::CACHE_KEY.$this->id, [
+        Cache::put(self::CACHE_KEY.$this->id, [
             'id' => $this->id,
             'data' => $this->execute(),
         ], $expiry);
@@ -98,7 +99,7 @@ class Analysis extends Model
      *
      * @return array|null
      */
-    public function execute()
+    public function execute(): ?array
     {
         $data = null;
         try {
@@ -106,7 +107,7 @@ class Analysis extends Model
             if (Str::contains($query, 'wplp_id') && !Str::contains($query, 'is_in_analytics')) {
                 $query = Str::replaceFirst('WHERE', 'WHERE is_in_analytics = 1 AND', $query);
             }
-            $data = \DB::connection('dashboard')->select($query);
+            $data = DB::connection('dashboard')->select($query);
         } catch (\Exception $e) {
             $data = [
                 'error' => $e->getMessage(),

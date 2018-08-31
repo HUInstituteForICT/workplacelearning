@@ -8,9 +8,9 @@ class CreateStatusTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('status', function (Blueprint $table) {
+        Schema::create('status', function (Blueprint $table): void {
             $table->integer('status_id', true);
             $table->string('status_label', 45)->nullable();
         });
@@ -19,7 +19,7 @@ class CreateStatusTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('status');
     }

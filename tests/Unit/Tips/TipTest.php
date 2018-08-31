@@ -6,7 +6,7 @@ use App\Tips\Services\TipManager;
 
 class TipTest extends \Tests\TestCase
 {
-    public function testTipLike()
+    public function testTipLike(): void
     {
         $tip = factory(Tip::class)->create();
         $student = factory(Student::class)->create();

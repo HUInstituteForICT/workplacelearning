@@ -55,7 +55,7 @@ class StatisticTriggerEvaluator
          */
         array_walk(
             $tipCoupledStatistics,
-            function (TipCoupledStatistic $coupledStatistic) use ($evaluatedTip, $tipCoupledStatisticResults) {
+            function (TipCoupledStatistic $coupledStatistic) use ($evaluatedTip, $tipCoupledStatisticResults): void {
                 $id = $coupledStatistic->id;
                 $resultable = $tipCoupledStatisticResults[$id];
 

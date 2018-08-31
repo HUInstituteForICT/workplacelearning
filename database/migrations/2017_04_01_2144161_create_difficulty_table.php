@@ -8,9 +8,9 @@ class CreateDifficultyTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('difficulty', function (Blueprint $table) {
+        Schema::create('difficulty', function (Blueprint $table): void {
             $table->integer('difficulty_id', true);
             $table->string('difficulty_label', 45)->nullable();
         });
@@ -19,7 +19,7 @@ class CreateDifficultyTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('difficulty');
     }

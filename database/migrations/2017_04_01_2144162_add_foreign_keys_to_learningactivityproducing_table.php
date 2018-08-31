@@ -8,9 +8,9 @@ class AddForeignKeysToLearningactivityproducingTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('learningactivityproducing', function (Blueprint $table) {
+        Schema::table('learningactivityproducing', function (Blueprint $table): void {
             $table->foreign('category_id', 'fk_LearningActivityProducing_Category1')->references('category_id')->on('category')->onUpdate('NO ACTION')->onDelete('NO ACTION');
             $table->foreign('difficulty_id', 'fk_LearningActivityProducing_Difficulty1')->references('difficulty_id')->on('difficulty')->onUpdate('NO ACTION')->onDelete('NO ACTION');
             $table->foreign('prev_lap_id', 'fk_LearningActivityProducing_LearningActivityProducing1')->references('lap_id')->on('learningactivityproducing')->onUpdate('NO ACTION')->onDelete('NO ACTION');
@@ -24,9 +24,9 @@ class AddForeignKeysToLearningactivityproducingTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('learningactivityproducing', function (Blueprint $table) {
+        Schema::table('learningactivityproducing', function (Blueprint $table): void {
             $table->dropForeign('fk_LearningActivityProducing_Category1');
             $table->dropForeign('fk_LearningActivityProducing_Difficulty1');
             $table->dropForeign('fk_LearningActivityProducing_LearningActivityProducing1');

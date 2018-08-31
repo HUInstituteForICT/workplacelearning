@@ -9,9 +9,9 @@ class StudentAddAnalyticsFlag extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('workplacelearningperiod', function (Blueprint $table) {
+        Schema::table('workplacelearningperiod', function (Blueprint $table): void {
             $table->boolean('is_in_analytics')->default(true);
         });
     }
@@ -19,9 +19,9 @@ class StudentAddAnalyticsFlag extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('workplacelearningperiod', function (Blueprint $table) {
+        Schema::table('workplacelearningperiod', function (Blueprint $table): void {
             $table->dropColumn('is_in_analytics');
         });
     }

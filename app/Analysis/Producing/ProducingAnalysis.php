@@ -103,9 +103,9 @@ class ProducingAnalysis
         }
         if (null === $chart) {
             return $this->charts;
-        } else {
-            return $this->charts[$chart];
         }
+
+        return $this->charts[$chart];
     }
 
     /**

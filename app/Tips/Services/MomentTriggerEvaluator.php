@@ -35,8 +35,6 @@ class MomentTriggerEvaluator
 
     /**
      * @param Moment[]|array
-     *
-     * @return bool
      */
     private function hasFittingMoment(array $moments, float $percentage): bool
     {

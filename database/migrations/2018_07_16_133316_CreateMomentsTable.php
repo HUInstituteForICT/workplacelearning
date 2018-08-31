@@ -9,16 +9,16 @@ class CreateMomentsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('moments', function (Blueprint $table) {
+        Schema::create('moments', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('rangeStart');
             $table->integer('rangeEnd');
             $table->unsignedInteger('tip_id');
         });
 
-        Schema::table('moments', function (Blueprint $table) {
+        Schema::table('moments', function (Blueprint $table): void {
             $table->foreign('tip_id', 'moment_to_tip')->references('id')->on('tips')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
@@ -26,7 +26,7 @@ class CreateMomentsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('moments');
     }

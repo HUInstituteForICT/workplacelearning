@@ -8,9 +8,9 @@ class AddForeignKeysToFeedbackTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('feedback', function (Blueprint $table) {
+        Schema::table('feedback', function (Blueprint $table): void {
             $table->foreign('learningactivity_id', 'fk_Feedback_LearningActivityProducing1')->references('lap_id')->on('learningactivityproducing')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -18,9 +18,9 @@ class AddForeignKeysToFeedbackTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('feedback', function (Blueprint $table) {
+        Schema::table('feedback', function (Blueprint $table): void {
             $table->dropForeign('fk_Feedback_LearningActivityProducing1');
         });
     }

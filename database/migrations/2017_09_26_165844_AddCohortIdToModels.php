@@ -18,7 +18,7 @@ class AddCohortIdToModels extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         /*
          * Same migrations for multiple models
@@ -34,10 +34,10 @@ class AddCohortIdToModels extends Migration
         // Loop over alle categories, krijg het EP_id, check of er mapping is ep_id => cohort_id, zoja zet cohort id, zo niet maak cohort en mapping
     }
 
-    private function category()
+    private function category(): void
     {
         if (!Schema::hasColumn('category', 'cohort_id')) {
-            Schema::table('category', function (Blueprint $table) {
+            Schema::table('category', function (Blueprint $table): void {
                 $table->integer('ep_id')->nullable()->change();
 
                 $table->unsignedInteger('cohort_id')->nullable()->default(null);
@@ -47,7 +47,7 @@ class AddCohortIdToModels extends Migration
         }
 
         $categories = Category::whereNotNull('ep_id')->where('wplp_id', '0')->whereNull('cohort_id')->with('educationProgram')->get();
-        $categories->each(function (Category $category) {
+        $categories->each(function (Category $category): void {
             if (!isset($this->epToCohortMapping[$category->ep_id])) {
                 $cohort = tap(new Cohort(['name' => $category->educationProgram->ep_name,
                                           'ep_id' => $category->ep_id,
@@ -59,10 +59,10 @@ class AddCohortIdToModels extends Migration
         });
     }
 
-    private function competence()
+    private function competence(): void
     {
         if (!Schema::hasColumn('competence', 'cohort_id')) {
-            Schema::table('competence', function (Blueprint $table) {
+            Schema::table('competence', function (Blueprint $table): void {
                 $table->integer('educationprogram_id')->nullable()->change();
                 $table->unsignedInteger('cohort_id')->nullable()->default(null);
                 $table->foreign('cohort_id', 'Fk_Cohort_Competence')
@@ -70,7 +70,7 @@ class AddCohortIdToModels extends Migration
             });
 
             $competence = Competence::whereNotNull('educationprogram_id')->whereNull('cohort_id')->with('educationProgram')->get();
-            $competence->each(function (Competence $competence) {
+            $competence->each(function (Competence $competence): void {
                 if (!isset($this->epToCohortMapping[$competence->educationprogram_id])) {
                     $cohort = tap(new Cohort(['name' => $competence->educationProgram->ep_name,
                                               'ep_id' => $competence->educationprogram_id,
@@ -83,10 +83,10 @@ class AddCohortIdToModels extends Migration
         }
     }
 
-    private function competenceDescription()
+    private function competenceDescription(): void
     {
         if (!Schema::hasColumn('competence_descriptions', 'cohort_id')) {
-            Schema::table('competence_descriptions', function (Blueprint $table) {
+            Schema::table('competence_descriptions', function (Blueprint $table): void {
                 $table->integer('education_program_id')->nullable()->change();
                 $table->unsignedInteger('cohort_id')->nullable()->default(null);
                 $table->foreign('cohort_id', 'Fk_Cohort_CompetenceDescriptions')
@@ -95,7 +95,7 @@ class AddCohortIdToModels extends Migration
 
             $competenceDescription = CompetenceDescription::whereNotNull('education_program_id')->whereNull('cohort_id')->get();
             $competenceDescription->load('educationProgram');
-            $competenceDescription->each(function (CompetenceDescription $competenceDescription) {
+            $competenceDescription->each(function (CompetenceDescription $competenceDescription): void {
                 if (!isset($this->epToCohortMapping[$competenceDescription->education_program_id])) {
                     $cohort = tap(new Cohort(['name' => $competenceDescription->educationProgram->ep_name,
                                               'ep_id' => $competenceDescription->education_program_id,
@@ -108,10 +108,10 @@ class AddCohortIdToModels extends Migration
         }
     }
 
-    private function resourcePerson()
+    private function resourcePerson(): void
     {
         if (!Schema::hasColumn('resourceperson', 'cohort_id')) {
-            Schema::table('resourceperson', function (Blueprint $table) {
+            Schema::table('resourceperson', function (Blueprint $table): void {
                 $table->integer('ep_id')->nullable()->change();
                 $table->unsignedInteger('cohort_id')->nullable()->default(null);
                 $table->foreign('cohort_id', 'Fk_Cohort_ResourcePerson')
@@ -120,7 +120,7 @@ class AddCohortIdToModels extends Migration
         }
 
         $resourcePerson = ResourcePerson::whereNotNull('ep_id')->where('wplp_id', '0')->whereNull('cohort_id')->with('educationProgram')->get();
-        $resourcePerson->each(function (ResourcePerson $resourcePerson) {
+        $resourcePerson->each(function (ResourcePerson $resourcePerson): void {
             if (!isset($this->epToCohortMapping[$resourcePerson->ep_id])) {
                 $cohort = tap(new Cohort(['name' => $resourcePerson->educationProgram->ep_name,
                                           'ep_id' => $resourcePerson->ep_id,
@@ -132,10 +132,10 @@ class AddCohortIdToModels extends Migration
         });
     }
 
-    private function timeslot()
+    private function timeslot(): void
     {
         if (!Schema::hasColumn('timeslot', 'cohort_id')) {
-            Schema::table('timeslot', function (Blueprint $table) {
+            Schema::table('timeslot', function (Blueprint $table): void {
                 $table->integer('edprog_id')->nullable()->change();
                 $table->unsignedInteger('cohort_id')->nullable()->default(null);
                 $table->foreign('cohort_id', 'Fk_Cohort_Timeslot')
@@ -144,7 +144,7 @@ class AddCohortIdToModels extends Migration
         }
 
         $timeslot = Timeslot::whereNotNull('edprog_id')->where('wplp_id', '0')->whereNull('cohort_id')->with('educationProgram')->get();
-        $timeslot->each(function (Timeslot $timeslot) {
+        $timeslot->each(function (Timeslot $timeslot): void {
             if (!isset($this->epToCohortMapping[$timeslot->edprog_id])) {
                 $cohort = tap(new Cohort(['name' => $timeslot->educationProgram->ep_name,
                                           'ep_id' => $timeslot->edprog_id,
@@ -156,10 +156,10 @@ class AddCohortIdToModels extends Migration
         });
     }
 
-    private function wplp()
+    private function wplp(): void
     {
         if (!Schema::hasColumn('workplacelearningperiod', 'cohort_id')) {
-            Schema::table('workplacelearningperiod', function (Blueprint $table) {
+            Schema::table('workplacelearningperiod', function (Blueprint $table): void {
                 $table->unsignedInteger('cohort_id')->nullable()->default(null);
                 $table->foreign('cohort_id', 'Fk_Cohort_Workplacelearningperiod')
                     ->references('id')->on('cohorts')->onUpdate('NO ACTION')->onDelete('NO ACTION');
@@ -167,7 +167,7 @@ class AddCohortIdToModels extends Migration
         }
 
         $wplp = WorkplaceLearningPeriod::whereNull('cohort_id')->with('student')->get();
-        $wplp->each(function (WorkplaceLearningPeriod $workplaceLearningPeriod) {
+        $wplp->each(function (WorkplaceLearningPeriod $workplaceLearningPeriod): void {
             if (!isset($this->epToCohortMapping[$workplaceLearningPeriod->student->ep_id])) {
                 $cohort = tap(new Cohort(['name' => $workplaceLearningPeriod->student->educationProgram->ep_name,
                                           'ep_id' => $workplaceLearningPeriod->student->ed_id,
@@ -182,9 +182,9 @@ class AddCohortIdToModels extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('category', function (Blueprint $table) {
+        Schema::table('category', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
             $table->dropForeign('Fk_Category_Cohort');
@@ -193,7 +193,7 @@ class AddCohortIdToModels extends Migration
             Schema::enableForeignKeyConstraints();
         });
 
-        Schema::table('competence', function (Blueprint $table) {
+        Schema::table('competence', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
             $table->dropForeign('Fk_Cohort_Competence');
@@ -202,7 +202,7 @@ class AddCohortIdToModels extends Migration
             Schema::enableForeignKeyConstraints();
         });
 
-        Schema::table('competence_descriptions', function (Blueprint $table) {
+        Schema::table('competence_descriptions', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
             $table->dropForeign('Fk_Cohort_CompetenceDescriptions');
@@ -211,7 +211,7 @@ class AddCohortIdToModels extends Migration
             Schema::enableForeignKeyConstraints();
         });
 
-        Schema::table('resourceperson', function (Blueprint $table) {
+        Schema::table('resourceperson', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
             $table->dropForeign('Fk_Cohort_ResourcePerson');
@@ -220,7 +220,7 @@ class AddCohortIdToModels extends Migration
             Schema::enableForeignKeyConstraints();
         });
 
-        Schema::table('timeslot', function (Blueprint $table) {
+        Schema::table('timeslot', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
             $table->dropForeign('Fk_Cohort_Timeslot');
@@ -229,7 +229,7 @@ class AddCohortIdToModels extends Migration
             Schema::enableForeignKeyConstraints();
         });
 
-        Schema::table('workplacelearningperiod', function (Blueprint $table) {
+        Schema::table('workplacelearningperiod', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
             $table->dropForeign('Fk_Cohort_Workplacelearningperiod');

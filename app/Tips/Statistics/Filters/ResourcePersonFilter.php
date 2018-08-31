@@ -14,7 +14,7 @@ class ResourcePersonFilter implements Filter
         $this->parameters = $parameters;
     }
 
-    public function filter(Builder $builder)
+    public function filter(Builder $builder): void
     {
         if (empty($this->parameters['person_label'])) {
             return;
@@ -33,7 +33,7 @@ class ResourcePersonFilter implements Filter
         }
     }
 
-    private function applyNullFilter(Builder $builder, array $labels)
+    private function applyNullFilter(Builder $builder, array $labels): void
     {
         $labelsInLower = collect($labels)->map(function ($label) {
             return strtolower($label);
@@ -41,9 +41,9 @@ class ResourcePersonFilter implements Filter
 
         // contains() only allows single key, not array of keys :(
         if ($labelsInLower->contains('alleen') || $labelsInLower->contains('alone')) {
-            $builder->where(function (Builder $query) use ($labels) {
+            $builder->where(function (Builder $query) use ($labels): void {
                 $query->whereIn('person_label', $labels) // Where the label is Alleen / Alone etc.
-                    ->orWhere(function (Builder $query) { // Or where res_person_id is null AND material is also null, because a book could've been used
+                    ->orWhere(function (Builder $query): void { // Or where res_person_id is null AND material is also null, because a book could've been used
                         $query->whereNull('res_person_id')
                             ->whereNull('res_material_id');
                     });

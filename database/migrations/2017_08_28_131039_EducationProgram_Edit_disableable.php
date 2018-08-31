@@ -9,9 +9,9 @@ class EducationProgramEditDisableable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('educationprogram', function (Blueprint $table) {
+        Schema::table('educationprogram', function (Blueprint $table): void {
             $table->boolean('disabled')->default(false);
         });
     }
@@ -19,9 +19,9 @@ class EducationProgramEditDisableable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('educationprogram', function (Blueprint $table) {
+        Schema::table('educationprogram', function (Blueprint $table): void {
             $table->dropColumn('disabled');
         });
     }

@@ -9,9 +9,9 @@ class AddHoursPerDayToWplp extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('workplacelearningperiod', function (Blueprint $table) {
+        Schema::table('workplacelearningperiod', function (Blueprint $table): void {
             $table->decimal('hours_per_day', 8, 1)->default(7.5);
         });
     }
@@ -19,9 +19,9 @@ class AddHoursPerDayToWplp extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('workplacelearningperiod', function (Blueprint $table) {
+        Schema::table('workplacelearningperiod', function (Blueprint $table): void {
             $table->dropColumn('hours_per_day');
         });
     }

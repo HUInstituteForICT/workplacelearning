@@ -107,7 +107,7 @@ class TemplateDashboardController extends Controller
             ->with('success', Lang::get('template.template_saved'));
     }
 
-    private function saveParameters($data, $template)
+    private function saveParameters($data, $template): void
     {
         $existingParams = $template->getParameters();
 

@@ -9,9 +9,9 @@ class AddForeignkeysCompetencedescriptionTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('competence_descriptions', function (Blueprint $table) {
+        Schema::table('competence_descriptions', function (Blueprint $table): void {
             $table->foreign('education_program_id', 'fk_CompetenceDescription_EducationProgram')->references('ep_id')->on('educationprogram')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -19,9 +19,9 @@ class AddForeignkeysCompetencedescriptionTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('competence_descriptions', function (Blueprint $table) {
+        Schema::table('competence_descriptions', function (Blueprint $table): void {
             $table->dropForeign('fk_CompetenceDescription_EducationProgram');
         });
     }

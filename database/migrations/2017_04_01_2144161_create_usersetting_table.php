@@ -8,9 +8,9 @@ class CreateUsersettingTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('usersetting', function (Blueprint $table) {
+        Schema::create('usersetting', function (Blueprint $table): void {
             $table->integer('setting_id', true);
             $table->string('setting_label');
             $table->string('setting_value', 500)->nullable();
@@ -21,7 +21,7 @@ class CreateUsersettingTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('usersetting');
     }

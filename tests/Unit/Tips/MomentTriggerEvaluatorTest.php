@@ -14,7 +14,7 @@ class MomentTriggerEvaluatorTest extends TestCase
     /** @var EvaluatedTip */
     private $evaluatedTip;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -29,7 +29,7 @@ class MomentTriggerEvaluatorTest extends TestCase
         $this->evaluatedTip = new EvaluatedTip($tip);
     }
 
-    public function testEvaluate()
+    public function testEvaluate(): void
     {
         /** @var PeriodMomentCalculator|\PHPUnit_Framework_MockObject_MockObject $periodMomentCalculator */
         $periodMomentCalculator = $this->createMock(PeriodMomentCalculator::class);

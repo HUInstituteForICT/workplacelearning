@@ -12,9 +12,9 @@ class AddDescriptionToTemplate extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table($this->table, function (Blueprint $table) {
+        Schema::table($this->table, function (Blueprint $table): void {
             $table->text($this->column)->nullable();
         });
         \DB::raw('UPDATE '.$this->table.' SET '.$this->column." = '' WHERE ".$this->column.' IS NULL');
@@ -23,9 +23,9 @@ class AddDescriptionToTemplate extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table($this->table, function (Blueprint $table) {
+        Schema::table($this->table, function (Blueprint $table): void {
             $table->dropColumn($this->column);
         });
     }

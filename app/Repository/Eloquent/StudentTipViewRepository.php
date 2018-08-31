@@ -9,7 +9,7 @@ use App\Tips\Models\Tip;
 
 class StudentTipViewRepository implements StudentTipViewRepositoryInterface
 {
-    public function createForTip(Tip $tip, Student $student)
+    public function createForTip(Tip $tip, Student $student): void
     {
         if (0 === $tip->studentTipViews()->where('student_id', '=', $student->student_id)->count()) {
             $studentTipView = new StudentTipView();
@@ -19,7 +19,7 @@ class StudentTipViewRepository implements StudentTipViewRepositoryInterface
         }
     }
 
-    public function save(StudentTipView $studentTipView)
+    public function save(StudentTipView $studentTipView): void
     {
         $studentTipView->save();
     }

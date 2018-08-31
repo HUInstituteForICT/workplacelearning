@@ -9,9 +9,9 @@ class AddDescriptionToLearningGoal extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('learninggoal', function (Blueprint $table) {
+        Schema::table('learninggoal', function (Blueprint $table): void {
             $table->string('description', 255)->default('');
         });
     }
@@ -19,9 +19,9 @@ class AddDescriptionToLearningGoal extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('learninggoal', function (Blueprint $table) {
+        Schema::table('learninggoal', function (Blueprint $table): void {
             $table->dropColumn('description');
         });
     }

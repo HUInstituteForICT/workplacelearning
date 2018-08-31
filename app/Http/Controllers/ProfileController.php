@@ -38,19 +38,18 @@ class ProfileController extends Controller
                 ->route('profile')
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-            // All ok.
-            // Todo why find user when already authenticated?
-            $user = Student::find(Auth::user()->student_id);
-            $user->firstname = $request->firstname;
-            $user->lastname = $request->lastname;
-            $user->email = $request->email;
-            $user->locale = $request->get('locale');
-            //$user->telefoon    = $request->phone;
-            $user->save();
-
-            return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
         }
+        // All ok.
+        // Todo why find user when already authenticated?
+        $user = Student::find(Auth::user()->student_id);
+        $user->firstname = $request->firstname;
+        $user->lastname = $request->lastname;
+        $user->email = $request->email;
+        $user->locale = $request->get('locale');
+        //$user->telefoon    = $request->phone;
+        $user->save();
+
+        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
     public function __construct()

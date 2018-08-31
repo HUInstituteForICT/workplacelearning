@@ -29,8 +29,6 @@ class AnalysisChart extends Model
      * $this->x_label.
      *
      * @param $value
-     *
-     * @return mixed
      */
     public function getXLabelAttribute($value)
     {
@@ -41,8 +39,6 @@ class AnalysisChart extends Model
      * $this->y_label.
      *
      * @param $value
-     *
-     * @return mixed
      */
     public function getYLabelAttribute($value)
     {

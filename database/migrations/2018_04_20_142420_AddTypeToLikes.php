@@ -9,9 +9,9 @@ class AddTypeToLikes extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('likes', function (Blueprint $table) {
+        Schema::table('likes', function (Blueprint $table): void {
             $table->integer('type')->default(1);
         });
     }
@@ -19,9 +19,9 @@ class AddTypeToLikes extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('likes', function (Blueprint $table) {
+        Schema::table('likes', function (Blueprint $table): void {
             $table->dropColumn('type');
         });
     }

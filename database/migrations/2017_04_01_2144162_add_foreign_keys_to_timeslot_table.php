@@ -8,9 +8,9 @@ class AddForeignKeysToTimeslotTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('timeslot', function (Blueprint $table) {
+        Schema::table('timeslot', function (Blueprint $table): void {
             $table->foreign('edprog_id', 'fk_Timeslot_EducationProgram1')->references('ep_id')->on('educationprogram')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -18,9 +18,9 @@ class AddForeignKeysToTimeslotTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('timeslot', function (Blueprint $table) {
+        Schema::table('timeslot', function (Blueprint $table): void {
             $table->dropForeign('fk_Timeslot_EducationProgram1');
         });
     }

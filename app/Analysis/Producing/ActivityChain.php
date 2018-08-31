@@ -11,8 +11,6 @@ class ActivityChain
 
     /**
      * ActivityChain constructor.
-     *
-     * @param array $chain
      */
     public function __construct(array $chain)
     {
@@ -64,8 +62,6 @@ class ActivityChain
 
     /**
      * Get the status text of an activity chain.
-     *
-     * @return mixed
      */
     public function statusText()
     {
@@ -82,15 +78,13 @@ class ActivityChain
         return true;
         if (reset($this->chain) != end($this->chain)) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
      * Get the first activity of the chain.
-     *
-     * @return mixed
      */
     public function first()
     {
@@ -99,8 +93,6 @@ class ActivityChain
 
     /**
      * Get the last activity of the chain.
-     *
-     * @return mixed
      */
     public function last()
     {

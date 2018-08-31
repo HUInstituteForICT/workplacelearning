@@ -48,7 +48,7 @@ class WplpDateValidationTestTest extends TestCase
         return $mock;
     }
 
-    public function testDate()
+    public function testDate(): void
     {
         $validator = new DateInLearningPeriodValidator($this->getRequestMock());
         $passes = $validator->validate('date', '10-1-2018', [], $this->getValidatorMock());

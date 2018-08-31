@@ -8,9 +8,9 @@ class AddForeignKeysToLearninggoalTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('learninggoal', function (Blueprint $table) {
+        Schema::table('learninggoal', function (Blueprint $table): void {
             $table->foreign('wplp_id', 'fk_LearningGoal_WorkplaceLearningPeriod1')->references('wplp_id')->on('workplacelearningperiod')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -18,9 +18,9 @@ class AddForeignKeysToLearninggoalTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('learninggoal', function (Blueprint $table) {
+        Schema::table('learninggoal', function (Blueprint $table): void {
             $table->dropForeign('fk_LearningGoal_WorkplaceLearningPeriod1');
         });
     }

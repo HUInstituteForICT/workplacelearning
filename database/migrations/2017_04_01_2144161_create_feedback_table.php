@@ -8,9 +8,9 @@ class CreateFeedbackTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('feedback', function (Blueprint $table) {
+        Schema::create('feedback', function (Blueprint $table): void {
             $table->integer('fb_id', true);
             $table->integer('learningactivity_id')->index('fk_Feedback_LearningActivityProducing1_idx');
             $table->string('notfinished', 100);
@@ -27,7 +27,7 @@ class CreateFeedbackTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('feedback');
     }

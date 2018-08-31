@@ -44,9 +44,8 @@ class EducationProgramsService
         }
         if ($entity instanceof Model) {
             return $entity;
-        } else {
-            throw new \Exception("Unable to find entity of type {$type} with ID {$entityId}");
         }
+        throw new \Exception("Unable to find entity of type {$type} with ID {$entityId}");
     }
 
     /**
@@ -87,8 +86,7 @@ class EducationProgramsService
     }
 
     /**
-     * @param EducationProgram $program
-     * @param array            $data    data to save
+     * @param array $data data to save
      *
      * @return bool if the program has been saved
      */
@@ -99,7 +97,6 @@ class EducationProgramsService
 
     /**
      * @param $entityId
-     * @param array $data
      *
      * @return Model|null
      *

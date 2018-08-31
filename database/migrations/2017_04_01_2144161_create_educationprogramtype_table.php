@@ -8,9 +8,9 @@ class CreateEducationprogramtypeTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('educationprogramtype', function (Blueprint $table) {
+        Schema::create('educationprogramtype', function (Blueprint $table): void {
             $table->integer('eptype_id', true);
             $table->string('eptype_name', 45);
         });
@@ -19,7 +19,7 @@ class CreateEducationprogramtypeTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('educationprogramtype');
     }

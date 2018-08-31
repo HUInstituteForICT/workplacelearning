@@ -5,7 +5,7 @@ use App\ChainManager;
 
 class ChainManagerTest extends \Tests\TestCase
 {
-    private function LapSaveMock(): \App\LearningActivityProducing
+    private function LapSaveMock(): App\LearningActivityProducing
     {
         $relMock = $this->createMock(\Illuminate\Database\Eloquent\Relations\BelongsTo::class);
         $relMock->expects(self::once())->method('associate')->withAnyParameters();
@@ -17,7 +17,7 @@ class ChainManagerTest extends \Tests\TestCase
         return $mock;
     }
 
-    private function wplpMock(): \App\WorkplaceLearningPeriod
+    private function wplpMock(): App\WorkplaceLearningPeriod
     {
         $mock = $this->createMock(\App\WorkplaceLearningPeriod::class);
         $mock->expects(self::once())->method('__get')->with('wplp_id')->willReturn(1);
@@ -36,7 +36,7 @@ class ChainManagerTest extends \Tests\TestCase
         return $mock;
     }
 
-    public function testCreateChain()
+    public function testCreateChain(): void
     {
         $chainManager = new ChainManager($this->wplpMock());
 
@@ -46,14 +46,14 @@ class ChainManagerTest extends \Tests\TestCase
         $this->assertEquals(1, $chain->wplp_id);
     }
 
-    public function testUpdateChain()
+    public function testUpdateChain(): void
     {
         $chainManager = new ChainManager(new \App\WorkplaceLearningPeriod());
         $chain = $this->chainMock();
         $chainManager->updateChain($chain, 'test name', Chain::STATUS_FINISHED);
     }
 
-    public function testAttachDetachActivity()
+    public function testAttachDetachActivity(): void
     {
         $chainManager = new ChainManager(new \App\WorkplaceLearningPeriod());
         $chain = new Chain();

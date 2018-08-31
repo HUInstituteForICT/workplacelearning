@@ -22,7 +22,7 @@ class ActingAnalysis
     /**
      * Creates the charts data for this analysis.
      */
-    public function createCharts()
+    public function createCharts(): void
     {
         $this->charts = [
             'timeslot' => new Chart(

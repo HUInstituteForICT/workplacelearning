@@ -10,11 +10,6 @@ class TaskTypeRedirect
 {
     /**
      * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     *
-     * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
@@ -22,7 +17,7 @@ class TaskTypeRedirect
             return redirect('login');
         }
 
-        if ('Acting' == Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name) {
+        if ('Acting' === Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name) {
             switch ($request->route()->getName()) {
                 case 'home':
                 case 'default':

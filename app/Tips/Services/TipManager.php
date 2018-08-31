@@ -12,7 +12,6 @@ class TipManager
      * Create a tip from basic data
      * Tip can be used in next creation step.
      *
-     * @param array $tipData
      *
      * @return Tip
      */
@@ -28,8 +27,6 @@ class TipManager
     /**
      * Enable this tip for selected cohorts.
      *
-     * @param Tip   $tip
-     * @param array $data
      *
      * @return Tip
      */
@@ -48,9 +45,7 @@ class TipManager
     /**
      * Add a new Like to a Tip given by a Student.
      *
-     * @param Tip     $tip
-     * @param int     $type
-     * @param Student $student
+     * @param int $type
      *
      * @return bool whether a new like has been added
      */

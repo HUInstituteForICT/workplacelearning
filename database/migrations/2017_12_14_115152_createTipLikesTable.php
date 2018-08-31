@@ -9,9 +9,9 @@ class CreateTipLikesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('likes', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table): void {
             $table->integer('tip_id');
             $table->integer('student_id');
 
@@ -22,7 +22,7 @@ class CreateTipLikesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('likes');
     }

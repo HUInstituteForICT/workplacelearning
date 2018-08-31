@@ -116,7 +116,7 @@ class ProducingActivityController extends Controller
         /** @var Carbon $latest */
         $latest = null;
 
-        $activities->each(function (LearningActivityProducing $activity) use (&$earliest, &$latest) {
+        $activities->each(function (LearningActivityProducing $activity) use (&$earliest, &$latest): void {
             $activityDate = Carbon::createFromTimestamp(strtotime($activity->date));
 
             if (null === $earliest || $activityDate->lessThan($earliest)) {

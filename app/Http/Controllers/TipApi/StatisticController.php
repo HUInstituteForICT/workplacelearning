@@ -13,8 +13,6 @@ class StatisticController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StatisticStoreRequest $request
-     * @param StatisticService      $statisticService
      *
      * @return \App\Tips\Models\CustomStatistic
      *
@@ -30,9 +28,7 @@ class StatisticController extends Controller
      *
      * @throws \Exception
      *
-     * @param StatisticStoreRequest $request
-     * @param int                   $id
-     * @param StatisticService      $statisticService
+     * @param int $id
      *
      * @return Statistic
      */

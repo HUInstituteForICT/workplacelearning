@@ -283,7 +283,7 @@ class QueryBuilderController extends Controller
         $chart->label = $data['name'];
 
         $saved = false;
-        \DB::transaction(function () use ($chart, $data, &$saved) {
+        \DB::transaction(function () use ($chart, $data, &$saved): void {
             if ($chart->save()) {
                 $chart->labels()->saveMany([
                     new Label(['chart_id' => $chart->id, 'name' => $data['x_axis'], 'type' => 'x']),

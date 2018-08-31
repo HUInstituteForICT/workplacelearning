@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class PeriodMomentCalculatorTest extends TestCase
 {
-    public function testPeriodMomentCalculator()
+    public function testPeriodMomentCalculator(): void
     {
         $start = new Carbon(date('Y-m-d'));
         $start->subDay();

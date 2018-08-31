@@ -44,7 +44,6 @@ class CollectorDataAggregator
     /**
      * Get the methods for a collector.
      *
-     * @param CollectorInterface $collector
      *
      * @return array
      */
@@ -58,8 +57,7 @@ class CollectorDataAggregator
     /**
      * Get the DataUnitAnnotation information for a method in a collector.
      *
-     * @param CollectorInterface $collector
-     * @param string             $method    Method to get annotations for
+     * @param string $method Method to get annotations for
      *
      * @return DataUnitAnnotation
      */

@@ -25,7 +25,7 @@ class StatisticResultCollection implements Resultable
      *
      * @param StatisticCalculationResult $result
      */
-    public function addResult(Resultable $result)
+    public function addResult(Resultable $result): void
     {
         $this->results[] = $result;
     }
@@ -46,7 +46,7 @@ class StatisticResultCollection implements Resultable
             return false;
         }
         $passed = true;
-        array_walk($this->results, function (Resultable $result) use (&$passed) {
+        array_walk($this->results, function (Resultable $result) use (&$passed): void {
             if (!$result->hasPassed()) {
                 $passed = false;
             }
@@ -55,9 +55,9 @@ class StatisticResultCollection implements Resultable
         return $passed;
     }
 
-    public function doThresholdComparison(float $threshold, int $operator)
+    public function doThresholdComparison(float $threshold, int $operator): void
     {
-        array_walk($this->results, function (Resultable $resultable) use ($threshold, $operator) {
+        array_walk($this->results, function (Resultable $resultable) use ($threshold, $operator): void {
             $resultable->doThresholdComparison($threshold, $operator);
         });
 

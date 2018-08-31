@@ -13,7 +13,7 @@ class DifficultyFilter implements Filter
         $this->parameters = $parameters;
     }
 
-    public function filter(Builder $builder)
+    public function filter(Builder $builder): void
     {
         if (empty($this->parameters['difficulty_label'])) {
             return;

@@ -23,8 +23,6 @@ class StatisticCalculationResult implements Resultable
 
     /**
      * Check if this statistic passed.
-     *
-     * @return bool
      */
     public function hasPassed(): bool
     {
@@ -36,7 +34,7 @@ class StatisticCalculationResult implements Resultable
         return number_format($this->result * 100).'%';
     }
 
-    public function doThresholdComparison(float $threshold, int $operator)
+    public function doThresholdComparison(float $threshold, int $operator): void
     {
         if (TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN === $operator) {
             $this->passed = $this->result < $threshold;

@@ -8,9 +8,9 @@ class AddForeignKeysToStudentTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('student', function (Blueprint $table) {
+        Schema::table('student', function (Blueprint $table): void {
             $table->foreign('ep_id', 'fk_Student_EducationProgram')->references('ep_id')->on('educationprogram')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -18,9 +18,9 @@ class AddForeignKeysToStudentTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('student', function (Blueprint $table) {
+        Schema::table('student', function (Blueprint $table): void {
             $table->dropForeign('fk_Student_EducationProgram');
         });
     }

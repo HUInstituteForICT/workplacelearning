@@ -9,9 +9,9 @@ class CreateStatisticVariablesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('statistic_variables', function (Blueprint $table) {
+        Schema::create('statistic_variables', function (Blueprint $table): void {
             $table->increments('id');
             $table->text('filters')->nullable();
         });
@@ -20,7 +20,7 @@ class CreateStatisticVariablesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('statistic_variables');
     }

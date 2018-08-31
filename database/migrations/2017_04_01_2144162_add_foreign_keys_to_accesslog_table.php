@@ -8,9 +8,9 @@ class AddForeignKeysToAccesslogTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('accesslog', function (Blueprint $table) {
+        Schema::table('accesslog', function (Blueprint $table): void {
             $table->foreign('student_id', 'fk_AccessLog_Student1')->references('student_id')->on('student')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -18,9 +18,9 @@ class AddForeignKeysToAccesslogTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('accesslog', function (Blueprint $table) {
+        Schema::table('accesslog', function (Blueprint $table): void {
             $table->dropForeign('fk_AccessLog_Student1');
         });
     }

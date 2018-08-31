@@ -26,7 +26,7 @@ class ProducingReportController extends Controller
     private $viewdata = [
     ];
 
-    public function wordExport(Request $request)
+    public function wordExport(Request $request): void
     {
         $student = Auth::user();
         $wp = $student->getCurrentWorkplace();

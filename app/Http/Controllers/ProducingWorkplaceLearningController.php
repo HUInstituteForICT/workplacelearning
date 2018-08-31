@@ -42,14 +42,14 @@ class ProducingWorkplaceLearningController extends Controller
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
                 ->with('error', Lang::get('general.profile-permission'));
-        } else {
-            return view('pages.producing.internship')
+        }
+
+        return view('pages.producing.internship')
                 ->with('period', $wplPeriod)
                 ->with('workplace', Workplace::find($wplPeriod->wp_id))
                 ->with('categories', $wplPeriod->categories()->get())
                 ->with('resource', new Collection())
                 ->with('cohorts', collect($wplPeriod->cohort()->get()));
-        }
     }
 
     public function create(Request $request)
@@ -224,21 +224,20 @@ class ProducingWorkplaceLearningController extends Controller
                 ->route('period-producing-edit', ['id' => $id])
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-            // All is well :)
-            foreach ($request['cat'] as $cat) {
-                // Either update or create a new row.
-                $category = Category::find($cat['cg_id']);
-                if (is_null($category)) {
-                    $category = new Category();
-                    $category->wplp_id = $cat['wplp_id'];
-                }
-                $category->category_label = $cat['cg_label'];
-                $category->save();
-            }
-            // Done, redirect back to profile page
-            return redirect()->route('period-producing-edit', ['id' => $id])->with('succes', Lang::get('general.edit-saved'));
         }
+        // All is well :)
+        foreach ($request['cat'] as $cat) {
+            // Either update or create a new row.
+            $category = Category::find($cat['cg_id']);
+            if (is_null($category)) {
+                $category = new Category();
+                $category->wplp_id = $cat['wplp_id'];
+            }
+            $category->category_label = $cat['cg_label'];
+            $category->save();
+        }
+        // Done, redirect back to profile page
+        return redirect()->route('period-producing-edit', ['id' => $id])->with('succes', Lang::get('general.edit-saved'));
     }
 
     public function __construct()

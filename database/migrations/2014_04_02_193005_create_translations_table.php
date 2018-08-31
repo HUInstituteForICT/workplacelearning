@@ -8,9 +8,9 @@ class CreateTranslationsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('ltm_translations', function (Blueprint $table) {
+        Schema::create('ltm_translations', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('status')->default(0);
             $table->string('locale');
@@ -24,7 +24,7 @@ class CreateTranslationsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('ltm_translations');
     }

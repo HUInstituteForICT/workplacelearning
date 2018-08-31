@@ -8,7 +8,7 @@ class MigrateChains extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         $laps = \App\LearningActivityProducing::orderBy('lap_id', 'ASC')->get();
 
@@ -42,7 +42,7 @@ class MigrateChains extends Migration
         echo "\n{$laps->count()} checked, {$lapsWithChain} in a chain, {$startingLaps} chains created\n";
     }
 
-    private function createChainForLap(\App\LearningActivityProducing $learningActivityProducing): Chain
+    private function createChainForLap(App\LearningActivityProducing $learningActivityProducing): Chain
     {
         /** @var \App\WorkplaceLearningPeriod $wplp */
         $wplp = $learningActivityProducing->workplaceLearningPeriod;
@@ -59,7 +59,7 @@ class MigrateChains extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         DB::statement('UPDATE learningactivityproducing SET chain_id = NULL');
         DB::statement('DELETE FROM chains');

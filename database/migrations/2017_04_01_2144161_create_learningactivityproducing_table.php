@@ -8,9 +8,9 @@ class CreateLearningactivityproducingTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('learningactivityproducing', function (Blueprint $table) {
+        Schema::create('learningactivityproducing', function (Blueprint $table): void {
             $table->integer('lap_id', true);
             $table->integer('wplp_id')->index('fk_LearningActivityProducing_WorkplaceLearningPeriod1_idx');
             $table->float('duration', 10, 0);
@@ -29,7 +29,7 @@ class CreateLearningactivityproducingTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('learningactivityproducing');
     }

@@ -7,7 +7,7 @@ class SetDefault75HoursOnWplp extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         DB::statement('update workplacelearningperiod set hours_per_day = 7.5;');
     }
@@ -15,7 +15,7 @@ class SetDefault75HoursOnWplp extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
     }
 }

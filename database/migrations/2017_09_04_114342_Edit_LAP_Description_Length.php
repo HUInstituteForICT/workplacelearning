@@ -9,9 +9,9 @@ class EditLAPDescriptionLength extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('learningactivityproducing', function (Blueprint $table) {
+        Schema::table('learningactivityproducing', function (Blueprint $table): void {
             $table->string('description', 1000)->change();
         });
     }
@@ -19,9 +19,9 @@ class EditLAPDescriptionLength extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('learningactivityproducing', function (Blueprint $table) {
+        Schema::table('learningactivityproducing', function (Blueprint $table): void {
             $table->string('description', 100)->change();
         });
     }

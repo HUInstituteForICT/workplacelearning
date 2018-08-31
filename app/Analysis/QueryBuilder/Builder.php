@@ -12,7 +12,7 @@ class Builder
 {
     private $query;
 
-    private function build($model, $relations, $selectData, $filterData, $sort = null, $limit = null)
+    private function build($model, $relations, $selectData, $filterData, $sort = null, $limit = null): void
     {
         $select = [];
         $filters = [];

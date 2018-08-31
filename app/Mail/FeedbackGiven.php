@@ -19,10 +19,6 @@ class FeedbackGiven extends Mailable
     /** @var Student $user */
     private $user;
 
-    /**
-     * @param Request $request
-     * @param Student $user
-     */
     public function __construct(Request $request, Student $user)
     {
         $this->request = $request;

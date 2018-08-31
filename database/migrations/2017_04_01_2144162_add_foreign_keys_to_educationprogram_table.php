@@ -8,9 +8,9 @@ class AddForeignKeysToEducationprogramTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('educationprogram', function (Blueprint $table) {
+        Schema::table('educationprogram', function (Blueprint $table): void {
             $table->foreign('eptype_id', 'fk_EducationProgram_EducationProgramType1')->references('eptype_id')->on('educationprogramtype')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -18,9 +18,9 @@ class AddForeignKeysToEducationprogramTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('educationprogram', function (Blueprint $table) {
+        Schema::table('educationprogram', function (Blueprint $table): void {
             $table->dropForeign('fk_EducationProgram_EducationProgramType1');
         });
     }

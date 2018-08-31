@@ -43,8 +43,8 @@ class LAPFactory
             round(((int) $data['aantaluren_custom']) / 60, 2);
 
         $learningActivityProducing->category()->associate($category);
-        $learningActivityProducing->difficulty()->associate(Difficulty::findOrFail($data['moeilijkheid']));
-        $learningActivityProducing->status()->associate(Status::findOrFail($data['status']));
+        $learningActivityProducing->difficulty()->associate((new Difficulty)->findOrFail($data['moeilijkheid']));
+        $learningActivityProducing->status()->associate((new Status)->findOrFail($data['status']));
 
         if (-1 !== ((int) $data['chain_id'])) {
             $chain = (new Chain())->find($data['chain_id']);
@@ -59,11 +59,11 @@ class LAPFactory
                 $learningActivityProducing->resourcePerson()->associate($this->getResourcePerson());
                 break;
             case 'internet':
-                $learningActivityProducing->resourceMaterial()->associate(ResourceMaterial::findOrFail(1));
+                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial)->findOrFail(1));
                 $learningActivityProducing->res_material_detail = $data['internetsource'];
                 break;
             case 'boek':
-                $learningActivityProducing->resourceMaterial()->associate(ResourceMaterial::findOrFail(2));
+                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial)->findOrFail(2));
                 $learningActivityProducing->res_material_detail = $data['booksource'];
                 break;
         }

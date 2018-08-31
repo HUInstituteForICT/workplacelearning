@@ -4,7 +4,7 @@ use App\Student;
 
 class LoginTest extends \Tests\TestCase
 {
-    public function testLogin()
+    public function testLogin(): void
     {
         /** @var Student $user */
         $user = factory(Student::class)->create(['pw_hash' => Hash::make('test123')]);

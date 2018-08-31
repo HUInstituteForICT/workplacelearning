@@ -9,9 +9,9 @@ class EditLAA extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('learningactivityacting', function (Blueprint $table) {
+        Schema::table('learningactivityacting', function (Blueprint $table): void {
             $table->string('situation', 1000)->change();
             $table->string('lessonslearned', 1000)->change();
             $table->string('support_wp', 500)->change();
@@ -22,9 +22,9 @@ class EditLAA extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('learningactivityacting', function (Blueprint $table) {
+        Schema::table('learningactivityacting', function (Blueprint $table): void {
         });
     }
 }

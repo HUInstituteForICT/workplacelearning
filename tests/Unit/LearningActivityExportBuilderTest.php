@@ -42,7 +42,7 @@ class LearningActivityExportBuilderTest extends TestCase
     /**
      * A basic test example.
      */
-    public function testGetJson()
+    public function testGetJson(): void
     {
         $exporter = new LearningActivityActingExportBuilder(collect([$this->buildMock()]));
         $json = $exporter->getJson();

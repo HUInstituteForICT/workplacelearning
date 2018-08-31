@@ -9,9 +9,9 @@ class CreateTemplatesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('templates', function (Blueprint $table) {
+        Schema::create('templates', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name');
             $table->text('query');
@@ -22,7 +22,7 @@ class CreateTemplatesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('templates');
     }

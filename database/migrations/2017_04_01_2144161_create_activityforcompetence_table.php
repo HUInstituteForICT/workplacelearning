@@ -8,9 +8,9 @@ class CreateActivityforcompetenceTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('activityforcompetence', function (Blueprint $table) {
+        Schema::create('activityforcompetence', function (Blueprint $table): void {
             $table->integer('afc_id', true);
             $table->integer('competence_id')->index('fk_ActivityForCompetency_Competency1');
             $table->integer('learningactivity_id')->index('fk_ActivityForCompetency_LearningActivityActing1_idx');
@@ -20,7 +20,7 @@ class CreateActivityforcompetenceTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('activityforcompetence');
     }

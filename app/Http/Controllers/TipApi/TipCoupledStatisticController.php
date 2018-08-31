@@ -15,8 +15,6 @@ class TipCoupledStatisticController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param TipCoupledStatisticCreateRequest $request
-     * @param StatisticService                 $statisticService
      *
      * @return TipCoupledStatistic
      *
@@ -51,8 +49,7 @@ class TipCoupledStatisticController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param TipCoupledStatisticUpdateRequest $request
-     * @param int                              $id
+     * @param int $id
      *
      * @return TipCoupledStatistic
      */

@@ -13,10 +13,8 @@ class AnalyticsController extends Controller
 
     /**
      * AnalysisController constructor.
-     *
-     * @param \App\Analysis $analysis
      */
-    public function __construct(\App\Analysis $analysis)
+    public function __construct(Analysis $analysis)
     {
         // We do this dependency injection so it's easier to mock during tests
         $this->analysis = $analysis;
@@ -47,7 +45,6 @@ class AnalyticsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
      *
      * @return Response
      */
@@ -100,8 +97,8 @@ class AnalyticsController extends Controller
             return abort(404);
         }
 
-        $d = \Excel::create('Analyse data', function ($excel) use ($data) {
-            $excel->sheet('New sheet', function ($sheet) use ($data) {
+        $d = \Excel::create('Analyse data', function ($excel) use ($data): void {
+            $excel->sheet('New sheet', function ($sheet) use ($data): void {
                 $sheet->loadView('pages.analytics.export', compact('data'));
             });
         });
@@ -112,7 +109,6 @@ class AnalyticsController extends Controller
     /**
      * Expire a cached analys.
      *
-     * @param Request $request
      *
      * @return Response
      */
@@ -130,7 +126,7 @@ class AnalyticsController extends Controller
      */
     public function expireAll()
     {
-        $this->analysis->all()->each(function (Analysis $analysis) {
+        $this->analysis->all()->each(function (Analysis $analysis): void {
             $analysis->refresh();
         });
 
@@ -160,8 +156,7 @@ class AnalyticsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int     $id
+     * @param int $id
      *
      * @return Response
      */

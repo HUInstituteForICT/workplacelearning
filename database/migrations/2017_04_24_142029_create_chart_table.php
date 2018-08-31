@@ -5,9 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateChartTable extends Migration
 {
-    public function up()
+    public function up(): void
     {
-        Schema::create('chart', function (Blueprint $table) {
+        Schema::create('chart', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('analysis_id')->unsigned();
             $table->integer('type_id')->unsigned();
@@ -15,7 +15,7 @@ class CreateChartTable extends Migration
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::drop('chart');
     }

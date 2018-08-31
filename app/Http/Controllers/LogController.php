@@ -9,7 +9,7 @@ use Validator;
 
 class LogController extends Controller
 {
-    public function log(Request $request)
+    public function log(Request $request): void
     {
         $validator = Validator::make($request->all(), [
             'width' => 'required|integer|min:1|max:20000',

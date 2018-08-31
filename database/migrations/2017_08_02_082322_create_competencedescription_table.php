@@ -9,9 +9,9 @@ class CreateCompetencedescriptionTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('competence_descriptions', function (Blueprint $table) {
+        Schema::create('competence_descriptions', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('education_program_id')->unique();
         });
@@ -20,7 +20,7 @@ class CreateCompetencedescriptionTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('competence_descriptions');
     }

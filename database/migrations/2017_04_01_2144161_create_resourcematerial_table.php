@@ -8,9 +8,9 @@ class CreateResourcematerialTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('resourcematerial', function (Blueprint $table) {
+        Schema::create('resourcematerial', function (Blueprint $table): void {
             $table->integer('rm_id', true);
             $table->string('rm_label', 45);
             $table->integer('wplp_id')->index('fk_ResourceMaterial_WorkplaceLearningPeriod1_idx');
@@ -20,7 +20,7 @@ class CreateResourcematerialTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('resourcematerial');
     }

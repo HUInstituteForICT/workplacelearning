@@ -6,7 +6,7 @@ use App\Tips\Models\TipCoupledStatistic;
 
 class TipCoupledStatisticTest extends \Tests\TestCase
 {
-    public function testTipRelation()
+    public function testTipRelation(): void
     {
         /** @var \App\Tips\Models\Tip $tip */
         $tip = factory(\App\Tips\Models\Tip::class)->create();
@@ -31,7 +31,7 @@ class TipCoupledStatisticTest extends \Tests\TestCase
         $this->assertInstanceOf(TipCoupledStatistic::class, $tip->coupledStatistics->first());
     }
 
-    public function testTipServiceCoupling()
+    public function testTipServiceCoupling(): void
     {
         $tipService = new \App\Tips\Services\TipManager();
 

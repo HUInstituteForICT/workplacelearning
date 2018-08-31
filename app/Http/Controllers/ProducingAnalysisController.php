@@ -84,7 +84,7 @@ class ProducingAnalysisController extends Controller
         })->shuffle()->take(3);
 
         // Register that the tip will be viewed by the student
-        $evaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $studentTipViewRepository) {
+        $evaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $studentTipViewRepository): void {
             $studentTipViewRepository->createForTip($evaluatedTip->getTip(), $student);
         });
 

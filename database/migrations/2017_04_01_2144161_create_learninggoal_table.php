@@ -8,9 +8,9 @@ class CreateLearninggoalTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('learninggoal', function (Blueprint $table) {
+        Schema::create('learninggoal', function (Blueprint $table): void {
             $table->integer('learninggoal_id', true);
             $table->string('learninggoal_label', 45);
             $table->integer('wplp_id')->index('fk_LearningGoal_WorkplaceLearningPeriod1_idx');
@@ -20,7 +20,7 @@ class CreateLearninggoalTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('learninggoal');
     }

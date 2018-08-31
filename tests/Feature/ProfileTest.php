@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ProfileTest extends TestCase
 {
-    public function testSaveProfile()
+    public function testSaveProfile(): void
     {
         /** @var Student $user */
         $user = factory(Student::class)->create();
@@ -35,7 +35,7 @@ class ProfileTest extends TestCase
         ]);
     }
 
-    public function testUpdatePassword()
+    public function testUpdatePassword(): void
     {
         $currentPassword = 'johnjohnjohndoe';
         /** @var Student $user */

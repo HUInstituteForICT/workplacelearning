@@ -8,9 +8,9 @@ class AddForeignKeysToPasswordResetTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('password_reset', function (Blueprint $table) {
+        Schema::table('password_reset', function (Blueprint $table): void {
             $table->foreign('email', 'pw_reset_email')->references('email')->on('student')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
@@ -18,9 +18,9 @@ class AddForeignKeysToPasswordResetTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('password_reset', function (Blueprint $table) {
+        Schema::table('password_reset', function (Blueprint $table): void {
             $table->dropForeign('pw_reset_email');
         });
     }

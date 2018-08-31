@@ -8,7 +8,7 @@ class HomepageTest extends TestCase
 {
     use GenericUserTrait;
 
-    public function testHomeActingWithoutActiveWplp()
+    public function testHomeActingWithoutActiveWplp(): void
     {
         $user = $this->getUser('acting');
         $wplp = $user->getCurrentWorkplaceLearningPeriod();
@@ -32,7 +32,7 @@ class HomepageTest extends TestCase
         $this->actingAs($user)->get('/acting/home')->assertSuccessful();
     }
 
-    public function testHomeActingWithActiveWplp()
+    public function testHomeActingWithActiveWplp(): void
     {
         $user = $this->getUser('acting');
         $this->assertDatabaseHas('usersetting', ['student_id' => $user->student_id, 'setting_label' => 'active_internship']);
@@ -40,7 +40,7 @@ class HomepageTest extends TestCase
         $this->actingAs($user)->get('/acting/home')->assertSuccessful();
     }
 
-    public function testHomeProducingWithoutActiveWplp()
+    public function testHomeProducingWithoutActiveWplp(): void
     {
         $user = $this->getUser('producing');
         $wplp = $user->getCurrentWorkplaceLearningPeriod();
@@ -56,7 +56,7 @@ class HomepageTest extends TestCase
         $this->actingAs($user)->get('/producing/home')->assertSuccessful();
     }
 
-    public function testHomeProducingWithActiveWplp()
+    public function testHomeProducingWithActiveWplp(): void
     {
         $user = $this->getUser('producing');
         $this->assertDatabaseHas('usersetting', ['student_id' => $user->student_id, 'setting_label' => 'active_internship']);

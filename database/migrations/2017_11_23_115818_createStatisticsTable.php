@@ -9,9 +9,9 @@ class CreateStatisticsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('statistics', function (Blueprint $table) {
+        Schema::create('statistics', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('type');
             $table->string('name');
@@ -26,7 +26,7 @@ class CreateStatisticsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('statistics');
     }

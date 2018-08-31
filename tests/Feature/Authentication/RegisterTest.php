@@ -2,7 +2,7 @@
 
 class RegisterTest extends \Tests\TestCase
 {
-    public function testRegistration()
+    public function testRegistration(): void
     {
         $response = $this->get('/');
         $response->assertRedirect('/login');

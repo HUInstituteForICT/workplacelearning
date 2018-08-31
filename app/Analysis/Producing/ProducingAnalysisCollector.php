@@ -17,8 +17,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getNumHoursAlone($year, $month)
     {
@@ -36,8 +34,6 @@ class ProducingAnalysisCollector
      * @param $collection
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function LimitCollectionByDate($collection, $year, $month)
     {
@@ -55,8 +51,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getNumTotalTasksByDate($year, $month)
     {
@@ -71,8 +65,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getNumEasyTasksByDate($year, $month)
     {
@@ -88,8 +80,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getNumAverageTasksByDate($year, $month)
     {
@@ -105,8 +95,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getNumDifficultTasksByDate($year, $month)
     {
@@ -122,8 +110,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getHoursEasyTasksByDate($year, $month)
     {
@@ -139,8 +125,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getHoursAverageTasksByDate($year, $month)
     {
@@ -156,8 +140,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getHoursDifficultTasksByDate($year, $month)
     {
@@ -207,7 +189,7 @@ class ProducingAnalysisCollector
         // Workaround: Get end dates and reverse from there, then array unique the duplicates
         $lap_end = LearningActivityProducing::whereNotNull('prev_lap_id')
             ->where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
-            ->whereNotIn('lap_id', function ($query) {
+            ->whereNotIn('lap_id', function ($query): void {
                 $query->select('prev_lap_id')
                     ->from('learningactivityproducing')
                     ->whereNotNull('prev_lap_id');
@@ -323,8 +305,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getNumHoursByDate($year, $month)
     {
@@ -339,8 +319,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getFullWorkingDays($year, $month)
     {
@@ -360,8 +338,6 @@ class ProducingAnalysisCollector
      *
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function getNumTasksByDate($year, $month)
     {

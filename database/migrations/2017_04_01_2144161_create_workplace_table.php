@@ -8,9 +8,9 @@ class CreateWorkplaceTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('workplace', function (Blueprint $table) {
+        Schema::create('workplace', function (Blueprint $table): void {
             $table->integer('wp_id', true);
             $table->string('wp_name', 100);
             $table->string('street', 45);
@@ -27,7 +27,7 @@ class CreateWorkplaceTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('workplace');
     }

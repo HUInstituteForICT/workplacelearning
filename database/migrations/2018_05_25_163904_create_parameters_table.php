@@ -9,9 +9,9 @@ class CreateParametersTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('parameters', function (Blueprint $table) {
+        Schema::create('parameters', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('template_id')->unsigned();
             $table->string('name');
@@ -26,7 +26,7 @@ class CreateParametersTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('parameters');
     }

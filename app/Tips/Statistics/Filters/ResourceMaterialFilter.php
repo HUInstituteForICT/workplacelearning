@@ -13,7 +13,7 @@ class ResourceMaterialFilter implements Filter
         $this->parameters = $parameters;
     }
 
-    public function filter(Builder $builder)
+    public function filter(Builder $builder): void
     {
         if (empty($this->parameters['rm_label'])) {
             return;
@@ -31,7 +31,7 @@ class ResourceMaterialFilter implements Filter
      * Checks whether the parameters contain values that require a OR WHERE IS NULL clause in the query.
      * If they are present they are applied in a correct manner, if not, a normal WHERE IN clause is applied.
      */
-    private function applyOptionalNullFilter(Builder $builder, array $labels)
+    private function applyOptionalNullFilter(Builder $builder, array $labels): void
     {
         $labelsInLower = collect($labels)->map(function ($label) {
             return strtolower($label);
@@ -39,7 +39,7 @@ class ResourceMaterialFilter implements Filter
 
         // contains() only allows single key, not array of keys :(
         if ($labelsInLower->contains('geen') || $labelsInLower->contains('none')) {
-            $builder->where(function (Builder $query) use ($labels) {
+            $builder->where(function (Builder $query) use ($labels): void {
                 $query->whereIn('rm_label', $labels)
                     ->orWhereNull('res_material_id');
             });

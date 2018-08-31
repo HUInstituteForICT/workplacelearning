@@ -9,9 +9,9 @@ class CreateTipCoupledStatisticPivotTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tip_coupled_statistic', function (Blueprint $table) {
+        Schema::create('tip_coupled_statistic', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('tip_id')->unsigned();
             $table->integer('statistic_id')->unsigned();
@@ -23,7 +23,7 @@ class CreateTipCoupledStatisticPivotTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('tip_coupled_statistic');
     }

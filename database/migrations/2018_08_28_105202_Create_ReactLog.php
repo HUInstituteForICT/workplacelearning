@@ -9,9 +9,9 @@ class CreateReactLog extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('react_logs', function (Blueprint $table) {
+        Schema::create('react_logs', function (Blueprint $table): void {
             $table->increments('id');
             $table->longText('log');
             $table->boolean('fixed')->default(false);
@@ -23,7 +23,7 @@ class CreateReactLog extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('react_logs');
     }

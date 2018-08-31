@@ -10,7 +10,7 @@ class ValidationServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot()
+    public function boot(): void
     {
         // Application specific validation rules
         Validator::extend('postalcode', 'App\Validators\PostalValidator@validate');
@@ -21,7 +21,7 @@ class ValidationServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register()
+    public function register(): void
     {
     }
 }

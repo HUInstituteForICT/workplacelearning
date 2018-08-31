@@ -18,8 +18,6 @@ class StatisticService
     }
 
     /**
-     * @param array $data
-     *
      * @return CustomStatistic
      *
      * @throws \Exception
@@ -36,9 +34,6 @@ class StatisticService
     }
 
     /**
-     * @param CustomStatistic $statistic
-     * @param array           $data
-     *
      * @return CustomStatistic
      *
      * @throws \Exception

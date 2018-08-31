@@ -32,7 +32,7 @@ class HomeController extends Controller
 
             /** @var Student $student */
             $student = $request->user();
-            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository) {
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 
@@ -52,7 +52,7 @@ class HomeController extends Controller
 
             /** @var Student $student */
             $student = $request->user();
-            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository) {
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 

@@ -55,7 +55,7 @@ class Category extends Model
         return $this->category_label;
     }
 
-    public function setCategoryLabel($label)
+    public function setCategoryLabel($label): void
     {
         $this->category_label = $label;
     }

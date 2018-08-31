@@ -8,9 +8,9 @@ class CreateEducationprogramTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('educationprogram', function (Blueprint $table) {
+        Schema::create('educationprogram', function (Blueprint $table): void {
             $table->integer('ep_id', true);
             $table->string('ep_name', 45);
             $table->integer('eptype_id')->index('fk_EducationProgram_EducationProgramType1_idx');
@@ -20,7 +20,7 @@ class CreateEducationprogramTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::disableForeignKeyConstraints();
         Schema::drop('educationprogram');

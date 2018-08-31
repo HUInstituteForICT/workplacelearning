@@ -41,14 +41,14 @@ class ActingWorkplaceLearningController extends Controller
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
                 ->with('error', Lang::get('errors.internship-no-permission'));
-        } else {
-            return view('pages.acting.internship')
+        }
+
+        return view('pages.acting.internship')
                 ->with('period', $wplPeriod)
                 ->with('workplace', Workplace::find($wplPeriod->wp_id))
                 ->with('learninggoals', $wplPeriod->getLearningGoals())
                 ->with('resource', new Collection())
                 ->with('cohorts', collect($wplPeriod->cohort()->get()));
-        }
     }
 
     public function create(Request $request)
@@ -248,28 +248,27 @@ class ActingWorkplaceLearningController extends Controller
                 ->route('period-acting-edit', ['id' => $id])
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-            if (isset($request['learninggoal_name'])) {
-                foreach ($request['learninggoal_name'] as $lg_id => $name) {
-                    $learningGoal = LearningGoal::find($lg_id);
-                    $description = $request['learninggoal_description'][$lg_id];
-                    if (is_null($learningGoal)) {
-                        $learningGoal = new LearningGoal();
-                        $learningGoal->wplp_id = $id;
-                    }
-                    $learningGoal->learninggoal_label = $name;
-                    $learningGoal->description = $description;
-                    $learningGoal->save();
+        }
+        if (isset($request['learninggoal_name'])) {
+            foreach ($request['learninggoal_name'] as $lg_id => $name) {
+                $learningGoal = LearningGoal::find($lg_id);
+                $description = $request['learninggoal_description'][$lg_id];
+                if (is_null($learningGoal)) {
+                    $learningGoal = new LearningGoal();
+                    $learningGoal->wplp_id = $id;
                 }
-            }
-
-            if (strlen($request['new_learninggoal_name']) > 0) {
-                $learningGoal = new LearningGoal();
-                $learningGoal->learninggoal_label = $request['new_learninggoal_name'];
-                $learningGoal->description = $request['new_learninggoal_description'];
-                $learningGoal->wplp_id = $id;
+                $learningGoal->learninggoal_label = $name;
+                $learningGoal->description = $description;
                 $learningGoal->save();
             }
+        }
+
+        if (strlen($request['new_learninggoal_name']) > 0) {
+            $learningGoal = new LearningGoal();
+            $learningGoal->learninggoal_label = $request['new_learninggoal_name'];
+            $learningGoal->description = $request['new_learninggoal_description'];
+            $learningGoal->wplp_id = $id;
+            $learningGoal->save();
         }
 
         // Done, redirect back to profile page
@@ -309,25 +308,24 @@ class ActingWorkplaceLearningController extends Controller
                 ->route('period-acting-edit', ['id' => $id])
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-            // All is well :)
-            foreach ($request['cat'] as $cat) {
-                // Either update or create a new row.
-                $category = Category::find($cat['cg_id']);
-                if (is_null($category)) {
-                    $category = new Category();
-                    $category->wplp_id = $cat['wplp_id'];
-                }
-                $category->category_label = $cat['cg_label'];
-                $category->save();
+        }
+        // All is well :)
+        foreach ($request['cat'] as $cat) {
+            // Either update or create a new row.
+            $category = Category::find($cat['cg_id']);
+            if (is_null($category)) {
+                $category = new Category();
+                $category->wplp_id = $cat['wplp_id'];
             }
+            $category->category_label = $cat['cg_label'];
+            $category->save();
+        }
 
-            // Done, redirect back to profile page
-            return redirect()->route('period-acting-edit', ['id' => $id])->with(
+        // Done, redirect back to profile page
+        return redirect()->route('period-acting-edit', ['id' => $id])->with(
                 'succes',
                 Lang::get('general.edit-saved')
             );
-        }
     }
 
     public function __construct()

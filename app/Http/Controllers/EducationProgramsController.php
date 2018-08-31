@@ -135,8 +135,6 @@ class EducationProgramsController extends Controller
     /**
      * Create an entity that belongs to a cohort (competence, category etc).
      *
-     * @param Cohort              $cohort
-     * @param CreateEntityRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      *
@@ -149,15 +147,13 @@ class EducationProgramsController extends Controller
 
         if ($result instanceof Model) {
             return response()->json(['status' => 'success', 'entity' => $result->toArray()]);
-        } else {
-            throw new \Exception("Unable to create entity of type {$request->get('type')}");
         }
+        throw new \Exception("Unable to create entity of type {$request->get('type')}");
     }
 
     /**
      * Delete an entity that belongs to a cohort.
      *
-     * @param DeleteEntityRequest $request
      * @param $entityId
      *
      * @return \Illuminate\Http\JsonResponse

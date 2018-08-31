@@ -28,7 +28,7 @@ class ChainManager
         return $chain;
     }
 
-    public function updateChain(Chain $chain, ?string $name, ?int $status)
+    public function updateChain(Chain $chain, ?string $name, ?int $status): void
     {
         $chain->name = $name ?? $chain->name;
         $chain->status = $status ?? $chain->status;
@@ -36,12 +36,12 @@ class ChainManager
         $chain->save();
     }
 
-    public function attachActivity(LearningActivityProducing $learningActivityProducing, Chain $chain)
+    public function attachActivity(LearningActivityProducing $learningActivityProducing, Chain $chain): void
     {
         $learningActivityProducing->chain()->associate($chain);
     }
 
-    public function detachActivity(LearningActivityProducing $learningActivityProducing)
+    public function detachActivity(LearningActivityProducing $learningActivityProducing): void
     {
         $learningActivityProducing->chain()->dissociate();
     }

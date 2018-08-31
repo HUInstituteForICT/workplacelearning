@@ -32,8 +32,6 @@ class ActingAnalysisCollector
      * @param $collection
      * @param $year
      * @param $month
-     *
-     * @return mixed
      */
     public function limitCollectionByDate(Collection $collection, $year, $month)
     {
@@ -110,8 +108,6 @@ class ActingAnalysisCollector
 
     /**
      * Get all the resource persons of the user's education program & internship.
-     *
-     * @return mixed
      */
     public function getResourcePersons()
     {
@@ -126,8 +122,6 @@ class ActingAnalysisCollector
 
     /**
      * Get all the resource materials of the user's internship.
-     *
-     * @return mixed
      */
     public function getResourceMaterials()
     {

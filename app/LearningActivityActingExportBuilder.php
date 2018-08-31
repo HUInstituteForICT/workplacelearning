@@ -18,7 +18,7 @@ class LearningActivityActingExportBuilder
     public function getJson()
     {
         $jsonArray = [];
-        $this->learningActivityActingCollection->each(function (LearningActivityActing $activity) use (&$jsonArray) {
+        $this->learningActivityActingCollection->each(function (LearningActivityActing $activity) use (&$jsonArray): void {
             $jsonArray[] = [
                 'id' => $activity->laa_id,
                 'date' => Carbon::createFromFormat('Y-m-d', $activity->date)->format('d-m-Y'),
@@ -57,7 +57,7 @@ class LearningActivityActingExportBuilder
             'supportEd',
             'competence',
              'evidence',
-        ])->each(function ($field) use (&$mapping, $translator) { $mapping[$field] = $translator->get('process_export.'.$field); });
+        ])->each(function ($field) use (&$mapping, $translator): void { $mapping[$field] = $translator->get('process_export.'.$field); });
 
         return $mapping;
     }

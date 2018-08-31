@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot()
+    public function boot(): void
     {
         if (!\App::environment('debug')) {
             \URL::forceScheme('https');
@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind(ChainManager::class, function (Container $app) {
             $request = $app->make(Request::class);

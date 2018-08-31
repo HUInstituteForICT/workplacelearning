@@ -5,7 +5,10 @@ namespace App;
 use App\Tips\Models\Tip;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class Cohort.
@@ -27,25 +30,22 @@ class Cohort extends Model
     protected $fillable = ['name', 'description', 'ep_id'];
     public $timestamps = false;
 
-    /**
-     * @return HasMany
-     */
-    public function categories()
+    public function categories(): HasMany
     {
         return tap($this->hasMany(Category::class, 'cohort_id', 'id'))->where('wplp_id', '0');
     }
 
-    public function competencies()
+    public function competencies(): HasMany
     {
         return $this->hasMany(Competence::class, 'cohort_id', 'id');
     }
 
-    public function competenceDescription()
+    public function competenceDescription(): HasOne
     {
         return $this->hasOne(CompetenceDescription::class, 'cohort_id', 'id');
     }
 
-    public function educationProgram()
+    public function educationProgram(): BelongsTo
     {
         return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
     }
@@ -56,23 +56,23 @@ class Cohort extends Model
         return tap($this->hasMany(ResourcePerson::class, 'cohort_id', 'id'))->where('wplp_id', '0');
     }
 
-    public function timeslots()
+    public function timeslots(): HasMany
     {
         return $this->hasMany(Timeslot::class, 'cohort_id', 'id');
     }
 
-    public function workplaceLearningPeriods()
+    public function workplaceLearningPeriods(): HasMany
     {
         return $this->hasMany(WorkplaceLearningPeriod::class, 'cohort_id', 'id');
     }
 
-    public function tips()
+    public function tips(): BelongsToMany
     {
         return $this->belongsToMany(Tip::class);
     }
 
     // Relations for query builder
-    public function getRelationships()
+    public function getRelationships(): array
     {
         return ['categories', 'competencies', 'competenceDescription', 'educationProgram', 'resourcePersons', 'timeslots', 'workplaceLearningPeriods'];
     }

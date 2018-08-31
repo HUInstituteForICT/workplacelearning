@@ -9,9 +9,9 @@ class CreateCohortsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('cohorts', function (Blueprint $table) {
+        Schema::create('cohorts', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name');
             $table->text('description')->nullable();
@@ -28,7 +28,7 @@ class CreateCohortsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('cohorts');
     }

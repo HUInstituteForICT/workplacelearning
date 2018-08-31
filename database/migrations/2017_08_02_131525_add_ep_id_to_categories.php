@@ -9,9 +9,9 @@ class AddEpIdToCategories extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('category', function (Blueprint $table) {
+        Schema::table('category', function (Blueprint $table): void {
             $table->integer('ep_id')->nullable();
         });
     }
@@ -19,9 +19,9 @@ class AddEpIdToCategories extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('category', function (Blueprint $table) {
+        Schema::table('category', function (Blueprint $table): void {
             $table->dropColumn('ep_id');
         });
     }

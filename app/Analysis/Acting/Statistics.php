@@ -25,7 +25,6 @@ class Statistics
     /**
      * Get the percentage of activities in this timeslot.
      *
-     * @param Timeslot $timeslot
      *
      * @return float
      */
@@ -38,15 +37,14 @@ class Statistics
 
         if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     /**
      * Get the percentage of activities with this learning goal.
      *
-     * @param LearningGoal $learningGoal
      *
      * @return float
      */
@@ -59,15 +57,14 @@ class Statistics
 
         if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     /**
      * Get the percentage of activities with this competence.
      *
-     * @param Competence $competence
      *
      * @return float
      */
@@ -79,15 +76,14 @@ class Statistics
             });
         if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     /**
      * Get the percentage of activities with a person.
      *
-     * @param ResourcePerson $person
      *
      * @return float
      */
@@ -99,15 +95,14 @@ class Statistics
             });
         if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     /**
      * Get the percentage of activities with a theory.
      *
-     * @param ResourceMaterial $material
      *
      * @return float
      */
@@ -125,9 +120,9 @@ class Statistics
 
         if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     /**
@@ -143,7 +138,7 @@ class Statistics
         $combo->learningGoal = null;
 
         // Loop over all the activities
-        $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo) {
+        $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo): void {
             // Find all activities with matching learning goal & timeslot
             $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function (LearningActivityActing $matchingActivity) use ($activity) {
                 return $activity->learningGoal->learninggoal_id === $matchingActivity->learningGoal->learninggoal_id &&
@@ -178,7 +173,7 @@ class Statistics
         $combo->competence = null;
 
         // Loop over all the activities
-        $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo) {
+        $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo): void {
             // Find all activities with matching competence & timeslot
             $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function (LearningActivityActing $matchingActivity) use ($activity) {
                 return $activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
@@ -213,7 +208,7 @@ class Statistics
         $combo->competence = null;
 
         // Loop over all the activities
-        $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo) {
+        $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo): void {
             // Find all activities with matching competence & learning goal
             $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function (LearningActivityActing $matchingActivity) use ($activity) {
                 return $activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
@@ -255,8 +250,8 @@ class Statistics
 
         if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($noTheory->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 }

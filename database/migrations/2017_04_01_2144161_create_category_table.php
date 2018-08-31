@@ -8,9 +8,9 @@ class CreateCategoryTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('category', function (Blueprint $table) {
+        Schema::create('category', function (Blueprint $table): void {
             $table->integer('category_id', true);
             $table->string('category_label', 45)->nullable();
             $table->integer('wplp_id')->index('fk_Category_WorkplaceLearningPeriod1_idx');
@@ -20,7 +20,7 @@ class CreateCategoryTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('category');
     }

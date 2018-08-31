@@ -16,7 +16,7 @@ class LearningActivityTest extends \Tests\TestCase
 {
     use GenericUserTrait;
 
-    public function testCreateLAA()
+    public function testCreateLAA(): void
     {
         $user = $this->getUser('acting');
 
@@ -50,7 +50,7 @@ class LearningActivityTest extends \Tests\TestCase
         $this->assertDatabaseHas('learningactivityacting', ['situation' => 'Some test activity!']);
     }
 
-    public function testCreateLAP()
+    public function testCreateLAP(): void
     {
         $user = $this->getUser('producing');
 
@@ -76,7 +76,7 @@ class LearningActivityTest extends \Tests\TestCase
         $this->assertDatabaseHas('learningactivityproducing', ['description' => 'Some test activity!']);
     }
 
-    public function testEditEditLAA()
+    public function testEditEditLAA(): void
     {
         $user = $this->getUser('acting');
         $wplp = $user->getCurrentWorkplaceLearningPeriod();

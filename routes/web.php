@@ -22,7 +22,7 @@ Route::post('locale', 'LocaleSwitcher@switchLocale')->name('localeswitcher');
 
 // API ROUTES - NOTE: NO LOCALIZATION AS IT WILL BREAK THE REQUEST DUE TO REDIRECTS (urls without a specified language get redirected, breaks POST requests to GET)
 Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix' => '/education-programs/api'],
-    function () {
+    function (): void {
         // "API" for edu programs routes
         Route::get('education-programs', 'EducationProgramsController@getEducationPrograms');
         Route::post('education-program', 'EducationProgramsController@createEducationProgram');
@@ -54,7 +54,7 @@ Route::get('/manage/tips', function () {
     return view('pages.tips.tips-app');
 })->middleware(['auth', CheckUserLevel::class])->name('tips-app');
 
-Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api/'], function () {
+Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api/'], function (): void {
     Route::resource('tip-coupled-statistics', 'TipApi\TipCoupledStatisticController');
     Route::resource('statistics', 'TipApi\StatisticController');
     Route::resource('tips', 'TipApi\TipsController');
@@ -70,7 +70,7 @@ Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api
 Route::get('/reactlogs', 'ReactLogController@index')->middleware(CheckUserLevel::class)->name('reactlogs');
 Route::get('/reactlogs/{reactLog}/fix', 'ReactLogController@fix')->middleware(CheckUserLevel::class)->name('fix-reactlog');
 
-Route::group(['before' => 'auth'], function () {
+Route::group(['before' => 'auth'], function (): void {
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
     Route::post('/activity-export-doc', 'ActivityExportController@exportActivitiesToWord');
     Route::get('/download/activity-export-doc/{fileName}', 'ActivityExportController@downloadWordExport')->name('docx-export-download');
@@ -82,12 +82,12 @@ Route::group(['before' => 'auth'], function () {
 Route::group([
     'before' => ['auth'],
     'middleware' => ['usernotifications'],
-], function () {
-    Route::group(['middleware' => CheckUserLevel::class], function () {
+], function (): void {
+    Route::group(['middleware' => CheckUserLevel::class], function (): void {
         Route::get('/education-programs', 'EducationProgramsController@index')
             ->name('education-programs');
 
-        Route::group(['prefix' => '/dashboard'], function () {
+        Route::group(['prefix' => '/dashboard'], function (): void {
             Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
             Route::get('/add', 'AnalyticsDashboardController@add')->name('dashboard.add');
             Route::post('/add', 'AnalyticsDashboardController@store')->name('dashboard.save');
@@ -114,7 +114,7 @@ Route::group([
                 return View::make('pages.analytics.dashboard.chart_details', compact('label', 'idLabel'));
             });
 
-            Route::group(['prefix' => 'api'], function () {
+            Route::group(['prefix' => 'api'], function (): void {
                 Route::get('chart_details/{label?}', 'AnalyticsChartController@getChartDetails')->name('charts-details');
                 Route::get('column_values/{table?}/{column?}', 'QueryBuilderController@getColumnValues')->name('column-values');
             });
@@ -129,7 +129,7 @@ Route::group([
             Route::post('/builder/testQuery', 'QueryBuilderController@testQuery')->name('querybuilder.test');
         });
 
-        Route::group(['prefix' => 'template'], function () {
+        Route::group(['prefix' => 'template'], function (): void {
             Route::get('/', 'TemplateDashboardController@index')->name('template.index');
             Route::get('/view/{id}', 'TemplateDashboardController@show')->name('template.show')->where('id', '[0-9]+');
             Route::post('/{id}', 'TemplateDashboardController@update')->name('template.update')->where('id', '[0-9]+');
@@ -137,7 +137,7 @@ Route::group([
             Route::get('/create', 'TemplateDashboardController@create')->name('template.create');
             Route::delete('/{id}', 'TemplateDashboardController@destroy')->name('template.destroy')->where('id', '[0-9]+');
 
-            Route::group(['prefix' => 'api'], function () {
+            Route::group(['prefix' => 'api'], function (): void {
                 // Api routes
                 Route::get('tables', 'TemplateDashboardController@getTables')->name('template.tables');
                 Route::get('columns/{id?}', 'TemplateDashboardController@getColumns')->name('template.columns');
@@ -170,7 +170,7 @@ Route::group([
 
     Route::group([
         'middleware' => ['taskTypeRedirect'],
-    ], function () {
+    ], function (): void {
         /* Add all middleware redirected urls here */
         Route::get('/', 'HomeController@showHome')->name('default');
         Route::get('home', 'HomeController@showHome')->name('home');
@@ -185,7 +185,7 @@ Route::group([
 
     Route::group([
         'middleware' => ['taskTypeRedirect'],
-    ], function () {
+    ], function (): void {
         /* Add all middleware redirected urls here */
         Route::get('/', 'HomeController@showHome')->name('default');
         Route::get('home', 'HomeController@showHome')->name('home');
@@ -201,7 +201,7 @@ Route::group([
     /* EP Type: Acting */
     Route::group([
         'prefix' => '/acting',
-    ], function () {
+    ], function (): void {
         Route::get('home', 'HomeController@showActingTemplate')->name('home-acting');
         Route::get('process', 'ActingActivityController@show')->name('process-acting');
         Route::post('process/create', 'ActingActivityController@create')->name('process-acting-create');
@@ -226,12 +226,12 @@ Route::group([
 
         // Download competence description
         Route::get('competence-description/{competenceDescription}',
-            function (\App\CompetenceDescription $competenceDescription) {
+            function (App\CompetenceDescription $competenceDescription) {
                 return response()->download(storage_path('app/'.$competenceDescription->file_name),
                     'competence-description.pdf');
             })->name('competence-description');
 
-        Route::get('evidence/{learningActivity}/remove', function (\App\LearningActivityActing $learningActivity) {
+        Route::get('evidence/{learningActivity}/remove', function (App\LearningActivityActing $learningActivity) {
             if ($learningActivity->workplaceLearningPeriod->student->student_id != Auth::user()->student_id) {
                 throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
             }
@@ -248,7 +248,7 @@ Route::group([
         })->name('evidence-remove');
 
         Route::get('evidence/{learningActivity}/{diskFileName}',
-            function (\App\LearningActivityActing $learningActivity, $diskFileName) {
+            function (App\LearningActivityActing $learningActivity, $diskFileName) {
                 if ($learningActivity->evidence_disk_filename !== $diskFileName) {
                     throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
                 }
@@ -261,7 +261,7 @@ Route::group([
     /* EP Type: Producing */
     Route::group([
         'prefix' => '/producing',
-    ], function () {
+    ], function (): void {
         Route::get('home', 'HomeController@showProducingTemplate')->name('home-producing');
 
         Route::get('process', 'ProducingActivityController@show')

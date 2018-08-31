@@ -19,11 +19,6 @@ class ApplicableTipFetcher
         $this->tipEvaluator = $tipEvaluator;
     }
 
-    /**
-     * @param Cohort $cohort
-     *
-     * @return EvaluatedStatisticTip[]
-     */
     public function fetchForCohort(Cohort $cohort): array
     {
         $cohort->load('tips.coupledStatistics.statistic');

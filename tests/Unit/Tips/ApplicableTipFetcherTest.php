@@ -46,7 +46,7 @@ class ApplicableTipFetcherTest extends \PHPUnit\Framework\TestCase
         return $mock;
     }
 
-    public function testFetchForWorkplaceLearningPeriod()
+    public function testFetchForWorkplaceLearningPeriod(): void
     {
         $fetcher = new ApplicableTipFetcher($this->getTipEvaluatorMock());
         $cohort = $this->getCohortMock(); // One instance; contained tip returns different value on 2nd call

@@ -8,9 +8,9 @@ class CreateCompetenceTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('competence', function (Blueprint $table) {
+        Schema::create('competence', function (Blueprint $table): void {
             $table->integer('competence_id', true);
             $table->string('competence_label', 45);
             $table->integer('educationprogram_id')->index('fk_Competency_EducationProgram1_idx');
@@ -20,7 +20,7 @@ class CreateCompetenceTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('competence');
     }

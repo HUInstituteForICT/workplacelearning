@@ -53,9 +53,9 @@ class Collector
         throw new \RuntimeException('Invalid educationProgramType; no matching LearningActivity');
     }
 
-    private function applyFilters(Builder $builder, array $filters)
+    private function applyFilters(Builder $builder, array $filters): void
     {
-        array_walk($filters, function ($filterData) use ($builder) {
+        array_walk($filters, function ($filterData) use ($builder): void {
             // Get an array of the parameters for the filter
             $parameters = collect($filterData['parameters'])->reduce(function ($carry, $parameter) {
                 if (isset($parameter['value'])) {
@@ -77,9 +77,6 @@ class Collector
     }
 
     /**
-     * @param StatisticVariable $statisticVariable
-     * @param string            $type
-     *
      * @return int
      */
     public function getValueForVariable(StatisticVariable $statisticVariable, string $type): float

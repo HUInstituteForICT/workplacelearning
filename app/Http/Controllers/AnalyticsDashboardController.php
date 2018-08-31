@@ -17,10 +17,6 @@ class AnalyticsDashboardController extends Controller
 
     /**
      * AnalysisController constructor.
-     *
-     * @param Analysis       $analysis
-     * @param AnalysisChart  $chart
-     * @param DashboardChart $dchart
      */
     public function __construct(Analysis $analysis, AnalysisChart $chart, DashboardChart $dchart)
     {
