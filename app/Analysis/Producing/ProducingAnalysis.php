@@ -27,7 +27,7 @@ class ProducingAnalysis
     {
         $this->analysisCollector = $analysisCollector;
         $this->buildData($year, $month);
-        $this->chains = $analysisCollector->getTaskChainsByDate(25, $year, $month);
+//        $this->chains = $analysisCollector->getTaskChainsByDate(25, $year, $month);
         $this->statistics = new Statistics($this->analysisData);
     }
 
