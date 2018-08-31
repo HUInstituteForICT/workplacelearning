@@ -20,7 +20,7 @@ class ProducingAnalysis
 
     private $statistics;
 
-    private $chains;
+    private $chains = [];
     private $producingAnalysisChains;
 
     public function __construct(ProducingAnalysisCollector $analysisCollector, $year, $month)

@@ -89,9 +89,9 @@ class ProducingAnalysisController extends Controller
         });
 
         // If there are no chains, there are no activities therefore redirect user somewhere else
-        if (0 == count($producingAnalysis->chains())) {
-            return redirect()->route('analysis-producing-choice')->withErrors([Lang::get('notifications.generic.nointernshiphoursmonth')]);
-        }
+//        if (0 == count($producingAnalysis->chains())) {
+//            return redirect()->route('analysis-producing-choice')->withErrors([Lang::get('notifications.generic.nointernshiphoursmonth')]);
+//        }
 
         // Get the raw data of the analysis, used in the view
         $analysisData = $producingAnalysis->analysisData;
