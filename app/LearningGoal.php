@@ -1,7 +1,9 @@
 <?php
 namespace App;
 
+use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -30,9 +32,9 @@ class LearningGoal extends Model
         parent::__construct($attributes);
     }
 
-    public function workplaceLearningPeriod()
+    public function workplaceLearningPeriod(): BelongsTo
     {
-        return $this->hasOne(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
+        return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
     public function learningActivityActing() {

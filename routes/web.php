@@ -303,10 +303,11 @@ Route::group([
             'ProducingAnalysisController@showDetail')->name('analysis-producing-detail');
 
         // Feedback
-        Route::get('feedback/{feedback}', 'ProducingActivityController@feedback')
+        Route::get('feedback/{feedback}', 'FeedbackController@show')
             ->middleware('can:view,feedback')
             ->name('feedback-producing');
-        Route::post('feedback/update/{feedback}', 'ProducingActivityController@updateFeedback')
+
+        Route::post('feedback/update/{feedback}', 'FeedbackController@update')
             ->middleware('can:update,feedback')
             ->name('feedback-producing-update');
 

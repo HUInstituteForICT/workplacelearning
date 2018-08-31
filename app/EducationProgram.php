@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property EducationProgramType $educationprogramType
  * @property int $ep_id
+ * @property int $eptype_id
  */
 class EducationProgram extends Model
 {

@@ -100,13 +100,6 @@ class ProducingActivityController extends Controller
             ->with('chains', $chains);
     }
 
-    public function feedback(Feedback $feedback)
-    {
-        return view('pages.producing.feedback')
-            ->with('lap', $feedback->learningActivityProducing)
-            ->with('feedback', $feedback);
-    }
-
     public function progress(Translator $translator)
     {
         if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
@@ -148,57 +141,8 @@ class ProducingActivityController extends Controller
             ->with('weekStatesDates', ['earliest' => $earliest->format('Y-m-d'), 'latest' => $latest->format('Y-m-d')]);
     }
 
-    public function updateFeedback(Request $request, Feedback $feedback)
-    {
-        $wzh = null;
-        $learningActivityProducing = $feedback->learningActivityProducing;
 
-        if ($learningActivityProducing->wplp_id !== Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id) {
-            return redirect()->route('home')->withErrors([Lang::get('errors.feedback-permission')]);
-        }
 
-        $messages = [
-            'newnotfinished' => Lang::get('validation.newnotfinished'),
-            'ondersteuning_werkplek.required_unless' => Lang::get('validation.ondersteuning_werkplek.required_unless'),
-            'ondersteuning_opleiding.required_unless' => Lang::get('validation.ondersteuning_opleiding.required_unless'),
-        ];
-
-        $validator = Validator::make($request->all(), [
-            'notfinished' => 'required',
-            'support_requested' => 'required|in:0,1,2',
-            'supported_provided_wp' => 'required_unless:support_requested,0|max:150',
-            'initiatief' => 'required|max:500',
-            'progress_satisfied' => 'required|in:1,2',
-            'vervolgstap_zelf' => 'required|max:150',
-            'ondersteuning_werkplek' => 'required_unless:ondersteuningWerkplek,Geen|max:150',
-            'ondersteuning_opleiding' => 'required_unless:ondersteuningOpleiding,Geen|max:150',
-        ]);
-
-        $validator->sometimes('newnotfinished', 'required|max:150', function ($input) {
-            return 'Anders' === $input->notfinished;
-        });
-
-        if ($validator->fails()) {
-            return redirect()->route('feedback-producing', ['id' => $feedback->fb_id])
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $feedback->notfinished = ('Anders' === $request['notfinished']) ? $request['newnotfinished'] : $request['notfinished'];
-        $feedback->initiative = $request['initiatief'];
-        $feedback->progress_satisfied = $request['progress_satisfied'];
-        $feedback->support_requested = $request['support_requested'];
-        $feedback->supported_provided_wp = $request['supported_provided_wp'];
-        $feedback->nextstep_self = $request['vervolgstap_zelf'];
-        $feedback->support_needed_wp = !isset($request['ondersteuningWerkplek']) ? $request['ondersteuning_werkplek'] : 'Geen';
-        $feedback->support_needed_ed = !isset($request['ondersteuningOpleiding']) ? $request['ondersteuning_opleiding'] : 'Geen';
-        $feedback->save();
-
-        return redirect()->route('process-producing')->with(
-            'success',
-            Lang::get('activity.feedback-activity-saved')
-        );
-    }
 
     public function create(ProducingCreateRequest $request, LAPFactory $LAPManager)
     {

@@ -61,15 +61,15 @@ class LearningActivityProducingExportBuilder
          return $mapping;
     }
 
-    private function formatDuration(int $duration): string
+    private function formatDuration(float $duration): string
     {
         switch ($duration) {
             case 0.25:
-                return "15 min";
+                return '15 min';
             case 0.5:
-                return "30 min";
+                return '30 min';
             case 0.75:
-                return "45 min";
+                return '45 min';
             case ($duration < 1):
                 return round($duration * 60) . ' min';
             default:

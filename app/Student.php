@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\EducationProgram;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -106,9 +108,9 @@ class Student extends Authenticatable
         return;
     }
 
-    public function educationProgram()
+    public function educationProgram():BelongsTo
     {
-        return $this->hasOne(\App\EducationProgram::class, 'ep_id', 'ep_id');
+        return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
     }
 
     public function deadlines()

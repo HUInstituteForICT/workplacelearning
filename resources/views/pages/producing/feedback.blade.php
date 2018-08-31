@@ -5,7 +5,6 @@
  * This project was commissioned by HU University of Applied Sciences.
  */
 
-
 /** @var App\LearningActivityProducing $lap */
 /** @var App\Feedback $feedback */
 ?>
@@ -117,32 +116,32 @@
                 <label>
                     <input type="radio" name="support_requested"
                            value="0"
-                           @if(!$feedback->isSaved() || ( $feedback->isSaved() && $feedback->support_requested === 0)) checked @endif
+                           @if($feedback->support_requested === 0 || !$feedback->isSaved()) checked @endif
                     />
                     <span>{{ __('activity.feedback.no-help') }}</span>
                 </label>
                 <label>
                     <input type="radio" name="support_requested"
                            value="1"
-                           @if($feedback->support_requested === 1 && $feedback->isSaved()) checked @endif
+                           @if($feedback->support_requested === 1) checked @endif
                     />
                     <span>{{ __('activity.feedback.help-received') }}</span>
                 </label>
                 <label>
                     <input type="radio" name="support_requested"
                            value="2"
-                           @if($feedback->support_requested === 2 && $feedback->isSaved()) checked @endif
+                           @if($feedback->support_requested === 2) checked @endif
                     />
                     <span>{{ __('activity.feedback.help-asked') }}</span>
                 </label>
             </div>
-            <div id="expand-toggle" class="col-md-3 form-group">
+            <div id="expand-toggle" class="col-md-3 form-group" style="display: none">
                 <h4>{{ __('activity.feedback.help-received-wp') }}</h4>
                 <textarea class="form-control fit-bs"
                           name="supported_provided_wp"
                           maxlength="150"
                           placeholder="{{ __('activity.feedback.help-received-example') }}" rows="8"
-                          cols="40">{{ ($feedback->isSaved()) ? $feedback->supported_provided_wp : '' }}</textarea>
+                          cols="40">{{ $feedback->supported_provided_wp }}</textarea>
             </div>
 
             <div class="col-md-2 form-group buttons">
@@ -150,14 +149,14 @@
                 <label>
                     <input type="radio" name="progress_satisfied"
                            value="2"
-                           @if(!$feedback->isSaved() || ($feedback->isSaved() && $feedback->progress_satisfied === 2)) checked @endif
+                           @if($feedback->progress_satisfied === 2 || !$feedback->isSaved()) checked @endif
                     />
                     <span>{{ __('general.yes') }}</span>
                 </label>
                 <label>
                     <input type="radio" name="progress_satisfied"
                            value="1"
-                           @if($feedback->progress_satisfied === 1 && $feedback->isSaved()) checked @endif
+                           @if($feedback->progress_satisfied === 1) checked @endif
                     />
                     <span>{{ __('general.no') }}</span>
                 </label>
@@ -169,7 +168,7 @@
                           name="initiatief"
                           maxlength="150"
                           placeholder="{{ __('activity.feedback.initiative-explanation') }}" rows="8"
-                          cols="40">{{ ($feedback->isSaved()) ? $feedback->initiative : "" }}</textarea>
+                          cols="40">{{ $feedback->initiative }}</textarea>
             </div>
 
         </div>
@@ -180,43 +179,44 @@
                 <h4>{{ __('activity.feedback.next-steps') }}</h4>
 
                 <textarea class="form-control fit-bs"
-                          {!! ($feedback->isSaved()) ? "disabled " : "" !!}
                           name="vervolgstap_zelf"
                           maxlength="150"
                           placeholder="{{ __('activity.feedback.which-person') }}" rows="8"
-                          cols="40">{{ ($feedback->isSaved()) ? $feedback->nextstep_self : "" }}</textarea>
+                          cols="40">{{ $feedback->nextstep_self }}</textarea>
             </div>
             <div class="col-sm-4 form-group">
                 <h4>{{ __('activity.feedback.help-needed') }}</h4>
                 <textarea class="form-control fit-bs"
-                          {!! ($feedback->isSaved()) ? "disabled " : "" !!}name="ondersteuning_werkplek"
+                          name="ondersteuning_werkplek"
                           maxlength="150"
                           placeholder="{{ __('activity.feedback.help-needed-example') }}" rows="8"
-                          cols="40">{{ ($feedback->isSaved()) ? $feedback->support_needed_wp : "" }}</textarea>
-                <br/><input type="checkbox" name="ondersteuningWerkplek"
-                            value="Geen" {{ ($feedback->isSaved() && $feedback->support_needed_wp == "Geen") ? "checked" : "" }}/> {{ __('activity.feedback.no-help-needed') }}
+                          cols="40">{{ $feedback->support_needed_wp }}</textarea>
+                <br/>
+                <input type="checkbox" name="ondersteuningWerkplek"
+                       value="Geen"
+                       @if($feedback->support_needed_wp === 'Geen') checked @endif/> {{ __('activity.feedback.no-help-needed') }}
                 <br style="clear: both;"/>
             </div>
             <div class="col-sm-4 form-group">
                 <h4>{{ __('activity.feedback.help-school-needed') }}</h4>
                 <textarea class="form-control fit-bs"
-                          {!! ($feedback->isSaved()) ? "disabled " : "" !!}name="ondersteuning_opleiding"
+                          name="ondersteuning_opleiding"
                           maxlength="150"
                           placeholder="{{ __('activity.feedback.help-school-needed-example') }}" rows="8"
-                          cols="40">{{ ($feedback->isSaved()) ? $feedback->support_needed_ed : "" }}</textarea>
-                <br/><input type="checkbox" name="ondersteuningOpleiding"
-                            value="Geen" {{ ($feedback->isSaved() && $feedback->support_needed_ed === "Geen") ? "checked" : "" }}/> {{ __('activity.feedback.no-school-help-needed') }}
+                          cols="40">{{ $feedback->support_needed_ed }}</textarea>
+                <br/>
+                <input type="checkbox" name="ondersteuningOpleiding"
+                       value="Geen"
+                       @if($feedback->support_needed_ed === 'Geen') checked @endif/> {{ __('activity.feedback.no-school-help-needed') }}
                 <br style="clear: both;"/>
 
             </div>
         </div>
-        @if(!$feedback->isSaved())
-            <div class="row">
-                <div class="col-sm-12">
-                    <input type="submit" class="btn btn-info" value="{{ __('general.save') }}"/>
-                </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="submit" class="btn btn-info" value="{{ __('general.save') }}"/>
             </div>
-        @endif
+        </div>
 
         {{ Form::close() }}
     </div>
