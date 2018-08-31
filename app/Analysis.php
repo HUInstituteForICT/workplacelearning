@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
- * @property int $id
- * @property string $name Analysis name
- * @property string $query SQL query
- * @property int $cache_duration Duration in given time type
+ * @property int    $id
+ * @property string $name           Analysis name
+ * @property string $query          SQL query
+ * @property int    $cache_duration Duration in given time type
  * @property string $type_time
  * @property string $time_type
  */
@@ -96,8 +96,6 @@ class Analysis extends Model
 
     /**
      * Return data from the query or an error.
-     *
-     * @return array|null
      */
     public function execute(): ?array
     {

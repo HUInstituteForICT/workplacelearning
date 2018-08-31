@@ -3,7 +3,6 @@
 namespace App\Tips\Services;
 
 use App\Cohort;
-use App\Tips\EvaluatedStatisticTip;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Models\Tip;
 
