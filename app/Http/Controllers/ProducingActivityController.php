@@ -13,7 +13,6 @@ use App\Difficulty;
 use App\Feedback;
 use App\Http\Requests\LearningActivity\ProducingCreateRequest;
 use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
-use App\LearningActivityActing;
 use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
 use App\Services\LAPFactory;
@@ -21,10 +20,8 @@ use App\Status;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\UnauthorizedException;
-use Validator;
 
 class ProducingActivityController extends Controller
 {
@@ -176,7 +173,7 @@ class ProducingActivityController extends Controller
             return redirect()->route('profile')->withErrors([__('errors.internship-no-permission')]);
         }
 
-        /** @var LearningActivityProducing $learningActivityProducing */
+        /* @var LearningActivityProducing $learningActivityProducing */
         $learningActivityProducing->date = $request['datum'];
         $learningActivityProducing->description = $request['omschrijving'];
         $learningActivityProducing->duration = 'x' !== $request['aantaluren'] ? $request['aantaluren'] : round(

@@ -14,12 +14,11 @@
 
 */
 
-use App\Http\Controllers\StatisticController;
 use App\Http\Middleware\CheckUserLevel;
 
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
-Route::post('locale', "LocaleSwitcher@switchLocale")->name('localeswitcher');
+Route::post('locale', 'LocaleSwitcher@switchLocale')->name('localeswitcher');
 
 // API ROUTES - NOTE: NO LOCALIZATION AS IT WILL BREAK THE REQUEST DUE TO REDIRECTS (urls without a specified language get redirected, breaks POST requests to GET)
 Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix' => '/education-programs/api'],
@@ -89,8 +88,6 @@ Route::group(['before' => 'auth'], function () {
 });
 
 
-// Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
-// Note: The localisation is saved in a session state.
 Route::group([
     'before' => ['auth'],
     'middleware' => ['usernotifications'],
@@ -163,7 +160,6 @@ Route::group([
     });
 
 
-    /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
 
     // User Creation and modification
     Route::get('profiel', 'ProfileController@show')->name('profile');
@@ -339,6 +335,5 @@ Route::group([
         Route::put('/chain/{chain}', 'ChainController@save')->name('chain-save');
         Route::get('/chain/{chain}/delete', 'ChainController@delete')->name('chain-delete');
 
-        //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
     });
 });
