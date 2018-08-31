@@ -287,11 +287,26 @@ Route::group([
         'prefix' => "/producing",
     ], function () {
         Route::get('home', 'HomeController@showProducingTemplate')->name('home-producing');
-        Route::get('process', 'ProducingActivityController@show')->name('process-producing');
-        Route::post('process/create', 'ProducingActivityController@create')->name('process-producing-create');
-        Route::get('process/edit/{id}', 'ProducingActivityController@edit')->name('process-producing-edit');
-        Route::post('process/update/{id}', 'ProducingActivityController@update')->name('process-producing-update');
-        Route::get('process/delete/{activity}', 'ProducingActivityController@delete')->name('process-producing-delete');
+
+        Route::get('process', 'ProducingActivityController@show')
+            ->middleware('can:create,App\LearningActivityActing')
+            ->name('process-producing');
+
+        Route::post('process/create', 'ProducingActivityController@create')
+            ->middleware('can:create,App\LearningActivityActing')
+            ->name('process-producing-create');
+
+        Route::get('process/edit/{learningActivityProducing}', 'ProducingActivityController@edit')
+            ->middleware('can:update,learningActivityProducing')
+            ->name('process-producing-edit');
+
+        Route::post('process/update/{learningActivityProducing}', 'ProducingActivityController@update')
+            ->middleware('can:update,learningActivityProducing')
+            ->name('process-producing-update');
+
+        Route::get('process/delete/{learningActivityProducing}', 'ProducingActivityController@delete')
+            ->middleware('can:delete,learningActivityProducing')
+            ->name('process-producing-delete');
 
         // Progress
         Route::get('progress', 'ProducingActivityController@progress')->name('progress-producing');

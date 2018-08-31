@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
  * @property string $evidence_disk_filename
  * @property string $evidence_mime
  */
-class LearningActivityActing extends Model
+class LearningActivityActing extends Model implements LearningActivityInterface
 {
     // Override the table used for the User Model
     protected $table = 'learningactivityacting';

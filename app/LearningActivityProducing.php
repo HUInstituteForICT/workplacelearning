@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property Carbon $date
  * @property Feedback $feedback
  */
-class LearningActivityProducing extends Model
+class LearningActivityProducing extends Model implements LearningActivityInterface
 {
     // Override the table used for the User Model
     protected $table = 'learningactivityproducing';

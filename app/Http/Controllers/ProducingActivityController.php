@@ -12,6 +12,8 @@ use App\ChainManager;
 use App\Difficulty;
 use App\Feedback;
 use App\Http\Requests\LearningActivity\ProducingCreateRequest;
+use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
+use App\LearningActivityActing;
 use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
 use App\Services\LAPFactory;
@@ -30,7 +32,7 @@ class ProducingActivityController extends Controller
     {
         // Allow only to view this page if an internship exists.
         if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
+            return redirect()->route('profile')->withErrors([__('errors.activity-no-internship')]);
         }
 
         $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
@@ -67,18 +69,16 @@ class ProducingActivityController extends Controller
             ->with('chains', $chains);
     }
 
-    public function edit(Request $request, $id)
+    public function edit(Request $request, LearningActivityProducing $learningActivityProducing)
     {
         // Allow only to view this page if an internship exists.
-        if (null == Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
+        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
+            return redirect()->route('profile')->withErrors([__('errors.activity-no-internship')]);
         }
 
-        $activity = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
-
-        if (!$activity) {
+        if (!$learningActivityProducing) {
             return redirect()->route('process-producing')
-                ->withErrors(Lang::get('errors.no-activity-found'));
+                ->withErrors(__('errors.no-activity-found'));
         }
 
         $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
@@ -94,7 +94,7 @@ class ProducingActivityController extends Controller
         $chains = $wplp->chains;
 
         return view('pages.producing.activity-edit')
-            ->with('activity', $activity)
+            ->with('activity', $learningActivityProducing)
             ->with('learningWith', $resourcePersons)
             ->with('categories', $categories)
             ->with('chains', $chains);
@@ -103,7 +103,7 @@ class ProducingActivityController extends Controller
     public function progress(Translator $translator)
     {
         if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([Lang::get('notifications.generic.nointernshipprogress')]);
+            return redirect()->route('profile')->withErrors([__('notifications.generic.nointernshipprogress')]);
         }
 
         $activities = Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
@@ -141,14 +141,11 @@ class ProducingActivityController extends Controller
             ->with('weekStatesDates', ['earliest' => $earliest->format('Y-m-d'), 'latest' => $latest->format('Y-m-d')]);
     }
 
-
-
-
     public function create(ProducingCreateRequest $request, LAPFactory $LAPManager)
     {
         // Allow only to view this page if an internship exists.
         if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([Lang::get('errors.internship-no-permission')]);
+            return redirect()->route('profile')->withErrors([__('errors.internship-no-permission')]);
         }
 
         $learningActivityProducing = $LAPManager->createLAP($request->all());
@@ -164,70 +161,22 @@ class ProducingActivityController extends Controller
 
             return redirect()
                 ->route('feedback-producing', ['id' => $feedback->fb_id])
-                ->with('notification', Lang::get('notifications.feedback-hard'));
+                ->with('notification', __('notifications.feedback-hard'));
         }
 
         return redirect()
             ->route('process-producing')
-            ->with('success', Lang::get('activity.saved-successfully'));
+            ->with('success', __('activity.saved-successfully'));
     }
 
-    public function update(Request $request, ChainManager $chainManager, $id)
+    public function update(ProducingUpdateRequest $request, ChainManager $chainManager, LearningActivityProducing $learningActivityProducing)
     {
         // Allow only to view this page if an internship exists.
         if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([Lang::get('errors.internship-no-permission')]);
+            return redirect()->route('profile')->withErrors([__('errors.internship-no-permission')]);
         }
 
-        // TODO shouldn't these fields be in English?
-        $validator = Validator::make($request->all(), [
-            'datum' => 'required|date|date_in_wplp',
-            'omschrijving' => 'required',
-            'aantaluren' => 'required',
-            'resource' => 'required|in:persoon,alleen,internet,boek,new',
-            'moeilijkheid' => 'required|exists:difficulty,difficulty_id',
-            'status' => 'required|exists:status,status_id',
-            'chain_id' => 'canChain',
-        ]);
-
-        // Conditional Validators
-        $validator->sometimes('newcat', 'sometimes|max:50', function ($input) {
-            return 'new' == $input->category_id;
-        });
-        $validator->sometimes('category_id', 'required|exists:category,category_id', function ($input) {
-            return 'new' != $input->category_id;
-        });
-        $validator->sometimes('newswv', 'required|max:50', function ($input) {
-            return 'new' == $input->personsource && 'persoon' == $input->resource;
-        });
-        $validator->sometimes('personsource', 'required|exists:resourceperson,rp_id', function ($input) {
-            return 'new' != $input->personsource && 'persoon' == $input->resource;
-        });
-        //$v->sometimes('internetsource', 'required|url', function($input){ temporarily loosened up validation
-
-        $validator->sometimes('internetsource', 'required|url|max:75', function ($input) {
-            return 'internet' == $input->resource;
-        });
-        $validator->sometimes('booksource', 'required|max:75', function ($input) {
-            return 'book' == $input->resource;
-        });
-        $validator->sometimes('newlerenmet', 'required|max:250', function ($input) {
-            return 'new' == $input->resource;
-        });
-
-        $validator->sometimes('aantaluren_custom', 'required|numeric', function ($input) {
-            return 'x' === $input->aantaluren;
-        });
-
-        if ($validator->fails()) {
-            return redirect()->route('process-producing-edit', ['id' => $id])
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        // Todo refactor model->fill()
         /** @var LearningActivityProducing $learningActivityProducing */
-        $learningActivityProducing = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningActivityProducingById($id);
         $learningActivityProducing->date = $request['datum'];
         $learningActivityProducing->description = $request['omschrijving'];
         $learningActivityProducing->duration = 'x' !== $request['aantaluren'] ? $request['aantaluren'] : round(
@@ -279,29 +228,29 @@ class ProducingActivityController extends Controller
 
         $learningActivityProducing->save();
 
-        return redirect()->route('process-producing')->with('success', Lang::get('activity.saved-successfully'));
+        return redirect()->route('process-producing')->with('success', __('activity.saved-successfully'));
     }
 
-    public function delete(LearningActivityProducing $activity)
+    public function delete(LearningActivityProducing $learningActivityProducing)
     {
-        if (null === $activity) {
+        if (null === $learningActivityProducing) {
             return redirect()->route('process-producing');
         }
         // Allow only to view this page if an internship exists.
         if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([Lang::get('errors.activity-no-internship')]);
+            return redirect()->route('profile')->withErrors([__('errors.activity-no-internship')]);
         }
 
-        if (null !== $activity->nextLearningActivityProducing()->first()) {
-            return redirect()->route('process-producing')->withErrors([Lang::get('errors.activity-in-chain')]);
+        if (null !== $learningActivityProducing->nextLearningActivityProducing()->first()) {
+            return redirect()->route('process-producing')->withErrors([__('errors.activity-in-chain')]);
         }
 
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $activity->wplp_id) {
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $learningActivityProducing->wplp_id) {
             throw new UnauthorizedException('No access');
         }
 
-        $activity->feedback()->delete();
-        $activity->delete();
+        $learningActivityProducing->feedback()->delete();
+        $learningActivityProducing->delete();
 
         return redirect()->route('process-producing');
     }
