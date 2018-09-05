@@ -53,7 +53,7 @@ class LAPFactory
             $chain = (new Chain())->find($data['chain_id']);
             $learningActivityProducing->chain()->associate($chain);
         } elseif ($chainId === -1 && $learningActivityProducing->status->isBusy()) {
-            $chain = $this->chainManager->createChain(__('New chain') . ' - ' . substr($learningActivityProducing->description, 0, 15));
+            $chain = $this->chainManager->createChain(__('New chain').' - '.substr($learningActivityProducing->description, 0, 15));
             $learningActivityProducing->chain()->associate($chain);
         }
 

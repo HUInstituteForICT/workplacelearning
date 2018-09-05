@@ -13,6 +13,7 @@ use App\Http\Requests\EducationProgram\DeleteEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateRequest;
 use App\Services\CohortCloner;
+use App\Services\CohortManager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Lang;
@@ -75,7 +76,7 @@ class EducationProgramsController extends Controller
         return response()->json($cohort);
     }
 
-    public function deleteCohort(Cohort $cohort)
+    public function deleteCohort(Cohort $cohort, CohortManager $cohortManager)
     {
         if ($cohort->workplaceLearningPeriods()->count() > 0) {
             return response()->json(['status' => 'error',
@@ -83,9 +84,11 @@ class EducationProgramsController extends Controller
             ], 405);
         }
 
-        $cohort->delete();
+        if ($cohortManager->deleteCohort($cohort)) {
+            return response()->json(['status' => 'success']);
+        }
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'error']);
     }
 
     public function toggleDisabledCohort(Cohort $cohort)
