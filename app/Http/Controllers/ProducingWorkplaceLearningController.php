@@ -33,7 +33,7 @@ class ProducingWorkplaceLearningController extends Controller
         return view('pages.producing.internship')
             ->with('period', $period)
             ->with('workplace', $workplace)
-            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
+            ->with('cohorts', Auth::user()->educationProgram->cohorts()->where('disabled', '=', 0)->get());
     }
 
     public function edit($id)

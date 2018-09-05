@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -53,17 +55,19 @@ class Student extends Authenticatable
         'remember_token',
     ];
 
+    /** @var WorkplaceLearningPeriod|null $currentWorkplaceLearningPeriod */
     private $currentWorkplaceLearningPeriod = null;
 
     private $userSettings = [];
 
-    public function getInitials()
+    public function getInitials(): string
     {
         $initials = '';
         if (preg_match('/\s/', $this->firstname)) {
             $names = explode(' ', $this->lastname);
             foreach ($names as $name) {
-                $initials = (0 == strlen($initials)) ? substr($name, 0, 1).'.' : $initials.' '.substr($name, 0, 1).'.';
+                $initials = ('' === $initials) ? substr($name, 0, 1) . '.' : $initials . ' ' . substr($name, 0,
+                        1) . '.';
             }
         } else {
             $initials = substr($this->firstname, 0, 1).'.';
@@ -72,12 +76,12 @@ class Student extends Authenticatable
         return $initials;
     }
 
-    public function getUserLevel()
+    public function getUserLevel(): int
     {
         return $this->userlevel;
     }
 
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->userlevel > 0;
     }
@@ -114,24 +118,25 @@ class Student extends Authenticatable
         return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
     }
 
-    public function deadlines()
+    public function deadlines(): HasMany
     {
-        return $this->hasMany(\App\Deadline::class, 'student_id', 'student_id');
+        return $this->hasMany(Deadline::class, 'student_id', 'student_id');
     }
 
-    public function usersettings()
+    public function usersettings(): HasMany
     {
-        return $this->hasMany(\App\UserSetting::class, 'student_id', 'student_id');
+        return $this->hasMany(UserSetting::class, 'student_id', 'student_id');
     }
 
-    public function workplaceLearningPeriods()
+    public function workplaceLearningPeriods(): HasMany
     {
-        return $this->hasMany(\App\WorkplaceLearningPeriod::class, 'student_id', 'student_id');
+        return $this->hasMany(WorkplaceLearningPeriod::class, 'student_id', 'student_id');
     }
 
-    public function workplaces()
+    public function workplaces(): HasManyThrough
     {
-        return $this->belongsToMany(\App\Workplace::class, 'workplacelearningperiod', 'student_id', 'wp_id');
+        return $this->hasManyThrough(Workplace::class, WorkplaceLearningPeriod::class);
+//        return $this->belongsToMany(\App\Workplace::class, 'workplacelearningperiod', 'student_id', 'wp_id');
     }
 
     public function getWorkplaceLearningPeriods()
@@ -155,38 +160,21 @@ class Student extends Authenticatable
         return $this->currentWorkplaceLearningPeriod;
     }
 
-    public function getCurrentWorkplace()
+    public function getCurrentWorkplace(): Workplace
     {
-        if (null == ($wplp = $this->getCurrentWorkplaceLearningPeriod())) {
-            return null;
-        }
-
-        return $this->workplaces()->where('workplace.wp_id', '=', $wplp->wp_id)->first();
-    }
-
-    /**
-     * @return EducationProgram
-     */
-    public function getEducationProgram()
-    {
-        return $this->educationProgram()->first();
-    }
-
-    public function getEducationProgramType()
-    {
-        return $this->getEducationProgram()->educationprogramType()->first();
+        return $this->getCurrentWorkplaceLearningPeriod()->workplace;
     }
 
     /**
      * @return Cohort
      */
-    public function currentCohort()
+    public function currentCohort(): Cohort
     {
         return $this->getCurrentWorkplaceLearningPeriod()->cohort;
     }
 
     /* OVERRIDE IN ORDER TO DISABLE THE REMEMBER_ME TOKEN */
-    public function getRememberToken()
+    public function getRememberToken():?string
     {
         return null;
     }
@@ -195,7 +183,7 @@ class Student extends Authenticatable
     {
     }
 
-    public function getRememberTokenName()
+    public function getRememberTokenName():?string
     {
         return null;
     }
@@ -209,7 +197,7 @@ class Student extends Authenticatable
     }
 
     // Override to use pw_hash as field instead of password
-    public function getAuthPassword()
+    public function getAuthPassword(): string
     {
         return $this->pw_hash;
     }

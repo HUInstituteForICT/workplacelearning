@@ -168,7 +168,7 @@ class ActingActivityController extends Controller
         if ('new' == $request['res_person']) {
             $resourcePerson = new ResourcePerson();
             $resourcePerson->person_label = $request['new_rp'];
-            $resourcePerson->ep_id = Auth::user()->getEducationProgram()->ep_id; //deprecated, bound to wplp?
+            $resourcePerson->ep_id = Auth::user()->educationProgram->ep_id; //deprecated, bound to wplp?
             $resourcePerson->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
             $resourcePerson->save();
 
@@ -187,7 +187,7 @@ class ActingActivityController extends Controller
         if ('new' == $request['timeslot']) {
             $timeslot = new Timeslot();
             $timeslot->timeslot_text = $request['new_timeslot'];
-            $timeslot->edprog_id = Auth::user()->getEducationProgram()->ep_id; //deprecated, bound to wplp?
+            $timeslot->edprog_id = Auth::user()->educationProgram->ep_id; //deprecated, bound to wplp?
             $timeslot->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
             $timeslot->save();
 
