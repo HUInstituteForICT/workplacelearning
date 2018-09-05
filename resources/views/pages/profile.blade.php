@@ -132,7 +132,7 @@
 
                 <tbody>
                 @foreach(Auth::user()->getWorkplaceLearningPeriods() as $wplp)
-                    <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id == $wplp->wplp_id) ? "highlight" : "" }}">
+                    <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id === $wplp->wplp_id) ? 'highlight' : '' }}">
                         <td><a href="{{ '/period/edit/'.$wplp->wplp_id }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></a></td>
                         <td>{{ $wplp->workplace->wp_name }}</td>
                         <td>{{ date('d-m-Y', strtotime($wplp->startdate)) }}</td>

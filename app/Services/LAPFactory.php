@@ -36,22 +36,26 @@ class LAPFactory
         $category = $this->getCategory($data['category_id']);
 
         $learningActivityProducing = new LearningActivityProducing();
-        $learningActivityProducing->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
         $learningActivityProducing->description = $data['omschrijving'];
         $learningActivityProducing->duration = 'x' !== $data['aantaluren'] ?
             $data['aantaluren'] :
             round(((int) $data['aantaluren_custom']) / 60, 2);
+        $learningActivityProducing->date = (new Carbon($data['datum']))->format('Y-m-d');
 
+        // Set relations
+        $learningActivityProducing->workplaceLearningPeriod()->associate(Auth::user()->getCurrentWorkplaceLearningPeriod());
         $learningActivityProducing->category()->associate($category);
         $learningActivityProducing->difficulty()->associate((new Difficulty())->findOrFail($data['moeilijkheid']));
         $learningActivityProducing->status()->associate((new Status())->findOrFail($data['status']));
 
-        if (-1 !== ((int) $data['chain_id'])) {
+        $chainId = ((int) $data['chain_id']);
+        if ($chainId !== -1) {
             $chain = (new Chain())->find($data['chain_id']);
             $learningActivityProducing->chain()->associate($chain);
+        } elseif ($chainId === -1 && $learningActivityProducing->status->isBusy()) {
+            $chain = $this->chainManager->createChain(__('New chain') . ' - ' . substr($learningActivityProducing->description, 0, 15));
+            $learningActivityProducing->chain()->associate($chain);
         }
-
-        $learningActivityProducing->date = (new Carbon($data['datum']))->format('Y-m-d');
 
         // Attach the resource used
         switch ($data['resource']) {

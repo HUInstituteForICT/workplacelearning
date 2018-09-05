@@ -84,18 +84,6 @@
 
 
                     <h5>{{ Lang::get('activity.chain-to') }}:</h5>
-                    {{--<select class="form-control fit-bs" name="previous_wzh" >--}}
-                    {{--<option value="-1">- {{ Lang::get('no-chain') }}-</option>--}}
-                    {{--@if(Auth::user()->getCurrentWorkplaceLearningPeriod() !== NULL)--}}
-                    {{--@foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getUnfinishedActivityProducing() as $unfinishedActivity)--}}
-                    {{--@if($unfinishedActivity->nextLearningActivityProducing === null)--}}
-                                    {{-- Only allow to chain activity if it hasn't been chained yet --}}
-                    {{--<option value="{{ $unfinishedActivity->lap_id }}">{{ date('d-m', strtotime($unfinishedActivity->date)) ." - ".$unfinishedActivity->description }}</option>--}}
-                    {{--@endif--}}
-                    {{--@endforeach--}}
-                    {{--@endif--}}
-                    {{--</select>--}}
-
 
                     <select class="form-control fit-bs" id="chainSelect" name="chain_id">
                         <option value="-1">{{ Lang::get('process.chain.none') }}</option>
