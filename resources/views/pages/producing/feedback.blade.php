@@ -55,8 +55,8 @@
                     </li>
                     <li>{{ !$lap->resourcePerson ? __('activity.feedback.not-used-source') : __('activity.feedback.used-source') }}
                         @if($lap->resourceMaterial)
-                            ({{ __($learningActivityProducing->resourceMaterial->rm_label) }}
-                            : {{ $learningActivityProducing->res_material_detail }})
+                            ({{ __($lap->resourceMaterial->rm_label) }}
+                            : {{ $lap->res_material_detail }})
                         @elseif($lap->resourcePerson)
                             ({{ __('activity.producing.person') }}
                             : {{ __($lap->resourcePerson->person_label)  }})
