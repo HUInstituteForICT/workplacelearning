@@ -108,7 +108,7 @@ class TipsController extends Controller
      *
      * @throws \Exception
      */
-    public function destroy($id): \Illuminate\Http\Response
+    public function destroy($id): \Illuminate\Http\JsonResponse
     {
         /** @var Tip $tip */
         $tip = (new Tip())->findOrFail($id);
