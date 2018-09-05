@@ -3,15 +3,16 @@
 namespace App\Providers;
 
 use App\ChainManager;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Http\Request;
 use App\Repository\Eloquent\LikeRepository;
 use App\Repository\Eloquent\StudentTipViewRepository;
 use App\Repository\LikeRepositoryInterface;
 use App\Repository\StudentTipViewRepositoryInterface;
+use App\Student;
 use App\Tips\DataCollectors\Collector;
 use App\Tips\PeriodMomentCalculator;
 use App\WorkplaceLearningPeriod;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -54,16 +55,23 @@ class AppServiceProvider extends ServiceProvider
             $year = 'all' === $request->get('year') ? null : $request->get('year', null);
             $month = 'all' === $request->get('month') ? null : $request->get('month', null);
 
-            $learningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod() ?? new WorkplaceLearningPeriod();
+            $student = $app->make(Student::class);
+            $learningPeriod = $student->hasCurrentWorkplaceLearningPeriod() ? $student->getCurrentWorkplaceLearningPeriod() : new WorkplaceLearningPeriod();
 
             return new Collector($year, $month, $learningPeriod);
         });
 
         $this->app->bind(PeriodMomentCalculator::class, function (Container $app) {
-            $request = $app->make(Request::class);
-            $learningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod() ?? new WorkplaceLearningPeriod();
+            $student = $app->make(Student::class);
+            $learningPeriod = $student->hasCurrentWorkplaceLearningPeriod() ? $student->getCurrentWorkplaceLearningPeriod() : new WorkplaceLearningPeriod();
 
             return new PeriodMomentCalculator($learningPeriod);
+        });
+
+        $this->app->bind(Student::class, function (Container $app) {
+            $request = $app->make(Request::class);
+
+            return $request->user();
         });
     }
 }

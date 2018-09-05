@@ -22,16 +22,13 @@ class HomeController extends Controller
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
+    public function showProducingTemplate(Student $student, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
-        /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
-        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
 
-        if (null !== $workplaceLearningPeriod && $workplaceLearningPeriod->hasLoggedHours()) {
-            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
+        if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
+            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
             /** @var Student $student */
-            $student = $request->user();
             $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
@@ -42,16 +39,13 @@ class HomeController extends Controller
         return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
-    public function showActingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
+    public function showActingTemplate(Student $student, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
-        /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
-        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
 
-        if (null !== $workplaceLearningPeriod && $workplaceLearningPeriod->hasLoggedHours()) {
-            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
+        if ($student->hasCurrentWorkplaceLearningPeriod()  && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
+            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
             /** @var Student $student */
-            $student = $request->user();
             $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });

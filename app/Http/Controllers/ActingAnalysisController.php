@@ -22,14 +22,10 @@ use Illuminate\Support\Facades\Lang;
 
 class ActingAnalysisController extends Controller
 {
-    public function showChoiceScreen()
+    public function showChoiceScreen(Student $student)
     {
-        // Check if user has active workplace
-        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('home-acting')->withErrors([Lang::get('notifications.generic.nointernshipactive')]);
-        }
         // Check if for the workplace the user has hours registered
-        if (!Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
+        if (!$student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
             return redirect()->route('home-acting')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
         }
 
@@ -50,14 +46,14 @@ class ActingAnalysisController extends Controller
         LikeRepositoryInterface $likeRepository,
         StudentTipViewRepositoryInterface $studentTipViewRepository
     ) {
-        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod() || 0 === Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count()) {
+        if (Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count() === 0) {
             return redirect()->route('home-acting')
                 ->withErrors([Lang::get('analysis.no-activity')]);
         }
 
         // Check valid date options
-        if (('all' != $year && 'all' != $month)
-            && (0 == preg_match('/^(20)([0-9]{2})$/', $year) || 0 == preg_match('/^([0-1]{1}[0-9]{1})$/', $month))
+        if (('all' !== $year && 'all' !== $month)
+            && (!preg_match('/^(20)(\d{2})$/', $year) || !preg_match('/^([0-1]{1}\d{1})$/', $month))
         ) {
             return redirect()->route('analysis-acting-choice');
         }

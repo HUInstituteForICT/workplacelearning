@@ -1,3 +1,8 @@
+<?php
+
+/** @var App\LearningActivityActing  $activity */
+?>
+
 @extends('layout.HUdefault')
 @section('title')
     {{ Lang::get('activity.activities') }} - {{ Lang::get('general.edit') }}
@@ -12,16 +17,7 @@
                 })();
             });
         </script>
-        @if(count($errors) > 0 || session()->has('success'))
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
-                    </div>
-                </div>
-            </div>
-        @endif
-        {{ Form::open(array('url' => route('process-acting-update', ['id' => $activity->laa_id]), 'class' => 'form-horizontal', "files" => true)) }}
+        {{ Form::open(array('url' => route('process-acting-update', ['id' => $activity->laa_id]), 'class' => 'form-horizontal', 'files' => true)) }}
             <div class="row well">
                 <div class="col-md-2 form-group">
                     <h4>{{ Lang::get('activity.activity') }}</h4>
@@ -70,7 +66,7 @@
                         <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_competence') }}"></i></h4>
                         <select name="competence" class="form-control fit-bs">
                             @foreach ($competencies as $value)
-                                <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : ($activity->getCompetencies()->competence_id == $value->competence_id) ? 'selected' : null }}>{{ $value->competence_label }}</option>
+                                <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : ($activity->competence->first()->competence_id == $value->competence_id) ? 'selected' : null }}>{{ $value->competence_label }}</option>
                             @endforeach
                         </select>
                         <h5>{!! str_replace('%s', "/assets/pdf/CompetentiesLerarenopleiding.pdf", Lang::get('elements.competences.competencedetails')) !!}</h5>

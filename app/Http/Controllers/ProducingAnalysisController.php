@@ -17,19 +17,14 @@ use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 
 class ProducingAnalysisController extends Controller
 {
-    public function showChoiceScreen()
+    public function showChoiceScreen(Student $student)
     {
-        // Check if user has active workplace
-        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('home-producing')->withErrors([Lang::get('notifications.generic.nointernshipactive')]);
-        }
         // Check if for the workplace the user has hours registered
-        if (!Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
+        if (!$student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
             return redirect()->route('home-producing')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
         }
 
@@ -39,14 +34,9 @@ class ProducingAnalysisController extends Controller
 
     public function showDetail(Request $request, $year, $month, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, StudentTipViewRepositoryInterface $studentTipViewRepository)
     {
-        // If no data or not enough data, redirect to analysis choice page
-        if (null == Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('analyse-producing-choice')->with('error', Lang::get('notifications.generic.nointernshipactive'));
-        }
-
         // Check valid date options
-        if (('all' != $year && 'all' != $month)
-            && (0 == preg_match('/^(20)([0-9]{2})$/', $year) || 0 == preg_match('/^([0-1]{1}[0-9]{1})$/', $month))
+        if (('all' !== $year && 'all' !== $month)
+            && (!preg_match('/^(20)(\d{2})$/', $year) || !preg_match('/^([0-1]{1}\d{1})$/', $month))
         ) {
             return redirect()->route('analysis-producing-choice');
         }
@@ -87,11 +77,6 @@ class ProducingAnalysisController extends Controller
         $evaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $studentTipViewRepository): void {
             $studentTipViewRepository->createForTip($evaluatedTip->getTip(), $student);
         });
-
-        // If there are no chains, there are no activities therefore redirect user somewhere else
-//        if (0 == count($producingAnalysis->chains())) {
-//            return redirect()->route('analysis-producing-choice')->withErrors([Lang::get('notifications.generic.nointernshiphoursmonth')]);
-//        }
 
         // Get the raw data of the analysis, used in the view
         $analysisData = $producingAnalysis->analysisData;

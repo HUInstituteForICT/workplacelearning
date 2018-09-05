@@ -8,6 +8,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $category_label
@@ -64,5 +65,10 @@ class Category extends Model
     public function getRelationships()
     {
         return ['cohort', 'educationProgram', 'InternshipPeriods', 'learningactivitiesproducing'];
+    }
+
+    public function workplaceLearningPeriod() : BelongsTo
+    {
+        return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id');
     }
 }

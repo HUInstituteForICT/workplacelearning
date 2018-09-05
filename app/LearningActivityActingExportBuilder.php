@@ -23,17 +23,17 @@ class LearningActivityActingExportBuilder
                 'id' => $activity->laa_id,
                 'date' => Carbon::createFromFormat('Y-m-d', $activity->date)->format('d-m-Y'),
                 'situation' => $activity->situation,
-                'timeslot' => $activity->getTimeslot(),
-                'resourcePerson' => $activity->getResourcePerson(),
-                'resourceMaterial' => $activity->getResourceMaterial(),
-                'lessonsLearned' => $activity->lessonslearned,
-                'learningGoal' => $activity->getLearningGoal(),
+                'timeslot' => __($activity->timeslot->timeslot_text),
+                'resourcePerson' => __($activity->resourcePerson->person_label),
+                'resourceMaterial' => __($activity->resourceMaterial ? $activity->resourceMaterial->rm_label : 'activity.none'),
+                'learningGoal' => __($activity->learningGoal->learninggoal_label),
+                'competence' => __($activity->competence->first()->competence_label),
                 'learningGoalDescription' => $activity->learningGoal->description,
-                'supportWp' => null !== $activity->support_wp ? $activity->support_wp : '',
-                'supportEd' => null !== $activity->support_ed ? $activity->support_ed : '',
-                'competence' => __($activity->getCompetencies()->competence_label),
+                'lessonsLearned' => $activity->lessonslearned,
+                'supportWp' => $activity->support_wp ?? '',
+                'supportEd' => $activity->support_ed ?? '',
                 'url' => route('process-acting-edit', ['id' => $activity->laa_id]),
-                'evidence' => null === $activity->evidence_filename ? '-' :
+                'evidence' => $activity->evidence_filename === null ? '-' :
                     route('evidence-download', ['id' => $activity->laa_id, 'diskFileName' => $activity->evidence_disk_filename]),
             ];
         });
@@ -41,7 +41,7 @@ class LearningActivityActingExportBuilder
         return json_encode($jsonArray);
     }
 
-    public function getFieldLanguageMapping(Translator $translator)
+    public function getFieldLanguageMapping(Translator $translator): array
     {
         $mapping = [];
         collect([

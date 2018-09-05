@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property Timeslot[]|Collection       $timeslots
  * @property string                      $description
  * @property int                         $ep_id
+ * @property CompetenceDescription $competenceDescription
  */
 class Cohort extends Model
 {

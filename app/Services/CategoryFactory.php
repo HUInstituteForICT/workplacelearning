@@ -3,15 +3,25 @@
 namespace App\Services;
 
 use App\Category;
-use Illuminate\Support\Facades\Auth;
+use App\Student;
 
 class CategoryFactory
 {
+    /**
+     * @var Student
+     */
+    private $student;
+
+    public function __construct(Student $student)
+    {
+        $this->student = $student;
+    }
+
     public function createCategory(string $label): Category
     {
         $category = new Category();
         $category->category_label = $label;
-        $category->wplp_id = Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id;
+        $category->workplaceLearningPeriod()->associate($this->student->getCurrentWorkplaceLearningPeriod());
         $category->save();
 
         return $category;

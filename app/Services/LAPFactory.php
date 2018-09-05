@@ -20,10 +20,23 @@ class LAPFactory
      */
     private $chainManager;
     private $data;
+    /**
+     * @var ResourcePersonFactory
+     */
+    private $resourcePersonFactory;
+    /**
+     * @var CategoryFactory
+     */
+    private $categoryFactory;
 
-    public function __construct(ChainManager $chainManager)
-    {
+    public function __construct(
+        ChainManager $chainManager,
+        ResourcePersonFactory $resourcePersonFactory,
+        CategoryFactory $categoryFactory
+    ) {
         $this->chainManager = $chainManager;
+        $this->resourcePersonFactory = $resourcePersonFactory;
+        $this->categoryFactory = $categoryFactory;
     }
 
     public function createLAP(array $data): LearningActivityProducing
@@ -40,7 +53,7 @@ class LAPFactory
         $learningActivityProducing->duration = 'x' !== $data['aantaluren'] ?
             $data['aantaluren'] :
             round(((int) $data['aantaluren_custom']) / 60, 2);
-        $learningActivityProducing->date = (new Carbon($data['datum']))->format('Y-m-d');
+        $learningActivityProducing->date = Carbon::parse($data['datum'])->format('Y-m-d');
 
         // Set relations
         $learningActivityProducing->workplaceLearningPeriod()->associate(Auth::user()->getCurrentWorkplaceLearningPeriod());
@@ -80,9 +93,7 @@ class LAPFactory
     private function getCategory($id): Category
     {
         if ('new' === $id) {
-            $categoryFactory = new CategoryFactory();
-
-            return $categoryFactory->createCategory($this->data['newcat']);
+            return $this->categoryFactory->createCategory($this->data['newcat']);
         }
 
         return (new Category())->find($id);
@@ -91,9 +102,7 @@ class LAPFactory
     private function getResourcePerson(): ResourcePerson
     {
         if ('new' === $this->data['personsource'] && 'persoon' === $this->data['resource']) {
-            $factory = new ResourcePersonFactory();
-
-            return $factory->createResourcePerson($this->data['newswv']);
+            return $this->resourcePersonFactory->createResourcePerson($this->data['newswv']);
         }
 
         return (new ResourcePerson())->find($this->data['personsource']);

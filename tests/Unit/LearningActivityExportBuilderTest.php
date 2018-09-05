@@ -4,6 +4,10 @@ namespace Tests\Feature;
 
 use App\LearningActivityActing;
 use App\LearningActivityActingExportBuilder;
+use App\ResourceMaterial;
+use App\ResourcePerson;
+use App\Timeslot;
+use Illuminate\Database\Eloquent\Collection;
 use Tests\TestCase;
 
 class LearningActivityExportBuilderTest extends TestCase
@@ -16,22 +20,34 @@ class LearningActivityExportBuilderTest extends TestCase
         $mock->shouldReceive('getAttribute')->with('date')->andReturn('2017-10-10');
         $mock->shouldReceive('getAttribute')->with('situation')->andReturn('pressure');
 
-        $mock->shouldReceive('getTimeslot')->times(1)->andReturn('1e lesuur');
-        $mock->shouldReceive('getResourcePerson')->times(1)->andReturn('Medestudent');
-        $mock->shouldReceive('getResourceMaterial')->times(1)->andReturn('Geen');
+        $timeslot = new Timeslot();
+        $timeslot->timeslot_text = '1e lesuur';
+        $mock->shouldReceive('getAttribute')->with('timeslot')->times(1)->andReturn($timeslot);
+
+        $resourcePerson = new ResourcePerson();
+        $resourcePerson->person_label = 'Medestudent';
+        $mock->shouldReceive('getAttribute')->with('resourcePerson')->times(1)->andReturn($resourcePerson);
+
+        $resourceMaterial = new ResourceMaterial();
+        $resourceMaterial->rm_label = 'Geen';
+        $mock->shouldReceive('getAttribute')->with('resourceMaterial')->times(2)->andReturn($resourceMaterial);
+
+
         $mock->shouldReceive('getAttribute')->with('lessonslearned')->andReturn('a lot');
-        $mock->shouldReceive('getLearningGoal')->times(1)->andReturn('Leervraag 1');
+//        $mock->shouldReceive('getLearningGoal')->times(1)->andReturn('Leervraag 1');
 
         $learningGoal = new \StdClass();
         $learningGoal->description = 'Description test';
-        $mock->shouldReceive('getAttribute')->with('learningGoal')->times(1)->andReturn($learningGoal);
+        $learningGoal->learninggoal_label = 'Leervraag 1';
+        $mock->shouldReceive('getAttribute')->with('learningGoal')->times(2)->andReturn($learningGoal);
 
         $mock->shouldReceive('getAttribute')->with('support_wp')->andReturn('support from wp');
         $mock->shouldReceive('getAttribute')->with('support_ed')->andReturn('support from ed');
 
         $competenceObject = new \StdClass();
         $competenceObject->competence_label = 'Interpersoonlijk';
-        $mock->shouldReceive('getCompetencies')->times(1)->andReturn($competenceObject);
+        $collection = new Collection([$competenceObject]);
+        $mock->shouldReceive('getAttribute')->with('competence')->times(1)->andReturn($collection);
         $mock->shouldReceive('getAttribute')->with('laa_id')->andReturn('1');
 
         $mock->shouldReceive('getAttribute')->with('evidence_filename')->andReturn(null);

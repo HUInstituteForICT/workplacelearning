@@ -147,34 +147,41 @@ class Student extends Authenticatable
             ->get();
     }
 
-    public function getCurrentWorkplaceLearningPeriod(): ?WorkplaceLearningPeriod
+    public function hasCurrentWorkplaceLearningPeriod(): bool
     {
-        if (null === $this->currentWorkplaceLearningPeriod) {
-            if (!$this->getUserSetting('active_internship')) {
-                return null;
-            }
-            $this->currentWorkplaceLearningPeriod = $this->workplaceLearningPeriods()->where('wplp_id', '=',
-                $this->getUserSetting('active_internship')->setting_value)->first();
+        return (bool) $this->getUserSetting('active_internship');
+    }
+
+    public function getCurrentWorkplaceLearningPeriod(): WorkplaceLearningPeriod
+    {
+        if (!$this->hasCurrentWorkplaceLearningPeriod()) {
+            throw new \UnexpectedValueException(__METHOD__ . ' should not have been called');
+        }
+        if ($this->currentWorkplaceLearningPeriod === null) {
+            $this->currentWorkplaceLearningPeriod = $this->workplaceLearningPeriods()
+                ->where('wplp_id', '=', $this->getUserSetting('active_internship')->setting_value)
+                ->first();
         }
 
         return $this->currentWorkplaceLearningPeriod;
     }
 
-    public function getCurrentWorkplace(): Workplace
+    public function getCurrentWorkplace(): ?Workplace
     {
-        return $this->getCurrentWorkplaceLearningPeriod()->workplace;
+        if ($this->getCurrentWorkplaceLearningPeriod()) {
+            return $this->getCurrentWorkplaceLearningPeriod()->workplace;
+        }
+
+        return null;
     }
 
-    /**
-     * @return Cohort
-     */
     public function currentCohort(): Cohort
     {
         return $this->getCurrentWorkplaceLearningPeriod()->cohort;
     }
 
     /* OVERRIDE IN ORDER TO DISABLE THE REMEMBER_ME TOKEN */
-    public function getRememberToken():?string
+    public function getRememberToken(): ?string
     {
         return null;
     }
@@ -183,7 +190,7 @@ class Student extends Authenticatable
     {
     }
 
-    public function getRememberTokenName():?string
+    public function getRememberTokenName(): ?string
     {
         return null;
     }

@@ -2,25 +2,33 @@
 
 namespace App;
 
+use App\Interfaces\LearningActivityInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @property int       $laa_id
- * @property int       $wplp_id
- * @property \DateTime $date
- * @property int       $timeslot_id
- * @property string    $situation
- * @property string    $lessonslearned
- * @property string    $support_wp
- * @property string    $support_ed
- * @property int       $res_person_id
- * @property int       $res_material_id
- * @property string    $res_material_detail
- * @property int       $learninggoal_id
- * @property string    $evidence_filename
- * @property string    $evidence_disk_filename
- * @property string    $evidence_mime
+ * @property int                     $laa_id
+ * @property int                     $wplp_id
+ * @property \DateTime               $date
+ * @property int                     $timeslot_id
+ * @property string                  $situation
+ * @property string                  $lessonslearned
+ * @property string                  $support_wp
+ * @property string                  $support_ed
+ * @property int                     $res_person_id
+ * @property int                     $res_material_id
+ * @property string                  $res_material_detail
+ * @property int                     $learninggoal_id
+ * @property string                  $evidence_filename
+ * @property string                  $evidence_disk_filename
+ * @property string                  $evidence_mime
+ * @property Timeslot                $timeslot
+ * @property ResourcePerson          $resourcePerson
+ * @property ResourceMaterial        $resourceMaterial
+ * @property LearningGoal            $learningGoal
+ * @property Collection|Competence[] $competence
  */
 class LearningActivityActing extends Model implements LearningActivityInterface
 {
@@ -47,76 +55,29 @@ class LearningActivityActing extends Model implements LearningActivityInterface
         'learninggoal_id',
     ];
 
-    public function learningGoal()
+    public function learningGoal(): BelongsTo
     {
-        return $this->hasOne(\App\LearningGoal::class, 'learninggoal_id', 'learninggoal_id');
+        return $this->belongsTo(LearningGoal::class, 'learninggoal_id', 'learninggoal_id');
     }
 
-    public function competence()
+    public function competence(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Competence::class, 'activityforcompetence', 'learningactivity_id', 'competence_id');
+        return $this->belongsToMany(Competence::class, 'activityforcompetence', 'learningactivity_id', 'competence_id');
     }
 
-    public function timeslot()
+    public function timeslot(): BelongsTo
     {
-        return $this->belongsTo(\App\Timeslot::class, 'timeslot_id', 'timeslot_id');
+        return $this->belongsTo(Timeslot::class, 'timeslot_id', 'timeslot_id');
     }
 
-    public function resourcePerson()
+    public function resourcePerson(): BelongsTo
     {
-        return $this->hasOne(\App\ResourcePerson::class, 'rp_id', 'res_person_id');
+        return $this->belongsTo(ResourcePerson::class, 'res_person_id', 'rp_id');
     }
 
-    public function resourceMaterial()
+    public function resourceMaterial(): BelongsTo
     {
-        return $this->hasOne(\App\ResourceMaterial::class, 'rm_id', 'res_material_id');
-    }
-
-    /**
-     * Used for display purposes.
-     *
-     * @return string
-     */
-    public function getTimeslot()
-    {
-        return __($this->timeslot()->first()->timeslot_text);
-    }
-
-    /**
-     * Used for display purposes.
-     *
-     * @return string
-     */
-    public function getResourcePerson()
-    {
-        return __($this->resourcePerson()->first()->person_label);
-    }
-
-    /**
-     * Used for display purposes.
-     *
-     * @return string
-     */
-    public function getResourceMaterial()
-    {
-        $label = $this->resourceMaterial()->first();
-
-        return ($label) ? __($label->rm_label) : __('activity.none');
-    }
-
-    /**
-     * Used for display purposes.
-     *
-     * @return string
-     */
-    public function getLearningGoal()
-    {
-        return __($this->learningGoal()->first()->learninggoal_label);
-    }
-
-    public function getCompetencies()
-    {
-        return $this->competence()->first();
+        return $this->belongsTo(ResourceMaterial::class, 'res_material_id', 'rm_id');
     }
 
     public function workplaceLearningPeriod(): BelongsTo
@@ -125,7 +86,7 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     }
 
     // Relations for query builder
-    public function getRelationships()
+    public function getRelationships(): array
     {
         return ['learningGoal', 'competence', 'timeslot', 'resourcePerson', 'resourceMaterial'];
     }

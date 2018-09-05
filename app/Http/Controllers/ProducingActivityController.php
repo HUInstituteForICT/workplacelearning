@@ -16,7 +16,9 @@ use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
 use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
 use App\Services\LAPFactory;
+use App\Services\LAPUpdater;
 use App\Status;
+use App\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,11 +29,6 @@ class ProducingActivityController extends Controller
 {
     public function show(Request $request, Translator $translator)
     {
-        // Allow only to view this page if an internship exists.
-        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([__('errors.activity-no-internship')]);
-        }
-
         $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
@@ -66,24 +63,14 @@ class ProducingActivityController extends Controller
             ->with('chains', $chains);
     }
 
-    public function edit(Request $request, LearningActivityProducing $learningActivityProducing)
+    public function edit(Request $request, LearningActivityProducing $learningActivityProducing, Student $student)
     {
-        // Allow only to view this page if an internship exists.
-        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([__('errors.activity-no-internship')]);
-        }
-
-        if (!$learningActivityProducing) {
-            return redirect()->route('process-producing')
-                ->withErrors(__('errors.no-activity-found'));
-        }
-
-        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
-            Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+        $resourcePersons = $student->currentCohort()->resourcePersons()->get()->merge(
+            $student->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
-        $categories = Auth::user()->currentCohort()->categories()->get()->merge(
-            Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
+        $categories = $student->currentCohort()->categories()->get()->merge(
+            $student->getCurrentWorkplaceLearningPeriod()->categories()->get()
         );
 
         $wplp = $request->user()->getCurrentWorkplaceLearningPeriod();
@@ -97,13 +84,9 @@ class ProducingActivityController extends Controller
             ->with('chains', $chains);
     }
 
-    public function progress(Translator $translator)
+    public function progress(Translator $translator, Student $student)
     {
-        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([__('notifications.generic.nointernshipprogress')]);
-        }
-
-        $activities = Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
+        $activities = $student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->orderBy('date', 'DESC')
             ->get();
@@ -140,11 +123,6 @@ class ProducingActivityController extends Controller
 
     public function create(ProducingCreateRequest $request, LAPFactory $LAPManager)
     {
-        // Allow only to view this page if an internship exists.
-        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([__('errors.internship-no-permission')]);
-        }
-
         $learningActivityProducing = $LAPManager->createLAP($request->all());
 
         $difficulty = $learningActivityProducing->difficulty;
@@ -166,85 +144,15 @@ class ProducingActivityController extends Controller
             ->with('success', __('activity.saved-successfully'));
     }
 
-    public function update(ProducingUpdateRequest $request, ChainManager $chainManager, LearningActivityProducing $learningActivityProducing)
+    public function update(ProducingUpdateRequest $request, LearningActivityProducing $learningActivityProducing, LAPUpdater $LAPUpdater)
     {
-        // Allow only to view this page if an internship exists.
-        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([__('errors.internship-no-permission')]);
-        }
-
-        /* @var LearningActivityProducing $learningActivityProducing */
-        $learningActivityProducing->date = $request['datum'];
-        $learningActivityProducing->description = $request['omschrijving'];
-        $learningActivityProducing->duration = 'x' !== $request['aantaluren'] ? $request['aantaluren'] : round(
-            ((int) $request['aantaluren_custom']) / 60,
-            2
-        );
-
-        // Todo refactor extract method?
-        switch ($request['resource']) {
-            case 'persoon':
-                $learningActivityProducing->res_person_id = $request['personsource'];
-                $learningActivityProducing->res_material_id = null;
-                $learningActivityProducing->res_material_detail = null;
-                break;
-            case 'internet':
-                $learningActivityProducing->res_material_id = 1;
-                $learningActivityProducing->res_material_detail = $request['internetsource'];
-                $learningActivityProducing->res_person_id = null;
-                break;
-            case 'boek':
-                $learningActivityProducing->res_material_id = 2;
-                $learningActivityProducing->res_material_detail = $request['booksource'];
-                $learningActivityProducing->res_person_id = null;
-                break;
-            case 'alleen':
-                $learningActivityProducing->res_person_id = null;
-                $learningActivityProducing->res_material_id = null;
-                $learningActivityProducing->res_material_detail = null;
-                break;
-        }
-
-        $learningActivityProducing->category_id = $request['category_id'];
-        $learningActivityProducing->difficulty_id = $request['moeilijkheid'];
-        $learningActivityProducing->status_id = $request['status'];
-        $learningActivityProducing->prev_lap_id = ('-1' != $request['previous_wzh']) ? $request['previous_wzh'] : null;
-
-        $chainId = $request->get('chain_id', null);
-
-        if (null !== $chainId) {
-            if (-1 === ((int) $chainId)) {
-                $learningActivityProducing->chain_id = null;
-            } elseif (-1 !== ((int) $chainId)) {
-                $chain = (new Chain())->find($chainId);
-                if (Chain::STATUS_FINISHED !== $chain->status) {
-                    $chainManager->attachActivity($learningActivityProducing, $chain);
-                }
-            }
-        }
-
-        $learningActivityProducing->save();
+        $LAPUpdater->update($learningActivityProducing, $request->all());
 
         return redirect()->route('process-producing')->with('success', __('activity.saved-successfully'));
     }
 
     public function delete(LearningActivityProducing $learningActivityProducing)
     {
-        if (null === $learningActivityProducing) {
-            return redirect()->route('process-producing');
-        }
-        // Allow only to view this page if an internship exists.
-        if (null === Auth::user()->getCurrentWorkplaceLearningPeriod()) {
-            return redirect()->route('profile')->withErrors([__('errors.activity-no-internship')]);
-        }
-
-        if (null !== $learningActivityProducing->nextLearningActivityProducing()->first()) {
-            return redirect()->route('process-producing')->withErrors([__('errors.activity-in-chain')]);
-        }
-
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id !== $learningActivityProducing->wplp_id) {
-            throw new UnauthorizedException('No access');
-        }
 
         $learningActivityProducing->feedback()->delete();
         $learningActivityProducing->delete();

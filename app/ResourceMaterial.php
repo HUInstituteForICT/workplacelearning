@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $rm_label
+ * @property int    $wplp_id
  */
 class ResourceMaterial extends Model
 {
@@ -18,23 +21,22 @@ class ResourceMaterial extends Model
 
     // Default
     protected $fillable = [
-        'rm_id',
         'rm_label',
         'wplp_id',
     ];
 
-    public function workplaceLearningPeriod()
+    public function workplaceLearningPeriod(): BelongsTo
     {
-        return $this->belongsTo(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
+        return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningActivityProducing()
+    public function learningActivityProducing(): HasMany
     {
-        return $this->belongsTo(\App\LearningActivityProducing::class, 'rm_id', 'res_material_id');
+        return $this->hasMany(LearningActivityProducing::class, 'res_material_id');
     }
 
     // Relations for query builder
-    public function getRelationships()
+    public function getRelationships(): array
     {
         return ['workplaceLearningPeriod', 'learningActivityProducing'];
     }

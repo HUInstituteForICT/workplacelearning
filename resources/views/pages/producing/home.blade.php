@@ -38,7 +38,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
+                    @if(Auth::user()->hasCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
                         <h1>{{ Lang::get('dashboard.lastWZHtitle') }}</h1>
                         @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(5) as $a)
                             <div class="dash-bar">

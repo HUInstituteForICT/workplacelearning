@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\LearningActivityInterface;
+use App\Interfaces\LearningActivityInterface;
 use App\Student;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -23,7 +23,7 @@ class LearningActivityPolicy
      */
     public function create(Student $student): bool
     {
-        return null !== $student->getCurrentWorkplaceLearningPeriod();
+        return $student->getCurrentWorkplaceLearningPeriod() !== null;
     }
 
     /**

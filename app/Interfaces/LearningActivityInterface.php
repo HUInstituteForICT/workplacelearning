@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Interfaces;
 
+use App\WorkplaceLearningPeriod;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**

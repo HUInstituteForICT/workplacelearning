@@ -7,6 +7,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -26,9 +27,8 @@ class ProducingReportController extends Controller
     private $viewdata = [
     ];
 
-    public function wordExport(Request $request): void
+    public function wordExport(Request $request, Student $student): void
     {
-        $student = Auth::user();
         $wp = $student->getCurrentWorkplace();
 
         $bold = tap(new Font())->setBold(true);
