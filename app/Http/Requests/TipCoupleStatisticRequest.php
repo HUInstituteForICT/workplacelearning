@@ -15,7 +15,7 @@ class TipCoupleStatisticRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -25,7 +25,7 @@ class TipCoupleStatisticRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $idRule = 'required|exists:statistics';
         if (starts_with($this->request->get('id'),
@@ -40,19 +40,16 @@ class TipCoupleStatisticRequest extends FormRequest
         ];
     }
 
-    private function doesPredefinedExist($predefinedString)
+    private function doesPredefinedExist($predefinedString): bool
     {
         $methodName = Str::after($predefinedString, 'predefined-');
 
         // Get all predefined statistics (producing, acting..)
-        $predefinedStatisticAnnotation = collect(PredefinedStatisticHelper::getProducingData())
-            ->merge(
-                collect(PredefinedStatisticHelper::getActingData())
-            )
+        $predefinedStatisticAnnotation = collect(PredefinedStatisticHelper::getData())
             ->first(function ($predefinedStatistic) use ($methodName) {
                 return $methodName === $predefinedStatistic['method'];
             });
 
-        return is_array($predefinedStatisticAnnotation);
+        return \is_array($predefinedStatisticAnnotation);
     }
 }

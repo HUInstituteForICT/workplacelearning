@@ -120,8 +120,4 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
     {
         return $this->belongsTo(Chain::class, 'chain_id', 'id');
     }
-
-    public function getResourceDetail(): string
-    {
-    }
 }

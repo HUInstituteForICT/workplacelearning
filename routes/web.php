@@ -205,7 +205,7 @@ Route::group([
     ], function (): void {
         Route::get('home', 'HomeController@showActingTemplate')->name('home-acting');
 
-        Route::group(['prefix' => 'process', 'middleware' => [RequireActiveInternship::class]], function() {
+        Route::group(['prefix' => 'process', 'middleware' => [RequireActiveInternship::class]], function () {
             Route::get('/', 'ActingActivityController@show')
                 ->middleware('can:create,App\LearningActivityActing')
                 ->name('process-acting');
@@ -226,9 +226,6 @@ Route::group([
                 ->middleware('can:delete,learningActivityActing')
                 ->name('process-acting-delete');
         });
-
-
-
 
         Route::get('progress', 'ActingActivityController@progress')
             ->middleware(RequireActiveInternship::class)
@@ -300,8 +297,7 @@ Route::group([
     ], function (): void {
         Route::get('home', 'HomeController@showProducingTemplate')->name('home-producing');
 
-
-        Route::group(['prefix' => 'process', 'middleware' => [RequireActiveInternship::class]], function() {
+        Route::group(['prefix' => 'process', 'middleware' => [RequireActiveInternship::class]], function () {
             Route::get('/', 'ProducingActivityController@show')
                 ->middleware('can:create,App\LearningActivityProducing')
                 ->name('process-producing');
@@ -323,8 +319,7 @@ Route::group([
                 ->name('process-producing-delete');
         });
 
-
-        Route::group(['middleware' => [RequireActiveInternship::class]], function() {
+        Route::group(['middleware' => [RequireActiveInternship::class]], function () {
             // Progress
             Route::get('progress', 'ProducingActivityController@progress')
                 ->name('progress-producing');
@@ -345,9 +340,7 @@ Route::group([
 
             Route::post('feedback/update/{feedback}', 'FeedbackController@update')
                 ->name('feedback-producing-update');
-
         });
-
 
         // Internships & Internship Periods
         Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period-producing');

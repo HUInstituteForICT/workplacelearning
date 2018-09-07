@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Requests\LearningActivity;
-
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,14 +15,14 @@ class ActingCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date'          => 'required|date|date_in_wplp',
-            'description'   => 'required|max:1000',
-            'learned'       => 'required|max:1000',
-            'support_wp'    => 'max:500',
-            'support_ed'    => 'max:500',
+            'date' => 'required|date|date_in_wplp',
+            'description' => 'required|max:1000',
+            'learned' => 'required|max:1000',
+            'support_wp' => 'max:500',
+            'support_ed' => 'max:500',
             'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
-            'competence'    => 'required|exists:competence,competence_id',
-            'evidence'      => 'file|max:5000',
+            'competence' => 'required|exists:competence,competence_id',
+            'evidence' => 'file|max:5000',
         ];
     }
 
@@ -57,6 +55,5 @@ class ActingCreateRequest extends FormRequest
         $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75', function ($input) {
             return $input->res_material >= 1;
         });
-
     }
 }

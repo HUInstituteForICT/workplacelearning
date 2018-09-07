@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Category;
 use App\Chain;
@@ -42,12 +40,12 @@ class LAPUpdater
                 $learningActivityProducing->res_material_detail = null;
                 break;
             case 'internet':
-                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial)->find(1));
+                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial())->find(1));
                 $learningActivityProducing->res_material_detail = $data['internetsource'];
                 $learningActivityProducing->resourcePerson()->dissociate();
                 break;
             case 'boek':
-                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial)->find(2));
+                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial())->find(2));
                 $learningActivityProducing->res_material_detail = $data['booksource'];
                 $learningActivityProducing->resourcePerson()->dissociate();
                 break;
@@ -58,7 +56,7 @@ class LAPUpdater
                 break;
         }
 
-        $learningActivityProducing->category()->associate((new Category)->find($data['category_id']));
+        $learningActivityProducing->category()->associate((new Category())->find($data['category_id']));
         $learningActivityProducing->difficulty()->associate((new Difficulty())->find($data['moeilijkheid']));
         $learningActivityProducing->status()->associate((new Status())->find($data['status']));
 //        $learningActivityProducing->prev_lap_id = ('-1' != $data['previous_wzh']) ? $data['previous_wzh'] : null;
@@ -77,6 +75,5 @@ class LAPUpdater
         }
 
         return $learningActivityProducing->save();
-
     }
 }

@@ -24,7 +24,7 @@ return [
     'new-statistic-driven' => 'Nieuwe statistiek tip',
     'new-moment-driven' => 'Nieuwe moment tip',
     'moment-trigger' => 'Moment trigger',
-    'moment-trigger-detail' => 'Geef de periode aan waarop deze tip actief wordt. Bijvoorbeeld start op 10% van de stage tot 20%. Meerdere gekoppelde momenten zorgen ervoor dat de tip op verschillende periodes in de stage actief kan zijn, bijvoorbeeld aan het begin (0% en 20%) en aan het eind (80% en 100%).',
+    'moment-trigger-detail' => 'Geef de periode aan waarop deze tip actief wordt. Bijvoorbeeld start op 10% van de stage tot 20%. Meerdere gekoppelde momenten zorgen ervoor dat de tip op verschillende periodes in de stage actief kan zijn, bijvoorbeeld aan het begin (0% en 20%) en aan het eind (80% en 100%). Als er meerdere momenten gekoppeld zijn hoeft er maar 1 moment actief te zijn om het moment gedeelte van de tip als actief te laten gelden.',
     'rangeStart' => 'Startgrens',
     'rangeEnd' => 'Eindgrens',
     'type-moment' => 'Moment',

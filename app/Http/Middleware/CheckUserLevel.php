@@ -8,7 +8,6 @@ use Illuminate\Validation\UnauthorizedException;
 
 class CheckUserLevel
 {
-
     /**
      * @var Student
      */

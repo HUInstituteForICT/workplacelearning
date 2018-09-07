@@ -7,8 +7,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Chain;
-use App\ChainManager;
 use App\Difficulty;
 use App\Feedback;
 use App\Http\Requests\LearningActivity\ProducingCreateRequest;
@@ -23,7 +21,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Translation\Translator;
-use Illuminate\Validation\UnauthorizedException;
 
 class ProducingActivityController extends Controller
 {
@@ -153,7 +150,6 @@ class ProducingActivityController extends Controller
 
     public function delete(LearningActivityProducing $learningActivityProducing)
     {
-
         $learningActivityProducing->feedback()->delete();
         $learningActivityProducing->delete();
 

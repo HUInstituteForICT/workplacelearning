@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\LearningActivityActing;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
@@ -10,6 +11,16 @@ use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 
 class EvidenceUploadHandler
 {
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
+
     public function process(Request $request, LearningActivityActing $learningActivityActing): void
     {
         $evidence = $request->file('evidence');
@@ -29,8 +40,8 @@ class EvidenceUploadHandler
 
     private function removePreviousUpload(LearningActivityActing $learningActivityActing): void
     {
-        if ($learningActivityActing->evidence_disk_filename !== null && Storage::exists("activity-evidence/{$learningActivityActing->evidence_disk_filename}")) {
-            Storage::delete("activity-evidence/{$learningActivityActing->evidence_disk_filename}");
+        if ($learningActivityActing->evidence_disk_filename !== null && $this->filesystem->exists("activity-evidence/{$learningActivityActing->evidence_disk_filename}")) {
+            $this->filesystem->delete("activity-evidence/{$learningActivityActing->evidence_disk_filename}");
         }
     }
 }

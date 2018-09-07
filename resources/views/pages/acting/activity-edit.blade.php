@@ -1,6 +1,6 @@
 <?php
 
-/** @var App\LearningActivityActing  $activity */
+/** @var App\LearningActivityActing $activity */
 ?>
 
 @extends('layout.HUdefault')

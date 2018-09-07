@@ -3,10 +3,23 @@
 namespace App\Services;
 
 use App\Cohort;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Facades\DB;
 
 class CohortManager
 {
+
+    /**
+     * @var DatabaseManager
+     */
+    private $databaseManager;
+
+    public function __construct(DatabaseManager $databaseManager)
+    {
+
+        $this->databaseManager = $databaseManager;
+    }
+
     public function deleteCohort(Cohort $cohort): bool
     {
         if ($this->deleteRelated($cohort)) {
@@ -19,7 +32,7 @@ class CohortManager
     private function deleteRelated(Cohort $cohort): bool
     {
         try {
-            DB::transaction(function () use ($cohort) {
+            $this->databaseManager->transaction(function () use ($cohort) {
                 $cohort->categories()->delete();
                 $cohort->competencies()->delete();
                 $cohort->competenceDescription()->delete();

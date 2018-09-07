@@ -24,7 +24,7 @@ return [
     'new-statistic-driven' => 'New statistic tip',
     'new-moment-driven' => 'New moment tip',
     'moment-trigger' => 'Moment trigger',
-    'moment-trigger-detail' => 'Enter the period in which this tip will be active. For example, start at 10% of the workplace learning period until 20%. Multiple coupled moments allow the tip to become active more than once during a workplace learning period, for example at the beginning (0% and 20%) and at the end (80% and 100%).',
+    'moment-trigger-detail' => 'Enter the period in which this tip will be active. For example, start at 10% of the workplace learning period until 20%. Multiple coupled moments allow the tip to become active more than once during a workplace learning period, for example at the beginning (0% and 20%) and at the end (80% and 100%). When more than one moment is coupled only one needs to be active to make the moments part of the tip active.',
     'rangeStart' => 'Start boundary',
     'rangeEnd' => 'End boundary',
     'type-moment' => 'Moment',

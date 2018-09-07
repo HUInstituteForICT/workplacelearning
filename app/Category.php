@@ -67,7 +67,7 @@ class Category extends Model
         return ['cohort', 'educationProgram', 'InternshipPeriods', 'learningactivitiesproducing'];
     }
 
-    public function workplaceLearningPeriod() : BelongsTo
+    public function workplaceLearningPeriod(): BelongsTo
     {
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id');
     }

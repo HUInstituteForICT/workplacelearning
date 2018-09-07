@@ -32,7 +32,6 @@ class LearningActivityExportBuilderTest extends TestCase
         $resourceMaterial->rm_label = 'Geen';
         $mock->shouldReceive('getAttribute')->with('resourceMaterial')->times(2)->andReturn($resourceMaterial);
 
-
         $mock->shouldReceive('getAttribute')->with('lessonslearned')->andReturn('a lot');
 //        $mock->shouldReceive('getLearningGoal')->times(1)->andReturn('Leervraag 1');
 

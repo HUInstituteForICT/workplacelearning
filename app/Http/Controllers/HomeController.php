@@ -7,7 +7,6 @@ use App\Repository\Eloquent\LikeRepository;
 use App\Student;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;
-use App\WorkplaceLearningPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Auth;
@@ -24,11 +23,10 @@ class HomeController extends Controller
     /* Placeholder Templates */
     public function showProducingTemplate(Student $student, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
-
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
             $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
-            /** @var Student $student */
+            /* @var Student $student */
             $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
@@ -41,11 +39,10 @@ class HomeController extends Controller
 
     public function showActingTemplate(Student $student, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
-
-        if ($student->hasCurrentWorkplaceLearningPeriod()  && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
+        if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
             $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
-            /** @var Student $student */
+            /* @var Student $student */
             $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });

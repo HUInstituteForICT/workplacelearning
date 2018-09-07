@@ -2,64 +2,90 @@
 
 namespace App\Http\Middleware;
 
+use App\Student;
 use Closure;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Redirector;
+use Illuminate\Routing\Route;
 
 class TaskTypeRedirect
 {
+    /**
+     * @var Guard
+     */
+    private $guard;
+    /**
+     * @var Redirector
+     */
+    private $redirector;
+
+    public function __construct(Guard $guard, Redirector $redirector)
+    {
+        $this->guard = $guard;
+        $this->redirector = $redirector;
+    }
+
     /**
      * Handle an incoming request.
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::guest()) {
-            return redirect('login');
+        if ($this->guard->guest()) {
+            return $this->redirector->to('login');
         }
 
-        if ('Acting' === Auth::user()->educationprogram()->first()->educationprogramtype()->first()->eptype_name) {
-            switch ($request->route()->getName()) {
+        /** @var Student $student */
+        $student = $this->guard->user();
+
+        $route = $request->route();
+        if (!$route instanceof Route) {
+            return $next($request);
+        }
+
+        if ($student->educationProgram->educationprogramType->isActing()) {
+            switch ($route->getName()) {
                 case 'home':
                 case 'default':
-                    return redirect()->route('home-acting');
+                    return $this->redirector->route('home-acting');
                     break;
                 case 'process':
-                    return redirect()->route('process-acting');
+                    return $this->redirector->route('process-acting');
                     break;
                 case 'analysis':
-                    return redirect()->route('analysis-acting-choice');
+                    return $this->redirector->route('analysis-acting-choice');
                     break;
                 case 'progress':
-                    return redirect()->route('progress-acting', ['page' => $request->page]);
+                    return $this->redirector->route('progress-acting');
                     break;
                 case 'period':
-                    return redirect()->route('period-acting');
+                    return $this->redirector->route('period-acting');
                     break;
                 case 'period-edit':
-                    return redirect()->route('period-acting-edit', ['id' => $request->id]);
+                    return $this->redirector->route('period-acting-edit', ['id' => $request->get('id')]);
                     break;
             }
         } else {
             // Assume the user follows an EP of type 'Producing'
-            switch ($request->route()->getName()) {
+            switch ($route->getName()) {
                 case 'home':
                 case 'default':
-                    return redirect()->route('home-producing');
+                    return $this->redirector->route('home-producing');
                     break;
                 case 'process':
-                    return redirect()->route('process-producing');
+                    return $this->redirector->route('process-producing');
                     break;
                 case 'analysis':
-                    return redirect()->route('analysis-producing-choice');
+                    return $this->redirector->route('analysis-producing-choice');
                     break;
                 case 'progress':
-                    return redirect()->route('progress-producing', ['page' => $request->page]);
+                    return $this->redirector->route('progress-producing');
                     break;
                 case 'period':
-                    return redirect()->route('period-producing');
+                    return $this->redirector->route('period-producing');
                     break;
                 case 'period-edit':
-                    return redirect()->route('period-producing-edit', ['id' => $request->id]);
+                    return $this->redirector->route('period-producing-edit', ['id' => $request->get('id')]);
                     break;
             }
         }

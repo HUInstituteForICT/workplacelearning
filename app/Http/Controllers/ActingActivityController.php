@@ -95,7 +95,7 @@ class ActingActivityController extends Controller
             $evidenceUploadHandler->process($request, $learningActivityActing);
         }
 
-        return redirect()->route('process-acting')->with('success', Lang::get('activity.saved-successfully'));
+        return redirect()->route('process-acting')->with('success', __('activity.saved-successfully'));
     }
 
     public function update(
@@ -104,13 +104,11 @@ class ActingActivityController extends Controller
         EvidenceUploadHandler $evidenceUploadHandler,
         LAAUpdater $LAAUpdater
     ) {
-
         if ($request->hasFile('evidence')) {
             $evidenceUploadHandler->process($request, $learningActivityActing);
         }
 
         $LAAUpdater->update($learningActivityActing, $request->all());
-
 
         return redirect()->route('process-acting')->with('success', __('activity.saved-successfully'));
     }

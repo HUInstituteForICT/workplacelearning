@@ -4,17 +4,18 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Auth\AuthManager;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class Locale
 {
-    /** @var AuthManager|Auth $authManager */
-    private $authManager;
+    /** @var Guard */
+    private $auth;
 
-    public function __construct(AuthManager $authManager)
+    public function __construct(Guard $authManager)
     {
-        $this->authManager = $authManager;
+        $this->auth = $authManager;
     }
 
     /**
@@ -30,7 +31,7 @@ class Locale
             $request->session()->put('locale', 'nl');
         }
         // If user is authenticated, force it to preference
-        if ($this->authManager->check()) {
+        if ($this->auth->check()) {
             $request->session()->put('locale', $request->user()->locale);
         }
 

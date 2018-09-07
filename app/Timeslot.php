@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property int    $timeslot_id
- * @property string $timeslot_text
+ * @property int                     $timeslot_id
+ * @property string                  $timeslot_text
  * @property WorkplaceLearningPeriod $workplaceLearningPeriod
  */
 class Timeslot extends Model

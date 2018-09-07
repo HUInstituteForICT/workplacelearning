@@ -66,8 +66,8 @@ class Student extends Authenticatable
         if (preg_match('/\s/', $this->firstname)) {
             $names = explode(' ', $this->lastname);
             foreach ($names as $name) {
-                $initials = ('' === $initials) ? substr($name, 0, 1) . '.' : $initials . ' ' . substr($name, 0,
-                        1) . '.';
+                $initials = ('' === $initials) ? substr($name, 0, 1).'.' : $initials.' '.substr($name, 0,
+                        1).'.';
             }
         } else {
             $initials = substr($this->firstname, 0, 1).'.';
@@ -155,7 +155,7 @@ class Student extends Authenticatable
     public function getCurrentWorkplaceLearningPeriod(): WorkplaceLearningPeriod
     {
         if (!$this->hasCurrentWorkplaceLearningPeriod()) {
-            throw new \UnexpectedValueException(__METHOD__ . ' should not have been called');
+            throw new \UnexpectedValueException(__METHOD__.' should not have been called');
         }
         if ($this->currentWorkplaceLearningPeriod === null) {
             $this->currentWorkplaceLearningPeriod = $this->workplaceLearningPeriods()

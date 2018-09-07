@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Requests\LearningActivity;
-
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,16 +15,16 @@ class ActingUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date'          => 'required|date|date_in_wplp',
-            'description'   => 'required|max:1000',
-            'timeslot'      => 'required|exists:timeslot,timeslot_id',
-            'new_rp'        => 'required_if:res_person,new|max:45|',
-            'new_rm'        => 'required_if:res_material,new|max:45',
-            'learned'       => 'required|max:1000',
-            'support_wp'    => 'max:500',
-            'support_ed'    => 'max:500',
+            'date' => 'required|date|date_in_wplp',
+            'description' => 'required|max:1000',
+            'timeslot' => 'required|exists:timeslot,timeslot_id',
+            'new_rp' => 'required_if:res_person,new|max:45|',
+            'new_rm' => 'required_if:res_material,new|max:45',
+            'learned' => 'required|max:1000',
+            'support_wp' => 'max:500',
+            'support_ed' => 'max:500',
             'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
-            'competence'    => 'required|exists:competence,competence_id',
+            'competence' => 'required|exists:competence,competence_id',
         ];
     }
 
