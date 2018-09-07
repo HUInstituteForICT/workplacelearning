@@ -4,11 +4,9 @@ namespace App\Services;
 
 use App\Cohort;
 use Illuminate\Database\DatabaseManager;
-use Illuminate\Support\Facades\DB;
 
 class CohortManager
 {
-
     /**
      * @var DatabaseManager
      */
@@ -16,7 +14,6 @@ class CohortManager
 
     public function __construct(DatabaseManager $databaseManager)
     {
-
         $this->databaseManager = $databaseManager;
     }
 

@@ -27,8 +27,6 @@ class LAAUpdater
         }
         $learningActivityActing->res_material_detail = $data['res_material_detail'];
 
-
-
         return $learningActivityActing->save();
     }
 }

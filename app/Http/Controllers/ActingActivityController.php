@@ -11,7 +11,6 @@ use App\Services\LAAFactory;
 use App\Services\LAAUpdater;
 use App\Student;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Lang;
 
 class ActingActivityController extends Controller
 {

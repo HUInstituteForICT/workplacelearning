@@ -5,7 +5,6 @@ namespace App\Services;
 use App\LearningActivityActing;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 

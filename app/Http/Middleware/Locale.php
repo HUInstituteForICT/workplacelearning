@@ -3,10 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
 
 class Locale
 {
