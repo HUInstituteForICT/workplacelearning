@@ -24,7 +24,7 @@ class MomentTriggerEvaluator
         $tip = $evaluatedTip->getTip();
 
         // Do nothing if there are no moments
-        if($tip->moments->count() === 0) {
+        if ($tip->moments->count() === 0) {
             return;
         }
 

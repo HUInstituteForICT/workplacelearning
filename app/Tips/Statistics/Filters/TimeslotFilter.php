@@ -33,6 +33,5 @@ class TimeslotFilter implements Filter
                     }
                 }, $timeslots);
             });
-
     }
 }
