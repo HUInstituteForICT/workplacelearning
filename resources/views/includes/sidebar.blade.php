@@ -30,7 +30,7 @@
             <div class="nav-title">{{ Lang::get('elements.sidebar.labels.profile') }}</div>
         </div>
     </a>
-    <a class="nav-tile" href="{{ '/progress/1' }}">
+    <a class="nav-tile" href="{{ '/progress' }}">
         <div class="tile white_tile">
             <img class="icon" src="{{ URL::asset('assets/img/Studievoortgang_blauw.svg', true) }}"/>
             <div class="nav-title">{{ Lang::get('elements.sidebar.labels.settings') }}</div>
