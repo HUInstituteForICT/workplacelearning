@@ -59,7 +59,7 @@
                     <h4>{{ Lang::get('activity.activity') }}</h4>
                     <input class="form-control fit-bs" type="date" name="datum" value="{{ (count($errors) > 0) ? old('datum') : $activity->date }}" /><br/>
                     <h5>{{ Lang::get('activity.description') }}:</h5>
-                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="80" rows="5" cols="19">{{ (count($errors) > 0) ? old('omschrijving') : $activity->description }}</textarea>
+                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="250" rows="5" cols="19">{{ (count($errors) > 0) ? old('omschrijving') : $activity->description }}</textarea>
 
                     <h5>{{ Lang::get('activity.chain-to') }}:</h5>
                     <select class="form-control fit-bs" id="chainSelect" name="chain_id">
