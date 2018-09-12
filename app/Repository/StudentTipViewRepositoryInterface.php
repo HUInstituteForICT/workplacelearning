@@ -1,11 +1,10 @@
 <?php
 
-
 namespace App\Repository;
 
 use App\Student;
-use App\Tips\StudentTipView;
-use App\Tips\Tip;
+use App\Tips\Models\StudentTipView;
+use App\Tips\Models\Tip;
 
 interface StudentTipViewRepositoryInterface
 {

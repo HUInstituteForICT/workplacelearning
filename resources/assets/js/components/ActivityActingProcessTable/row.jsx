@@ -14,6 +14,12 @@ export default class Row extends React.Component {
     render() {
         let activity = this.props.activity;
         let className = "fa fa-arrow-circle-o-" + (this.state.visible ? 'up' : 'down');
+
+        const actionStyle = {
+            paddingLeft: 10, paddingRight: 10,
+            marginLeft: 10, marginRight: 10
+        };
+
         return <tr className="activityExport">
             <td>
                 {(activity.situation.length > 30 || activity.lessonsLearned.length > 30) &&
@@ -52,9 +58,8 @@ export default class Row extends React.Component {
             <td>{activity.competence}</td>
             <td>{activity.evidence !== "-" && <a href={activity.evidence}>download</a>}</td>
             <td>
-                <a href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
-                &nbsp;
-                <a onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/acting/process/delete/" + activity.id: null}><i className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
+                <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
+                <a style={actionStyle} onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/acting/process/delete/" + activity.id: null}><i className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
             </td>
         </tr>
     }

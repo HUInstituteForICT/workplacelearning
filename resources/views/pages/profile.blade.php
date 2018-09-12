@@ -73,14 +73,14 @@
                 {!! Form::close() !!}
             </div>
 
-            @if(Auth::user()->getCurrentWorkplace())
+            @if(Auth::user()->hasCurrentWorkplaceLearningPeriod())
                 <!-- Current Internship -->
                 <div class="col-md-6">
                     {!! Form::open(array('url' => 'dummy', 'class' => 'form-horizontal well')) !!}
                     <h2>{{ Lang::get('elements.profile.internships.current.title') }}</h2>
                     <div class="form-group">
                         {!! Form::label('companyname', Lang::get('elements.profile.internships.companyname'), array('class' => 'col-sm-4 control-label')) !!}
-                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplace()->wp_name ." (".Auth::user()->getCurrentWorkplace()->town.")" }}</p></div>
+                        <div class="col-sm-8"><p class="form-control-static">{{ Auth::user()->getCurrentWorkplace()->wp_name .' ('.Auth::user()->getCurrentWorkplace()->town.")" }}</p></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('contactperson', Lang::get('elements.profile.internships.contactperson'), array('class' => 'col-sm-4 control-label')) !!}
@@ -132,15 +132,15 @@
 
                 <tbody>
                 @foreach(Auth::user()->getWorkplaceLearningPeriods() as $wplp)
-                    <tr class="{{ (Auth::user()->getCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id == $wplp->wplp_id) ? "highlight" : "" }}">
+                    <tr class="{{ (Auth::user()->hasCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->is($wplp)) ? 'highlight' : '' }}">
                         <td><a href="{{ '/period/edit/'.$wplp->wplp_id }}"><img class="table-icon" src="{{ secure_asset("assets/img/icn-edit.svg") }}" /></a></td>
-                        <td>{{ $wplp->getWorkplace()->wp_name }}</td>
+                        <td>{{ $wplp->workplace->wp_name }}</td>
                         <td>{{ date('d-m-Y', strtotime($wplp->startdate)) }}</td>
                         <td>{{ date('d-m-Y', strtotime($wplp->enddate)) }}</td>
-                        <td>{{ $wplp->getWorkplace()->town }}</td>
-                        <td>{{ $wplp->getWorkplace()->contact_name }}</td>
-                        <td>{{ $wplp->getWorkplace()->contact_email }}</td>
-                        <td>{{ $wplp->getWorkplace()->contact_phone }}</td>
+                        <td>{{ $wplp->workplace->town }}</td>
+                        <td>{{ $wplp->workplace->contact_name }}</td>
+                        <td>{{ $wplp->workplace->contact_email }}</td>
+                        <td>{{ $wplp->workplace->contact_phone }}</td>
                     </tr>
                 @endforeach
                 </tbody>

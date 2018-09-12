@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
     'AccessLog' => 'Access log',
     'Category' => 'Category (activity)',
     'Cohort' => 'Cohort',
@@ -17,16 +17,14 @@ return array (
     'WorkplaceLearningPeriod' => 'Workplace learning period',
 
     'step1' => [
-
         'title' => 'Step 1: Type of analysis',
         'caption' => 'What kind of analysis do you want to add?',
         'builder' => 'Build a query',
         'template' => 'Analysis based on template',
-        'custom' => 'Custom SQL Query'
+        'custom' => 'Custom SQL Query',
     ],
 
     'step2' => [
-
         'builder' => 'Step 2: Choose entity and relations',
         'entity' => 'Entity',
         'relations' => 'Relations',
@@ -36,7 +34,7 @@ return array (
         'custom' => 'Step 2: Enter query',
         'no-data' => 'No data found.',
         'sql-error' => 'The SQL query is not valid.',
-        'show-query' => 'Show query'
+        'show-query' => 'Show query',
     ],
 
     'step3' => [
@@ -61,7 +59,7 @@ return array (
         'asc' => 'Ascending',
         'desc' => 'Descending',
 
-        'value' => 'Value'
+        'value' => 'Value',
     ],
 
     'step4' => [
@@ -89,7 +87,7 @@ return array (
         'error-name' => 'Name field is required.',
         'error-cache-duration' => 'Cache field is required.',
         'error-chart-id' => 'Please choose a chart type',
-        'error-axis' => 'X- en Y-as can\'t be empty'
+        'error-axis' => 'X- en Y-as can\'t be empty',
     ],
 
     'next' => 'Next',
@@ -97,5 +95,5 @@ return array (
     'cancel' => 'Cancel',
     'save' => 'Save',
 
-    'query-error' => 'Something went wrong while executing the query.'
+    'query-error' => 'Something went wrong while executing the query.',
 );

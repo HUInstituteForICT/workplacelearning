@@ -1,14 +1,11 @@
 <?php
 
-return array (
-  'header' => 
-  array (
+return array(
+  'header' => array(
     'title' => 'Workplace Assisted Learning',
   ),
-  'sidebar' => 
-  array (
-    'labels' => 
-    array (
+  'sidebar' => array(
+    'labels' => array(
       'dash' => 'Dashboard',
       'input' => 'Activities',
       'reports' => 'Analysis',
@@ -19,29 +16,25 @@ return array (
       'logout' => 'Log Out',
       'tips' => 'Tips',
       'template' => 'Template Management',
-      'analytics_dashboard' => 'Analytics Dashboard'
+      'analytics_dashboard' => 'Analytics Dashboard',
     ),
   ),
-  'alerts' => 
-  array (
+  'alerts' => array(
     'notice' => 'Notice',
     'warning' => 'Warning',
     'error' => 'Error',
     'success' => 'Success',
   ),
-  'registration' => 
-  array (
+  'registration' => array(
     'title' => 'Account Registration',
-    'labels' => 
-    array (
+    'labels' => array(
       'studentnr' => 'Student No.',
       'firstname' => 'Firstname',
       'lastname' => 'Lastname',
       'email' => 'E-Mail',
       'phone' => 'Phone Number',
       'birthdate' => 'Date of Birth',
-      'gender' => 
-      array (
+      'gender' => array(
         'text' => 'I am a',
         'male' => 'Man',
         'female' => 'Woman',
@@ -52,8 +45,7 @@ return array (
       'answer' => 'Security Question: Where were you born?',
       'education' => 'Which education program are you in?',
     ),
-    'placeholders' => 
-    array (
+    'placeholders' => array(
       'studentnr' => '7 Digits',
       'firstname' => 'Ex: Jan',
       'lastname' => 'Ex: Jansen',
@@ -63,19 +55,16 @@ return array (
       'secret' => 'Ask your mentor about this code.',
       'answer' => 'Ex: Amsterdam',
     ),
-    'buttons' => 
-    array (
+    'buttons' => array(
       'register' => 'Register',
       'reset' => 'Reset',
     ),
     'privacyagreement' => 'By registering you agree with our <a href="%s">privacy policy</a>.',
   ),
-  'profile' => 
-  array (
+  'profile' => array(
     'title' => 'Profile',
     'btnsave' => 'Save',
-    'labels' => 
-    array (
+    'labels' => array(
       'studentnr' => 'Student Number',
       'firstname' => 'First name',
       'lastname' => 'Last name',
@@ -85,8 +74,7 @@ return array (
       'password' => 'Password',
       'new_password' => 'New password',
       'password_repeat' => 'Password (Confirmation)',
-      'secretquestion' => 
-      array (
+      'secretquestion' => array(
         1 => 'Where were you born?',
         2 => 'What is or was the name of your first pet?',
         3 => 'What is your favorite color?',
@@ -94,8 +82,7 @@ return array (
       'internship-assignment-error' => 'This field should at least contain 15 characters and can have a maximum of 500.',
       'language' => 'Language',
     ),
-    'placeholders' => 
-    array (
+    'placeholders' => array(
       'firstname' => 'Ex: Jan',
       'lastname' => 'Ex: Jansen',
       'email' => 'Ex: jan.jansen@student.hu.nl',
@@ -108,15 +95,12 @@ return array (
       'learninggoalname' => 'New learning goal name',
       'learninggoaldescription' => 'New learning goal description',
     ),
-    'internships' => 
-    array (
+    'internships' => array(
       'backtoprofile' => 'Back to Profile',
-      'profile' => 
-      array (
+      'profile' => array(
         'title' => 'My Internships',
       ),
-      'current' => 
-      array (
+      'current' => array(
         'title' => 'Placement Information',
         'titleadditive' => '(Current Internship)',
         'titleassignment' => 'Internship Assignment',
@@ -137,60 +121,49 @@ return array (
       'contactemail' => 'Email Address',
       'cohort' => 'Cohort',
     ),
-    'categories' => 
-    array (
+    'categories' => array(
       'title' => 'Categories',
       'internshipname' => 'Linked to Internship',
       'categoryname' => 'Name of Category',
     ),
-    'cooperations' => 
-    array (
+    'cooperations' => array(
       'title' => 'Cooperations',
       'internshipname' => 'Linked to Internship',
       'cooperationname' => 'Name of Cooperation',
       'cooperationdesc' => 'Description',
     ),
-    'learninggoals' => 
-    array (
+    'learninggoals' => array(
       'title' => 'Learning goals',
       'goalno' => 'Learning goal no.',
       'goalname' => 'Learning goal name',
       'description' => 'Learning goal description',
     ),
   ),
-  'general' => 
-  array (
+  'general' => array(
     'mayonlycontain' => 'Dit veld mag alleen de volgende tekens bevatten:',
   ),
-  'calendar' => 
-  array (
-    'labels' => 
-    array (
+  'calendar' => array(
+    'labels' => array(
       'newdeadline' => 'New Appointment',
       'date' => 'Date',
     ),
-    'placeholders' => 
-    array (
+    'placeholders' => array(
       'description' => 'Description',
     ),
-    'btntext' => 
-    array (
+    'btntext' => array(
       'newdeadline' => 'Appointment',
       'adddeadline' => 'Save',
       'removedeadline' => 'Remove',
     ),
-    'notifications' => 
-    array (
+    'notifications' => array(
       'success' => 'was saved successfully',
       'fail' => 'could not be saved',
     ),
   ),
-  'tasks' => 
-  array (
+  'tasks' => array(
     'hour' => 'hour|hours',
   ),
-  'analysis' => 
-  array (
+  'analysis' => array(
     'analysisexplanation' => 'This page can give you insight in how you work and learn, and helps you to reflect on your activities in the workplace. This can give you insight in how to improve your learning process.',
     'analysischoice' => 'Below, you can choose to analyse the activities for a specific month or to view activities for all months.',
     'workingdaysheader' => 'Number of registered working days',
@@ -200,8 +173,7 @@ return array (
     'choice' => 'Choose a month to display',
     'showall' => 'Show all data',
   ),
-  'competences' => 
-  array (
+  'competences' => array(
     'competencedetails' => 'Competences en Indicators',
   ),
 );

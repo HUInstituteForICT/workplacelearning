@@ -8,12 +8,10 @@ class CreateCohortTipPivotTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('cohort_tip', function (Blueprint $table) {
+        Schema::create('cohort_tip', function (Blueprint $table): void {
             $table->integer('cohort_id')->unsigned();
             $table->integer('tip_id')->unsigned();
 
@@ -26,10 +24,8 @@ class CreateCohortTipPivotTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('cohort_tip');
     }

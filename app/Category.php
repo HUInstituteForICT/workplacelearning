@@ -8,9 +8,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property string category_label
+ * @property string $category_label
+ * @property int    $wplp_id
  */
 class Category extends Model
 {
@@ -26,14 +28,16 @@ class Category extends Model
         'category_id',
         'category_label',
         'wplp_id',
-        'cohort_id'
+        'cohort_id',
     ];
 
-    public function cohort() {
+    public function cohort()
+    {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
     }
 
-    public function educationProgram() {
+    public function educationProgram()
+    {
         return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
     }
 
@@ -52,7 +56,7 @@ class Category extends Model
         return $this->category_label;
     }
 
-    public function setCategoryLabel($label)
+    public function setCategoryLabel($label): void
     {
         $this->category_label = $label;
     }
@@ -60,6 +64,11 @@ class Category extends Model
     // Relations for query builder
     public function getRelationships()
     {
-        return ["cohort", "educationProgram", "InternshipPeriods", "learningactivitiesproducing"];
+        return ['cohort', 'educationProgram', 'InternshipPeriods', 'learningactivitiesproducing'];
+    }
+
+    public function workplaceLearningPeriod(): BelongsTo
+    {
+        return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id');
     }
 }

@@ -3,20 +3,18 @@
  * Created by PhpStorm.
  * User: sivar
  * Date: 25/05/2018
- * Time: 17:31
+ * Time: 17:31.
  */
 
 namespace App\Analysis\Template;
-
 
 use Illuminate\Support\Facades\Schema;
 
 class ColumnParameterType extends ParameterType
 {
-
     public function __construct()
     {
-        parent::__construct("Column", 1);
+        parent::__construct('Column', 1);
     }
 
     /*
@@ -33,5 +31,4 @@ class ColumnParameterType extends ParameterType
     {
         return Lang::get('template.error.table');
     }
-
 }

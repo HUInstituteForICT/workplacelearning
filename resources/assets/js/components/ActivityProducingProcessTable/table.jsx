@@ -45,32 +45,25 @@ export default class ActivityProducingProcessTable extends React.Component {
             duration: {rules: [], selectedRules: []},
             resourceDetail: {rules: [], selectedRules: []},
             category: {rules: [], selectedRules: []},
-            difficulty: {rules: [], selectedRules: []}
+            difficulty: {rules: [], selectedRules: []},
+            chain: {rules: [], selectedRules: []},
         };
 
 
         // Build filters
         activities.map((activity) => {
 
-            let duration = activity.duration;
-            if (filters.duration.rules.indexOf(duration) === -1) {
-                filters.duration.rules.push(duration);
-            }
+            const addFilter = (property, filter) => {
+                if(filters[property].rules.indexOf(filter) === -1) {
+                    filters[property].rules.push(filter);
+                }
+            };
 
-            let resourceDetail = activity.resourceDetail;
-            if (filters.resourceDetail.rules.indexOf(resourceDetail) === -1) {
-                filters.resourceDetail.rules.push(resourceDetail);
-            }
-
-            let category = activity.category;
-            if (filters.category.rules.indexOf(category) === -1) {
-                filters.category.rules.push(category);
-            }
-
-            let difficulty = activity.difficulty;
-            if (filters.difficulty.rules.indexOf(difficulty) === -1) {
-                filters.difficulty.rules.push(difficulty);
-            }
+            addFilter('duration', activity.duration);
+            addFilter('resourceDetail', activity.resourceDetail);
+            addFilter('category', activity.category);
+            addFilter('difficulty', activity.difficulty);
+            addFilter('chain', activity.chain);
 
 
         });
@@ -79,6 +72,7 @@ export default class ActivityProducingProcessTable extends React.Component {
         filters.resourceDetail.rules.sort();
         filters.category.rules.sort();
         filters.difficulty.rules.sort();
+        filters.chain.rules.sort();
 
 
         return filters;
@@ -136,6 +130,14 @@ export default class ActivityProducingProcessTable extends React.Component {
                 }
 
                 return this.state.filters.difficulty.selectedRules.indexOf(activity.difficulty) > -1;
+            })
+            // Filter chain
+            .filter((activity) => {
+                if (this.state.filters.chain.selectedRules.length === 0) {
+                    return true;
+                }
+
+                return this.state.filters.chain.selectedRules.indexOf(activity.chain) > -1;
             })
             .filter((activity) => {
                 return moment(activity.date, "DD-MM-YYYY").isSameOrAfter(this.state.startDate) && moment(activity.date, "DD-MM-YYYY").isSameOrBefore(this.state.endDate)
@@ -234,6 +236,17 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <div style={{clear: 'both'}}/>
                 </div>
 
+                <div className="duration col-md-2">
+                    <h4>{Lang.get('react.chain')}</h4>
+                    <div className="buttons">
+                        {this.state.filters.chain.rules.map(rule => {
+                            return <FilterRule key={rule} type="chain" onClickHandler={this.updateFilter} rule={rule}
+                                               activated={this.state.filters.chain.selectedRules.indexOf(rule) > -1}/>
+                        })}
+                    </div>
+                    <div style={{clear: 'both'}}/>
+                </div>
+
             </div>
             <br/>
             <div className="export" style={{paddingBottom:"15px"}}>
@@ -283,6 +296,8 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <td>{Lang.get('react.category')}</td>
                     <td>{Lang.get('react.complexity')}</td>
                     <td>{Lang.get('react.status')}</td>
+                    <td>{Lang.get('react.chain')}</td>
+                    <td>Feedback</td>
                     <td>{/* Edit URL, no table header */}</td>
                 </tr>
                 </thead>

@@ -11,10 +11,8 @@ class TxtExport extends Mailable
 {
     use Queueable, SerializesModels;
 
-
     protected $txt;
     private $comment;
-
 
     /**
      * Create a new message instance.
@@ -34,9 +32,9 @@ class TxtExport extends Mailable
      */
     public function build()
     {
-        return $this->from("noreply@werkplekleren.hu.nl")
+        return $this->from('noreply@werkplekleren.hu.nl')
             ->subject(__('process_export.mail-subject'))
-            ->attachData($this->txt, 'leermomenten-export.txt', ["mime" => "text/plain"])
-            ->text('mail.text-export', ["student" => Auth::user(), "comment" => $this->comment]);
+            ->attachData($this->txt, 'leermomenten-export.txt', ['mime' => 'text/plain'])
+            ->text('mail.text-export', ['student' => Auth::user(), 'comment' => $this->comment]);
     }
 }

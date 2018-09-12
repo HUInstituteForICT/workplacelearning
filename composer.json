@@ -56,7 +56,8 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize"
-        ]
+        ],
+        "analyse" : "./vendor/bin/phpstan analyse --level=7"
     },
     "config": {
         "preferred-install": "dist"

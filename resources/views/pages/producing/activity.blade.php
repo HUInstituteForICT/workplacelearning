@@ -44,7 +44,7 @@
         <div class="row">
             <div class="col-md-12 well">
                 <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i> {{ Lang::get('activity.how-does-this-page-work') }}</h4>
-                <div id="help-text">
+                <div id="help-text" style="display: none">
                     <ol>
                         <li>{{ Lang::get('activity.producing.steps.1') }}</li>
                         <li>{{ Lang::get('activity.producing.steps.2') }}</li>
@@ -80,21 +80,24 @@
                     </div>
 
                     <h5>{{ Lang::get('activity.description') }}:</h5>
-                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="80" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="250" rows="5" cols="19"></textarea>
+
 
                     <h5>{{ Lang::get('activity.chain-to') }}:</h5>
-                    <select class="form-control fit-bs" name="previous_wzh" >
-                        <option value="-1">- {{ Lang::get('no-chain') }}-</option>
-                        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() !== NULL)
-                            @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getUnfinishedActivityProducing() as $unfinishedActivity)
-                                @if($unfinishedActivity->nextLearningActivityProducing === null)
-                                    {{-- Only allow to chain activity if it hasn't been chained yet --}}
-                                <option value="{{ $unfinishedActivity->lap_id }}">{{ date('d-m', strtotime($unfinishedActivity->date)) ." - ".$unfinishedActivity->description }}</option>
-                                @endif
-                            @endforeach
-                        @endif
+
+                    <select class="form-control fit-bs" id="chainSelect" name="chain_id">
+                        <option value="-1">{{ Lang::get('process.chain.none') }}</option>
+                        @foreach($chains as $chain)
+                            <option id="chain-select-{{ $chain->id }}"
+                                    @if($chain->status === \App\Chain::STATUS_FINISHED) disabled @endif
+                                    value="{{ $chain->id }}">
+                                {{ $chain->name }} @if($chain->status === \App\Chain::STATUS_FINISHED) ({{ strtolower(__('process.chain.finished')) }}) @endif
+                            </option>
+                        @endforeach
+
                     </select>
 
+                    @include('pages.producing.chain-partial')
                 </div>
                 <div class="col-md-2 form-group buttons numpad">
                     <h4>{{ Lang::get('activity.hours') }}</h4>
@@ -118,11 +121,13 @@
 
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
-                    <?php $checkedFirst = false ?>
+                    <?php $checkedFirst = false; ?>
                     @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
                         @foreach($categories as $cat)
                             <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($checkedFirst === false) ? "checked" : "" }}/><span>{{ __($cat->category_label) }}</span></label>
-                            <?php if($checkedFirst === false) $checkedFirst = true; ?>
+                            <?php if (false === $checkedFirst) {
+    $checkedFirst = true;
+} ?>
                         @endforeach
                     @endif
                     <div>
@@ -227,6 +232,10 @@
                 maxDate: "{{ date('Y-m-d', strtotime("now")) }}",
                 useCurrent: false,
             });
+
+
+
+
         }).on('dp.change', function(e) {
             $('#datum').attr('value', moment(e.date).format("DD-MM-YYYY"));
         });

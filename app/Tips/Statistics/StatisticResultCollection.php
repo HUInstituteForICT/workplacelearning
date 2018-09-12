@@ -4,8 +4,7 @@ namespace App\Tips\Statistics;
 
 /**
  * Class StatisticCalculationResultCollection
- * Represents a result from a statistic, can be a percentage due to the calculation performed
- * @package App\Tips\Statistics
+ * Represents a result from a statistic, can be a percentage due to the calculation performed.
  */
 class StatisticResultCollection implements Resultable
 {
@@ -22,10 +21,11 @@ class StatisticResultCollection implements Resultable
     }
 
     /**
-     * Add a new Statistic result
+     * Add a new Statistic result.
+     *
      * @param StatisticCalculationResult $result
      */
-    public function addResult(Resultable $result)
+    public function addResult(Resultable $result): void
     {
         $this->results[] = $result;
     }
@@ -42,27 +42,28 @@ class StatisticResultCollection implements Resultable
     public function hasPassed(): bool
     {
         // In case all results failed and have been removed
-        if(\count($this->results) === 0) {
+        if (0 === \count($this->results)) {
             return false;
         }
         $passed = true;
-        array_walk($this->results, function(Resultable $result) use(&$passed) {
-            if(!$result->hasPassed()) {
+        array_walk($this->results, function (Resultable $result) use (&$passed): void {
+            if (!$result->hasPassed()) {
                 $passed = false;
             }
         });
+
         return $passed;
     }
 
-    public function doThresholdComparison(float $threshold, int $operator)
+    public function doThresholdComparison(float $threshold, int $operator): void
     {
-        array_walk($this->results, function(Resultable $resultable) use($threshold, $operator) {
+        array_walk($this->results, function (Resultable $resultable) use ($threshold, $operator): void {
             $resultable->doThresholdComparison($threshold, $operator);
         });
 
         // Some collections may want to remove failed results because the overall resultset should pass regardless
-        if($this->removeFailedResults) {
-            $this->results = array_filter($this->results, function(Resultable $resultable) {
+        if ($this->removeFailedResults) {
+            $this->results = array_filter($this->results, function (Resultable $resultable) {
                 return $resultable->hasPassed();
             });
         }
@@ -70,9 +71,10 @@ class StatisticResultCollection implements Resultable
 
     public function getName(): string
     {
-        $names = array_map(function(Resultable $resultable) {
+        $names = array_map(function (Resultable $resultable) {
             return $resultable->getName();
         }, $this->results);
+
         return implode(', ', $names);
     }
 }

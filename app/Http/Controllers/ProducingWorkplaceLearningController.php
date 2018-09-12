@@ -23,9 +23,7 @@ use Validator;
 
 class ProducingWorkplaceLearningController extends Controller
 {
-
     public function show()
-
     {
         $workplace = new Workplace();
         $workplace->country = trans('general.netherlands');
@@ -33,9 +31,9 @@ class ProducingWorkplaceLearningController extends Controller
         $period->hours_per_day = 7.5; // Default hours per day for a new period
 
         return view('pages.producing.internship')
-            ->with("period", $period)
-            ->with("workplace", $workplace)
-            ->with('cohorts', Auth::user()->getEducationProgram()->cohorts()->where('disabled', '=', 0)->get());
+            ->with('period', $period)
+            ->with('workplace', $workplace)
+            ->with('cohorts', Auth::user()->educationProgram->cohorts()->where('disabled', '=', 0)->get());
     }
 
     public function edit($id)
@@ -44,37 +42,36 @@ class ProducingWorkplaceLearningController extends Controller
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
                 ->with('error', Lang::get('general.profile-permission'));
-        } else {
-            return view('pages.producing.internship')
-                ->with('period', $wplPeriod)
-                ->with("workplace", Workplace::find($wplPeriod->wp_id))
-                ->with("categories", $wplPeriod->categories()->get())
-                ->with("resource", new Collection)
-                ->with('cohorts', collect($wplPeriod->cohort()->get()));
         }
+
+        return view('pages.producing.internship')
+                ->with('period', $wplPeriod)
+                ->with('workplace', Workplace::find($wplPeriod->wp_id))
+                ->with('categories', $wplPeriod->categories()->get())
+                ->with('resource', new Collection())
+                ->with('cohorts', collect($wplPeriod->cohort()->get()));
     }
 
     public function create(Request $request)
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'companyName'           => 'required|max:255|min:3',
-            'companyStreet'         => 'required|max:45|min:3',
-            'companyHousenr'        => 'required|max:9|min:1', //
-            'companyPostalcode'     => 'required|postalcode',
-            'companyLocation'       => 'required|max:255|min:3',
-            'companyCountry'        => 'required|max:255|min:2',
-            'contactPerson'         => 'required|max:255|min:3',
-            'contactPhone'          => 'required',
-            'contactEmail'         => 'required|email|max:255',
-            'numdays'              => 'required|integer|min:1',
-            'numhours'             => 'required|numeric|min:1|max:24',
-            'startdate'            => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
-            'enddate'              => 'required|date|after:startdate',
+            'companyName' => 'required|max:255|min:3',
+            'companyStreet' => 'required|max:45|min:3',
+            'companyHousenr' => 'required|max:9|min:1',
+            'companyPostalcode' => 'required|postalcode',
+            'companyLocation' => 'required|max:255|min:3',
+            'companyCountry' => 'required|max:255|min:2',
+            'contactPerson' => 'required|max:255|min:3',
+            'contactPhone' => 'required',
+            'contactEmail' => 'required|email|max:255',
+            'numdays' => 'required|integer|min:1',
+            'numhours' => 'required|numeric|min:1|max:24',
+            'startdate' => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
+            'enddate' => 'required|date|after:startdate',
             'internshipAssignment' => 'required|min:15|max:500',
-            'isActive'             => 'sometimes|required|in:1,0',
-            'cohort'               => 'required|exists:cohorts,id',
-
+            'isActive' => 'sometimes|required|in:1,0',
+            'cohort' => 'required|exists:cohorts,id',
         ]);
 
         if ($validator->fails()) {
@@ -86,41 +83,41 @@ class ProducingWorkplaceLearningController extends Controller
 
         $cohort = Cohort::find($request['cohort']);
 
-        if ($cohort->disabled === 1 || $cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+        if (1 === $cohort->disabled || $cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
             throw new InvalidArgumentException('Unknown cohort');
         }
 
         // Pass. Create the internship and period.
-        $wplPeriod = new WorkplaceLearningPeriod;
-        $workplace = new Workplace;
+        $wplPeriod = new WorkplaceLearningPeriod();
+        $workplace = new Workplace();
 
         // Todo use mass assignment
         // Save the workplace first
-        $workplace->wp_name        = $request['companyName'];
-        $workplace->street         = $request['companyStreet'];
-        $workplace->housenr        = $request['companyHousenr'];
-        $workplace->postalcode     = $request['companyPostalcode'];
-        $workplace->town           = $request['companyLocation'];
-        $workplace->country        = $request['companyCountry'];
-        $workplace->contact_name   = $request['contactPerson'];
-        $workplace->contact_email  = $request['contactEmail'];
-        $workplace->contact_phone  = $request['contactPhone'];
+        $workplace->wp_name = $request['companyName'];
+        $workplace->street = $request['companyStreet'];
+        $workplace->housenr = $request['companyHousenr'];
+        $workplace->postalcode = $request['companyPostalcode'];
+        $workplace->town = $request['companyLocation'];
+        $workplace->country = $request['companyCountry'];
+        $workplace->contact_name = $request['contactPerson'];
+        $workplace->contact_email = $request['contactEmail'];
+        $workplace->contact_phone = $request['contactPhone'];
         $workplace->numberofemployees = 0;
         $workplace->save();
 
         // Todo use mass assignment
-        $wplPeriod->student_id   = Auth::user()->student_id;
-        $wplPeriod->wp_id        = $workplace->wp_id;
-        $wplPeriod->startdate    = $request['startdate'];
-        $wplPeriod->enddate      = $request['enddate'];
-        $wplPeriod->nrofdays     = $request['numdays'];
+        $wplPeriod->student_id = Auth::user()->student_id;
+        $wplPeriod->wp_id = $workplace->wp_id;
+        $wplPeriod->startdate = $request['startdate'];
+        $wplPeriod->enddate = $request['enddate'];
+        $wplPeriod->nrofdays = $request['numdays'];
         $wplPeriod->hours_per_day = $request['numhours'];
-        $wplPeriod->description  = $request['internshipAssignment'];
+        $wplPeriod->description = $request['internshipAssignment'];
         $wplPeriod->cohort()->associate($cohort);
         $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if ($request['isActive'] == 1) {
+        if (1 == $request['isActive']) {
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
@@ -131,26 +128,26 @@ class ProducingWorkplaceLearningController extends Controller
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'companyName'           => 'required|max:255|min:3',
-            'companyStreet'         => 'required|max:45|min:3',
-            'companyHousenr'        => 'required|max:4|min:1', //
-            'companyPostalcode'     => 'required|postalcode',
-            'companyLocation'       => 'required|max:255|min:3',
-            'companyCountry'        => 'required|max:255|min:2',
-            'contactPerson'         => 'required|max:255|min:3',
-            'contactPhone'          => 'required|',
-            'contactEmail'          => 'required|email|max:255',
-            'numdays'               => 'required|integer|min:1',
-            'numhours'             => 'required|numeric|min:1|max:24',
-            'startdate'             => 'required|date|after:'.date("Y-m-d", strtotime('-6 months')),
-            'enddate'               => 'required|date|after:startdate',
-            'internshipAssignment'  => 'required|min:15|max:500',
-            'isActive'              => 'sometimes|required|in:1,0'
+            'companyName' => 'required|max:255|min:3',
+            'companyStreet' => 'required|max:45|min:3',
+            'companyHousenr' => 'required|max:4|min:1',
+            'companyPostalcode' => 'required|postalcode',
+            'companyLocation' => 'required|max:255|min:3',
+            'companyCountry' => 'required|max:255|min:2',
+            'contactPerson' => 'required|max:255|min:3',
+            'contactPhone' => 'required|',
+            'contactEmail' => 'required|email|max:255',
+            'numdays' => 'required|integer|min:1',
+            'numhours' => 'required|numeric|min:1|max:24',
+            'startdate' => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
+            'enddate' => 'required|date|after:startdate',
+            'internshipAssignment' => 'required|min:15|max:500',
+            'isActive' => 'sometimes|required|in:1,0',
         ]);
 
         if ($validator->fails()) {
             return redirect()
-                ->route('period-producing-edit', ["id" => $id])
+                ->route('period-producing-edit', ['id' => $id])
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -165,33 +162,32 @@ class ProducingWorkplaceLearningController extends Controller
         // Succes. Also fetch the associated Workplace Eloquent object and update
         $workplace = Workplace::find($wplPeriod->wp_id);
 
-
         // Todo use model->fill()
         // Save the workplace first
-        $workplace->wp_name        = $request['companyName'];
-        $workplace->street         = $request['companyStreet'];
-        $workplace->housenr        = $request['companyHousenr'];
-        $workplace->postalcode     = $request['companyPostalcode'];
-        $workplace->town           = $request['companyLocation'];
-        $workplace->country        = $request['companyCountry'];
-        $workplace->contact_name   = $request['contactPerson'];
-        $workplace->contact_email  = $request['contactEmail'];
-        $workplace->contact_phone  = $request['contactPhone'];
+        $workplace->wp_name = $request['companyName'];
+        $workplace->street = $request['companyStreet'];
+        $workplace->housenr = $request['companyHousenr'];
+        $workplace->postalcode = $request['companyPostalcode'];
+        $workplace->town = $request['companyLocation'];
+        $workplace->country = $request['companyCountry'];
+        $workplace->contact_name = $request['contactPerson'];
+        $workplace->contact_email = $request['contactEmail'];
+        $workplace->contact_phone = $request['contactPhone'];
         $workplace->numberofemployees = 0;
         $workplace->save();
 
         // Todo use model->fill()
-        $wplPeriod->student_id   = Auth::user()->student_id;
-        $wplPeriod->wp_id        = $workplace->wp_id;
-        $wplPeriod->startdate    = $request['startdate'];
-        $wplPeriod->enddate      = $request['enddate'];
-        $wplPeriod->nrofdays     = $request['numdays'];
+        $wplPeriod->student_id = Auth::user()->student_id;
+        $wplPeriod->wp_id = $workplace->wp_id;
+        $wplPeriod->startdate = $request['startdate'];
+        $wplPeriod->enddate = $request['enddate'];
+        $wplPeriod->nrofdays = $request['numdays'];
         $wplPeriod->hours_per_day = $request['numhours'];
-        $wplPeriod->description  = $request['internshipAssignment'];
+        $wplPeriod->description = $request['internshipAssignment'];
         $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if ($request['isActive'] == 1) {
+        if (1 == $request['isActive']) {
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
@@ -218,31 +214,30 @@ class ProducingWorkplaceLearningController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'cat.*.wplp_id'       => 'required|digits_between:1,5',
-            'cat.*.cg_id'       => 'required|digits_between:1,5',
-            'cat.*.cg_label'    => 'required|min:3|max:50',
+            'cat.*.wplp_id' => 'required|digits_between:1,5',
+            'cat.*.cg_id' => 'required|digits_between:1,5',
+            'cat.*.cg_label' => 'required|min:3|max:50',
         ]);
         if ($validator->fails()) {
             // Noes. errors occured. Exit back to profile page with errors
             return redirect()
-                ->route('period-producing-edit', ["id" => $id])
+                ->route('period-producing-edit', ['id' => $id])
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-            // All is well :)
-            foreach ($request['cat'] as $cat) {
-                // Either update or create a new row.
-                $category = Category::find($cat['cg_id']);
-                if (is_null($category)) {
-                    $category = new Category;
-                    $category->wplp_id = $cat['wplp_id'];
-                }
-                $category->category_label = $cat['cg_label'];
-                $category->save();
-            }
-            // Done, redirect back to profile page
-            return redirect()->route('period-producing-edit', ["id" => $id])->with('succes', Lang::get('general.edit-saved'));
         }
+        // All is well :)
+        foreach ($request['cat'] as $cat) {
+            // Either update or create a new row.
+            $category = Category::find($cat['cg_id']);
+            if (is_null($category)) {
+                $category = new Category();
+                $category->wplp_id = $cat['wplp_id'];
+            }
+            $category->category_label = $cat['cg_label'];
+            $category->save();
+        }
+        // Done, redirect back to profile page
+        return redirect()->route('period-producing-edit', ['id' => $id])->with('succes', Lang::get('general.edit-saved'));
     }
 
     public function __construct()

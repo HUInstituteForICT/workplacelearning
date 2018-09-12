@@ -1,7 +1,8 @@
 <?php
 
-return array (
+return array(
     'postalcode' => ':value is niet een geldige postcode.',
+    'can_chain' => 'The activity cannot be attached to this chain',
     'date_in_wplp' => 'De datum :date valt niet binnen de start en einddatum van je werkplek.',
     'accepted' => ':attribute dient te worden geaccepteerd.',
     'active_url' => ':attribute is geen geldige URL.',
@@ -13,8 +14,7 @@ return array (
     'array' => ':attribute moet een array zijn.',
     'before' => ':attribute moet een datum zijn eerder dan :date.',
     'before_or_equal' => ':attribute moet een datum zijn voor of gelijk aan :date.',
-    'between' =>
-  array (
+    'between' => array(
     'numeric' => ':attribute moet tussen :min en :max liggen.',
     'file' => ':attribute moet tussen :min en :max kilobytes zijn.',
     'string' => ':attribute moet tussen :min en :max karakters lang zijn.',
@@ -39,8 +39,7 @@ return array (
     'integer' => ':attribute dient een geheel getal te zijn.',
     'ip' => ':attribute dient een geldig IP adres te zijn.',
     'json' => ':attribute moet een geldige JSON string zijn.',
-    'max' =>
-  array (
+    'max' => array(
     'numeric' => ':attribute mag niet groter zijn dan :max.',
     'file' => ':attribute mag niet groter zijn dan :max kilobytes.',
     'string' => ':attribute mag niet groter zijn dan :max karakters.',
@@ -48,8 +47,7 @@ return array (
   ),
     'mimes' => ':attribute dient een bestand te zijn van het type: :values.',
     'mimetypes' => ':attribute dient een bestand te zijn van het type: :values.',
-    'min' =>
-  array (
+    'min' => array(
     'numeric' => ':attribute dient minimaal :min te zijn.',
     'file' => ':attribute dient minimaal :min kilobytes te zijn.',
     'string' => ':attribute dient minimaal :min karakters te bevatten.',
@@ -67,8 +65,7 @@ return array (
     'required_without' => 'Het :attribute veld is verplicht wanneer :values niet aanwezig is.',
     'required_without_all' => 'Het :attribute veld is verplicht wanneer geen van :values aanwezig is.',
     'same' => 'Het :attribute en :other moeten hetzelfde zijn.',
-    'size' =>
-  array (
+    'size' => array(
     'numeric' => ':attribute moet :size zijn.',
     'file' => ':attribute moet :size kilobytes groot zijn.',
     'string' => ':attribute moet :size karakters lang zijn.',
@@ -79,45 +76,36 @@ return array (
     'unique' => ':attribute is al bezet.',
     'uploaded' => 'Het uploaden van :attribute is mislukt.',
     'url' => ':attribute formaat is ongeldig.',
-    'custom' =>
-  array (
-    'res_person' => 
-    array (
+    'custom' => array(
+    'res_person' => array(
       'required' => 'Het "met wie?" veld is verplicht.',
       'exists' => 'Deze "met wie?" bestaat niet.',
     ),
-    'new_rp' => 
-    array (
+    'new_rp' => array(
       'required' => 'De omschrijving bij het "met wie?" veld is verplicht.',
       'max' => 'De omschrijving bij het "met wie?" veld mag maximaal 45 tekens lang zijn.',
       'regex' => 'De omschrijving bij het "met wie?" veld heeft een verkeerd formaat.',
     ),
-    'res_material' => 
-    array (
+    'res_material' => array(
       'required' => 'Het "met welke theorie?" veld is verplicht.',
       'exists' => 'Deze "met welke theorie?" bestaat niet.',
     ),
-    'new_rm' => 
-    array (
+    'new_rm' => array(
       'required' => 'De omschrijving bij het "met welke theorie?" veld is verplicht.',
       'max' => 'De omschrijving bij het "met welke theorie?" veld mag maximaal 45 tekens lang zijn.',
       'regex' => 'De omschrijving bij het "met welke theorie?" veld heeft een verkeerd formaat.',
     ),
-    'competence' => 
-    array (
+    'competence' => array(
       'exists' => 'De geselecteerde :attribute is ongeldig',
     ),
-    'learning_goal' => 
-    array (
+    'learning_goal' => array(
       'exists' => 'De geselecteerde :attribute is ongeldig',
     ),
-    'res_material_detail' => 
-    array (
+    'res_material_detail' => array(
       'required_unless' => 'Het :attribute veld is verplicht.',
     ),
   ),
-    'attributes' =>
-  array (
+    'attributes' => array(
     'learned' => '"wat heb je geleerd?"',
     'description' => 'situatie',
     'support_wp' => '"wat heb je hierbij nodig van je werkplek?"',
@@ -150,11 +138,11 @@ return array (
       'name' => 'naam',
       'threshold' => 'grenswaarde',
       'tipText' => 'tip tekst',
-      'showInAnalysis' => 'zichtbaar in analyse'
+      'showInAnalysis' => 'zichtbaar in analyse',
   ),
 
-    "newnotfinished"                          => "De omschrijving is verplicht en mag maximaal 150 tekens zijn.",
-    "ondersteuning_werkplek.required_unless"  => "Omschrijving van de ondersteuning van de werkplek is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben.",
-    "ondersteuning_opleiding.required_unless" => "Omschrijving van de ondersteuning van de opleiding is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben.",
-    "valid_password"                          => 'Fout huidig wachtwoord.',
+    'newnotfinished' => 'De omschrijving is verplicht en mag maximaal 150 tekens zijn.',
+    'ondersteuning_werkplek.required_unless' => 'Omschrijving van de ondersteuning van de werkplek is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben.',
+    'ondersteuning_opleiding.required_unless' => 'Omschrijving van de ondersteuning van de opleiding is verplicht, tenzij je aangeeft geen ondersteuning nodig te hebben.',
+    'valid_password' => 'Fout huidig wachtwoord.',
 );

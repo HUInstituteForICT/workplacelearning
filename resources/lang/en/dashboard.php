@@ -39,19 +39,19 @@ return array(
     'years' => 'Years',
     'error-create-no-data' => 'Cannot create a chart, there is no data',
 
-    "cant-move-further" => "Can't move any further!",
-    "failed-to-move" => 'Failed to move the chart.',
+    'cant-move-further' => "Can't move any further!",
+    'failed-to-move' => 'Failed to move the chart.',
 
-    "chart-added-fail" => "Failed to save to database",
-    "chart-added" => "Chart added",
-    "chart-removed-fail" => "Failed to remove chart",
-    "chart-removed" => "Chart removed from dashboard.",
+    'chart-added-fail' => 'Failed to save to database',
+    'chart-added' => 'Chart added',
+    'chart-removed-fail' => 'Failed to remove chart',
+    'chart-removed' => 'Chart removed from dashboard.',
 
-    "category" => "Category",
-    "no-descriptions" => "No descriptions found",
-    "description" => "Description",
-    "details-title" => "Graph details",
+    'category' => 'Category',
+    'no-descriptions' => 'No descriptions found',
+    'description' => 'Description',
+    'details-title' => 'Graph details',
 
-    "analysis-removed-fail" => "Failed to remove analysis",
-    "analysis-removed" => "Analysis removed."
+    'analysis-removed-fail' => 'Failed to remove analysis',
+    'analysis-removed' => 'Analysis removed.',
 );

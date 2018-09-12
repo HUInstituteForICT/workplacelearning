@@ -2,14 +2,14 @@
 
 namespace App\Tips\Statistics;
 
-use App\Tips\TipCoupledStatistic;
+use App\Tips\Models\TipCoupledStatistic;
 
 class StatisticCalculationResult implements Resultable
 {
     /** @var float $result Numeric result of a statistic calculation */
     private $result;
 
-    /** @var string $entityName The name of entity instance of the calculation*/
+    /** @var string $entityName The name of entity instance of the calculation */
     private $entityName;
 
     /** @var bool $passed Whether or not this statistic calculation result passed */
@@ -22,24 +22,23 @@ class StatisticCalculationResult implements Resultable
     }
 
     /**
-     * Check if this statistic passed
-     * @return bool
+     * Check if this statistic passed.
      */
-    public function hasPassed():bool
+    public function hasPassed(): bool
     {
         return $this->passed;
     }
 
     public function getResultString(): string
     {
-        return number_format($this->result * 100) . '%';
+        return number_format($this->result * 100).'%';
     }
 
-    public function doThresholdComparison(float $threshold, int $operator)
+    public function doThresholdComparison(float $threshold, int $operator): void
     {
-        if ($operator === TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN) {
+        if (TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN === $operator) {
             $this->passed = $this->result < $threshold;
-        } elseif ($operator === TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN) {
+        } elseif (TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN === $operator) {
             $this->passed = $this->result > $threshold;
         }
     }

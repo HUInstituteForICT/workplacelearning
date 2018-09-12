@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\DataCollectors;
-
 
 use App\WorkplaceLearningPeriod;
 

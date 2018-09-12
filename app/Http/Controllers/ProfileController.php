@@ -28,9 +28,9 @@ class ProfileController extends Controller
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'firstname'     => 'required|max:255|min:3',
-            'lastname'      => 'required|max:255|min:3',
-            'email'         => 'required|email|max:255|unique:student,email,'.$request->student_id.',student_id',
+            'firstname' => 'required|max:255|min:3',
+            'lastname' => 'required|max:255|min:3',
+            'email' => 'required|email|max:255|unique:student,email,'.$request->student_id.',student_id',
         ]);
 
         if ($validator->fails()) {
@@ -38,18 +38,18 @@ class ProfileController extends Controller
                 ->route('profile')
                 ->withErrors($validator)
                 ->withInput();
-        } else {
-            // All ok.
-            // Todo why find user when already authenticated?
-            $user = Student::find(Auth::user()->student_id);
-            $user->firstname    = $request->firstname;
-            $user->lastname  = $request->lastname;
-            $user->email       = $request->email;
-            $user->locale = $request->get('locale');
-            //$user->telefoon    = $request->phone;
-            $user->save();
-            return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
         }
+        // All ok.
+        // Todo why find user when already authenticated?
+        $user = Student::find(Auth::user()->student_id);
+        $user->firstname = $request->firstname;
+        $user->lastname = $request->lastname;
+        $user->email = $request->email;
+        $user->locale = $request->get('locale');
+        //$user->telefoon    = $request->phone;
+        $user->save();
+
+        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
     public function __construct()
@@ -62,13 +62,13 @@ class ProfileController extends Controller
         $user = $request->user();
 
         // Just extend here, we don't need it anywhere else
-        Validator::extend('validPassword', function ($attribute, $value, $parameters, $validator) use($user) {
+        Validator::extend('validPassword', function ($attribute, $value, $parameters, $validator) use ($user) {
             return Hash::check($value, $user->pw_hash);
         });
 
         $validator = Validator::make($request->all(), [
             'current_password' => 'required|validPassword',
-            'new_password'     => 'required|string|min:6',
+            'new_password' => 'required|string|min:6',
             'confirm_password' => 'required|string|min:6|same:new_password',
         ]);
 

@@ -2,21 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\LearningActivityActing;
-use App\LearningActivityProducingExportBuilder;
 use App\Student;
 use App\Validators\DateInLearningPeriodValidator;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class WplpDateValidationTestTest extends TestCase
 {
-
     private function getRequestMock()
     {
         /** @var Request|\PHPUnit_Framework_MockObject_MockObject $mock */
@@ -54,7 +48,7 @@ class WplpDateValidationTestTest extends TestCase
         return $mock;
     }
 
-    public function testDate()
+    public function testDate(): void
     {
         $validator = new DateInLearningPeriodValidator($this->getRequestMock());
         $passes = $validator->validate('date', '10-1-2018', [], $this->getValidatorMock());
@@ -67,5 +61,4 @@ class WplpDateValidationTestTest extends TestCase
 
         $this->assertFalse($fails);
     }
-
 }

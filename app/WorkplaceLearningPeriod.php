@@ -9,23 +9,27 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Nette\Utils\DateTime;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @property int $wplp_id
+ * @property int    $wplp_id
  * @property Cohort $cohort
  * @property Category[]|Collection categories
  * @property LearningGoal[]|Collection learningGoals
  * @property LearningActivityActing[]|Collection learningActivityActing
- * @property int student_id
- * @property int $wp_id
- * @property \DateTime $startdate
- * @property \DateTime $enddate
- * @property int $nrofdays
- * @property string $description
- * @property int $cohort_id
- * @property double $hours_per_day
- * @property Workplace $workplace
+ * @property int        $student_id
+ * @property Student    $student
+ * @property int        $wp_id
+ * @property \DateTime  $startdate
+ * @property \DateTime  $enddate
+ * @property int        $nrofdays
+ * @property string     $description
+ * @property int        $cohort_id
+ * @property float      $hours_per_day
+ * @property Collection $chains
+ * @property Workplace  $workplace
  */
 class WorkplaceLearningPeriod extends Model
 {
@@ -46,57 +50,57 @@ class WorkplaceLearningPeriod extends Model
         'nrofdays',
         'description',
         'cohort_id',
-        'hours_per_day'
+        'hours_per_day',
     ];
 
-    public function cohort()
+    public function cohort(): BelongsTo
     {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
     }
 
-    public function student()
+    public function student(): BelongsTo
     {
-        return $this->belongsTo(\App\Student::class, 'student_id', 'student_id');
+        return $this->belongsTo(Student::class, 'student_id', 'student_id');
     }
 
-    public function workplace()
+    public function workplace(): HasOne
     {
-        return $this->hasOne(\App\Workplace::class, 'wp_id', 'wp_id');
+        return $this->hasOne(Workplace::class, 'wp_id', 'wp_id');
     }
 
-    public function categories()
+    public function categories(): HasMany
     {
-        return $this->hasMany(\App\Category::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(Category::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningGoals()
+    public function learningGoals(): HasMany
     {
-        return $this->hasMany(\App\LearningGoal::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(LearningGoal::class, 'wplp_id', 'wplp_id');
     }
 
-    public function resourcePerson()
+    public function resourcePerson(): HasMany
     {
         return $this->hasMany(ResourcePerson::class, 'wplp_id', 'wplp_id');
     }
 
-    public function timeslot()
+    public function timeslot(): HasMany
     {
         return $this->hasMany(Timeslot::class, 'wplp_id', 'wplp_id');
     }
 
-    public function resourceMaterial()
+    public function resourceMaterial(): HasMany
     {
-        return $this->hasMany(\App\ResourceMaterial::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(ResourceMaterial::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningActivityProducing()
+    public function learningActivityProducing(): HasMany
     {
-        return $this->hasMany(\App\LearningActivityProducing::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(LearningActivityProducing::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningActivityActing()
+    public function learningActivityActing(): HasMany
     {
-        return $this->hasMany(\App\LearningActivityActing::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(LearningActivityActing::class, 'wplp_id', 'wplp_id');
     }
 
     public function getLearningActivityActingById($id)
@@ -113,12 +117,7 @@ class WorkplaceLearningPeriod extends Model
             ->first();
     }
 
-    public function getWorkplace()
-    {
-        return $this->workplace()->first();
-    }
-
-    public function getUnfinishedActivityProducing()
+    public function getUnfinishedActivityProducing(): Collection
     {
         return $this->learningActivityProducing()
             ->where('status_id', '=', '2')
@@ -127,45 +126,36 @@ class WorkplaceLearningPeriod extends Model
             ->get();
     }
 
-    public function getLearningGoals()
+    public function getLearningGoals(): Collection
     {
         return $this->learningGoals()
             ->orderBy('learninggoal_id', 'asc')
             ->get();
     }
 
-    public function hasLoggedHours()
+    public function hasLoggedHours(): bool
     {
-        return (count($this->getLastActivity(1)) > 0);
+        return \count($this->getLastActivity(1)) > 0;
     }
 
     public function getNumLoggedHours()
     {
-        return ($this->getLastActivity(1000000, 0)->sum('duration'));
+        return $this->getLastActivity(1000000, 0)->sum('duration');
     }
 
-    /**
-     * @return Collection
-     */
-    public function getResourcePersons()
+    public function getResourcePersons(): Collection
     {
         return $this->resourcePerson()
             ->orderBy('rp_id', 'asc')
             ->get();
     }
 
-    /**
-     * @return Collection
-     */
-    public function getTimeslots()
+    public function getTimeslots(): Collection
     {
         return $this->timeslot()->orderBy('timeslot_id', 'asc')->get();
     }
 
-    /**
-     * @return Collection
-     */
-    public function getResourceMaterials()
+    public function getResourceMaterials(): Collection
     {
         return $this->resourceMaterial()
             ->orWhere('wplp_id', '=', '0')
@@ -176,8 +166,8 @@ class WorkplaceLearningPeriod extends Model
     public function getLastActivity($count, $offset = 0)
     {
         /** @var Student $student */
-        $student = $this->student()->first();
-        switch ($student->getEducationProgram()->eptype_id) {
+        $student = $this->student;
+        switch ($student->educationProgram->eptype_id) {
             case 2:
                 return $this->getLastActivityProducing($count, $offset);
                 break;
@@ -191,7 +181,7 @@ class WorkplaceLearningPeriod extends Model
 
     private function getLastActivityProducing($count, $offset = 0)
     {
-        return $this->LearningActivityProducing()
+        return $this->learningActivityProducing()
             ->orderBy('date', 'desc')
             ->orderBy('lap_id', 'desc')
             ->skip($offset)
@@ -201,19 +191,33 @@ class WorkplaceLearningPeriod extends Model
 
     private function getLastActivityActing($count, $offset = 0)
     {
-        $x = $this->LearningActivityActing()
+        return $this->learningActivityActing()
             ->orderBy('date', 'desc')
             ->orderBy('laa_id', 'desc')
             ->skip($offset)
             ->take($count)
             ->get();
-        return $x;
+    }
+
+    public function chains(): HasMany
+    {
+        return $this->hasMany(Chain::class, 'wplp_id', 'wplp_id');
     }
 
     // Relations for query builder
-    public function getRelationships()
+    public function getRelationships(): array
     {
-        return ["cohort", "student", "workplace", "categories", "learningGoals", "resourcePerson", "timeslot",
-                "resourceMaterial", "learningActivityProducing", "learningActivityActing"];
+        return [
+            'cohort',
+            'student',
+            'workplace',
+            'categories',
+            'learningGoals',
+            'resourcePerson',
+            'timeslot',
+            'resourceMaterial',
+            'learningActivityProducing',
+            'learningActivityActing',
+        ];
     }
 }

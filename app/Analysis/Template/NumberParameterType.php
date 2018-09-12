@@ -3,18 +3,16 @@
  * Created by PhpStorm.
  * User: sivar
  * Date: 25/05/2018
- * Time: 17:27
+ * Time: 17:27.
  */
 
 namespace App\Analysis\Template;
 
-
 class NumberParameterType extends ParameterType
 {
-
     public function __construct()
     {
-        parent::__construct("Number", 0);
+        parent::__construct('Number', 0);
     }
 
     public function isOfType(array $types)
@@ -26,5 +24,4 @@ class NumberParameterType extends ParameterType
     {
         return Lang::get('template.error.number');
     }
-
 }

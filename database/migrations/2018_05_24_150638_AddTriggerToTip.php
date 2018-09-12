@@ -8,12 +8,10 @@ class AddTriggerToTip extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('tips', function(Blueprint $table) {
+        Schema::table('tips', function (Blueprint $table): void {
             $table->string('trigger')->default('statistic');
             $table->float('rangeStart')->nullable();
             $table->float('rangeEnd')->nullable();
@@ -22,12 +20,10 @@ class AddTriggerToTip extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('tips', function(Blueprint $table) {
+        Schema::table('tips', function (Blueprint $table): void {
             $table->dropColumn(['trigger', 'rangeStart', 'rangeEnd']);
         });
     }

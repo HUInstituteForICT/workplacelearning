@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'date' => 'date',
   'situation' => 'situation',
   'timeslot' => 'timeslot',
@@ -19,6 +19,7 @@ return array (
   'supportEd' => 'support Hogeschool Utrecht',
   'learningGoalDescription' => 'learning goal description',
   'evidence' => 'bewijsstuk',
+  'chain' => 'chain',
   'mail-subject' => 'Learning activities export shared',
   'text-mail' => 'Good day,
 
@@ -32,27 +33,27 @@ Attached to this email you will find the text of these learning moments.
 Kind regards,
 Hogeschool Utrecht - werkplekleren.hu.nl',
 
-    "wordexport" => [
-        "by-intern" => "Filled out by intern",
-        "intern-name" => "Name Intern",
-        "organisation" => "Internship organisation",
-        "studentnr" => "Student number",
-        "address" => "Address",
-        "total-days" => "Total days interning",
-        "mentor" => "Mentor",
-        "by-workplace" => "Filled out by workplace",
-        "name" => "Name",
-        "date" => "Date",
-        "confirmation" => "Confirmation, on behalf of the company, that the above information is filled out correctly and truthfully.",
-        "signature" => "Signature",
-        "remarks" => "Remarks from workplace",
-        "week" => "Week",
-        "activities" => "Activities",
-        "absent" => "Absent",
-        "days-worked" => "Total days worked (:hours hours or more)",
-        "day" => "Day",
-        "days" => "Days",
-        "absence-reason" => "Cause of absence, if applicable",
-        "remarks-week" => "Remarks"
-    ]
+    'wordexport' => [
+        'by-intern' => 'Filled out by intern',
+        'intern-name' => 'Name Intern',
+        'organisation' => 'Internship organisation',
+        'studentnr' => 'Student number',
+        'address' => 'Address',
+        'total-days' => 'Total days interning',
+        'mentor' => 'Mentor',
+        'by-workplace' => 'Filled out by workplace',
+        'name' => 'Name',
+        'date' => 'Date',
+        'confirmation' => 'Confirmation, on behalf of the company, that the above information is filled out correctly and truthfully.',
+        'signature' => 'Signature',
+        'remarks' => 'Remarks from workplace',
+        'week' => 'Week',
+        'activities' => 'Activities',
+        'absent' => 'Absent',
+        'days-worked' => 'Total days worked (:hours hours or more)',
+        'day' => 'Day',
+        'days' => 'Days',
+        'absence-reason' => 'Cause of absence, if applicable',
+        'remarks-week' => 'Remarks',
+    ],
 );

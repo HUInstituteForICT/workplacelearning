@@ -25,7 +25,7 @@ class TipEditRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'tipText' => 'required|max:1000'
+            'tipText' => 'required|max:1000',
         ];
     }
 }

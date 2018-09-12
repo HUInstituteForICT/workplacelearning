@@ -1,16 +1,15 @@
 <?php
 
-
 namespace App\Tips;
 
-
 use App\Cohort;
-use App\Tips\DataCollectors\Collector;
+use App\Tips\Models\Tip;
+use App\Tips\Services\ApplicableTipFetcher;
+use App\Tips\Services\TipEvaluator;
 use Illuminate\Support\Collection;
 
 class ApplicableTipFetcherTest extends \PHPUnit\Framework\TestCase
 {
-
     private function getTipMock()
     {
         /** @var Tip|\PHPUnit_Framework_MockObject_MockObject $mock */
@@ -40,15 +39,14 @@ class ApplicableTipFetcherTest extends \PHPUnit\Framework\TestCase
 
     private function getEvaluatedTipMock()
     {
-        /** @var EvaluatedStatisticTip|\PHPUnit_Framework_MockObject_MockObject $mock */
-        $mock = $this->createMock(EvaluatedStatisticTip::class);
+        /** @var EvaluatedTip|\PHPUnit_Framework_MockObject_MockObject $mock */
+        $mock = $this->createMock(EvaluatedTip::class);
         $mock->expects($this->exactly(2))->method('isPassing')->willReturn(true, false);
 
         return $mock;
     }
 
-
-    public function testFetchForWorkplaceLearningPeriod()
+    public function testFetchForWorkplaceLearningPeriod(): void
     {
         $fetcher = new ApplicableTipFetcher($this->getTipEvaluatorMock());
         $cohort = $this->getCohortMock(); // One instance; contained tip returns different value on 2nd call

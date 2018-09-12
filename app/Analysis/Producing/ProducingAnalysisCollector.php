@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Analysis\Producing;
 
 use App\LearningActivityProducing;
@@ -9,17 +8,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class ProducingAnalysisCollector gives access to raw data about user's activities
- * @package App\Analysis\Producing
+ * Class ProducingAnalysisCollector gives access to raw data about user's activities.
  */
 class ProducingAnalysisCollector
 {
     /**
-     * Get the hours the user spent working alone
+     * Get the hours the user spent working alone.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getNumHoursAlone($year, $month)
     {
@@ -32,30 +29,28 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Limit a Collection from a certain date and +1 month
+     * Limit a Collection from a certain date and +1 month.
      *
      * @param $collection
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function LimitCollectionByDate($collection, $year, $month)
     {
-        if ($year != "all" && $month != "all") {
+        if ('all' != $year && 'all' != $month) {
             $dtime = mktime(0, 0, 0, intval($month), 1, intval($year));
             $collection->whereDate('date', '>=', date('Y-m-d', $dtime))
-                ->whereDate('date', '<=', date('Y-m-d', strtotime("+1 month", $dtime)));
+                ->whereDate('date', '<=', date('Y-m-d', strtotime('+1 month', $dtime)));
         }
 
         return $collection;
     }
 
     /**
-     * Get the number tasks of the user
+     * Get the number tasks of the user.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getNumTotalTasksByDate($year, $month)
     {
@@ -66,11 +61,10 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the number of easy tasks of the user
+     * Get the number of easy tasks of the user.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getNumEasyTasksByDate($year, $month)
     {
@@ -82,11 +76,10 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the number of easy tasks of the user
+     * Get the number of easy tasks of the user.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getNumAverageTasksByDate($year, $month)
     {
@@ -98,11 +91,10 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the number of difficult tasks of the user
+     * Get the number of difficult tasks of the user.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getNumDifficultTasksByDate($year, $month)
     {
@@ -114,11 +106,10 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the hours of easy tasks of the user
+     * Get the hours of easy tasks of the user.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getHoursEasyTasksByDate($year, $month)
     {
@@ -130,11 +121,10 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the hours of average tasks of the user
+     * Get the hours of average tasks of the user.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getHoursAverageTasksByDate($year, $month)
     {
@@ -146,11 +136,10 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the hours of difficult tasks of the user
+     * Get the hours of difficult tasks of the user.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getHoursDifficultTasksByDate($year, $month)
     {
@@ -162,11 +151,12 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get all task chains of the user within a certain date range
+     * Get all task chains of the user within a certain date range.
      *
      * @param int $amount
      * @param $year
      * @param $month
+     *
      * @return array
      */
     public function getTaskChainsByDate($amount = 50, $year, $month)
@@ -192,14 +182,14 @@ class ProducingAnalysisCollector
                 continue;
             }
             $task_chains[$arr_key][] = $nw;
-            while (($nw = $nw->getNextLearningActivity()) != null) {
+            while (null != ($nw = $nw->getNextLearningActivity())) {
                 $task_chains[$arr_key][] = $nw;
             }
         }
         // Workaround: Get end dates and reverse from there, then array unique the duplicates
         $lap_end = LearningActivityProducing::whereNotNull('prev_lap_id')
             ->where('wplp_id', Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
-            ->whereNotIn('lap_id', function ($query) {
+            ->whereNotIn('lap_id', function ($query): void {
                 $query->select('prev_lap_id')
                     ->from('learningactivityproducing')
                     ->whereNotNull('prev_lap_id');
@@ -214,7 +204,7 @@ class ProducingAnalysisCollector
                 continue;
             }
             array_unshift($task_chains[$arr_key], $pw);
-            while (($pw = $pw->getPrevousLearningActivity()) != null) {
+            while (null != ($pw = $pw->getPrevousLearningActivity())) {
                 array_unshift($task_chains[$arr_key], $pw);
             }
         }
@@ -225,10 +215,11 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the average difficulty of tasks by date
+     * Get the average difficulty of tasks by date.
      *
      * @param $year
      * @param $month
+     *
      * @return float|int
      */
     public function getAverageDifficultyByDate($year, $month)
@@ -237,13 +228,15 @@ class ProducingAnalysisCollector
             Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
         $lap_collection = $this->limitCollectionByDate($lap_collection, $year, $month);
 
-        return ($lap_collection->count() == 0) ? 0 : ($lap_collection->sum('difficulty_id') / $lap_collection->count()) * 3.33;
+        return (0 == $lap_collection->count()) ? 0 : ($lap_collection->sum('difficulty_id') / $lap_collection->count()) * 3.33;
     }
 
     /**
-     * Get the category by difficulties filtered by date range
+     * Get the category by difficulties filtered by date range.
+     *
      * @param $year
      * @param $month
+     *
      * @return Collection
      */
     public function getCategoryDifficultyByDate($year, $month)
@@ -260,10 +253,11 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get average difficulty with resource person by date range
+     * Get average difficulty with resource person by date range.
      *
      * @param $year
      * @param $month
+     *
      * @return Collection
      */
     public function getResourcePersonDifficultyByDate($year, $month)
@@ -283,10 +277,11 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the most occurring category filtered by date range
+     * Get the most occurring category filtered by date range.
      *
      * @param $year
      * @param $month
+     *
      * @return $this|mixed
      */
     public function getMostOccuringCategoryByDate($year, $month)
@@ -306,11 +301,10 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the number of hours of activities filtered by date range
+     * Get the number of hours of activities filtered by date range.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getNumHoursByDate($year, $month)
     {
@@ -321,16 +315,15 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the amount of full working days (>7.5 hours || wplp defined hours amount)
+     * Get the amount of full working days (>7.5 hours || wplp defined hours amount).
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getFullWorkingDays($year, $month)
     {
         // Retrieve the number of days the student worked at least his minimum hours defined in the wplp
-        $result = LearningActivityProducing::selectRaw("COUNT(*) as days")->where('wplp_id',
+        $result = LearningActivityProducing::selectRaw('COUNT(*) as days')->where('wplp_id',
             Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->groupBy('date')
             ->havingRaw('SUM(duration) >= ?', [Auth::user()->getCurrentWorkplaceLearningPeriod()->hours_per_day])
@@ -341,11 +334,10 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the number of tasks filtered by date range
+     * Get the number of tasks filtered by date range.
      *
      * @param $year
      * @param $month
-     * @return mixed
      */
     public function getNumTasksByDate($year, $month)
     {
@@ -356,10 +348,11 @@ class ProducingAnalysisCollector
     }
 
     /**
-     * Get the number of hours in a category filtered by date range
+     * Get the number of hours in a category filtered by date range.
      *
      * @param $year
      * @param $month
+     *
      * @return Collection
      */
     public function getNumHoursCategory($year, $month)

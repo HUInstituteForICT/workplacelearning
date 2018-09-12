@@ -1,18 +1,17 @@
 <?php
 
-
 namespace App\Repository\Eloquent;
 
 use App\Repository\StudentTipViewRepositoryInterface;
 use App\Student;
-use App\Tips\StudentTipView;
-use App\Tips\Tip;
+use App\Tips\Models\StudentTipView;
+use App\Tips\Models\Tip;
 
 class StudentTipViewRepository implements StudentTipViewRepositoryInterface
 {
-    public function createForTip(Tip $tip, Student $student)
+    public function createForTip(Tip $tip, Student $student): void
     {
-        if($tip->studentTipViews()->where('student_id', '=', $student->student_id)->count() === 0) {
+        if (0 === $tip->studentTipViews()->where('student_id', '=', $student->student_id)->count()) {
             $studentTipView = new StudentTipView();
             $studentTipView->student_id = $student->student_id;
 
@@ -20,7 +19,7 @@ class StudentTipViewRepository implements StudentTipViewRepositoryInterface
         }
     }
 
-    public function save(StudentTipView $studentTipView)
+    public function save(StudentTipView $studentTipView): void
     {
         $studentTipView->save();
     }

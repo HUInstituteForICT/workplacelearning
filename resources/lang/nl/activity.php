@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'activities' => 'Activiteiten',
   'activity' => 'Activiteit',
   'situation' => 'Situatie',
@@ -34,8 +34,7 @@ return array (
   'easy' => 'Makkelijk',
   'average' => 'Gemiddeld',
   'hard' => 'Moeilijk',
-  'feedback' => 
-  array (
+  'feedback' => array(
     'feedback' => 'Feedback',
     'difficulty-indication' => 'Qua complexiteit vond jij deze activiteit ',
     'given-information' => 'Je hebt de volgende informatie ingegeven:',
@@ -47,7 +46,7 @@ return array (
     'used-source' => 'Je hebt tijdens het werken aan deze bron een hulpbron aangeboord',
     'not-used-source' => 'Je hebt tijdens het werken aan deze bron geen hulpbron aangeboord',
     'lookback' => 'Terugblik',
-    'why-hard' => 'Wat maakte deze activiteit voor jou moeilijk?',
+    'why-hard' => 'Wat maakte deze activiteit voor jou minder makkelijk?',
     'little-experience' => 'Weinig Ervaring',
     'no-aid-source' => 'Geen hulpbron beschikbaar',
     'lack-of-time' => 'Tijdgebrek',
@@ -56,7 +55,7 @@ return array (
     'help-received' => 'Hulp gekregen',
     'help-asked' => 'Hulp gevraagd',
     'help-received-wp' => 'Welke hulp heb je gekregen van je werkplek?',
-    'help-received-example' => 'Bijvoorbeeld: Een collega heeft mij een aangeraden om een boek na te slaan.',
+    'help-received-example' => 'Bijvoorbeeld: Een collega heeft mij aangeraden om een boek na te slaan.',
     'happy-with-progress' => 'Ben je tevreden met de voortgang?',
     'own-initiative' => 'Welk eigen initiatief heb je genomen?',
     'initiative-explanation' => 'Leg in je eigen woorden uit wat je hebt gedaan om verder te komen',
@@ -72,10 +71,8 @@ return array (
   ),
   'source-description' => 'Beschrijving bron',
   'how-does-this-page-work' => 'Hoe werkt deze pagina?',
-  'acting' => 
-  array (
-    'steps' => 
-    array (
+  'acting' => array(
+    'steps' => array(
       1 => 'Kies een datum waarop het leermoment plaatsvond. De datum mag niet in de toekomst liggen.',
       2 => 'Vul een omschrijving in van de situatie waarin het leermoment plaatsvond.',
       3 => 'Geef aan in welke categorie het leermoment valt (dit kan bijvoorbeeld een specifieke klas zijn of een specifieke patiënt). Je kunt hier zelf categorieën toevoegen, maar als je te veel categorieën gebruikt, zal het snel verwarrend worden. Denk dus goed na welke categorieën voor jou waardevol zijn om bijvoorbeeld analyses op uit te voeren of voor exporteren naar je stageverslag.',
@@ -85,11 +82,9 @@ return array (
       7 => 'Tenslotte kun je dit leermoment nog koppelen aan een van je leervragen (of niet) en aan een van de competenties van je opleiding.',
     ),
   ),
-  'producing' =>
-  array (
-      "person" => "Persoon",
-      'steps'  =>
-          array (
+  'producing' => array(
+      'person' => 'Persoon',
+      'steps' => array(
       1 => 'Kies een datum waarop je de activiteit hebt uitgevoerd. Deze mag niet in de toekomst liggen.',
       2 => 'Vul een omschrijving in van de activiteit die je hebt uitgevoerd.',
       3 => 'Geef aan hoeveel tijd je aan deze activiteit hebt besteed.',
@@ -101,7 +96,7 @@ return array (
     ),
   ),
   'transfered' => 'Overgedragen',
-    "saved-successfully" => 'De leeractiviteit is opgeslagen.',
+    'saved-successfully' => 'De leeractiviteit is opgeslagen.',
 
-    "feedback-activity-saved" => 'Zowel de activiteit als de feedback zijn opgeslagen.'
+    'feedback-activity-saved' => 'Zowel de activiteit als de feedback zijn opgeslagen.',
 );

@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                             <br/><br/>
-                            <?php $tipCounter++; ?>
+                            <?php ++$tipCounter; ?>
 
                     @endforeach
                 @else

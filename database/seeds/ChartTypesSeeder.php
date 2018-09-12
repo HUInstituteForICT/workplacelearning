@@ -6,13 +6,11 @@ class ChartTypesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        collect(["pie", "bar", "line"])->each(function($type) {
-            (new \App\ChartType(["name" => ucfirst($type), "slug" => $type]))->save();
+        collect(['pie', 'bar', 'line'])->each(function ($type): void {
+            (new \App\ChartType(['name' => ucfirst($type), 'slug' => $type]))->save();
         });
     }
 }

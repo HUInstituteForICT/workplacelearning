@@ -20,25 +20,26 @@ class ActingAnalysis
     }
 
     /**
-     * Creates the charts data for this analysis
+     * Creates the charts data for this analysis.
      */
-    public function createCharts() {
+    public function createCharts(): void
+    {
         $this->charts = [
-            "timeslot" => new Chart(
-                $this->analysisCollector->getTimeslots()->map(function($timeslot){return $timeslot->timeslot_text;}),
-                $this->analysisCollector->getTimeslots()->map(function($timeslot){return $this->statistic('percentageActivitiesInTimeslot', $timeslot);})
+            'timeslot' => new Chart(
+                $this->analysisCollector->getTimeslots()->map(function ($timeslot) {return $timeslot->timeslot_text; }),
+                $this->analysisCollector->getTimeslots()->map(function ($timeslot) {return $this->statistic('percentageActivitiesInTimeslot', $timeslot); })
             ),
-            "learninggoal" => new Chart(
-                $this->analysisCollector->getLearningGoals()->map(function($learningGoal){return $learningGoal->learninggoal_label;}),
-                $this->analysisCollector->getLearningGoals()->map(function($learningGoal){return $this->statistic('percentageActivityForLearningGoal', $learningGoal);})
+            'learninggoal' => new Chart(
+                $this->analysisCollector->getLearningGoals()->map(function ($learningGoal) {return $learningGoal->learninggoal_label; }),
+                $this->analysisCollector->getLearningGoals()->map(function ($learningGoal) {return $this->statistic('percentageActivityForLearningGoal', $learningGoal); })
             ),
-            "competence" => new Chart(
-                $this->analysisCollector->getCompetencies()->map(function($competence){return $competence->competence_label;}),
-                $this->analysisCollector->getCompetencies()->map(function($competence){return $this->statistic('percentageActivityForCompetence', $competence);})
+            'competence' => new Chart(
+                $this->analysisCollector->getCompetencies()->map(function ($competence) {return $competence->competence_label; }),
+                $this->analysisCollector->getCompetencies()->map(function ($competence) {return $this->statistic('percentageActivityForCompetence', $competence); })
             ),
-            "person" => new Chart(
-                $this->analysisCollector->getResourcePersons()->map(function($person){return $person->person_label;}),
-                $this->analysisCollector->getResourcePersons()->map(function($person){return $this->statistic('percentageActivityWithResourcePerson', $person);})
+            'person' => new Chart(
+                $this->analysisCollector->getResourcePersons()->map(function ($person) {return $person->person_label; }),
+                $this->analysisCollector->getResourcePersons()->map(function ($person) {return $this->statistic('percentageActivityWithResourcePerson', $person); })
             ),
             // Not used currently, might be reinstated later on?
             /*"material" => new Chart(
@@ -50,33 +51,39 @@ class ActingAnalysis
 
     /**
      * @param null $name a specific requested chart if passed, if none it returns all charts
+     *
      * @return Chart[]|Chart returns the requested Chart(s)
      */
-    public function charts($name) {
-        if($this->charts === null) {
+    public function charts($name)
+    {
+        if (null === $this->charts) {
             $this->createCharts();
         }
 
-        if($name === null) {
+        if (null === $name) {
             return $this->charts;
         }
+
         return $this->charts[$name];
     }
 
     /**
-     * Returns the value of the requested statistic
+     * Returns the value of the requested statistic.
+     *
      * @param $name string name of the method on the Statistic class
      * @param array $args Extra arguments passed that are necessary to calculate the statistic (i.e. LearningGoal, Timeslot)
+     *
      * @return mixed the statistic
+     *
      * @throws \Exception if the statistic method is not found
      */
-    public function statistic($name, ...$args) {
-
-        if(!method_exists($this->statistics, $name)) {
-            throw new \Exception("Method not found on " . Statistics::class);
+    public function statistic($name, ...$args)
+    {
+        if (!method_exists($this->statistics, $name)) {
+            throw new \Exception('Method not found on '.Statistics::class);
         }
 
-        if(!$args === null) {
+        if (null === !$args) {
             return $this->statistics->$name();
         }
 

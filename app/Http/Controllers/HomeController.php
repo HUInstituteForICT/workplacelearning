@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
 use App\Student;
-use App\Tips\ApplicableTipFetcher;
-use App\Tips\EvaluatedTip;
-use App\WorkplaceLearningPeriod;
+use App\Tips\EvaluatedTipInterface;
+use App\Tips\Services\ApplicableTipFetcher;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Auth;
@@ -16,54 +15,40 @@ use Validator;
 
 class HomeController extends Controller
 {
-
     public function showHome()
     {
         return view('pages.home');
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
+    public function showProducingTemplate(Student $student, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
+        if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
+            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
-        /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
-        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
-
-        if ($workplaceLearningPeriod !== null && $workplaceLearningPeriod->hasLoggedHours()) {
-
-            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
-
-            /** @var Student $student */
-            $student = $request->user();
-            $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+            /* @var Student $student */
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
-
-
 
         return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
-    public function showActingTemplate(Request $request, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
+    public function showActingTemplate(Student $student, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
-        /** @var WorkplaceLearningPeriod $workplaceLearningPeriod */
-        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
+        if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
+            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
-        if ($workplaceLearningPeriod !== null && $workplaceLearningPeriod->hasLoggedHours()) {
-            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($workplaceLearningPeriod->cohort));
-
-            /** @var Student $student */
-            $student = $request->user();
-            $applicableEvaluatedTips->each(function (EvaluatedTip $evaluatedTip) use ($student, $likeRepository) {
+            /* @var Student $student */
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
-
 
         return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
@@ -82,7 +67,7 @@ class HomeController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'onderwerp' => 'required|max:40|min:3',
-            'uitleg'    => 'required|max:800|min:5',
+            'uitleg' => 'required|max:800|min:5',
         ]);
 
         if ($validator->fails()) {

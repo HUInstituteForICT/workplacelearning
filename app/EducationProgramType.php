@@ -8,9 +8,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property integer $eptype_id
+ * @property int    $eptype_id
  * @property string $eptype_name Name of the program type
  */
 class EducationProgramType extends Model
@@ -28,8 +29,18 @@ class EducationProgramType extends Model
         'eptype_name',
     ];
 
-    public function educationprogram()
+    public function educationPrograms(): HasMany
     {
-        return $this->belongsToMany(\App\EducationProgram::class);
+        return $this->hasMany(EducationProgram::class);
+    }
+
+    public function isActing()
+    {
+        return \in_array(strtolower($this->eptype_name), ['acting']);
+    }
+
+    public function isProducing()
+    {
+        return \in_array(strtolower($this->eptype_name), ['producing']);
     }
 }

@@ -8,8 +8,10 @@ const statistic = new schema.Entity('statistics');
 const statisticVariable = new schema.Entity('statisticVariables');
 const educationProgramType = new schema.Entity('educationProgramTypes', {}, {idAttribute: 'eptype_id'});
 const educationProgram = new schema.Entity('educationPrograms', {}, {idAttribute: 'ep_id'});
+const moment = new schema.Entity('moments');
 
-tip.define({enabled_cohorts: [cohort], coupled_statistics: [coupledStatistic]});
+
+tip.define({enabled_cohorts: [cohort], coupled_statistics: [coupledStatistic], moments: [moment]});
 
 statistic.define({
     statistic_variable_one: statisticVariable,
@@ -33,7 +35,7 @@ const loadSchema = {tips, cohorts, statistics, statisticVariables, educationProg
 export const Schema = {
     tip, cohort, coupledStatistic, statisticVariable, educationProgramType,
     tips, cohorts, statistics, educationProgramTypes,
-    statistic,
+    statistic, moment,
 
     loadSchema
 };

@@ -8,14 +8,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\User;
-use App\InternshipPeriod;
 
 /**
- * Class Workplace
- * @package App
+ * Class Workplace.
  *
- * @property int $wp_id
+ * @property int    $wp_id
  * @property string $wp_name
  * @property string $street
  * @property string $housenr
@@ -25,7 +22,7 @@ use App\InternshipPeriod;
  * @property string $contact_name
  * @property string $contact_email
  * @property string $contact_phone
- * @property int $numberofemployees
+ * @property int    $numberofemployees
  */
 class Workplace extends Model
 {
@@ -50,7 +47,6 @@ class Workplace extends Model
         'contact_phone',
         'numberofemployees',
     ];
-
 
     public function internshipperiod()
     {

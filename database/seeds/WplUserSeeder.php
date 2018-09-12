@@ -6,10 +6,8 @@ class WplUserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         \DB::select("CREATE USER IF NOT EXISTS 'wpldashboard'@'%' IDENTIFIED BY 'WPLdashboard';");
 

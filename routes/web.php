@@ -14,32 +14,30 @@
 
 */
 
-use App\Http\Controllers\StatisticController;
 use App\Http\Middleware\CheckUserLevel;
+use App\Http\Middleware\RequireActiveInternship;
 
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
-Route::post('locale', "LocaleSwitcher@switchLocale")->name('localeswitcher');
+Route::post('locale', 'LocaleSwitcher@switchLocale')->name('localeswitcher');
 
 // API ROUTES - NOTE: NO LOCALIZATION AS IT WILL BREAK THE REQUEST DUE TO REDIRECTS (urls without a specified language get redirected, breaks POST requests to GET)
 Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix' => '/education-programs/api'],
-    function () {
-
+    function (): void {
         // "API" for edu programs routes
         Route::get('education-programs', 'EducationProgramsController@getEducationPrograms');
         Route::post('education-program', 'EducationProgramsController@createEducationProgram');
         Route::delete('education-program/{program}', 'EducationProgramsController@deleteEducationProgram');
 
-
         Route::post('education-program/{program}/cohort/create', 'EducationProgramsController@createCohort');
         Route::put('education-program/cohort/{cohort}/update', 'EducationProgramsController@updateCohort');
+        Route::get('education-program/cohort/{cohort}/clone', 'EducationProgramsController@cloneCohort');
         Route::get('education-program/cohort/{cohort}', 'EducationProgramsController@getCohort');
         Route::delete('education-program/cohort/{cohort}', 'EducationProgramsController@deleteCohort');
         Route::get('education-program/cohort/{cohort}/disable', 'EducationProgramsController@toggleDisabledCohort');
 
         Route::post('education-program/{cohort}/entity', 'EducationProgramsController@createEntity');
         Route::post('cohort/entity/{entity}/delete', 'EducationProgramsController@deleteEntity');
-
 
         Route::put('education-program/entity/{entity}', 'EducationProgramsController@updateEntity');
         Route::put('education-program/{program}', 'EducationProgramsController@updateProgram');
@@ -50,47 +48,47 @@ Route::group(['before' => 'auth', 'middleware' => CheckUserLevel::class, 'prefix
         Route::get('editable-education-program/{program}', 'EducationProgramsController@getEditableProgram');
 
         Route::get('education-program/{program}/disable', 'EducationProgramsController@toggleDisabled');
-
     }
 );
 
-Route::get('/manage/tips', function() {
+Route::get('/manage/tips', function () {
     return view('pages.tips.tips-app');
 })->middleware(['auth', CheckUserLevel::class])->name('tips-app');
 
-Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api/'], function() {
-
+Route::group(['middleware' => ['auth', CheckUserLevel::class], 'prefix' => '/api/'], function (): void {
     Route::resource('tip-coupled-statistics', 'TipApi\TipCoupledStatisticController');
     Route::resource('statistics', 'TipApi\StatisticController');
     Route::resource('tips', 'TipApi\TipsController');
 
-
+    Route::post('moments/create/{tip}', 'TipApi\MomentController@create');
+    Route::put('moments/{moment}', 'TipApi\MomentController@update');
+    Route::delete('moments/{moment}', 'TipApi\MomentController@delete');
 
     Route::put('tips/{tip}/cohorts', 'TipApi\TipsController@updateCohorts')->name('tips.updateCohorts');
 });
 
-Route::group(['before' => 'auth'], function () {
+// Admin
+Route::get('/reactlogs', 'ReactLogController@index')->middleware(CheckUserLevel::class)->name('reactlogs');
+Route::get('/reactlogs/{reactLog}/fix', 'ReactLogController@fix')->middleware(CheckUserLevel::class)->name('fix-reactlog');
+
+Route::group(['before' => 'auth'], function (): void {
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
-    Route::post('/activity-export-doc', "ActivityExportController@exportActivitiesToWord");
-    Route::get('/download/activity-export-doc/{fileName}', "ActivityExportController@downloadWordExport")->name('docx-export-download');
+    Route::post('/activity-export-doc', 'ActivityExportController@exportActivitiesToWord');
+    Route::get('/download/activity-export-doc/{fileName}', 'ActivityExportController@downloadWordExport')->name('docx-export-download');
     // Catch the stat registration post
     Route::post('/log', 'LogController@log');
+    Route::post('/reactlog', 'ReactLogController@store');
 });
 
-
-// Register the localization routes (e.g. /nl/rapportage will switch the language to NL)
-// Note: The localisation is saved in a session state.
 Route::group([
     'before' => ['auth'],
     'middleware' => ['usernotifications'],
-], function () {
-
-
-    Route::group(['middleware' => CheckUserLevel::class], function () {
+], function (): void {
+    Route::group(['middleware' => CheckUserLevel::class], function (): void {
         Route::get('/education-programs', 'EducationProgramsController@index')
             ->name('education-programs');
 
-        Route::group(['prefix' => '/dashboard'], function () {
+        Route::group(['prefix' => '/dashboard'], function (): void {
             Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
             Route::get('/add', 'AnalyticsDashboardController@add')->name('dashboard.add');
             Route::post('/add', 'AnalyticsDashboardController@store')->name('dashboard.save');
@@ -110,14 +108,14 @@ Route::group([
             Route::resource('charts', 'AnalyticsChartController');
             Route::post('charts/create', 'AnalyticsChartController@create_step_2')->name('charts.create_step_2');
 
-            Route::get("/chart_details/{id}/{label}", function($id, $label)
-            {
-                $label = str_replace("_", " ", $label);
-                $idLabel = $id . ";" . $label;
-                return View::make("pages.analytics.dashboard.chart_details", compact( 'label', 'idLabel'));
+            Route::get('/chart_details/{id}/{label}', function ($id, $label) {
+                $label = str_replace('_', ' ', $label);
+                $idLabel = $id.';'.$label;
+
+                return View::make('pages.analytics.dashboard.chart_details', compact('label', 'idLabel'));
             });
 
-            Route::group(['prefix' => 'api'], function () {
+            Route::group(['prefix' => 'api'], function (): void {
                 Route::get('chart_details/{label?}', 'AnalyticsChartController@getChartDetails')->name('charts-details');
                 Route::get('column_values/{table?}/{column?}', 'QueryBuilderController@getColumnValues')->name('column-values');
             });
@@ -132,7 +130,7 @@ Route::group([
             Route::post('/builder/testQuery', 'QueryBuilderController@testQuery')->name('querybuilder.test');
         });
 
-        Route::group(['prefix' => 'template'], function () {
+        Route::group(['prefix' => 'template'], function (): void {
             Route::get('/', 'TemplateDashboardController@index')->name('template.index');
             Route::get('/view/{id}', 'TemplateDashboardController@show')->name('template.show')->where('id', '[0-9]+');
             Route::post('/{id}', 'TemplateDashboardController@update')->name('template.update')->where('id', '[0-9]+');
@@ -140,7 +138,7 @@ Route::group([
             Route::get('/create', 'TemplateDashboardController@create')->name('template.create');
             Route::delete('/{id}', 'TemplateDashboardController@destroy')->name('template.destroy')->where('id', '[0-9]+');
 
-            Route::group(['prefix' => 'api'], function () {
+            Route::group(['prefix' => 'api'], function (): void {
                 // Api routes
                 Route::get('tables', 'TemplateDashboardController@getTables')->name('template.tables');
                 Route::get('columns/{id?}', 'TemplateDashboardController@getColumns')->name('template.columns');
@@ -148,11 +146,7 @@ Route::group([
                 Route::get('param_html/{id?}', 'TemplateDashboardController@getHTML')->name('template.param-html');
             });
         });
-
     });
-
-
-    /** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
 
     // User Creation and modification
     Route::get('profiel', 'ProfileController@show')->name('profile');
@@ -177,75 +171,97 @@ Route::group([
 
     Route::group([
         'middleware' => ['taskTypeRedirect'],
-    ], function () {
+    ], function (): void {
         /* Add all middleware redirected urls here */
         Route::get('/', 'HomeController@showHome')->name('default');
         Route::get('home', 'HomeController@showHome')->name('home');
         Route::get('process', 'ActingActivityController@show')->name('process');
-        Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page',
-            '[1-9]{1}[0-9]*')->name('progress');
+        Route::get('progress', 'ProducingActivityController@progress')->name('progress');
         Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
+        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit');
         Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
-        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id',
-            '[0-9]*');
     });
     // Dashboard
 
-
-    Route::group([
-        'middleware' => ['taskTypeRedirect'],
-    ], function () {
-        /* Add all middleware redirected urls here */
-        Route::get('/', 'HomeController@showHome')->name('default');
-        Route::get('home', 'HomeController@showHome')->name('home');
-        Route::get('process', 'ActingActivityController@show')->name('process');
-        Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
-        Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
-        Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
-        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
-    });
-
+//    Route::group([
+//        'middleware' => ['taskTypeRedirect'],
+//    ], function (): void {
+//        /* Add all middleware redirected urls here */
+//        Route::get('/', 'HomeController@showHome')->name('default');
+//        Route::get('home', 'HomeController@showHome')->name('home');
+//        Route::get('process', 'ActingActivityController@show')->name('process');
+//        Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
+//        Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
+//        Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
+//        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
+//    });
 
     Route::get('/tip/{tip}/like', 'TipApi\TipsController@likeTip')->name('tips.like');
 
     /* EP Type: Acting */
     Route::group([
-        'prefix' => "/acting",
-    ], function () {
+        'prefix' => '/acting',
+    ], function (): void {
         Route::get('home', 'HomeController@showActingTemplate')->name('home-acting');
-        Route::get('process', 'ActingActivityController@show')->name('process-acting');
-        Route::post('process/create', 'ActingActivityController@create')->name('process-acting-create');
-        Route::get('process/edit/{id}', 'ActingActivityController@edit')->name('process-acting-edit');
-        Route::post('process/update/{id}', 'ActingActivityController@update')->name('process-acting-update');
-        Route::get('process/delete/{activity}', 'ActingActivityController@delete')->name('process-acting-delete');
 
-        Route::get('progress/{page}', 'ActingActivityController@progress')->where('page',
-            '[1-9]{1}[0-9]*')->name('progress-acting');
+        Route::group(['prefix' => 'process', 'middleware' => [RequireActiveInternship::class]], function () {
+            Route::get('/', 'ActingActivityController@show')
+                ->middleware('can:create,App\LearningActivityActing')
+                ->name('process-acting');
+
+            Route::post('/create', 'ActingActivityController@create')
+                ->middleware('can:create,App\LearningActivityActing')
+                ->name('process-acting-create');
+
+            Route::get('/edit/{learningActivityActing}', 'ActingActivityController@edit')
+                ->middleware('can:update,learningActivityActing')
+                ->name('process-acting-edit');
+
+            Route::post('/update/{learningActivityActing}', 'ActingActivityController@update')
+                ->middleware('can:update,learningActivityActing')
+                ->name('process-acting-update');
+
+            Route::get('/delete/{learningActivityActing}', 'ActingActivityController@delete')
+                ->middleware('can:delete,learningActivityActing')
+                ->name('process-acting-delete');
+        });
+
+        Route::get('progress', 'ActingActivityController@progress')
+            ->middleware(RequireActiveInternship::class)
+            ->name('progress-acting');
 
         // Internships & Internship Periods
-        Route::get('period/create', 'ActingWorkplaceLearningController@show')->name('period-acting');
-        Route::get('period/edit/{id}',
-            'ActingWorkplaceLearningController@edit')->name('period-acting-edit')->where('id', '[0-9]*');
-        Route::post('period/create', 'ActingWorkplaceLearningController@create')->name('period-acting-create');
-        Route::post('period/update/{id}',
-            'ActingWorkplaceLearningController@update')->name('period-acting-update')->where('id', '[0-9]*');
+        Route::get('period/create', 'ActingWorkplaceLearningController@show')
+            ->name('period-acting');
+
+        Route::get('period/edit/{id}', 'ActingWorkplaceLearningController@edit')
+            ->name('period-acting-edit');
+
+        Route::post('period/create', 'ActingWorkplaceLearningController@create')
+            ->name('period-acting-create');
+
+        Route::post('period/update/{id}', 'ActingWorkplaceLearningController@update')
+            ->name('period-acting-update')
+            ->where('id', '[0-9]*');
 
         // Report Creation
-        Route::get('analysis', 'ActingAnalysisController@showChoiceScreen')->name('analysis-acting-choice');
-        Route::get('analysis/{year}/{month}',
-            'ActingAnalysisController@showDetail')->name('analysis-acting-detail');
+        Route::get('analysis', 'ActingAnalysisController@showChoiceScreen')
+            ->middleware(RequireActiveInternship::class)
+            ->name('analysis-acting-choice');
 
+        Route::get('analysis/{year}/{month}', 'ActingAnalysisController@showDetail')
+            ->middleware(RequireActiveInternship::class)
+            ->name('analysis-acting-detail');
 
         // Download competence description
         Route::get('competence-description/{competenceDescription}',
-            function (\App\CompetenceDescription $competenceDescription) {
-                return response()->download(storage_path('app/' . $competenceDescription->file_name),
-                    "competence-description.pdf");
+            function (App\CompetenceDescription $competenceDescription) {
+                return response()->download(storage_path('app/'.$competenceDescription->file_name),
+                    'competence-description.pdf');
             })->name('competence-description');
 
-
-        Route::get('evidence/{learningActivity}/remove', function (\App\LearningActivityActing $learningActivity) {
-            if ($learningActivity->workplaceLearningPeriod->student->student_id != Auth::user()->student_id) {
+        Route::get('evidence/{learningActivity}/remove', function (App\LearningActivityActing $learningActivity, App\Student $student) {
+            if (!$learningActivity->workplaceLearningPeriod->student->is($student)) {
                 throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
             }
 
@@ -257,48 +273,72 @@ Route::group([
                 $learningActivity->save();
             }
 
-            return redirect()->route('process-acting-edit', ["id" => $learningActivity->laa_id]);
-
-
-        })->name('evidence-remove');
+            return redirect()->route('process-acting-edit', ['id' => $learningActivity->laa_id]);
+        })
+            ->middleware(RequireActiveInternship::class)
+            ->name('evidence-remove');
 
         Route::get('evidence/{learningActivity}/{diskFileName}',
-            function (\App\LearningActivityActing $learningActivity, $diskFileName) {
+            function (App\LearningActivityActing $learningActivity, $diskFileName) {
                 if ($learningActivity->evidence_disk_filename !== $diskFileName) {
                     throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
                 }
 
-                return response()->download(storage_path('app/activity-evidence/' . $learningActivity->evidence_disk_filename),
+                return response()->download(storage_path('app/activity-evidence/'.$learningActivity->evidence_disk_filename),
                     $learningActivity->evidence_filename);
             })->name('evidence-download');
     });
 
     /* EP Type: Producing */
     Route::group([
-        'prefix' => "/producing",
-    ], function () {
+        'prefix' => '/producing',
+    ], function (): void {
         Route::get('home', 'HomeController@showProducingTemplate')->name('home-producing');
-        Route::get('process', 'ProducingActivityController@show')->name('process-producing');
-        Route::post('process/create', 'ProducingActivityController@create')->name('process-producing-create');
-        Route::get('process/edit/{id}', 'ProducingActivityController@edit')->name('process-producing-edit');
-        Route::post('process/update/{id}', 'ProducingActivityController@update')->name('process-producing-update');
-        Route::get('process/delete/{activity}', 'ProducingActivityController@delete')->name('process-producing-delete');
 
-        // Progress
-        Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page',
-            '[1-9]{1}[0-9]*')->name('progress-producing');
-        Route::get('report/export', 'ProducingReportController@wordExport')->name('report-producing-export');
+        Route::group(['prefix' => 'process', 'middleware' => [RequireActiveInternship::class]], function () {
+            Route::get('/', 'ProducingActivityController@show')
+                ->middleware('can:create,App\LearningActivityProducing')
+                ->name('process-producing');
 
-        // Report Creation
-        Route::get('analysis', 'ProducingAnalysisController@showChoiceScreen')->name('analysis-producing-choice');
-        Route::get('analysis/{year}/{month}',
-            'ProducingAnalysisController@showDetail')->name('analysis-producing-detail');
+            Route::post('/create', 'ProducingActivityController@create')
+                ->middleware('can:create,App\LearningActivityProducing')
+                ->name('process-producing-create');
 
-        // Feedback
-        Route::get('feedback/{id}', 'ProducingActivityController@feedback')->where('id',
-            '[0-9]*')->name('feedback-producing');
-        Route::post('feedback/update/{id}',
-            'ProducingActivityController@updateFeedback')->name('feedback-producing-update');
+            Route::get('/edit/{learningActivityProducing}', 'ProducingActivityController@edit')
+                ->middleware('can:update,learningActivityProducing')
+                ->name('process-producing-edit');
+
+            Route::post('/update/{learningActivityProducing}', 'ProducingActivityController@update')
+                ->middleware('can:update,learningActivityProducing')
+                ->name('process-producing-update');
+
+            Route::get('/delete/{learningActivityProducing}', 'ProducingActivityController@delete')
+                ->middleware('can:delete,learningActivityProducing')
+                ->name('process-producing-delete');
+        });
+
+        Route::group(['middleware' => [RequireActiveInternship::class]], function () {
+            // Progress
+            Route::get('progress', 'ProducingActivityController@progress')
+                ->name('progress-producing');
+
+            Route::get('report/export', 'ProducingReportController@wordExport')
+                ->name('report-producing-export');
+
+            // Analysis
+            Route::get('analysis', 'ProducingAnalysisController@showChoiceScreen')
+                ->name('analysis-producing-choice');
+
+            Route::get('analysis/{year}/{month}', 'ProducingAnalysisController@showDetail')
+                ->name('analysis-producing-detail');
+
+            // Feedback
+            Route::get('feedback/{feedback}', 'FeedbackController@show')
+                ->name('feedback-producing');
+
+            Route::post('feedback/update/{feedback}', 'FeedbackController@update')
+                ->name('feedback-producing-update');
+        });
 
         // Internships & Internship Periods
         Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period-producing');
@@ -308,6 +348,8 @@ Route::group([
         Route::post('period/update/{id}',
             'ProducingWorkplaceLearningController@update')->name('period-producing-update')->where('id', '[0-9]*');
 
-        //Route::get('report/export',                     'ReportController@export')->name('report-producing-export');
+        Route::post('/chain/create', 'ChainController@create')->name('chain-create');
+        Route::put('/chain/{chain}', 'ChainController@save')->name('chain-save');
+        Route::get('/chain/{chain}/delete', 'ChainController@delete')->name('chain-delete');
     });
 });

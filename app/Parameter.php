@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Parameter extends Model
 {
-
     protected $table = 'parameters';
     protected $primaryKey = 'id';
 
@@ -14,12 +13,11 @@ class Parameter extends Model
         'name',
         'type_name',
         'table',
-        'column'
+        'column',
     ];
 
     public function template()
     {
         return $this->belongsTo(Template::class);
     }
-
 }

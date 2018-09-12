@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'analysis' => 'Analysis',
   'deadlines' => 'Deadlines',
   'goodluck' => 'Good luck and enjoy your time at your workplace!',
@@ -8,8 +8,7 @@ return array (
   'profile' => 'Profile',
   'progress' => 'Progress',
   'see-menu' => 'In the menu you can see a few tiles',
-  'steps' => 
-  array (
+  'steps' => array(
     1 => 'you can add your learning moments.',
     2 => 'you can find all your submitted learning moments.',
     3 => 'you can gain insights about your learning moments through multiple analyses. You will also get personalised tips that can help you overcome difficulties and to get more out of your internship.',

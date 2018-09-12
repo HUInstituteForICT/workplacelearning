@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ */
 class Template extends Model
 {
     protected $table = 'templates';
@@ -13,7 +16,7 @@ class Template extends Model
     protected $fillable = [
         'name',
         'description',
-        'query'
+        'query',
     ];
 
     public function getParameters()
@@ -25,5 +28,4 @@ class Template extends Model
     {
         return $this->hasMany(Parameter::class);
     }
-
 }

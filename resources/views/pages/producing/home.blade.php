@@ -38,18 +38,18 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
+                    @if(Auth::user()->hasCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
                         <h1>{{ Lang::get('dashboard.lastWZHtitle') }}</h1>
                         @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(5) as $a)
                             <div class="dash-bar">
                                 <?php
                                 $fmt = new IntlDateFormatter(
-                                        (LaravelLocalization::getCurrentLocale() == "en") ? "en_US" : "nl_NL",
+                                        ('en' == LaravelLocalization::getCurrentLocale()) ? 'en_US' : 'nl_NL',
                                         IntlDateFormatter::GREGORIAN,
                                         IntlDateFormatter::NONE,
-                                        NULL,
-                                        NULL,
-                                        "EEEE dd-MM"
+                                        null,
+                                        null,
+                                        'EEEE dd-MM'
                                 );
                                 ?>
                                 <div class="dash-date">
@@ -58,7 +58,15 @@
                                 <div class="dash-description">
                                     <b>{{ $a->description }}</b>
                                 </div>
-                                <div class="dash-hours"><b>({{ $a->getDurationString() }})</b></div>
+                                <div class="dash-hours">
+                                    <strong>
+                                        @if($a->duration < 1)
+                                            ({{ round($a->duration * 60) }} {{ __('minutes') }})
+                                        @else
+                                            ({{ $a->duration }} {{ __('hours') }})
+                                        @endif
+                                    </strong>
+                                </div>
                             </div>
                         @endforeach
                     @endif

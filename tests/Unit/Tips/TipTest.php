@@ -1,16 +1,13 @@
 <?php
 
-
 use App\Student;
-use App\Tips\Tip;
-use App\Tips\TipCoupledStatistic;
-use App\Tips\TipManager;
-
+use App\Tips\Models\Tip;
+use App\Tips\Services\TipManager;
 
 class TipTest extends \Tests\TestCase
 {
-
-    public function testTipLike() {
+    public function testTipLike(): void
+    {
         $tip = factory(Tip::class)->create();
         $student = factory(Student::class)->create();
 
@@ -23,5 +20,4 @@ class TipTest extends \Tests\TestCase
 
         $this->assertFalse($result);
     }
-
 }

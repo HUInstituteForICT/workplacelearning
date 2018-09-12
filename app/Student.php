@@ -3,19 +3,22 @@
 namespace App;
 
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * Class Student
- * @property int $student_id
- * @property string $email
- * @property string $firstname
- * @property string $lastname
- * @property integer $userlevel
- * @property EducationProgram $educationProgram
- * @property string $pw_hash
+ * Class Student.
  *
+ * @property int              $student_id
+ * @property string           $email
+ * @property string           $firstname
+ * @property string           $lastname
+ * @property int              $userlevel
+ * @property EducationProgram $educationProgram
+ * @property string           $pw_hash
  */
 class Student extends Authenticatable
 {
@@ -40,62 +43,65 @@ class Student extends Authenticatable
         'registrationdate',
         'answer',
         'pw_hash',
-        'locale'
+        'locale',
     ];
 
-
     public static $locales = [
-        "nl" => "Nederlands",
-        "en" => "English",
+        'nl' => 'Nederlands',
+        'en' => 'English',
     ];
 
     protected $hidden = [
         'remember_token',
     ];
 
+    /** @var WorkplaceLearningPeriod|null $currentWorkplaceLearningPeriod */
     private $currentWorkplaceLearningPeriod = null;
 
     private $userSettings = [];
 
-    public function getInitials()
+    public function getInitials(): string
     {
-        $initials = "";
+        $initials = '';
         if (preg_match('/\s/', $this->firstname)) {
             $names = explode(' ', $this->lastname);
             foreach ($names as $name) {
-                $initials = (strlen($initials) == 0) ? substr($name, 0, 1)."." : $initials." ".substr($name, 0, 1).".";
+                $initials = ('' === $initials) ? substr($name, 0, 1).'.' : $initials.' '.substr($name, 0,
+                        1).'.';
             }
         } else {
-            $initials = substr($this->firstname, 0, 1).".";
+            $initials = substr($this->firstname, 0, 1).'.';
         }
+
         return $initials;
     }
 
-    public function getUserLevel()
+    public function getUserLevel(): int
     {
         return $this->userlevel;
     }
 
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        return ($this->userlevel > 0);
+        return $this->userlevel > 0;
     }
 
     public function getUserSetting($label, $forceRefresh = false)
     {
-        if($forceRefresh || !isset($this->userSettings[$label])) {
+        if ($forceRefresh || !isset($this->userSettings[$label])) {
             $this->userSettings[$label] = $this->usersettings()->where('setting_label', '=', $label)->first();
         }
+
         return $this->userSettings[$label];
     }
 
-    public function setUserSetting($label, $value)
+    public function setUserSetting($label, $value): void
     {
         $setting = $this->getUserSetting($label);
         if (!$setting) {
             $setting = UserSetting::create([
-                'student_id'    => $this->student_id,
-                'setting_label'  => $label,
+                'student_id' => $this->student_id,
+                'setting_label' => $label,
                 'setting_value' => $value,
             ]);
         } else {
@@ -103,99 +109,93 @@ class Student extends Authenticatable
             $setting->save();
         }
         $this->userSettings[$label] = $setting;
+
         return;
     }
 
-    public function educationProgram()
+    public function educationProgram(): BelongsTo
     {
-        return $this->hasOne(\App\EducationProgram::class, 'ep_id', 'ep_id');
+        return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
     }
 
-    public function deadlines()
+    public function deadlines(): HasMany
     {
-        return $this->hasMany(\App\Deadline::class, 'student_id', 'student_id');
+        return $this->hasMany(Deadline::class, 'student_id', 'student_id');
     }
 
-    public function usersettings()
+    public function usersettings(): HasMany
     {
-        return $this->hasMany(\App\UserSetting::class, 'student_id', 'student_id');
+        return $this->hasMany(UserSetting::class, 'student_id', 'student_id');
     }
 
-    public function workplaceLearningPeriods()
+    public function workplaceLearningPeriods(): HasMany
     {
-        return $this->hasMany(\App\WorkplaceLearningPeriod::class, 'student_id', 'student_id');
+        return $this->hasMany(WorkplaceLearningPeriod::class, 'student_id', 'student_id');
     }
 
-    public function workplaces()
+    public function workplaces(): HasManyThrough
     {
-        return $this->belongsToMany(\App\Workplace::class, 'workplacelearningperiod', 'student_id', 'wp_id');
+        return $this->hasManyThrough(Workplace::class, WorkplaceLearningPeriod::class);
+//        return $this->belongsToMany(\App\Workplace::class, 'workplacelearningperiod', 'student_id', 'wp_id');
     }
 
     public function getWorkplaceLearningPeriods()
     {
         return $this->workplaceLearningPeriods()
-            ->join("workplace", 'workplacelearningperiod.wp_id', '=', 'workplace.wp_id')
+            ->join('workplace', 'workplacelearningperiod.wp_id', '=', 'workplace.wp_id')
             ->orderBy('startdate', 'desc')
             ->get();
     }
 
-    /**
-     * @return null|WorkplaceLearningPeriod
-     */
-    public function getCurrentWorkplaceLearningPeriod()
+    public function hasCurrentWorkplaceLearningPeriod(): bool
     {
-        if($this->currentWorkplaceLearningPeriod === null) {
-            if (!$this->getUserSetting('active_internship')) {
-                return null;
-            }
-            $this->currentWorkplaceLearningPeriod = $this->workplaceLearningPeriods()->where('wplp_id', '=', $this->getUserSetting('active_internship')->setting_value)->first();;
+        return (bool) $this->getUserSetting('active_internship');
+    }
+
+    public function getCurrentWorkplaceLearningPeriod(): WorkplaceLearningPeriod
+    {
+        if (!$this->hasCurrentWorkplaceLearningPeriod()) {
+            throw new \UnexpectedValueException(__METHOD__.' should not have been called');
+        }
+        if ($this->currentWorkplaceLearningPeriod === null) {
+            $this->currentWorkplaceLearningPeriod = $this->workplaceLearningPeriods()
+                ->where('wplp_id', '=', $this->getUserSetting('active_internship')->setting_value)
+                ->first();
         }
 
         return $this->currentWorkplaceLearningPeriod;
     }
 
-    public function getCurrentWorkplace()
+    public function getCurrentWorkplace(): ?Workplace
     {
-        if (($wplp = $this->getCurrentWorkplaceLearningPeriod()) == null) {
-            return null;
+        if ($this->getCurrentWorkplaceLearningPeriod()) {
+            return $this->getCurrentWorkplaceLearningPeriod()->workplace;
         }
-        return $this->workplaces()->where('workplace.wp_id', '=', $wplp->wp_id)->first();
+
+        return null;
     }
 
-    /**
-     * @return EducationProgram
-     */
-    public function getEducationProgram()
-    {
-        return $this->educationProgram()->first();
-    }
-
-    public function getEducationProgramType()
-    {
-        return $this->getEducationProgram()->educationprogramType()->first();
-    }
-
-    /**
-     * @return Cohort
-     */
-    public function currentCohort()
+    public function currentCohort(): Cohort
     {
         return $this->getCurrentWorkplaceLearningPeriod()->cohort;
     }
 
     /* OVERRIDE IN ORDER TO DISABLE THE REMEMBER_ME TOKEN */
-    public function getRememberToken()
+    public function getRememberToken(): ?string
     {
         return null;
     }
-    public function setRememberToken($value)
+
+    public function setRememberToken($value): void
     {
     }
-    public function getRememberTokenName()
+
+    public function getRememberTokenName(): ?string
     {
         return null;
     }
-    public function setAttribute($key, $value)
+
+    public function setAttribute($key, $value): void
     {
         $isRememberTokenAttribute = $key == $this->getRememberTokenName();
         if (!$isRememberTokenAttribute) {
@@ -204,12 +204,12 @@ class Student extends Authenticatable
     }
 
     // Override to use pw_hash as field instead of password
-    public function getAuthPassword()
+    public function getAuthPassword(): string
     {
         return $this->pw_hash;
     }
 
-    public function setActiveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod)
+    public function setActiveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod): void
     {
         $this->setUserSetting('active_internship', $workplaceLearningPeriod->wplp_id);
     }

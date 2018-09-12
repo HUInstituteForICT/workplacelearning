@@ -3,17 +3,16 @@
  * Created by PhpStorm.
  * User: sivar
  * Date: 25/05/2018
- * Time: 17:29
+ * Time: 17:29.
  */
 
 namespace App\Analysis\Template;
-
 
 class BooleanParameterType extends ParameterType
 {
     public function __construct()
     {
-        parent::__construct("Boolean", 0);
+        parent::__construct('Boolean', 0);
     }
 
     // returns null if not true or false
@@ -23,12 +22,12 @@ class BooleanParameterType extends ParameterType
             return true;
         }
         $boolStr = strtolower($types[0]);
-        return $boolStr == 'true' || $boolStr == 'false';
+
+        return 'true' == $boolStr || 'false' == $boolStr;
     }
 
     public function getErrorMsg()
     {
         return Lang::get('template.error.boolean');
     }
-
 }

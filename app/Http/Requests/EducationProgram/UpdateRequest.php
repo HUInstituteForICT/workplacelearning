@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests\EducationProgram;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -23,7 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'ep_name' => 'required'
+            'ep_name' => 'required',
         ];
     }
 }

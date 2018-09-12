@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips;
-
 
 use App\WorkplaceLearningPeriod;
 use Carbon\Carbon;
@@ -21,7 +19,6 @@ class PeriodMomentCalculator
 
     public function getMomentAsPercentage(): string
     {
-
         $startDate = new Carbon($this->workplaceLearningPeriod->startdate);
         $endDate = new Carbon($this->workplaceLearningPeriod->enddate);
         $currentDate = new Carbon();

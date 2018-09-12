@@ -1,10 +1,8 @@
 <?php
 
-
 namespace App\Tips\Statistics;
 
-
-use App\Tips\CollectorDataAggregator;
+use App\Tips\DataCollectors\CollectorDataAggregator;
 use App\Tips\DataCollectors\PredefinedStatisticCollector;
 use App\WorkplaceLearningPeriod;
 
@@ -14,9 +12,9 @@ class PredefinedStatisticHelper
 
     public static function getData()
     {
-        if (self::$cache === null) {
+        if (null === self::$cache) {
             self::$cache = (new CollectorDataAggregator(new PredefinedStatisticCollector(null, null,
-                new WorkplaceLearningPeriod)))
+                new WorkplaceLearningPeriod())))
                 ->getInformation(false);
         }
 
@@ -25,8 +23,8 @@ class PredefinedStatisticHelper
 
     public static function isActingMethod($method)
     {
-        $x = (bool)collect(self::getData())->first(function (array $predefinedStatisticData) use ($method) {
-            return $predefinedStatisticData['method'] === $method && $predefinedStatisticData['epType'] === 'Acting';
+        $x = (bool) collect(self::getData())->first(function (array $predefinedStatisticData) use ($method) {
+            return $predefinedStatisticData['method'] === $method && 'Acting' === $predefinedStatisticData['epType'];
         });
 
         return $x;
@@ -34,8 +32,8 @@ class PredefinedStatisticHelper
 
     public static function isProducingMethod($method)
     {
-        $x = (bool)collect(self::getData())->first(function (array $predefinedStatisticData) use ($method) {
-            return $predefinedStatisticData['method'] === $method && $predefinedStatisticData['epType'] === 'Producing';
+        $x = (bool) collect(self::getData())->first(function (array $predefinedStatisticData) use ($method) {
+            return $predefinedStatisticData['method'] === $method && 'Producing' === $predefinedStatisticData['epType'];
         });
 
         return $x;

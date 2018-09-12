@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'pageheader' => 'Analyse',
   'generatebuttontext' => 'Genereer',
   'radiobtnstandard' => 'Standaard',

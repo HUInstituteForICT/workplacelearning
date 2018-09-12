@@ -1,11 +1,11 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 /**
- * @property int $competence_id
+ * @property int    $competence_id
  * @property string $competence_label
  */
 class Competence extends Model
@@ -22,10 +22,11 @@ class Competence extends Model
         'competence_id',
         'competence_label',
         'educationprogram_id',
-        'cohort_id'
+        'cohort_id',
     ];
 
-    public function cohort() {
+    public function cohort()
+    {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
     }
 
@@ -42,6 +43,6 @@ class Competence extends Model
     // Relations for query builder
     public function getRelationships()
     {
-        return ["cohort", "educationProgram", "learningActivityActing"];
+        return ['cohort', 'educationProgram', 'learningActivityActing'];
     }
 }

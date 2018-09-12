@@ -27,13 +27,13 @@
                 <div class="form-horizontal well">
                     <h2>
                         {{ Lang::get('elements.profile.internships.current.title') }}
-                        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() && $period->wplp_id == Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
+                        @if(Auth::user()->hasCurrentWorkplaceLearningPeriod() && $period->is(Auth::user()->getCurrentWorkplaceLearningPeriod()))
                             {{ Lang::get('elements.profile.internships.current.titleadditive') }}
                         @endif
                     </h2>
                     <div class="form-group">
                         <div class="col-lg-4"></div>
-                        <div class="col-lg-8"><label><input type="checkbox" name="isActive" value="1" {{ ((Auth::user()->getCurrentWorkplaceLearningPeriod() != null && $period->wplp_id == Auth::user()->getUserSetting('active_internship')->setting_value) || Auth::user()->getUserSetting('active_internship') == NULL) ? "checked" : "" }}/> {{ Lang::get('elements.profile.internships.activeinternship') }}</label></div>
+                        <div class="col-lg-8"><label><input type="checkbox" name="isActive" value="1" {{ ((Auth::user()->hasCurrentWorkplaceLearningPeriod() && $period->wplp_id === Auth::user()->getUserSetting('active_internship')->setting_value) || Auth::user()->getUserSetting('active_internship') === NULL) ? "checked" : "" }}/> {{ Lang::get('elements.profile.internships.activeinternship') }}</label></div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('companyname', Lang::get('elements.profile.internships.companyname'), array('class' => 'col-lg-4 control-label')) !!}
@@ -161,7 +161,7 @@
                             <td><input type="text" name="learninggoal_name[{{ $goal->learninggoal_id }}]" value="{{ (!is_null(old('learninggoal_name.'.$goal->learninggoal_id))) ? old('learninggoal_name.'.$goal->learninggoal_id) : $goal->learninggoal_label }}" /></td>
                             <td><textarea class="form-control" name="learninggoal_description[{{ $goal->learninggoal_id }}]">{{ (!is_null(old('learninggoal_description.'.$goal->learninggoal_id))) ? old('learninggoal_description.'.$goal->learninggoal_id) : $goal->description }}</textarea></td>
                         </tr>
-                        <?php $i++; ?>
+                        <?php ++$i; ?>
                     @endforeach
                     <tr>
                         <td>{{ Lang::get('new') }} {{ Lang::get('general.learninggoal') }}:</td>

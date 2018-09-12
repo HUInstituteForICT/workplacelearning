@@ -1,20 +1,17 @@
 <?php
 
-
 namespace App\Repository\Eloquent;
 
-
 use App\Student;
-use App\Tips\StudentTipView;
-use App\Tips\Tip;
+use App\Tips\Models\StudentTipView;
+use App\Tips\Models\Tip;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Tests\TestCase;
 
 class StudentTipViewRepositoryTest extends TestCase
 {
-
-    public function testCreateForTip()
+    public function testCreateForTip(): void
     {
         /** @var Student|\PHPUnit_Framework_MockObject_MockObject $studentMock */
         $studentMock = $this->createMock(Student::class);
@@ -34,10 +31,9 @@ class StudentTipViewRepositoryTest extends TestCase
         $repo = new StudentTipViewRepository();
         $repo->createForTip($tipMock, $studentMock);
         $repo->createForTip($tipMock, $studentMock);
-
     }
 
-    public function testSave()
+    public function testSave(): void
     {
         /** @var StudentTipView|\PHPUnit_Framework_MockObject_MockObject $mock */
         $mock = $this->createMock(StudentTipView::class);

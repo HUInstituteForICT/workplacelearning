@@ -8,12 +8,10 @@ class CreateParametersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('parameters', function (Blueprint $table) {
+        Schema::create('parameters', function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('template_id')->unsigned();
             $table->string('name');
@@ -23,15 +21,12 @@ class CreateParametersTable extends Migration
             $table->foreign('template_id')->references('id')->on('templates')->onDelete('cascade');
             $table->timestamps();
         });
-
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('parameters');
     }

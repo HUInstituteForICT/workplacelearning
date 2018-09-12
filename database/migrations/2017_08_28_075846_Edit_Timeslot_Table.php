@@ -8,12 +8,10 @@ class EditTimeslotTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('timeslot', function (Blueprint $table) {
+        Schema::table('timeslot', function (Blueprint $table): void {
             $table->integer('wplp_id')->nullable();
             $table->foreign('wplp_id', 'fk_Timeslot_Wplp1')->references('wplp_id')->on('workplacelearningperiod')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
@@ -21,13 +19,11 @@ class EditTimeslotTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('timeslot', function (Blueprint $table) {
-            $table->dropForeign("fk_Timeslot_Wplp1");
+        Schema::table('timeslot', function (Blueprint $table): void {
+            $table->dropForeign('fk_Timeslot_Wplp1');
             $table->dropColumn('wplp_id');
         });
     }

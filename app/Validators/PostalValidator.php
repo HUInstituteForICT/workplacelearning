@@ -13,7 +13,6 @@ class PostalValidator
             return str_replace(':value', $value, $message);
         });
 
-        return (bool)preg_match('/^[a-zA-Z0-9]{3,10}$/', $value);
-
+        return (bool) preg_match('/^[a-zA-Z0-9]{3,10}$/', $value);
     }
 }

@@ -7,28 +7,24 @@ class AddTypeColumnToLabelsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('labels', function (Blueprint $table) {
+        Schema::table('labels', function (Blueprint $table): void {
             $table->string('type')->nullable();
         });
 
-        collect(["pie", "bar", "line"])->each(function($type) {
-            (new \App\ChartType(["name" => ucfirst($type), "slug" => $type]))->save();
+        collect(['pie', 'bar', 'line'])->each(function ($type): void {
+            (new \App\ChartType(['name' => ucfirst($type), 'slug' => $type]))->save();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('labels', function (Blueprint $table) {
+        Schema::table('labels', function (Blueprint $table): void {
             $table->dropColumn('type');
         });
     }

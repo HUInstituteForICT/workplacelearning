@@ -8,25 +8,20 @@ class AddForeignkeyEpIdToCategories extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('category', function(Blueprint $table) {
+        Schema::table('category', function (Blueprint $table): void {
             $table->foreign('ep_id', 'fk_Category_EducationProgram')->references('ep_id')->on('educationprogram')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('category', function(Blueprint $table)
-        {
+        Schema::table('category', function (Blueprint $table): void {
             $table->dropForeign('fk_Category_EducationProgram');
         });
     }

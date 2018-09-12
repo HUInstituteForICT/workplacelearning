@@ -34,8 +34,6 @@ class RegisterController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -45,49 +43,49 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'studentnr'     => 'required|digits:7|unique:student',
-            'firstname'     => 'required|max:255|min:3',
-            'lastname'      => 'required|max:255|min:3',
-            'gender'        => 'required|in:male,female',
-            'email'         => 'required|email|max:255|unique:student',
-            'password'      => 'required|min:8|confirmed',
-            'secret'        => 'required|in:ICTstage2016,Stage2017,Stage2018',
+            'studentnr' => 'required|digits:7|unique:student',
+            'firstname' => 'required|max:255|min:3',
+            'lastname' => 'required|max:255|min:3',
+            'gender' => 'required|in:male,female',
+            'email' => 'required|email|max:255|unique:student',
+            'password' => 'required|min:8|confirmed',
+            'secret' => 'required|in:ICTstage2016,Stage2017,Stage2018',
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     *
      * @return Student
      */
     protected function create(array $data)
     {
         $educationProgram = EducationProgram::find($data['education']);
-        if($educationProgram->disabled) {
+        if ($educationProgram->disabled) {
             throw new InvalidParameterException();
         }
 
         return Student::create([
-            'studentnr'         => $data['studentnr'],
-            'firstname'         => $data['firstname'],
-            'lastname'          => $data['lastname'],
-            'ep_id'             => $data['education'],
-            'pw_hash'           => bcrypt($data['password']),
-            'gender'            => strtoupper(substr($data['gender'], 0, 1)),
+            'studentnr' => $data['studentnr'],
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'ep_id' => $data['education'],
+            'pw_hash' => bcrypt($data['password']),
+            'gender' => strtoupper(substr($data['gender'], 0, 1)),
             //'birthdate'        => $data['birthdate'],     // Deprecated
-            'email'             => $data['email'],
+            'email' => $data['email'],
             //'phonenr'          => $data['phone'],         // Deprecated
             'userlevel' => 0,
-            'registrationdate'  => date('Y-m-d H:i:s'),
+            'registrationdate' => date('Y-m-d H:i:s'),
             //'answer'            => $data['answer'],       // Deprecated,
-            'locale' => Session::get('locale', 'nl')
+            'locale' => Session::get('locale', 'nl'),
         ]);
     }
 }

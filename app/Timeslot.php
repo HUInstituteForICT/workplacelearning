@@ -1,13 +1,15 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property int $timeslot_id
- * @property string $timeslot_text
- *
+ * @property int                     $timeslot_id
+ * @property string                  $timeslot_text
+ * @property WorkplaceLearningPeriod $workplaceLearningPeriod
  */
 class Timeslot extends Model
 {
@@ -24,26 +26,32 @@ class Timeslot extends Model
         'timeslot_text',
         'edprog_id',
         'wplp_id',
-        'cohort_id'
+        'cohort_id',
     ];
 
-    public function cohort() {
+    public function cohort(): BelongsTo
+    {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
     }
 
-    public function educationProgram()
+    public function educationProgram(): BelongsTo
     {
-        return $this->belongsTo(\App\EducationProgram::class, 'edprog_id', 'ep_id');
+        return $this->belongsTo(EducationProgram::class, 'edprog_id', 'ep_id');
     }
 
-    public function learningActivitiesActing()
+    public function learningActivitiesActing(): HasMany
     {
-        return $this->hasMany(\App\LearningActivityActing::class, 'timeslot_id', 'timeslot_id');
+        return $this->hasMany(LearningActivityActing::class, 'timeslot_id', 'timeslot_id');
+    }
+
+    public function workplaceLearningPeriod(): BelongsTo
+    {
+        return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id');
     }
 
     // Relations for query builder
-    public function getRelationships()
+    public function getRelationships(): array
     {
-        return ["cohort", "educationProgram"];
+        return ['cohort', 'educationProgram'];
     }
 }

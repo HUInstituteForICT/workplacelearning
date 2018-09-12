@@ -1,11 +1,10 @@
 <?php
+
 namespace App\Validators;
 
 use App\Student;
 use Carbon\Carbon;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 
 class DateInLearningPeriodValidator
@@ -29,11 +28,10 @@ class DateInLearningPeriodValidator
         $activityDate = new Carbon($value);
 
         $validator->addReplacer('date_in_wplp', function ($message, $attribute, $rule, $parameters) use ($activityDate) {
-
             return str_replace(':date', $activityDate->toDateString(), $message);
         });
 
-        if($workplaceLearningPeriod === null) {
+        if (null === $workplaceLearningPeriod) {
             return false;
         }
 

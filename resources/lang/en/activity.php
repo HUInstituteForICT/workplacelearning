@@ -1,10 +1,8 @@
 <?php
 
-return array (
-  'acting' => 
-  array (
-    'steps' => 
-    array (
+return array(
+  'acting' => array(
+    'steps' => array(
       1 => 'Pick a date on which the learning moment happened. The date cannot be in the future.',
       2 => 'Enter a description of the situation of the learning moment',
       3 => 'Give the category of this learning moment (this could for example be a specific patient). You can add categories yourself as well. However adding too many will make it cluttered. Think smart about which categories you add.',
@@ -28,8 +26,7 @@ return array (
   'description' => 'Description',
   'difficulty' => 'Difficulty',
   'easy' => 'Easy',
-  'feedback' => 
-  array (
+  'feedback' => array(
     'busy' => 'and you are still busy with it.',
     'category' => 'The activity is in the category',
     'difficulty-indication' => 'You found the difficulty of this activity',
@@ -75,12 +72,10 @@ return array (
   'none' => 'None',
   'other' => 'Other',
   'person' => 'Person',
-  'producing' => 
-  array (
-      "person" => "Person",
-      'steps'  =>
-    array (
-      1 => 'Pick the date on which you performed the activity. In cannot be in the future.',
+  'producing' => array(
+      'person' => 'Person',
+      'steps' => array(
+      1 => 'Pick the date on which you performed the activity. It cannot be in the future.',
       2 => 'Describe the activity you performed.',
       3 => 'Supply the hours you spent on this activity.',
       4 => 'Select the category for the activity.',
@@ -101,8 +96,7 @@ return array (
   'with' => 'With whom?',
   'work-learn-with' => 'Work/Learn with',
   'transfered' => 'Transferred',
-  "saved-successfully" => 'The learning activity has been saved.',
+  'saved-successfully' => 'The learning activity has been saved.',
 
-    "feedback-activity-saved" => "Both the activity and the feedback have been saved."
-
+    'feedback-activity-saved' => 'Both the activity and the feedback have been saved.',
 );

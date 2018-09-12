@@ -1,21 +1,19 @@
 <?php
 
-
 namespace App\Tips\Statistics;
 
-use App\Tips\TipCoupledStatistic;
+use App\Tips\Models\TipCoupledStatistic;
 
 /**
  * Class StatisticResult
- * Represents a generic result of a statistic. Is not necessarily a percentage-able value
- * @package App\Tips\Statistics
+ * Represents a generic result of a statistic. Is not necessarily a percentage-able value.
  */
 class StatisticResult implements Resultable
 {
     /** @var float $result Numeric result of a statistic calculation */
     private $result;
 
-    /** @var string $entityName The name of entity instance of the calculation*/
+    /** @var string $entityName The name of entity instance of the calculation */
     private $entityName;
 
     /** @var bool $passed Whether or not this statistic calculation result passed */
@@ -29,7 +27,7 @@ class StatisticResult implements Resultable
 
     public function getResultString(): string
     {
-        return $this->result . '';
+        return $this->result.'';
     }
 
     public function hasPassed(): bool
@@ -37,11 +35,11 @@ class StatisticResult implements Resultable
         return $this->passed;
     }
 
-    public function doThresholdComparison(float $threshold, int $operator)
+    public function doThresholdComparison(float $threshold, int $operator): void
     {
-        if ($operator === TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN) {
+        if (TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN === $operator) {
             $this->passed = $this->result < $threshold;
-        } elseif ($operator === TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN) {
+        } elseif (TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN === $operator) {
             $this->passed = $this->result > $threshold;
         }
     }

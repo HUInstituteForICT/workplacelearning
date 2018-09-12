@@ -1,12 +1,12 @@
 <?php
 
 return [
-    "create-new" => "Create new statistic",
-    "statistic" => "Statistic",
+    'create-new' => 'Create new statistic',
+    'statistic' => 'Statistic',
     'statistics' => 'Statistics',
-    "all-statistics" => "All statistics",
-    "go-to" => "Go to statistics",
-    "is-nested-by-others" => "This statistic cannot be removed because it is used by other statistics: :statistics",
+    'all-statistics' => 'All statistics',
+    'go-to' => 'Go to statistics',
+    'is-nested-by-others' => 'This statistic cannot be removed because it is used by other statistics: :statistics',
     'edit' => 'Edit statistic',
     'variable-help' => 'To use a filter fill in a value, otherwise leave it empty.
     Filter a property on multiple values by using "||" between the values, e.g. "Alone || Colleague".',
@@ -26,12 +26,12 @@ return [
     'predefined-stats' => [
         'Category with highest difficulty' => 'Category with highest difficulty',
         'Person easiest to work with' => 'Person easiest to work with',
-        'Percentage learning moments for every learning question without use of theory' => 'Percentage learning moments for every learning question without use of theory'
+        'Percentage learning moments for every learning question without use of theory' => 'Percentage learning moments for every learning question without use of theory',
     ],
     'predefined-value-name-params' => [
         'The found category\'s name' => 'The found category\'s name',
         'The found person\'s name' => 'The found person\'s name',
-        'The names of the learning moments (e.g. \'Unplanned moment, individual session\')' => 'The names of the learning moments (e.g. \'Unplanned moment, individual session\')'
+        'The names of the learning moments (e.g. \'Unplanned moment, individual session\')' => 'The names of the learning moments (e.g. \'Unplanned moment, individual session\')',
     ],
 
     'filters' => [
@@ -39,6 +39,6 @@ return [
         'Category' => 'Category',
         'Difficulty' => 'Difficulty',
         'Timeslot/Category' => 'Timeslot/Category',
-        'Theory / resource material' => 'Theory / resource material'
-    ]
+        'Theory / resource material' => 'Theory / resource material',
+    ],
 ];

@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Repository;
 
 use App\Student;
-use App\Tips\Like;
-use App\Tips\Tip;
+use App\Tips\Models\Like;
+use App\Tips\Models\Tip;
 
 interface LikeRepositoryInterface
 {

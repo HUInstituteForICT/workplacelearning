@@ -1,14 +1,13 @@
 <?php
 
-
 namespace App\Tips;
 
-
 use App\Tips\DataCollectors\Collector;
-use App\Tips\Statistics\CustomStatistic;
-use App\Tips\Statistics\PredefinedStatistic;
+use App\Tips\DataCollectors\CollectorDataAggregator;
+use App\Tips\Models\CustomStatistic;
+use App\Tips\Models\PredefinedStatistic;
+use App\Tips\Models\Statistic;
 use App\Tips\Statistics\Resultable;
-use App\Tips\Statistics\Statistic;
 use App\Tips\Statistics\StatisticCalculationResult;
 use DivisionByZeroError;
 
@@ -21,14 +20,11 @@ class StatisticCalculator
 
     public function __construct(Collector $collector)
     {
-
         $this->collector = $collector;
     }
 
     /**
      * @throws \ErrorException
-     * @param Statistic $statistic
-     * @return Resultable
      */
     public function calculate(Statistic $statistic): Resultable
     {
@@ -43,13 +39,10 @@ class StatisticCalculator
 
     /**
      * @throws \ErrorException
-     * @param CustomStatistic $statistic
-     * @return Resultable
      */
     private function calculateCustomStatistic(CustomStatistic $statistic): Resultable
     {
         $statistic->load(['statisticVariableOne', 'statisticVariableTwo']);
-
 
         $valueVarOne = $this->collector->getValueForVariable($statistic->statisticVariableOne, $statistic->education_program_type);
         $valueVarTwo = $this->collector->getValueForVariable($statistic->statisticVariableTwo, $statistic->education_program_type);
@@ -68,7 +61,7 @@ class StatisticCalculator
         } catch (DivisionByZeroError $exception) {
             return new StatisticCalculationResult(0, $statistic->name);
         } catch (\ErrorException $exception) {
-            if ($exception->getMessage() === 'Division by zero') {
+            if ('Division by zero' === $exception->getMessage()) {
                 return new StatisticCalculationResult(0, $statistic->name);
             }
             throw $exception; // unexpected exception, bubble up
@@ -80,6 +73,7 @@ class StatisticCalculator
     {
         /** @var StatisticCalculationResult $result */
         $method = $this->getPredefinedMethodName($statistic->name)['method'];
+
         return $this->collector->predefinedStatisticCollector->{$method}();
     }
 
@@ -89,6 +83,5 @@ class StatisticCalculator
             ->first(function (array $annotation) use ($name) {
                 return $annotation['name'] === $name;
             });
-
     }
 }

@@ -12,6 +12,6 @@
         <a href="{{ url('/profiel') }}"><img class="logout" src="{{ secure_asset('assets/img/btn-setting.svg') }}" /></a>
                 <div class="stud-info-header">
                 <p>{{ Auth::user()->lastname .", ". Auth::user()->getInitials() }}<br />
-                {{ (Auth::user()->getCurrentWorkplace() != null) ? Auth::user()->getCurrentWorkplace()->wp_name ." (".Lang::get('general.until-header') ." ".date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->enddate)).")" : Lang::get('general.no-internship-active-header') }}
+                {{ (Auth::user()->hasCurrentWorkplaceLearningPeriod()) ? Auth::user()->getCurrentWorkplace()->wp_name ." (".Lang::get('general.until-header') ." ".date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->enddate)).")" : Lang::get('general.no-internship-active-header') }}
         </div>
         @endif

@@ -1,8 +1,5 @@
 <?php
 
-use App\Category;
-use App\EducationProgram;
-use App\EducationProgramType;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Seeder;
 
@@ -12,20 +9,15 @@ class SetupSeeder extends Seeder
 
     /**
      * Run the database seeds.
-     *
-     * @param DatabaseManager $db
-     * @return void
      */
-    public function run(DatabaseManager $db)
+    public function run(DatabaseManager $db): void
     {
         $this->db = $db;
 
         // Start transaction to make sure only on success it all goes
-        $this->db->transaction(function () {
-
-            $this->db->statement("SET SESSION FOREIGN_KEY_CHECKS=0;");
+        $this->db->transaction(function (): void {
+            $this->db->statement('SET SESSION FOREIGN_KEY_CHECKS=0;');
             $this->db->statement("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';");
-
 
             // Execute the SQL queries to create a "default state" of this application
             collect([
@@ -103,12 +95,10 @@ INSERT INTO `workplace` (`wp_id`, `wp_name`, `street`, `housenr`, `postalcode`, 
 ", "
 INSERT INTO `workplacelearningperiod` (`wplp_id`, `student_id`, `wp_id`, `startdate`, `enddate`, `nrofdays`, `description`) VALUES
 (0, 0, 0, '2017-01-01', '2017-01-01', 0, 'Default workplace');
-"
-            ])->each(function($query) {
+",
+            ])->each(function ($query): void {
                 $this->db->statement($query);
             });
-
         });
-
     }
 }

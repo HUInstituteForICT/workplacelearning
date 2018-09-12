@@ -13,61 +13,59 @@
 
 use Carbon\Carbon;
 
-$factory->define(\App\Student::class, function(Faker\Generator $faker) {
+$factory->define(\App\Student::class, function (Faker\Generator $faker) {
     return [
         'studentnr' => $faker->numberBetween(1000000, 9999999),
         'firstname' => $faker->firstName,
-        'lastname'  => $faker->lastName,
-        'ep_id'     => function() {
+        'lastname' => $faker->lastName,
+        'ep_id' => function () {
             return factory(\App\EducationProgram::class)->create()->ep_id;
         },
         'userlevel' => 0,
-        'pw_hash'   => Hash::make($faker->password),
-        'gender'    => $faker->randomElement(['m', 'f']),
+        'pw_hash' => Hash::make($faker->password),
+        'gender' => $faker->randomElement(['m', 'f']),
         'birthdate' => $faker->date(),
-        'email'     => $faker->email,
-        'phonenr'   => $faker->phoneNumber,
-        'locale'    => 'en',
+        'email' => $faker->email,
+        'phonenr' => $faker->phoneNumber,
+        'locale' => 'en',
     ];
 });
 
-$factory->define(\App\EducationProgram::class, function(Faker\Generator $faker) {
+$factory->define(\App\EducationProgram::class, function (Faker\Generator $faker) {
     return [
-        'ep_name' => $faker->name . ' opleiding',
-        'eptype_id' => function() {
+        'ep_name' => $faker->name.' opleiding',
+        'eptype_id' => function () {
             return factory(\App\EducationProgramType::class)->states('acting')->make()->eptype_id;
         },
         'disabled' => false,
     ];
 });
 
-
-
-$factory->define(\App\Tips\Statistics\StatisticVariable::class, function () {
+$factory->define(\App\Tips\Models\StatisticVariable::class, function () {
     return [
-        'filters'   => \App\Tips\Statistics\StatisticVariable::$availableFilters['acting'],
+        'filters' => \App\Tips\Models\StatisticVariable::$availableFilters['acting'],
     ];
 });
 
-$factory->define(\App\Tips\Statistics\CustomStatistic::class, function () {
+$factory->define(\App\Tips\Models\CustomStatistic::class, function () {
     return [
-        'operator'                  => \App\Tips\Statistics\CustomStatistic::OPERATOR_ADD,
-        'name'                      => 'Total learning activity + Total learning activity',
-        'education_program_type'    => 'acting',
-        'select_type'               => 'count',
+        'operator' => \App\Tips\Models\CustomStatistic::OPERATOR_ADD,
+        'name' => 'Total learning activity + Total learning activity',
+        'education_program_type' => 'acting',
+        'select_type' => 'count',
         'statistic_variable_one_id' => function () {
-            return factory(\App\Tips\Statistics\StatisticVariable::class)->create()->id;
+            return factory(\App\Tips\Models\StatisticVariable::class)->create()->id;
         },
         'statistic_variable_two_id' => function () {
-            return factory(\App\Tips\Statistics\StatisticVariable::class)->create()->id;
+            return factory(\App\Tips\Models\StatisticVariable::class)->create()->id;
         },
     ];
 });
 
-$factory->define(\App\Tips\Tip::class, function () {
+$factory->define(\App\Tips\Models\Tip::class, function () {
     return [
-        'name'           => 'Total learning activities times 2',
-        'tipText'        => 'Your total learning activities are :percentage',
+        'name' => 'Total learning activities times 2',
+        'tipText' => 'Your total learning activities are :percentage',
         'showInAnalysis' => true,
     ];
 });
@@ -93,14 +91,13 @@ $factory->state(\App\EducationProgram::class, 'acting', function () {
 
 $factory->state(\App\EducationProgram::class, 'producing', function () {
     return [
-        'eptype_id' => function() {return factory(\App\EducationProgramType::class)->states('producing')->create()->eptype_id;},
+        'eptype_id' => function () {return factory(\App\EducationProgramType::class)->states('producing')->create()->eptype_id; },
     ];
 });
 
-
 $factory->define(\App\WorkplaceLearningPeriod::class, function () {
     return [
-        'wp_id' => function() {
+        'wp_id' => function () {
             return factory(\App\Workplace::class)->create();
         },
         'nrofdays' => 10,
@@ -110,14 +107,13 @@ $factory->define(\App\WorkplaceLearningPeriod::class, function () {
     ];
 });
 
-
-$factory->define(\App\Workplace::class, function(Faker\Generator $faker) {
+$factory->define(\App\Workplace::class, function (Faker\Generator $faker) {
     return [
         'wp_name' => $faker->lastName,
         'street' => $faker->streetName,
         'housenr' => $faker->buildingNumber,
-        'postalcode'=> $faker->postcode,
-        'town'=> $faker->city,
+        'postalcode' => $faker->postcode,
+        'town' => $faker->city,
         'contact_name' => $faker->firstName,
         'contact_email' => $faker->email,
         'contact_phone' => $faker->phoneNumber,
@@ -126,7 +122,7 @@ $factory->define(\App\Workplace::class, function(Faker\Generator $faker) {
     ];
 });
 
-$factory->define(\App\Cohort::class, function(Faker\Generator $faker) {
+$factory->define(\App\Cohort::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->userName,
         'description' => $faker->text,
@@ -134,29 +130,29 @@ $factory->define(\App\Cohort::class, function(Faker\Generator $faker) {
     ];
 });
 
-$factory->define(\App\Timeslot::class, function(Faker\Generator $faker) {
+$factory->define(\App\Timeslot::class, function (Faker\Generator $faker) {
     return [
         'timeslot_text' => $faker->text(20),
     ];
 });
 
-$factory->define(\App\LearningActivityActing::class, function(Faker\Generator $faker) {
+$factory->define(\App\LearningActivityActing::class, function (Faker\Generator $faker) {
     return [
-        'date'                => Carbon::now()->format('d-m-Y'),
-        'situation'         => $faker->text(40), // gets saved in $laa->situation !!!!!!
-        'lessonslearned'             => 'A lot',
-        'support_wp'          => 'Nothing',
-        'support_ed'          => 'Nothing',
+        'date' => Carbon::now()->format('d-m-Y'),
+        'situation' => $faker->text(40), // gets saved in $laa->situation !!!!!!
+        'lessonslearned' => 'A lot',
+        'support_wp' => 'Nothing',
+        'support_ed' => 'Nothing',
     ];
 });
 
-$factory->define(\App\ResourcePerson::class, function(Faker\Generator $faker) {
+$factory->define(\App\ResourcePerson::class, function (Faker\Generator $faker) {
     return [
         'person_label' => $faker->name,
     ];
 });
 
-$factory->define(\App\ResourceMaterial::class, function(Faker\Generator $faker) {
+$factory->define(\App\ResourceMaterial::class, function (Faker\Generator $faker) {
     return [
         'rm_label' => $faker->word,
     ];

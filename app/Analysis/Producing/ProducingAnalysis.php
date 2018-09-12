@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Analysis\Producing;
 
 use App\Chart;
 
 /**
- * Class ProducingAnalysis used for getting analysis info of a producing user's activities
- * @package App\Analysis\Producing
+ * Class ProducingAnalysis used for getting analysis info of a producing user's activities.
  */
 class ProducingAnalysis
 {
@@ -22,15 +20,14 @@ class ProducingAnalysis
 
     private $statistics;
 
-    private $chains;
+    private $chains = [];
     private $producingAnalysisChains;
-
 
     public function __construct(ProducingAnalysisCollector $analysisCollector, $year, $month)
     {
         $this->analysisCollector = $analysisCollector;
         $this->buildData($year, $month);
-        $this->chains = $analysisCollector->getTaskChainsByDate(25, $year, $month);
+//        $this->chains = $analysisCollector->getTaskChainsByDate(25, $year, $month);
         $this->statistics = new Statistics($this->analysisData);
     }
 
@@ -62,28 +59,30 @@ class ProducingAnalysis
         )->toArray();
 
         $this->analysisData['person_difficulty'] = $this->analysisCollector->getResourcePersonDifficultyByDate(
-            $year, 
+            $year,
             $month
         )->first();
 
-
-        if($this->analysisData)
-        $this->analysisData['num_hours'] = $this->analysisCollector->getNumHoursByDate($year, $month);
+        if ($this->analysisData) {
+            $this->analysisData['num_hours'] = $this->analysisCollector->getNumHoursByDate($year, $month);
+        }
         $this->analysisData['num_days'] = $this->analysisCollector->getFullWorkingDays($year, $month);
         $this->analysisData['num_lap'] = $this->analysisCollector->getNumTasksByDate($year, $month);
         $this->analysisData['num_hours_category'] = $this->analysisCollector->getNumHoursCategory($year, $month)->toArray();
+
         return $this->analysisData;
     }
 
     /**
      * @param null $chart a specific requested chart if passed, if none it returns all charts
+     *
      * @return Chart[]|Chart returns the requested Chart(s)
      */
     public function charts($chart = null)
     {
-        if ($this->charts === null) {
+        if (null === $this->charts) {
             $this->charts = [
-                "hours" => new Chart(
+                'hours' => new Chart(
                     array_map(function ($category) {
                         return $category->name;
                     }, $this->analysisData['num_hours_category']),
@@ -92,7 +91,7 @@ class ProducingAnalysis
                     }, $this->analysisData['num_hours_category'])
                 ),
 
-                "categories" => new Chart(
+                'categories' => new Chart(
                     array_map(function ($category) {
                         return $category->name;
                     }, $this->analysisData['category_difficulty']),
@@ -102,17 +101,20 @@ class ProducingAnalysis
                 ),
             ];
         }
-        if ($chart === null) {
+        if (null === $chart) {
             return $this->charts;
-        } else {
-            return $this->charts[$chart];
         }
+
+        return $this->charts[$chart];
     }
 
     /**
-     * Returns the value of the requested statistic
+     * Returns the value of the requested statistic.
+     *
      * @param $name string name of the method on the Statistic class
+     *
      * @return mixed the statistic
+     *
      * @throws \Exception if the statistic method is not found
      */
     public function statistic($name)
@@ -120,20 +122,22 @@ class ProducingAnalysis
         if (method_exists($this->statistics, $name)) {
             return $this->statistics->$name();
         }
-        throw new \Exception("Method not found on " . Statistics::class);
+        throw new \Exception('Method not found on '.Statistics::class);
     }
 
     /**
-     * Returns all activity chains of the user wrapped in ActivityChain objects
+     * Returns all activity chains of the user wrapped in ActivityChain objects.
+     *
      * @return ActivityChain[]
      */
     public function chains()
     {
-        if ($this->producingAnalysisChains === null) {
+        if (null === $this->producingAnalysisChains) {
             $this->producingAnalysisChains = array_map(function ($chain) {
                 return new ActivityChain($chain);
             }, $this->chains);
         }
+
         return $this->producingAnalysisChains;
     }
 }

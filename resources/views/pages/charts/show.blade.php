@@ -38,7 +38,7 @@
                 data: {
                     labels: [<?php
                         $items = array_map(function ($key) use ($chart) {
-                            return "'" . substr($key->{$chart->x_label->name}, 0, 33) . "'";
+                            return "'".substr($key->{$chart->x_label->name}, 0, 33)."'";
                         }, $chart->analysis->data['data']);
                         echo join(', ', $items);
                         ?>],
@@ -66,7 +66,7 @@
                         ],
                         data: [<?php
                             $x_items = array_map(function ($key) use ($chart) {
-                                return "'" . $key->{$chart->y_label->name} . "'";
+                                return "'".$key->{$chart->y_label->name}."'";
                             }, $chart->analysis->data['data']);
                             echo join(', ', $x_items);
                             ?>]

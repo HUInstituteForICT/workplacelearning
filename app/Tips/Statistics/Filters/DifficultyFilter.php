@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Tips\Statistics\Filters;
-
 
 use Illuminate\Database\Query\Builder;
 
 class DifficultyFilter implements Filter
 {
-
     private $parameters;
 
     public function __construct($parameters)
@@ -16,7 +13,7 @@ class DifficultyFilter implements Filter
         $this->parameters = $parameters;
     }
 
-    public function filter(Builder $builder)
+    public function filter(Builder $builder): void
     {
         if (empty($this->parameters['difficulty_label'])) {
             return;

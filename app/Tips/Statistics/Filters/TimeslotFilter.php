@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Tips\Statistics\Filters;
-
 
 use Illuminate\Database\Query\Builder;
 
 class TimeslotFilter implements Filter
 {
-
     private $parameters;
 
     public function __construct($parameters)
@@ -16,7 +13,7 @@ class TimeslotFilter implements Filter
         $this->parameters = $parameters;
     }
 
-    public function filter(Builder $builder)
+    public function filter(Builder $builder): void
     {
         if (empty($this->parameters['timeslot_text'])) {
             return;
@@ -26,6 +23,16 @@ class TimeslotFilter implements Filter
 
         $builder
             ->leftJoin('timeslot', 'learningactivityacting.timeslot_id', '=', 'timeslot.timeslot_id')
-            ->whereIn('timeslot_text', $timeslots);
+            ->where(function (Builder $builder) use ($timeslots) {
+                $builder->whereIn('timeslot_text', $timeslots);
+
+                array_map(function (string $timeslot) use ($builder) {
+                    if (strpos($timeslot, '*') !== false) {
+                        $wildcardLabel = str_replace('*', '%', $timeslot);
+                        $builder->orWhere('timeslot_text', 'LIKE', $wildcardLabel);
+                    }
+                }, $timeslots);
+            });
+
     }
 }

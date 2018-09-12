@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Tips\Statistics\Filters;
-
 
 use Illuminate\Database\Query\Builder;
 
 class CategoryFilter implements Filter
 {
-
     private $parameters;
 
     public function __construct($parameters)
@@ -16,7 +13,7 @@ class CategoryFilter implements Filter
         $this->parameters = $parameters;
     }
 
-    public function filter(Builder $builder)
+    public function filter(Builder $builder): void
     {
         if (empty($this->parameters['category_label'])) {
             return;
@@ -26,6 +23,15 @@ class CategoryFilter implements Filter
 
         $builder
             ->leftJoin('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
-            ->whereIn('category_label', $categories);
+            ->where(function (Builder $builder) use ($categories) {
+                $builder->whereIn('category_label', $categories);
+
+                array_map(function (string $category) use ($builder) {
+                    if (strpos($category, '*') !== false) {
+                        $wildcardLabel = str_replace('*', '%', $category);
+                        $builder->orWhere('category_label', 'LIKE', $wildcardLabel);
+                    }
+                }, $categories);
+            });
     }
 }

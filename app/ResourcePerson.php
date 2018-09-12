@@ -10,9 +10,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ResourcePerson
+ * Class ResourcePerson.
+ *
  * @property string $person_label
- * @package App
+ * @property int    $wplp_id
+ * @property int    $ep_id
  */
 class ResourcePerson extends Model
 {
@@ -29,10 +31,11 @@ class ResourcePerson extends Model
         'person_label',
         'ep_id',
         'wplp_id',
-        'cohort_id'
+        'cohort_id',
     ];
 
-    public function cohort() {
+    public function cohort()
+    {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
     }
 
@@ -54,6 +57,6 @@ class ResourcePerson extends Model
     // Relations for query builder
     public function getRelationships()
     {
-        return ["cohort", "workplaceLearningPeriod", "learningActivityProducing", "educationProgram"];
+        return ['cohort', 'workplaceLearningPeriod', 'learningActivityProducing', 'educationProgram'];
     }
 }

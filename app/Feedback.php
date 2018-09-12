@@ -8,7 +8,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property learningActivityProducing $learningActivityProducing
+ * @property int                       $fb_id
+ * @property int                       $notfinished
+ * @property string                    $initiative
+ * @property string                    $progress_satisfied
+ * @property string                    $support_requested
+ * @property string                    $supported_provided_wp
+ * @property string                    $nextstep_self
+ * @property string                    $support_needed_wp
+ * @property string                    $support_needed_ed
+ */
 class Feedback extends Model
 {
     // Override the table used for the User Model
@@ -32,13 +45,13 @@ class Feedback extends Model
         'support_needed_ed',
     ];
 
-    public function isSaved()
+    public function isSaved(): bool
     {
-        return (strlen($this->notfinished) > 0);
+        return \strlen($this->notfinished) > 0;
     }
 
-    public function learningactivityproducing()
+    public function learningActivityProducing(): BelongsTo
     {
-        return $this->belongsTo(\App\LearningActivityProducing::class);
+        return $this->belongsTo(LearningActivityProducing::class, 'learningactivity_id', 'lap_id');
     }
 }

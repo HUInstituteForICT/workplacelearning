@@ -22,7 +22,6 @@ class ResetPasswordController extends Controller
 
     /**
      * Create a new controller instance.
-     *
      */
     public function __construct()
     {
@@ -30,7 +29,7 @@ class ResetPasswordController extends Controller
     }
 
     /* Override to remove the 'remember_token' column and set a custom password column name */
-    protected function resetPassword($user, $password)
+    protected function resetPassword($user, $password): void
     {
         $user->forceFill([
             'pw_hash' => bcrypt($password),
