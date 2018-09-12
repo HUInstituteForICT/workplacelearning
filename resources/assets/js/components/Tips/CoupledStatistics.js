@@ -37,8 +37,6 @@ class CoupledStatistics extends React.Component {
         if(newProps.stepIndex === 15 && newProps.stepIndex !== this.props.stepIndex) {
             this.setState({showCoupleStatisticModal: false});
         }
-
-
     }
 
     toggleCoupleModal = () => {

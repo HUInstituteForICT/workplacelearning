@@ -61,6 +61,8 @@ class TipEditPage extends React.Component {
         if(type === EVENTS.TOUR_END) {
             this.setState({runJoyride: false, stepIndex: 0});
         }
+
+        this.forceUpdate();
     };
 
     // The steps of tour guide
