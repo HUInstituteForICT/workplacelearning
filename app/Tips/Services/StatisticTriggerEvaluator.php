@@ -35,7 +35,6 @@ class StatisticTriggerEvaluator
                 return $this->doesCoupledStatisticPass($tipCoupledStatistic, $result);
             }
         );
-
         $this->addParameters($evaluatedTip, $tipCoupledStatisticResults);
         $evaluatedTip->addEvaluationResult($passes);
     }

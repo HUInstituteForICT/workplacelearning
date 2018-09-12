@@ -44,7 +44,20 @@ class ResourceMaterialFilter implements Filter
                     ->orWhereNull('res_material_id');
             });
         } else {
-            $builder->whereIn('rm_label', $labels);
+            $builder->where(function (Builder $builder) use ($labels) {
+                $builder->whereIn('rm_label', $labels);
+                $this->applyWildcard($builder, $labels);
+            });
         }
+    }
+
+    private function applyWildcard(Builder $builder, array $labels): void
+    {
+        array_map(function (string $label) use ($builder) {
+            if (strpos($label, '*') !== false) {
+                $wildcardLabel = str_replace('*', '%', $label);
+                $builder->orWhere('rm_label', 'LIKE', $wildcardLabel);
+            }
+        }, $labels);
     }
 }

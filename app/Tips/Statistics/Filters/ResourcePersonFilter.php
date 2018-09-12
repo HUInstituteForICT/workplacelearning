@@ -29,8 +29,22 @@ class ResourcePersonFilter implements Filter
         if (str_contains($builder->from, (new LearningActivityProducing())->getTable())) {
             $this->applyNullFilter($builder, $labels);
         } else {
-            $builder->whereIn('person_label', $labels);
+            $builder->where(function (Builder $builder) use ($labels) {
+                $builder->whereIn('person_label', $labels);
+
+                $this->applyWildcard($builder, $labels);
+            });
         }
+    }
+
+    private function applyWildcard(Builder $builder, array $labels): void
+    {
+        array_map(function (string $label) use ($builder) {
+            if (strpos($label, '*') !== false) {
+                $wildcardLabel = str_replace('*', '%', $label);
+                $builder->orWhere('person_label', 'LIKE', $wildcardLabel);
+            }
+        }, $labels);
     }
 
     private function applyNullFilter(Builder $builder, array $labels): void
@@ -47,9 +61,13 @@ class ResourcePersonFilter implements Filter
                         $query->whereNull('res_person_id')
                             ->whereNull('res_material_id');
                     });
+                $this->applyWildcard($query, $labels);
             });
         } else {
-            $builder->whereIn('person_label', $labels);
+            $builder->where(function (Builder $builder) use ($labels) {
+                $builder->whereIn('person_label', $labels);
+                $this->applyWildcard($builder, $labels);
+            });
         }
     }
 }

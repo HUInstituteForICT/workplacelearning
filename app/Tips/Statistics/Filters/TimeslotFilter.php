@@ -23,6 +23,16 @@ class TimeslotFilter implements Filter
 
         $builder
             ->leftJoin('timeslot', 'learningactivityacting.timeslot_id', '=', 'timeslot.timeslot_id')
-            ->whereIn('timeslot_text', $timeslots);
+            ->where(function (Builder $builder) use ($timeslots) {
+                $builder->whereIn('timeslot_text', $timeslots);
+
+                array_map(function (string $timeslot) use ($builder) {
+                    if (strpos($timeslot, '*') !== false) {
+                        $wildcardLabel = str_replace('*', '%', $timeslot);
+                        $builder->orWhere('timeslot_text', 'LIKE', $wildcardLabel);
+                    }
+                }, $timeslots);
+            });
+
     }
 }

@@ -178,24 +178,23 @@ Route::group([
         Route::get('process', 'ActingActivityController@show')->name('process');
         Route::get('progress', 'ProducingActivityController@progress')->name('progress');
         Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
+        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit');
         Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
-        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id',
-            '[0-9]*');
     });
     // Dashboard
 
-    Route::group([
-        'middleware' => ['taskTypeRedirect'],
-    ], function (): void {
-        /* Add all middleware redirected urls here */
-        Route::get('/', 'HomeController@showHome')->name('default');
-        Route::get('home', 'HomeController@showHome')->name('home');
-        Route::get('process', 'ActingActivityController@show')->name('process');
-        Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
-        Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
-        Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
-        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
-    });
+//    Route::group([
+//        'middleware' => ['taskTypeRedirect'],
+//    ], function (): void {
+//        /* Add all middleware redirected urls here */
+//        Route::get('/', 'HomeController@showHome')->name('default');
+//        Route::get('home', 'HomeController@showHome')->name('home');
+//        Route::get('process', 'ActingActivityController@show')->name('process');
+//        Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
+//        Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
+//        Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
+//        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
+//    });
 
     Route::get('/tip/{tip}/like', 'TipApi\TipsController@likeTip')->name('tips.like');
 
@@ -236,8 +235,7 @@ Route::group([
             ->name('period-acting');
 
         Route::get('period/edit/{id}', 'ActingWorkplaceLearningController@edit')
-            ->name('period-acting-edit')
-            ->where('id', '[0-9]*');
+            ->name('period-acting-edit');
 
         Route::post('period/create', 'ActingWorkplaceLearningController@create')
             ->name('period-acting-create');

@@ -35,7 +35,7 @@ class ActingWorkplaceLearningController extends Controller
             ->with('cohorts', Auth::user()->educationProgram->cohorts()->where('disabled', '=', 0)->get());
     }
 
-    public function edit($id)
+    public function edit(int $id)
     {
         $wplPeriod = WorkplaceLearningPeriod::find($id);
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {

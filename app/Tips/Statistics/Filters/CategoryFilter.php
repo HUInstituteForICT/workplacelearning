@@ -23,6 +23,15 @@ class CategoryFilter implements Filter
 
         $builder
             ->leftJoin('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
-            ->whereIn('category_label', $categories);
+            ->where(function (Builder $builder) use ($categories) {
+                $builder->whereIn('category_label', $categories);
+
+                array_map(function (string $category) use ($builder) {
+                    if (strpos($category, '*') !== false) {
+                        $wildcardLabel = str_replace('*', '%', $category);
+                        $builder->orWhere('category_label', 'LIKE', $wildcardLabel);
+                    }
+                }, $categories);
+            });
     }
 }

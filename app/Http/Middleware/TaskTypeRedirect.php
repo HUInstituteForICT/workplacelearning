@@ -42,7 +42,6 @@ class TaskTypeRedirect
         if (!$route instanceof Route) {
             return $next($request);
         }
-
         if ($student->educationProgram->educationprogramType->isActing()) {
             switch ($route->getName()) {
                 case 'home':
@@ -62,7 +61,7 @@ class TaskTypeRedirect
                     return $this->redirector->route('period-acting');
                     break;
                 case 'period-edit':
-                    return $this->redirector->route('period-acting-edit', ['id' => $request->get('id')]);
+                    return $this->redirector->route('period-acting-edit', ['id' => $route->parameter('id')]);
                     break;
             }
         } else {
@@ -85,7 +84,7 @@ class TaskTypeRedirect
                     return $this->redirector->route('period-producing');
                     break;
                 case 'period-edit':
-                    return $this->redirector->route('period-producing-edit', ['id' => $request->get('id')]);
+                    return $this->redirector->route('period-producing-edit', ['id' => $route->parameter('id')]);
                     break;
             }
         }

@@ -25,7 +25,6 @@ class Collector
         $this->year = $year;
         $this->month = $month;
         $this->learningPeriod = $learningPeriod;
-
         $this->predefinedStatisticCollector = new PredefinedStatisticCollector($this->year, $this->month,
             $this->learningPeriod);
     }
@@ -84,7 +83,6 @@ class Collector
         $builder = $this->getQueryBuilder($type);
 
         $this->applyFilters($builder, $statisticVariable->filters);
-
         $this->applyPeriod($builder);
 
         // Hours select can onle be used on a statistic variable
