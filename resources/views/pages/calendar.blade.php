@@ -37,7 +37,7 @@
                         text: '{{ Lang::get('elements.calendar.btntext.newdeadline') }}',
                         click: function() {
                             if($("#newCalendarEvent").length) {
-                                $('#eventForm').attr('action', '{{ URL::to('deadline/update', array(), false) }}');
+                                $('#eventForm').attr('action', '{{ route('deadline-create') }}');
                                 $("#delButton").hide(1);
                             }
                         }
