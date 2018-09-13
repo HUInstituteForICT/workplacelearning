@@ -18,7 +18,7 @@ use App\Http\Middleware\CheckUserLevel;
 use App\Http\Middleware\RequireActiveInternship;
 
 Route::get('/pull-update', function () {
-    return exec('cd /sites/werkplekleren.hu.nl/htdocs && git stash && git pull');
+    return shell_exec('cd /sites/werkplekleren.hu.nl/htdocs && git stash && git pull');
 })->middleware('auth', CheckUserLevel::class);
 
 Auth::routes();
