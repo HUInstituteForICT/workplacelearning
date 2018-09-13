@@ -10,7 +10,7 @@ use Illuminate\Routing\Redirector;
 class RequireActiveInternship
 {
     /**
-     * @var Student
+     * @var Student|null
      */
     private $student;
     /**
@@ -18,7 +18,7 @@ class RequireActiveInternship
      */
     private $redirector;
 
-    public function __construct(Student $student, Redirector $redirector)
+    public function __construct(?Student $student, Redirector $redirector)
     {
         $this->student = $student;
         $this->redirector = $redirector;
@@ -26,6 +26,10 @@ class RequireActiveInternship
 
     public function handle(Request $request, Closure $next)
     {
+        if($this->student === null) {
+            return $this->redirector->route('login');
+        }
+
         if (!$this->student->hasCurrentWorkplaceLearningPeriod()) {
             return $this->redirector->route('profile')->withErrors([__('notifications.internship-required')]);
         }
