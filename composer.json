@@ -16,7 +16,8 @@
         "phpoffice/phpword": "dev-develop",
         "mariuzzo/laravel-js-localization": "^1.4",
         "nanigans/single-table-inheritance": "0.8.*",
-        "doctrine/common": "2.8.*"
+        "doctrine/common": "2.8.*",
+        "rap2hpoutre/laravel-log-viewer": "^0.22.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

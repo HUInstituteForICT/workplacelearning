@@ -9,11 +9,11 @@ use Illuminate\Validation\UnauthorizedException;
 class CheckUserLevel
 {
     /**
-     * @var Student
+     * @var Student|null
      */
     private $user;
 
-    public function __construct(Student $user)
+    public function __construct(?Student $user)
     {
         $this->user = $user;
     }
@@ -27,7 +27,7 @@ class CheckUserLevel
      */
     public function handle($request, Closure $next)
     {
-        if (1 !== $this->user->getUserLevel()) {
+        if ($this->user === null || 1 !== $this->user->getUserLevel()) {
             throw new UnauthorizedException('Insufficient permissions');
         }
 

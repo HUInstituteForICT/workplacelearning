@@ -21,6 +21,8 @@ Route::get('/pull-update', function () {
     return shell_exec('cd /sites/werkplekleren.hu.nl/htdocs && git stash && git pull');
 })->middleware('auth', CheckUserLevel::class);
 
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('auth', CheckUserLevel::class);
+
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 Route::post('locale', 'LocaleSwitcher@switchLocale')->name('localeswitcher');

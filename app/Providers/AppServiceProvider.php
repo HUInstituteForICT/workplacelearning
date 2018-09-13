@@ -68,10 +68,8 @@ class AppServiceProvider extends ServiceProvider
             return new PeriodMomentCalculator($learningPeriod);
         });
 
-        $this->app->bind(Student::class, function (Container $app) {
-            $request = $app->make(Request::class);
-
-            return $request->user();
+        $this->app->bind(Student::class, function () {
+            return \Auth::user();
         });
     }
 }
