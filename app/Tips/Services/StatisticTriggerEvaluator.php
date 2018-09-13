@@ -46,8 +46,11 @@ class StatisticTriggerEvaluator
      */
     private function addParameters(EvaluatedTip $evaluatedTip, array $tipCoupledStatisticResults): void
     {
-        $tipCoupledStatistics = $evaluatedTip->getTip()->coupledStatistics->all();
-
+        try {
+            $tipCoupledStatistics = $evaluatedTip->getTip()->coupledStatistics()->find(array_keys($tipCoupledStatisticResults))->all();
+        } catch (\Exception $e) {
+            return;
+        }
         /*
          * For each TipCoupledStatistic create the corresponding parameter
          * If the coupledStatistic is a predefined also add the name of the predefined statistic entity (e.g. category)

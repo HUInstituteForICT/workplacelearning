@@ -26,7 +26,7 @@ class RequireActiveInternship
 
     public function handle(Request $request, Closure $next)
     {
-        if($this->student === null) {
+        if ($this->student === null) {
             return $this->redirector->route('login');
         }
 

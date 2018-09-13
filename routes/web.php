@@ -17,6 +17,10 @@
 use App\Http\Middleware\CheckUserLevel;
 use App\Http\Middleware\RequireActiveInternship;
 
+Route::get('/pull-update', function () {
+    return exec('cd /sites/werkplekleren.hu.nl/htdocs && git stash && git pull');
+})->middleware('auth', CheckUserLevel::class);
+
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');
 Route::post('locale', 'LocaleSwitcher@switchLocale')->name('localeswitcher');
