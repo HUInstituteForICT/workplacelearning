@@ -164,7 +164,6 @@ $config = [
         App\Providers\ValidationServiceProvider::class,
 
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
-
     ],
 
     /*

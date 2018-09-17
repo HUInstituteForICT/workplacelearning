@@ -4,6 +4,7 @@ namespace App\Tips\DataCollectors;
 
 use App\LearningGoal;
 use App\ResourcePerson;
+use App\Tips\Statistics\InvalidStatisticResult;
 use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
 use App\Tips\Statistics\StatisticResult;
@@ -48,7 +49,7 @@ class PredefinedStatisticCollector implements CollectorInterface
         if (null !== $result && !empty($result->category_id) && !empty($result->category_difficulty)) {
             $category = (new \App\Category())->find($result->category_id);
         } else {
-            throw new \RuntimeException('Unable to get category id');
+            return new InvalidStatisticResult();
         }
 
         return new StatisticResult((float) $result->category_difficulty, $category->category_label);
@@ -73,7 +74,7 @@ class PredefinedStatisticCollector implements CollectorInterface
             /** @var ResourcePerson $person */
             $person = (new ResourcePerson())->find($result->res_person_id);
         } else {
-            throw new \RuntimeException('Unable to get person id');
+            return new InvalidStatisticResult();
         }
 
         return new StatisticResult($result->person_difficulty, $person->person_label);
