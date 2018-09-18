@@ -22,6 +22,13 @@ Route::get('/pull-update', function () {
 })->middleware('auth', CheckUserLevel::class);
 
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('auth', CheckUserLevel::class);
+Route::get('switch-user/{id}', function(int $id) {
+    if(!in_array(\Auth::user()->email, ['rogier@inesta.com', 'rogier+producing@inesta.com'])) {
+        redirect('/');
+    }
+    Auth::loginUsingId($id);
+    return redirect('/');
+})->middleware('auth', CheckUserLevel::class);
 
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout');

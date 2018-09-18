@@ -1,23 +1,19 @@
 <?php
 
-
 namespace App\Tips\Statistics;
 
-
 /**
- * Used because sometimes student doesn't have a valid result for calculating, thus return a fake result
+ * Used because sometimes student doesn't have a valid result for calculating, thus return a fake result.
  */
 class InvalidStatisticResult implements Resultable
 {
-
     public function getResultString(): string
     {
         return '';
     }
 
-    public function doThresholdComparison(float $threshold, int $operator):void
+    public function doThresholdComparison(float $threshold, int $operator): void
     {
-
     }
 
     public function hasPassed(): bool
