@@ -18,15 +18,16 @@ use App\Http\Middleware\CheckUserLevel;
 use App\Http\Middleware\RequireActiveInternship;
 
 Route::get('/pull-update', function () {
-    return shell_exec('cd /sites/werkplekleren.hu.nl/htdocs && git stash && git pull');
+    return shell_exec('git -C /sites/werkplekleren.hu.nl/htdocs fetch && git -C /sites/werkplekleren.hu.nl/htdocs reset --hard origin/master && git -C /sites/werkplekleren.hu.nl/htdocs pull');
 })->middleware('auth', CheckUserLevel::class);
 
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('auth', CheckUserLevel::class);
-Route::get('switch-user/{id}', function(int $id) {
-    if(!in_array(\Auth::user()->email, ['rogier@inesta.com', 'rogier+producing@inesta.com'])) {
+Route::get('switch-user/{id}', function (int $id) {
+    if (!in_array(\Auth::user()->email, ['rogier@inesta.com', 'rogier+producing@inesta.com'])) {
         redirect('/');
     }
     Auth::loginUsingId($id);
+
     return redirect('/');
 })->middleware('auth', CheckUserLevel::class);
 
