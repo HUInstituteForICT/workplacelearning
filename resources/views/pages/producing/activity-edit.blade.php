@@ -57,16 +57,6 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                 })();
             });
         </script>
-        @if(count($errors) > 0 || session()->has('success'))
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                        <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}
-                            : </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
-                    </div>
-                </div>
-            </div>
-        @endif
         {{ Form::open(array('url' => route('process-producing-update', ['id' => $activity->lap_id]), 'class' => 'form-horizontal')) }}
         <div class="row well">
             <div class="col-md-2 form-group">
