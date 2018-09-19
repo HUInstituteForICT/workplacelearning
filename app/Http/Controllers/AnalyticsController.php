@@ -93,7 +93,7 @@ class AnalyticsController extends Controller
 
         $data = \Cache::get(Analysis::CACHE_KEY.$analysis->id);
 
-        if (isset($data['error']) && null === $data) {
+        if (isset($data['error']) && $data === null) {
             return abort(404);
         }
 
@@ -169,25 +169,21 @@ class AnalyticsController extends Controller
             'type_time' => 'required',
         ]);
 
+        /** @var Analysis $analysis */
         $analysis = $this->analysis->findOrFail($id);
 
-        $name = Input::get('name');
-        $query = Input::get('query');
-        $cache_duration = Input::get('cache_duration');
-        $type_time = Input::get('type_time');
+        $analysis->name = Input::get('name');
+        $analysis->query = Input::get('query');
+        $analysis->cache_duration = Input::get('cache_duration');
+        $analysis->type_time = Input::get('type_time');
 
-        if (!$analysis->update(array(
-            'name' => $name,
-            'query' => $query,
-            'cache_duration' => $cache_duration,
-            'type_time' => $type_time,
-        ))
-        ) {
+        if (!$analysis->save()) {
             return redirect()
                 ->back()
                 ->withInput()
                 ->withErrors(['The analysis has not been updated']);
         }
+
         $analysis->refresh();
 
         return redirect()->action('AnalyticsController@show', [$analysis['id']])

@@ -2,12 +2,14 @@
 
 namespace App\Analysis\QueryBuilder;
 
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * Class Models provides functionality to get a list of models.
  */
 class Models
 {
-    private $models = [
+    private static $models = [
         'AccessLog',
         'Category',
         'Cohort',
@@ -24,20 +26,22 @@ class Models
         'WorkplaceLearningPeriod',
     ];
 
-    public function getAll()
+    public function getAll(): array
     {
-        return $this->models;
+        return self::$models;
     }
 
-    public function getColumns($string)
+    public function getColumns($string): array
     {
         $modelString = 'App\\'.$string;
+
+        /** @var Model $model */
         $model = new $modelString();
 
         return \DB::connection('dashboard')->getSchemaBuilder()->getColumnListing($model->getTable());
     }
 
-    public function getRelations($string)
+    public function getRelations($string): array
     {
         $modelString = 'App\\'.$string;
         $model = new $modelString();
@@ -49,7 +53,7 @@ class Models
 
             foreach ($tmpRelations as $relation) {
                 $className = class_basename(\get_class($model->$relation()->getRelated()));
-                if ($className !== $string && \in_array($className, $this->models, true)) {
+                if ($className !== $string && \in_array($className, self::$models, true)) {
                     $relationships[$relation] = \Lang::get('querybuilder.'.$className);
                 }
             }

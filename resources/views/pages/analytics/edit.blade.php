@@ -30,13 +30,13 @@
                         <div class="col-sm-4">
                             <select class="form-control" name="type_time" id="type_time" required="required"
                                     title="Time type">
-                                <option value="seconds" <?= ('seconds' === $analysis->type_time) ? 'selected' : ''; ?>>{{ Lang::get('dashboard.seconds') }}</option>
-                                <option value="minutes" <?= ('minutes' === $analysis->type_time) ? 'selected' : ''; ?>>{{ Lang::get('dashboard.minutes') }}</option>
-                                <option value="hours" <?= ('hours' === $analysis->type_time) ? 'selected' : ''; ?>>{{ Lang::get('dashboard.hour') }}</option>
-                                <option value="days" <?= ('days' === $analysis->type_time) ? 'selected' : ''; ?>>{{ Lang::get('dashboard.days') }}</option>
-                                <option value="weeks" <?= ('weeks' === $analysis->type_time) ? 'selected' : ''; ?>>{{ Lang::get('dashboard.weeks') }}</option>
-                                <option value="months" <?= ('months' === $analysis->type_time) ? 'selected' : ''; ?>>{{ Lang::get('dashboard.months') }}</option>
-                                <option value="years" <?= ('years' === $analysis->type_time) ? 'selected' : ''; ?>>{{ Lang::get('dashboard.years') }}</option>
+                                <option value="seconds" <?= ($analysis->type_time === 'seconds') ? 'selected' : ''; ?>>{{ Lang::get('dashboard.seconds') }}</option>
+                                <option value="minutes" <?= ($analysis->type_time === 'minutes') ? 'selected' : ''; ?>>{{ Lang::get('dashboard.minutes') }}</option>
+                                <option value="hours" <?= ($analysis->type_time === 'hours') ? 'selected' : ''; ?>>{{ Lang::get('dashboard.hour') }}</option>
+                                <option value="days" <?= ($analysis->type_time === 'days') ? 'selected' : ''; ?>>{{ Lang::get('dashboard.days') }}</option>
+                                <option value="weeks" <?= ($analysis->type_time === 'weeks') ? 'selected' : ''; ?>>{{ Lang::get('dashboard.weeks') }}</option>
+                                <option value="months" <?= ($analysis->type_time === 'months') ? 'selected' : ''; ?>>{{ Lang::get('dashboard.months') }}</option>
+                                <option value="years" <?= ($analysis->type_time === 'years') ? 'selected' : ''; ?>>{{ Lang::get('dashboard.years') }}</option>
                             </select>
                         </div>
                     </div>

@@ -15,7 +15,12 @@ return PhpCsFixer\Config::create()
         'fully_qualified_strict_types' => true,
         'no_superfluous_phpdoc_tags' => true,
         'no_useless_else' => true,
-        'yoda_style' => false
+        'yoda_style' => [
+            'always_move_variable' => true,
+            'equal' => false,
+            'identical' => false,
+            'less_and_greater' => false,
+        ]
     ])
     ->setFinder($finder)
 ;

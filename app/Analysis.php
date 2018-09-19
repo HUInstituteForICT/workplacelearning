@@ -26,7 +26,7 @@ class Analysis extends Model
 
     public function charts(): HasMany
     {
-        return $this->hasMany('App\AnalysisChart');
+        return $this->hasMany(AnalysisChart::class);
     }
 
     // Who named this? It now works both ways.

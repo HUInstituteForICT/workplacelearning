@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property Analysis           $analysis
  * @property ChartType          $type
  * @property Collection|Label[] $labels
+ * @property int                $id
+ * @property int                $analysis_id
+ * @property int                $type_id
+ * @property string             $label
  */
 class AnalysisChart extends Model
 {
