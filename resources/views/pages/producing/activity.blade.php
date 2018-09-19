@@ -1,5 +1,6 @@
 <?php
 /**transferred*/
+/** @var \App\ResourcePerson[] $learningWith */
 ?>
 @extends('layout.HUdefault')
 @section('title')
@@ -58,15 +59,6 @@
                 </div>
             </div>
         </div>
-        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() == NULL)
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-notice">
-                        <span>{{ Lang::get('elements.alerts.notice') }}: </span>{!! str_replace('%s', route('profile'), Lang::get('dashboard.nointernshipactive')) !!}
-                    </div>
-                </div>
-            </div>
-        @endif
         <div class="row">
             {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => route('process-producing-create'))) !!}
                 <div class="col-md-2 form-group">
@@ -185,36 +177,6 @@
 
             <div id="ActivityProducingProcessTable" class="__reactRoot col-md-12"></div>
         </div>
-
-
-        {{--<div class="row">
-            <table class="table blockTable col-md-12">
-                <thead class="blue_tile">
-                <tr>
-                    <td>Datum</td>
-                    <td>Omschrijving</td>
-                    <td>Tijd (Uren)</td>
-                    <td>Werken/leren met</td>
-                    <td>Complexiteit</td>
-                    <td></td>
-                </tr>
-                </thead>
-                <tbody>
-                @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
-                    @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8) as $a)
-                        <tr>
-                            <td>{{ date('d-m', strtotime($a->date)) }}</td>
-                            <td>{{ $a->description }}</td>
-                            <td>{{ $a->getDurationString() }}</td>
-                            <td>{{ $a->getResourceDetail() }}</td>
-                            <td>{{ $a->getDifficulty() }}</td>
-                            <td><a href="{{route('process-producing-edit', ['id' => $a->lap_id]) }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></a></td>
-                        </tr>
-                    @endforeach
-                @endif
-                </tbody>
-            </table>
-        </div>--}}
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
