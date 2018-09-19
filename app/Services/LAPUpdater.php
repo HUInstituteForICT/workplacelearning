@@ -25,7 +25,6 @@ class LAPUpdater
 
     public function update(LearningActivityProducing $learningActivityProducing, array $data): bool
     {
-        /* @var LearningActivityProducing $learningActivityProducing */
         $learningActivityProducing->date = Carbon::parse($data['datum'])->format('Y-m-d');
         $learningActivityProducing->description = $data['omschrijving'];
         $learningActivityProducing->duration = 'x' !== $data['aantaluren'] ? $data['aantaluren'] : round(
@@ -59,7 +58,6 @@ class LAPUpdater
         $learningActivityProducing->category()->associate((new Category())->find($data['category_id']));
         $learningActivityProducing->difficulty()->associate((new Difficulty())->find($data['moeilijkheid']));
         $learningActivityProducing->status()->associate((new Status())->find($data['status']));
-//        $learningActivityProducing->prev_lap_id = ('-1' != $data['previous_wzh']) ? $data['previous_wzh'] : null;
 
         $chainId = $data['chain_id'] ?? null;
 
