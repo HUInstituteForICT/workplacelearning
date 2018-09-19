@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Analysis;
 use App\Analysis\QueryBuilder\Builder;
 use App\Analysis\QueryBuilder\Models;
+use App\AnalysisChart;
+use App\ChartType;
 use App\DashboardChart;
+use App\Label;
 use App\Template;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Analysis;
-use App\ChartType;
-use App\AnalysisChart;
-use App\Label;
 
 class QueryBuilderController extends Controller
 {
-    public function showStep(Request $request, $id)
+    public function showStep(Request $request, int $id)
     {
-        if (0 == $id && $request->isMethod('get')) {
+        if ($id === 0 && $request->isMethod('get')) {
             $request->session()->put('builder', []);
             $data = [];
 
@@ -30,20 +31,20 @@ class QueryBuilderController extends Controller
             die;
         }
 
-        if ('build' == $data['analysis_type']) {
+        if ($data['analysis_type'] === 'build') {
             switch ($id) {
                 case 1: return view('pages.analytics.builder.step1-type', compact('data')); break;
                 case 2: return $this->step2($data); break;
                 case 3: return $this->step3($data); break;
                 case 4: return $this->step4($data); break;
             }
-        } elseif ('template' == $data['analysis_type']) {
+        } elseif ($data['analysis_type'] === 'template') {
             switch ($id) {
                 case 1: return view('pages.analytics.builder.step1-type', compact('data')); break;
                 case 2: return $this->step2template($data); break;
                 case 4: return $this->step4($data); break;
             }
-        } elseif ('custom' == $data['analysis_type']) {
+        } elseif ($data['analysis_type'] === 'custom') {
             switch ($id) {
                 case 1: return view('pages.analytics.builder.step1-type', compact('data')); break;
                 case 2: return view('pages.analytics.builder.step2-custom', compact('data')); break;
@@ -61,10 +62,8 @@ class QueryBuilderController extends Controller
         switch ($id) {
             case 3:
 
-                if (isset($oldData['analysis_entity']) && 2 == $oldData['step']) {
-                    if ($request->input('analysis_entity') != $oldData['analysis_entity']) {
-                        $request->session()->put('builder', array_merge($request->all(), ['analysis_type' => $oldData['analysis_type']]));
-                    }
+                if (isset($oldData['analysis_entity']) && (int) $oldData['step'] === 2 && $oldData['analysis_entity'] !== $request->input('analysis_entity')) {
+                    $request->session()->put('builder', array_merge($request->all(), ['analysis_type' => $oldData['analysis_type']]));
                 }
                 break;
 
@@ -76,13 +75,13 @@ class QueryBuilderController extends Controller
 
                 switch ($data['analysis_type']) {
                     case 'build':
-                        $table = (isset($data['analysis_entity']) ? $data['analysis_entity'] : []);
-                        $relations = (isset($data['analysis_relation']) ? $data['analysis_relation'] : []);
+                        $table = $data['analysis_entity'] ?? [];
+                        $relations = $data['analysis_relation'] ?? [];
 
-                        $select = (isset($data['query_data']) ? $data['query_data'] : []);
-                        $filters = (isset($data['query_filter']) ? $data['query_filter'] : []);
-                        $sort = (isset($data['query_sort']) ? $data['query_sort'] : []);
-                        $limit = (isset($data['query_limit']) && $data['query_limit'] ? $data['query_limit'] : null);
+                        $select = $data['query_data'] ?? [];
+                        $filters = $data['query_filter'] ?? [];
+                        $sort = $data['query_sort'] ?? [];
+                        $limit = $data['query_limit'] ?? null;
 
                         $result = (new Builder())->getData($table, $relations, $select, $filters, $sort, $limit)->toArray();
 
@@ -149,7 +148,7 @@ class QueryBuilderController extends Controller
 
         $models = $model->getAll();
 
-        $relations = $model->getRelations((isset($data['analysis_entity'])) ? $data['analysis_entity'] : $models[0]);
+        $relations = $model->getRelations($data['analysis_entity'] ?? $models[0]);
 
         return view('pages.analytics.builder.step2-builder', compact('models', 'relations', 'data'));
     }
@@ -165,12 +164,11 @@ class QueryBuilderController extends Controller
 
             foreach ($parameters as $parameter) {
                 $pos = strpos($query, $needle);
-                if (false !== $pos) {
-                    $query = substr_replace($query, $parameter->name, $pos, strlen($needle));
+                if ($pos !== false) {
+                    $query = substr_replace($query, $parameter->name, $pos, \strlen($needle));
                 }
             }
-            $query = str_replace(["\r", "\n"], '@', $query);
-            $query = str_replace("'", 'š', $query);
+            $query = str_replace(array("\r", "\n", "'"), ['@', '@', 'š'], $query);
             $template->query = $query;
         }
         $tables = DB::connection('dashboard')->select('SHOW TABLES');
@@ -189,6 +187,7 @@ class QueryBuilderController extends Controller
     private function step3($data)
     {
         $modelString = 'App\\'.$data['analysis_entity'];
+        /** @var Model $mainModel */
         $mainModel = new $modelString();
 
         $relations = [];
@@ -198,7 +197,7 @@ class QueryBuilderController extends Controller
 
         if (isset($data['analysis_relation'])) {
             foreach ($data['analysis_relation'] as $r) {
-                $class = class_basename(get_class($mainModel->$r()->getRelated()));
+                $class = class_basename(\get_class($mainModel->$r()->getRelated()));
 
                 $relations[] = $class;
                 $columns[$class] = $this->getColumns($class);
@@ -215,17 +214,17 @@ class QueryBuilderController extends Controller
 
         if (isset($data['result'][0])) {
             $labels = array_keys(get_object_vars($data['result'][0]));
-        } elseif ('build' == $data['analysis_type']) {
-            $select = (isset($data['query_data']) ? $data['query_data'] : []);
+        } elseif ($data['analysis_type'] === 'build') {
+            $select = $data['query_data'] ?? [];
             $labels = array_unique((new Builder())->getSelectFields($select));
         }
 
-        $chartTypes = ChartType::whereNotNull('slug')->get();
+        $chartTypes = (new ChartType())->whereNotNull('slug')->get();
 
         return view('pages.analytics.builder.step4-chart', compact('data', 'result', 'labels', 'chartTypes'));
     }
 
-    private function step5($data)
+    private function step5($data): bool
     {
         switch ($data['analysis_type']) {
             case 'build':
@@ -317,7 +316,7 @@ class QueryBuilderController extends Controller
             foreach ($data['analysis_relation'] as $relation) {
                 $tableString = 'App\\'.$data['analysis_entity'];
                 $tableModel = new $tableString();
-                $r = class_basename(get_class($tableModel->$relation()->getRelated()));
+                $r = class_basename(\get_class($tableModel->$relation()->getRelated()));
 
                 $entities[$r] = \Lang::get('querybuilder.'.$r);
             }
@@ -326,12 +325,12 @@ class QueryBuilderController extends Controller
         return json_encode($entities);
     }
 
-    public function getColumns($table)
+    public function getColumns($table): array
     {
         return (new Models())->getColumns($table);
     }
 
-    public function getRelations($modelString)
+    public function getRelations($modelString): array
     {
         return (new Models())->getRelations($modelString);
     }
@@ -348,8 +347,8 @@ class QueryBuilderController extends Controller
     {
         $sessionData = $request->session()->get('builder');
 
-        $table = (isset($sessionData['analysis_entity']) ? $sessionData['analysis_entity'] : []);
-        $relations = (isset($sessionData['analysis_relation']) ? $sessionData['analysis_relation'] : []);
+        $table = $sessionData['analysis_entity'] ?? [];
+        $relations = $sessionData['analysis_relation'] ?? [];
 
         $select = [];
         $filters = [];
@@ -381,7 +380,7 @@ class QueryBuilderController extends Controller
     {
         $result = $request->session()->get('builder')['result'];
 
-        $chartType = ChartType::find($request->input('type'));
+        $chartType = (new ChartType())->find($request->input('type'));
 
         $slug = 'pie';
 
@@ -397,7 +396,7 @@ class QueryBuilderController extends Controller
         return view('pages.analytics.builder.step4-getchart', compact('slug', 'x_label', 'y_label', 'result', 'title'));
     }
 
-    public function getColumnValues($table, $column)
+    public function getColumnValues($table, $column): array
     {
         $query = 'select '.$column.' from '.$table.';';
 

@@ -1,5 +1,8 @@
 <?php
 /**transferred*/
+/** @var \App\ResourcePerson[] $learningWith */
+/** @var \App\Category[] $categories */
+/** @var \App\Chain[] $chains */
 ?>
 @extends('layout.HUdefault')
 @section('title')
@@ -58,15 +61,6 @@
                 </div>
             </div>
         </div>
-        @if(Auth::user()->getCurrentWorkplaceLearningPeriod() == NULL)
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert-notice">
-                        <span>{{ Lang::get('elements.alerts.notice') }}: </span>{!! str_replace('%s', route('profile'), Lang::get('dashboard.nointernshipactive')) !!}
-                    </div>
-                </div>
-            </div>
-        @endif
         <div class="row">
             {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => route('process-producing-create'))) !!}
                 <div class="col-md-2 form-group">
@@ -91,7 +85,11 @@
                             <option id="chain-select-{{ $chain->id }}"
                                     @if($chain->status === \App\Chain::STATUS_FINISHED) disabled @endif
                                     value="{{ $chain->id }}">
-                                {{ $chain->name }} @if($chain->status === \App\Chain::STATUS_FINISHED) ({{ strtolower(__('process.chain.finished')) }}) @endif
+                                {{ $chain->name }}
+                                @if($chain->status === \App\Chain::STATUS_FINISHED)
+                                    ({{ strtolower(__('process.chain.finished')) }})
+                                @endif
+                                {{ '(' . $chain->hours()  . ' ' . strtolower(__('activity.hours')) . ')' }}
                             </option>
                         @endforeach
 
@@ -121,15 +119,14 @@
 
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
-                    <?php $checkedFirst = false; ?>
-                    @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
-                        @foreach($categories as $cat)
-                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($checkedFirst === false) ? "checked" : "" }}/><span>{{ __($cat->category_label) }}</span></label>
-                            <?php if (false === $checkedFirst) {
-    $checkedFirst = true;
-} ?>
+                        @foreach($categories as $category)
+                        <label>
+                            <input type="radio" name="category_id"
+                                   value="{{ $category->category_id }}"
+                                    {{ ($loop->first) ? 'checked' : null }}/>
+                            <span>{{ __($category->category_label) }}</span>
+                        </label>
                         @endforeach
-                    @endif
                     <div>
                         <label class="newcat"><input type="radio" name="category_id" value="new" /><span class="new" id="newcat">{{ Lang::get('activity.other') }}<br />({{ Lang::get('activity.add') }})</span></label>
                         <input id="category" type="text" maxlength="50" name="newcat" placeholder="{{ Lang::get('activity.description') }}" />
@@ -140,9 +137,9 @@
                     <div id="swvcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>{{ Lang::get('activity.person') }}</span></label>
                         <select id="rp_id" name="personsource" class="cond-hidden">
-                            @foreach($learningWith as $res)
-                                <option value="{{ $res->rp_id }}">{{ __($res->person_label) }}</option>
-                            @endforeach */ ?>
+                            @foreach($learningWith as $resourcePerson)
+                                <option value="{{ $resourcePerson->rp_id }}">{{ __($resourcePerson->person_label) }}</option>
+                            @endforeach
                             <option value="new">{{ Lang::get('general.new') }}/{{ Lang::get('activity.other') }}</option>
                         </select>
                         <input id="cond-select-hidden" type="text" maxlength="50" name="newswv" placeholder="Omschrijving" />
@@ -185,36 +182,6 @@
 
             <div id="ActivityProducingProcessTable" class="__reactRoot col-md-12"></div>
         </div>
-
-
-        {{--<div class="row">
-            <table class="table blockTable col-md-12">
-                <thead class="blue_tile">
-                <tr>
-                    <td>Datum</td>
-                    <td>Omschrijving</td>
-                    <td>Tijd (Uren)</td>
-                    <td>Werken/leren met</td>
-                    <td>Complexiteit</td>
-                    <td></td>
-                </tr>
-                </thead>
-                <tbody>
-                @if(Auth::user()->getCurrentWorkplace() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
-                    @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(8) as $a)
-                        <tr>
-                            <td>{{ date('d-m', strtotime($a->date)) }}</td>
-                            <td>{{ $a->description }}</td>
-                            <td>{{ $a->getDurationString() }}</td>
-                            <td>{{ $a->getResourceDetail() }}</td>
-                            <td>{{ $a->getDifficulty() }}</td>
-                            <td><a href="{{route('process-producing-edit', ['id' => $a->lap_id]) }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i></a></td>
-                        </tr>
-                    @endforeach
-                @endif
-                </tbody>
-            </table>
-        </div>--}}
     </div>
     <script type="text/javascript">
         $(document).ready(function () {

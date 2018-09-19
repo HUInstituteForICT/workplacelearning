@@ -24,17 +24,17 @@ use Illuminate\Translation\Translator;
 
 class ProducingActivityController extends Controller
 {
-    public function show(Request $request, Translator $translator)
+    public function show(Request $request, Translator $translator, Student $student)
     {
-        $resourcePersons = Auth::user()->currentCohort()->resourcePersons()->get()->merge(
-            Auth::user()->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+        $resourcePersons = $student->currentCohort()->resourcePersons()->get()->merge(
+            $student->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
-        $categories = Auth::user()->currentCohort()->categories()->get()->merge(
+        $categories = $student->currentCohort()->categories()->get()->merge(
             Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
         );
 
-        $exportBuilder = new LearningActivityProducingExportBuilder(Auth::user()->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
+        $exportBuilder = new LearningActivityProducingExportBuilder($student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial', 'chain', 'feedback')
             ->take(8)
             ->orderBy('date', 'DESC')
@@ -45,9 +45,10 @@ class ProducingActivityController extends Controller
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
 
-        $wplp = $request->user()->getCurrentWorkplaceLearningPeriod();
+        $wplp = $student->getCurrentWorkplaceLearningPeriod();
 
         $chains = $wplp->chains;
+        $chains->load('activities');
 
         return view('pages.producing.activity')
             ->with('learningWith', $resourcePersons)
@@ -57,7 +58,7 @@ class ProducingActivityController extends Controller
             ->with('activitiesJson', $activitiesJson)
             ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
             ->with('workplacelearningperiod', Auth::user()->getCurrentWorkplaceLearningPeriod())
-            ->with('chains', $chains);
+            ->with('chains', $chains->all());
     }
 
     public function edit(Request $request, LearningActivityProducing $learningActivityProducing, Student $student)

@@ -20,7 +20,19 @@ ehthumbs.db
 .DS_Store
 .AppleDouble
 .LSOverride
-/vendor/
 
 # caddy webserver
 Caddyfile
+.php_cs.cache
+_ide_helper.php
+database-docker/
+database/seeds/AccountSeeder.php
+docker/database/
+projectFilesBackup/
+public/css/PDFstyle.css.map
+public/css/animations.css.map
+public/css/app.css.map
+public/css/fonts.css.map
+public/css/weekstaten.css.map
+storage/debugbar/
+public/js/app.js.map

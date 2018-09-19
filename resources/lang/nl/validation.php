@@ -133,6 +133,8 @@ return array(
     'firstname' => 'voornaam',
     'lastname' => 'achternaam',
     'email' => 'email address',
+    'feedback_subject' => 'feedback of bug onderwerp',
+    'feedback_description' => 'omschrijving',
     'new_password' => 'nieuw wachtwoord',
       'postalcode' => 'postcode',
       'name' => 'naam',

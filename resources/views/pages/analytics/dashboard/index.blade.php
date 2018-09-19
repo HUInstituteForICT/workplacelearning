@@ -16,12 +16,13 @@
                     </div>
                 </div>
 
+                <?php /** @var \App\DashboardChart $chart */ ?>
                 @forelse($charts as $key => $chart)
                     <div class="col-sm-6">
                         <div class="panel panel-default">
                             <div class="panel-heading clearfix">
-                                <div class="col-sm-9"><h3 class="panel-title">{{ $chart->chart->label }}</h3></div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-8"><h3 class="panel-title">{{ $chart->chart->label }}</h3></div>
+                                <div class="col-sm-4 text-right">
                                     <form action="{{ route('dashboard.move', [$chart->id, $chart->position, $chart->position - 1]) }}"
                                           style="display: inline-block;" method="post" accept-charset="UTF-8">
                                         {{ csrf_field() }}
@@ -39,6 +40,16 @@
                                         {{ method_field('delete') }}
                                         <button class="btn btn-danger" title="Remove">&times;</button>
                                     </form>
+
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                                            <span class="glyphicon glyphicon-pencil"></span> <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{{route('analytics-edit', ['id' => $chart->chart->analysis_id])}}">{{__('analysis.analysis')}}</a></li>
+                                        </ul>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="panel-body">

@@ -34,7 +34,7 @@ class LearningActivityProducingExportBuilder
                 'difficulty' => $this->translator->get('general.'.strtolower($activity->difficulty->difficulty_label)),
                 'status' => $this->translator->get('general.'.strtolower($activity->status->status_label)),
                 'url' => route('process-producing-edit', ['id' => $activity->lap_id]),
-                'chain' => $activity->chain->name ?? '-',
+                'chain' => $this->formatChain($activity),
                 'feedback' => $activity->feedback->fb_id ?? null,
             ];
         });
@@ -87,5 +87,15 @@ class LearningActivityProducingExportBuilder
         }
 
         return $this->translator->get('activity.alone');
+    }
+
+    private function formatChain(LearningActivityProducing $learningActivityProducing): string
+    {
+        if (!$learningActivityProducing->chain) {
+            return '-';
+        }
+        $hours = strtolower($this->translator->get('activity.hours'));
+
+        return $learningActivityProducing->chain->name." ({$learningActivityProducing->chain->hours()} {$hours})";
     }
 }

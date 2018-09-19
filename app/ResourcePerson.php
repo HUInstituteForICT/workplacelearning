@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class ResourcePerson.
  *
+ * @property int    $rp_id
  * @property string $person_label
  * @property int    $wplp_id
  * @property int    $ep_id

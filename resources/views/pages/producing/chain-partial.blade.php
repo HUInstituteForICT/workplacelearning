@@ -36,7 +36,7 @@
                             <tbody id="chainTableBody">
                             @foreach($chains as $chain)
                                 <tr id="chain-row-{{$chain->id}}">
-                                    <td>{{ $chain->name }}</td>
+                                    <td>{{ $chain->name }} {{ '(' . $chain->hours()  . ' ' . strtolower(__('activity.hours')) . ')' }}</td>
                                     <td
                                             data-id="{{$chain->id}}"
                                             data-name="{{ $chain->name }}"

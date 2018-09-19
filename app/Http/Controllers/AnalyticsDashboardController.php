@@ -7,6 +7,7 @@ use App\AnalysisChart;
 use App\DashboardChart;
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Lang;
 
 class AnalyticsDashboardController extends Controller
@@ -14,16 +15,21 @@ class AnalyticsDashboardController extends Controller
     private $analysis;
     private $chart;
     private $dchart;
+    /**
+     * @var Redirector
+     */
+    private $redirector;
 
     /**
      * AnalysisController constructor.
      */
-    public function __construct(Analysis $analysis, AnalysisChart $chart, DashboardChart $dchart)
+    public function __construct(Analysis $analysis, AnalysisChart $chart, DashboardChart $dchart, Redirector $redirector)
     {
         // We do this dependency injection so it's easier to mock during tests
         $this->analysis = $analysis;
         $this->chart = $chart;
         $this->dchart = $dchart;
+        $this->redirector = $redirector;
     }
 
     public function index()
@@ -72,10 +78,10 @@ class AnalyticsDashboardController extends Controller
 
         $next = $this->dchart->where('position', $modifier, $chart->position)->orderBy('position', 'asc')->take(1)->first();
 
-        if (null === $next) {
-            return redirect()
+        if ($next === null) {
+            return $this->redirector
                 ->back()
-                ->withErrors([Lang::get('dashboard.cant-move-further')]);
+                ->withErrors([__('dashboard.cant-move-further')]);
         }
 
         \DB::transaction(function () use ($chart, $next) {
@@ -91,7 +97,7 @@ class AnalyticsDashboardController extends Controller
                 ->with('success', 'Chart has been moved.');
         });
 
-        return redirect()
+        return $this->redirector
             ->back()
             ->withErrors([Lang::get('dashboard.failed-to-move')]);
     }

@@ -131,6 +131,8 @@ return array(
     'firstname' => 'first name',
     'lastname' => 'last name',
     'email' => 'email address',
+        'feedback_subject' => 'feedback or bug subject',
+        'feedback_description' => 'description',
   ),
     'after_or_equal' => 'The :attribute should be a date equal to or after :date',
     'before_or_equal' => 'The :attribute should be a date equal to or before :date',
