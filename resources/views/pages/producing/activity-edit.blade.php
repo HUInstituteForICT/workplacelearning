@@ -86,21 +86,21 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                 <h4>{{ Lang::get('activity.hours') }}</h4>
 
                 <label class="predefinedHours"><input type="radio" name="aantaluren" value="0.25"
-                            {{ old('aantaluren', $activity->duration) === 0.25 ? 'checked' : null }}>
+                            {{ (float) old('aantaluren', $activity->duration) === 0.25 ? 'checked' : null }}>
                     <span>15 min.</span>
                 </label>
                 <label class="predefinedHours"><input type="radio" name="aantaluren" value="0.50"
-                            {{ (old('aantaluren', $activity->duration) === 0.50) ? 'checked' : null }}>
+                            {{ (float) old('aantaluren', $activity->duration) === 0.50 ? 'checked' : null }}>
                     <span>30 min.</span>
                 </label>
                 <label class="predefinedHours"><input type="radio" name="aantaluren" value="0.75"
-                            {{ (old('aantaluren', $activity->duration) === 0.75) ? 'checked'  : null }}>
+                            {{ (float) old('aantaluren', $activity->duration) === 0.75 ? 'checked'  : null }}>
                     <span>45 min.</span>
                 </label>
                 {{-- NEEDS TO BE FLOATS because hours are saved as floats in db... --}}
                 @for($i = 1.0; $i <= 6.0; $i++)
                     <label class="predefinedHours"><input type="radio" name="aantaluren" value="{{ $i }}"
-                                {{ (old('aantaluren', $activity->duration) === $i) ? 'checked'  : null }}>
+                                {{ (float) old('aantaluren', $activity->duration) === $i ? 'checked'  : null }}>
                         <span>{{ $i . ' ' . Lang::choice('elements.tasks.hour', $i) }}</span>
                     </label>
                 @endfor
