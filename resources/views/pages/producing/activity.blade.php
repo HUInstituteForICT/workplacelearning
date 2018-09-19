@@ -1,6 +1,7 @@
 <?php
 /**transferred*/
 /** @var \App\ResourcePerson[] $learningWith */
+/** @var \App\Category[] $categories  */
 ?>
 @extends('layout.HUdefault')
 @section('title')
@@ -113,15 +114,14 @@
 
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.producing_category') }}"></i></h4>
-                    <?php $checkedFirst = false; ?>
-                    @if(Auth::user()->getCurrentWorkplaceLearningPeriod() != null)
-                        @foreach($categories as $cat)
-                            <label><input type="radio" name="category_id" value="{{ $cat->category_id }}" {{ ($checkedFirst === false) ? "checked" : "" }}/><span>{{ __($cat->category_label) }}</span></label>
-                            <?php if (false === $checkedFirst) {
-    $checkedFirst = true;
-} ?>
+                        @foreach($categories as $category)
+                        <label>
+                            <input type="radio" name="category_id"
+                                   value="{{ $category->category_id }}"
+                                    {{ ($loop->first) ? 'checked' : null }}/>
+                            <span>{{ __($category->category_label) }}</span>
+                        </label>
                         @endforeach
-                    @endif
                     <div>
                         <label class="newcat"><input type="radio" name="category_id" value="new" /><span class="new" id="newcat">{{ Lang::get('activity.other') }}<br />({{ Lang::get('activity.add') }})</span></label>
                         <input id="category" type="text" maxlength="50" name="newcat" placeholder="{{ Lang::get('activity.description') }}" />
@@ -132,9 +132,9 @@
                     <div id="swvcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>{{ Lang::get('activity.person') }}</span></label>
                         <select id="rp_id" name="personsource" class="cond-hidden">
-                            @foreach($learningWith as $res)
-                                <option value="{{ $res->rp_id }}">{{ __($res->person_label) }}</option>
-                            @endforeach */ ?>
+                            @foreach($learningWith as $resourcePerson)
+                                <option value="{{ $resourcePerson->rp_id }}">{{ __($resourcePerson->person_label) }}</option>
+                            @endforeach
                             <option value="new">{{ Lang::get('general.new') }}/{{ Lang::get('activity.other') }}</option>
                         </select>
                         <input id="cond-select-hidden" type="text" maxlength="50" name="newswv" placeholder="Omschrijving" />
