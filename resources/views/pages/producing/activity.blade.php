@@ -2,6 +2,7 @@
 /**transferred*/
 /** @var \App\ResourcePerson[] $learningWith */
 /** @var \App\Category[] $categories */
+/** @var \App\Chain[] $chains */
 ?>
 @extends('layout.HUdefault')
 @section('title')
@@ -84,7 +85,11 @@
                             <option id="chain-select-{{ $chain->id }}"
                                     @if($chain->status === \App\Chain::STATUS_FINISHED) disabled @endif
                                     value="{{ $chain->id }}">
-                                {{ $chain->name }} @if($chain->status === \App\Chain::STATUS_FINISHED) ({{ strtolower(__('process.chain.finished')) }}) @endif
+                                {{ $chain->name }}
+                                @if($chain->status === \App\Chain::STATUS_FINISHED)
+                                    ({{ strtolower(__('process.chain.finished')) }})
+                                @endif
+                                {{ '(' . $chain->hours()  . ' ' . strtolower(__('activity.hours')) . ')' }}
                             </option>
                         @endforeach
 

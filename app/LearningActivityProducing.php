@@ -15,17 +15,17 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property Chain                   $chain
  * @property int                     $wplp_id
  * @property WorkplaceLearningPeriod $workplaceLearningPeriod
- * @property int duration
- * @property string           $res_material_id
- * @property string           $res_material_detail
- * @property Category         $category
- * @property Difficulty       $difficulty
- * @property Status           $status
- * @property ResourceMaterial $resourceMaterial
- * @property ResourcePerson   $resourcePerson
- * @property int              $status_id
- * @property Carbon           $date
- * @property Feedback         $feedback
+ * @property float                   $duration
+ * @property string                  $res_material_id
+ * @property string                  $res_material_detail
+ * @property Category                $category
+ * @property Difficulty              $difficulty
+ * @property Status                  $status
+ * @property ResourceMaterial        $resourceMaterial
+ * @property ResourcePerson          $resourcePerson
+ * @property int                     $status_id
+ * @property Carbon                  $date
+ * @property Feedback                $feedback
  */
 class LearningActivityProducing extends Model implements LearningActivityInterface
 {
