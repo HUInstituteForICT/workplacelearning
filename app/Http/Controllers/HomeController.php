@@ -2,19 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BugReportRequest;
 use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
 use App\Student;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;
-use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
-use Validator;
+use Illuminate\Routing\Redirector;
 
 class HomeController extends Controller
 {
+    /**
+     * @var Redirector
+     */
+    private $redirector;
+
+    public function __construct(Redirector $redirector)
+    {
+        $this->redirector = $redirector;
+    }
+
     public function showHome()
     {
         return view('pages.home');
@@ -53,9 +61,9 @@ class HomeController extends Controller
         return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
-    public function showDefault()
+    public function showDefault(): \Illuminate\Http\RedirectResponse
     {
-        return redirect()->route('home');
+        return $this->redirector->route('home');
     }
 
     public function showBugReport()
@@ -63,21 +71,19 @@ class HomeController extends Controller
         return view('pages.bugreport');
     }
 
-    public function createBugReport(Request $request, Mailer $mailer)
-    {
-        $validator = Validator::make($request->all(), [
-            'onderwerp' => 'required|max:40|min:3',
-            'uitleg' => 'required|max:800|min:5',
-        ]);
+    public function createBugReport(
+        BugReportRequest $request,
+        Mailer $mailer,
+        Student $student
+    ): \Illuminate\Http\RedirectResponse {
+        $mailer->send(
+            new FeedbackGiven(
+                $student,
+                $request->get('feedback_subject'),
+                $request->get('feedback_description')
+            )
+        );
 
-        if ($validator->fails()) {
-            return redirect()->route('bugreport')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $mailer->send(new FeedbackGiven($request, Auth::user()));
-
-        return redirect()->route('home')->with('success', Lang::get('general.bugreport-sent'));
+        return $this->redirector->route('home')->with('success', __('general.bugreport-sent'));
     }
 }

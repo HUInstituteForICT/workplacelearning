@@ -2,10 +2,8 @@
 
 namespace App\Mail;
 
-use App\EducationProgram;
 use App\Student;
 use Illuminate\Bus\Queueable;
-use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -13,22 +11,24 @@ class FeedbackGiven extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /** @var Request $request */
-    private $request;
-
     /** @var Student $user */
     private $user;
+    /**
+     * @var string
+     */
+    private $description;
 
-    public function __construct(Request $request, Student $user)
+    public function __construct(Student $user, string $subject, string $description)
     {
-        $this->request = $request;
         $this->user = $user;
+        $this->subject = $subject;
+        $this->description = $description;
     }
 
     /**
      * @return $this
      */
-    public function build()
+    public function build(): self
     {
         $this->subject('Tip/Bug ingezonden!');
         $this->from('debug@werkplekleren.hu.nl', 'Werkplekleren @ Hogeschool Utrecht');
@@ -40,9 +40,9 @@ class FeedbackGiven extends Mailable
                 [
                     'student_name' => $this->user->getInitials().' '.$this->user->lastname.' ('.$this->user->firstname.')',
                     'student_email' => $this->user->email,
-                    'education' => EducationProgram::find($this->user->ep_id),
-                    'subject' => $this->request->get('onderwerp'),
-                    'content' => $this->request->get('uitleg'),
+                    'education' => $this->user->educationProgram,
+                    'subject' => $this->subject,
+                    'content' => $this->description,
                 ]
             );
     }

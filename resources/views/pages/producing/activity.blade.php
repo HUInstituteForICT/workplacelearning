@@ -1,7 +1,7 @@
 <?php
 /**transferred*/
 /** @var \App\ResourcePerson[] $learningWith */
-/** @var \App\Category[] $categories  */
+/** @var \App\Category[] $categories */
 ?>
 @extends('layout.HUdefault')
 @section('title')
