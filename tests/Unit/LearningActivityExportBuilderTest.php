@@ -16,6 +16,8 @@ class LearningActivityExportBuilderTest extends TestCase
     {
         $mock = \Mockery::mock(LearningActivityActing::class);
 
+        $mock->shouldReceive('offsetExists')->andReturn(true);
+
         $mock->shouldReceive('getAttribute')->with('id')->andReturn('1');
         $mock->shouldReceive('getAttribute')->with('date')->andReturn('2017-10-10');
         $mock->shouldReceive('getAttribute')->with('situation')->andReturn('pressure');
