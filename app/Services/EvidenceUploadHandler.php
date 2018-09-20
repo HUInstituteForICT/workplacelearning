@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\LearningActivityActing;
+use App\Repository\Eloquent\LearningActivityActingRepository;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
@@ -14,10 +15,15 @@ class EvidenceUploadHandler
      * @var Filesystem
      */
     private $filesystem;
+    /**
+     * @var LearningActivityActingRepository
+     */
+    private $learningActivityActingRepository;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, LearningActivityActingRepository $learningActivityActingRepository)
     {
         $this->filesystem = $filesystem;
+        $this->learningActivityActingRepository = $learningActivityActingRepository;
     }
 
     public function process(Request $request, LearningActivityActing $learningActivityActing): void
@@ -34,7 +40,7 @@ class EvidenceUploadHandler
         $learningActivityActing->evidence_disk_filename = $diskFileName;
         $learningActivityActing->evidence_mime = $evidence->getClientMimeType();
 
-        $learningActivityActing->save();
+        $this->learningActivityActingRepository->save($learningActivityActing);
     }
 
     private function removePreviousUpload(LearningActivityActing $learningActivityActing): void

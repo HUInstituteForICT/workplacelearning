@@ -7,6 +7,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CurrentUserResolver;
 use App\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,9 +27,19 @@ class ProducingReportController extends Controller
     // This array holds the view content that needs to be passed to the view (eg charts, images, text, etc)
     private $viewdata = [
     ];
+    /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
 
-    public function wordExport(Request $request, Student $student): void
+    public function __construct(CurrentUserResolver $currentUserResolver)
     {
+        $this->currentUserResolver = $currentUserResolver;
+    }
+
+    public function wordExport(Request $request): void
+    {
+        $student = $this->currentUserResolver->getCurrentUser();
         $wp = $student->getCurrentWorkplace();
 
         $bold = tap(new Font())->setBold(true);
@@ -92,8 +103,8 @@ class ProducingReportController extends Controller
 
         $tableStyle = [
             'borderColor' => '006699',
-            'borderSize' => 6,
-            'cellMargin' => 50,
+            'borderSize'  => 6,
+            'cellMargin'  => 50,
         ];
         $firstRowStyle = ['bgColor' => '66BBFF'];
         $w->addTableStyle('table', $tableStyle, $firstRowStyle);
@@ -146,7 +157,7 @@ class ProducingReportController extends Controller
             $totalDaysCell = $weekMetaTable->addCell(4000);
             $totalDaysCell->addText(Lang::get('process_export.wordexport.days-worked', ['hours' => Auth::user()->getCurrentWorkplaceLearningPeriod()->hours_per_day]).': ');
             $totalDaysCell->getStyle()->setGridSpan(1);
-            $weekMetaTable->addCell(8000)->addText(($days_this_week.((1 == $days_this_week) ? ' '.Lang::get('process_export.wordexport.day') : ' '.Lang::get('process_export.wordexport.days'))));
+            $weekMetaTable->addCell(8000)->addText(($days_this_week.(($days_this_week == 1) ? ' '.Lang::get('process_export.wordexport.day') : ' '.Lang::get('process_export.wordexport.days'))));
 
             $weekMetaTable->addRow();
             $absenceCell = $weekMetaTable->addCell(4000);
@@ -196,11 +207,11 @@ class ProducingReportController extends Controller
                 continue;
             }
             $dataset[''.date('d-m-Y', strtotime($lap->date))][$lap->lap_id] = [
-                'date' => $lap->date,
-                'duration' => $lap->duration,
+                'date'        => $lap->date,
+                'duration'    => $lap->duration,
                 'description' => $lap->description,
-                'difficulty' => $lap->difficulty_label,
-                'status' => $lap->status_label,
+                'difficulty'  => $lap->difficulty_label,
+                'status'      => $lap->status_label,
             ];
         }
 

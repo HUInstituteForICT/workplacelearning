@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
+ * App\AnalysisChart.
+ *
  * @property Analysis           $analysis
  * @property ChartType          $type
  * @property Collection|Label[] $labels
@@ -16,6 +18,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int                $analysis_id
  * @property int                $type_id
  * @property string             $label
+ * @property mixed              $x_label
+ * @property mixed              $y_label
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart whereAnalysisId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart whereTypeId($value)
+ * @mixin \Eloquent
  */
 class AnalysisChart extends Model
 {

@@ -10,11 +10,17 @@ use App\Tips\Statistics\Filters\TimeslotFilter;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Tips\Models\StatisticVariable.
+ *
  * @property int             $id
  * @property array           $filters
  * @property CustomStatistic $statistic
  * @property string          $type
  * @property string          $selectType
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StatisticVariable whereFilters($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StatisticVariable whereId($value)
+ * @mixin \Eloquent
  */
 class StatisticVariable extends Model
 {
@@ -23,22 +29,22 @@ class StatisticVariable extends Model
     public static $availableFilters = [
         'acting' => [
             [
-                'class' => ResourcePersonFilter::class,
-                'name' => 'Resource person',
+                'class'      => ResourcePersonFilter::class,
+                'name'       => 'Resource person',
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'person_label'],
                 ],
             ],
             [
-                'class' => TimeslotFilter::class,
-                'name' => 'Timeslot/Category',
+                'class'      => TimeslotFilter::class,
+                'name'       => 'Timeslot/Category',
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'timeslot_text'],
                 ],
             ],
             [
-                'class' => ResourceMaterialFilter::class,
-                'name' => 'Theory / resource material',
+                'class'      => ResourceMaterialFilter::class,
+                'name'       => 'Theory / resource material',
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'rm_label'],
                 ],
@@ -46,22 +52,22 @@ class StatisticVariable extends Model
         ],
         'producing' => [
             [
-                'class' => ResourcePersonFilter::class,
-                'name' => 'Resource person',
+                'class'      => ResourcePersonFilter::class,
+                'name'       => 'Resource person',
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'person_label'],
                 ],
             ],
             [
-                'class' => CategoryFilter::class,
-                'name' => 'Category',
+                'class'      => CategoryFilter::class,
+                'name'       => 'Category',
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'category_label'],
                 ],
             ],
             [
-                'class' => DifficultyFilter::class,
-                'name' => 'Difficulty',
+                'class'      => DifficultyFilter::class,
+                'name'       => 'Difficulty',
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'difficulty_label'],
                 ],

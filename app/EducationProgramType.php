@@ -11,8 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property int    $eptype_id
- * @property string $eptype_name Name of the program type
+ * App\EducationProgramType.
+ *
+ * @property int                                                              $eptype_id
+ * @property string                                                           $eptype_name       Name of the program type
+ * @property \Illuminate\Database\Eloquent\Collection|\App\EducationProgram[] $educationPrograms
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgramType whereEptypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgramType whereEptypeName($value)
+ * @mixin \Eloquent
  */
 class EducationProgramType extends Model
 {

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * App\Tips\Models\Tip.
+ *
  * @property string                 $name              Name of the tip
  * @property bool                   $showInAnalysis    Whether or not the tip should be displayed in analyses
  * @property int                    $id                ID of the tip
@@ -20,6 +22,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int                    $rangeStart
  * @property int                    $rangeEnd
  * @property Moment[]|Collection    $moments
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereRangeEnd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereRangeStart($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereShowInAnalysis($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereTipText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereTrigger($value)
+ * @mixin \Eloquent
  */
 class Tip extends Model
 {

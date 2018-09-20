@@ -13,25 +13,36 @@ use App\Http\Requests\LearningActivity\ProducingCreateRequest;
 use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
 use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
+use App\Services\CurrentUserResolver;
 use App\Services\LAPFactory;
 use App\Services\LAPUpdater;
 use App\Status;
-use App\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Translation\Translator;
 
 class ProducingActivityController extends Controller
 {
-    public function show(Request $request, Translator $translator, Student $student)
+    /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
+
+    public function __construct(CurrentUserResolver $currentUserResolver)
     {
+        $this->currentUserResolver = $currentUserResolver;
+    }
+
+    public function show(Request $request, Translator $translator)
+    {
+        $student = $this->currentUserResolver->getCurrentUser();
+
         $resourcePersons = $student->currentCohort()->resourcePersons()->get()->merge(
             $student->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
 
         $categories = $student->currentCohort()->categories()->get()->merge(
-            Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
+            $student->getCurrentWorkplaceLearningPeriod()->categories()->get()
         );
 
         $exportBuilder = new LearningActivityProducingExportBuilder($student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
@@ -57,12 +68,14 @@ class ProducingActivityController extends Controller
             ->with('statuses', Status::all())
             ->with('activitiesJson', $activitiesJson)
             ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
-            ->with('workplacelearningperiod', Auth::user()->getCurrentWorkplaceLearningPeriod())
+            ->with('workplacelearningperiod', $student->getCurrentWorkplaceLearningPeriod())
             ->with('chains', $chains->all());
     }
 
-    public function edit(Request $request, LearningActivityProducing $learningActivityProducing, Student $student)
+    public function edit(Request $request, LearningActivityProducing $learningActivityProducing)
     {
+        $student = $this->currentUserResolver->getCurrentUser();
+
         $resourcePersons = $student->currentCohort()->resourcePersons()->get()->merge(
             $student->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
         );
@@ -82,8 +95,9 @@ class ProducingActivityController extends Controller
             ->with('chains', $chains);
     }
 
-    public function progress(Translator $translator, Student $student)
+    public function progress(Translator $translator)
     {
+        $student = $this->currentUserResolver->getCurrentUser();
         $activities = $student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
             ->orderBy('date', 'DESC')
@@ -100,10 +114,10 @@ class ProducingActivityController extends Controller
         $activities->each(function (LearningActivityProducing $activity) use (&$earliest, &$latest): void {
             $activityDate = Carbon::createFromTimestamp(strtotime($activity->date));
 
-            if (null === $earliest || $activityDate->lessThan($earliest)) {
+            if ($earliest === null || $activityDate->lessThan($earliest)) {
                 $earliest = $activityDate;
             }
-            if (null === $latest || $activityDate->greaterThan($latest)) {
+            if ($latest === null || $activityDate->greaterThan($latest)) {
                 $latest = $activityDate;
             }
         });

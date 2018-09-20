@@ -9,95 +9,82 @@ namespace App\Http\Controllers;
 
 use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
-use App\Cohort;
-use App\Repository\LikeRepositoryInterface;
-use App\Repository\StudentTipViewRepositoryInterface;
-use App\Student;
-use App\Tips\EvaluatedTipInterface;
+use App\Services\CurrentPeriodResolver;
 use App\Tips\Services\ApplicableTipFetcher;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
+use App\Tips\Services\TipPicker;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\App;
+use IntlDateFormatter;
 
-class ActingAnalysisController extends Controller
+class ActingAnalysisController
 {
-    public function showChoiceScreen(Student $student)
-    {
-        // Check if for the workplace the user has hours registered
-        if (!$student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
-            return redirect()->route('home-acting')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
-        }
+    /**
+     * @var CurrentPeriodResolver
+     */
+    private $currentPeriodResolver;
+    /**
+     * @var Redirector
+     */
+    private $redirector;
 
-        return view('pages.acting.analysis.choice');
+    public function __construct(
+        CurrentPeriodResolver $currentPeriodResolver,
+        Redirector $redirector
+    ) {
+        $this->currentPeriodResolver = $currentPeriodResolver;
+        $this->redirector = $redirector;
     }
 
-    /**
-     * @param $year
-     * @param $month
-     *
-     * @return $this|\Illuminate\Http\RedirectResponse
-     */
+    public function showChoiceScreen()
+    {
+        $period = $this->currentPeriodResolver->getPeriod();
+        // Check if for the workplace the user has hours registered
+        if (!$period->hasLoggedHours()) {
+            return $this->redirector->route('home-acting')->withErrors(__('notifications.generic.nointernshipregisteredactivities'));
+        }
+
+        $start = $period->startdate->modify('first day of this month')->format('Y-m-d');
+        $end = $period->enddate->format('Y-m-d');
+
+        return view('pages.acting.analysis.choice', [
+            'start'     => strtotime($start),
+            'end'       => strtotime($end),
+            'formatter' => new IntlDateFormatter(
+                App::getLocale(),
+                IntlDateFormatter::GREGORIAN,
+                IntlDateFormatter::NONE,
+                null,
+                null,
+                'MMMM YYYY'
+            ),
+        ]);
+    }
+
     public function showDetail(
-        Request $request,
         $year,
         $month,
         ApplicableTipFetcher $applicableTipFetcher,
-        LikeRepositoryInterface $likeRepository,
-        StudentTipViewRepositoryInterface $studentTipViewRepository
+        TipPicker $tipPicker
     ) {
-        if (Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(1)->count() === 0) {
-            return redirect()->route('home-acting')
-                ->withErrors([Lang::get('analysis.no-activity')]);
-        }
+        $period = $this->currentPeriodResolver->getPeriod();
 
-        // Check valid date options
-        if (('all' !== $year && 'all' !== $month)
-            && (!preg_match('/^(20)(\d{2})$/', $year) || !preg_match('/^([0-1]{1}\d{1})$/', $month))
-        ) {
-            return redirect()->route('analysis-acting-choice');
+        if ($period->learningActivityActing->count() === 0) {
+            return $this->redirector->route('home-acting')
+                ->withErrors([__('analysis.no-activity')]);
         }
 
         // The analysis for the charts etc.
+        // Create Chart classes for each chart displayed
         $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
 
-        if ('all' === $year || 'all' === $month) {
-            $year = null;
-            $month = null;
-        }
+        $applicableEvaluatedTips = $applicableTipFetcher->fetchForCohort($period->cohort);
 
-        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
+        $evaluatedTips = $tipPicker->pick($applicableEvaluatedTips, 3);
+        $tipPicker->markTipsViewed($evaluatedTips);
 
-        /** @var Cohort $cohort */
-        $cohort = $workplaceLearningPeriod->cohort;
-
-        $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($cohort));
-
-        // Load likes for each tip and check if it should be shown to user
-        /** @var Student $student */
-        $student = $request->user();
-        $evaluatedTips = $applicableEvaluatedTips->filter(function (EvaluatedTipInterface $evaluatedTip) use (
-            $student,
-            $likeRepository
-        ) {
-            $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
-
-            // If not liked by this student yet, allow it to be shown
-            if (0 === $evaluatedTip->getTip()->likes->count()) {
-                return true;
-            }
-
-            // If liked, allow, if disliked filter it out
-            return 1 === $evaluatedTip->getTip()->likes[0]->type;
-        })->shuffle()->take(3);
-
-        // Register that the tip will be viewed by the student
-        $evaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $studentTipViewRepository): void {
-            $studentTipViewRepository->createForTip($evaluatedTip->getTip(), $student);
-        });
-
-        return view('pages.acting.analysis.detail')
-            ->with('evaluatedTips', $evaluatedTips)
-            ->with('actingAnalysis', $analysis);
+        return view('pages.acting.analysis.detail', [
+            'evaluatedTips'  => $evaluatedTips,
+            'actingAnalysis' => $analysis,
+        ]);
     }
 }

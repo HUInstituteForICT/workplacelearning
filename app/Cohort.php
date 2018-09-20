@@ -13,18 +13,26 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * Class Cohort.
  *
- * @property int                         $id
- * @property string                      $name
- * @property Tip[]|Collection            $tips
- * @property Category[]|Collection       $categories
- * @property Competence[]|Collection     $competencies
- * @property EducationProgram            $educationProgram
- * @property bool                        $disabled
- * @property ResourcePerson[]|Collection $resourcePersons
- * @property Timeslot[]|Collection       $timeslots
- * @property string                      $description
- * @property int                         $ep_id
- * @property CompetenceDescription       $competenceDescription
+ * @property int                                                                     $id
+ * @property string                                                                  $name
+ * @property Tip[]|Collection                                                        $tips
+ * @property Category[]|Collection                                                   $categories
+ * @property Competence[]|Collection                                                 $competencies
+ * @property EducationProgram                                                        $educationProgram
+ * @property bool                                                                    $disabled
+ * @property ResourcePerson[]|Collection                                             $resourcePersons
+ * @property Timeslot[]|Collection                                                   $timeslots
+ * @property string                                                                  $description
+ * @property int                                                                     $ep_id
+ * @property CompetenceDescription                                                   $competenceDescription
+ * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[] $workplaceLearningPeriods
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereDisabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereEpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereName($value)
+ * @mixin \Eloquent
  */
 class Cohort extends Model
 {

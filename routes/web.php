@@ -95,7 +95,7 @@ Route::group(['before' => 'auth'], function (): void {
 });
 
 Route::group([
-    'before' => ['auth'],
+    'before'     => ['auth'],
     'middleware' => ['usernotifications'],
 ], function (): void {
     Route::group(['middleware' => CheckUserLevel::class], function (): void {
@@ -264,6 +264,10 @@ Route::group([
             ->name('analysis-acting-choice');
 
         Route::get('analysis/{year}/{month}', 'ActingAnalysisController@showDetail')
+            ->where([
+                'year'  => '/^(20)(\d{2})$/|all',
+                'month' => '/^([0-1]{1}\d{1})$/|all',
+            ])
             ->middleware(RequireActiveInternship::class)
             ->name('analysis-acting-detail');
 
@@ -274,8 +278,11 @@ Route::group([
                     'competence-description.pdf');
             })->name('competence-description');
 
-        Route::get('evidence/{learningActivity}/remove', function (App\LearningActivityActing $learningActivity, App\Student $student) {
-            if (!$learningActivity->workplaceLearningPeriod->student->is($student)) {
+        Route::get('evidence/{learningActivity}/remove', function (
+            App\LearningActivityActing $learningActivity,
+            App\Services\CurrentUserResolver $currentUserResolver
+        ) {
+            if (!$learningActivity->workplaceLearningPeriod->student->is($currentUserResolver->getCurrentUser())) {
                 throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
             }
 
@@ -344,6 +351,10 @@ Route::group([
                 ->name('analysis-producing-choice');
 
             Route::get('analysis/{year}/{month}', 'ProducingAnalysisController@showDetail')
+                ->where([
+                    'year'  => '/^(20)(\d{2})$/|all',
+                    'month' => '/^([0-1]{1}\d{1})$/|all',
+                ])
                 ->name('analysis-producing-detail');
 
             // Feedback

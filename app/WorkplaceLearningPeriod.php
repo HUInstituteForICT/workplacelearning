@@ -14,22 +14,41 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @property int    $wplp_id
- * @property Cohort $cohort
- * @property Category[]|Collection categories
- * @property LearningGoal[]|Collection learningGoals
- * @property LearningActivityActing[]|Collection learningActivityActing
- * @property int        $student_id
- * @property Student    $student
- * @property int        $wp_id
- * @property \DateTime  $startdate
- * @property \DateTime  $enddate
- * @property int        $nrofdays
- * @property string     $description
- * @property int        $cohort_id
- * @property float      $hours_per_day
- * @property Collection $chains
- * @property Workplace  $workplace
+ * App\WorkplaceLearningPeriod.
+ *
+ * @property int                                                                       $wplp_id
+ * @property Cohort                                                                    $cohort
+ * @property int                                                                       $student_id
+ * @property Student                                                                   $student
+ * @property int                                                                       $wp_id
+ * @property \DateTime                                                                 $startdate
+ * @property \DateTime                                                                 $enddate
+ * @property int                                                                       $nrofdays
+ * @property string                                                                    $description
+ * @property int                                                                       $cohort_id
+ * @property float                                                                     $hours_per_day
+ * @property Collection                                                                $chains
+ * @property Workplace                                                                 $workplace
+ * @property int                                                                       $is_in_analytics
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Category[]                  $categories
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[]    $learningActivityActing
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningGoal[]              $learningGoals
+ * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[]          $resourceMaterial
+ * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[]            $resourcePerson
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[]                  $timeslot
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereCohortId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereEnddate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereHoursPerDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereIsInAnalytics($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereNrofdays($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereStartdate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereStudentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereWpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereWplpId($value)
+ * @mixin \Eloquent
  */
 class WorkplaceLearningPeriod extends Model
 {
@@ -39,6 +58,11 @@ class WorkplaceLearningPeriod extends Model
     public $timestamps = false;
     // Override the primary key column
     protected $primaryKey = 'wplp_id';
+
+    protected $dates = [
+        'startdate',
+        'enddate',
+    ];
 
     // Default
     protected $fillable = [
@@ -165,9 +189,7 @@ class WorkplaceLearningPeriod extends Model
 
     public function getLastActivity($count, $offset = 0)
     {
-        /** @var Student $student */
-        $student = $this->student;
-        switch ($student->educationProgram->eptype_id) {
+        switch ($this->student->educationProgram->eptype_id) {
             case 2:
                 return $this->getLastActivityProducing($count, $offset);
                 break;

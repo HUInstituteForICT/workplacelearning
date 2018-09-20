@@ -7,8 +7,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property string $rm_label
- * @property int    $wplp_id
+ * App\ResourceMaterial.
+ *
+ * @property string                                                                    $rm_label
+ * @property int                                                                       $wplp_id
+ * @property int                                                                       $rm_id
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ * @property \App\WorkplaceLearningPeriod                                              $workplaceLearningPeriod
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial whereRmId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial whereRmLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial whereWplpId($value)
+ * @mixin \Eloquent
  */
 class ResourceMaterial extends Model
 {

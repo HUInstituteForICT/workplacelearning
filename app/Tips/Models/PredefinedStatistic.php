@@ -5,7 +5,27 @@ namespace App\Tips\Models;
 use App\Tips\Statistics\PredefinedStatisticHelper;
 
 /**
- * @property string $name
+ * App\Tips\Models\PredefinedStatistic.
+ *
+ * @property string      $name
+ * @property int         $id
+ * @property string      $type
+ * @property int|null    $operator
+ * @property string      $education_program_type
+ * @property string|null $select_type
+ * @property int|null    $statistic_variable_one_id
+ * @property int|null    $statistic_variable_two_id
+ * @property mixed       $value_parameter_description
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereEducationProgramType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereOperator($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereSelectType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereStatisticVariableOneId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereStatisticVariableTwoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereType($value)
+ * @mixin \Eloquent
  */
 class PredefinedStatistic extends Statistic
 {

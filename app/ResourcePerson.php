@@ -8,6 +8,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class ResourcePerson.
@@ -16,6 +17,21 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $person_label
  * @property int    $wplp_id
  * @property int    $ep_id
+ *
+ * @method find(int $id)
+ *
+ * @property int|null                       $cohort_id
+ * @property \App\Cohort|null               $cohort
+ * @property \App\EducationProgram|null     $educationProgram
+ * @property \App\LearningActivityProducing $learningActivityProducing
+ * @property \App\WorkplaceLearningPeriod   $workplaceLearningPeriod
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereCohortId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereEpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson wherePersonLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereRpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereWplpId($value)
+ * @mixin \Eloquent
  */
 class ResourcePerson extends Model
 {
@@ -35,28 +51,28 @@ class ResourcePerson extends Model
         'cohort_id',
     ];
 
-    public function cohort()
+    public function cohort(): BelongsTo
     {
         return $this->belongsTo(Cohort::class, 'cohort_id', 'id');
     }
 
-    public function workplaceLearningPeriod()
+    public function workplaceLearningPeriod(): BelongsTo
     {
-        return $this->belongsTo(\App\WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
+        return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningActivityProducing()
+    public function learningActivityProducing(): BelongsTo
     {
-        return $this->belongsTo(\App\LearningActivityProducing::class, 'rp_id', 'res_person_id');
+        return $this->belongsTo(LearningActivityProducing::class, 'rp_id', 'res_person_id');
     }
 
-    public function educationProgram()
+    public function educationProgram(): BelongsTo
     {
-        return $this->belongsTo(\App\EducationProgram::class, 'ep_id', 'ep_id');
+        return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
     }
 
     // Relations for query builder
-    public function getRelationships()
+    public function getRelationships(): array
     {
         return ['cohort', 'workplaceLearningPeriod', 'learningActivityProducing', 'educationProgram'];
     }

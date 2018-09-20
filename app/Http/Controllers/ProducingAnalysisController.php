@@ -9,83 +9,79 @@ namespace App\Http\Controllers;
 
 use App\Analysis\Producing\ProducingAnalysis;
 use App\Analysis\Producing\ProducingAnalysisCollector;
-use App\Cohort;
-use App\Repository\Eloquent\LikeRepository;
-use App\Repository\StudentTipViewRepositoryInterface;
-use App\Student;
-use App\Tips\EvaluatedTipInterface;
+use App\Services\CurrentPeriodResolver;
 use App\Tips\Services\ApplicableTipFetcher;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Lang;
+use App\Tips\Services\TipPicker;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\App;
+use IntlDateFormatter;
 
-class ProducingAnalysisController extends Controller
+class ProducingAnalysisController
 {
-    public function showChoiceScreen(Student $student)
-    {
-        // Check if for the workplace the user has hours registered
-        if (!$student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
-            return redirect()->route('home-producing')->withErrors([Lang::get('notifications.generic.nointernshipregisteredactivities')]);
-        }
+    /**
+     * @var CurrentPeriodResolver
+     */
+    private $currentPeriodResolver;
+    /**
+     * @var Redirector
+     */
+    private $redirector;
 
-        return view('pages.producing.analysis.choice')
-            ->with('numdays', (new ProducingAnalysisCollector())->getFullWorkingDays('all', 'all'));
+    public function __construct(CurrentPeriodResolver $currentPeriodResolver, Redirector $redirector)
+    {
+        $this->currentPeriodResolver = $currentPeriodResolver;
+        $this->redirector = $redirector;
     }
 
-    public function showDetail(Request $request, $year, $month, ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, StudentTipViewRepositoryInterface $studentTipViewRepository)
+    public function showChoiceScreen(ProducingAnalysisCollector $producingAnalysisCollector)
     {
-        // Check valid date options
-        if (('all' !== $year && 'all' !== $month)
-            && (!preg_match('/^(20)(\d{2})$/', $year) || !preg_match('/^([0-1]{1}\d{1})$/', $month))
-        ) {
-            return redirect()->route('analysis-producing-choice');
+        $period = $this->currentPeriodResolver->getPeriod();
+
+        // Check if for the workplace the user has hours registered
+        if (!$period->hasLoggedHours()) {
+            return $this->redirector->route('home-producing')->withErrors([__('notifications.generic.nointernshipregisteredactivities')]);
         }
 
+        $start = $period->startdate->modify('first day of this month')->format('Y-m-d');
+        $end = $period->enddate->format('Y-m-d');
+
+        return view('pages.producing.analysis.choice', [
+            'period'    => $period,
+            'numdays'   => $producingAnalysisCollector->getFullWorkingDays('all', 'all'),
+            'start'     => strtotime($start),
+            'end'       => strtotime($end),
+            'formatter' => new IntlDateFormatter(
+                App::getLocale(),
+                IntlDateFormatter::GREGORIAN,
+                IntlDateFormatter::NONE,
+                null,
+                null,
+                'MMMM YYYY'
+            ),
+        ]);
+    }
+
+    public function showDetail(
+        $year,
+        $month,
+        ApplicableTipFetcher $applicableTipFetcher,
+        TipPicker $tipPicker,
+        ProducingAnalysis $producingAnalysis
+    ) {
         // Create new Analysis for the producing student
-        $producingAnalysis = new ProducingAnalysis(new ProducingAnalysisCollector(), $year, $month);
+        $producingAnalysis->buildData($year, $month);
 
-        if ('all' === $year || 'all' === $month) {
-            $year = null;
-            $month = null;
-        }
-        $workplaceLearningPeriod = $request->user()->getCurrentWorkplaceLearningPeriod();
+        $period = $this->currentPeriodResolver->getPeriod();
 
-        /** @var Cohort $cohort */
-        $cohort = $workplaceLearningPeriod->cohort;
+        $applicableEvaluatedTips = $applicableTipFetcher->fetchForCohort($period->cohort);
 
-        $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($cohort));
+        $evaluatedTips = $tipPicker->pick($applicableEvaluatedTips, 3);
+        $tipPicker->markTipsViewed($evaluatedTips);
 
-        /** @var Student $student */
-        $student = $request->user();
-
-        $evaluatedTips = $applicableEvaluatedTips->filter(function (EvaluatedTipInterface $evaluatedTip) use (
-            $student,
-            $likeRepository
-        ) {
-            $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
-
-            // If not liked by this student yet, allow it to be shown
-            if (0 === $evaluatedTip->getTip()->likes->count()) {
-                return true;
-            }
-
-            // If liked, allow, if disliked filter it out
-            return 1 === $evaluatedTip->getTip()->likes[0]->type;
-        })->shuffle()->take(3);
-
-        // Register that the tip will be viewed by the student
-        $evaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $studentTipViewRepository): void {
-            $studentTipViewRepository->createForTip($evaluatedTip->getTip(), $student);
-        });
-
-        // Get the raw data of the analysis, used in the view
-        $analysisData = $producingAnalysis->analysisData;
-
-        return view('pages.producing.analysis.detail')
-            ->with('evaluatedTips', $evaluatedTips)
-            ->with('producingAnalysis', $producingAnalysis)
-            ->with('analysis', $analysisData)
-            ->with('year', $year)
-            ->with('monthno', $month);
+        return view('pages.producing.analysis.detail', [
+            'evaluatedTips'     => $evaluatedTips,
+            'producingAnalysis' => $producingAnalysis,
+            'analysis'          => $producingAnalysis->analysisData,
+        ]);
     }
 }

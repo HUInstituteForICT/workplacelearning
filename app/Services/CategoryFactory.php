@@ -3,25 +3,24 @@
 namespace App\Services;
 
 use App\Category;
-use App\Student;
 
 class CategoryFactory
 {
     /**
-     * @var Student
+     * @var CurrentPeriodResolver
      */
-    private $student;
+    private $currentPeriodResolver;
 
-    public function __construct(Student $student)
+    public function __construct(CurrentPeriodResolver $currentPeriodResolver)
     {
-        $this->student = $student;
+        $this->currentPeriodResolver = $currentPeriodResolver;
     }
 
     public function createCategory(string $label): Category
     {
         $category = new Category();
         $category->category_label = $label;
-        $category->workplaceLearningPeriod()->associate($this->student->getCurrentWorkplaceLearningPeriod());
+        $category->workplaceLearningPeriod()->associate($this->currentPeriodResolver->getPeriod());
         $category->save();
 
         return $category;

@@ -6,10 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 
 /**
- * @property int                 $id                     The id of the statistic
- * @property string              $name                   The name of this statistic
- * @property string              $education_program_type the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
- * @property TipCoupledStatistic $pivot
+ * App\Tips\Models\Statistic.
+ *
+ * @property int                                                                             $id                        The id of the statistic
+ * @property string                                                                          $name                      The name of this statistic
+ * @property string                                                                          $education_program_type    the education program type of this statistic. Some data is only available for certain types, therefore a distinction is necessary.
+ * @property TipCoupledStatistic                                                             $pivot
+ * @property string                                                                          $type
+ * @property int|null                                                                        $operator
+ * @property string|null                                                                     $select_type
+ * @property int|null                                                                        $statistic_variable_one_id
+ * @property int|null                                                                        $statistic_variable_two_id
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Tips\Models\TipCoupledStatistic[] $coupledStatistics
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereEducationProgramType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereOperator($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereSelectType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereStatisticVariableOneId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereStatisticVariableTwoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereType($value)
+ * @mixin \Eloquent
  */
 class Statistic extends Model
 {

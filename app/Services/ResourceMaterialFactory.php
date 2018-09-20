@@ -3,25 +3,24 @@
 namespace App\Services;
 
 use App\ResourceMaterial;
-use App\Student;
 
 class ResourceMaterialFactory
 {
     /**
-     * @var Student
+     * @var CurrentPeriodResolver
      */
-    private $student;
+    private $currentPeriodResolver;
 
-    public function __construct(Student $student)
+    public function __construct(CurrentPeriodResolver $currentPeriodResolver)
     {
-        $this->student = $student;
+        $this->currentPeriodResolver = $currentPeriodResolver;
     }
 
     public function createResourceMaterial(string $label): ResourceMaterial
     {
         $resourceMaterial = new ResourceMaterial();
         $resourceMaterial->rm_label = $label;
-        $resourceMaterial->workplaceLearningPeriod()->associate($this->student->getCurrentWorkplaceLearningPeriod());
+        $resourceMaterial->workplaceLearningPeriod()->associate($this->currentPeriodResolver->getPeriod());
         $resourceMaterial->save();
 
         return $resourceMaterial;

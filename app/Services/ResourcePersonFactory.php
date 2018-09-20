@@ -3,26 +3,26 @@
 namespace App\Services;
 
 use App\ResourcePerson;
-use App\Student;
 
 class ResourcePersonFactory
 {
     /**
-     * @var Student
+     * @var CurrentUserResolver
      */
-    private $student;
+    private $currentUserResolver;
 
-    public function __construct(Student $student)
+    public function __construct(CurrentUserResolver $currentUserResolver)
     {
-        $this->student = $student;
+        $this->currentUserResolver = $currentUserResolver;
     }
 
     public function createResourcePerson(string $label): ResourcePerson
     {
+        $student = $this->currentUserResolver->getCurrentUser();
         $resourcePerson = new ResourcePerson();
         $resourcePerson->person_label = $label;
-        $resourcePerson->workplaceLearningPeriod()->associate($this->student->getCurrentWorkplaceLearningPeriod());
-        $resourcePerson->educationProgram()->associate($this->student->educationProgram);
+        $resourcePerson->workplaceLearningPeriod()->associate($student->getCurrentWorkplaceLearningPeriod());
+        $resourcePerson->educationProgram()->associate($student->educationProgram);
         $resourcePerson->save();
 
         return $resourcePerson;

@@ -3,6 +3,7 @@
 namespace App\Tips\Services;
 
 use App\Cohort;
+use App\Tips\EvaluatedTip;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Models\Tip;
 
@@ -18,6 +19,9 @@ class ApplicableTipFetcher
         $this->tipEvaluator = $tipEvaluator;
     }
 
+    /**
+     * @return EvaluatedTip[]
+     */
     public function fetchForCohort(Cohort $cohort): array
     {
         $cohort->load('tips.coupledStatistics.statistic');

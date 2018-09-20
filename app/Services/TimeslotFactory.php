@@ -2,28 +2,29 @@
 
 namespace App\Services;
 
-use App\Student;
 use App\Timeslot;
 
 class TimeslotFactory
 {
     /**
-     * @var Student
+     * @var CurrentUserResolver
      */
-    private $student;
+    private $currentUserResolver;
 
-    public function __construct(Student $student)
+    public function __construct(CurrentUserResolver $currentUserResolver)
     {
-        $this->student = $student;
+        $this->currentUserResolver = $currentUserResolver;
     }
 
     public function createTimeslot(string $label): Timeslot
     {
+        $student = $this->currentUserResolver->getCurrentUser();
+
         $timeslot = new Timeslot();
 
         $timeslot->timeslot_text = $label;
-        $timeslot->educationProgram()->associate($this->student->educationProgram);
-        $timeslot->workplaceLearningPeriod()->associate($this->student->getCurrentWorkplaceLearningPeriod());
+        $timeslot->educationProgram()->associate($student->educationProgram);
+        $timeslot->workplaceLearningPeriod()->associate($student->getCurrentWorkplaceLearningPeriod());
 
         $timeslot->save();
 

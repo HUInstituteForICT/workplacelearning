@@ -12,17 +12,31 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Workplace.
  *
- * @property int    $wp_id
- * @property string $wp_name
- * @property string $street
- * @property string $housenr
- * @property string $postalcode
- * @property string $town
- * @property string $country
- * @property string $contact_name
- * @property string $contact_email
- * @property string $contact_phone
- * @property int    $numberofemployees
+ * @property int                                                                     $wp_id
+ * @property string                                                                  $wp_name
+ * @property string                                                                  $street
+ * @property string                                                                  $housenr
+ * @property string                                                                  $postalcode
+ * @property string                                                                  $town
+ * @property string                                                                  $country
+ * @property string                                                                  $contact_name
+ * @property string                                                                  $contact_email
+ * @property string                                                                  $contact_phone
+ * @property int                                                                     $numberofemployees
+ * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[] $internshipperiod
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereContactEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereContactName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereContactPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereHousenr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereNumberofemployees($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace wherePostalcode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereStreet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereTown($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereWpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereWpName($value)
+ * @mixin \Eloquent
  */
 class Workplace extends Model
 {

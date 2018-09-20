@@ -9,23 +9,46 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @property int                     $lap_id
- * @property int                     $chain_id
- * @property string                  $description
- * @property Chain                   $chain
- * @property int                     $wplp_id
- * @property WorkplaceLearningPeriod $workplaceLearningPeriod
- * @property float                   $duration
- * @property string                  $res_material_id
- * @property string                  $res_material_detail
- * @property Category                $category
- * @property Difficulty              $difficulty
- * @property Status                  $status
- * @property ResourceMaterial        $resourceMaterial
- * @property ResourcePerson          $resourcePerson
- * @property int                     $status_id
- * @property Carbon                  $date
- * @property Feedback                $feedback
+ * App\LearningActivityProducing.
+ *
+ * @property int                                 $lap_id
+ * @property int                                 $chain_id
+ * @property string                              $description
+ * @property Chain                               $chain
+ * @property int                                 $wplp_id
+ * @property WorkplaceLearningPeriod             $workplaceLearningPeriod
+ * @property float                               $duration
+ * @property string                              $res_material_id
+ * @property string                              $res_material_detail
+ * @property Category                            $category
+ * @property Difficulty                          $difficulty
+ * @property Status                              $status
+ * @property ResourceMaterial                    $resourceMaterial
+ * @property ResourcePerson                      $resourcePerson
+ * @property int                                 $status_id
+ * @property Carbon                              $date
+ * @property Feedback                            $feedback
+ * @property int|null                            $prev_lap_id
+ * @property int|null                            $res_person_id
+ * @property int                                 $category_id
+ * @property int                                 $difficulty_id
+ * @property \App\LearningActivityProducing      $nextLearningActivityProducing
+ * @property \App\LearningActivityProducing|null $previousLearningActivityProducing
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereChainId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereDifficultyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereLapId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing wherePrevLapId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereResMaterialDetail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereResMaterialId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereResPersonId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereWplpId($value)
+ * @mixin \Eloquent
  */
 class LearningActivityProducing extends Model implements LearningActivityInterface
 {

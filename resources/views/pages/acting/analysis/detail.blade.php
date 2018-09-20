@@ -1,3 +1,8 @@
+<?php
+/** @var App\Tips\EvaluatedTip[] $evaluatedTips */
+/** @var App\Tips\EvaluatedTip $evaluatedTip */
+?>
+
 @extends('layout.HUdefault')
 @section('title')
     Analyse
@@ -36,7 +41,7 @@
 
 
 
-                @if($evaluatedTips->count() > 0)
+                @if(count($evaluatedTips) > 0)
                     <?php $tipCounter = 1; ?>
 
                     @foreach($evaluatedTips as $evaluatedTip)

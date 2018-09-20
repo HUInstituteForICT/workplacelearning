@@ -12,9 +12,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property EducationProgramType $educationprogramType
- * @property int                  $ep_id
- * @property int                  $eptype_id
+ * App\EducationProgram.
+ *
+ * @property EducationProgramType                                           $educationprogramType
+ * @property int                                                            $ep_id
+ * @property int                                                            $eptype_id
+ * @property string                                                         $ep_name
+ * @property int                                                            $disabled
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Category[]       $category
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Cohort[]         $cohorts
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Competence[]     $competence
+ * @property \App\CompetenceDescription                                     $competenceDescription
+ * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[] $resourcePerson
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Student[]        $student
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[]       $timeslot
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram whereDisabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram whereEpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram whereEpName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram whereEptypeId($value)
+ * @mixin \Eloquent
  */
 class EducationProgram extends Model
 {

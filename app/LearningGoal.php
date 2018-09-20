@@ -6,9 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int    $learninggoal_id
- * @property string $learninggoal_label
- * @property string $description
+ * App\LearningGoal.
+ *
+ * @property int                          $learninggoal_id
+ * @property string                       $learninggoal_label
+ * @property string                       $description
+ * @property int                          $wplp_id
+ * @property \App\LearningActivityActing  $learningActivityActing
+ * @property \App\WorkplaceLearningPeriod $workplaceLearningPeriod
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal whereLearninggoalId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal whereLearninggoalLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal whereWplpId($value)
+ * @mixin \Eloquent
  */
 class LearningGoal extends Model
 {

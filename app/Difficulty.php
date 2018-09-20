@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property string $difficulty_label
- * @property int    $difficulty_id
+ * App\Difficulty.
+ *
+ * @property string                                                                    $difficulty_label
+ * @property int                                                                       $difficulty_id
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Difficulty whereDifficultyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Difficulty whereDifficultyLabel($value)
+ * @mixin \Eloquent
  */
 class Difficulty extends Model
 {

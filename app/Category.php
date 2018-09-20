@@ -11,9 +11,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int    $category_id
- * @property string $category_label
- * @property int    $wplp_id
+ * App\Category.
+ *
+ * @property int                            $category_id
+ * @property string                         $category_label
+ * @property int                            $wplp_id
+ * @property int|null                       $ep_id
+ * @property int|null                       $cohort_id
+ * @property \App\WorkplaceLearningPeriod   $InternshipPeriods
+ * @property \App\Cohort|null               $cohort
+ * @property \App\EducationProgram|null     $educationProgram
+ * @property \App\LearningActivityProducing $learningactivitiesproducing
+ * @property \App\WorkplaceLearningPeriod   $workplaceLearningPeriod
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereCategoryLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereCohortId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereEpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereWplpId($value)
+ * @mixin \Eloquent
  */
 class Category extends Model
 {

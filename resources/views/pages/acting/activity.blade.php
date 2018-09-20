@@ -111,7 +111,7 @@
                 </div>
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.with') }}<i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_with') }}"></i></h4>
-                    @foreach ($resPersons as $key => $value)
+                    @foreach ($resourcePersons as $key => $value)
                         <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ __($value->person_label) }}</span></label>
                     @endforeach
                     <div>
@@ -122,7 +122,7 @@
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_theory') }}"></i></h4>
                     <label><input type="radio" name="res_material" id="rm_none" value="none" {{ (old('res_material') === 'none' || old('res_material') === null) ? 'checked' : null }}><span>{{ Lang::get('activity.none') }}</span></label>
-                    @foreach ($resMaterials as $key => $value)
+                    @foreach ($resourceMaterials as $key => $value)
                         <label><input type="radio" name="res_material" value="{{ $value->rm_id }}" {{ (old('res_material') != null && old('res_material') == $value->rm_id) ? "checked" : null }} /><span>{{ $value->rm_label }}</span></label>
                     @endforeach
                     <input type="text" name="res_material_detail" id="res_material_detail" placeholder="{{ Lang::get('activity.source-description') }}" value="{{ old('res_material_detail') }}" />

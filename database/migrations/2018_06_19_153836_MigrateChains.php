@@ -15,31 +15,31 @@ class MigrateChains extends Migration
         $lapsWithChain = 0;
         $startingLaps = 0;
 
-        echo "\nConverting old LAP chains to new format... \n";
+//        echo "\nConverting old LAP chains to new format... \n";
         /** @var \App\LearningActivityProducing $activity */
         foreach ($laps as $activity) {
             $chain = null;
-            if (null !== $activity->previousLearningActivityProducing) {
+            if ($activity->previousLearningActivityProducing !== null) {
                 $chain = $activity->previousLearningActivityProducing->chain;
-            } elseif (null !== $activity->nextLearningActivityProducing) {
+            } elseif ($activity->nextLearningActivityProducing !== null) {
                 $chain = $this->createChainForLap($activity);
                 ++$startingLaps;
             }
-            if (null !== $chain) {
+            if ($chain !== null) {
                 $activity->chain_id = $chain->id;
                 $activity->save();
                 ++$lapsWithChain;
 
-                if (0 === ($lapsWithChain % 25)) {
-                    echo '.';
+                if (($lapsWithChain % 25) === 0) {
+//                    echo '.';
                 }
-                if (0 === ($lapsWithChain % 250)) {
-                    echo " - ${lapsWithChain} \n";
+                if (($lapsWithChain % 250) === 0) {
+//                    echo " - ${lapsWithChain} \n";
                 }
             }
         }
 
-        echo "\n{$laps->count()} checked, {$lapsWithChain} in a chain, {$startingLaps} chains created\n";
+//        echo "\n{$laps->count()} checked, {$lapsWithChain} in a chain, {$startingLaps} chains created\n";
     }
 
     private function createChainForLap(App\LearningActivityProducing $learningActivityProducing): Chain
@@ -48,7 +48,7 @@ class MigrateChains extends Migration
         $wplp = $learningActivityProducing->workplaceLearningPeriod;
         $locale = $wplp->student->locale;
         $chain = new Chain();
-        $chain->name = ('nl' === $locale ? 'Keten' : 'Chain').' '.$learningActivityProducing->description;
+        $chain->name = ($locale === 'nl' ? 'Keten' : 'Chain').' '.$learningActivityProducing->description;
         $chain->status = Chain::STATUS_BUSY;
         $chain->wplp_id = $learningActivityProducing->wplp_id;
         $chain->save();
