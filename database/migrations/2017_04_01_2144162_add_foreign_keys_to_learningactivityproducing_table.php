@@ -27,13 +27,27 @@ class AddForeignKeysToLearningactivityproducingTable extends Migration
     public function down(): void
     {
         Schema::table('learningactivityproducing', function (Blueprint $table): void {
-            $table->dropForeign('fk_LearningActivityProducing_Category1');
-            $table->dropForeign('fk_LearningActivityProducing_Difficulty1');
-            $table->dropForeign('fk_LearningActivityProducing_LearningActivityProducing1');
-            $table->dropForeign('fk_LearningActivityProducing_ResourceMaterial1');
-            $table->dropForeign('fk_LearningActivityProducing_ResourcePerson1');
-            $table->dropForeign('fk_LearningActivityProducing_Status1');
-            $table->dropForeign('fk_LearningActivityProducing_WorkplaceLearningPeriod1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYPRODUCING_CATEGORY1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYPRODUCING_DIFFICULTY1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYPRODUCING_LEARNINGACTIVITYPRODUCING1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYPRODUCING_RESOURCEMATERIAL1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYPRODUCING_RESOURCEPERSON1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYPRODUCING_STATUS1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYPRODUCING_WORKPLACELEARNINGPERIOD1');
+            }
         });
     }
 }

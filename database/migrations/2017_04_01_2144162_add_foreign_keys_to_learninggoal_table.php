@@ -21,7 +21,9 @@ class AddForeignKeysToLearninggoalTable extends Migration
     public function down(): void
     {
         Schema::table('learninggoal', function (Blueprint $table): void {
-            $table->dropForeign('fk_LearningGoal_WorkplaceLearningPeriod1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGGOAL_WORKPLACELEARNINGPERIOD1');
+            }
         });
     }
 }

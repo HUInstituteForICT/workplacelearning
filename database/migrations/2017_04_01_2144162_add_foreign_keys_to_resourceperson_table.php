@@ -22,8 +22,12 @@ class AddForeignKeysToResourcepersonTable extends Migration
     public function down(): void
     {
         Schema::table('resourceperson', function (Blueprint $table): void {
-            $table->dropForeign('fk_ResourcePerson_EducationProgram1');
-            $table->dropForeign('fk_ResourcePerson_WorkplaceLearningPeriod1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_RESOURCEPERSON_EDUCATIONPROGRAM1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_RESOURCEPERSON_WORKPLACELEARNINGPERIOD1');
+            }
         });
     }
 }

@@ -21,7 +21,9 @@ class AddForeignKeysToDeadlineTable extends Migration
     public function down(): void
     {
         Schema::table('deadline', function (Blueprint $table): void {
-            $table->dropForeign('fk_Deadline_Student1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_DEADLINE_STUDENT1');
+            }
         });
     }
 }

@@ -21,7 +21,9 @@ class AddForeignKeysToTimeslotTable extends Migration
     public function down(): void
     {
         Schema::table('timeslot', function (Blueprint $table): void {
-            $table->dropForeign('fk_Timeslot_EducationProgram1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_TIMESLOT_EDUCATIONPROGRAM1');
+            }
         });
     }
 }

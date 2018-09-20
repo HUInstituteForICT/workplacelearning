@@ -187,7 +187,9 @@ class AddCohortIdToModels extends Migration
         Schema::table('category', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
-            $table->dropForeign('Fk_Category_Cohort');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_CATEGORY_COHORT');
+            }
             $table->dropColumn('cohort_id');
 
             Schema::enableForeignKeyConstraints();
@@ -196,7 +198,9 @@ class AddCohortIdToModels extends Migration
         Schema::table('competence', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
-            $table->dropForeign('Fk_Cohort_Competence');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_COHORT_COMPETENCE');
+            }
             $table->dropColumn('cohort_id');
 
             Schema::enableForeignKeyConstraints();
@@ -205,7 +209,9 @@ class AddCohortIdToModels extends Migration
         Schema::table('competence_descriptions', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
-            $table->dropForeign('Fk_Cohort_CompetenceDescriptions');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_COHORT_COMPETENCEDESCRIPTIONS');
+            }
             $table->dropColumn('cohort_id');
 
             Schema::enableForeignKeyConstraints();
@@ -214,7 +220,9 @@ class AddCohortIdToModels extends Migration
         Schema::table('resourceperson', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
-            $table->dropForeign('Fk_Cohort_ResourcePerson');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_COHORT_RESOURCEPERSON');
+            }
             $table->dropColumn('cohort_id');
 
             Schema::enableForeignKeyConstraints();
@@ -223,7 +231,9 @@ class AddCohortIdToModels extends Migration
         Schema::table('timeslot', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
-            $table->dropForeign('Fk_Cohort_Timeslot');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_COHORT_TIMESLOT');
+            }
             $table->dropColumn('cohort_id');
 
             Schema::enableForeignKeyConstraints();
@@ -232,7 +242,9 @@ class AddCohortIdToModels extends Migration
         Schema::table('workplacelearningperiod', function (Blueprint $table): void {
             Schema::disableForeignKeyConstraints();
 
-            $table->dropForeign('Fk_Cohort_Workplacelearningperiod');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_COHORT_WORKPLACELEARNINGPERIOD');
+            }
             $table->dropColumn('cohort_id');
 
             Schema::enableForeignKeyConstraints();

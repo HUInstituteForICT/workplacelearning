@@ -22,8 +22,12 @@ class AddForeignKeysToWorkplacelearningperiodTable extends Migration
     public function down(): void
     {
         Schema::table('workplacelearningperiod', function (Blueprint $table): void {
-            $table->dropForeign('fk_WorkplaceLearningPeriod_Student1');
-            $table->dropForeign('fk_WorkplaceLearningPeriod_Workplace1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_WORKPLACELEARNINGPERIOD_STUDENT1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_WORKPLACELEARNINGPERIOD_WORKPLACE1');
+            }
         });
     }
 }

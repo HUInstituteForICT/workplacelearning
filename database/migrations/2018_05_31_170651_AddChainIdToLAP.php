@@ -26,7 +26,9 @@ class AddChainIdToLAP extends Migration
     public function down(): void
     {
         Schema::table('learningactivityproducing', function (Blueprint $table): void {
-            $table->dropForeign('chain_to_lap');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('CHAIN_TO_LAP');
+            }
             $table->dropColumn('chain_id');
         });
     }

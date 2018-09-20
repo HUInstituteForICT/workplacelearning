@@ -33,8 +33,12 @@ class StudentTipViews extends Migration
     {
         Schema::table('student_tip_views', function (Blueprint $table): void {
             try {
-                $table->dropForeign('student_tip_views_to_student');
-                $table->dropForeign('student_tip_views_to_tip');
+                if (DB::getDriverName() !== 'sqlite') {
+                    $table->dropForeign('STUDENT_TIP_VIEWS_TO_STUDENT');
+                }
+                if (DB::getDriverName() !== 'sqlite') {
+                    $table->dropForeign('STUDENT_TIP_VIEWS_TO_TIP');
+                }
             } catch (\Exception $exception) {
                 // do nothing, foreign doesnt exist
             }

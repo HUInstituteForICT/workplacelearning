@@ -22,7 +22,9 @@ class AddForeignkeyEpIdToCategories extends Migration
     public function down(): void
     {
         Schema::table('category', function (Blueprint $table): void {
-            $table->dropForeign('fk_Category_EducationProgram');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_CATEGORY_EDUCATIONPROGRAM');
+            }
         });
     }
 }

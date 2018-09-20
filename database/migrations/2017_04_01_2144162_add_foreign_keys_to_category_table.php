@@ -21,7 +21,9 @@ class AddForeignKeysToCategoryTable extends Migration
     public function down(): void
     {
         Schema::table('category', function (Blueprint $table): void {
-            $table->dropForeign('fk_Category_WorkplaceLearningPeriod1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_CATEGORY_WORKPLACELEARNINGPERIOD1');
+            }
         });
     }
 }

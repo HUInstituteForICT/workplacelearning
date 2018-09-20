@@ -21,7 +21,9 @@ class AddForeignKeysToEducationprogramTable extends Migration
     public function down(): void
     {
         Schema::table('educationprogram', function (Blueprint $table): void {
-            $table->dropForeign('fk_EducationProgram_EducationProgramType1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_EDUCATIONPROGRAM_EDUCATIONPROGRAMTYPE1');
+            }
         });
     }
 }
