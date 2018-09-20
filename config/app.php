@@ -144,7 +144,7 @@ $config = [
         Illuminate\Redis\RedisServiceProvider::class,
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
-        Laravel\Tinker\TinkerServiceProvider::class,
+//        Laravel\Tinker\TinkerServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 //        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
