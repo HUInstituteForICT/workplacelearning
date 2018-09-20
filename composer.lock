@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ffe096caf9e4b5b02fcf317eb6207b6",
+    "content-hash": "cc9b9a72659fa990f1286e448d6b5f8d",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1342,16 +1342,16 @@
         },
         {
             "name": "phpoffice/phpword",
-            "version": "dev-develop",
+            "version": "0.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PHPWord.git",
-                "reference": "2bfd82e2293477a6046e4f3a015ba6c84c947c3a"
+                "reference": "dfa2f36cad2b632b7ab1c56473e4f5db9a7caf7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/2bfd82e2293477a6046e4f3a015ba6c84c947c3a",
-                "reference": "2bfd82e2293477a6046e4f3a015ba6c84c947c3a",
+                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/dfa2f36cad2b632b7ab1c56473e4f5db9a7caf7f",
+                "reference": "dfa2f36cad2b632b7ab1c56473e4f5db9a7caf7f",
                 "shasum": ""
             },
             "require": {
@@ -1447,7 +1447,7 @@
                 "word",
                 "writer"
             ],
-            "time": "2018-07-21T12:31:53+00:00"
+            "time": "2018-07-14T16:59:43+00:00"
         },
         {
             "name": "psr/container",
@@ -6280,9 +6280,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "phpoffice/phpword": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

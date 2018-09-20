@@ -12,7 +12,7 @@
         "laravel/framework": "5.7.*",
         "laravelcollective/html": "^5.7",
         "doctrine/dbal": "^2.5",
-        "phpoffice/phpword": "dev-develop",
+        "phpoffice/phpword": "^0.15",
         "mariuzzo/laravel-js-localization": "^1.4",
         "nanigans/single-table-inheritance": "0.8.*",
         "doctrine/common": "2.8.*",
