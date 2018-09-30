@@ -10,14 +10,17 @@ namespace App\Http\Controllers;
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 
 use App\Category;
+use App\Http\Requests\Workplace\ActingLearningGoalsUpdateRequest;
 use App\Http\Requests\Workplace\ActingWorkplaceCreateRequest;
 use App\Http\Requests\Workplace\ActingWorkplaceUpdateRequest;
-use App\LearningGoal;
 use App\Repository\Eloquent\CohortRepository;
 use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
 use App\Repository\Eloquent\WorkplaceRepository;
+use App\Services\CurrentPeriodResolver;
 use App\Services\CurrentUserResolver;
 use App\Services\Factories\ActingWorkplaceFactory;
+use App\Services\Factories\LearningGoalFactory;
+use App\Services\LearningGoalUpdater;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Contracts\View\View;
@@ -94,73 +97,30 @@ class ActingWorkplaceLearningController
         return $redirector->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
-    public function updateLearningGoals(Request $request, $id)
-    {
-        // Verify the given ID is valid and belongs to the student
-        $belongsToStudent = false;
-        foreach (Auth::user()->workplacelearningperiods()->get() as $ip) {
-            if ($ip->wplp_id == $id) {
-                $belongsToStudent = true;
-                break;
-            }
-        }
-        if (!$belongsToStudent) {
-            return redirect()->route('profile')->withErrors(Lang::get('general.profile-permission'));
-        } // $id is invalid or does not belong to the student
-
-        $validator = Validator::make($request->all(), [
-            'learninggoal_name.*'        => 'required|min:3|max:50',
-            'learninggoal_description.*' => 'required|min:3, max:1000',
-        ]);
-        $validator->sometimes(
-            'new_learninggoal_name',
-            'required|min:3|max:50',
-            function ($input) {
-                return strlen($input->new_learninggoal_name) > 0;
-            }
-        );
-
-        $validator->sometimes(
-            'new_learninggoal_description',
-            'required|min:3|max:1000',
-            function ($input) {
-                return strlen($input->new_learninggoal_name) > 0;
-            }
-        );
-
-        if ($validator->fails()) {
-            // Noes. errors occurred. Exit back to profile page with errors
-            return redirect()
-                ->route('period-acting-edit', ['id' => $id])
-                ->withErrors($validator)
-                ->withInput();
-        }
-        if (isset($request['learninggoal_name'])) {
-            foreach ($request['learninggoal_name'] as $lg_id => $name) {
-                $learningGoal = LearningGoal::find($lg_id);
-                $description = $request['learninggoal_description'][$lg_id];
-                if (is_null($learningGoal)) {
-                    $learningGoal = new LearningGoal();
-                    $learningGoal->wplp_id = $id;
-                }
-                $learningGoal->learninggoal_label = $name;
-                $learningGoal->description = $description;
-                $learningGoal->save();
-            }
+    public function updateLearningGoals(
+        ActingLearningGoalsUpdateRequest $request,
+        LearningGoalUpdater $learningGoalUpdater,
+        LearningGoalFactory $learningGoalFactory,
+        CurrentPeriodResolver $currentPeriodResolver,
+        Redirector $redirector
+    ): RedirectResponse {
+        if ($request->has('learningGoal')) {
+            $learningGoalUpdater->updateLearningGoals($request->get('learningGoal'));
         }
 
-        if (strlen($request['new_learninggoal_name']) > 0) {
-            $learningGoal = new LearningGoal();
-            $learningGoal->learninggoal_label = $request['new_learninggoal_name'];
-            $learningGoal->description = $request['new_learninggoal_description'];
-            $learningGoal->wplp_id = $id;
-            $learningGoal->save();
+        if ($request->has('new_learninggoal_name') && \strlen($request->get('new_learninggoal_name')) > 0) {
+            $learningGoalFactory->createLearningGoal([
+                'label'       => $request->get('new_learninggoal_name'),
+                'description' => $request->get('new_learninggoal_description'),
+                'wplp_id'     => $currentPeriodResolver->getPeriod()->wplp_id,
+            ]);
         }
 
         // Done, redirect back to profile page
-        return redirect()->route('period-acting-edit', ['id' => $id])->with(
+        return $redirector->route('period-acting-edit',
+            ['workplaceLearningPeriod' => $currentPeriodResolver->getPeriod()->wplp_id])->with(
             'success',
-            Lang::get('general.edit-saved')
+            __('general.edit-saved')
         );
     }
 

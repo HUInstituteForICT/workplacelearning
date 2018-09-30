@@ -17,6 +17,11 @@ class LearningGoalRepository
         return $learningGoal->save();
     }
 
+    public function update(LearningGoal $learningGoal, array $data): bool
+    {
+        return $learningGoal->update($data);
+    }
+
     public function learningGoalsAvailableForStudent(Student $student): array
     {
         return $student->getCurrentWorkplaceLearningPeriod()->learningGoals()

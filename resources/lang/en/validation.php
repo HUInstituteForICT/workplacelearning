@@ -99,6 +99,14 @@ return array(
     'learning_goal' => array(
       'exists' => 'The selected :attribute is invalid',
     ),
+    'learningGoal.*.label' => [
+        'min' => 'The label for a learning goal must at be 3 characters or longer.',
+        'max' => 'The label for a learning goal cannot be longer than 50 characters.',
+    ],
+    'learningGoal.*.description' => [
+        'min' => 'The description for a learning goal must at be 3 characters or longer.',
+        'max' => 'The description for a learning goal cannot be longer than 1000 characters.',
+    ],
     'res_material_detail' => array(
       'required_unless' => 'The :attribute field is required.',
     ),

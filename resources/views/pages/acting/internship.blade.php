@@ -140,7 +140,7 @@
         <div class="row">
             <!-- Learning Goals -->
             <div class="col-lg-6">
-                {!! Form::open(array('url' => route('learninggoals-update', ['id' => $period->wplp_id]), 'class' => 'form form-horizontal well')) !!}
+                {!! Form::open(array('url' => route('learninggoals-update'), 'class' => 'form form-horizontal well')) !!}
                 <h3>{{ Lang::get('elements.profile.learninggoals.title') }}</h3>
                 <table class="table blockTable">
                     <thead class="blue_tile">
@@ -155,8 +155,8 @@
                     @foreach($learninggoals as $goal)
                         <tr>
                             <td>{{ Lang::get('general.learninggoal') }} {{ $i }}</td>
-                            <td><input type="text" name="learninggoal_name[{{ $goal->learninggoal_id }}]" value="{{ (!is_null(old('learninggoal_name.'.$goal->learninggoal_id))) ? old('learninggoal_name.'.$goal->learninggoal_id) : $goal->learninggoal_label }}" /></td>
-                            <td><textarea class="form-control" name="learninggoal_description[{{ $goal->learninggoal_id }}]">{{ (!is_null(old('learninggoal_description.'.$goal->learninggoal_id))) ? old('learninggoal_description.'.$goal->learninggoal_id) : $goal->description }}</textarea></td>
+                            <td><input type="text" name="learningGoal[{{ $goal->learninggoal_id }}][label]" value="{{ old('learningGoal.'.$goal->learninggoal_id.'.label', $goal->learninggoal_label) }}" /></td>
+                            <td><textarea class="form-control" name="learningGoal[{{ $goal->learninggoal_id }}][description]">{{ old('learningGoal.'.$goal->learninggoal_id.'.description', $goal->description) }}</textarea></td>
                         </tr>
                         <?php ++$i; ?>
                     @endforeach

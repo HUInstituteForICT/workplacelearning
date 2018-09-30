@@ -170,8 +170,9 @@ Route::group([
     Route::post('categorie/update/{id}',
         'ProducingWorkplaceLearningController@updateCategories')->name('categories-update')->where('id', '[0-9]*');
     // Learning Goal updating
-    Route::post('learninggoal/update/{id}',
-        'ActingWorkplaceLearningController@updateLearningGoals')->name('learninggoals-update')->where('id', '[0-9]*');
+    Route::post('learninggoal/update', 'ActingWorkplaceLearningController@updateLearningGoals')
+        ->middleware(RequireActiveInternship::class)
+        ->name('learninggoals-update');
 
     // Calendar Creation
     Route::get('deadline', 'CalendarController@show')->name('deadline');

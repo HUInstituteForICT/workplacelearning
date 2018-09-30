@@ -101,6 +101,14 @@ return array(
     'learning_goal' => array(
       'exists' => 'De geselecteerde :attribute is ongeldig',
     ),
+    'learningGoal.*.label' => [
+        'min' => 'Het label voor een leerdoel moet minimaal 3 karakters lang zijn.',
+        'max' => 'Het label voor een leerdoel mag maximaal 50 karakters lang zijn.',
+    ],
+    'learningGoal.*.description' => [
+        'min' => 'De omschrijving voor een leerdoel moet minimaal 3 karakters lang zijn.',
+        'max' => 'De omschrijving voor een leerdoel mag maximaal 1000 karakters lang zijn.',
+    ],
     'res_material_detail' => array(
       'required_unless' => 'Het :attribute veld is verplicht.',
     ),
