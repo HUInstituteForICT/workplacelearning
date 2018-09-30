@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\WorkplaceLearningPeriod.
@@ -87,9 +86,9 @@ class WorkplaceLearningPeriod extends Model
         return $this->belongsTo(Student::class, 'student_id', 'student_id');
     }
 
-    public function workplace(): HasOne
+    public function workplace(): BelongsTo
     {
-        return $this->hasOne(Workplace::class, 'wp_id', 'wp_id');
+        return $this->belongsTo(Workplace::class);
     }
 
     public function categories(): HasMany
@@ -147,13 +146,6 @@ class WorkplaceLearningPeriod extends Model
             ->where('status_id', '=', '2')
             ->orderBy('date', 'asc')
             ->orderBy('lap_id', 'desc')
-            ->get();
-    }
-
-    public function getLearningGoals(): Collection
-    {
-        return $this->learningGoals()
-            ->orderBy('learninggoal_id', 'asc')
             ->get();
     }
 

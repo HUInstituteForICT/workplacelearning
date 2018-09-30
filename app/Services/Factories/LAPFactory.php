@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Factories;
 
 use App\Category;
 use App\Chain;

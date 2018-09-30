@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Factories;
 
 use App\LearningActivityActing;
 use App\LearningGoal;
 use App\ResourceMaterial;
 use App\ResourcePerson;
+use App\Services\CurrentUserResolver;
 use App\Timeslot;
 use Carbon\Carbon;
 

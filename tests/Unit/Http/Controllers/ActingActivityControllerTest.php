@@ -10,7 +10,7 @@ use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Services\AvailableActingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
 use App\Services\EvidenceUploadHandler;
-use App\Services\LAAFactory;
+use App\Services\Factories\LAAFactory;
 use App\Services\LAAUpdater;
 use App\Services\LearningActivityActingExportBuilder;
 use App\Student;

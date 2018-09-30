@@ -25,6 +25,8 @@ namespace App\Tips\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic whereStatisticVariableTwoId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic whereType($value)
  * @mixin \Eloquent
+ *
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Tips\Models\TipCoupledStatistic[] $coupledStatistics
  */
 class CustomStatistic extends Statistic
 {

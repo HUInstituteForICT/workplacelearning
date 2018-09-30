@@ -1,9 +1,5 @@
 <?php
-/**
- * This file (internship.blade.php) was created on 06/22/2016 at 23:59.
- * (C) Max Cassee
- * This project was commissioned by HU University of Applied Sciences.
- */
+/** @var \App\WorkplaceLearningPeriod $period */
 ?>
 
 @extends('layout.HUdefault')
@@ -113,18 +109,19 @@
                     <div class="form-group">
                         {!! Form::label('cohort', Lang::get('elements.profile.internships.cohort'), array('class' => 'col-lg-4 control-label')) !!}
                         <div class="col-lg-6">
-                            <select @if($period->cohort !== null) readonly="true" disabled @endif class="form-control" name="cohort">
-                                @foreach($cohorts as $cohort)
 
-                                    @if(is_null($period->cohort))
-                                        <option @if(old('cohort') == $cohort->id) selected @endif value="{{ $cohort->id }}">{{ $cohort->name }}</option>
-                                    @else
-                                        <option @if($period->cohort->id == $cohort->id) selected @endif value="{{ $cohort->id }}">{{ $cohort->name }}</option>
-                                    @endif
-
-
-                                @endforeach
-                            </select>
+                            @if($period->cohort === null)
+                                <select class="form-control" name="cohort">
+                                    @foreach($cohorts as $cohort)
+                                        <option @if(old('cohort') === $cohort->id) selected
+                                                @endif value="{{ $cohort->id }}">{{ $cohort->name }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <select readonly="true" disabled class="form-control" name="cohort">
+                                        <option selected value="{{ $period->cohort->id }}">{{ $period->cohort->name }}</option>
+                                </select>
+                            @endif
                         </div>
                         <div class="col-lg-2">
                             <input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" />

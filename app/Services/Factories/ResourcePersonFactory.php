@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Factories;
 
 use App\ResourcePerson;
+use App\Services\CurrentUserResolver;
 
 class ResourcePersonFactory
 {

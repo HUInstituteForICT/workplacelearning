@@ -14,7 +14,7 @@ use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
 use App\LearningActivityProducing;
 use App\LearningActivityProducingExportBuilder;
 use App\Services\CurrentUserResolver;
-use App\Services\LAPFactory;
+use App\Services\Factories\LAPFactory;
 use App\Services\LAPUpdater;
 use App\Status;
 use Carbon\Carbon;

@@ -26,6 +26,8 @@ use App\Tips\Statistics\PredefinedStatisticHelper;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereStatisticVariableTwoId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereType($value)
  * @mixin \Eloquent
+ *
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Tips\Models\TipCoupledStatistic[] $coupledStatistics
  */
 class PredefinedStatistic extends Statistic
 {

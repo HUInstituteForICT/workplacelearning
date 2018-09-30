@@ -5,170 +5,102 @@
  * This project was commissioned by HU University of Applied Sciences.
  */
 
-namespace app\Http\Controllers;
+namespace App\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 
 use App\Category;
-use App\Cohort;
+use App\Http\Requests\Workplace\ActingWorkplaceCreateRequest;
+use App\LearningGoal;
+use App\Repository\Eloquent\CohortRepository;
+use App\Services\CurrentUserResolver;
+use App\Services\Factories\ActingWorkplaceFactory;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
-use App\LearningGoal;
-use http\Exception\InvalidArgumentException;
-use Illuminate\Support\Collection;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Validator;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 
-class ActingWorkplaceLearningController extends Controller
+class ActingWorkplaceLearningController
 {
-    public function show()
+    /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
+
+    public function __construct(CurrentUserResolver $currentUserResolver)
+    {
+        $this->currentUserResolver = $currentUserResolver;
+    }
+
+    public function show(CohortRepository $cohortRepository): View
     {
         $workplace = new Workplace();
         $workplace->country = trans('general.netherlands');
 
+        $student = $this->currentUserResolver->getCurrentUser();
+        $cohorts = $cohortRepository->cohortsAvailableForStudent($student);
+
         return view('pages.acting.internship')
             ->with('period', new WorkplaceLearningPeriod())
             ->with('workplace', $workplace)
-            ->with('cohorts', Auth::user()->educationProgram->cohorts()->where('disabled', '=', 0)->get());
+            ->with('cohorts', $cohorts);
     }
 
-    public function edit(int $id)
-    {
-        $wplPeriod = WorkplaceLearningPeriod::find($id);
-        if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
-            return redirect()->route('profile')
-                ->with('error', Lang::get('errors.internship-no-permission'));
-        }
+    public function create(
+        ActingWorkplaceCreateRequest $request,
+        ActingWorkplaceFactory $actingWorkplaceFactory,
+        Redirector $redirector
+    ): RedirectResponse {
+        $actingWorkplaceFactory->createEntities($request->all());
 
-        return view('pages.acting.internship')
-                ->with('period', $wplPeriod)
-                ->with('workplace', Workplace::find($wplPeriod->wp_id))
-                ->with('learninggoals', $wplPeriod->getLearningGoals())
-                ->with('resource', new Collection())
-                ->with('cohorts', collect($wplPeriod->cohort()->get()));
+        return $redirector->route('profile')->with('success', __('general.edit-saved'));
     }
 
-    public function create(Request $request)
+    public function edit(WorkplaceLearningPeriod $workplaceLearningPeriod)
     {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
-            'companyName' => 'required|max:255|min:3',
-            'companyStreet' => 'required|max:45|min:3',
-            'companyHousenr' => 'required|max:9|min:1',
+        $workplace = $workplaceLearningPeriod->workplace;
 
-            'companyPostalcode' => 'required|postalcode',
-            'companyLocation' => 'required|max:255|min:3',
-            'companyCountry' => 'required|max:255|min:2',
-            'contactPerson' => 'required|max:255|min:3',
-            'contactPhone' => 'required',
-            'contactEmail' => 'required|email|max:255',
-            'numdays' => 'required|integer|min:1',
-            'startdate' => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
-            'enddate' => 'required|date|after:startdate',
-            'internshipAssignment' => 'required|min:15|max:500',
-            'isActive' => 'sometimes|required|in:1,0',
-            'cohort' => 'required|exists:cohorts,id',
+        return view('pages.acting.internship', [
+            'period'        => $workplaceLearningPeriod,
+            'workplace'     => $workplace,
+            'learninggoals' => $workplaceLearningPeriod->learningGoals,
         ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->route('period-acting-create')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $cohort = Cohort::find($request['cohort']);
-
-        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id || 1 === $cohort->disabled) {
-            throw new InvalidArgumentException('Unknown cohort');
-        }
-
-        // Pass. Create the internship and period.
-        $wplPeriod = new WorkplaceLearningPeriod();
-        $wplPeriod->hours_per_day = 7.5; // Although not used in acting, still set it as its not nullable in DB
-        $workplace = new Workplace();
-
-        // Todo use model->fill($request)
-        // Save the workplace first
-        $workplace->wp_name = $request['companyName'];
-        $workplace->street = $request['companyStreet'];
-        $workplace->housenr = $request['companyHousenr'];
-        $workplace->postalcode = $request['companyPostalcode'];
-        $workplace->town = $request['companyLocation'];
-        $workplace->country = $request['companyCountry'];
-        $workplace->contact_name = $request['contactPerson'];
-        $workplace->contact_email = $request['contactEmail'];
-        $workplace->contact_phone = $request['contactPhone'];
-        $workplace->numberofemployees = 0;
-        $workplace->save();
-
-        // Todo use model->fill($workplace)
-        $wplPeriod->student_id = Auth::user()->student_id;
-        $wplPeriod->wp_id = $workplace->wp_id;
-        $wplPeriod->startdate = $request['startdate'];
-        $wplPeriod->enddate = $request['enddate'];
-        $wplPeriod->nrofdays = $request['numdays'];
-        $wplPeriod->description = $request['internshipAssignment'];
-        $wplPeriod->cohort()->associate($cohort);
-        $wplPeriod->save();
-
-        // Create unplanned learning as default learning goal
-        $learningGoal = new LearningGoal();
-        $learningGoal->learninggoal_label = Lang::get('general.default.learninggoal_label');
-        $learningGoal->description = Lang::get('general.default.learninggoal_desc');
-        $learningGoal->wplp_id = $wplPeriod->wplp_id;
-        $learningGoal->save();
-
-        // Creating default learning goals for internship period
-        for ($i = 1; $i < 4; ++$i) {
-            $learningGoal = new LearningGoal();
-            $learningGoal->learninggoal_label = sprintf(Lang::get('activity.learningquestion').' %s', $i);
-            $learningGoal->description = sprintf(Lang::get('general.default.learninggoal_desc_placeholder').' %s', $i);
-            $learningGoal->wplp_id = $wplPeriod->wplp_id;
-            $learningGoal->save();
-        }
-
-        // Set the user setting to the current Internship ID
-        if (1 == $request['isActive']) {
-            Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
-        }
-
-        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, WorkplaceLearningPeriod $wplPeriod)
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'companyName' => 'required|max:255|min:3',
-            'companyStreet' => 'required|max:45|min:3',
+            'companyName'    => 'required|max:255|min:3',
+            'companyStreet'  => 'required|max:45|min:3',
             'companyHousenr' => 'required|max:4|min:1',
 
-            'companyPostalcode' => 'required|postalcode',
-            'companyLocation' => 'required|max:255|min:3',
-            'companyCountry' => 'required|max:255|min:2',
-            'contactPerson' => 'required|max:255|min:3',
-            'contactPhone' => 'required',
-            'contactEmail' => 'required|email|max:255',
-            'numdays' => 'required|integer|min:1',
-            'startdate' => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
-            'enddate' => 'required|date|after:startdate',
+            'companyPostalcode'    => 'required|postalcode',
+            'companyLocation'      => 'required|max:255|min:3',
+            'companyCountry'       => 'required|max:255|min:2',
+            'contactPerson'        => 'required|max:255|min:3',
+            'contactPhone'         => 'required',
+            'contactEmail'         => 'required|email|max:255',
+            'numdays'              => 'required|integer|min:1',
+            'startdate'            => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
+            'enddate'              => 'required|date|after:startdate',
             'internshipAssignment' => 'required|min:15|max:500',
-            'isActive' => 'sometimes|required|in:1,0',
+            'isActive'             => 'sometimes|required|in:1,0',
         ]);
 
         if ($validator->fails()) {
             return redirect()
-                ->route('period-acting-edit', ['id' => $id])
+                ->route('period-acting-edit', ['workplaceLearningPeriod' => $wplPeriod])
                 ->withErrors($validator)
                 ->withInput();
         }
 
         // Input is valid. Attempt to fetch the WPLP and validate it belongs to the user
-        $wplPeriod = WorkplaceLearningPeriod::find($id);
         if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
             return redirect()->route('profile')
                 ->with('error', Lang::get('errors.internship-no-permission'));
@@ -201,7 +133,7 @@ class ActingWorkplaceLearningController extends Controller
         $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if (1 == $request['isActive']) {
+        if ($request['isActive'] == 1) {
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
@@ -223,7 +155,7 @@ class ActingWorkplaceLearningController extends Controller
         } // $id is invalid or does not belong to the student
 
         $validator = Validator::make($request->all(), [
-            'learninggoal_name.*' => 'required|min:3|max:50',
+            'learninggoal_name.*'        => 'required|min:3|max:50',
             'learninggoal_description.*' => 'required|min:3, max:1000',
         ]);
         $validator->sometimes(
@@ -298,8 +230,8 @@ class ActingWorkplaceLearningController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'cat.*.wplp_id' => 'required|digits_between:1,5',
-            'cat.*.cg_id' => 'required|digits_between:1,5',
+            'cat.*.wplp_id'  => 'required|digits_between:1,5',
+            'cat.*.cg_id'    => 'required|digits_between:1,5',
             'cat.*.cg_label' => 'required|min:3|max:50',
         ]);
         if ($validator->fails()) {
@@ -326,10 +258,5 @@ class ActingWorkplaceLearningController extends Controller
                 'succes',
                 Lang::get('general.edit-saved')
             );
-    }
-
-    public function __construct()
-    {
-        $this->middleware('auth');
     }
 }

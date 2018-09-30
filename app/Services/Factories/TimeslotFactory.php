@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Factories;
 
+use App\Services\CurrentUserResolver;
 use App\Timeslot;
 
 class TimeslotFactory

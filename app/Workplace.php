@@ -12,18 +12,18 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Workplace.
  *
- * @property int                                                                     $wp_id
- * @property string                                                                  $wp_name
- * @property string                                                                  $street
- * @property string                                                                  $housenr
- * @property string                                                                  $postalcode
- * @property string                                                                  $town
- * @property string                                                                  $country
- * @property string                                                                  $contact_name
- * @property string                                                                  $contact_email
- * @property string                                                                  $contact_phone
- * @property int                                                                     $numberofemployees
- * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[] $internshipperiod
+ * @property int                                                                $wp_id
+ * @property string                                                             $wp_name
+ * @property string                                                             $street
+ * @property string                                                             $housenr
+ * @property string                                                             $postalcode
+ * @property string                                                             $town
+ * @property string                                                             $country
+ * @property string                                                             $contact_name
+ * @property string                                                             $contact_email
+ * @property string                                                             $contact_phone
+ * @property int                                                                $numberofemployees
+ * @property \Illuminate\Database\Eloquent\Collection|WorkplaceLearningPeriod[] $internshipperiod
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereContactEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereContactName($value)
@@ -37,6 +37,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereWpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereWpName($value)
  * @mixin \Eloquent
+ *
+ * @property \App\WorkplaceLearningPeriod $workplaceLearningPeriod
  */
 class Workplace extends Model
 {
@@ -62,8 +64,13 @@ class Workplace extends Model
         'numberofemployees',
     ];
 
-    public function internshipperiod()
+    public function internshipperiod(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(\App\WorkplaceLearningPeriod::class, 'wp_id', 'wp_id');
+        return $this->hasMany(WorkplaceLearningPeriod::class, 'wp_id', 'wp_id');
+    }
+
+    public function workplaceLearningPeriod(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(WorkplaceLearningPeriod::class);
     }
 }

@@ -17,9 +17,6 @@ class LearningGoalRepository
         return $learningGoal->save();
     }
 
-    /**
-     * @return LearningGoal[]
-     */
     public function learningGoalsAvailableForStudent(Student $student): array
     {
         return $student->getCurrentWorkplaceLearningPeriod()->learningGoals()

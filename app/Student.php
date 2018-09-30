@@ -48,6 +48,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereStudentnr($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereUserlevel($value)
  * @mixin \Eloquent
+ *
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Cohort[] $cohorts
  */
 class Student extends Authenticatable
 {
