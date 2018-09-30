@@ -50,7 +50,7 @@ class ActingWorkplaceFactory
 
         if ((int) $data['isActive'] === 1) {
             $student = $this->currentUserResolver->getCurrentUser();
-            $student->setUserSetting('active_internship', $workplaceLearningPeriod->wplp_id);
+            $student->setActiveWorkplaceLearningPeriod($workplaceLearningPeriod);
         }
     }
 

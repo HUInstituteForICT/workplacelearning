@@ -11,8 +11,11 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Requests\Workplace\ActingWorkplaceCreateRequest;
+use App\Http\Requests\Workplace\ActingWorkplaceUpdateRequest;
 use App\LearningGoal;
 use App\Repository\Eloquent\CohortRepository;
+use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
+use App\Repository\Eloquent\WorkplaceRepository;
 use App\Services\CurrentUserResolver;
 use App\Services\Factories\ActingWorkplaceFactory;
 use App\Workplace;
@@ -72,72 +75,23 @@ class ActingWorkplaceLearningController
         ]);
     }
 
-    public function update(Request $request, WorkplaceLearningPeriod $wplPeriod)
-    {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
-            'companyName'    => 'required|max:255|min:3',
-            'companyStreet'  => 'required|max:45|min:3',
-            'companyHousenr' => 'required|max:4|min:1',
+    public function update(
+        ActingWorkplaceUpdateRequest $request,
+        WorkplaceLearningPeriod $workplaceLearningPeriod,
+        Redirector $redirector,
+        WorkplaceRepository $workplaceRepository,
+        WorkplaceLearningPeriodRepository $workplaceLearningPeriodRepository
+    ): RedirectResponse {
+        $workplaceRepository->update($workplaceLearningPeriod->workplace, $request->all());
 
-            'companyPostalcode'    => 'required|postalcode',
-            'companyLocation'      => 'required|max:255|min:3',
-            'companyCountry'       => 'required|max:255|min:2',
-            'contactPerson'        => 'required|max:255|min:3',
-            'contactPhone'         => 'required',
-            'contactEmail'         => 'required|email|max:255',
-            'numdays'              => 'required|integer|min:1',
-            'startdate'            => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
-            'enddate'              => 'required|date|after:startdate',
-            'internshipAssignment' => 'required|min:15|max:500',
-            'isActive'             => 'sometimes|required|in:1,0',
-        ]);
+        $workplaceLearningPeriodRepository->update($workplaceLearningPeriod, $request->all());
 
-        if ($validator->fails()) {
-            return redirect()
-                ->route('period-acting-edit', ['workplaceLearningPeriod' => $wplPeriod])
-                ->withErrors($validator)
-                ->withInput();
+        if ((int) $request->get('isActive') === 1) {
+            $student = $this->currentUserResolver->getCurrentUser();
+            $student->setActiveWorkplaceLearningPeriod($workplaceLearningPeriod);
         }
 
-        // Input is valid. Attempt to fetch the WPLP and validate it belongs to the user
-        if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
-            return redirect()->route('profile')
-                ->with('error', Lang::get('errors.internship-no-permission'));
-        }
-
-        // Succes. Also fetch the associated Workplace Eloquent object and update
-        $workplace = Workplace::find($wplPeriod->wp_id);
-
-        // Todo use model->fill($request)
-        // Save the workplace first
-        $workplace->wp_name = $request['companyName'];
-        $workplace->street = $request['companyStreet'];
-        $workplace->housenr = $request['companyHousenr'];
-        $workplace->postalcode = $request['companyPostalcode'];
-        $workplace->town = $request['companyLocation'];
-        $workplace->country = $request['companyCountry'];
-        $workplace->contact_name = $request['contactPerson'];
-        $workplace->contact_email = $request['contactEmail'];
-        $workplace->contact_phone = $request['contactPhone'];
-        $workplace->numberofemployees = 0;
-        $workplace->save();
-
-        // Todo use model->fill($request)
-        $wplPeriod->student_id = Auth::user()->student_id;
-        $wplPeriod->wp_id = $workplace->wp_id;
-        $wplPeriod->startdate = $request['startdate'];
-        $wplPeriod->enddate = $request['enddate'];
-        $wplPeriod->nrofdays = $request['numdays'];
-        $wplPeriod->description = $request['internshipAssignment'];
-        $wplPeriod->save();
-
-        // Set the user setting to the current Internship ID
-        if ($request['isActive'] == 1) {
-            Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
-        }
-
-        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
+        return $redirector->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
     public function updateLearningGoals(Request $request, $id)

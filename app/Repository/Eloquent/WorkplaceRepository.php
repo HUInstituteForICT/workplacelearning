@@ -15,4 +15,19 @@ class WorkplaceRepository
     {
         return $workplace->save();
     }
+
+    public function update(Workplace $workplace, array $data): bool
+    {
+        $workplace->wp_name = $data['companyName'];
+        $workplace->street = $data['companyStreet'];
+        $workplace->housenr = $data['companyHousenr'];
+        $workplace->postalcode = $data['companyPostalcode'];
+        $workplace->town = $data['companyLocation'];
+        $workplace->country = $data['companyCountry'];
+        $workplace->contact_name = $data['contactPerson'];
+        $workplace->contact_email = $data['contactEmail'];
+        $workplace->contact_phone = $data['contactPhone'];
+
+        return $workplace->save();
+    }
 }

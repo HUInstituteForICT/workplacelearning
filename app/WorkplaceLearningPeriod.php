@@ -88,7 +88,7 @@ class WorkplaceLearningPeriod extends Model
 
     public function workplace(): BelongsTo
     {
-        return $this->belongsTo(Workplace::class);
+        return $this->belongsTo(Workplace::class, 'wp_id', 'wp_id');
     }
 
     public function categories(): HasMany
