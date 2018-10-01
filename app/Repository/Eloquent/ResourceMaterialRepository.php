@@ -9,7 +9,7 @@ class ResourceMaterialRepository
 {
     public function get(int $id): ResourceMaterial
     {
-        return (new ResourceMaterial())::findOrFail($id);
+        return ResourceMaterial::findOrFail($id);
     }
 
     public function save(ResourceMaterial $resourceMaterial): bool

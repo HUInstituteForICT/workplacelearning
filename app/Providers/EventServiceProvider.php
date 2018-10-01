@@ -2,25 +2,20 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
+use App\Events\LearningActivityProducingCreated;
+use App\Listeners\AttachBusyActivityToNewChain;
+use App\Listeners\CreateFeedbackIfNecessary;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var array
-     */
     protected $listen = [
-        'App\Events\SomeEvent' => [
-            'App\Listeners\EventListener',
+        LearningActivityProducingCreated::class => [
+            AttachBusyActivityToNewChain::class,
+            CreateFeedbackIfNecessary::class,
         ],
     ];
 
-    /**
-     * Register any events for your application.
-     */
     public function boot(): void
     {
         parent::boot();

@@ -2,52 +2,33 @@
 
 namespace App\Services\Factories;
 
-use App\Category;
-use App\Chain;
-use App\ChainManager;
-use App\Difficulty;
-use App\Feedback;
 use App\LearningActivityProducing;
-use App\ResourceMaterial;
-use App\ResourcePerson;
-use App\Status;
+use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Services\CurrentPeriodResolver;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class LAPFactory
 {
     /**
-     * @var ChainManager
+     * @var CurrentPeriodResolver
      */
-    private $chainManager;
-    private $data;
+    private $currentPeriodResolver;
     /**
-     * @var ResourcePersonFactory
+     * @var LearningActivityProducingRepository
      */
-    private $resourcePersonFactory;
-    /**
-     * @var CategoryFactory
-     */
-    private $categoryFactory;
+    private $learningActivityProducingRepository;
 
     public function __construct(
-        ChainManager $chainManager,
-        ResourcePersonFactory $resourcePersonFactory,
-        CategoryFactory $categoryFactory
+        CurrentPeriodResolver $currentPeriodResolver,
+        LearningActivityProducingRepository $learningActivityProducingRepository
     ) {
-        $this->chainManager = $chainManager;
-        $this->resourcePersonFactory = $resourcePersonFactory;
-        $this->categoryFactory = $categoryFactory;
+        $this->currentPeriodResolver = $currentPeriodResolver;
+        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
     }
 
     public function createLAP(array $data): LearningActivityProducing
     {
-        $this->data = $data;
-        if ($data['resource'] === 'new') {
-            $data['resource'] = 'other';
-        }
-
-        $category = $this->getCategory($data['category_id']);
+        $currentPeriod = $this->currentPeriodResolver->getPeriod();
 
         $learningActivityProducing = new LearningActivityProducing();
         $learningActivityProducing->description = $data['omschrijving'];
@@ -57,67 +38,29 @@ class LAPFactory
         $learningActivityProducing->date = Carbon::parse($data['datum'])->format('Y-m-d');
 
         // Set relations
-        $learningActivityProducing->workplaceLearningPeriod()->associate(Auth::user()->getCurrentWorkplaceLearningPeriod());
-        $learningActivityProducing->category()->associate($category);
-        $learningActivityProducing->difficulty()->associate((new Difficulty())->findOrFail($data['moeilijkheid']));
-        $learningActivityProducing->status()->associate((new Status())->findOrFail($data['status']));
-
-        $chainId = ((int) $data['chain_id']);
-        if ($chainId !== -1) {
-            $chain = (new Chain())->find($data['chain_id']);
-            $learningActivityProducing->chain()->associate($chain);
-        } elseif ($chainId === -1 && $learningActivityProducing->status->isBusy()) {
-            $chain = $this->chainManager->createChain(__('New chain').' - '.substr($learningActivityProducing->description, 0, 15));
-            $learningActivityProducing->chain()->associate($chain);
-        }
+        $learningActivityProducing->workplaceLearningPeriod()->associate($currentPeriod);
+        $learningActivityProducing->category()->associate($data['category_id']);
+        $learningActivityProducing->difficulty()->associate($data['moeilijkheid']);
+        $learningActivityProducing->status()->associate($data['status']);
+        $learningActivityProducing->chain()->associate($data['chain_id']);
 
         // Attach the resource used
         switch ($data['resource']) {
             case 'persoon':
-                $learningActivityProducing->resourcePerson()->associate($this->getResourcePerson());
+                $learningActivityProducing->resourcePerson()->associate($data['resource_person_id']);
                 break;
             case 'internet':
-                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial())->findOrFail(1));
+                $learningActivityProducing->resourceMaterial()->associate(1); // 1 is default Internet ResourceMaterial id
                 $learningActivityProducing->res_material_detail = $data['internetsource'];
                 break;
             case 'boek':
-                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial())->findOrFail(2));
+                $learningActivityProducing->resourceMaterial()->associate(2); // 2 is default Book ResourceMaterial id
                 $learningActivityProducing->res_material_detail = $data['booksource'];
                 break;
         }
 
-        $learningActivityProducing->save();
-
-        $this->createFeedbackIfNecessary($learningActivityProducing);
+        $this->learningActivityProducingRepository->save($learningActivityProducing);
 
         return $learningActivityProducing;
-    }
-
-    private function createFeedbackIfNecessary(LearningActivityProducing $learningActivityProducing): void
-    {
-        if ($learningActivityProducing->status->isBusy() && ($learningActivityProducing->difficulty->isHard() || $learningActivityProducing->difficulty->isAverage())) {
-            // Create Feedback object and redirect
-            $feedback = new Feedback();
-            $feedback->learningActivityProducing()->associate($learningActivityProducing);
-            $feedback->save();
-        }
-    }
-
-    private function getCategory($id): Category
-    {
-        if ($id === 'new') {
-            return $this->categoryFactory->createCategory($this->data['newcat']);
-        }
-
-        return (new Category())->find($id);
-    }
-
-    private function getResourcePerson(): ResourcePerson
-    {
-        if ($this->data['personsource'] === 'new' && $this->data['resource'] === 'persoon') {
-            return $this->resourcePersonFactory->createResourcePerson($this->data['newswv']);
-        }
-
-        return (new ResourcePerson())->find($this->data['personsource']);
     }
 }

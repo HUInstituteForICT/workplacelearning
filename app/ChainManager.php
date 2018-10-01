@@ -16,18 +16,6 @@ class ChainManager
         $this->workplaceLearningPeriod = $workplaceLearningPeriod;
     }
 
-    public function createChain(string $name): Chain
-    {
-        $chain = new Chain();
-        $chain->name = $name;
-        $chain->status = Chain::STATUS_BUSY;
-        $chain->wplp_id = $this->workplaceLearningPeriod->wplp_id;
-
-        $chain->save();
-
-        return $chain;
-    }
-
     public function updateChain(Chain $chain, ?string $name, ?int $status): void
     {
         $chain->name = $name ?? $chain->name;

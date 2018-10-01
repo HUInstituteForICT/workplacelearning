@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\LearningActivityProducingCreated;
 use App\Interfaces\LearningActivityInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -75,6 +76,10 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
         'status_id',
     ];
 
+    protected $dispatchesEvents = [
+        'created' => LearningActivityProducingCreated::class,
+    ];
+
     public function previousLearningActivityProducing(): BelongsTo
     {
         return $this->belongsTo(LearningActivityProducing::class, 'prev_lap_id', 'lap_id');
@@ -124,15 +129,15 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
     public function getRelationships(): array
     {
         return ['previousLearningActivityProducing',
-                'nextLearningActivityProducing',
-                'workplaceLearningPeriod',
-                'feedback',
-                'resourcePerson',
-                'resourceMaterial',
-                'category',
-                'difficulty',
-                'status',
-                ];
+            'nextLearningActivityProducing',
+            'workplaceLearningPeriod',
+            'feedback',
+            'resourcePerson',
+            'resourceMaterial',
+            'category',
+            'difficulty',
+            'status',
+        ];
     }
 
     // Note: DND, object comparison

@@ -13,6 +13,7 @@ use App\LearningActivityProducing;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Services\AvailableProducingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
+use App\Services\CustomProducingEntityHandler;
 use App\Services\Factories\LAPFactory;
 use App\Services\LAPUpdater;
 use App\Services\LearningActivityProducingExportBuilder;
@@ -85,9 +86,16 @@ class ProducingActivityController
         );
     }
 
-    public function create(ProducingCreateRequest $request, LAPFactory $LAPFactory): RedirectResponse
-    {
-        $learningActivityProducing = $LAPFactory->createLAP($request->all());
+    public function create(
+        ProducingCreateRequest $request,
+        LAPFactory $LAPFactory,
+        CustomProducingEntityHandler $customProducingEntityHandler
+    ): RedirectResponse {
+        // Because related entities can be created during this route, create them first and set their ids
+        // in the request data so that the factory can be relatively simple
+        $data = $customProducingEntityHandler->process($request->all());
+
+        $learningActivityProducing = $LAPFactory->createLAP($data);
 
         if ($learningActivityProducing->feedback) {
             return redirect()
