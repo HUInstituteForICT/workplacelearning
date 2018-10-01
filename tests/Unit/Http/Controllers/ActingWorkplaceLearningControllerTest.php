@@ -3,11 +3,15 @@
 namespace Test\Unit\Http\Controllers;
 
 use App\Http\Controllers\ActingWorkplaceLearningController;
+use App\Http\Requests\Workplace\ActingLearningGoalsUpdateRequest;
 use App\Http\Requests\Workplace\ActingWorkplaceCreateRequest;
 use App\LearningGoal;
 use App\Repository\Eloquent\CohortRepository;
+use App\Services\CurrentPeriodResolver;
 use App\Services\CurrentUserResolver;
 use App\Services\Factories\ActingWorkplaceFactory;
+use App\Services\Factories\LearningGoalFactory;
+use App\Services\LearningGoalUpdater;
 use App\Student;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
@@ -62,5 +66,39 @@ class ActingWorkplaceLearningControllerTest extends TestCase
 
         $actingWorkplaceLearningController = new ActingWorkplaceLearningController($this->createMock(CurrentUserResolver::class));
         $actingWorkplaceLearningController->create($request, $actingWorkplaceFactory, $redirector);
+    }
+
+    public function testUpdateLearningGoals(): void
+    {
+        $request = $this->createMock(ActingLearningGoalsUpdateRequest::class);
+
+        $request->expects(self::exactly(2))->method('has')
+            ->withConsecutive(['learningGoal'], ['new_learninggoal_name'])
+            ->willReturnOnConsecutiveCalls([true], [true]);
+
+        $request->expects(self::exactly(4))->method('get')
+            ->withConsecutive(['learningGoal'], ['new_learninggoal_name'], ['new_learninggoal_name'], ['new_learninggoal_description'])
+            ->willReturnOnConsecutiveCalls([['empty array']], 'some label', 'some label', 'some description');
+
+        $period = $this->createMock(WorkplaceLearningPeriod::class);
+        $period->expects(self::exactly(2))->method('__get')->willReturn(1);
+
+        $currentPeriodResolver = $this->createMock(CurrentPeriodResolver::class);
+        $currentPeriodResolver->expects(self::exactly(2))->method('getPeriod')->willReturn($period);
+
+        $learningGoalUpdater = $this->createMock(LearningGoalUpdater::class);
+        $learningGoalUpdater->expects(self::once())->method('updateLearningGoals')->withAnyParameters();
+
+        $learningGoalFactory = $this->createMock(LearningGoalFactory::class);
+        $learningGoalFactory->expects(self::once())->method('createLearningGoal')->withAnyParameters();
+
+        $redirectResponse = $this->createMock(RedirectResponse::class);
+        $redirectResponse->expects(self::once())->method('with')->withAnyParameters()->willReturnSelf();
+
+        $redirector = $this->createMock(Redirector::class);
+        $redirector->expects(self::once())->method('route')->with('period-acting-edit')->willReturn($redirectResponse);
+
+        $actingWorkplaceLearningController = new ActingWorkplaceLearningController($this->createMock(CurrentUserResolver::class));
+        $actingWorkplaceLearningController->updateLearningGoals($request, $learningGoalUpdater, $learningGoalFactory, $currentPeriodResolver, $redirector);
     }
 }
