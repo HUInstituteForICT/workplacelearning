@@ -59,6 +59,8 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
     // Override the primary key column
     protected $primaryKey = 'lap_id';
 
+    protected $dates = ['date'];
+
     // Default
     protected $fillable = [
         'duration',

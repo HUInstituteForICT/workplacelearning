@@ -1,6 +1,5 @@
 <?php
-/**transferred*/
-/** @var \App\ResourcePerson[] $learningWith */
+/** @var \App\ResourcePerson[] $resourcePersons */
 /** @var \App\Category[] $categories */
 /** @var \App\Chain[] $chains */
 ?>
@@ -137,7 +136,7 @@
                     <div id="swvcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>{{ Lang::get('activity.person') }}</span></label>
                         <select id="rp_id" name="personsource" class="cond-hidden">
-                            @foreach($learningWith as $resourcePerson)
+                            @foreach($resourcePersons as $resourcePerson)
                                 <option value="{{ $resourcePerson->rp_id }}">{{ __($resourcePerson->person_label) }}</option>
                             @endforeach
                             <option value="new">{{ Lang::get('general.new') }}/{{ Lang::get('activity.other') }}</option>

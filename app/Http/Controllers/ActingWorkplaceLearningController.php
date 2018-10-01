@@ -63,7 +63,7 @@ class ActingWorkplaceLearningController
         return $redirector->route('profile')->with('success', __('general.edit-saved'));
     }
 
-    public function edit(WorkplaceLearningPeriod $workplaceLearningPeriod)
+    public function edit(WorkplaceLearningPeriod $workplaceLearningPeriod): View
     {
         $workplace = $workplaceLearningPeriod->workplace;
 

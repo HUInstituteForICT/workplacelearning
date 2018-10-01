@@ -6,6 +6,7 @@ use App\Category;
 use App\Chain;
 use App\ChainManager;
 use App\Difficulty;
+use App\Feedback;
 use App\LearningActivityProducing;
 use App\ResourceMaterial;
 use App\ResourcePerson;
@@ -42,7 +43,7 @@ class LAPFactory
     public function createLAP(array $data): LearningActivityProducing
     {
         $this->data = $data;
-        if ('new' === $data['resource']) {
+        if ($data['resource'] === 'new') {
             $data['resource'] = 'other';
         }
 
@@ -50,7 +51,7 @@ class LAPFactory
 
         $learningActivityProducing = new LearningActivityProducing();
         $learningActivityProducing->description = $data['omschrijving'];
-        $learningActivityProducing->duration = 'x' !== $data['aantaluren'] ?
+        $learningActivityProducing->duration = $data['aantaluren'] !== 'x' ?
             $data['aantaluren'] :
             round(((int) $data['aantaluren_custom']) / 60, 2);
         $learningActivityProducing->date = Carbon::parse($data['datum'])->format('Y-m-d');
@@ -87,12 +88,24 @@ class LAPFactory
 
         $learningActivityProducing->save();
 
+        $this->createFeedbackIfNecessary($learningActivityProducing);
+
         return $learningActivityProducing;
+    }
+
+    private function createFeedbackIfNecessary(LearningActivityProducing $learningActivityProducing): void
+    {
+        if ($learningActivityProducing->status->isBusy() && ($learningActivityProducing->difficulty->isHard() || $learningActivityProducing->difficulty->isAverage())) {
+            // Create Feedback object and redirect
+            $feedback = new Feedback();
+            $feedback->learningActivityProducing()->associate($learningActivityProducing);
+            $feedback->save();
+        }
     }
 
     private function getCategory($id): Category
     {
-        if ('new' === $id) {
+        if ($id === 'new') {
             return $this->categoryFactory->createCategory($this->data['newcat']);
         }
 
@@ -101,7 +114,7 @@ class LAPFactory
 
     private function getResourcePerson(): ResourcePerson
     {
-        if ('new' === $this->data['personsource'] && 'persoon' === $this->data['resource']) {
+        if ($this->data['personsource'] === 'new' && $this->data['resource'] === 'persoon') {
             return $this->resourcePersonFactory->createResourcePerson($this->data['newswv']);
         }
 

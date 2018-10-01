@@ -8,6 +8,7 @@ use App\Repository\Eloquent\LikeRepository;
 use App\Services\CurrentUserResolver;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;
+use Illuminate\Contracts\View\View;
 use Illuminate\Mail\Mailer;
 use Illuminate\Routing\Redirector;
 
@@ -29,7 +30,7 @@ class HomeController extends Controller
         $this->currentUserResolver = $currentUserResolver;
     }
 
-    public function showHome()
+    public function showHome(): View
     {
         return view('pages.home');
     }

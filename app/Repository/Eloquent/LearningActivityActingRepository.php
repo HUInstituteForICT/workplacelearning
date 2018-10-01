@@ -9,7 +9,7 @@ class LearningActivityActingRepository
 {
     public function get(int $id): LearningActivityActing
     {
-        return (new LearningActivityActing())::findOrFail($id);
+        return LearningActivityActing::findOrFail($id);
     }
 
     public function save(LearningActivityActing $learningActivityActing): bool
