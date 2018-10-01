@@ -9,6 +9,7 @@ use App\LearningActivityProducing;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Services\AvailableProducingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
+use App\Services\CustomProducingEntityHandler;
 use App\Services\Factories\LAPFactory;
 use App\Services\LAPUpdater;
 use App\Services\LearningActivityProducingExportBuilder;
@@ -82,6 +83,9 @@ class ProducingActivityControllerTest extends TestCase
         $activity = $this->createMock(LearningActivityProducing::class);
         $activity->expects(self::once())->method('__get')->with('feedback')->willReturn(false);
 
+        $customProducingEntityHandler = $this->createMock(CustomProducingEntityHandler::class);
+        $customProducingEntityHandler->expects(self::once())->method('process')->willReturn([]);
+
         $lapFactory = $this->createMock(LAPFactory::class);
         $lapFactory->expects(self::once())->method('createLAP')->with([])->willReturn($activity);
 
@@ -90,7 +94,7 @@ class ProducingActivityControllerTest extends TestCase
         $repository = $this->createMock(LearningActivityProducingRepository::class);
 
         $producingActivityController = new ProducingActivityController($currentUserResolver, $repository);
-        $producingActivityController->create($request, $lapFactory);
+        $producingActivityController->create($request, $lapFactory, $customProducingEntityHandler);
     }
 
     public function testUpdate(): void
