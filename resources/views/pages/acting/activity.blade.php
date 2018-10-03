@@ -94,7 +94,7 @@
                     </div>
                     <h4>{{ Lang::get('activity.situation') }}</h4>
                     <div>
-                        <textarea id="description" class="form-control fit-bs" name="description" required  maxlength="1000" rows="16" cols="19">{{ old('description') }}</textarea>
+                        <textarea id="description" class="form-control fit-bs" name="description" required  maxlength="1500" rows="16" cols="19">{{ old('description') }}</textarea>
                         <a data-target-text="#description" data-target-title="{{ ucfirst(trans('process_export.situation')) }}" class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
                     </div>
 

@@ -16,7 +16,7 @@ class ActingUpdateRequest extends FormRequest
     {
         return [
             'date' => 'required|date|date_in_wplp',
-            'description' => 'required|max:1000',
+            'description' => 'required|max:1500',
             'timeslot' => 'required|exists:timeslot,timeslot_id',
             'new_rp' => 'required_if:res_person,new|max:45|',
             'new_rm' => 'required_if:res_material,new|max:45',
@@ -31,11 +31,11 @@ class ActingUpdateRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->sometimes('res_person', 'required|exists:resourceperson,rp_id', function ($input) {
-            return 'new' !== $input->res_person;
+            return $input->res_person !== 'new';
         });
 
         $validator->sometimes('res_material', 'required|exists:resourcematerial,rm_id', function ($input) {
-            return 'new' !== $input->res_material && 'none' !== $input->res_material;
+            return $input->res_material !== 'new' && $input->res_material !== 'none';
         });
 
         $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75', function ($input) {
