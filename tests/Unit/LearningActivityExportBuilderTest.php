@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Competence;
 use App\LearningActivityActing;
 use App\ResourceMaterial;
 use App\ResourcePerson;
@@ -46,7 +47,7 @@ class LearningActivityExportBuilderTest extends TestCase
         $mock->shouldReceive('getAttribute')->with('support_wp')->andReturn('support from wp');
         $mock->shouldReceive('getAttribute')->with('support_ed')->andReturn('support from ed');
 
-        $competenceObject = new \StdClass();
+        $competenceObject = new Competence();
         $competenceObject->competence_label = 'Interpersoonlijk';
         $collection = new Collection([$competenceObject]);
         $mock->shouldReceive('getAttribute')->with('competence')->times(1)->andReturn($collection);
