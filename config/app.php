@@ -149,6 +149,7 @@ $config = [
         App\Providers\ValidationServiceProvider::class,
 
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        Spatie\TranslationLoader\TranslationServiceProvider::class,
     ],
 
     /*
@@ -205,13 +206,12 @@ $config = [
 
 if (env('APP_ENV') === 'local' || env('APP_ENV') === 'dev') {
     $config['providers'][] = Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class;
-    $config['providers'][] = Barryvdh\TranslationManager\ManagerServiceProvider::class;
-    $config['providers'][] = Barryvdh\TranslationManager\TranslationServiceProvider::class;
+//    $config['providers'][] = Barryvdh\TranslationManager\ManagerServiceProvider::class;
+//    $config['providers'][] = Barryvdh\TranslationManager\TranslationServiceProvider::class;
     $config['providers'][] = Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class;
     $config['providers'][] = Barryvdh\Debugbar\ServiceProvider::class;
-} else {
-    $config['providers'][] = Illuminate\Translation\TranslationServiceProvider::class;
 }
+//    $config['providers'][] = Illuminate\Translation\TranslationServiceProvider::class;
 
 return $config;
 
