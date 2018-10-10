@@ -120,4 +120,8 @@ export default class EducationProgramService {
     static cloneCohort(id, callback) {
         axios.get(base + 'education-program/cohort/' + id + '/clone').then(callback);
     }
+
+    static loadTranslations(type, id, callback) {
+        axios.get(base + 'entity/' + type + '/' + id + '/translations').then(callback);
+    }
 }

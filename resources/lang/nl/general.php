@@ -79,4 +79,7 @@ return array(
     'unsatisfied' => 'niet tevreden',
     'course-of-activity' => 'met het verloop van deze activiteit',
     'netherlands' => 'Nederland',
+    'translations' => 'Vertalingen',
+    'en' => 'Engels',
+    'nl' => 'Nederlands',
 );

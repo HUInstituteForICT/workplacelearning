@@ -7,6 +7,8 @@
 
 namespace App;
 
+use App\Interfaces\HasLabelProperty;
+use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,8 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int    $wplp_id
  * @property int    $ep_id
  */
-class ResourcePerson extends Model
+class ResourcePerson extends Model implements HasLabelProperty
 {
+    use TranslatableEntity;
+
     // Override the table used for the User Model
     protected $table = 'resourceperson';
     // Disable using created_at and updated_at columns
@@ -59,5 +63,10 @@ class ResourcePerson extends Model
     public function getRelationships()
     {
         return ['cohort', 'workplaceLearningPeriod', 'learningActivityProducing', 'educationProgram'];
+    }
+
+    public function getLabel(): string
+    {
+        return $this->person_label;
     }
 }

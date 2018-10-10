@@ -14,6 +14,8 @@ use App\Http\Requests\EducationProgram\UpdateEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateRequest;
 use App\Services\CohortCloner;
 use App\Services\CohortManager;
+use App\Services\EntityTranslationManager;
+use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Lang;
@@ -71,7 +73,7 @@ class EducationProgramsController extends Controller
     {
         $cohort->load(['competencies', 'timeslots', 'competenceDescription', 'categories', 'resourcePersons'])->get();
 
-        $cohort->canBeDeleted = 0 === $cohort->workplaceLearningPeriods()->count();
+        $cohort->canBeDeleted = $cohort->workplaceLearningPeriods()->count() === 0;
 
         return response()->json($cohort);
     }
@@ -118,7 +120,7 @@ class EducationProgramsController extends Controller
             'resourcePersons',
         ])->get();
 
-        $program->canBeDeleted = 0 === $program->cohorts->count();
+        $program->canBeDeleted = $program->cohorts->count() === 0;
 
         return response()->json($program);
     }
@@ -181,11 +183,16 @@ class EducationProgramsController extends Controller
         return response()->json(['status' => 'success']);
     }
 
-    public function updateEntity(UpdateEntityRequest $request, $entityId)
+    public function updateEntity(UpdateEntityRequest $request, $entityId, EntityTranslationManager $entityTranslationManager)
     {
+        /** @var TranslatableEntity $entity */
         $entity = $this->programsService->updateEntity((int) $entityId, $request->all());
 
         $mappedNameField = EducationProgramsService::nameToEntityNameMapping[$request->get('type')];
+
+        if ($request->has('translations')) {
+            $entityTranslationManager->syncForEntity($entity, $request->get('translations'));
+        }
 
         return response()->json(['status' => 'success', 'entity' => $entity, 'mappedNameField' => $mappedNameField]);
     }
@@ -211,7 +218,7 @@ class EducationProgramsController extends Controller
     {
         /** @var CompetenceDescription $competenceDescription */
         $competenceDescription = $cohort->competenceDescription;
-        if (null !== $competenceDescription) {
+        if ($competenceDescription !== null) {
             Storage::disk('local')->delete($competenceDescription->file_name);
             $competenceDescription->delete();
         }
@@ -229,5 +236,13 @@ class EducationProgramsController extends Controller
             'id' => $clonedCohort->id,
             'name' => $clonedCohort->name,
         ]);
+    }
+
+    public function entityTranslations(
+        string $type,
+        int $id,
+        EntityTranslationManager $entityTranslationManager
+    ) {
+        return json_encode(['translations' => $entityTranslationManager->getTranslationsForEntity($type, $id)]);
     }
 }

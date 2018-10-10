@@ -29,7 +29,7 @@
         $(document).ready(function() {
             $("#delButton").hide(1);
             $("#calendar").fullCalendar({
-                lang: '{{LaravelLocalization::getCurrentLocale()}}',
+                lang: '{{app()->getLocale()}}',
                 defaultDate: '{{ date('Y-m-d', strtotime("now")) }}',
                 height: 475,
                 customButtons: {

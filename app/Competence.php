@@ -2,14 +2,18 @@
 
 namespace App;
 
+use App\Interfaces\HasLabelProperty;
+use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int    $competence_id
  * @property string $competence_label
  */
-class Competence extends Model
+class Competence extends Model implements HasLabelProperty
 {
+    use TranslatableEntity;
+
     // Override the table used for the User Model
     protected $table = 'competence';
     // Disable using created_at and updated_at columns
@@ -44,5 +48,10 @@ class Competence extends Model
     public function getRelationships()
     {
         return ['cohort', 'educationProgram', 'learningActivityActing'];
+    }
+
+    public function getLabel(): string
+    {
+        return $this->competence_label;
     }
 }

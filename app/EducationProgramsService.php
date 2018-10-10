@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,13 +34,13 @@ class EducationProgramsService
     private function getEntity($entityId, $type)
     {
         $entity = null;
-        if ('competence' === $type) {
+        if ($type === 'competence') {
             $entity = Competence::find($entityId);
-        } elseif ('timeslot' === $type) {
+        } elseif ($type === 'timeslot') {
             $entity = Timeslot::find($entityId);
-        } elseif ('resourcePerson' === $type) {
+        } elseif ($type === 'resourcePerson') {
             $entity = ResourcePerson::find($entityId);
-        } elseif ('category' === $type) {
+        } elseif ($type === 'category') {
             $entity = Category::find($entityId);
         }
         if ($entity instanceof Model) {
@@ -58,14 +59,15 @@ class EducationProgramsService
     public function createEntity($type, $value, Cohort $cohort)
     {
         $cohort->refresh();
+        /** @var TranslatableEntity|null $result */
         $result = null;
-        if ('competence' === $type) {
+        if ($type === 'competence') {
             $result = $cohort->competencies()->save(new Competence(['competence_label' => $value]));
-        } elseif ('timeslot' === $type) {
+        } elseif ($type === 'timeslot') {
             $result = $cohort->timeslots()->save(new Timeslot(['timeslot_text' => $value, 'wplp_id' => 0]));
-        } elseif ('resourcePerson' === $type) {
+        } elseif ($type === 'resourcePerson') {
             $result = $cohort->resourcePersons()->save(new ResourcePerson(['person_label' => $value, 'wplp_id' => 0]));
-        } elseif ('category' === $type) {
+        } elseif ($type === 'category') {
             $result = $cohort->categories()->save(new Category(['category_label' => $value, 'wplp_id' => 0]));
         }
 
@@ -122,7 +124,7 @@ class EducationProgramsService
      */
     public function handleUploadedCompetenceDescription(Cohort $cohort, $fileData)
     {
-        if (null === $cohort->competenceDescription) {
+        if ($cohort->competenceDescription === null) {
             $cohort->competenceDescription()->save(new CompetenceDescription());
         }
         $competenceDescription = $cohort->competenceDescription()->first();

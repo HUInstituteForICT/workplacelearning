@@ -27,7 +27,7 @@ class PredefinedStatisticCollector implements CollectorInterface
 
     protected function wherePeriod(Builder $queryBuilder)
     {
-        if (null === $this->year || null === $this->month) {
+        if ($this->year === null || $this->month === null) {
             return $queryBuilder;
         }
 
@@ -46,13 +46,13 @@ class PredefinedStatisticCollector implements CollectorInterface
             ->groupBy('category_id')
             ->orderBy('category_difficulty')->limit(1)->getBaseQuery())->first();
 
-        if (null !== $result && !empty($result->category_id) && !empty($result->category_difficulty)) {
+        if ($result !== null && !empty($result->category_id) && !empty($result->category_difficulty)) {
             $category = (new \App\Category())->find($result->category_id);
         } else {
             return new InvalidStatisticResult();
         }
 
-        return new StatisticResult((float) $result->category_difficulty, $category->category_label);
+        return new StatisticResult((float) $result->category_difficulty, $category->localizedLabel());
     }
 
     /**
@@ -70,14 +70,14 @@ class PredefinedStatisticCollector implements CollectorInterface
             ->orderBy('person_difficulty')->limit(1)->getBaseQuery()
         )->first();
 
-        if (null !== $result && !empty($result->res_person_id) && !empty($result->person_difficulty)) {
+        if ($result !== null && !empty($result->res_person_id) && !empty($result->person_difficulty)) {
             /** @var ResourcePerson $person */
             $person = (new ResourcePerson())->find($result->res_person_id);
         } else {
             return new InvalidStatisticResult();
         }
 
-        return new StatisticResult($result->person_difficulty, $person->person_label);
+        return new StatisticResult($result->person_difficulty, $person->localizedLabel());
     }
 
     /**
