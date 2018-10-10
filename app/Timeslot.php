@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Interfaces\HasLabelProperty;
+use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,8 +28,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot whereWplpId($value)
  * @mixin \Eloquent
  */
-class Timeslot extends Model
+class Timeslot extends Model implements HasLabelProperty
 {
+    use TranslatableEntity;
+
     // Override the table used for the User Model
     protected $table = 'timeslot';
     // Disable using created_at and updated_at columns
@@ -68,5 +72,10 @@ class Timeslot extends Model
     public function getRelationships(): array
     {
         return ['cohort', 'educationProgram'];
+    }
+
+    public function getLabel(): string
+    {
+        return $this->timeslot_text;
     }
 }

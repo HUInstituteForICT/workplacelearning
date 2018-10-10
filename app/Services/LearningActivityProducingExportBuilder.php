@@ -34,7 +34,7 @@ class LearningActivityProducingExportBuilder
                 'duration'       => $this->formatDuration($activity->duration),
                 'description'    => $activity->description,
                 'resourceDetail' => $this->formatResourceDetail($activity),
-                'category'       => $this->translator->get($activity->category->category_label),
+                'category'       => $activity->category->localizedLabel(),
                 'difficulty'     => $this->translator->get('general.'.strtolower($activity->difficulty->difficulty_label)),
                 'status'         => $this->translator->get('general.'.strtolower($activity->status->status_label)),
                 'url'            => route('process-producing-edit', ['id' => $activity->lap_id]),
@@ -89,7 +89,7 @@ class LearningActivityProducingExportBuilder
         }
 
         if ($learningActivityProducing->resourcePerson) {
-            return $this->translator->get('activity.producing.person').': '.__($learningActivityProducing->resourcePerson->person_label);
+            return $this->translator->get('activity.producing.person').': '.__($learningActivityProducing->resourcePerson->localizedLabel());
         }
 
         return $this->translator->get('activity.alone');

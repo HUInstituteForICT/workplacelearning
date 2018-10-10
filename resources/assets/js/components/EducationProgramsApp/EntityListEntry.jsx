@@ -1,6 +1,7 @@
 import * as React from "react";
 import EducationProgramService from "../../services/EducationProgramService";
-import {EntityTypes} from "./EntityCreator";
+
+const locales = ["en", "nl"];
 
 export default class EntityListEntry extends React.Component {
 
@@ -10,24 +11,35 @@ export default class EntityListEntry extends React.Component {
             loading: false,
             editMode: false,
             fieldValue: '',
+            translations: {}
         };
         this.toEdit = this.toEdit.bind(this);
         this.save = this.save.bind(this);
         this.onChangeFieldValue = this.onChangeFieldValue.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
+        this.loadTranslations = this.loadTranslations.bind(this);
+        this.addTranslation = this.addTranslation.bind(this);
+        this.setTranslation = this.setTranslation.bind(this);
+    }
+
+    loadTranslations() {
+        EducationProgramService.loadTranslations(this.props.type, this.props.id, function (response) {
+            this.setState({translations: response.data.translations});
+        }.bind(this));
     }
 
     toEdit() {
         this.setState({
             editMode: true,
             fieldValue: this.props.label
-        })
+        });
+        this.loadTranslations();
     }
 
     save() {
         this.setState({loading: true});
 
-        EducationProgramService.updateEntity(this.props.id, {type: this.props.type, name: this.state.fieldValue},
+        EducationProgramService.updateEntity(this.props.id, {type: this.props.type, name: this.state.fieldValue, translations: this.state.translations},
             response => {
                 this.props.onEntityUpdatedName(this.props.id, this.props.type, this.state.fieldValue, response.data.mappedNameField);
                 this.setState({loading:false, editMode:false});
@@ -46,6 +58,21 @@ export default class EntityListEntry extends React.Component {
         }
     }
 
+
+    addTranslation(locale) {
+        if (!locales.includes(locale)) return;
+        if (this.state.translations.hasOwnProperty(locale)) return;
+
+        let translations = {...this.state.translations};
+        translations[locale] = "";
+
+        this.setState({translations: translations});
+    }
+
+    setTranslation(locale, value) {
+        this.setState({translations: {...this.state.translations, [locale]: value}});
+    }
+
     render() {
 
         let styleBtn = {
@@ -62,6 +89,13 @@ export default class EntityListEntry extends React.Component {
                     <input onKeyPress={this.onKeyPress} type="text" className="form-control"
                            style={{display: 'inline-block', width: '100%'}} value={this.state.fieldValue}
                            onChange={this.onChangeFieldValue}/>
+
+                    <hr/>
+                    {this.renderTranslationButton()}
+
+                    {this.renderTranslations()}
+
+                    <hr/>
                     <br/>
                     <span className="defaultButton" style={styleBtn} onClick={this.save}>
                         {Lang.get('react.save')}
@@ -80,6 +114,43 @@ export default class EntityListEntry extends React.Component {
                 {this.props.label}
             </span>
         </div>
+    }
+
+
+    renderTranslationButton() {
+        return <div className="btn-group">
+            <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">{Lang.get('general.translations')}&nbsp;<span
+                className="caret"></span>
+            </button>
+            <ul className="dropdown-menu">
+                {locales.map(locale => {
+                    if (this.state.translations.hasOwnProperty(locale)) return null;
+
+                    return <li key={locale} onClick={() => this.addTranslation(locale)}>
+                        <a>{Lang.get('general.' + locale)}</a></li>;
+
+                })}
+            </ul>
+        </div>;
+    }
+
+    renderTranslations() {
+        if (Object.keys(this.state.translations).length === 0) return null;
+        return <div style={{marginTop: '10px'}}>
+            {Object.keys(this.state.translations).map(locale =>
+                <div className="input-group" key={locale} style={{marginTop: '10px'}}>
+                    <span className="input-group-addon">{Lang.get('general.' + locale)}</span>
+                    <input type="text" className="form-control" value={this.state.translations[locale]}
+                           onChange={e => this.setTranslation(locale, e.target.value)}/>
+                    <span className="input-group-btn">
+                            <button className="btn btn-danger" type="button">
+                                  <span className="glyphicon glyphicon-trash"/>
+                            </button>
+                        </span>
+                </div>
+            )}
+        </div>;
     }
 
 

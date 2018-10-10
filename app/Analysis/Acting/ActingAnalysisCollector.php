@@ -2,7 +2,11 @@
 
 namespace App\Analysis\Acting;
 
+use App\Competence;
+use App\LearningGoal;
 use App\ResourceMaterial;
+use App\ResourcePerson;
+use App\Timeslot;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,7 +69,7 @@ class ActingAnalysisCollector
     /**
      * Get all the timeslots of the user's education program.
      *
-     * @return Collection
+     * @return Collection|Timeslot[]
      */
     public function getTimeslots()
     {
@@ -81,7 +85,7 @@ class ActingAnalysisCollector
     /**
      * Get all the learning goals for the user's interning place.
      *
-     * @return Collection
+     * @return Collection|LearningGoal[]
      */
     public function getLearningGoals()
     {
@@ -95,7 +99,7 @@ class ActingAnalysisCollector
     /**
      * Get all the competencies of the user's education program.
      *
-     * @return Collection
+     * @return Collection|Competence[]
      */
     public function getCompetencies()
     {
@@ -108,6 +112,8 @@ class ActingAnalysisCollector
 
     /**
      * Get all the resource persons of the user's education program & internship.
+     *
+     * @return Collection|ResourcePerson[]
      */
     public function getResourcePersons()
     {

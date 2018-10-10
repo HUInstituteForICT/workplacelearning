@@ -7,6 +7,8 @@
 
 namespace App;
 
+use App\Interfaces\HasLabelProperty;
+use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -31,8 +33,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereWplpId($value)
  * @mixin \Eloquent
  */
-class Category extends Model
+class Category extends Model implements HasLabelProperty
 {
+    use TranslatableEntity;
+
     // Override the table used for the User Model
     protected $table = 'category';
     // Disable using created_at and updated_at columns
@@ -87,5 +91,10 @@ class Category extends Model
     public function workplaceLearningPeriod(): BelongsTo
     {
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id');
+    }
+
+    public function getLabel(): string
+    {
+        return $this->category_label;
     }
 }

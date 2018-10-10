@@ -147,7 +147,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                                                             title="{{ trans('tooltips.producing_category') }}"></i></h4>
                 @foreach($categories as $key => $value)
                     <label><input type="radio" name="category_id"
-                                  value="{{ $value->category_id }}" {{ (old('category_id') == $value->category_id) ? 'checked' : ($activity->category_id == $value->category_id) ? 'checked' : null }}/><span>{{ $value->category_label }}</span></label>
+                                  value="{{ $value->category_id }}" {{ (old('category_id') == $value->category_id) ? 'checked' : ($activity->category_id == $value->category_id) ? 'checked' : null }}/><span>{{ $value->localizedLabel() }}</span></label>
                 @endforeach
             </div>
             <div class="col-md-2 form-group buttons">
