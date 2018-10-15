@@ -11,7 +11,8 @@ export default class EntityListEntry extends React.Component {
             loading: false,
             editMode: false,
             fieldValue: '',
-            translations: {}
+            translations: {},
+            loadingTranslations: false
         };
         this.toEdit = this.toEdit.bind(this);
         this.save = this.save.bind(this);
@@ -20,11 +21,14 @@ export default class EntityListEntry extends React.Component {
         this.loadTranslations = this.loadTranslations.bind(this);
         this.addTranslation = this.addTranslation.bind(this);
         this.setTranslation = this.setTranslation.bind(this);
+        this.removeTranslation = this.removeTranslation.bind(this);
     }
 
     loadTranslations() {
+        this.setState({loadingTranslations: true});
         EducationProgramService.loadTranslations(this.props.type, this.props.id, function (response) {
-            this.setState({translations: response.data.translations});
+            this.setState({translations: response.data.translations, loadingTranslations: false});
+
         }.bind(this));
     }
 
@@ -58,13 +62,23 @@ export default class EntityListEntry extends React.Component {
         }
     }
 
-
     addTranslation(locale) {
         if (!locales.includes(locale)) return;
         if (this.state.translations.hasOwnProperty(locale)) return;
 
         let translations = {...this.state.translations};
         translations[locale] = "";
+
+        this.setState({translations: translations});
+    }
+
+    removeTranslation(locale) {
+        if (!locales.includes(locale)) return;
+
+        if (!this.state.translations.hasOwnProperty(locale)) return;
+
+        let translations = {...this.state.translations};
+        delete translations[locale];
 
         this.setState({translations: translations});
     }
@@ -91,19 +105,20 @@ export default class EntityListEntry extends React.Component {
                            onChange={this.onChangeFieldValue}/>
 
                     <hr/>
-                    {this.renderTranslationButton()}
-
-                    {this.renderTranslations()}
+                    {this.state.loadingTranslations && <div className="loader">Loading...</div>}
+                    {!this.state.loadingTranslations && <div>{this.renderTranslationButton()}{this.renderTranslations()}</div>}
 
                     <hr/>
                     <br/>
-                    <span className="defaultButton" style={styleBtn} onClick={this.save}>
+                    <div className="btn-group btn-group-justified">
+                    <span className="btn btn-success" onClick={this.save}>
                         {Lang.get('react.save')}
                         </span>
-                    <span className="defaultButton red" style={styleBtn}
+                    <span className="btn btn-danger"
                           onClick={() => this.props.onRemoveClick(this.props.id, this.props.type)}>
                         {Lang.get('react.delete')}
                         </span>
+                    </div>
                 </div>}
             </div>
         }
@@ -118,9 +133,17 @@ export default class EntityListEntry extends React.Component {
 
 
     renderTranslationButton() {
+        if (locales.filter(locale => !this.state.translations.hasOwnProperty(locale)).length === 0) {
+            return <div className="btn-group">
+                <button disabled type="button" className="btn btn-default"
+                        aria-expanded="false">{Lang.get('general.translations')}</button>
+            </div>
+        }
+
+
         return <div className="btn-group">
             <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">{Lang.get('general.translations')}&nbsp;<span
+                    aria-expanded="false">{Lang.get('general.translations')}&nbsp;<span
                 className="caret"></span>
             </button>
             <ul className="dropdown-menu">
@@ -144,7 +167,8 @@ export default class EntityListEntry extends React.Component {
                     <input type="text" className="form-control" value={this.state.translations[locale]}
                            onChange={e => this.setTranslation(locale, e.target.value)}/>
                     <span className="input-group-btn">
-                            <button className="btn btn-danger" type="button">
+                            <button className="btn btn-danger" type="button"
+                                    onClick={() => this.removeTranslation(locale)}>
                                   <span className="glyphicon glyphicon-trash"/>
                             </button>
                         </span>
