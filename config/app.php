@@ -147,7 +147,7 @@ $config = [
         Laravel\Tinker\TinkerServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
+//        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
@@ -164,6 +164,7 @@ $config = [
         App\Providers\ValidationServiceProvider::class,
 
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        Spatie\TranslationLoader\TranslationServiceProvider::class,
     ],
 
     /*
@@ -196,7 +197,7 @@ $config = [
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+//        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'Mail' => Illuminate\Support\Facades\Mail::class,
@@ -218,15 +219,14 @@ $config = [
     ],
 ];
 
-if ('local' === env('APP_ENV') || 'dev' === env('APP_ENV')) {
+if (env('APP_ENV') === 'local' || env('APP_ENV') === 'dev') {
     $config['providers'][] = Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class;
-    $config['providers'][] = Barryvdh\TranslationManager\ManagerServiceProvider::class;
-    $config['providers'][] = Barryvdh\TranslationManager\TranslationServiceProvider::class;
+//    $config['providers'][] = Barryvdh\TranslationManager\ManagerServiceProvider::class;
+//    $config['providers'][] = Barryvdh\TranslationManager\TranslationServiceProvider::class;
     $config['providers'][] = Mariuzzo\LaravelJsLocalization\LaravelJsLocalizationServiceProvider::class;
     $config['providers'][] = Barryvdh\Debugbar\ServiceProvider::class;
-} else {
-    $config['providers'][] = Illuminate\Translation\TranslationServiceProvider::class;
 }
+//    $config['providers'][] = Illuminate\Translation\TranslationServiceProvider::class;
 
 return $config;
 

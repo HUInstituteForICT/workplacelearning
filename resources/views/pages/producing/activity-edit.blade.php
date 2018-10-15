@@ -145,7 +145,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                                                             title="{{ trans('tooltips.producing_category') }}"></i></h4>
                 @foreach($categories as $key => $value)
                     <label><input type="radio" name="category_id"
-                                  value="{{ $value->category_id }}" {{ (old('category_id') == $value->category_id) ? 'checked' : ($activity->category_id == $value->category_id) ? 'checked' : null }}/><span>{{ $value->category_label }}</span></label>
+                                  value="{{ $value->category_id }}" {{ (old('category_id') == $value->category_id) ? 'checked' : ($activity->category_id == $value->category_id) ? 'checked' : null }}/><span>{{ $value->localizedLabel() }}</span></label>
                 @endforeach
             </div>
             <div class="col-md-2 form-group buttons">
@@ -158,7 +158,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                                                        value="persoon" {{ (old('resource') == 'persoon') ? 'checked' : ($activity->res_person_id != null ) ? 'checked' : null }} /><span>{{ Lang::get('activity.person') }}</span></label>
                     <select id="rp_id" name="personsource" class="cond-hidden">
                         @foreach($learningWith as $key => $value)
-                            <option value="{{ $value->rp_id }}" {{ (old('personsource') == $value->rp_id) ? 'selected' : ($activity->res_person_id == $value->res_person_id) ? 'selected' : null }}>{{ $value->person_label }}</option>
+                            <option value="{{ $value->rp_id }}" {{ (old('personsource') == $value->rp_id) ? 'selected' : ($activity->res_person_id == $value->res_person_id) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
                         @endforeach
                     </select>
                 </div>

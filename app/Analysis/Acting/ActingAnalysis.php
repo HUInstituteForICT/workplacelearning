@@ -3,6 +3,9 @@
 namespace App\Analysis\Acting;
 
 use App\Chart;
+use App\Competence;
+use App\ResourcePerson;
+use App\Timeslot;
 
 class ActingAnalysis
 {
@@ -26,19 +29,19 @@ class ActingAnalysis
     {
         $this->charts = [
             'timeslot' => new Chart(
-                $this->analysisCollector->getTimeslots()->map(function ($timeslot) {return $timeslot->timeslot_text; }),
-                $this->analysisCollector->getTimeslots()->map(function ($timeslot) {return $this->statistic('percentageActivitiesInTimeslot', $timeslot); })
+                $this->analysisCollector->getTimeslots()->map(function (Timeslot $timeslot) {return $timeslot->localizedLabel(); }),
+                $this->analysisCollector->getTimeslots()->map(function (Timeslot $timeslot) {return $this->statistic('percentageActivitiesInTimeslot', $timeslot); })
             ),
             'learninggoal' => new Chart(
                 $this->analysisCollector->getLearningGoals()->map(function ($learningGoal) {return $learningGoal->learninggoal_label; }),
                 $this->analysisCollector->getLearningGoals()->map(function ($learningGoal) {return $this->statistic('percentageActivityForLearningGoal', $learningGoal); })
             ),
             'competence' => new Chart(
-                $this->analysisCollector->getCompetencies()->map(function ($competence) {return $competence->competence_label; }),
+                $this->analysisCollector->getCompetencies()->map(function (Competence $competence) {return $competence->localizedLabel(); }),
                 $this->analysisCollector->getCompetencies()->map(function ($competence) {return $this->statistic('percentageActivityForCompetence', $competence); })
             ),
             'person' => new Chart(
-                $this->analysisCollector->getResourcePersons()->map(function ($person) {return $person->person_label; }),
+                $this->analysisCollector->getResourcePersons()->map(function (ResourcePerson $person) {return $person->localizedLabel(); }),
                 $this->analysisCollector->getResourcePersons()->map(function ($person) {return $this->statistic('percentageActivityWithResourcePerson', $person); })
             ),
             // Not used currently, might be reinstated later on?
@@ -56,11 +59,11 @@ class ActingAnalysis
      */
     public function charts($name)
     {
-        if (null === $this->charts) {
+        if ($this->charts === null) {
             $this->createCharts();
         }
 
-        if (null === $name) {
+        if ($name === null) {
             return $this->charts;
         }
 
@@ -83,7 +86,7 @@ class ActingAnalysis
             throw new \Exception('Method not found on '.Statistics::class);
         }
 
-        if (null === !$args) {
+        if (!$args === null) {
             return $this->statistics->$name();
         }
 

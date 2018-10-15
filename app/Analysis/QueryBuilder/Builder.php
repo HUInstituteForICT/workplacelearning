@@ -76,13 +76,13 @@ class Builder
                     $mainModel->$r()->getQualifiedForeignKey());
             } else {
                 $this->query->join($join->getTable(),
-                    $mainModel->$r()->getQualifiedForeignKeyName(),
+                    $mainModel->$r()->getQualifiedForeignPivotKeyName(),
                     '=',
-                    $mainModel->$r()->getQualifiedParentKeyName());
+                    $mainModel->$r()->getQualifiedForeignPivotKeyName());
             }
         }
 
-        if (null != $sort) {
+        if ($sort != null) {
             foreach ($sort as $s) {
                 $modelString = 'App\\'.$s['table'];
                 $table = new $modelString();
@@ -91,7 +91,7 @@ class Builder
             }
         }
 
-        if (null != $limit) {
+        if ($limit != null) {
             $this->query->limit($limit);
         }
     }

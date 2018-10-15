@@ -50,7 +50,7 @@
                             @endif
                         </strong>.
                     </li>
-                    <li>{{ __('activity.category') }} <strong>{{ $lap->category->category_label }}</strong>,
+                    <li>{{ __('activity.category') }} <strong>{{ $lap->category->localizedLabel() }}</strong>,
                         {{ $lap->status->isBusy() ? __('activity.feedback.busy') : __('activity.feedback.finished') }}
                     </li>
                     <li>{{ !$lap->resourcePerson ? __('activity.feedback.not-used-source') : __('activity.feedback.used-source') }}
@@ -59,7 +59,7 @@
                             : {{ $lap->res_material_detail }})
                         @elseif($lap->resourcePerson)
                             ({{ __('activity.producing.person') }}
-                            : {{ __($lap->resourcePerson->person_label)  }})
+                            : {{ $lap->resourcePerson->localizedLabel()  }})
                         @else
                             ({{ __('activity.alone')  }})
                         @endif

@@ -1,6 +1,6 @@
 @extends('layout.HUdefault')
 @section('title')
-    {{ Lang::get('activity.activities') }}
+    {{ __('tips.education-programs') }}
 @stop
 @section('content')
         <div class="row">

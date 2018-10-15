@@ -124,7 +124,7 @@
                             <input type="radio" name="category_id"
                                    value="{{ $category->category_id }}"
                                     {{ ($loop->first) ? 'checked' : null }}/>
-                            <span>{{ __($category->category_label) }}</span>
+                            <span>{{ $category->localizedLabel() }}</span>
                         </label>
                         @endforeach
                     <div>
@@ -138,7 +138,7 @@
                         <label class="expand-click"><input type="radio" name="resource" value="persoon" checked/><span>{{ Lang::get('activity.person') }}</span></label>
                         <select id="rp_id" name="personsource" class="cond-hidden">
                             @foreach($learningWith as $resourcePerson)
-                                <option value="{{ $resourcePerson->rp_id }}">{{ __($resourcePerson->person_label) }}</option>
+                                <option value="{{ $resourcePerson->rp_id }}">{{ $resourcePerson->localizedLabel() }}</option>
                             @endforeach
                             <option value="new">{{ Lang::get('general.new') }}/{{ Lang::get('activity.other') }}</option>
                         </select>

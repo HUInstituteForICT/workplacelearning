@@ -28,13 +28,13 @@
                 <div class="col-md-2 form-group buttons">
                     <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_when') }}"></i></h4>
                     @foreach ($timeslots as $key => $value)
-                        <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ (old('timeslot') == $value->timeslot_id) ? 'checked' : ($activity->timeslot_id == $value->timeslot_id) ? 'checked' : null }} /><span>{{ $value->timeslot_text }}</span></label>
+                        <label><input type="radio" name="timeslot" value="{{ $value->timeslot_id }}" {{ (old('timeslot') == $value->timeslot_id) ? 'checked' : ($activity->timeslot_id == $value->timeslot_id) ? 'checked' : null }} /><span>{{ $value->localizedLabel() }}</span></label>
                     @endforeach
                 </div>
                 <div class="col-md-2 from-group buttons">
                     <h4>{{ Lang::get('activity.with') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_with') }}"></i></h4>
                     @foreach ($resPersons as $key => $value)
-                        <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ (old('res_person') == $value->rp_id) ? 'checked' : ($activity->res_person_id == $value->rp_id) ? 'checked' : null }} /><span>{{ $value->person_label }}</span></label>
+                        <label><input type="radio" name="res_person" value="{{ $value->rp_id }}" {{ (old('res_person') == $value->rp_id) ? 'checked' : ($activity->res_person_id == $value->rp_id) ? 'checked' : null }} /><span>{{ $value->localizedLabel() }}</span></label>
                     @endforeach
                 </div>
 
@@ -66,7 +66,7 @@
                         <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_competence') }}"></i></h4>
                         <select name="competence" class="form-control fit-bs">
                             @foreach ($competencies as $value)
-                                <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : ($activity->competence->first()->competence_id == $value->competence_id) ? 'selected' : null }}>{{ $value->competence_label }}</option>
+                                <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : ($activity->competence->first()->competence_id == $value->competence_id) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
                             @endforeach
                         </select>
                         <h5>{!! str_replace('%s', "/assets/pdf/CompetentiesLerarenopleiding.pdf", Lang::get('elements.competences.competencedetails')) !!}</h5>
