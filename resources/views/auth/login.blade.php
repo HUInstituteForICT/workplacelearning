@@ -15,8 +15,7 @@
                     <div class="form-group">
                         <div class="cols-sm-11">
                             <div class="input-group">
-                                {{ csrf_field() }}
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
                                 <input class="form-control" placeholder="student@student.com" type="text" name="email" value="{{ old('email') }}"/>
                             </div>
                         </div>
@@ -30,6 +29,7 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        {{ csrf_field() }}
                         <input type="submit" class="btn btn-def btn-block" value="Login" />
                     </div>
                     <div class="form-group text-center">
