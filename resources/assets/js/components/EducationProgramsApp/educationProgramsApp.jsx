@@ -119,7 +119,7 @@ export default class educationProgramsApp extends React.Component {
                     <option value="2">{Lang.get('react.producing')}</option>
                 </select>
                 <br/>
-                <span className="defaultButton fill" onClick={this.onClickAddEducationProgram}>{Lang.get('react.add')}</span>
+                <span className="btn btn-success fill" onClick={this.onClickAddEducationProgram}>{Lang.get('react.add')}</span>
             </div>
         </div>
     }
