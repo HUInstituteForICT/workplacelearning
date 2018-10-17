@@ -111,6 +111,7 @@ return array(
     'learning_goal' => 'learning goal',
     'competence' => 'competence',
     'date' => 'date',
+    'newcat' => 'new category',
     'res_material_detail' => 'theory source',
     'timeslot' => 'timeslot',
     'companyName' => 'company name',

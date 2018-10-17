@@ -113,6 +113,7 @@ return array(
     'learning_goal' => 'leervraag',
     'competence' => 'competentie',
     'date' => 'datum',
+    'newcat' => 'nieuwe categorie',
     'res_material_detail' => 'theoriebron',
     'timeslot' => 'categorie',
     'companyName' => 'bedrijfsnaam',
