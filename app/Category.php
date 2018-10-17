@@ -95,6 +95,6 @@ class Category extends Model implements HasLabelProperty
 
     public function getLabel(): string
     {
-        return $this->category_label;
+        return $this->category_label ?? 'Unknown category';
     }
 }
