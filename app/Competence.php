@@ -52,6 +52,6 @@ class Competence extends Model implements HasLabelProperty
 
     public function getLabel(): string
     {
-        return $this->competence_label;
+        return $this->competence_label ?? 'Unknown competence';
     }
 }

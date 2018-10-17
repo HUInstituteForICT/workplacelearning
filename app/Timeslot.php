@@ -76,6 +76,6 @@ class Timeslot extends Model implements HasLabelProperty
 
     public function getLabel(): string
     {
-        return $this->timeslot_text;
+        return $this->timeslot_text ?? 'Unknown timeslot/category';
     }
 }
