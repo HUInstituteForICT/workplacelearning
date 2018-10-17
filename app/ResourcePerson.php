@@ -83,6 +83,6 @@ class ResourcePerson extends Model implements HasLabelProperty
 
     public function getLabel(): string
     {
-        return $this->person_label;
+        return $this->person_label ?? 'Unknown person';
     }
 }
