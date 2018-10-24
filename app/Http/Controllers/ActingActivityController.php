@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Evidence;
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\LearningActivityActing;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Services\AvailableActingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
+use App\Services\EvidenceFileHandler;
 use App\Services\EvidenceUploadHandler;
 use App\Services\Factories\LAAFactory;
 use App\Services\LAAUpdater;
@@ -117,9 +119,14 @@ class ActingActivityController
         return $this->redirector->route('process-acting')->with('success', __('activity.saved-successfully'));
     }
 
-    public function delete(LearningActivityActing $learningActivityActing): RedirectResponse
+    public function delete(LearningActivityActing $learningActivityActing, EvidenceFileHandler $evidenceFileHandler): RedirectResponse
     {
-        $this->learningActivityActingRepository->delete($learningActivityActing);
+        $learningActivityActing->competence()->detach($learningActivityActing->competence);
+        $learningActivityActing->evidence->each(function (Evidence $evidence) use ($evidenceFileHandler) {
+            $evidenceFileHandler->delete($evidence);
+        });
+
+        $learningActivityActing->delete();
 
         return $this->redirector->route('process-acting');
     }
