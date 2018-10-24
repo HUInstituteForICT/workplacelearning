@@ -82,6 +82,9 @@ class ActingActivityController
             ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping));
     }
 
+    /**
+     * @throws \Exception
+     */
     public function create(
         ActingCreateRequest $request,
         LAAFactory $LAAFactory,
@@ -96,6 +99,9 @@ class ActingActivityController
         return $this->redirector->route('process-acting')->with('success', __('activity.saved-successfully'));
     }
 
+    /**
+     * @throws \Exception
+     */
     public function update(
         ActingUpdateRequest $request,
         LearningActivityActing $learningActivityActing,

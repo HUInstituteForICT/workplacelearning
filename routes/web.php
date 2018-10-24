@@ -268,36 +268,11 @@ Route::group([
                     'competence-description.pdf');
             })->name('competence-description');
 
-        Route::get('evidence/{learningActivity}/remove', function (
-            App\LearningActivityActing $learningActivity,
-            App\Services\CurrentUserResolver $currentUserResolver
-        ) {
-            if (!$learningActivity->workplaceLearningPeriod->student->is($currentUserResolver->getCurrentUser())) {
-                throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
-            }
-
-            if (Storage::exists("activity-evidence/{$learningActivity->evidence_disk_filename}")) {
-                Storage::delete("activity-evidence/{$learningActivity->evidence_disk_filename}");
-                $learningActivity->evidence_filename = null;
-                $learningActivity->evidence_disk_filename = null;
-                $learningActivity->evidence_mime = null;
-                $learningActivity->save();
-            }
-
-            return redirect()->route('process-acting-edit', ['id' => $learningActivity->laa_id]);
-        })
+        Route::get('evidence/{evidence}/remove', 'EvidenceController@remove')
             ->middleware(RequireActiveInternship::class)
             ->name('evidence-remove');
 
-        Route::get('evidence/{learningActivity}/{diskFileName}',
-            function (App\LearningActivityActing $learningActivity, $diskFileName) {
-                if ($learningActivity->evidence_disk_filename !== $diskFileName) {
-                    throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
-                }
-
-                return response()->download(storage_path('app/activity-evidence/'.$learningActivity->evidence_disk_filename),
-                    $learningActivity->evidence_filename);
-            })->name('evidence-download');
+        Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')->name('evidence-download');
     });
 
     /* EP Type: Producing */
