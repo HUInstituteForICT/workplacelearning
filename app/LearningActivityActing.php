@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\LearningActivityActing.
@@ -109,5 +110,10 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     public function getRelationships(): array
     {
         return ['learningGoal', 'competence', 'timeslot', 'resourcePerson', 'resourceMaterial'];
+    }
+
+    public function evidence(): HasMany
+    {
+        return $this->hasMany(Evidence::class, 'learning_activity_acting_id', 'laa_id');
     }
 }
