@@ -18,7 +18,8 @@ class LAAUpdater
         $learningActivityActing->timeslot()->associate($data['timeslot']);
         $learningActivityActing->resourcePerson()->associate($data['res_person']);
         $learningActivityActing->learningGoal()->associate($data['learning_goal']);
-        $learningActivityActing->competence()->sync([$data['competence']]);
+
+        $learningActivityActing->competence()->sync($data['competence']);
 
         if ($data['res_material'] === 'none') {
             $learningActivityActing->resourceMaterial()->dissociate();

@@ -64,7 +64,7 @@ class LAAFactory
         $activityActing->save();
 
         // Needs to be after save because the relation is many-to-many for some reason, thus association table is used
-        $activityActing->competence()->attach($data['competence']);
+        $activityActing->competence()->sync($data['competence']);
 
         return $activityActing;
     }

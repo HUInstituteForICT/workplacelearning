@@ -22,7 +22,7 @@ return array(
   'busy' => 'Busy',
   'category' => 'Category',
   'chain-to' => 'Chain to previous activity',
-  'competence' => 'Competence',
+  'competence' => 'Competences',
   'description' => 'Description',
   'difficulty' => 'Difficulty',
   'easy' => 'Easy',
