@@ -81,12 +81,16 @@ class LearningActivityExportBuilderTest extends TestCase
             'learningGoalDescription' => 'Description test',
             'supportWp' => 'support from wp',
             'supportEd' => 'support from ed',
-            'competence' => 'Interpersoonlijk',
+            'competence' => ['Interpersoonlijk'],
             'url' => route('process-acting-edit', ['id' => 1]),
         ];
 
         foreach ($mapping as $field => $value) {
-            $this->assertEquals($value, $decoded[0]->{$field}, "{$field}: expected({$value}) got({$decoded[0]->{$field}})");
+            if (is_array($value)) {
+                $this->assertContains($value[0], $decoded[0]->{$field});
+            } else {
+                $this->assertEquals($value, $decoded[0]->{$field}, "{$field}: expected({$value}) got({$decoded[0]->{$field}})");
+            }
         }
     }
 }
