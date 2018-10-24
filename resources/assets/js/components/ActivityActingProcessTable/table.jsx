@@ -58,11 +58,12 @@ export default class ActivityActingProcessTable extends React.Component {
                 filters.learningGoal.rules.push(learningGoal);
             }
 
-            let competence = activity.competence;
-            if (filters.competence.rules.indexOf(competence) === -1) {
-                filters.competence.rules.push(competence);
-            }
-
+            let competencies = activity.competence;
+            competencies.forEach(competence => {
+                if (filters.competence.rules.indexOf(competence) === -1) {
+                    filters.competence.rules.push(competence);
+                }
+            });
 
         });
 
@@ -120,7 +121,9 @@ export default class ActivityActingProcessTable extends React.Component {
                     return true;
                 }
 
-                return this.state.filters.competence.selectedRules.indexOf(activity.competence) > -1;
+                return activity.competence.some(competence => {
+                    return this.state.filters.competence.selectedRules.indexOf(competence) > -1;
+                });
             })
             .filter((activity) => {
                 return moment(activity.date, "DD-MM-YYYY").isSameOrAfter(this.state.startDate) && moment(activity.date, "DD-MM-YYYY").isSameOrBefore(this.state.endDate)

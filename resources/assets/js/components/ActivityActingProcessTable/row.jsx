@@ -55,7 +55,7 @@ export default class Row extends React.Component {
                 }
             </td>
             <td>{activity.learningGoal}</td>
-            <td>{activity.competence}</td>
+            <td>{activity.competence.join(', ')}</td>
             <td>{activity.evidence !== "-" && <a href={activity.evidence}>download</a>}</td>
             <td>
                 <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
