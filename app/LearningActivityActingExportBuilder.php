@@ -35,8 +35,13 @@ class LearningActivityActingExportBuilder
                 'supportWp' => $activity->support_wp ?? '',
                 'supportEd' => $activity->support_ed ?? '',
                 'url' => route('process-acting-edit', ['id' => $activity->laa_id]),
-                'evidence' => $activity->evidence_filename === null ? '-' :
-                    route('evidence-download', ['id' => $activity->laa_id, 'diskFileName' => $activity->evidence_disk_filename]),
+                'evidence' => $activity->evidence->map(function (Evidence $evidence) {
+                    return [
+                        'name' => $evidence->filename,
+                        'url' => route('evidence-download',
+                            ['evidence' => $evidence, 'diskFileName' => $evidence->disk_filename]),
+                    ];
+                })->all(),
             ];
         });
 

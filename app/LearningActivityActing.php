@@ -10,26 +10,44 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property int                     $laa_id
- * @property int                     $wplp_id
- * @property \DateTime               $date
- * @property int                     $timeslot_id
- * @property string                  $situation
- * @property string                  $lessonslearned
- * @property string                  $support_wp
- * @property string                  $support_ed
- * @property int                     $res_person_id
- * @property int                     $res_material_id
- * @property string                  $res_material_detail
- * @property int                     $learninggoal_id
- * @property string                  $evidence_filename
- * @property string                  $evidence_disk_filename
- * @property string                  $evidence_mime
- * @property Timeslot                $timeslot
- * @property ResourcePerson          $resourcePerson
- * @property ResourceMaterial        $resourceMaterial
- * @property LearningGoal            $learningGoal
- * @property Collection|Competence[] $competence
+ * App\LearningActivityActing.
+ *
+ * @property int                                                      $laa_id
+ * @property int                                                      $wplp_id
+ * @property \DateTime                                                $date
+ * @property int                                                      $timeslot_id
+ * @property string                                                   $situation
+ * @property string                                                   $lessonslearned
+ * @property string                                                   $support_wp
+ * @property string                                                   $support_ed
+ * @property int                                                      $res_person_id
+ * @property int                                                      $res_material_id
+ * @property string                                                   $res_material_detail
+ * @property int                                                      $learninggoal_id
+ * @property string                                                   $evidence_filename
+ * @property string                                                   $evidence_disk_filename
+ * @property string                                                   $evidence_mime
+ * @property Timeslot                                                 $timeslot
+ * @property ResourcePerson                                           $resourcePerson
+ * @property ResourceMaterial                                         $resourceMaterial
+ * @property LearningGoal                                             $learningGoal
+ * @property Collection|Competence[]                                  $competence
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Evidence[] $evidence
+ * @property \App\WorkplaceLearningPeriod                             $workplaceLearningPeriod
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLaaId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLearninggoalId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLessonslearned($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereResMaterialDetail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereResMaterialId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereResPersonId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereSituation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereSupportEd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereSupportWp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereTimeslotId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereWplpId($value)
+ * @mixin \Eloquent
  */
 class LearningActivityActing extends Model implements LearningActivityInterface
 {
