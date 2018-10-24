@@ -28,6 +28,9 @@ export default class ActingActivityProcessExporter {
         this.activities.forEach((activity, index) => {
             let values = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
+                if(Array.isArray(activity[header])) {
+                    return '"' + activity[header].join(', ') + '"';
+                }
                 return activity[header];
             });
             let dataString = values.join(",");
@@ -50,6 +53,8 @@ export default class ActingActivityProcessExporter {
                 if (unwantedColumns.indexOf(header) !== -1) return;
                 if(header === 'situation' || header === 'lessonsLearned') {
                     return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" + activity[header] + " \n";
+                } else if(header === 'competence') {
+                    return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header].join(', ')
                 }
                 return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header];
             });
