@@ -2,11 +2,22 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Evidence;
 use App\LearningActivityActing;
 use App\Student;
 
 class LearningActivityActingRepository
 {
+    /**
+     * @var EvidenceRepository
+     */
+    private $evidenceRepository;
+
+    public function __construct(EvidenceRepository $evidenceRepository)
+    {
+        $this->evidenceRepository = $evidenceRepository;
+    }
+
     public function get(int $id): LearningActivityActing
     {
         return LearningActivityActing::findOrFail($id);
@@ -32,6 +43,10 @@ class LearningActivityActingRepository
     {
         try {
             $learningActivityActing->competence()->detach();
+
+            $learningActivityActing->evidence->each(function (Evidence $evidence) {
+                $this->evidenceRepository->delete($evidence);
+            });
 
             return $learningActivityActing->delete();
         } catch (\Exception $e) {
