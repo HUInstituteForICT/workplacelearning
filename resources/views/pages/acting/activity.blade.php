@@ -169,7 +169,7 @@
                     </div>
                     <div style="margin-top: 20px;">
                         <h4>{{ Lang::get('process.evidence') }}</h4>
-                        <input type="file" name="evidence"/>
+                        <input type="file" name="evidence[]" multiple/>
                     </div>
                     <div>
                         <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />

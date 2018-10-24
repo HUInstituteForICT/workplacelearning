@@ -24,6 +24,7 @@ class ActingUpdateRequest extends FormRequest
             'support_wp' => 'max:500',
             'support_ed' => 'max:500',
             'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
+            'competence' => 'required|min:1',
             'competence.*' => 'required|exists:competence,competence_id',
         ];
     }

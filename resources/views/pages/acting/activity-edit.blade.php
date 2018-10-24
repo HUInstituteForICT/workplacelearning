@@ -72,16 +72,24 @@
                         <h5>{!! str_replace('%s', "/assets/pdf/CompetentiesLerarenopleiding.pdf", Lang::get('elements.competences.competencedetails')) !!}</h5>
                     </div>
                     <div style="margin-top: 20px;">
-                        <h4>{{ Lang::get('process.evidence') }}</h4>
-                        @if($activity->evidence_disk_filename !== null)
-                        <a href="{{ route('evidence-download', ["learningActivity" => $activity->laa_id, "diskFileName" => $activity->evidence_disk_filename]) }}">{{ Lang::get('general.download') }}</a>
-                            -
-                            <a href={{ route('evidence-remove', ["learningActivity" => $activity->laa_id]) }}>{{Lang::get('process.remove')}}</a>
+                        <h4>{{ __('process.evidence') }}</h4>
+                        @if($activity->evidence->count() > 0)
+                            <ul>
+
+                                @foreach($activity->evidence as $evidence)
+                                    <li>
+                                        <?php /** App\Evidence $evidence */ ?>
+                                        <a href="{{ route('evidence-download', ['learningActivity' => $evidence->id, 'diskFileName' => $evidence->disk_filename]) }}">{{ $evidence->filename }}</a>
+                                        -
+                                        <a href={{ route('evidence-remove', ['learningActivity' => $evidence->id]) }}>{{__('process.remove')}}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
                         @endif
-                        <input type="file" name="evidence"/>
+                        <input type="file" name="evidence[]" multiple/>
                     </div>
                     <div>
-                        <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="{{ Lang::get('general.save') }}" />
+                        <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="{{ __('general.save') }}" />
                     </div>
                 </div>
             </div>
