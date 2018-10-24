@@ -72,7 +72,9 @@ class Statistics
     {
         $activities = $this->analysisCollector->getLearningActivities()->filter(
             function (LearningActivityActing $activity) use ($competence) {
-                return $activity->competence->first()->competence_id === $competence->competence_id;
+                $competenceIds = $activity->competence->pluck('competence_id')->all();
+
+                return \in_array($competence->competence_id, $competenceIds, true);
             });
         if ($this->analysisCollector->getLearningActivities()->count() > 0) {
             return round(($activities->count() / $this->analysisCollector->getLearningActivities()->count()) * 100, 1);
@@ -111,8 +113,8 @@ class Statistics
         $activities = $this->analysisCollector->getLearningActivities()->filter(
             function (LearningActivityActing $activity) use ($material) {
                 // There is no resourceMaterial for the "none" option, bypass a NullRef this way because in the analysisCollector we spoof the $material with a non-persisted material "none"
-                if (null === $activity->resourceMaterial) {
-                    return null === $material->rm_id;
+                if ($activity->resourceMaterial === null) {
+                    return $material->rm_id === null;
                 }
 
                 return $activity->resourceMaterial->rm_id === $material->rm_id;
@@ -176,7 +178,11 @@ class Statistics
         $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo): void {
             // Find all activities with matching competence & timeslot
             $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function (LearningActivityActing $matchingActivity) use ($activity) {
-                return $activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
+                $activityCompetenceIds = $activity->competence->pluck('competence_id')->all();
+                $matchingActivityCompetenceIds = $matchingActivity->competence->pluck('competence_id')->all();
+
+                /* @noinspection TypeUnsafeComparisonInspection */
+                return sort($activityCompetenceIds) == sort($matchingActivityCompetenceIds) &&
                     $activity->timeslot->timeslot_id === $matchingActivity->timeslot->timeslot_id &&
                     $activity !== $matchingActivity;
             });
@@ -211,7 +217,11 @@ class Statistics
         $this->analysisCollector->getLearningActivities()->each(function (LearningActivityActing $activity) use ($combo): void {
             // Find all activities with matching competence & learning goal
             $matchingActivities = $this->analysisCollector->getLearningActivities()->filter(function (LearningActivityActing $matchingActivity) use ($activity) {
-                return $activity->competence->first()->competence_label === $matchingActivity->competence->first()->competence_label &&
+                $activityCompetenceIds = $activity->competence->pluck('competence_id')->all();
+                $matchingActivityCompetenceIds = $matchingActivity->competence->pluck('competence_id')->all();
+
+                /* @noinspection TypeUnsafeComparisonInspection */
+                return sort($activityCompetenceIds) == sort($matchingActivityCompetenceIds) &&
                     $activity->learningGoal->learninggoal_id === $matchingActivity->learningGoal->learninggoal_id &&
                     $activity !== $matchingActivity;
             });
@@ -242,9 +252,9 @@ class Statistics
             return (int) $activity->learninggoal_id == (int) $learningGoal->learninggoal_id;
         });
         $noTheory = $activities->filter(function (LearningActivityActing $activity) {
-            return null === $activity->resourceMaterial;
+            return $activity->resourceMaterial === null;
         });
-        if (0 === $noTheory->count()) {
+        if ($noTheory->count() === 0) {
             return 0;
         }
 
