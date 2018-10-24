@@ -156,9 +156,9 @@
                             @endforeach
                         </select>
                         <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_competence') }}"></i></h4>
-                        <select name="competence" class="form-control fit-bs">
+                        <select name="competence[]" class="form-control fit-bs" multiple>
                             @foreach ($competencies as $value)
-                                <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : null }}>{{ __($value->localizedLabel()) }}</option>
+                                <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', []), false) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
                             @endforeach
                         </select>
                         @if($competenceDescription !== null)

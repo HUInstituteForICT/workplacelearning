@@ -27,7 +27,9 @@ class LearningActivityActingExportBuilder
                 'resourcePerson' => $activity->resourcePerson->localizedLabel(),
                 'resourceMaterial' => __($activity->resourceMaterial ? $activity->resourceMaterial->rm_label : 'activity.none'),
                 'learningGoal' => __($activity->learningGoal->learninggoal_label),
-                'competence' => $activity->competence->first()->localizedLabel(),
+                'competence' => $activity->competence->map(function (Competence $competence) {
+                    return $competence->localizedLabel();
+                })->all(),
                 'learningGoalDescription' => $activity->learningGoal->description,
                 'lessonsLearned' => $activity->lessonslearned,
                 'supportWp' => $activity->support_wp ?? '',

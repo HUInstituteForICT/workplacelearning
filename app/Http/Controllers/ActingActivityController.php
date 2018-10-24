@@ -114,7 +114,7 @@ class ActingActivityController extends Controller
 
     public function delete(LearningActivityActing $learningActivityActing)
     {
-        $learningActivityActing->competence()->detach($learningActivityActing->competence()->first()->competence_id);
+        $learningActivityActing->competence()->detach($learningActivityActing->competence);
         $learningActivityActing->delete();
 
         return redirect()->route('process-acting');

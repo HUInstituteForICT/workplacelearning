@@ -64,9 +64,9 @@
                             @endforeach
                         </select>
                         <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_competence') }}"></i></h4>
-                        <select name="competence" class="form-control fit-bs">
+                        <select name="competence[]" class="form-control fit-bs" multiple>
                             @foreach ($competencies as $value)
-                                <option value="{{ $value->competence_id }}" {{ (old('competence') == $value->competence_id) ? 'selected' : ($activity->competence->first()->competence_id == $value->competence_id) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
+                                <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', $activity->competence->pluck('competence_id')->all()), false) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
                             @endforeach
                         </select>
                         <h5>{!! str_replace('%s', "/assets/pdf/CompetentiesLerarenopleiding.pdf", Lang::get('elements.competences.competencedetails')) !!}</h5>

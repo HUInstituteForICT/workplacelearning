@@ -23,7 +23,7 @@ return array(
   'no-chain' => 'Niet Koppelen',
   'hours' => 'Uren',
   'learningquestion' => 'Leervraag',
-  'competence' => 'Competentie',
+  'competence' => 'Competenties',
   'add' => 'Toevoegen',
   'none' => 'Geen',
   'other' => 'Anders',
