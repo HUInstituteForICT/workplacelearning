@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Evidence;
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\LearningActivityActing;
 use App\LearningActivityActingExportBuilder;
+use App\Services\EvidenceFileHandler;
 use App\Services\EvidenceUploadHandler;
 use App\Services\LAAFactory;
 use App\Services\LAAUpdater;
@@ -118,9 +120,14 @@ class ActingActivityController extends Controller
         return redirect()->route('process-acting')->with('success', __('activity.saved-successfully'));
     }
 
-    public function delete(LearningActivityActing $learningActivityActing)
+    public function delete(LearningActivityActing $learningActivityActing, EvidenceFileHandler $evidenceFileHandler)
     {
         $learningActivityActing->competence()->detach($learningActivityActing->competence);
+
+        $learningActivityActing->evidence->each(function (Evidence $evidence) use ($evidenceFileHandler) {
+            $evidenceFileHandler->delete($evidence);
+        });
+
         $learningActivityActing->delete();
 
         return redirect()->route('process-acting');
