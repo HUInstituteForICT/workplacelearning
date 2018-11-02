@@ -20,15 +20,17 @@ class ActivityExportController extends Controller
 
     public function exportActivitiesToWord(Request $request)
     {
-        $w = new PhpWord();
-        $s = $w->addSection('Hoi');
-        $text = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $request->get('exportText'));
-        $s->addText($text);
+//        Settings::setOutputEscapingEnabled(true);
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        $text = htmlspecialchars($request->get('exportText'));
+//        $text = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $request->get('exportText'));
+        $section->addText($text);
 
         $fileName = md5(time());
         $filePath = storage_path('app/word-exports/').$fileName.'.docx';
         try {
-            $w->save($filePath);
+            $phpWord->save($filePath);
         } catch (\Exception $e) {
             die($e->getMessage());
         }
