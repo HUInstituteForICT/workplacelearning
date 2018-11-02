@@ -168,8 +168,11 @@
                         @endif
                     </div>
                     <div style="margin-top: 20px;">
-                        <h4>{{ Lang::get('process.evidence') }}</h4>
-                        <input type="file" name="evidence[]" multiple/>
+                        <h4>{{ __('process.evidence') }}</h4>
+                        <input type="file" name="evidence[]" multiple onchange="updateFileList(this)"/>
+                        <ul id="fileList">
+
+                        </ul>
                     </div>
                     <div>
                         <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />
@@ -223,6 +226,23 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
         <script>
+            var fileList = document.getElementById('fileList');
+
+            function updateFileList(fileInput) {
+                console.log(fileInput);
+                var files = [];
+                for (var i = 0; i < fileInput.files.length; i++) {
+                    files.push(fileInput.files[i].name);
+                }
+                fileList.innerHTML = '';
+                files.forEach(function (fileName) {
+                    var node = document.createElement('li');
+                    node.innerText = fileName;
+                    fileList.appendChild(node);
+                });
+
+            }
+
             var enlargedModal = $('#enlargedModal');
             var title = $('.modal-title');
             var textarea = $(enlargedModal).find('textarea');
