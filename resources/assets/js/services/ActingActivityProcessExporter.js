@@ -25,11 +25,16 @@ export default class ActingActivityProcessExporter {
         });
         this.output(translatedHeaders.join(",") + "\n");
 
+        const encode = input => '"' + input + '"';
+
         this.activities.forEach((activity, index) => {
             let values = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
                 if(Array.isArray(activity[header])) {
-                    return '"' + activity[header].join(', ') + '"';
+                    if (header === 'evidence') {
+                        return encode(activity[header].map(evidence => evidence.url).join(', '));
+                    }
+                    return encode(activity[header].join(', '));
                 }
                 return activity[header];
             });
@@ -55,6 +60,8 @@ export default class ActingActivityProcessExporter {
                     return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" + activity[header] + " \n";
                 } else if(header === 'competence') {
                     return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header].join(', ')
+                } else if(header === 'evidence') {
+                    return _.capitalize(exportTranslatedFieldMapping[header]) +  ":\n" + activity[header].map(evidence => evidence.name + ": \t" + evidence.url).join("\n");
                 }
                 return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header];
             });
