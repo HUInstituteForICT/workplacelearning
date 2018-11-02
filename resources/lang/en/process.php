@@ -2,7 +2,7 @@
 
 return [
     'enlarge' => 'Enlarge field',
-    'evidence' => 'Evidence',
+    'evidence' => 'Evidence (1 or more)',
     'remove' => 'remove',
     'chain' => [
         'chain-activity' => 'Chain activity',

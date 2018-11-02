@@ -2,7 +2,7 @@
 
 return [
     'enlarge' => 'Vergroot tekstveld',
-    'evidence' => 'Bewijsstukken',
+    'evidence' => 'Bewijsstukken (1 of meer)',
     'remove' => 'verwijderen',
     'chain' => [
         'chain-activity' => 'Keten activiteit',
