@@ -3,6 +3,7 @@
 namespace App\Tips\Models;
 
 use App\Tips\Statistics\Filters\CategoryFilter;
+use App\Tips\Statistics\Filters\CompetenceFilter;
 use App\Tips\Statistics\Filters\DifficultyFilter;
 use App\Tips\Statistics\Filters\ResourceMaterialFilter;
 use App\Tips\Statistics\Filters\ResourcePersonFilter;
@@ -47,6 +48,13 @@ class StatisticVariable extends Model
                 'name'       => 'Theory / resource material',
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'rm_label'],
+                ],
+            ],
+            [
+                'class' => CompetenceFilter::class,
+                'name' => 'Competence',
+                'parameters' => [
+                    ['name' => 'Label', 'propertyName' => 'competence_label'],
                 ],
             ],
         ],
