@@ -40,5 +40,6 @@ return [
         'Difficulty' => 'Difficulty',
         'Timeslot/Category' => 'Timeslot/Category',
         'Theory / resource material' => 'Theory / resource material',
+        'Competence' => 'Competence',
     ],
 ];

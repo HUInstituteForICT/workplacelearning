@@ -42,5 +42,6 @@ return [
         'Difficulty' => 'Moeilijkheidsgraad',
         'Timeslot/Category' => 'Tijdslot/Categorie',
         'Theory / resource material' => 'Theorie',
+        'Competence' => 'Competentie',
     ],
 ];
