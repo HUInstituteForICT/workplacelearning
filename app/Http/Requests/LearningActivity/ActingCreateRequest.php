@@ -23,7 +23,7 @@ class ActingCreateRequest extends FormRequest
             'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
             'competence' => 'required|min:1',
             'competence.*' => 'required|exists:competence,competence_id',
-            'evidence.*' => 'file|max:5000|mimes:pdf,ppt,pptx,docx,txt,jpg,png,bmp',
+            'evidence.*' => 'file|max:5000',
         ];
     }
 
