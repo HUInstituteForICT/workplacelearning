@@ -142,7 +142,7 @@ return array(
         'email'                    => 'email address',
         'feedback_subject'     => 'feedback or bug subject',
         'feedback_description' => 'description',
-        'evidence' => 'Evidence file',
+        'evidence.*' => 'Evidence file',
   ),
     'after_or_equal'  => 'The :attribute should be a date equal to or after :date',
     'before_or_equal' => 'The :attribute should be a date equal to or before :date',

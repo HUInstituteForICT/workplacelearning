@@ -150,7 +150,7 @@ return array(
         'threshold'          => 'grenswaarde',
         'tipText'            => 'tip tekst',
         'showInAnalysis'     => 'zichtbaar in analyse',
-        'evidence' => 'Bewijsstuk',
+        'evidence.*' => 'Bewijsstuk',
   ),
 
     'newnotfinished'                          => 'De omschrijving is verplicht en mag maximaal 150 tekens zijn.',
