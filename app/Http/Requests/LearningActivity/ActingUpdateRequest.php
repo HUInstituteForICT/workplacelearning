@@ -16,7 +16,7 @@ class ActingUpdateRequest extends FormRequest
     {
         return [
             'date' => 'required|date|date_in_wplp',
-            'description' => 'required|max:1500',
+            'description' => 'required|max:2000',
             'timeslot' => 'required|exists:timeslot,timeslot_id',
             'new_rp' => 'required_if:res_person,new|max:45|',
             'new_rm' => 'required_if:res_material,new|max:45',
@@ -24,7 +24,7 @@ class ActingUpdateRequest extends FormRequest
             'support_wp' => 'max:500',
             'support_ed' => 'max:500',
             'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
-            'competence' => 'required|min:1',
+            'competence' => 'required|min:1|max:3',
             'competence.*' => 'required|exists:competence,competence_id',
             'evidence.*' => 'file|max:5000',
         ];

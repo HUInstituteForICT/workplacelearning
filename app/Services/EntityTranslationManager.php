@@ -7,6 +7,7 @@ use App\Competence;
 use App\Repository\Eloquent\LanguageLineRepository;
 use App\ResourcePerson;
 use App\Timeslot;
+use App\Tips\Models\Tip;
 use App\Traits\TranslatableEntity;
 use Spatie\TranslationLoader\LanguageLine;
 
@@ -17,6 +18,7 @@ class EntityTranslationManager
         'timeslot' => Timeslot::class,
         'resourcePerson' => ResourcePerson::class,
         'category' => Category::class,
+        'tip' => Tip::class,
     ];
 
     /**
@@ -42,7 +44,7 @@ class EntityTranslationManager
                 'text' => $translations,
             ]);
         } else {
-            $languageLine->fill(['text' => $translations]);
+            $languageLine->text = $translations;
         }
 
         $this->languageLineRepository->save($languageLine);

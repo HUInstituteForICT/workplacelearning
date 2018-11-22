@@ -121,6 +121,7 @@ export default class EducationProgramService {
         axios.get(base + 'education-program/cohort/' + id + '/clone').then(callback);
     }
 
+    // @todo move this outside of EducationProgramService as it is also used by tips
     static loadTranslations(type, id, callback) {
         axios.get(base + 'entity/' + type + '/' + id + '/translations').then(callback);
     }
