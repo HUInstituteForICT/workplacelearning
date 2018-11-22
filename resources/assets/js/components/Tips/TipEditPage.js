@@ -7,7 +7,9 @@ import Joyride from "react-joyride";
 import {ACTIONS, EVENTS} from 'react-joyride/es/constants';
 import CoupledStatistics from "./CoupledStatistics";
 import Moments from "./Moments";
+import EducationProgramService from "../../services/EducationProgramService";
 
+const locales = ["en", "nl"];
 
 class TipEditPage extends React.Component {
 
@@ -21,9 +23,54 @@ class TipEditPage extends React.Component {
             runJoyride: false,
             stepIndex: 0,
             selectedEducationProgramId: null,
+            loadingTranslations: false,
+            translations: {}
+        };
 
-        }
+        this.loadTranslations = this.loadTranslations.bind(this);
+        this.addTranslation = this.addTranslation.bind(this);
+        this.setTranslation = this.setTranslation.bind(this);
+        this.removeTranslation = this.removeTranslation.bind(this);
 
+
+
+    }
+
+    componentDidMount() {
+        this.loadTranslations();
+    }
+
+    loadTranslations() {
+        this.setState({loadingTranslations: true});
+        EducationProgramService.loadTranslations('tip', this.props.match.params.id, function (response) {
+            this.setState({translations: response.data.translations, loadingTranslations: false});
+
+        }.bind(this));
+    }
+
+    addTranslation(locale) {
+        if (!locales.includes(locale)) return;
+        if (this.state.translations.hasOwnProperty(locale)) return;
+
+        let translations = {...this.state.translations};
+        translations[locale] = "";
+
+        this.setState({translations: translations});
+    }
+
+    removeTranslation(locale) {
+        if (!locales.includes(locale)) return;
+
+        if (!this.state.translations.hasOwnProperty(locale)) return;
+
+        let translations = {...this.state.translations};
+        delete translations[locale];
+
+        this.setState({translations: translations});
+    }
+
+    setTranslation(locale, value) {
+        this.setState({translations: {...this.state.translations, [locale]: value}});
     }
 
     toggleVisibleCohorts = (enable) => {
@@ -243,6 +290,8 @@ class TipEditPage extends React.Component {
                             <textarea className="form-control" value={tip.tipText} maxLength={1000} rows={3}
                                       onChange={e => updateEntity('tips', tip.id, {...tip, tipText: e.target.value})}/>
                         </div>
+
+
                         {coupledStatistics.length > 0 && <p>{Lang.get('tips.form.statistic-value-parameters')}</p>}
                         {tip.moments.length > 0 && <p>{Lang.get('tips.form.moment-value-parameters')}</p>}
 
@@ -286,6 +335,13 @@ class TipEditPage extends React.Component {
                             }
                             </tbody>
                         </table>
+
+                        <hr/>
+
+                        {this.state.loadingTranslations && <div className="loader">Loading...</div>}
+                        {!this.state.loadingTranslations &&
+                        <div>{this.renderTranslationButton()}{this.renderTranslations()}</div>}
+
 
                     </div>
                 </div>
@@ -406,9 +462,68 @@ class TipEditPage extends React.Component {
     save = () => {
         const {tip} = this.props;
         this.setState({submitting: true});
-        axios.put(`/api/tips/${tip.id}`, tip).then(response => {
+        axios.put(`/api/tips/${tip.id}`, {tip, translations: this.state.translations}).then(response => {
             this.setState({submitting: false,});
         });
+    };
+
+    renderTranslationButton() {
+        if (locales.filter(locale => !this.state.translations.hasOwnProperty(locale)).length === 0) {
+            return <div className="btn-group">
+                <button disabled type="button" className="btn btn-default"
+                        aria-expanded="false">{Lang.get('general.translations')}</button>
+            </div>
+        }
+
+
+        return <div className="btn-group">
+            <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    aria-expanded="false">{Lang.get('general.translations')}&nbsp;<span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu">
+                {locales.map(locale => {
+                    if (this.state.translations.hasOwnProperty(locale)) return null;
+
+                    return <li key={locale} onClick={() => this.addTranslation(locale)}>
+                        <a>{Lang.get('general.' + locale)}</a></li>;
+
+                })}
+            </ul>
+        </div>;
+    }
+
+    renderTranslations() {
+        if (Object.keys(this.state.translations).length === 0) return null;
+        return <div style={{marginTop: '10px'}}>
+            {Object.keys(this.state.translations).map(locale =>
+                <div key={locale} style={{marginTop: '10px'}}>
+                    <div className="row">
+                        <div className="col-md-4">
+                            <label>{Lang.get('general.' + locale)}</label>
+                        </div>
+
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-11">
+
+                        <textarea className="form-control" value={this.state.translations[locale]}
+                                  onChange={e => this.setTranslation(locale, e.target.value)}/>
+
+
+                        </div>
+                        <div className="col-md-1 text-right">
+                            <button className="btn btn-danger" type="button"
+                                    onClick={() => this.removeTranslation(locale)}>
+                                <span className="glyphicon glyphicon-trash"/>
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+            )}
+        </div>;
     }
 
 }

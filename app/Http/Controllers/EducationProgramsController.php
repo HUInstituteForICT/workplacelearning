@@ -238,6 +238,7 @@ class EducationProgramsController extends Controller
         ]);
     }
 
+    // @todo move out of EducationPrograms domain
     public function entityTranslations(
         string $type,
         int $id,

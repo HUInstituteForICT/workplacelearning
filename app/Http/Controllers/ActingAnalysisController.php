@@ -52,7 +52,7 @@ class ActingAnalysisController extends Controller
         }
 
         // Check valid date options
-        if (('all' !== $year && 'all' !== $month)
+        if (($year !== 'all' && $month !== 'all')
             && (!preg_match('/^(20)(\d{2})$/', $year) || !preg_match('/^([0-1]{1}\d{1})$/', $month))
         ) {
             return redirect()->route('analysis-acting-choice');
@@ -61,7 +61,7 @@ class ActingAnalysisController extends Controller
         // The analysis for the charts etc.
         $analysis = new ActingAnalysis(new ActingAnalysisCollector($year, $month));
 
-        if ('all' === $year || 'all' === $month) {
+        if ($year === 'all' || $month === 'all') {
             $year = null;
             $month = null;
         }
@@ -72,7 +72,6 @@ class ActingAnalysisController extends Controller
         $cohort = $workplaceLearningPeriod->cohort;
 
         $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($cohort));
-
         // Load likes for each tip and check if it should be shown to user
         /** @var Student $student */
         $student = $request->user();
@@ -83,12 +82,12 @@ class ActingAnalysisController extends Controller
             $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
 
             // If not liked by this student yet, allow it to be shown
-            if (0 === $evaluatedTip->getTip()->likes->count()) {
+            if ($evaluatedTip->getTip()->likes->count() === 0) {
                 return true;
             }
 
             // If liked, allow, if disliked filter it out
-            return 1 === $evaluatedTip->getTip()->likes[0]->type;
+            return $evaluatedTip->getTip()->likes[0]->type === 1;
         })->shuffle()->take(3);
 
         // Register that the tip will be viewed by the student

@@ -9,7 +9,7 @@ trait TranslatableEntity
         // LanguageLine package overrides translator, fetches translations from DB, where translation key is either present or not
         // If it is not, the translation key is returned
         // If it is we can get a translation for current locale of request
-        $translation = __($this->getTranslationKey(), [], 'en');
+        $translation = __($this->getTranslationKey(), []);
 
         // If there is no translation, return the default label value for the Entity
         if ($translation === $this->getTranslationKey() && method_exists(static::class, 'getLabel')) {

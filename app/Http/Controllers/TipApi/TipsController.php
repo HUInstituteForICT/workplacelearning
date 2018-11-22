@@ -7,6 +7,7 @@ use App\EducationProgram;
 use App\EducationProgramType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipUpdateRequest;
+use App\Services\EntityTranslationManager;
 use App\Tips\Models\CustomStatistic;
 use App\Tips\Models\StatisticVariable;
 use App\Tips\Models\Tip;
@@ -26,10 +27,10 @@ class TipsController extends Controller
         // Add predefined statistics to the collection because they can also be chosen but aren't in the DB
         $predefined = collect(PredefinedStatisticHelper::getData())
             ->map(function (array $predefinedStatistic) {
-                if ('Producing' === $predefinedStatistic['epType']) {
+                if ($predefinedStatistic['epType'] === 'Producing') {
                     $predefinedStatistic['id'] = 'p-p-'.md5($predefinedStatistic['name']);
                     $predefinedStatistic['education_program_type'] = 'producing';
-                } elseif ('Acting' === $predefinedStatistic['epType']) {
+                } elseif ($predefinedStatistic['epType'] === 'Acting') {
                     $predefinedStatistic['id'] = 'p-a-'.md5($predefinedStatistic['name']);
                     $predefinedStatistic['education_program_type'] = 'acting';
                 }
@@ -84,19 +85,23 @@ class TipsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int                      $id
      */
-    public function update(TipUpdateRequest $request, $id): Tip
+    public function update(TipUpdateRequest $request, $id, EntityTranslationManager $entityTranslationManager): Tip
     {
         /** @var Tip $tip */
         $tip = (new Tip())->with('coupledStatistics', 'enabledCohorts', 'likes', 'studentTipViews')->findOrFail($id);
-        $tip->name = $request->get('name');
-        $tip->tipText = $request->get('tipText');
-        $tip->showInAnalysis = $request->has('showInAnalysis') ? $request->get('showInAnalysis') : false;
-        if ('moment' === $tip->trigger) {
-            $tip->rangeStart = (int) $request->get('rangeStart');
-            $tip->rangeEnd = (int) $request->get('rangeEnd');
+        $tip->name = $request->input('tip.name');
+        $tip->tipText = $request->input('tip.tipText');
+        $tip->showInAnalysis = $request->input('tip.showInAnalysis') ?: false;
+        if ($tip->trigger === 'moment') {
+            $tip->rangeStart = (int) $request->input('tip.rangeStart');
+            $tip->rangeEnd = (int) $request->input('tip.rangeEnd');
         }
         $tip->save();
-        $tip->enabledCohorts()->sync($request->get('enabled_cohorts'));
+        $tip->enabledCohorts()->sync($request->input('tip.enabled_cohorts'));
+
+        if ($request->has('translations')) {
+            $entityTranslationManager->syncForEntity($tip, $request->input('translations'));
+        }
 
         return $tip;
     }
