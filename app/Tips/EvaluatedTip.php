@@ -32,7 +32,7 @@ class EvaluatedTip implements EvaluatedTipInterface
 
     public function getTipText(): string
     {
-        $tipText = $this->tip->tipText;
+        $tipText = $this->tip->localizedLabel();
         array_walk($this->textParameters, function (TextParameter $textParameter) use (&$tipText): void {
             $tipText = $textParameter->apply($tipText);
         });
@@ -42,12 +42,12 @@ class EvaluatedTip implements EvaluatedTipInterface
 
     public function isPassing(): bool
     {
-        if (0 === \count($this->evaluationResults)) {
+        if (\count($this->evaluationResults) === 0) {
             return false;
         }
 
         return collect($this->evaluationResults)->every(function (bool $result) {
-            return true === $result;
+            return $result === true;
         });
     }
 
