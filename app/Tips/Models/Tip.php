@@ -3,7 +3,9 @@
 namespace App\Tips\Models;
 
 use App\Cohort;
+use App\Interfaces\HasLabelProperty;
 use App\Student;
+use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -32,8 +34,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereTrigger($value)
  * @mixin \Eloquent
  */
-class Tip extends Model
+class Tip extends Model implements HasLabelProperty
 {
+    use TranslatableEntity;
+
     public $timestamps = false;
 
     /**
@@ -93,5 +97,10 @@ class Tip extends Model
     public function moments(): HasMany
     {
         return $this->hasMany(Moment::class);
+    }
+
+    public function getLabel(): string
+    {
+        return $this->tipText;
     }
 }

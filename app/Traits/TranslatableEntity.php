@@ -6,7 +6,10 @@ trait TranslatableEntity
 {
     public function localizedLabel(): string
     {
-        $translation = __($this->getTranslationKey());
+        // LanguageLine package overrides translator, fetches translations from DB, where translation key is either present or not
+        // If it is not, the translation key is returned
+        // If it is we can get a translation for current locale of request
+        $translation = __($this->getTranslationKey(), [], 'en');
 
         // If there is no translation, return the default label value for the Entity
         if ($translation === $this->getTranslationKey() && method_exists(static::class, 'getLabel')) {
