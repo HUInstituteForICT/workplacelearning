@@ -40,6 +40,11 @@ class WorkplaceLearningPeriod extends Model
     // Override the primary key column
     protected $primaryKey = 'wplp_id';
 
+    protected $casts = [
+        'startdate' => 'date',
+        'enddate' => 'date',
+    ];
+
     // Default
     protected $fillable = [
         'wplp_id',

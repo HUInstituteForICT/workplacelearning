@@ -14,6 +14,7 @@ use App\Cohort;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use App\LearningGoal;
+use Carbon\Carbon;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
@@ -82,7 +83,7 @@ class ActingWorkplaceLearningController extends Controller
 
         $cohort = Cohort::find($request['cohort']);
 
-        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id || 1 === $cohort->disabled) {
+        if ($cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id || $cohort->disabled === 1) {
             throw new InvalidArgumentException('Unknown cohort');
         }
 
@@ -108,8 +109,8 @@ class ActingWorkplaceLearningController extends Controller
         // Todo use model->fill($workplace)
         $wplPeriod->student_id = Auth::user()->student_id;
         $wplPeriod->wp_id = $workplace->wp_id;
-        $wplPeriod->startdate = $request['startdate'];
-        $wplPeriod->enddate = $request['enddate'];
+        $wplPeriod->startdate = new Carbon($request['startdate']);
+        $wplPeriod->enddate = new Carbon($request['enddate']);
         $wplPeriod->nrofdays = $request['numdays'];
         $wplPeriod->description = $request['internshipAssignment'];
         $wplPeriod->cohort()->associate($cohort);
@@ -132,7 +133,7 @@ class ActingWorkplaceLearningController extends Controller
         }
 
         // Set the user setting to the current Internship ID
-        if (1 == $request['isActive']) {
+        if ($request['isActive'] == 1) {
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
@@ -145,7 +146,7 @@ class ActingWorkplaceLearningController extends Controller
         $validator = Validator::make($request->all(), [
             'companyName' => 'required|max:255|min:3',
             'companyStreet' => 'required|max:45|min:3',
-            'companyHousenr' => 'required|max:4|min:1',
+            'companyHousenr' => 'required|max:9|min:1',
 
             'companyPostalcode' => 'required|postalcode',
             'companyLocation' => 'required|max:255|min:3',
@@ -194,14 +195,14 @@ class ActingWorkplaceLearningController extends Controller
         // Todo use model->fill($request)
         $wplPeriod->student_id = Auth::user()->student_id;
         $wplPeriod->wp_id = $workplace->wp_id;
-        $wplPeriod->startdate = $request['startdate'];
-        $wplPeriod->enddate = $request['enddate'];
+        $wplPeriod->startdate = new Carbon($request['startdate']);
+        $wplPeriod->enddate = new Carbon($request['enddate']);
         $wplPeriod->nrofdays = $request['numdays'];
         $wplPeriod->description = $request['internshipAssignment'];
         $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if (1 == $request['isActive']) {
+        if ($request['isActive'] == 1) {
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
