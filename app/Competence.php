@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Interfaces\HasLabelProperty;
+use App\Interfaces\IsTranslatable;
 use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence whereEducationprogramId($value)
  * @mixin \Eloquent
  */
-class Competence extends Model implements HasLabelProperty
+class Competence extends Model implements HasLabelProperty, IsTranslatable
 {
     use TranslatableEntity;
 

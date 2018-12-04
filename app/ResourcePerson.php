@@ -8,6 +8,7 @@
 namespace App;
 
 use App\Interfaces\HasLabelProperty;
+use App\Interfaces\IsTranslatable;
 use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,7 +36,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereWplpId($value)
  * @mixin \Eloquent
  */
-class ResourcePerson extends Model implements HasLabelProperty
+class ResourcePerson extends Model implements HasLabelProperty, IsTranslatable
 {
     use TranslatableEntity;
 

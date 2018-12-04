@@ -8,6 +8,7 @@
 namespace App;
 
 use App\Interfaces\HasLabelProperty;
+use App\Interfaces\IsTranslatable;
 use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,7 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereWplpId($value)
  * @mixin \Eloquent
  */
-class Category extends Model implements HasLabelProperty
+class Category extends Model implements HasLabelProperty, IsTranslatable
 {
     use TranslatableEntity;
 

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Interfaces\HasLabelProperty;
+use App\Interfaces\IsTranslatable;
 use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,7 +29,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot whereWplpId($value)
  * @mixin \Eloquent
  */
-class Timeslot extends Model implements HasLabelProperty
+class Timeslot extends Model implements HasLabelProperty, IsTranslatable
 {
     use TranslatableEntity;
 
