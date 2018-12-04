@@ -64,7 +64,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                 <input class="form-control fit-bs" type="date" name="datum"
                        value="{{ (count($errors) > 0) ? old('datum') : $activity->date }}"/><br/>
                 <h5>{{ Lang::get('activity.description') }}:</h5>
-                <textarea class="form-control fit-bs" name="omschrijving" required maxlength="250" rows="5"
+                <textarea class="form-control fit-bs" name="omschrijving" required maxlength="300" rows="5"
                           cols="19">{{ (count($errors) > 0) ? old('omschrijving') : $activity->description }}</textarea>
 
                 <h5>{{ Lang::get('activity.chain-to') }}:</h5>

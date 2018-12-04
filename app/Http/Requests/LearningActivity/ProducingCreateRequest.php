@@ -16,7 +16,7 @@ class ProducingCreateRequest extends FormRequest
     {
         return [
             'datum' => 'required|date|date_in_wplp',
-            'omschrijving' => 'required|max:250',
+            'omschrijving' => 'required|max:300',
             'aantaluren' => 'required',
             'resource' => 'required|in:persoon,alleen,internet,boek,new',
             'moeilijkheid' => 'required|exists:difficulty,difficulty_id',
