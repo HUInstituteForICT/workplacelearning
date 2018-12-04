@@ -13,6 +13,7 @@ use App\Category;
 use App\Cohort;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
@@ -83,7 +84,7 @@ class ProducingWorkplaceLearningController extends Controller
 
         $cohort = Cohort::find($request['cohort']);
 
-        if (1 === $cohort->disabled || $cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
+        if ($cohort->disabled === 1 || $cohort->educationProgram->ep_id !== Auth::user()->educationProgram->ep_id) {
             throw new InvalidArgumentException('Unknown cohort');
         }
 
@@ -108,8 +109,8 @@ class ProducingWorkplaceLearningController extends Controller
         // Todo use mass assignment
         $wplPeriod->student_id = Auth::user()->student_id;
         $wplPeriod->wp_id = $workplace->wp_id;
-        $wplPeriod->startdate = $request['startdate'];
-        $wplPeriod->enddate = $request['enddate'];
+        $wplPeriod->startdate = new Carbon($request['startdate']);
+        $wplPeriod->enddate = new Carbon($request['enddate']);
         $wplPeriod->nrofdays = $request['numdays'];
         $wplPeriod->hours_per_day = $request['numhours'];
         $wplPeriod->description = $request['internshipAssignment'];
@@ -117,7 +118,7 @@ class ProducingWorkplaceLearningController extends Controller
         $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if (1 == $request['isActive']) {
+        if ($request['isActive'] == 1) {
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
@@ -179,15 +180,15 @@ class ProducingWorkplaceLearningController extends Controller
         // Todo use model->fill()
         $wplPeriod->student_id = Auth::user()->student_id;
         $wplPeriod->wp_id = $workplace->wp_id;
-        $wplPeriod->startdate = $request['startdate'];
-        $wplPeriod->enddate = $request['enddate'];
+        $wplPeriod->startdate = new Carbon($request['startdate']);
+        $wplPeriod->enddate = new Carbon($request['enddate']);
         $wplPeriod->nrofdays = $request['numdays'];
         $wplPeriod->hours_per_day = $request['numhours'];
         $wplPeriod->description = $request['internshipAssignment'];
         $wplPeriod->save();
 
         // Set the user setting to the current Internship ID
-        if (1 == $request['isActive']) {
+        if ($request['isActive'] == 1) {
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 

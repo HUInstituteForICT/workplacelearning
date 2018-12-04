@@ -114,13 +114,17 @@
                     <div class="form-group">
                         {!! Form::label('startdate', Lang::get('elements.profile.internships.startdate'), array('class' => 'col-lg-4 control-label')) !!}
                         <div class="col-lg-6">
-                            <input name="startdate" type="date" class="form-control" min="{{ date('Y-m-d', strtotime('-6 months')) }}" value="{{ date('Y-m-d', (($period->startdate) ? strtotime($period->startdate) : time())) }}">
+                            <input name="startdate" type="text" class="form-control dateInput"
+                                   min="{{ date('d-m-Y', strtotime('-6 months')) }}"
+                                   value="{{ date('d-m-Y', (($period->startdate) ? strtotime($period->startdate) : time())) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('enddate', Lang::get('elements.profile.internships.enddate'), array('class' => 'col-lg-4 control-label')) !!}
                         <div class="col-lg-6">
-                            <input name="enddate" type="date" class="form-control" min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d', (($period->enddate) ? strtotime($period->enddate) : strtotime('tomorrow'))) }}">
+                            <input name="enddate" type="text" class="form-control dateInput"
+                                   min="{{ date('d-m-Y') }}"
+                                   value="{{ date('d-m-Y', (($period->enddate) ? strtotime($period->enddate) : strtotime('tomorrow'))) }}">
                         </div>
 
                     </div>
@@ -196,4 +200,19 @@
             </div>
         @endif
     </div>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.dateInput').datetimepicker({
+                locale: 'nl',
+                format: 'DD-MM-YYYY',
+                minDate: "{{ date('Y-m-d', strtotime('-6 months')) }}",
+                useCurrent: true,
+            });
+        }).on('dp.change', function (e) {
+            $(e).attr('value', moment(e.date).format("DD-MM-YYYY"));
+        });
+    </script>
 @stop

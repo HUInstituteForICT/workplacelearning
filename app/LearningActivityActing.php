@@ -61,6 +61,10 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     // Override the primary key column
     protected $primaryKey = 'laa_id';
 
+    protected $casts = [
+        'date' => 'date',
+    ];
+
     // Default
     protected $fillable = [
         'laa_id',
