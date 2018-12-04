@@ -83,7 +83,7 @@ class LearningActivityExportBuilderTest extends TestCase
             'learningGoalDescription' => 'Description test',
             'supportWp'               => 'support from wp',
             'supportEd'               => 'support from ed',
-            'competence'              => 'Interpersoonlijk',
+            'competence'              => ['Interpersoonlijk'],
             'url'                     => route('process-acting-edit', ['id' => 1]),
         ];
 

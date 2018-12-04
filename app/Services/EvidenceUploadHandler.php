@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\LearningActivityActing;
-use App\Repository\Eloquent\LearningActivityActingRepository;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 

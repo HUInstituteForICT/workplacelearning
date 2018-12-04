@@ -163,7 +163,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                         @foreach($resourcePersons as $resourcePerson)
                             <option value="{{ $resourcePerson->rp_id }}"
                                     {{ (int) old('personsource', $activity->res_person_id) === $resourcePerson->rp_id ? 'selected' : null }}>
-                                {{ $resourcePerson->person_label }}
+                                {{ $resourcePerson->localizedLabel() }}
                             </option>
                         @endforeach
                     </select>

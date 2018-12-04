@@ -16,7 +16,8 @@
         "mariuzzo/laravel-js-localization": "^1.4",
         "nanigans/single-table-inheritance": "0.8.*",
         "doctrine/common": "^2.9",
-        "rap2hpoutre/laravel-log-viewer": "^0.22.0"
+        "rap2hpoutre/laravel-log-viewer": "^0.22.0",
+        "spatie/laravel-translation-loader": "^2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

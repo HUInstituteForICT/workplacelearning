@@ -44,7 +44,7 @@
                             <div class="dash-bar">
                                 <?php
                                 $fmt = new IntlDateFormatter(
-                                        App::getLocale(),
+                                        (app()->getLocale() == 'en') ? 'en_US' : 'nl_NL',
                                         IntlDateFormatter::GREGORIAN,
                                         IntlDateFormatter::NONE,
                                         null,
