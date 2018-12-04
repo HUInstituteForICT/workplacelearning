@@ -44,7 +44,6 @@ class EntityTranslationManagerTest extends \PHPUnit\Framework\TestCase
         $translations = ['en' => 'test translation'];
 
         $languageLine = $this->createMock(LanguageLine::class);
-        $languageLine->expects(self::once())->method('fill')->with(['text' => $translations]);
 
         $repository = $this->createMock(LanguageLineRepository::class);
 
