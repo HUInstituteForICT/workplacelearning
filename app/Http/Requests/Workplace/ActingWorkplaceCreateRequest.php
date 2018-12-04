@@ -4,6 +4,7 @@ namespace App\Http\Requests\Workplace;
 
 use App\Repository\Eloquent\CohortRepository;
 use App\Rules\CohortInStudentEducationProgram;
+use App\Services\CurrentUserResolver;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -34,11 +35,11 @@ class ActingWorkplaceCreateRequest extends FormRequest
             'internshipAssignment' => 'required|min:15|max:500',
             'isActive'             => 'sometimes|required|in:1,0',
             'cohort'               => [
-                'required|exists:cohorts,id',
-                Rule::exists('cohorts')->where(function (Builder $query) {
+                'required',
+                Rule::exists('cohorts', 'id')->where(function (Builder $query) {
                     $query->where('disabled', '=', 0);
                 }),
-                new CohortInStudentEducationProgram($this->user(), $this->container->get(CohortRepository::class)),
+                new CohortInStudentEducationProgram($this->container->get(CurrentUserResolver::class), $this->container->get(CohortRepository::class)),
             ],
         ];
     }

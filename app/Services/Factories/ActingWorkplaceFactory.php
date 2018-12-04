@@ -48,7 +48,7 @@ class ActingWorkplaceFactory
 
         $this->createDefaultLearningGoals($workplaceLearningPeriod->wplp_id);
 
-        if ((int) $data['isActive'] === 1) {
+        if (isset($data['isActive']) && (int) $data['isActive'] === 1) {
             $student = $this->currentUserResolver->getCurrentUser();
             $student->setActiveWorkplaceLearningPeriod($workplaceLearningPeriod);
         }
