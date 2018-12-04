@@ -73,7 +73,7 @@
                     </div>
 
                     <h5>{{ Lang::get('activity.description') }}:</h5>
-                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="250" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="300" rows="5" cols="19"></textarea>
 
 
                     <h5>{{ Lang::get('activity.chain-to') }}:</h5>
