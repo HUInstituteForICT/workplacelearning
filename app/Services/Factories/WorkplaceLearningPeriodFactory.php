@@ -5,6 +5,7 @@ namespace App\Services\Factories;
 use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
 use App\Services\CurrentUserResolver;
 use App\WorkplaceLearningPeriod;
+use Carbon\Carbon;
 
 class WorkplaceLearningPeriodFactory
 {
@@ -28,9 +29,9 @@ class WorkplaceLearningPeriodFactory
         $workplaceLearningPeriod = new WorkplaceLearningPeriod();
         $workplaceLearningPeriod->student()->associate($this->currentUserResolver->getCurrentUser());
         $workplaceLearningPeriod->workplace()->associate($data['workplace_id']);
-        $workplaceLearningPeriod->cohort()->associate($data['cohort_id']);
-        $workplaceLearningPeriod->startdate = $data['startdate'];
-        $workplaceLearningPeriod->enddate = $data['enddate'];
+        $workplaceLearningPeriod->cohort()->associate($data['cohort']);
+        $workplaceLearningPeriod->startdate = Carbon::parse($data['startdate'])->format('Y-m-d');
+        $workplaceLearningPeriod->enddate = Carbon::parse($data['enddate'])->format('Y-m-d');
         $workplaceLearningPeriod->nrofdays = $data['numdays'];
         $workplaceLearningPeriod->description = $data['internshipAssignment'];
         $workplaceLearningPeriod->hours_per_day = 7.5; // Although not used in acting, still set it as its not nullable in DB
