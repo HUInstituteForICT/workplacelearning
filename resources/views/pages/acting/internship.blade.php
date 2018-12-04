@@ -103,15 +103,15 @@
                         <div class="col-lg-6">
                             <input name="startdate" type="text" class="form-control dateInput"
                                    min="{{ date('d-m-Y', strtotime('-6 months')) }}"
-                                   value="{{ date('d-m-Y', (($period->startdate) ? strtotime($period->startdate) : strtotime("now"))) }}">
+                                   value="{{ $period->startdate ? $period->startdate->format('d-m-Y') : date('d-m-Y') }}">
                         </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('enddate', Lang::get('elements.profile.internships.enddate'), array('class' => 'col-lg-4 control-label')) !!}
                         <div class="col-lg-6">
                             <input name="enddate" type="text" class="form-control dateInput"
-                                   min="{{ date('d-m-Y', time()) }}"
-                                   value="{{ date('d-m-Y', (($period->enddate) ? strtotime($period->enddate) : strtotime('tomorrow'))) }}">
+                                   min="{{ date('d-m-Y') }}"
+                                   value="{{ $period->enddate ? $period->enddate->format('d-m-Y') : date('d-m-Y', strtotime('tomorrow')) }}">
                         </div>
                     </div>
                     <div class="form-group">

@@ -116,7 +116,7 @@
                         <div class="col-lg-6">
                             <input name="startdate" type="text" class="form-control dateInput"
                                    min="{{ date('d-m-Y', strtotime('-6 months')) }}"
-                                   value="{{ date('d-m-Y', (($period->startdate) ? strtotime($period->startdate) : time())) }}">
+                                   value="{{ ($period->startdate) ? $period->startdate->format('d-m-Y') : date('d-m-Y') }}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -124,7 +124,7 @@
                         <div class="col-lg-6">
                             <input name="enddate" type="text" class="form-control dateInput"
                                    min="{{ date('d-m-Y') }}"
-                                   value="{{ date('d-m-Y', (($period->enddate) ? strtotime($period->enddate) : strtotime('tomorrow'))) }}">
+                                   value="{{(($period->enddate) ? $period->enddate->format('d-m-Y') : date('d-m-Y', strtotime('tomorrow'))) }}">
                         </div>
 
                     </div>
