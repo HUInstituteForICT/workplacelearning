@@ -26,6 +26,7 @@ return array(
   'description' => 'Description',
   'difficulty' => 'Difficulty',
   'easy' => 'Easy',
+  'mostOftenCategory' => 'Most often occurring category',
   'feedback' => array(
     'busy' => 'and you are still busy with it.',
     'category' => 'The activity is in the category',
@@ -64,6 +65,7 @@ return array(
   'finished' => 'Finished',
   'hard' => 'Difficult',
   'hours' => 'Hours',
+  'minutes' => 'Minutes',
   'how-does-this-page-work' => 'How does this page work?',
   'internetsource' => 'Internet source',
   'learned' => 'What did you learn?',

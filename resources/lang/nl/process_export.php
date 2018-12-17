@@ -10,6 +10,7 @@ return array(
   'learningGoal' => 'leerdoel',
   'competence' => 'competentie',
   'duration' => 'tijd',
+  'hours' => 'uur',
   'description' => 'omschrijving',
   'resourceDetail' => 'hulpbron',
   'category' => 'categorie',

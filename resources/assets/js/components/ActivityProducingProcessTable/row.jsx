@@ -21,15 +21,18 @@ export default class Row extends React.Component {
         };
 
         return <tr className="activityExport">
+            <td>{activity.duration}</td>
+
+            {(activity.description.length > 30) &&
             <td>
-                {(activity.description.length > 30) &&
+
                 <i onClick={() => this.setState({visible: !this.state.visible})}
                    className={className}/>
-                }
+
 
             </td>
-            <td>{activity.date}</td>
-            <td>
+            }
+            <td colSpan={activity.description.length <= 30 ? 2 : 1}>
                 {activity.description.length > 30 &&
                 <span>
                         {this.state.visible && <span>{activity.description}</span>}
@@ -40,7 +43,6 @@ export default class Row extends React.Component {
                 activity.description
                 }
             </td>
-            <td>{activity.duration}</td>
             <td>{activity.resourceDetail}</td>
             <td>{activity.category}</td>
             <td>

@@ -144,6 +144,16 @@ export default class ActivityProducingProcessTable extends React.Component {
             })
     }
 
+    groupByDay(activities) {
+        const days = {};
+        activities.forEach(activity => {
+            if (!days.hasOwnProperty(activity.date)) {
+                days[activity.date] = [];
+            }
+            days[activity.date].push(activity);
+        });
+        return days;
+    }
 
     exportHandler() {
         const exporter = new ProducingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
@@ -177,6 +187,7 @@ export default class ActivityProducingProcessTable extends React.Component {
 
     render() {
         let filteredActivities = this.filterActivities(this.state.activities);
+        let groupedByDay = this.groupByDay(filteredActivities);
         return <div>
             <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> {Lang.get('react.filters')}</h3>
             <div className="filters row" style={{display:"none"}}>
@@ -288,29 +299,82 @@ export default class ActivityProducingProcessTable extends React.Component {
             <table className="table blockTable">
                 <thead className="blue_tile">
                 <tr>
-                    <td></td>
-                    <td>{Lang.get('react.date')}</td>
-                    <td>{Lang.get('react.description')}</td>
                     <td>{Lang.get('react.time')}</td>
+                    <td colSpan={2}>{Lang.get('react.description')}</td>
                     <td>{Lang.get('react.aid')}</td>
                     <td>{Lang.get('react.category')}</td>
                     <td>{Lang.get('react.complexity')}</td>
                     <td>{Lang.get('react.status')}</td>
                     <td>{Lang.get('react.chain')}</td>
-                    <td>Feedback</td>
+                    <td/>
                     <td>{/* Edit URL, no table header */}</td>
                 </tr>
                 </thead>
                 <tbody>
-                {filteredActivities.map((activity) => {
-                    return <Row key={activity.id} activity={activity}/>
+
+                {Object.keys(groupedByDay).map(day => {
+                    const activities = groupedByDay[day];
+                    const statistics = this.calculateStatisticsForActivities(activities);
+
+                    let hoursCell = <td>{Lang.get('activity.hours')}: {statistics.totalHours}</td>;
+
+                    if (statistics.totalHours < 1) {
+                        hoursCell = <td>{Lang.get('activity.minutes')}: {statistics.totalHours * 60}</td>;
+                    }
+
+                    return [<tr style={{backgroundColor: 'rgba(0,161,226, 0.45)', color: 'rgba(255,255,255)', fontWeight: 'bold'}}>
+                        <td>{Lang.get('react.date')}: {day}</td>
+                        {hoursCell}
+                        <td>{Lang.get('activity.difficulty')}: {statistics.difficulty}</td>
+                        <td>{Lang.get('activity.mostOftenCategory')}: {statistics.mostOftenCategory}</td>
+                        <td colSpan={8}/>
+                    </tr>, activities.map((activity) => {
+                        return <Row key={activity.id} activity={activity}/>
+                    })];
                 })}
+
 
                 </tbody>
             </table>
             </div>
         </div>
     }
+
+    calculateStatisticsForActivities(activities) {
+        const statistics = {
+            totalHours: null,
+            difficulty: null,
+            mostOftenCategory: null,
+            mostOftenCategoryCount: 0,
+            categories: {}
+        };
+        activities.forEach(activity => {
+            statistics.totalHours += activity.hours;
+            statistics.difficulty += activity.difficultyValue;
+
+            if (!statistics.categories.hasOwnProperty(activity.category)) {
+                statistics.categories[activity.category] = 0;
+            }
+            statistics.categories[activity.category] += 1;
+        });
+
+        // Average diff
+        if (activities.length > 0) {
+            statistics.difficulty = (statistics.difficulty / activities.length).toFixed(2);
+        }
+
+        Object.keys(statistics.categories).forEach(category => {
+            const count = statistics.categories[category];
+            if (count > statistics.mostOftenCategoryCount) {
+                statistics.mostOftenCategory = category;
+            }
+        });
+
+
+        return statistics;
+    }
+
+
 
 
 }

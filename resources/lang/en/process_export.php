@@ -10,6 +10,7 @@ return array(
   'learningGoal' => 'learning goal',
   'competence' => 'competence',
   'duration' => 'duration',
+  'hours' => 'hours',
   'description' => 'description',
   'resourceDetail' => 'working/studying with',
   'category' => 'category',

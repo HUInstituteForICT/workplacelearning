@@ -22,6 +22,7 @@ return array(
   'chain-to' => 'Koppel aan vorige activiteit',
   'no-chain' => 'Niet Koppelen',
   'hours' => 'Uren',
+  'minutes' => 'Minuten',
   'learningquestion' => 'Leervraag',
   'competence' => 'Competenties',
   'add' => 'Toevoegen',
@@ -34,6 +35,7 @@ return array(
   'easy' => 'Makkelijk',
   'average' => 'Gemiddeld',
   'hard' => 'Moeilijk',
+  'mostOftenCategory' => 'Meest voorkomende categorie',
   'feedback' => array(
     'feedback' => 'Feedback',
     'difficulty-indication' => 'Qua complexiteit vond jij deze activiteit ',
