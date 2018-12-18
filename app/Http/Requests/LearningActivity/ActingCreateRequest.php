@@ -53,7 +53,7 @@ class ActingCreateRequest extends FormRequest
             return $input->res_material === 'new';
         });
 
-        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75', function ($input) {
+        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:200', function ($input) {
             return $input->res_material >= 1;
         });
     }

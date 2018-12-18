@@ -40,7 +40,7 @@ class ActingUpdateRequest extends FormRequest
             return $input->res_material !== 'new' && $input->res_material !== 'none';
         });
 
-        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:75', function ($input) {
+        $validator->sometimes('res_material_detail', 'required_unless:res_material,none|max:200', function ($input) {
             return $input->res_material >= 1;
         });
     }
