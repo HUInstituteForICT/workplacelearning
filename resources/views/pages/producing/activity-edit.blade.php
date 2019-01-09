@@ -57,14 +57,23 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                         }
                     });
                 })();
+
+                $('.dateinput').datetimepicker({
+                    locale: 'nl',
+                    format: 'DD-MM-YYYY',
+                    minDate: "{{ $activity->workplacelearningperiod->startdate }}",
+                    maxDate: "{{ date('Y-m-d') }}",
+                    useCurrent: false,
+                });
             });
         </script>
         {{ Form::open(array('url' => route('process-producing-update', ['id' => $activity->lap_id]), 'class' => 'form-horizontal')) }}
         <div class="row well">
             <div class="col-md-2 form-group">
                 <h4>{{ __('activity.activity') }}</h4>
-                <input class="form-control fit-bs" type="date" name="datum"
-                       value="{{ (count($errors) > 0) ? old('datum') : $activity->date }}"/><br/>
+                <input class="form-control dateinput fit-bs" type="text" name="datum"
+                       value="{{ (count($errors) > 0) ? old('datum') : $activity->date->format('d-m-Y') }}"/><br/>
+
                 <h5>{{ __('activity.description') }}:</h5>
                 <textarea class="form-control fit-bs" name="omschrijving" required maxlength="300" rows="5"
                           cols="19">{{ (count($errors) > 0) ? old('omschrijving') : $activity->description }}</textarea>

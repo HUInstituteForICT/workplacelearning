@@ -30,7 +30,7 @@ class LearningActivityProducingExportBuilder
         $collection->each(function (LearningActivityProducing $activity) use (&$jsonArray): void {
             $jsonArray[] = [
                 'id'             => $activity->lap_id,
-                'date'           => Carbon::createFromFormat('Y-m-d', $activity->date)->format('d-m-Y'),
+                'date'           => $activity->date->format('d-m-Y'),
                 'duration'       => $this->formatDuration($activity->duration),
                 'hours' => $activity->duration,
                 'description'    => $activity->description,

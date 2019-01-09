@@ -138,7 +138,7 @@ $factory->define(\App\Timeslot::class, function (Faker\Generator $faker) {
 
 $factory->define(\App\LearningActivityActing::class, function (Faker\Generator $faker) {
     return [
-        'date' => Carbon::now()->format('d-m-Y'),
+        'date' => Carbon::now(),
         'situation' => $faker->text(40), // gets saved in $laa->situation !!!!!!
         'lessonslearned' => 'A lot',
         'support_wp' => 'Nothing',

@@ -8,6 +8,7 @@ use App\ResourceMaterial;
 use App\ResourcePerson;
 use App\Services\LearningActivityActingExportBuilder;
 use App\Timeslot;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Translation\Translator;
 use Tests\TestCase;
@@ -21,7 +22,7 @@ class LearningActivityExportBuilderTest extends TestCase
         $mock->shouldReceive('offsetExists')->andReturn(true);
 
         $mock->shouldReceive('getAttribute')->with('id')->andReturn('1');
-        $mock->shouldReceive('getAttribute')->with('date')->andReturn('2017-10-10');
+        $mock->shouldReceive('getAttribute')->with('date')->andReturn(Carbon::createFromDate(2017, 10, 10));
         $mock->shouldReceive('getAttribute')->with('situation')->andReturn('pressure');
 
         $timeslot = new Timeslot();
