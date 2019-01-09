@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Chain;
 
-class CreateRequest extends \Illuminate\Foundation\Http\FormRequest
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateRequest extends FormRequest
 {
     public function authorize(): bool
     {

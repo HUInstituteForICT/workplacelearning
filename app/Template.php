@@ -5,7 +5,23 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
+ * App\Template.
+ *
+ * @property int                                                       $id
+ * @property string                                                    $name
+ * @property string                                                    $query
+ * @property \Illuminate\Support\Carbon|null                           $created_at
+ * @property \Illuminate\Support\Carbon|null                           $updated_at
+ * @property string|null                                               $description
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Parameter[] $parameters
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereQuery($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Template extends Model
 {

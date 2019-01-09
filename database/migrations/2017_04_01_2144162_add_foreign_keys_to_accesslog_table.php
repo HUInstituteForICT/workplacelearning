@@ -21,7 +21,9 @@ class AddForeignKeysToAccesslogTable extends Migration
     public function down(): void
     {
         Schema::table('accesslog', function (Blueprint $table): void {
-            $table->dropForeign('fk_AccessLog_Student1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_ACCESSLOG_STUDENT1');
+            }
         });
     }
 }

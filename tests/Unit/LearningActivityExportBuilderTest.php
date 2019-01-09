@@ -4,11 +4,12 @@ namespace Tests\Feature;
 
 use App\Competence;
 use App\LearningActivityActing;
-use App\LearningActivityActingExportBuilder;
 use App\ResourceMaterial;
 use App\ResourcePerson;
+use App\Services\LearningActivityActingExportBuilder;
 use App\Timeslot;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Translation\Translator;
 use Tests\TestCase;
 
 class LearningActivityExportBuilderTest extends TestCase
@@ -62,27 +63,28 @@ class LearningActivityExportBuilderTest extends TestCase
      */
     public function testGetJson(): void
     {
-        $exporter = new LearningActivityActingExportBuilder(collect([$this->buildMock()]));
-        $json = $exporter->getJson();
+        $exporter = new LearningActivityActingExportBuilder($this->createMock(Translator::class));
+
+        $json = $exporter->getJson([$this->buildMock()], null);
 
         $this->assertTrue(is_string($json), 'Export is not a string, therefore not JSON');
 
         $decoded = json_decode($json);
 
         $mapping = [
-            'id' => 1,
-            'date' => '10-10-2017',
-            'situation' => 'pressure',
-            'timeslot' => '1e lesuur',
-            'resourcePerson' => 'Medestudent',
-            'resourceMaterial' => 'Geen',
-            'lessonsLearned' => 'a lot',
-            'learningGoal' => 'Leervraag 1',
+            'id'                      => 1,
+            'date'                    => '10-10-2017',
+            'situation'               => 'pressure',
+            'timeslot'                => '1e lesuur',
+            'resourcePerson'          => 'Medestudent',
+            'resourceMaterial'        => 'Geen',
+            'lessonsLearned'          => 'a lot',
+            'learningGoal'            => 'Leervraag 1',
             'learningGoalDescription' => 'Description test',
-            'supportWp' => 'support from wp',
-            'supportEd' => 'support from ed',
-            'competence' => ['Interpersoonlijk'],
-            'url' => route('process-acting-edit', ['id' => 1]),
+            'supportWp'               => 'support from wp',
+            'supportEd'               => 'support from ed',
+            'competence'              => ['Interpersoonlijk'],
+            'url'                     => route('process-acting-edit', ['id' => 1]),
         ];
 
         foreach ($mapping as $field => $value) {

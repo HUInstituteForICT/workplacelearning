@@ -2,20 +2,26 @@
 
 namespace App\Http\Middleware;
 
-use App\Student;
+use App\Exceptions\UnexpectedUser;
+use App\Services\CurrentUserResolver;
 use Closure;
-use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Routing\Redirector;
 
 class CheckUserLevel
 {
     /**
-     * @var Student|null
+     * @var CurrentUserResolver
      */
-    private $user;
+    private $currentUserResolver;
+    /**
+     * @var Redirector
+     */
+    private $redirector;
 
-    public function __construct(?Student $user)
+    public function __construct(CurrentUserResolver $currentUserResolver, Redirector $redirector)
     {
-        $this->user = $user;
+        $this->currentUserResolver = $currentUserResolver;
+        $this->redirector = $redirector;
     }
 
     /**
@@ -27,8 +33,14 @@ class CheckUserLevel
      */
     public function handle($request, Closure $next)
     {
-        if ($this->user === null || 1 !== $this->user->getUserLevel()) {
-            throw new UnauthorizedException('Insufficient permissions');
+        try {
+            $user = $this->currentUserResolver->getCurrentUser();
+
+            if ($user->getUserLevel() !== 1) {
+                return $this->redirector->route('home');
+            }
+        } catch (UnexpectedUser $exception) {
+            return $this->redirector->route('login');
         }
 
         return $next($request);

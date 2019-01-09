@@ -8,11 +8,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * App\Chain.
+ *
  * @property int                                    $id
  * @property string                                 $name
  * @property Collection|LearningActivityProducing[] $activities
  * @property int                                    $status
  * @property int                                    $wplp_id
+ * @property \App\WorkplaceLearningPeriod           $workplaceLearningPeriod
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereWplpId($value)
+ * @mixin \Eloquent
  */
 class Chain extends Model
 {

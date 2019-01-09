@@ -10,15 +10,46 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * Class Student.
+ * App\Student.
  *
- * @property int              $student_id
- * @property string           $email
- * @property string           $firstname
- * @property string           $lastname
- * @property int              $userlevel
- * @property EducationProgram $educationProgram
- * @property string           $pw_hash
+ * @property int                                                                                                       $student_id
+ * @property string                                                                                                    $email
+ * @property string                                                                                                    $firstname
+ * @property string                                                                                                    $lastname
+ * @property int                                                                                                       $userlevel
+ * @property EducationProgram                                                                                          $educationProgram
+ * @property string                                                                                                    $pw_hash
+ * @property int                                                                                                       $studentnr
+ * @property int                                                                                                       $ep_id
+ * @property string                                                                                                    $gender
+ * @property string|null                                                                                               $birthdate
+ * @property string|null                                                                                               $phonenr
+ * @property string|null                                                                                               $registrationdate
+ * @property string|null                                                                                               $answer
+ * @property string                                                                                                    $locale
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Deadline[]                                                  $deadlines
+ * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[]                                               $usersettings
+ * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[]                                   $workplaceLearningPeriods
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Workplace[]                                                 $workplaces
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereAnswer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereBirthdate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereEpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereFirstname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereLastname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereLocale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student wherePhonenr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student wherePwHash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereRegistrationdate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereStudentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereStudentnr($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereUserlevel($value)
+ * @mixin \Eloquent
+ *
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Cohort[] $cohorts
  */
 class Student extends Authenticatable
 {
@@ -66,7 +97,7 @@ class Student extends Authenticatable
         if (preg_match('/\s/', $this->firstname)) {
             $names = explode(' ', $this->lastname);
             foreach ($names as $name) {
-                $initials = ('' === $initials) ? substr($name, 0, 1).'.' : $initials.' '.substr($name, 0,
+                $initials = ($initials === '') ? substr($name, 0, 1).'.' : $initials.' '.substr($name, 0,
                         1).'.';
             }
         } else {
@@ -100,7 +131,7 @@ class Student extends Authenticatable
         $setting = $this->getUserSetting($label);
         if (!$setting) {
             $setting = UserSetting::create([
-                'student_id' => $this->student_id,
+                'student_id'    => $this->student_id,
                 'setting_label' => $label,
                 'setting_value' => $value,
             ]);
@@ -166,13 +197,13 @@ class Student extends Authenticatable
         return $this->currentWorkplaceLearningPeriod;
     }
 
-    public function getCurrentWorkplace(): ?Workplace
+    public function getCurrentWorkplace(): Workplace
     {
-        if ($this->getCurrentWorkplaceLearningPeriod()) {
+        if ($this->hasCurrentWorkplaceLearningPeriod()) {
             return $this->getCurrentWorkplaceLearningPeriod()->workplace;
         }
 
-        return null;
+        throw new \RuntimeException('Student should have active workplace learning period');
     }
 
     public function currentCohort(): Cohort

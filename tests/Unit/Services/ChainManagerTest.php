@@ -36,16 +36,6 @@ class ChainManagerTest extends \Tests\TestCase
         return $mock;
     }
 
-    public function testCreateChain(): void
-    {
-        $chainManager = new ChainManager($this->wplpMock());
-
-        $chain = $chainManager->createChain('new chain');
-
-        $this->assertEquals('new chain', $chain->name);
-        $this->assertEquals(1, $chain->wplp_id);
-    }
-
     public function testUpdateChain(): void
     {
         $chainManager = new ChainManager(new \App\WorkplaceLearningPeriod());

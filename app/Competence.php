@@ -8,8 +8,21 @@ use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int    $competence_id
- * @property string $competence_label
+ * App\Competence.
+ *
+ * @property int                                                                    $competence_id
+ * @property string                                                                 $competence_label
+ * @property int|null                                                               $educationprogram_id
+ * @property int|null                                                               $cohort_id
+ * @property \App\Cohort|null                                                       $cohort
+ * @property \App\EducationProgram|null                                             $educationProgram
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[] $learningActivityActing
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence whereCohortId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence whereCompetenceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence whereCompetenceLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence whereEducationprogramId($value)
+ * @mixin \Eloquent
  */
 class Competence extends Model implements HasLabelProperty, IsTranslatable
 {

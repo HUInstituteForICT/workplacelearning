@@ -47,6 +47,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereSupportWp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereTimeslotId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereWplpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceDiskFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceMime($value)
  * @mixin \Eloquent
  */
 class LearningActivityActing extends Model implements LearningActivityInterface

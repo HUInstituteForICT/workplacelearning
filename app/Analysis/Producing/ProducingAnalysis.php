@@ -23,11 +23,9 @@ class ProducingAnalysis
     private $chains = [];
     private $producingAnalysisChains;
 
-    public function __construct(ProducingAnalysisCollector $analysisCollector, $year, $month)
+    public function __construct(ProducingAnalysisCollector $analysisCollector)
     {
         $this->analysisCollector = $analysisCollector;
-        $this->buildData($year, $month);
-//        $this->chains = $analysisCollector->getTaskChainsByDate(25, $year, $month);
         $this->statistics = new Statistics($this->analysisData);
     }
 
@@ -35,7 +33,7 @@ class ProducingAnalysis
      * Build the data that is necessary for the analysis
      * Is based on earlier created functions, it merely wraps around those and provides access to the data
      */
-    public function buildData($year, $month)
+    public function buildData($year, $month): array
     {
         $this->analysisData['avg_difficulty'] = $this->analysisCollector->getAverageDifficultyByDate($year, $month);
         $this->analysisData['num_total_lap'] = $this->analysisCollector->getNumTotalTasksByDate($year, $month);
@@ -80,7 +78,7 @@ class ProducingAnalysis
      */
     public function charts($chart = null)
     {
-        if (null === $this->charts) {
+        if ($this->charts === null) {
             $this->charts = [
                 'hours' => new Chart(
                     array_map(function ($category) {
@@ -101,7 +99,7 @@ class ProducingAnalysis
                 ),
             ];
         }
-        if (null === $chart) {
+        if ($chart === null) {
             return $this->charts;
         }
 
@@ -132,7 +130,7 @@ class ProducingAnalysis
      */
     public function chains()
     {
-        if (null === $this->producingAnalysisChains) {
+        if ($this->producingAnalysisChains === null) {
             $this->producingAnalysisChains = array_map(function ($chain) {
                 return new ActivityChain($chain);
             }, $this->chains);

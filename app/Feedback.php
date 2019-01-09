@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * App\Feedback.
+ *
  * @property learningActivityProducing $learningActivityProducing
  * @property int                       $fb_id
  * @property int                       $notfinished
@@ -21,6 +23,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string                    $nextstep_self
  * @property string                    $support_needed_wp
  * @property string                    $support_needed_ed
+ * @property int                       $learningactivity_id
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereFbId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereInitiative($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereLearningactivityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereNextstepSelf($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereNotfinished($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereProgressSatisfied($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportNeededEd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportNeededWp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportRequested($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportedProvidedWp($value)
+ * @mixin \Eloquent
  */
 class Feedback extends Model
 {

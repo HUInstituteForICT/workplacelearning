@@ -9,6 +9,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Deadline.
+ *
+ * @property int          $dl_id
+ * @property int          $student_id
+ * @property string|null  $dl_value
+ * @property string|null  $dl_datetime
+ * @property \App\Student $User
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereDlDatetime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereDlId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereDlValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereStudentId($value)
+ * @mixin \Eloquent
+ */
 class Deadline extends Model
 {
     // Override the table used for the User Model

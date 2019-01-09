@@ -5,6 +5,23 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * App\CompetenceDescription.
+ *
+ * @property int                        $id
+ * @property int|null                   $education_program_id
+ * @property int|null                   $cohort_id
+ * @property \App\Cohort|null           $cohort
+ * @property \App\EducationProgram|null $educationProgram
+ * @property string                     $download_url
+ * @property string                     $file_name
+ * @property bool                       $has_data
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CompetenceDescription whereCohortId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CompetenceDescription whereEducationProgramId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\CompetenceDescription whereId($value)
+ * @mixin \Eloquent
+ */
 class CompetenceDescription extends Model
 {
     public function educationProgram()

@@ -1,14 +1,16 @@
 @extends('layout.HUdefault')
 
 <?php
-/** @var \App\LearningActivityProducing $activity */
+/** @var \App\LearningActivityProducing $activity */use App\ResourcePerson;
+
+/** @var \App\ResourcePerson $resourcePersons */
 /** @var bool $isCustomActivityDuration */
 $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0], false);
 
 ?>
 
 @section('title')
-    {{ Lang::get('activity.activities') }} - {{ Lang::get('general.edit') }}
+    {{ __('activity.activities') }} - {{ __('general.edit') }}
 @stop
 @section('content')
     <div class="container-fluid">
@@ -60,16 +62,16 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
         {{ Form::open(array('url' => route('process-producing-update', ['id' => $activity->lap_id]), 'class' => 'form-horizontal')) }}
         <div class="row well">
             <div class="col-md-2 form-group">
-                <h4>{{ Lang::get('activity.activity') }}</h4>
+                <h4>{{ __('activity.activity') }}</h4>
                 <input class="form-control fit-bs" type="date" name="datum"
                        value="{{ (count($errors) > 0) ? old('datum') : $activity->date }}"/><br/>
-                <h5>{{ Lang::get('activity.description') }}:</h5>
+                <h5>{{ __('activity.description') }}:</h5>
                 <textarea class="form-control fit-bs" name="omschrijving" required maxlength="300" rows="5"
                           cols="19">{{ (count($errors) > 0) ? old('omschrijving') : $activity->description }}</textarea>
 
-                <h5>{{ Lang::get('activity.chain-to') }}:</h5>
+                <h5>{{ __('activity.chain-to') }}:</h5>
                 <select class="form-control fit-bs" id="chainSelect" name="chain_id">
-                    <option value="-1">{{ Lang::get('process.chain.none') }}</option>
+                    <option value="-1">{{ __('process.chain.none') }}</option>
                     @foreach($chains as $chain)
                         <option value="{{ $chain->id }}"
                                 @if($activity->chain_id === $chain->id) selected @endif
@@ -83,7 +85,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
 
             </div>
             <div class="col-md-2 form-group buttons numpad">
-                <h4>{{ Lang::get('activity.hours') }}</h4>
+                <h4>{{ __('activity.hours') }}</h4>
 
                 <label class="predefinedHours"><input type="radio" name="aantaluren" value="0.25"
                             {{ (float) old('aantaluren', $activity->duration) === 0.25 ? 'checked' : null }}>
@@ -109,7 +111,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                     <label id="hours_custom">
                         <input type="radio" name="aantaluren" value="x"
                                @if($isCustomActivityDuration) checked @endif/>
-                        <span>{{ Lang::get('activity.other') }}</span>
+                        <span>{{ __('activity.other') }}</span>
                     </label>
 
                     <br/>
@@ -121,7 +123,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                         @if($isCustomActivityDuration)
                             <input class="form-control" type="number" step="1" min="1" max="480"
                                    name="aantaluren_custom" value="{{ round($activity->duration*60) }}">
-                            &nbsp;{{ Lang::get('dashboard.minutes') }}
+                            &nbsp;{{ __('dashboard.minutes') }}
                             <script>
                                 (function () {
                                     setTimeout(function () {
@@ -133,14 +135,14 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                             <input class="form-control" type="number" step="1" min="1" max="480"
                                    name="aantaluren_custom" value="5">
                             &nbsp;
-                            {{ Lang::get('dashboard.minutes') }}
+                            {{ __('dashboard.minutes') }}
                         @endif
                     </div>
                 </div>
 
             </div>
             <div class="col-md-2 form-group buttons">
-                <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true"
+                <h4>{{ __('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                             data-toggle="tooltip" data-placement="bottom"
                                                             title="{{ trans('tooltips.producing_category') }}"></i></h4>
                 @foreach($categories as $key => $value)
@@ -149,65 +151,69 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                 @endforeach
             </div>
             <div class="col-md-2 form-group buttons">
-                <h4>{{ Lang::get('activity.work-learn-with') }} <i class="fa fa-info-circle" aria-hidden="true"
+                <h4>{{ __('activity.work-learn-with') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                    data-toggle="tooltip" data-placement="bottom"
                                                                    title="{{ trans('tooltips.producing_with') }}"></i>
                 </h4>
                 <div id="swvcontainer">
                     <label class="expand-click"><input type="radio" name="resource"
-                                                       value="persoon" {{ (old('resource') == 'persoon') ? 'checked' : ($activity->res_person_id != null ) ? 'checked' : null }} /><span>{{ Lang::get('activity.person') }}</span></label>
+                                                       value="persoon" {{ old('resource') === 'persoon' || $activity->res_person_id ? 'checked' : null  }} /><span>{{ __('activity.person') }}</span></label>
                     <select id="rp_id" name="personsource" class="cond-hidden">
-                        @foreach($learningWith as $key => $value)
-                            <option value="{{ $value->rp_id }}" {{ (old('personsource') == $value->rp_id) ? 'selected' : ($activity->res_person_id == $value->res_person_id) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
+                        <?php /** @var ResourcePerson $resourcePerson */ ?>
+                        @foreach($resourcePersons as $resourcePerson)
+                            <option value="{{ $resourcePerson->rp_id }}"
+                                    {{ (int) old('personsource', $activity->res_person_id) === $resourcePerson->rp_id ? 'selected' : null }}>
+                                {{ $resourcePerson->localizedLabel() }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
                 <div id="solocontainer">
                     <label class="expand-click"><input type="radio" name="resource"
-                                                       value="alleen" {{ (old('resource') == 'alleen') ? 'checked' : ($activity->res_person_id == null && $activity->res_material_id == null) ? 'checked' : null }} /><span>{{ Lang::get('activity.alone') }}</span></label>
+                                                       value="alleen" {{ old('resource') === 'alleen' || ($activity->res_person_id === null && $activity->res_material_id === null) ? 'checked' : null }} /><span>{{ __('activity.alone') }}</span></label>
                 </div>
                 <div id="internetcontainer">
                     <label class="expand-click"><input type="radio" name="resource"
-                                                       value="internet" {{ (old('resource') == 'internet') ? 'checked' : (!old('resource') && $activity->res_material_id == 1) ? 'checked' : null }} /><span>{{ Lang::get('activity.internetsource') }}</span></label>
+                                                       value="internet" {{ (old('resource') === 'internet') ? 'checked' : (!old('resource') && $activity->res_material_id == 1) ? 'checked' : null }} /><span>{{ __('activity.internetsource') }}</span></label>
                     <input class="cond-hidden" maxlength="75" type="text" name="internetsource"
-                           value="{{ (old('internetsource') != null) ? old('internetsource') : $activity->res_material_detail }}"
+                           value="{{ old('internetsource') ?? $activity->res_material_detail }}"
                            placeholder="http://www.bron.domein/"/>
                 </div>
                 <div id="boekcontainer">
                     <label class="expand-click"><input type="radio" name="resource"
-                                                       value="boek" {{ (old('resource') == 'boek') ? 'checked' : (!old('resource') && $activity->res_material_id == 2) ? 'checked' : null }} /><span>{{ Lang::get('activity.book') }}
-                            /{{ Lang::get('activity.article') }}</span></label>
+                                                       value="boek" {{ (old('resource') == 'boek') ? 'checked' : (!old('resource') && $activity->res_material_id == 2) ? 'checked' : null }} /><span>{{ __('activity.book') }}
+                            /{{ __('activity.article') }}</span></label>
                     <input class="cond-hidden" type="text" maxlength="75" name="booksource"
                            value="{{ (old('booksource') != null) ? old('internetsource') : $activity->res_material_detail }}"
-                           placeholder="{{ Lang::get('dashboard.name') }}{{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}"/>
+                           placeholder="{{ __('dashboard.name') }}{{ __('activity.book') }}/{{ __('activity.article') }}"/>
                 </div>
             </div>
             <div class="col-md-2 form-group buttons">
-                <h4>{{ Lang::get('activity.status') }} <i class="fa fa-info-circle" aria-hidden="true"
+                <h4>{{ __('activity.status') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                           data-toggle="tooltip" data-placement="bottom"
                                                           title="{{ trans('tooltips.producing_status') }}"></i></h4>
                 <label><input type="radio" name="status"
-                              value="1" {{ (old('status') == 1) ? 'checked' : ($activity->status_id == 1) ? 'checked' : null }} /><span>{{ Lang::get('activity.finished') }}</span></label>
+                              value="1" {{ (old('status') == 1) ? 'checked' : ($activity->status_id == 1) ? 'checked' : null }} /><span>{{ __('activity.finished') }}</span></label>
                 <label><input type="radio" name="status"
-                              value="2" {{ (old('status') == 2) ? 'checked' : ($activity->status_id == 2) ? 'checked' : null }} /><span>{{ Lang::get('activity.busy') }}</span></label>
+                              value="2" {{ (old('status') == 2) ? 'checked' : ($activity->status_id == 2) ? 'checked' : null }} /><span>{{ __('activity.busy') }}</span></label>
                 <label><input type="radio" name="status"
-                              value="3" {{ (old('status') == 3) ? 'checked' : ($activity->status_id == 3) ? 'checked' : null }} /><span>{{ Lang::get('activity.transferred') }}</span></label>
+                              value="3" {{ (old('status') == 3) ? 'checked' : ($activity->status_id == 3) ? 'checked' : null }} /><span>{{ __('activity.transferred') }}</span></label>
             </div>
             <div class="col-md-1 form-group buttons">
-                <h4>{{ Lang::get('activity.difficulty') }}<i class="fa fa-info-circle" aria-hidden="true"
+                <h4>{{ __('activity.difficulty') }}<i class="fa fa-info-circle" aria-hidden="true"
                                                              data-toggle="tooltip" data-placement="bottom"
                                                              title="{{ trans('tooltips.producing_difficulty') }}"></i>
                 </h4>
                 <label><input type="radio" name="moeilijkheid"
-                              value="1" {{ (old('moeilijkheid') == 1) ? 'checked' : ($activity->difficulty_id == 1) ? 'checked' : null }} /><span>{{ Lang::get('activity.easy') }}</span></label>
+                              value="1" {{ (old('moeilijkheid') == 1) ? 'checked' : ($activity->difficulty_id == 1) ? 'checked' : null }} /><span>{{ __('activity.easy') }}</span></label>
                 <label><input type="radio" name="moeilijkheid"
-                              value="2" {{ (old('moeilijkheid') == 2) ? 'checked' : ($activity->difficulty_id == 2) ? 'checked' : null }} /><span>{{ Lang::get('activity.average') }}</span></label>
+                              value="2" {{ (old('moeilijkheid') == 2) ? 'checked' : ($activity->difficulty_id == 2) ? 'checked' : null }} /><span>{{ __('activity.average') }}</span></label>
                 <label><input type="radio" name="moeilijkheid"
-                              value="3" {{ (old('moeilijkheid') == 3) ? 'checked' : ($activity->difficulty_id == 3) ? 'checked' : null }} /><span>{{ Lang::get('activity.hard') }}</span></label>
+                              value="3" {{ (old('moeilijkheid') == 3) ? 'checked' : ($activity->difficulty_id == 3) ? 'checked' : null }} /><span>{{ __('activity.hard') }}</span></label>
             </div>
             <div class="col-md-1 form-group buttons">
                 <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;"
-                       value="{{ Lang::get('general.save') }}"/>
+                       value="{{ __('general.save') }}"/>
             </div>
         </div>
         {{ Form::close() }}

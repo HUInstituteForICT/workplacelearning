@@ -23,7 +23,7 @@ class FeedbackPolicy
      */
     public function create(Student $student)
     {
-        return $student->educationProgram->educationprogramType->isProducing();
+        return $student->educationProgram->educationprogramType->isProducing() && $student->hasCurrentWorkplaceLearningPeriod();
     }
 
     /**

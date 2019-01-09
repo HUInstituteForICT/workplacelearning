@@ -23,7 +23,9 @@ class EditTimeslotTable extends Migration
     public function down(): void
     {
         Schema::table('timeslot', function (Blueprint $table): void {
-            $table->dropForeign('fk_Timeslot_Wplp1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_TIMESLOT_WPLP1');
+            }
             $table->dropColumn('wplp_id');
         });
     }

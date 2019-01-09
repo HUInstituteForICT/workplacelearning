@@ -21,7 +21,9 @@ class AddForeignKeysToFeedbackTable extends Migration
     public function down(): void
     {
         Schema::table('feedback', function (Blueprint $table): void {
-            $table->dropForeign('fk_Feedback_LearningActivityProducing1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_FEEDBACK_LEARNINGACTIVITYPRODUCING1');
+            }
         });
     }
 }

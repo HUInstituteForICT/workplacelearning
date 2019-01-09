@@ -27,13 +27,19 @@ class CreateForeignKeys extends Migration
     public function down(): void
     {
         Schema::table('labels', function (Blueprint $table): void {
-            $table->dropForeign('labels_chart_id_foreign');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('LABELS_CHART_ID_FOREIGN');
+            }
         });
         Schema::table('chart', function (Blueprint $table): void {
-            $table->dropForeign('chart_analysis_id_foreign');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('CHART_ANALYSIS_ID_FOREIGN');
+            }
         });
         Schema::table('chart', function (Blueprint $table): void {
-            $table->dropForeign('chart_type_id_foreign');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('CHART_TYPE_ID_FOREIGN');
+            }
         });
     }
 }

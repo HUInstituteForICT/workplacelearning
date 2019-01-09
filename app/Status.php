@@ -10,7 +10,15 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property string $status_label
+ * App\Status.
+ *
+ * @property string                                                                    $status_label
+ * @property int                                                                       $status_id
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereStatusLabel($value)
+ * @mixin \Eloquent
  */
 class Status extends Model
 {

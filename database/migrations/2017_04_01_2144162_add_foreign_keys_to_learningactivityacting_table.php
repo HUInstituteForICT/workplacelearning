@@ -25,11 +25,21 @@ class AddForeignKeysToLearningactivityactingTable extends Migration
     public function down(): void
     {
         Schema::table('learningactivityacting', function (Blueprint $table): void {
-            $table->dropForeign('fk_LearningActivityActing_LearningGoal1');
-            $table->dropForeign('fk_LearningActivityActing_ResourceMaterial1');
-            $table->dropForeign('fk_LearningActivityActing_ResourcePerson1');
-            $table->dropForeign('fk_LearningActivityActing_Timeslot1');
-            $table->dropForeign('fk_LearningActivityActing_WorkplaceLearningPeriod1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYACTING_LEARNINGGOAL1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYACTING_RESOURCEMATERIAL1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYACTING_RESOURCEPERSON1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYACTING_TIMESLOT1');
+            }
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_LEARNINGACTIVITYACTING_WORKPLACELEARNINGPERIOD1');
+            }
         });
     }
 }

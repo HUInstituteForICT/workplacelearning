@@ -1,35 +1,39 @@
 <?php
 
-namespace App;
+namespace App\Services;
 
+use App\LearningActivityProducing;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Translation\Translator;
 
 class LearningActivityProducingExportBuilder
 {
-    private $learningActivityProducingCollection;
     /**
      * @var Translator
      */
     private $translator;
 
-    public function __construct(Collection $learningActivityProducingCollection, Translator $translator)
+    public function __construct(Translator $translator)
     {
-        $this->learningActivityProducingCollection = $learningActivityProducingCollection;
         $this->translator = $translator;
     }
 
-    public function getJson()
+    public function getJson(array $learningActivities, ?int $limit): string
     {
         $jsonArray = [];
-        $this->learningActivityProducingCollection->each(function (LearningActivityProducing $activity) use (&$jsonArray): void {
+
+        $collection = collect($learningActivities);
+        if ($limit !== null) {
+            $collection = $collection->take($limit);
+        }
+
+        $collection->each(function (LearningActivityProducing $activity) use (&$jsonArray): void {
             $jsonArray[] = [
-                'id' => $activity->lap_id,
-                'date' => Carbon::createFromFormat('Y-m-d', $activity->date)->format('d-m-Y'),
-                'duration' => $this->formatDuration($activity->duration),
+                'id'             => $activity->lap_id,
+                'date'           => Carbon::createFromFormat('Y-m-d', $activity->date)->format('d-m-Y'),
+                'duration'       => $this->formatDuration($activity->duration),
                 'hours' => $activity->duration,
-                'description' => $activity->description,
+                'description'    => $activity->description,
                 'resourceDetail' => $this->formatResourceDetail($activity),
                 'category' => $activity->category->localizedLabel(),
                 'difficulty' => $this->translator->get('general.'.strtolower($activity->difficulty->difficulty_label)),
@@ -44,21 +48,23 @@ class LearningActivityProducingExportBuilder
         return json_encode($jsonArray);
     }
 
-    public function getFieldLanguageMapping(Translator $translator): array
+    public function getFieldLanguageMapping(): array
     {
         $mapping = [];
         collect([
-             'id',
-             'date',
-             'duration',
-             'hours',
-             'description',
-             'resourceDetail',
-             'category',
-             'difficulty',
-             'status',
-             'chain',
-        ])->each(function ($field) use (&$mapping, $translator): void { $mapping[$field] = $translator->get('process_export.'.$field); });
+            'id',
+            'date',
+            'duration',
+            'hours',
+            'description',
+            'resourceDetail',
+            'category',
+            'difficulty',
+            'status',
+            'chain',
+        ])->each(function ($field) use (&$mapping): void {
+            $mapping[$field] = $this->translator->get('process_export.'.$field);
+        });
 
         return $mapping;
     }

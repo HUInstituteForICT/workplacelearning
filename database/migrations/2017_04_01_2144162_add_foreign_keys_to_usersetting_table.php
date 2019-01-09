@@ -21,7 +21,9 @@ class AddForeignKeysToUsersettingTable extends Migration
     public function down(): void
     {
         Schema::table('usersetting', function (Blueprint $table): void {
-            $table->dropForeign('fk_UserSetting_Student1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_USERSETTING_STUDENT1');
+            }
         });
     }
 }

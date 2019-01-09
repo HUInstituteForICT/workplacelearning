@@ -6,11 +6,18 @@ use App\Student;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Tips\Models\Like.
+ *
  * @property int     $student_id
  * @property int     $tip_id
  * @property Student $student
  * @property Tip     $tip
  * @property int     $type
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Like whereStudentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Like whereTipId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Like whereType($value)
+ * @mixin \Eloquent
  */
 class Like extends Model
 {
