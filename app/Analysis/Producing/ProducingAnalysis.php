@@ -68,6 +68,8 @@ class ProducingAnalysis
         $this->analysisData['num_lap'] = $this->analysisCollector->getNumTasksByDate($year, $month);
         $this->analysisData['num_hours_category'] = $this->analysisCollector->getNumHoursCategory($year, $month)->toArray();
 
+        $this->statistics = new Statistics($this->analysisData);
+        
         return $this->analysisData;
     }
 

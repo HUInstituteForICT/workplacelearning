@@ -18,7 +18,7 @@ class LAPFactory
     /**
      * @var ChainManager
      */
-    private $chainManager;
+    private $chainFactory;
     private $data;
     /**
      * @var ResourcePersonFactory
@@ -30,11 +30,11 @@ class LAPFactory
     private $categoryFactory;
 
     public function __construct(
-        ChainFactory $chainManager,
+        ChainFactory $chainFactory,
         ResourcePersonFactory $resourcePersonFactory,
         CategoryFactory $categoryFactory
     ) {
-        $this->chainManager = $chainManager;
+        $this->chainFactory = $chainFactory;
         $this->resourcePersonFactory = $resourcePersonFactory;
         $this->categoryFactory = $categoryFactory;
     }
@@ -66,7 +66,7 @@ class LAPFactory
             $chain = Chain::find($data['chain_id']);
             $learningActivityProducing->chain()->associate($chain);
         } elseif ($chainId === -1 && $learningActivityProducing->status->isBusy()) {
-            $chain = $this->chainManager->createChain([
+            $chain = $this->chainFactory->createChain([
                 'name'    => __('New chain').' - '.substr($learningActivityProducing->description, 0, 15),
                 'wplp_id' => Auth::user()->getCurrentWorkplaceLearningPeriod(),
             ]);

@@ -35,10 +35,10 @@ class ProducingAnalysisCollector
      * @param $year
      * @param $month
      */
-    public function LimitCollectionByDate($collection, $year, $month)
+    public function limitCollectionByDate($collection, $year, $month)
     {
-        if ('all' != $year && 'all' != $month) {
-            $dtime = mktime(0, 0, 0, intval($month), 1, intval($year));
+        if ($year !== 'all' && $month !== 'all') {
+            $dtime = mktime(0, 0, 0, (int) $month, 1, (int) $year);
             $collection->whereDate('date', '>=', date('Y-m-d', $dtime))
                 ->whereDate('date', '<=', date('Y-m-d', strtotime('+1 month', $dtime)));
         }
@@ -154,8 +154,8 @@ class ProducingAnalysisCollector
      * Get all task chains of the user within a certain date range.
      *
      * @param int $amount
-     * @param $year
-     * @param $month
+     * @param     $year
+     * @param     $month
      *
      * @return array
      */
@@ -195,7 +195,7 @@ class ProducingAnalysisCollector
                     ->whereNotNull('prev_lap_id');
             });
 
-        $lap_end = $this->LimitCollectionByDate($lap_end, $year, $month)->orderBy('date', 'desc')->take($amount)->get();
+        $lap_end = $this->limitCollectionByDate($lap_end, $year, $month)->orderBy('date', 'desc')->take($amount)->get();
         foreach ($lap_end as $w) {
             $arr_key = count($task_chains);
             $pw = $w->getPrevousLearningActivity();
@@ -227,8 +227,11 @@ class ProducingAnalysisCollector
         $lap_collection = LearningActivityProducing::where('wplp_id',
             Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
         $lap_collection = $this->limitCollectionByDate($lap_collection, $year, $month);
+        if ($lap_collection->count() === 0) {
+            return 0;
+        }
 
-        return (0 == $lap_collection->count()) ? 0 : ($lap_collection->sum('difficulty_id') / $lap_collection->count()) * 3.33;
+        return $lap_collection->sum('difficulty_id') / $lap_collection->count() * 3.33;
     }
 
     /**
@@ -246,7 +249,7 @@ class ProducingAnalysisCollector
             ->join('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
             ->where('learningactivityproducing.wplp_id', '=',
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
-        $result = $this->LimitCollectionByDate($result, $year, $month);
+        $result = $this->limitCollectionByDate($result, $year, $month);
         $result = $result->groupBy('learningactivityproducing.category_id')->orderBy('difficulty', 'desc')->get();
 
         return $result;
@@ -268,7 +271,7 @@ class ProducingAnalysisCollector
             ->where('learningactivityproducing.wplp_id', '=',
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
             ->where('difficulty_id', '=', 3);
-        $result = $this->LimitCollectionByDate($result, $year, $month);
+        $result = $this->limitCollectionByDate($result, $year, $month);
 
         $result = $result->groupBy('learningactivityproducing.res_person_id')->orderBy('difficult_activities', 'asc')
             ->limit(1)->get();
@@ -294,7 +297,7 @@ class ProducingAnalysisCollector
                 '=',
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id
             );
-        $result = $this->LimitCollectionByDate($result, $year, $month);
+        $result = $this->limitCollectionByDate($result, $year, $month);
         $result = $result->groupBy('learningactivityproducing.category_id')->orderBy('count', 'desc')->first();
 
         return $result;
@@ -365,7 +368,7 @@ class ProducingAnalysisCollector
                 '=',
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id
             );
-        $result = $this->LimitCollectionByDate($result, $year, $month);
+        $result = $this->limitCollectionByDate($result, $year, $month);
 
         return $result->groupBy('learningactivityproducing.category_id')->get();
     }
