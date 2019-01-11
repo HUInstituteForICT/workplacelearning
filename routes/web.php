@@ -96,8 +96,7 @@ Route::group(['before' => 'auth'], function (): void {
 });
 
 Route::group([
-    'before' => ['auth'],
-    'middleware' => ['usernotifications'],
+    'middleware' => ['auth', 'usernotifications'],
 ], function (): void {
     Route::group(['middleware' => CheckUserLevel::class], function (): void {
         Route::get('/education-programs', 'EducationProgramsController@index')
@@ -172,8 +171,9 @@ Route::group([
     Route::post('categorie/update/{id}',
         'ProducingWorkplaceLearningController@updateCategories')->name('categories-update')->where('id', '[0-9]*');
     // Learning Goal updating
-    Route::post('learninggoal/update/{id}',
-        'ActingWorkplaceLearningController@updateLearningGoals')->name('learninggoals-update')->where('id', '[0-9]*');
+    Route::post('learninggoal/update', 'ActingWorkplaceLearningController@updateLearningGoals')
+        ->middleware(RequireActiveInternship::class)
+        ->name('learninggoals-update');
 
     // Calendar Creation
     Route::get('deadline', 'CalendarController@show')->name('deadline');
@@ -196,20 +196,6 @@ Route::group([
         Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit');
         Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
     });
-    // Dashboard
-
-//    Route::group([
-//        'middleware' => ['taskTypeRedirect'],
-//    ], function (): void {
-//        /* Add all middleware redirected urls here */
-//        Route::get('/', 'HomeController@showHome')->name('default');
-//        Route::get('home', 'HomeController@showHome')->name('home');
-//        Route::get('process', 'ActingActivityController@show')->name('process');
-//        Route::get('progress/{page}', 'ProducingActivityController@progress')->where('page', '[1-9]{1}[0-9]*')->name('progress');
-//        Route::get('analysis', 'ProducingActivityController@show')->name('analysis');
-//        Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
-//        Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit')->where('id', '[0-9]*');
-//    });
 
     Route::get('/tip/{tip}/like', 'TipApi\TipsController@likeTip')->name('tips.like');
 
@@ -247,17 +233,20 @@ Route::group([
 
         // Internships & Internship Periods
         Route::get('period/create', 'ActingWorkplaceLearningController@show')
+            ->middleware(['can:create,App\Workplace', 'can:create,App\WorkplaceLearningPeriod'])
             ->name('period-acting');
 
-        Route::get('period/edit/{id}', 'ActingWorkplaceLearningController@edit')
-            ->name('period-acting-edit');
-
         Route::post('period/create', 'ActingWorkplaceLearningController@create')
+            ->middleware(['can:create,App\Workplace', 'can:create,App\WorkplaceLearningPeriod'])
             ->name('period-acting-create');
 
-        Route::post('period/update/{id}', 'ActingWorkplaceLearningController@update')
-            ->name('period-acting-update')
-            ->where('id', '[0-9]*');
+        Route::get('period/edit/{workplaceLearningPeriod}', 'ActingWorkplaceLearningController@edit')
+            ->middleware(['can:update,workplaceLearningPeriod'])
+            ->name('period-acting-edit');
+
+        Route::post('period/update/{workplaceLearningPeriod}', 'ActingWorkplaceLearningController@update')
+            ->middleware(['can:update,workplaceLearningPeriod'])
+            ->name('period-acting-update');
 
         // Report Creation
         Route::get('analysis', 'ActingAnalysisController@showChoiceScreen')
@@ -265,6 +254,10 @@ Route::group([
             ->name('analysis-acting-choice');
 
         Route::get('analysis/{year}/{month}', 'ActingAnalysisController@showDetail')
+            ->where([
+                'year'  => '/^(20)(\d{2})$/|all',
+                'month' => '/^([0-1]{1}\d{1})$/|all',
+            ])
             ->middleware(RequireActiveInternship::class)
             ->name('analysis-acting-detail');
 
@@ -323,6 +316,10 @@ Route::group([
                 ->name('analysis-producing-choice');
 
             Route::get('analysis/{year}/{month}', 'ProducingAnalysisController@showDetail')
+                ->where([
+                    'year'  => '/^(20)(\d{2})$/|all',
+                    'month' => '/^([0-1]{1}\d{1})$/|all',
+                ])
                 ->name('analysis-producing-detail');
 
             // Feedback

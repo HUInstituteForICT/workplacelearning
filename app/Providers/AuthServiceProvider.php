@@ -7,6 +7,10 @@ use App\LearningActivityActing;
 use App\LearningActivityProducing;
 use App\Policies\FeedbackPolicy;
 use App\Policies\LearningActivityPolicy;
+use App\Policies\WorkplaceLearningPeriodPolicy;
+use App\Policies\WorkplacePolicy;
+use App\Workplace;
+use App\WorkplaceLearningPeriod;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -17,9 +21,11 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Feedback::class => FeedbackPolicy::class,
+        Feedback::class                  => FeedbackPolicy::class,
         LearningActivityProducing::class => LearningActivityPolicy::class,
-        LearningActivityActing::class => LearningActivityPolicy::class,
+        LearningActivityActing::class    => LearningActivityPolicy::class,
+        Workplace::class                 => WorkplacePolicy::class,
+        WorkplaceLearningPeriod::class   => WorkplaceLearningPeriodPolicy::class,
     ];
 
     /**

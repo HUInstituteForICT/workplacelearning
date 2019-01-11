@@ -24,7 +24,9 @@ class AddFkToDashcharts extends Migration
     public function down(): void
     {
         Schema::table('dashboard_charts', function (Blueprint $table): void {
-            $table->dropForeign('dashboard_charts_chart_id_foreign');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('DASHBOARD_CHARTS_CHART_ID_FOREIGN');
+            }
         });
     }
 }

@@ -5,6 +5,8 @@ namespace App\Tips\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * App\Tips\Models\TipCoupledStatistic.
+ *
  * @property int       $id
  * @property int       $tip_id
  * @property Tip       $tip
@@ -12,6 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property int       $comparison_operator
  * @property float     $threshold
  * @property Statistic $statistic
+ * @property mixed     $condition
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereComparisonOperator($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereStatisticId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereThreshold($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereTipId($value)
+ * @mixin \Eloquent
  */
 class TipCoupledStatistic extends Model
 {
@@ -19,7 +29,7 @@ class TipCoupledStatistic extends Model
     const COMPARISON_OPERATOR_GREATER_THAN = 1;
 
     const COMPARISON_OPERATORS = [
-        self::COMPARISON_OPERATOR_LESS_THAN => ['type' => self::COMPARISON_OPERATOR_LESS_THAN, 'label' => '<'],
+        self::COMPARISON_OPERATOR_LESS_THAN    => ['type' => self::COMPARISON_OPERATOR_LESS_THAN, 'label' => '<'],
         self::COMPARISON_OPERATOR_GREATER_THAN => ['type' => self::COMPARISON_OPERATOR_GREATER_THAN, 'label' => '>'],
     ];
     public $timestamps = false;

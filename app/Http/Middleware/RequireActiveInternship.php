@@ -2,7 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Student;
+use App\Exceptions\UnexpectedUser;
+use App\Services\CurrentUserResolver;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -10,30 +11,32 @@ use Illuminate\Routing\Redirector;
 class RequireActiveInternship
 {
     /**
-     * @var Student|null
-     */
-    private $student;
-    /**
      * @var Redirector
      */
     private $redirector;
+    /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
 
-    public function __construct(?Student $student, Redirector $redirector)
+    public function __construct(CurrentUserResolver $currentUserResolver, Redirector $redirector)
     {
-        $this->student = $student;
         $this->redirector = $redirector;
+        $this->currentUserResolver = $currentUserResolver;
     }
 
     public function handle(Request $request, Closure $next)
     {
-        if ($this->student === null) {
+        try {
+            $student = $this->currentUserResolver->getCurrentUser();
+
+            if (!$student->hasCurrentWorkplaceLearningPeriod()) {
+                return $this->redirector->route('profile')->withErrors([__('notifications.internship-required')]);
+            }
+
+            return $next($request);
+        } catch (UnexpectedUser $exception) {
             return $this->redirector->route('login');
         }
-
-        if (!$this->student->hasCurrentWorkplaceLearningPeriod()) {
-            return $this->redirector->route('profile')->withErrors([__('notifications.internship-required')]);
-        }
-
-        return $next($request);
     }
 }

@@ -90,7 +90,7 @@ class ActingAnalysisCollector
     public function getLearningGoals()
     {
         if ($this->learningGoals === null) {
-            $this->learningGoals = Auth::user()->getCurrentWorkplaceLearningPeriod()->getLearningGoals();
+            $this->learningGoals = Auth::user()->getCurrentWorkplaceLearningPeriod()->learningGoals;
         }
 
         return $this->learningGoals;

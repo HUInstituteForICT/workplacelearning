@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Factories;
 
 use App\LearningActivityActing;
 use App\LearningGoal;
 use App\ResourceMaterial;
 use App\ResourcePerson;
-use App\Student;
+use App\Services\CurrentUserResolver;
 use App\Timeslot;
 use Carbon\Carbon;
 
@@ -25,20 +25,20 @@ class LAAFactory
      */
     private $resourceMaterialFactory;
     /**
-     * @var Student
+     * @var CurrentUserResolver
      */
-    private $student;
+    private $currentUserResolver;
 
     public function __construct(
         TimeslotFactory $timeslotFactory,
         ResourcePersonFactory $resourcePersonFactory,
         ResourceMaterialFactory $resourceMaterialFactory,
-        Student $student
+        CurrentUserResolver $currentUserResolver
     ) {
         $this->timeslotFactory = $timeslotFactory;
         $this->resourcePersonFactory = $resourcePersonFactory;
         $this->resourceMaterialFactory = $resourceMaterialFactory;
-        $this->student = $student;
+        $this->currentUserResolver = $currentUserResolver;
     }
 
     public function createLAA(array $data): LearningActivityActing
@@ -52,8 +52,8 @@ class LAAFactory
         }
 
         $activityActing->timeslot()->associate($this->getTimeslot($data));
-        $activityActing->workplaceLearningPeriod()->associate($this->student->getCurrentWorkplaceLearningPeriod());
-        $activityActing->learningGoal()->associate((new LearningGoal())->find($data['learning_goal']));
+        $activityActing->workplaceLearningPeriod()->associate($this->currentUserResolver->getCurrentUser()->getCurrentWorkplaceLearningPeriod());
+        $activityActing->learningGoal()->associate((new LearningGoal())::find($data['learning_goal']));
 
         $activityActing->date = Carbon::parse($data['date'])->format('Y-m-d');
         $activityActing->situation = $data['description'];

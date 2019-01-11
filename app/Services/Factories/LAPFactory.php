@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Factories;
 
 use App\Category;
 use App\Chain;
@@ -30,7 +30,7 @@ class LAPFactory
     private $categoryFactory;
 
     public function __construct(
-        ChainManager $chainManager,
+        ChainFactory $chainManager,
         ResourcePersonFactory $resourcePersonFactory,
         CategoryFactory $categoryFactory
     ) {
@@ -42,7 +42,7 @@ class LAPFactory
     public function createLAP(array $data): LearningActivityProducing
     {
         $this->data = $data;
-        if ('new' === $data['resource']) {
+        if ($data['resource'] === 'new') {
             $data['resource'] = 'other';
         }
 
@@ -50,7 +50,7 @@ class LAPFactory
 
         $learningActivityProducing = new LearningActivityProducing();
         $learningActivityProducing->description = $data['omschrijving'];
-        $learningActivityProducing->duration = 'x' !== $data['aantaluren'] ?
+        $learningActivityProducing->duration = $data['aantaluren'] !== 'x' ?
             $data['aantaluren'] :
             round(((int) $data['aantaluren_custom']) / 60, 2);
         $learningActivityProducing->date = Carbon::parse($data['datum'])->format('Y-m-d');
@@ -58,15 +58,18 @@ class LAPFactory
         // Set relations
         $learningActivityProducing->workplaceLearningPeriod()->associate(Auth::user()->getCurrentWorkplaceLearningPeriod());
         $learningActivityProducing->category()->associate($category);
-        $learningActivityProducing->difficulty()->associate((new Difficulty())->findOrFail($data['moeilijkheid']));
-        $learningActivityProducing->status()->associate((new Status())->findOrFail($data['status']));
+        $learningActivityProducing->difficulty()->associate(Difficulty::findOrFail($data['moeilijkheid']));
+        $learningActivityProducing->status()->associate(Status::findOrFail($data['status']));
 
         $chainId = ((int) $data['chain_id']);
         if ($chainId !== -1) {
-            $chain = (new Chain())->find($data['chain_id']);
+            $chain = Chain::find($data['chain_id']);
             $learningActivityProducing->chain()->associate($chain);
         } elseif ($chainId === -1 && $learningActivityProducing->status->isBusy()) {
-            $chain = $this->chainManager->createChain(__('New chain').' - '.substr($learningActivityProducing->description, 0, 15));
+            $chain = $this->chainManager->createChain([
+                'name'    => __('New chain').' - '.substr($learningActivityProducing->description, 0, 15),
+                'wplp_id' => Auth::user()->getCurrentWorkplaceLearningPeriod(),
+            ]);
             $learningActivityProducing->chain()->associate($chain);
         }
 
@@ -76,11 +79,11 @@ class LAPFactory
                 $learningActivityProducing->resourcePerson()->associate($this->getResourcePerson());
                 break;
             case 'internet':
-                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial())->findOrFail(1));
+                $learningActivityProducing->resourceMaterial()->associate(ResourceMaterial::findOrFail(1));
                 $learningActivityProducing->res_material_detail = $data['internetsource'];
                 break;
             case 'boek':
-                $learningActivityProducing->resourceMaterial()->associate((new ResourceMaterial())->findOrFail(2));
+                $learningActivityProducing->resourceMaterial()->associate(ResourceMaterial::findOrFail(2));
                 $learningActivityProducing->res_material_detail = $data['booksource'];
                 break;
         }
@@ -92,16 +95,16 @@ class LAPFactory
 
     private function getCategory($id): Category
     {
-        if ('new' === $id) {
+        if ($id === 'new') {
             return $this->categoryFactory->createCategory($this->data['newcat']);
         }
 
-        return (new Category())->find($id);
+        return Category::find($id);
     }
 
     private function getResourcePerson(): ResourcePerson
     {
-        if ('new' === $this->data['personsource'] && 'persoon' === $this->data['resource']) {
+        if ($this->data['personsource'] === 'new' && $this->data['resource'] === 'persoon') {
             return $this->resourcePersonFactory->createResourcePerson($this->data['newswv']);
         }
 

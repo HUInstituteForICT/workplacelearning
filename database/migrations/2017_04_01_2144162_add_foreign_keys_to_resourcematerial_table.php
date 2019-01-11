@@ -21,7 +21,9 @@ class AddForeignKeysToResourcematerialTable extends Migration
     public function down(): void
     {
         Schema::table('resourcematerial', function (Blueprint $table): void {
-            $table->dropForeign('fk_ResourceMaterial_WorkplaceLearningPeriod1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_RESOURCEMATERIAL_WORKPLACELEARNINGPERIOD1');
+            }
         });
     }
 }

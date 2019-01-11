@@ -21,7 +21,9 @@ class AddForeignKeysToCompetenceTable extends Migration
     public function down(): void
     {
         Schema::table('competence', function (Blueprint $table): void {
-            $table->dropForeign('fk_Competency_EducationProgram1');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('FK_COMPETENCY_EDUCATIONPROGRAM1');
+            }
         });
     }
 }

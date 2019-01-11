@@ -2,83 +2,80 @@
 
 namespace App\Http\Controllers;
 
-use App\Evidence;
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\LearningActivityActing;
-use App\LearningActivityActingExportBuilder;
-use App\Services\EvidenceFileHandler;
+use App\Repository\Eloquent\LearningActivityActingRepository;
+use App\Services\AvailableActingEntitiesFetcher;
+use App\Services\CurrentUserResolver;
 use App\Services\EvidenceUploadHandler;
-use App\Services\LAAFactory;
+use App\Services\Factories\LAAFactory;
 use App\Services\LAAUpdater;
-use App\Student;
-use Illuminate\Routing\Controller;
+use App\Services\LearningActivityActingExportBuilder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
-class ActingActivityController extends Controller
+class ActingActivityController
 {
-    public function show(Student $student)
-    {
-        $resourcePersons = $student->currentCohort()->resourcePersons()->get()->merge(
-            $student->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
-        );
+    /**
+     * @var Redirector
+     */
+    private $redirector;
 
-        $timeslots = $student->currentCohort()->timeslots()->get()->merge(
-            $student->getCurrentWorkplaceLearningPeriod()->getTimeslots()
-        );
+    /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
+    /**
+     * @var LearningActivityActingRepository
+     */
+    private $learningActivityActingRepository;
 
-        $exportBuilder = new LearningActivityActingExportBuilder($student->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
-            ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
-            ->take(8)
-            ->orderBy('date', 'DESC')
-            ->orderBy('laa_id', 'DESC')
-            ->get());
+    public function __construct(
+        Redirector $redirector,
+        CurrentUserResolver $currentUserResolver,
+        LearningActivityActingRepository $learningActivityActingRepository
+    ) {
+        $this->redirector = $redirector;
+        $this->currentUserResolver = $currentUserResolver;
+        $this->learningActivityActingRepository = $learningActivityActingRepository;
+    }
 
-        $activitiesJson = $exportBuilder->getJson();
+    public function show(
+        AvailableActingEntitiesFetcher $availableActingEntitiesFetcher,
+        LearningActivityActingExportBuilder $exportBuilder
+    ) {
+        $student = $this->currentUserResolver->getCurrentUser();
 
-        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
+        $activitiesJson = $exportBuilder->getJson($this->learningActivityActingRepository->getActivitiesForStudent($student),
+            8);
 
-        return view('pages.acting.activity')
-            ->with('competenceDescription', $student->currentCohort()->competenceDescription)
-            ->with('timeslots', $timeslots)
-            ->with('resPersons', $resourcePersons)
-            ->with('resMaterials', $student->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
-            ->with('learningGoals', $student->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
-            ->with('competencies', $student->currentCohort()->competencies()->get())
-            ->with('activities', $student->getCurrentWorkplaceLearningPeriod()->getLastActivity(8))
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
+
+        return view('pages.acting.activity', $availableActingEntitiesFetcher->getEntities())
             ->with('activitiesJson', $activitiesJson)
             ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
             ->with('workplacelearningperiod', $student->getCurrentWorkplaceLearningPeriod());
     }
 
-    public function edit(LearningActivityActing $learningActivityActing, Student $student)
-    {
-        $resourcePersons = $student->currentCohort()->resourcePersons()->get()->merge(
-            $student->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
-        );
-
-        $timeslots = $student->currentCohort()->timeslots()->get()->merge(
-            $student->getCurrentWorkplaceLearningPeriod()->getTimeslots()
-        );
-
-        return view('pages.acting.activity-edit')
-            ->with('activity', $learningActivityActing)
-            ->with('timeslots', $timeslots)
-            ->with('resPersons', $resourcePersons)
-            ->with('resMaterials', $student->getCurrentWorkplaceLearningPeriod()->getResourceMaterials())
-            ->with('learningGoals', $student->getCurrentWorkplaceLearningPeriod()->getLearningGoals())
-            ->with('competencies', $student->currentCohort()->competencies()->get());
+    public function edit(
+        LearningActivityActing $learningActivityActing,
+        AvailableActingEntitiesFetcher $availableActingEntitiesFetcher
+    ) {
+        return view('pages.acting.activity-edit', $availableActingEntitiesFetcher->getEntities())
+            ->with('activity', $learningActivityActing);
     }
 
-    public function progress(Student $student)
+    public function progress(LearningActivityActingExportBuilder $exportBuilder)
     {
-        $exportBuilder = new LearningActivityActingExportBuilder($student->getCurrentWorkplaceLearningPeriod()->learningActivityActing()
-            ->with('timeslot', 'resourcePerson', 'resourceMaterial', 'learningGoal', 'competence')
-            ->orderBy('date', 'DESC')
-            ->get());
+        $student = $this->currentUserResolver->getCurrentUser();
 
-        $activitiesJson = $exportBuilder->getJson();
+        $activitiesJson = $exportBuilder->getJson(
+            $this->learningActivityActingRepository->getActivitiesForStudent($student),
+            null
+        );
 
-        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
 
         return view('pages.acting.progress')
             ->with('activitiesJson', $activitiesJson)
@@ -92,14 +89,14 @@ class ActingActivityController extends Controller
         ActingCreateRequest $request,
         LAAFactory $LAAFactory,
         EvidenceUploadHandler $evidenceUploadHandler
-    ) {
+    ): RedirectResponse {
         $learningActivityActing = $LAAFactory->createLAA($request->all());
 
         if ($request->hasFile('evidence')) {
             $evidenceUploadHandler->process($request, $learningActivityActing);
         }
 
-        return redirect()->route('process-acting')->with('success', __('activity.saved-successfully'));
+        return $this->redirector->route('process-acting')->with('success', __('activity.saved-successfully'));
     }
 
     /**
@@ -110,26 +107,20 @@ class ActingActivityController extends Controller
         LearningActivityActing $learningActivityActing,
         EvidenceUploadHandler $evidenceUploadHandler,
         LAAUpdater $LAAUpdater
-    ) {
+    ): RedirectResponse {
         if ($request->hasFile('evidence')) {
             $evidenceUploadHandler->process($request, $learningActivityActing);
         }
 
         $LAAUpdater->update($learningActivityActing, $request->all());
 
-        return redirect()->route('process-acting')->with('success', __('activity.saved-successfully'));
+        return $this->redirector->route('process-acting')->with('success', __('activity.saved-successfully'));
     }
 
-    public function delete(LearningActivityActing $learningActivityActing, EvidenceFileHandler $evidenceFileHandler)
+    public function delete(LearningActivityActing $learningActivityActing): RedirectResponse
     {
-        $learningActivityActing->competence()->detach($learningActivityActing->competence);
+        $this->learningActivityActingRepository->delete($learningActivityActing);
 
-        $learningActivityActing->evidence->each(function (Evidence $evidence) use ($evidenceFileHandler) {
-            $evidenceFileHandler->delete($evidence);
-        });
-
-        $learningActivityActing->delete();
-
-        return redirect()->route('process-acting');
+        return $this->redirector->route('process-acting');
     }
 }

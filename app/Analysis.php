@@ -10,12 +10,23 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
- * @property int    $id
- * @property string $name           Analysis name
- * @property string $query          SQL query
- * @property int    $cache_duration Duration in given time type
- * @property string $type_time
- * @property string $time_type
+ * App\Analysis.
+ *
+ * @property int                                                           $id
+ * @property string                                                        $name           Analysis name
+ * @property string                                                        $query          SQL query
+ * @property int                                                           $cache_duration Duration in given time type
+ * @property string                                                        $type_time
+ * @property string                                                        $time_type
+ * @property \Illuminate\Database\Eloquent\Collection|\App\AnalysisChart[] $charts
+ * @property mixed                                                         $data
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereCacheDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereQuery($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereTypeTime($value)
+ * @mixin \Eloquent
  */
 class Analysis extends Model
 {
@@ -89,7 +100,7 @@ class Analysis extends Model
         }
 
         Cache::put(self::CACHE_KEY.$this->id, [
-            'id' => $this->id,
+            'id'   => $this->id,
             'data' => $this->execute(),
         ], $expiry);
     }

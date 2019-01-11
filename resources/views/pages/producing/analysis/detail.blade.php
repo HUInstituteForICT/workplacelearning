@@ -1,6 +1,10 @@
+<?php
+/** @var App\Tips\EvaluatedTip[] $evaluatedTips */
+/** @var App\Tips\EvaluatedTip $evaluatedTip */
+?>
 @extends('layout.HUdefault')
 @section('title')
-    {{ Lang::get('analysis.detail') }}
+    {{ __('analysis.detail') }}
 @stop
 @section('content')
     <script>
@@ -40,7 +44,7 @@
                     <h1>{{ __('tips.personal-tip') }}s</h1>
 
 
-                    @if($evaluatedTips->count() > 0)
+                    @if(count($evaluatedTips) > 0)
                         <?php $tipCounter = 1; ?>
 
                         @foreach($evaluatedTips as $evaluatedTip)
@@ -80,9 +84,9 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <h1>{{ Lang::get('analyses.analyses-statistics-title') }}</h1>
+                    <h1>{{ __('analyses.analyses-statistics-title') }}</h1>
 
-                    <h2>{{ Lang::get('analyses.time-per-category') }}</h2>
+                    <h2>{{ __('analyses.time-per-category') }}</h2>
                     <canvas id="chart_hours"></canvas>
                     <script>
                         var canvasHours = document.getElementById('chart_hours');
@@ -121,24 +125,24 @@
             <div class="row">
                 <div class="col-md-8">
                     {!! Form::open(array('url' => 'dummy', 'class' => 'form-horizontal')) !!}
-                    <h2>{{ Lang::get('analyses.statistic') }}</h2>
+                    <h2>{{ __('analyses.statistic') }}</h2>
                     <div class="form-group">
-                        {!! Form::label('', Lang::get('analyses.average-difficulty'), array('class' => 'col-sm-3 control-label')) !!}
+                        {!! Form::label('', __('analyses.average-difficulty'), array('class' => 'col-sm-3 control-label')) !!}
                         <div class="col-sm-9"><p
                                     class="form-control-static">{{ $producingAnalysis->statistic('averageDifficulty') }}
-                                ({{ Lang::get('analyses.10-most-complex') }})</p></div>
+                                ({{ __('analyses.10-most-complex') }})</p></div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('', Lang::get('analyses.percentage-difficult'), array('class' => 'col-sm-3 control-label')) !!}
+                        {!! Form::label('', __('analyses.percentage-difficult'), array('class' => 'col-sm-3 control-label')) !!}
                         <div class="col-sm-9"><p
                                     class="form-control-static">{{ $producingAnalysis->statistic('percentageDifficultTasks') }}
-                                <b>{{ Lang::get('general.moeilijk') }}</b></p></div>
+                                <b>{{ __('general.moeilijk') }}</b></p></div>
                     </div>
                     <div class="form-group">
-                        {!! Form::label('', Lang::get('analyses.percentage-work-on-own'), array('class' => 'col-sm-3 control-label')) !!}
+                        {!! Form::label('', __('analyses.percentage-work-on-own'), array('class' => 'col-sm-3 control-label')) !!}
                         <div class="col-sm-9"><p
                                     class="form-control-static">{{ $producingAnalysis->statistic('percentageAloneHours') }}
-                                {{ Lang::get('analyses.percentage-work-alone') }}</p></div>
+                                {{ __('analyses.percentage-work-alone') }}</p></div>
                     </div>
                     {!! Form::close() !!}
                     <canvas id="chart_categories"></canvas>

@@ -6,9 +6,20 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property string $log
- * @property bool   $fixed
- * @property int    $id
+ * App\ReactLog.
+ *
+ * @property string                          $log
+ * @property bool                            $fixed
+ * @property int                             $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereFixed($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereLog($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class ReactLog extends Model
 {

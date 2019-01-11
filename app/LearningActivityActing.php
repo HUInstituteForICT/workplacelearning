@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Interfaces\LearningActivityInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int                                                      $laa_id
  * @property int                                                      $wplp_id
- * @property \DateTime                                                $date
+ * @property Carbon                                                   $date
  * @property int                                                      $timeslot_id
  * @property string                                                   $situation
  * @property string                                                   $lessonslearned
@@ -47,16 +48,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereSupportWp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereTimeslotId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereWplpId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceDiskFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceMime($value)
  * @mixin \Eloquent
  */
 class LearningActivityActing extends Model implements LearningActivityInterface
 {
-    // Override the table used for the User Model
-    protected $table = 'learningactivityacting';
     // Disable using created_at and updated_at columns
     public $timestamps = false;
+    // Override the table used for the User Model
+    protected $table = 'learningactivityacting';
     // Override the primary key column
     protected $primaryKey = 'laa_id';
+
+    protected $dates = ['date'];
 
     // Default
     protected $fillable = [

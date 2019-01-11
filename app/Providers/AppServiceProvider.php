@@ -7,7 +7,8 @@ use App\Repository\Eloquent\LikeRepository;
 use App\Repository\Eloquent\StudentTipViewRepository;
 use App\Repository\LikeRepositoryInterface;
 use App\Repository\StudentTipViewRepositoryInterface;
-use App\Student;
+use App\Services\CurrentPeriodResolver;
+use App\Services\CurrentUserResolver;
 use App\Tips\DataCollectors\Collector;
 use App\Tips\PeriodMomentCalculator;
 use App\WorkplaceLearningPeriod;
@@ -52,24 +53,17 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(Collector::class, function (Container $app) {
             $request = $app->make(Request::class);
 
-            $year = 'all' === $request->get('year') ? null : $request->get('year', null);
-            $month = 'all' === $request->get('month') ? null : $request->get('month', null);
+            $year = $request->get('year') === 'all' ? null : $request->get('year', null);
+            $month = $request->get('month') === 'all' ? null : $request->get('month', null);
 
-            $student = $app->make(Student::class);
+            $student = $app->make(CurrentUserResolver::class)->getCurrentUser();
             $learningPeriod = $student->hasCurrentWorkplaceLearningPeriod() ? $student->getCurrentWorkplaceLearningPeriod() : new WorkplaceLearningPeriod();
 
             return new Collector($year, $month, $learningPeriod);
         });
 
         $this->app->bind(PeriodMomentCalculator::class, function (Container $app) {
-            $student = $app->make(Student::class);
-            $learningPeriod = $student->hasCurrentWorkplaceLearningPeriod() ? $student->getCurrentWorkplaceLearningPeriod() : new WorkplaceLearningPeriod();
-
-            return new PeriodMomentCalculator($learningPeriod);
-        });
-
-        $this->app->bind(Student::class, function () {
-            return \Auth::user();
+            return new PeriodMomentCalculator($app->make(CurrentPeriodResolver::class)->getPeriod());
         });
     }
 }

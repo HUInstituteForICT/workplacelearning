@@ -21,7 +21,9 @@ class AddForeignKeysToPasswordResetTable extends Migration
     public function down(): void
     {
         Schema::table('password_reset', function (Blueprint $table): void {
-            $table->dropForeign('pw_reset_email');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign('PW_RESET_EMAIL');
+            }
         });
     }
 }

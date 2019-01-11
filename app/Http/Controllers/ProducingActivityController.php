@@ -7,133 +7,99 @@
 
 namespace App\Http\Controllers;
 
-use App\Difficulty;
-use App\Feedback;
 use App\Http\Requests\LearningActivity\ProducingCreateRequest;
 use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
 use App\LearningActivityProducing;
-use App\LearningActivityProducingExportBuilder;
-use App\Services\LAPFactory;
+use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Services\AvailableProducingEntitiesFetcher;
+use App\Services\CurrentUserResolver;
+use App\Services\CustomProducingEntityHandler;
+use App\Services\Factories\LAPFactory;
 use App\Services\LAPUpdater;
-use App\Status;
-use App\Student;
+use App\Services\LearningActivityProducingExportBuilder;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Translation\Translator;
+use Illuminate\Http\RedirectResponse;
 
-class ProducingActivityController extends Controller
+class ProducingActivityController
 {
-    public function show(Request $request, Translator $translator, Student $student)
-    {
-        $resourcePersons = $student->currentCohort()->resourcePersons()->get()->merge(
-            $student->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
-        );
+    /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
+    /**
+     * @var LearningActivityProducingRepository
+     */
+    private $learningActivityProducingRepository;
 
-        $categories = $student->currentCohort()->categories()->get()->merge(
-            Auth::user()->getCurrentWorkplaceLearningPeriod()->categories()->get()
-        );
+    public function __construct(
+        CurrentUserResolver $currentUserResolver,
+        LearningActivityProducingRepository $learningActivityProducingRepository
+    ) {
+        $this->currentUserResolver = $currentUserResolver;
+        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+    }
 
-        $exportBuilder = new LearningActivityProducingExportBuilder($student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
-            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial', 'chain', 'feedback')
-            ->take(8)
-            ->orderBy('date', 'DESC')
-            ->orderBy('lap_id', 'DESC')
-            ->get(), $translator);
+    public function show(
+        AvailableProducingEntitiesFetcher $availableProducingEntitiesFetcher,
+        LearningActivityProducingExportBuilder $exportBuilder
+    ) {
+        $student = $this->currentUserResolver->getCurrentUser();
 
-        $activitiesJson = $exportBuilder->getJson();
+        $activitiesJson = $exportBuilder->getJson($this->learningActivityProducingRepository->getActivitiesForStudent($student),
+            8);
 
-        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
 
-        $wplp = $student->getCurrentWorkplaceLearningPeriod();
-
-        $chains = $wplp->chains;
-        $chains->load('activities');
-
-        return view('pages.producing.activity')
-            ->with('learningWith', $resourcePersons)
-            ->with('categories', $categories)
-            ->with('difficulties', Difficulty::all())
-            ->with('statuses', Status::all())
+        return view('pages.producing.activity', $availableProducingEntitiesFetcher->getEntities())
             ->with('activitiesJson', $activitiesJson)
             ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
-            ->with('workplacelearningperiod', Auth::user()->getCurrentWorkplaceLearningPeriod())
-            ->with('chains', $chains->all());
+            ->with('workplacelearningperiod', $student->getCurrentWorkplaceLearningPeriod());
     }
 
-    public function edit(Request $request, LearningActivityProducing $learningActivityProducing, Student $student)
+    public function edit(
+        LearningActivityProducing $learningActivityProducing,
+        AvailableProducingEntitiesFetcher $availableProducingEntitiesFetcher
+    ) {
+        return view('pages.producing.activity-edit', $availableProducingEntitiesFetcher->getEntities())
+            ->with('activity', $learningActivityProducing);
+    }
+
+    public function progress(LearningActivityProducingExportBuilder $exportBuilder)
     {
-        $resourcePersons = $student->currentCohort()->resourcePersons()->get()->merge(
-            $student->getCurrentWorkplaceLearningPeriod()->getResourcePersons()
+        $student = $this->currentUserResolver->getCurrentUser();
+        $activities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+
+        $activitiesJson = $exportBuilder->getJson($activities, null);
+        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
+
+        $earliest = $this->learningActivityProducingRepository->earliestActivityForStudent($student)->date ?? Carbon::now();
+        $latest = $this->learningActivityProducingRepository->latestActivityForStudent($student)->date ?? Carbon::now();
+
+        return view('pages.producing.progress', [
+                'activitiesJson'               => $activitiesJson,
+                'exportTranslatedFieldMapping' => json_encode($exportTranslatedFieldMapping),
+                'weekStatesDates'              => [
+                    'earliest' => $earliest->format('Y-m-d'),
+                    'latest'   => $latest->format('Y-m-d'),
+                ],
+            ]
         );
-
-        $categories = $student->currentCohort()->categories()->get()->merge(
-            $student->getCurrentWorkplaceLearningPeriod()->categories()->get()
-        );
-
-        $wplp = $request->user()->getCurrentWorkplaceLearningPeriod();
-
-        $chains = $wplp->chains;
-
-        return view('pages.producing.activity-edit')
-            ->with('activity', $learningActivityProducing)
-            ->with('learningWith', $resourcePersons)
-            ->with('categories', $categories)
-            ->with('chains', $chains);
     }
 
-    public function progress(Translator $translator, Student $student)
-    {
-        $activities = $student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
-            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial')
-            ->orderBy('date', 'DESC')
-            ->get();
-        $exportBuilder = new LearningActivityProducingExportBuilder($activities, $translator);
+    public function create(
+        ProducingCreateRequest $request,
+        LAPFactory $LAPFactory,
+        CustomProducingEntityHandler $customProducingEntityHandler
+    ): RedirectResponse {
+        // Because related entities can be created during this route, create them first and set their ids
+        // in the request data so that the factory can be relatively simple
+        $data = $customProducingEntityHandler->process($request->all());
 
-        $activitiesJson = $exportBuilder->getJson();
+        $learningActivityProducing = $LAPFactory->createLAP($data);
 
-        /** @var Carbon $earliest */
-        $earliest = null;
-        /** @var Carbon $latest */
-        $latest = null;
-
-        $activities->each(function (LearningActivityProducing $activity) use (&$earliest, &$latest): void {
-            $activityDate = Carbon::createFromTimestamp(strtotime($activity->date));
-
-            if (null === $earliest || $activityDate->lessThan($earliest)) {
-                $earliest = $activityDate;
-            }
-            if (null === $latest || $activityDate->greaterThan($latest)) {
-                $latest = $activityDate;
-            }
-        });
-
-        $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping(app()->make('translator'));
-
-        $earliest = $earliest ?? Carbon::now();
-        $latest = $latest ?? Carbon::now();
-
-        return view('pages.producing.progress')
-            ->with('activitiesJson', $activitiesJson)
-            ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
-            ->with('weekStatesDates', ['earliest' => $earliest->format('Y-m-d'), 'latest' => $latest->format('Y-m-d')]);
-    }
-
-    public function create(ProducingCreateRequest $request, LAPFactory $LAPManager)
-    {
-        $learningActivityProducing = $LAPManager->createLAP($request->all());
-
-        $difficulty = $learningActivityProducing->difficulty;
-        $status = $learningActivityProducing->status;
-
-        if ($status->isBusy() && ($difficulty->isHard() || $difficulty->isAverage())) {
-            // Create Feedback object and redirect
-            $feedback = new Feedback();
-            $feedback->learningActivityProducing()->associate($learningActivityProducing);
-            $feedback->save();
-
+        if ($learningActivityProducing->feedback) {
             return redirect()
-                ->route('feedback-producing', ['id' => $feedback->fb_id])
+                ->route('feedback-producing', ['feedback' => $learningActivityProducing->feedback])
                 ->with('notification', __('notifications.feedback-hard'));
         }
 
@@ -142,17 +108,16 @@ class ProducingActivityController extends Controller
             ->with('success', __('activity.saved-successfully'));
     }
 
-    public function update(ProducingUpdateRequest $request, LearningActivityProducing $learningActivityProducing, LAPUpdater $LAPUpdater)
+    public function update(ProducingUpdateRequest $request, LearningActivityProducing $learningActivityProducing, LAPUpdater $LAPUpdater): RedirectResponse
     {
         $LAPUpdater->update($learningActivityProducing, $request->all());
 
         return redirect()->route('process-producing')->with('success', __('activity.saved-successfully'));
     }
 
-    public function delete(LearningActivityProducing $learningActivityProducing)
+    public function delete(LearningActivityProducing $learningActivityProducing): RedirectResponse
     {
-        $learningActivityProducing->feedback()->delete();
-        $learningActivityProducing->delete();
+        $this->learningActivityProducingRepository->delete($learningActivityProducing);
 
         return redirect()->route('process-producing');
     }

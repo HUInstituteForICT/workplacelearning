@@ -8,29 +8,34 @@
 namespace App\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
+use App\Services\CurrentUserResolver;
 use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Validator;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function show()
     {
         return view('pages.profile')
             ->with('locales', Student::$locales);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, CurrentUserResolver $currentUserResolver)
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|max:255|min:3',
-            'lastname' => 'required|max:255|min:3',
-            'email' => 'required|email|max:255|unique:student,email,'.$request->student_id.',student_id',
+            'lastname'  => 'required|max:255|min:3',
+            'email'     => 'required|email|max:255|unique:student,email,'.$request->student_id.',student_id',
         ]);
 
         if ($validator->fails()) {
@@ -39,22 +44,14 @@ class ProfileController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        // All ok.
-        // Todo why find user when already authenticated?
-        $user = Student::find(Auth::user()->student_id);
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
-        $user->email = $request->email;
+        $user = $currentUserResolver->getCurrentUser();
+        $user->firstname = $request->get('firstname');
+        $user->lastname = $request->get('lastname');
+        $user->email = $request->get('email');
         $user->locale = $request->get('locale');
-        //$user->telefoon    = $request->phone;
         $user->save();
 
         return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
-    }
-
-    public function __construct()
-    {
-        $this->middleware('auth');
     }
 
     public function changePassword(Request $request)
@@ -68,7 +65,7 @@ class ProfileController extends Controller
 
         $validator = Validator::make($request->all(), [
             'current_password' => 'required|validPassword',
-            'new_password' => 'required|string|min:6',
+            'new_password'     => 'required|string|min:6',
             'confirm_password' => 'required|string|min:6|same:new_password',
         ]);
 

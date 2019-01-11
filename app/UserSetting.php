@@ -9,6 +9,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\UserSetting.
+ *
+ * @property int          $setting_id
+ * @property string       $setting_label
+ * @property string|null  $setting_value
+ * @property int          $student_id
+ * @property \App\Student $student
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting whereSettingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting whereSettingLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting whereSettingValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting whereStudentId($value)
+ * @mixin \Eloquent
+ */
 class UserSetting extends Model
 {
     // Override the table used for the User Model
