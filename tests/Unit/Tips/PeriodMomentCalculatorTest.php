@@ -2,6 +2,7 @@
 
 namespace Unit\Tips;
 
+use App\Services\CurrentPeriodResolver;
 use App\Tips\PeriodMomentCalculator;
 use App\WorkplaceLearningPeriod;
 use Carbon\Carbon;
@@ -21,7 +22,10 @@ class PeriodMomentCalculatorTest extends TestCase
         $wplp->startdate = $start->format('Y-m-d');
         $wplp->enddate = $end->format('Y-m-d');
 
-        $periodMomentCalculator = new PeriodMomentCalculator($wplp);
+        $resolver = $this->createMock(CurrentPeriodResolver::class);
+        $resolver->expects(self::once())->method('getPeriod')->willReturn($wplp);
+
+        $periodMomentCalculator = new PeriodMomentCalculator($resolver);
 
         $this->assertEquals('50', $periodMomentCalculator->getMomentAsPercentage());
     }
