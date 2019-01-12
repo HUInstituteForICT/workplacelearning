@@ -3,6 +3,7 @@
 namespace App\Repository\Eloquent;
 
 use App\WorkplaceLearningPeriod;
+use Carbon\Carbon;
 
 class WorkplaceLearningPeriodRepository
 {
@@ -18,8 +19,8 @@ class WorkplaceLearningPeriodRepository
 
     public function update(WorkplaceLearningPeriod $wplPeriod, array $data): bool
     {
-        $wplPeriod->startdate = $data['startdate'];
-        $wplPeriod->enddate = $data['enddate'];
+        $wplPeriod->startdate = Carbon::parse($data['startdate']);
+        $wplPeriod->enddate = Carbon::parse($data['enddate']);
         $wplPeriod->nrofdays = $data['numdays'];
         $wplPeriod->description = $data['internshipAssignment'];
 
