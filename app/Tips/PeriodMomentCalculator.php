@@ -2,23 +2,33 @@
 
 namespace App\Tips;
 
+use App\Services\CurrentPeriodResolver;
 use App\WorkplaceLearningPeriod;
 use Carbon\Carbon;
 
 class PeriodMomentCalculator
 {
     /**
-     * @var WorkplaceLearningPeriod
+     * @var CurrentPeriodResolver
+     */
+    private $currentPeriodResolver;
+
+    /**
+     * @var WorkplaceLearningPeriod|null
      */
     private $workplaceLearningPeriod;
 
-    public function __construct(WorkplaceLearningPeriod $workplaceLearningPeriod)
+    public function __construct(CurrentPeriodResolver $currentPeriodResolver)
     {
-        $this->workplaceLearningPeriod = $workplaceLearningPeriod;
+        $this->currentPeriodResolver = $currentPeriodResolver;
     }
 
     public function getMomentAsPercentage(): string
     {
+        if($this->workplaceLearningPeriod === null) {
+            $this->workplaceLearningPeriod = $this->currentPeriodResolver->getPeriod();
+        }
+        
         $startDate = new Carbon($this->workplaceLearningPeriod->startdate);
         $endDate = new Carbon($this->workplaceLearningPeriod->enddate);
         $currentDate = new Carbon();

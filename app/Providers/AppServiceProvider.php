@@ -63,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(PeriodMomentCalculator::class, function (Container $app) {
-            return new PeriodMomentCalculator($app->make(CurrentPeriodResolver::class)->getPeriod());
+            return new PeriodMomentCalculator($app->make(CurrentPeriodResolver::class));
         });
     }
 }
