@@ -44,8 +44,6 @@ class LearningActivityProducingRepository
         $activity = $student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()->orderBy('date',
             'ASC')->first();
 
-        return $activity;
-
         if (!$activity instanceof LearningActivityProducing && $activity !== null) {
             throw new \RuntimeException('Expected result to be null or LearningActivityProducing, instead '.\get_class($activity));
         }
@@ -58,7 +56,7 @@ class LearningActivityProducingRepository
         $activity = $student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()->orderBy('date',
             'desc')->first();
 
-        if (!$activity instanceof LearningActivityProducing || $activity === null) {
+        if (!$activity instanceof LearningActivityProducing && $activity !== null) {
             throw new \RuntimeException('Expected result to be null or LearningActivityProducing, instead '.\get_class($activity));
         }
 
