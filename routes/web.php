@@ -255,8 +255,8 @@ Route::group([
 
         Route::get('analysis/{year}/{month}', 'ActingAnalysisController@showDetail')
             ->where([
-                'year'  => '/^(20)(\d{2})$/|all',
-                'month' => '/^([0-1]{1}\d{1})$/|all',
+                'year'  => '^(20)(\d{2})|all$',
+                'month' => '^([0-1]{1}\d{1})|all$',
             ])
             ->middleware(RequireActiveInternship::class)
             ->name('analysis-acting-detail');
@@ -317,8 +317,8 @@ Route::group([
 
             Route::get('analysis/{year}/{month}', 'ProducingAnalysisController@showDetail')
                 ->where([
-                    'year'  => '/^(20)(\d{2})$/|all',
-                    'month' => '/^([0-1]{1}\d{1})$/|all',
+                    'year'  => '^(20)(\d{2})|all$',
+                    'month' => '^([0-1]{1}\d{1})|all$',
                 ])
                 ->name('analysis-producing-detail');
 
