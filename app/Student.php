@@ -27,6 +27,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string|null                                                                                               $registrationdate
  * @property string|null                                                                                               $answer
  * @property string                                                                                                    $locale
+ * @property string|null                                                                                               $canvas_user_id
  * @property \Illuminate\Database\Eloquent\Collection|\App\Deadline[]                                                  $deadlines
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[]                                               $usersettings
@@ -243,5 +244,10 @@ class Student extends Authenticatable
     public function setActiveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod): void
     {
         $this->setUserSetting('active_internship', $workplaceLearningPeriod->wplp_id);
+    }
+
+    public function isCoupledToCanvasAccount():bool
+    {
+        return $this->canvas_user_id !== null;
     }
 }

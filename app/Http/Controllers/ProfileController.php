@@ -8,24 +8,34 @@
 namespace App\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
+use App\Repository\Eloquent\StudentRepository;
 use App\Services\CurrentUserResolver;
 use App\Student;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Validator;
 
 class ProfileController extends Controller
 {
-    public function __construct()
+    /**
+     * @var Redirector
+     */
+    private $redirector;
+
+    public function __construct(Redirector $redirector)
     {
         $this->middleware('auth');
+        $this->redirector = $redirector;
     }
 
-    public function show()
+    public function show(CurrentUserResolver $currentUserResolver)
     {
         return view('pages.profile')
+            ->with('student', $currentUserResolver->getCurrentUser())
             ->with('locales', Student::$locales);
     }
 
@@ -80,5 +90,20 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
+    }
+
+    public function removeCanvasCoupling(
+        StudentRepository $studentRepository,
+        CurrentUserResolver $currentUserResolver
+    ): RedirectResponse {
+        $student = $currentUserResolver->getCurrentUser();
+
+        $student->canvas_user_id = null;
+
+        $studentRepository->save($student);
+
+        session()->flash('success', 'De koppeling tussen je Canvas en Werkplekleren accounts is verwijderd.');
+
+        return $this->redirector->route('profile');
     }
 }

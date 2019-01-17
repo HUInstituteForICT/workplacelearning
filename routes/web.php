@@ -1,26 +1,15 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-
-
-
-*/
 
 use App\Http\Middleware\CheckUserLevel;
 use App\Http\Middleware\RequireActiveInternship;
 
+Route::post('/canvas', 'CanvasLTIController');
+
 Route::get('/pull-update', function () {
     return shell_exec('git -C /sites/werkplekleren.hu.nl/htdocs fetch && git -C /sites/werkplekleren.hu.nl/htdocs reset --hard origin/master && git -C /sites/werkplekleren.hu.nl/htdocs pull');
 })->middleware('auth', CheckUserLevel::class);
-
+Auth::routes();
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('auth', CheckUserLevel::class);
 Route::get('switch-user/{id}', function (int $id) {
     if (!in_array(\Auth::user()->email, ['rogier@inesta.com', 'rogier+producing@inesta.com'])) {
@@ -31,7 +20,7 @@ Route::get('switch-user/{id}', function (int $id) {
     return redirect('/');
 })->middleware('auth', CheckUserLevel::class);
 
-Auth::routes();
+
 Route::get('/logout', 'Auth\LoginController@logout');
 Route::post('locale', 'LocaleSwitcher@switchLocale')->name('localeswitcher');
 
@@ -166,6 +155,7 @@ Route::group([
     Route::get('profiel', 'ProfileController@show')->name('profile');
     Route::post('profiel/update', 'ProfileController@update');
     Route::put('profiel/change-password', 'ProfileController@changePassword');
+    Route::get('canvas-uncouple', 'ProfileController@removeCanvasCoupling')->name('uncouple-canvas');
 
     // Category updating
     Route::post('categorie/update/{id}',
@@ -343,3 +333,5 @@ Route::group([
         Route::get('/chain/{chain}/delete', 'ChainController@delete')->name('chain-delete');
     });
 });
+
+

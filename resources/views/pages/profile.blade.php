@@ -50,7 +50,15 @@
 
                 </div> -->
                 <input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}" />
+
+                @if(Auth::user()->isCoupledToCanvasAccount())
+                    <hr>
+                    <br/><br/><br/>
+                    <a href="{{ route('uncouple-canvas') }}" class="btn btn-danger">{{ __('Koppeling met Canvas verwijderen') }}</a>
+                @endif
                 {!! Form::close() !!}
+
+
             </div>
 
             <div class="col-md-3">

@@ -15,4 +15,9 @@ class StudentRepository
     {
         return $student->save();
     }
+
+    public function findByEmail(string $email): ?Student
+    {
+        return Student::where('email', '=', $email)->first();
+    }
 }

@@ -76,7 +76,12 @@
   "Één patiënt": "One patient",
   "Patiëntenkamer/team": "Patient room/team",
 
-  "minutes": "minutes"
+  "minutes": "minutes",
+  "Het Werkplekleren account met als email :email is al gekoppeld aan een ander Canvas account.": "The Workplace Learning account with e-mail :email is already linked to another Canvas account",
+  "Jouw Canvas account is nu gekoppeld aan je Werkplekleren account.": "Your Canvas account is now linked to your Workplace Learning account.",
+  "Je bent successvol via Canvas ingelogd.": "You have successfully logged in via Canvas",
+  "De koppeling tussen je Canvas en Werkplekleren accounts is verwijderd.": "Your Canvas and Workplace Learning accounts have been unlinked.",
+  "Koppeling met Canvas verwijderen": "Remove link with Canvas"
 
 
 }
