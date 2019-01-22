@@ -23,7 +23,7 @@ export default class ActingActivityProcessExporter {
         let translatedHeaders = headers.map(header => {
             return exportTranslatedFieldMapping[header]
         });
-        this.output(translatedHeaders.join(",") + "\n");
+        this.output(translatedHeaders.join(";") + "\n");
 
         const encode = input => '"' + input + '"';
 
@@ -38,7 +38,7 @@ export default class ActingActivityProcessExporter {
                 }
                 return activity[header];
             });
-            let dataString = values.join(",");
+            let dataString = values.join(";");
             this.output(index < this.activities.length ? dataString + "\n" : dataString);
 
         });

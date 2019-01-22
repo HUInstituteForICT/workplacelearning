@@ -24,14 +24,14 @@ export default class ProducingActivityProcessExporter {
         let translatedHeaders = headers.map(header => {
             return exportTranslatedFieldMapping[header]
         });
-        this.output(translatedHeaders.join(",") + "\n");
+        this.output(translatedHeaders.join(";") + "\n");
 
         this.activities.forEach((activity, index) => {
             let values = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
                 return activity[header];
             });
-            let dataString = values.join(",");
+            let dataString = values.join(";");
             this.output(index < this.activities.length ? dataString + "\n" : dataString);
 
         });
