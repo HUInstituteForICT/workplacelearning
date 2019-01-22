@@ -152,7 +152,6 @@ export default class ActivityActingProcessTable extends React.Component {
             const exportText = exporter.outputData;
             axios.post('/activity-export-doc', {exportText})
                 .then(response => {
-                console.log(response);
                 window.location.href = response.data.download;
             });
         } else {

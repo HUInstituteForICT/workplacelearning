@@ -16,7 +16,7 @@ export default class ProducingActivityProcessExporter {
         // Build headers and filter unwanted
         let headers = Object.keys(this.activities[0]);
 
-        let unwantedColumns = ["id", "url"];
+        let unwantedColumns = ["id", "url", "difficultyValue", "hours"];
         unwantedColumns.forEach(column => {
             headers.splice(headers.indexOf(column), 1)
         });
@@ -29,6 +29,9 @@ export default class ProducingActivityProcessExporter {
         this.activities.forEach((activity, index) => {
             let values = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
+                if (activity[header] === null || activity[header] === 'null') {
+                    return '';
+                }
                 return activity[header];
             });
             let dataString = values.join(";");
@@ -41,7 +44,7 @@ export default class ProducingActivityProcessExporter {
         // Build headers and filter unwanted
         let headers = Object.keys(this.activities[0]);
 
-        let unwantedColumns = ["id", "url"];
+        let unwantedColumns = ["id", "url", "difficultyValue", "hours"];
         unwantedColumns.forEach(column => {
             headers.splice(headers.indexOf(column), 1)
         });
