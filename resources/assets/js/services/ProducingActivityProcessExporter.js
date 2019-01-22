@@ -11,6 +11,10 @@ export default class ProducingActivityProcessExporter {
 
     }
 
+    getFeedbackUrl(id) {
+        return "https://" + window.location.hostname + '/producing/feedback/' + id;
+    }
+
     csv() {
 
         // Build headers and filter unwanted
@@ -31,6 +35,9 @@ export default class ProducingActivityProcessExporter {
                 if (unwantedColumns.indexOf(header) !== -1) return;
                 if (activity[header] === null || activity[header] === 'null') {
                     return '';
+                }
+                if(header === 'feedback') {
+                    return this.getFeedbackUrl(activity[header]);
                 }
                 return activity[header];
             });
@@ -54,6 +61,12 @@ export default class ProducingActivityProcessExporter {
                 if (unwantedColumns.indexOf(header) !== -1) return;
                 if(header === 'description') {
                     return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" + activity[header] + " \n";
+                }
+                if (activity[header] === null || activity[header] === 'null') {
+                    return _.capitalize(exportTranslatedFieldMapping[header]) + ": -";
+                }
+                if(header === 'feedback') {
+                    return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + this.getFeedbackUrl(activity[header]);
                 }
                 return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header];
             });

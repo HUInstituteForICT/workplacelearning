@@ -65,7 +65,7 @@ class LearningActivityProducingExportBuilder
         ])->each(function ($field) use (&$mapping): void {
             $mapping[$field] = $this->translator->get('process_export.'.$field);
         });
-
+        $mapping['feedback'] = 'feedback';
         return $mapping;
     }
 
