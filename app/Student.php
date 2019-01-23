@@ -28,6 +28,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string|null                                                                                               $answer
  * @property string                                                                                                    $locale
  * @property string|null                                                                                               $canvas_user_id
+ * @property bool                                                                                                      $is_registered_through_canvas
  * @property \Illuminate\Database\Eloquent\Collection|\App\Deadline[]                                                  $deadlines
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[]                                               $usersettings
@@ -76,6 +77,8 @@ class Student extends Authenticatable
         'answer',
         'pw_hash',
         'locale',
+        'canvas_user_id',
+        'is_registered_through_canvas'
     ];
 
     public static $locales = [
@@ -249,5 +252,10 @@ class Student extends Authenticatable
     public function isCoupledToCanvasAccount():bool
     {
         return $this->canvas_user_id !== null;
+    }
+
+    public function isRegisteredThroughCanvas(): bool
+    {
+        return $this->is_registered_through_canvas;
     }
 }

@@ -5,6 +5,8 @@ use App\Http\Middleware\CheckUserLevel;
 use App\Http\Middleware\RequireActiveInternship;
 
 Route::post('/canvas', 'CanvasLTIController');
+Route::match(['get', 'post'], '/canvas/register',
+    'CanvasRegistrationController')->middleware('guest')->name('canvas-registration');
 
 Route::get('/pull-update', function () {
     return shell_exec('git -C /sites/werkplekleren.hu.nl/htdocs fetch && git -C /sites/werkplekleren.hu.nl/htdocs reset --hard origin/master && git -C /sites/werkplekleren.hu.nl/htdocs pull');

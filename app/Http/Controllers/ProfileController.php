@@ -41,12 +41,20 @@ class ProfileController extends Controller
 
     public function update(Request $request, CurrentUserResolver $currentUserResolver)
     {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
+        $user = $currentUserResolver->getCurrentUser();
+
+        $rules = [
             'firstname' => 'required|max:255|min:3',
             'lastname'  => 'required|max:255|min:3',
-            'email'     => 'required|email|max:255|unique:student,email,'.$request->student_id.',student_id',
-        ]);
+
+        ];
+
+        if (!$user->isRegisteredThroughCanvas()) {
+            $rules['email'] = 'email|max:255|unique:student,email,' . $request->student_id . ',student_id';
+        }
+
+        // Validate the input
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return redirect()
@@ -54,10 +62,12 @@ class ProfileController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $user = $currentUserResolver->getCurrentUser();
+
         $user->firstname = $request->get('firstname');
         $user->lastname = $request->get('lastname');
-        $user->email = $request->get('email');
+        if (!$user->isRegisteredThroughCanvas()) {
+            $user->email = $request->get('email');
+        }
         $user->locale = $request->get('locale');
         $user->save();
 
@@ -102,7 +112,7 @@ class ProfileController extends Controller
 
         $studentRepository->save($student);
 
-        session()->flash('success', 'De koppeling tussen je Canvas en Werkplekleren accounts is verwijderd.');
+        session()->flash('success', __('De koppeling tussen je Canvas en Werkplekleren accounts is verwijderd.'));
 
         return $this->redirector->route('profile');
     }

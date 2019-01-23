@@ -81,7 +81,9 @@
   "Jouw Canvas account is nu gekoppeld aan je Werkplekleren account.": "Your Canvas account is now linked to your Workplace Learning account.",
   "Je bent successvol via Canvas ingelogd.": "You have successfully logged in via Canvas",
   "De koppeling tussen je Canvas en Werkplekleren accounts is verwijderd.": "Your Canvas and Workplace Learning accounts have been unlinked.",
-  "Koppeling met Canvas verwijderen": "Remove link with Canvas"
-
+  "Koppeling met Canvas verwijderen": "Remove link with Canvas",
+  "Je Werkplekleren account is aangemaakt, je kunt via Canvas inloggen op dit account.": "Your Workplace Learning account has been created. You can log in to this account via Canvas.",
+  "Je Werkplekleren account is bijna aangemaakt, het is enkel nog nodig om je studentennummer en opleiding door te geven.": "Your Workplace Learning account is almost created, you only need to fill in your student number and the programme you're in.",
+  "Je opleiding staat er niet tussen? Neem dan contact op met je stage coördinator.": "Is your programme not in the list? Contact your internship coordinator."
 
 }

@@ -29,7 +29,9 @@ class CanvasLTIController
 
         $email = $request->get('lis_person_contact_email_primary');
         $canvasUserId = $request->get('user_id');
+        $firstName = $request->get('lis_person_name_given');
+        $lastName = $request->get('lis_person_name_family');
 
-        return $this->authenticator->authenticate($email, $canvasUserId);
+        return $this->authenticator->authenticate($email, $canvasUserId, $firstName, $lastName);
     }
 }

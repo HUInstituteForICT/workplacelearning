@@ -8,7 +8,6 @@ use App\Repository\Eloquent\StudentRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Nette\NotImplementedException;
 
 class CanvasAuthenticator
 {
@@ -27,12 +26,25 @@ class CanvasAuthenticator
         $this->redirector = $redirector;
     }
 
-    public function authenticate(string $email, string $canvasUserId): RedirectResponse
+    public function authenticate(
+        string $email,
+        string $canvasUserId,
+        string $firstName,
+        string $lastName
+    ): RedirectResponse
     {
-        $student = $this->studentRepository->findByEmail($email);
+        $student = $this->studentRepository->findByEmailOrCanvasId($email, $canvasUserId);
+
 
         if ($student === null) {
-            throw new NotImplementedException('non-linked canvas student');
+            session()->put('canvasRegistrationData', [
+                'email'        => $email,
+                'canvasUserId' => $canvasUserId,
+                'firstName'    => $firstName,
+                'lastName'     => $lastName,
+            ]);
+
+            return $this->redirector->route('canvas-registration');
         }
 
         // In case there is no coupling yet, couple and login as
