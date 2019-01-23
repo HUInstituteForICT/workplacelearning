@@ -15,4 +15,15 @@ class StudentRepository
     {
         return $student->save();
     }
+
+    public function findByEmailOrCanvasId(string $email, string $canvasUserId): ?Student
+    {
+        $student = Student::where('email', '=', $email)->first();
+
+        if($student === null) {
+            $student = Student::where('canvas_user_id', '=', $canvasUserId)->first();
+        }
+
+        return $student;
+    }
 }

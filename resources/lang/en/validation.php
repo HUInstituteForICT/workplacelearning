@@ -112,6 +112,8 @@ return array(
     ),
   ),
     'attributes' => array(
+        'studentnr'                => 'Student number',
+        'education'                => 'Programme',
         'learned'                  => '"what did you learn?"',
         'description'              => 'situation',
         'support_wp'               => '"what do you need from your workplace?"',

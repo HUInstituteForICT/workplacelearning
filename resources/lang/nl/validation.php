@@ -114,6 +114,8 @@ return array(
     ),
   ),
     'attributes' => array(
+        'studentnr'            => 'Studentnummer',
+        'education'            => 'Opleiding',
         'learned'              => '"wat heb je geleerd?"',
         'description'          => 'situatie',
         'support_wp'           => '"wat heb je hierbij nodig van je werkplek?"',

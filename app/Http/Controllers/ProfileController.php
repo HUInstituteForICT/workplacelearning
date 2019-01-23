@@ -8,35 +8,53 @@
 namespace App\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
+use App\Repository\Eloquent\StudentRepository;
 use App\Services\CurrentUserResolver;
 use App\Student;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Validator;
 
 class ProfileController extends Controller
 {
-    public function __construct()
+    /**
+     * @var Redirector
+     */
+    private $redirector;
+
+    public function __construct(Redirector $redirector)
     {
         $this->middleware('auth');
+        $this->redirector = $redirector;
     }
 
-    public function show()
+    public function show(CurrentUserResolver $currentUserResolver)
     {
         return view('pages.profile')
+            ->with('student', $currentUserResolver->getCurrentUser())
             ->with('locales', Student::$locales);
     }
 
     public function update(Request $request, CurrentUserResolver $currentUserResolver)
     {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
+        $user = $currentUserResolver->getCurrentUser();
+
+        $rules = [
             'firstname' => 'required|max:255|min:3',
             'lastname'  => 'required|max:255|min:3',
-            'email'     => 'required|email|max:255|unique:student,email,'.$request->student_id.',student_id',
-        ]);
+
+        ];
+
+        if (!$user->isRegisteredThroughCanvas()) {
+            $rules['email'] = 'email|max:255|unique:student,email,' . $request->student_id . ',student_id';
+        }
+
+        // Validate the input
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return redirect()
@@ -44,10 +62,12 @@ class ProfileController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $user = $currentUserResolver->getCurrentUser();
+
         $user->firstname = $request->get('firstname');
         $user->lastname = $request->get('lastname');
-        $user->email = $request->get('email');
+        if (!$user->isRegisteredThroughCanvas()) {
+            $user->email = $request->get('email');
+        }
         $user->locale = $request->get('locale');
         $user->save();
 
@@ -80,5 +100,20 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
+    }
+
+    public function removeCanvasCoupling(
+        StudentRepository $studentRepository,
+        CurrentUserResolver $currentUserResolver
+    ): RedirectResponse {
+        $student = $currentUserResolver->getCurrentUser();
+
+        $student->canvas_user_id = null;
+
+        $studentRepository->save($student);
+
+        session()->flash('success', __('De koppeling tussen je Canvas en Werkplekleren accounts is verwijderd.'));
+
+        return $this->redirector->route('profile');
     }
 }
