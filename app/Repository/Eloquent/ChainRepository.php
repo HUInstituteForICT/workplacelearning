@@ -22,6 +22,6 @@ class ChainRepository
      */
     public function chainsAvailableForStudent(Student $student): array
     {
-        return $student->getCurrentWorkplaceLearningPeriod()->chains()->with('activities')->get()->all();
+        return $student->getCurrentWorkplaceLearningPeriod()->chains()->orderBy('status', 'ASC')->with('activities')->get()->all();
     }
 }

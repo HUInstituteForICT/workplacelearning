@@ -81,15 +81,11 @@
                     <select class="form-control fit-bs" id="chainSelect" name="chain_id">
                         <option value="-1">{{ Lang::get('process.chain.none') }}</option>
                         @foreach($chains as $chain)
-                            <option id="chain-select-{{ $chain->id }}"
-                                    @if($chain->status === \App\Chain::STATUS_FINISHED) disabled @endif
-                                    value="{{ $chain->id }}">
-                                {{ $chain->name }}
-                                @if($chain->status === \App\Chain::STATUS_FINISHED)
-                                    ({{ strtolower(__('process.chain.finished')) }})
-                                @endif
-                                {{ '(' . $chain->hours()  . ' ' . strtolower(__('activity.hours')) . ')' }}
+                            @if($chain->status === \App\Chain::STATUS_BUSY)
+                                <option id="chain-select-{{ $chain->id }}" value="{{ $chain->id }}">
+                                    {{ $chain->name }}&nbsp;{{ '(' . $chain->hours()  . ' ' . strtolower(__('activity.hours')) . ')' }}
                             </option>
+                            @endif
                         @endforeach
 
                     </select>
