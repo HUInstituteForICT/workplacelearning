@@ -3,9 +3,8 @@
 </a>
 
 
-{{-- Modal used for enlarging fields --}}
 <div class="modal fade" id="chainModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
@@ -40,7 +39,9 @@
                                     <td
                                             data-id="{{$chain->id}}"
                                             data-name="{{ $chain->name }}"
+                                            style="text-align: right; width:50%;"
                                     >
+
                                         @if($chain->status === 1)
                                             <button class="chainReopenButton btn btn-default"
                                                     type="button">
@@ -56,11 +57,9 @@
                                                 class="btn btn-primary chainUpdateModalOpen">
                                             {{ __('process.chain.rename') }}
                                         </button>
-                                        <button class="btn btn-danger chainDeleteModalButton" type="button"
-                                                style="float:right;">
+                                        <button class="btn btn-danger chainDeleteModalButton" type="button">
                                             {{ __('process.chain.delete') }}
                                         </button>
-                                        <div style="clear: both"></div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -75,9 +74,9 @@
                         data-dismiss="modal">{{ Lang::get('general.close') }}</button>
 
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="chainUpdateModal">
     <div class="modal-dialog">
@@ -91,7 +90,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <label for="chainUpdateName">{{ __('process.chain.name') }}</label>
-                        <input type="text" class="form-control" id="chainUpdateName"/>
+                        <input type="text" class="form-control" id="chainUpdateName" maxlength="255"/>
                         <br/>
                         <a type="button" class="btn btn-primary"
                            id="chainUpdateSaveButton">{{ Lang::get('process.chain.save') }}</a>
@@ -104,9 +103,9 @@
                         data-dismiss="modal">{{ Lang::get('general.close') }}</button>
 
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>
 
 
 <div class="modal fade" id="chainDeleteModal">
@@ -132,9 +131,9 @@
                 <button type="button" class="btn btn-default"
                         data-dismiss="modal">{{ __('process.chain.cancel') }}</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>
 
 
 <script>
