@@ -16,7 +16,7 @@ export default class FilterRule extends React.Component {
     render() {
         let style = {display: "none"};
 
-        return <label><input style={style} type="checkbox" value={this.props.rule} onChange={this.handleClick}/><span>{this.props.rule}</span></label>;
+        return <label><input style={style} type="checkbox" value={this.props.rule} onChange={this.handleClick}/><span>{this.props.rule}&nbsp;</span></label>;
     }
 
 

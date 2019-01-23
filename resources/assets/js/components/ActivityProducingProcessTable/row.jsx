@@ -45,9 +45,7 @@ export default class Row extends React.Component {
             </td>
             <td>{activity.resourceDetail}</td>
             <td>{activity.category}</td>
-            <td>
-                {activity.difficulty}
-            </td>
+            <td>{activity.difficulty}</td>
             <td>{activity.status}</td>
             <td>{activity.chain}</td>
             <td>
