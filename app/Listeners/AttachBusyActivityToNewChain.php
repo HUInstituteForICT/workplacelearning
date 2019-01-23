@@ -28,7 +28,7 @@ class AttachBusyActivityToNewChain
     public function handle(LearningActivityProducingCreated $event): void
     {
         $activity = $event->getActivity();
-        if ($activity->status->isBusy()) {
+        if ($activity->chain === null && $activity->status->isBusy()) {
             $chain = $this->chainFactory->createChain([
                 'name'    => $this->generateName($activity->description),
                 'wplp_id' => $activity->wplp_id,
