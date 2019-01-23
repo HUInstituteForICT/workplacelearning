@@ -43,7 +43,7 @@ class ProducingCreateRequest extends FormRequest
             return $input->personsource !== 'new' && $input->resource === 'persoon';
         });
 
-        $validator->sometimes('internetsource', 'required|max:250', function ($input) {
+        $validator->sometimes('internetsource', 'required|url|max:250', function ($input) {
             return $input->resource === 'internet';
         });
 
