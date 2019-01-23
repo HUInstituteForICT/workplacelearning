@@ -29,7 +29,7 @@ class LearningActivityActingExportBuilder
             $collection = $collection->take($limit);
         }
 
-        $collection->each(function (LearningActivityActing $activity) use (&$jsonArray): void {
+        $collection->sortBy('date')->each(function (LearningActivityActing $activity) use (&$jsonArray): void {
             $jsonArray[] = [
                 'id'                      => $activity->laa_id,
                 'date'                    => $activity->date->format('d-m-Y'),

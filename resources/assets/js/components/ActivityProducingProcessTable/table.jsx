@@ -322,7 +322,7 @@ export default class ActivityProducingProcessTable extends React.Component {
                     }
 
                     return [<tr style={{backgroundColor: 'rgba(0,161,226, 0.45)', color: 'rgba(255,255,255)', fontWeight: 'bold'}}>
-                        <td>{Lang.get('react.date')}: {day}</td>
+                        <td>{day}</td>
                         {hoursCell}
                         <td>{Lang.get('activity.difficulty')}: {statistics.difficulty}</td>
                         <td>{Lang.get('activity.mostOftenCategory')}: {statistics.mostOftenCategory}</td>
@@ -366,6 +366,7 @@ export default class ActivityProducingProcessTable extends React.Component {
             const count = statistics.categories[category];
             if (count > statistics.mostOftenCategoryCount) {
                 statistics.mostOftenCategory = category;
+                statistics.mostOftenCategoryCount = count;
             }
         });
 

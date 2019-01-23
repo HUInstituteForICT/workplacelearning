@@ -48,6 +48,8 @@ class ProducingActivityController
         $activitiesJson = $exportBuilder->getJson($this->learningActivityProducingRepository->getActivitiesForStudent($student),
             8);
 
+
+
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
 
         return view('pages.producing.activity', $availableProducingEntitiesFetcher->getEntities())
@@ -67,7 +69,7 @@ class ProducingActivityController
     public function progress(LearningActivityProducingExportBuilder $exportBuilder)
     {
         $student = $this->currentUserResolver->getCurrentUser();
-        $activities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+        $activities = $this->learningActivityProducingRepository->getActivitiesForStudent($student, 'ASC');
 
         $activitiesJson = $exportBuilder->getJson($activities, null);
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
