@@ -11,6 +11,12 @@
                 </div>
             </div>
             <div class="main-login main-center">
+                @if(session()->has('error'))
+                    <div class="alert alert-error">
+                        <span>{{ __('elements.alerts.error') }}: </span>{!! session('error') !!}
+                    </div>
+                    <br/>
+                @endif
                 <form class="form-horizontal" method="post" action="/login">
                     <div class="form-group">
                         <div class="cols-sm-11">
