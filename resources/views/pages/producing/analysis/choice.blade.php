@@ -57,14 +57,14 @@
                     {{ __('elements.analysis.showall') }}
                 </a>
                 <br/>
-                @while($end > $start)
+                @while($end >= $start)
                     @if($end <= strtotime((new DateTime)->modify('last day of this month')->format('Y-m-d')))
                         <a href="{{ route('analysis-producing-detail', ['month' => date('m', $end), 'year' => date('Y', $end)]) }}">
                             {{ ucwords($formatter->format($end)) }}
                         </a>
                         <br/>
                     @endif
-                    <?php $end = strtotime('last day of previous month', $end); ?>
+                    <?php $end = strtotime('first day of previous month', $end); ?>
                 @endwhile
             </div>
         </div>
