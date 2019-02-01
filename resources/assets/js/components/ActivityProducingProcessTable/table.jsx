@@ -312,7 +312,7 @@ export default class ActivityProducingProcessTable extends React.Component {
                 <tbody>
 
                 {Object.keys(groupedByDay).map(day => {
-                    const activities = groupedByDay[day];
+                    const activities = groupedByDay[day].sort((a, b) => a.id - b.id);
                     const statistics = this.calculateStatisticsForActivities(activities);
 
                     let hoursCell = <td>{Lang.get('activity.hours')}: {statistics.totalHours}</td>;

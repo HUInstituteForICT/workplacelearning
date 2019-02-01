@@ -26,7 +26,7 @@ class LearningActivityProducingExportBuilder
             $collection = $collection->take($limit);
         }
 
-        $collection->sortBy('date')->each(function (LearningActivityProducing $activity) use (&$jsonArray): void {
+        $collection->each(function (LearningActivityProducing $activity) use (&$jsonArray): void {
             $jsonArray[] = [
                 'id'              => $activity->lap_id,
                 'date'            => $activity->date->format('d-m-Y'),
