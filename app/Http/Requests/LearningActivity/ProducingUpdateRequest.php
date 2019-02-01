@@ -43,11 +43,11 @@ class ProducingUpdateRequest extends FormRequest
             return $input->personsource !== 'new' && $input->resource === 'persoon';
         });
 
-        $validator->sometimes('internetsource', 'required|url|max:75', function ($input) {
+        $validator->sometimes('internetsource', 'required|url|max:150', function ($input) {
             return $input->resource === 'internet';
         });
 
-        $validator->sometimes('booksource', 'required|max:75', function ($input) {
+        $validator->sometimes('booksource', 'required|max:150', function ($input) {
             return $input->resource === 'book';
         });
 

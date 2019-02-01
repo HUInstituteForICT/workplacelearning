@@ -184,7 +184,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                 <div id="internetcontainer">
                     <label class="expand-click"><input type="radio" name="resource"
                                                        value="internet" {{ (old('resource') === 'internet') ? 'checked' : (!old('resource') && $activity->res_material_id == 1) ? 'checked' : null }} /><span>{{ __('activity.internetsource') }}</span></label>
-                    <input class="cond-hidden" maxlength="75" type="text" name="internetsource"
+                    <input class="cond-hidden" maxlength="150" type="text" name="internetsource"
                            value="{{ old('internetsource') ?? $activity->res_material_detail }}"
                            placeholder="http://www.bron.domein/"/>
                 </div>
@@ -192,7 +192,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                     <label class="expand-click"><input type="radio" name="resource"
                                                        value="boek" {{ (old('resource') == 'boek') ? 'checked' : (!old('resource') && $activity->res_material_id == 2) ? 'checked' : null }} /><span>{{ __('activity.book') }}
                             /{{ __('activity.article') }}</span></label>
-                    <input class="cond-hidden" type="text" maxlength="75" name="booksource"
+                    <input class="cond-hidden" type="text" maxlength="150" name="booksource"
                            value="{{ (old('booksource') != null) ? old('internetsource') : $activity->res_material_detail }}"
                            placeholder="{{ __('dashboard.name') }}{{ __('activity.book') }}/{{ __('activity.article') }}"/>
                 </div>

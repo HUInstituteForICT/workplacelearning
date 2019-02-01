@@ -43,7 +43,7 @@ export default class Row extends React.Component {
                 activity.description
                 }
             </td>
-            <td>{activity.resourceDetail}</td>
+            <td style={{wordBreak: 'break-all', width: '15%'}}>{activity.resourceDetail}</td>
             <td>{activity.category}</td>
             <td>{activity.difficulty}</td>
             <td>{activity.status}</td>
