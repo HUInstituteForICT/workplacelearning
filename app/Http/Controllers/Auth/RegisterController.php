@@ -55,7 +55,7 @@ class RegisterController extends Controller
             'gender' => 'required|in:male,female',
             'email' => 'required|email|max:255|unique:student',
             'password' => 'required|min:8|confirmed',
-            'secret' => 'required|in:ICTstage2016,Stage2017,Stage2018',
+            'secret' => 'required|in:ICTstage2016,Stage2017,Stage2018,Stage2019',
         ]);
     }
 
