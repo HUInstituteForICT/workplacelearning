@@ -9,8 +9,8 @@ use App\Repository\LikeRepositoryInterface;
 use App\Repository\StudentTipViewRepositoryInterface;
 use App\Services\CurrentPeriodResolver;
 use App\Services\CurrentUserResolver;
-use App\Tips\DataCollectors\Collector;
 use App\Tips\PeriodMomentCalculator;
+use App\Tips\Services\StatisticValueFetcher;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
@@ -26,9 +26,6 @@ class AppServiceProvider extends ServiceProvider
         if (!\App::environment('debug')) {
             \URL::forceScheme('https');
         }
-
-        // Require annotation manually
-        require_once app_path('Tips/DataCollectors/DataUnitAnnotation.php');
     }
 
     /**
@@ -50,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(LikeRepositoryInterface::class, LikeRepository::class);
         $this->app->bind(StudentTipViewRepositoryInterface::class, StudentTipViewRepository::class);
 
-        $this->app->bind(Collector::class, function (Container $app) {
+        $this->app->bind(StatisticValueFetcher::class, function (Container $app) {
             $request = $app->make(Request::class);
 
             $year = $request->get('year') === 'all' ? null : $request->get('year', null);
@@ -59,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
             $student = $app->make(CurrentUserResolver::class)->getCurrentUser();
             $learningPeriod = $student->hasCurrentWorkplaceLearningPeriod() ? $student->getCurrentWorkplaceLearningPeriod() : new WorkplaceLearningPeriod();
 
-            return new Collector($year, $month, $learningPeriod);
+            return new StatisticValueFetcher($year, $month, $learningPeriod);
         });
 
         $this->app->bind(PeriodMomentCalculator::class, function (Container $app) {

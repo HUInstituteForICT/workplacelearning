@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int    $wplp_id
  * @property int    $ep_id
  *
- * @method find(int $id)
  *
  * @property int|null                       $cohort_id
  * @property \App\Cohort|null               $cohort

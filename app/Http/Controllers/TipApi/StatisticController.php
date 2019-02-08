@@ -14,7 +14,7 @@ class StatisticController extends Controller
      * Store a newly created resource in storage.
      *
      *
-     * @return \App\Tips\Models\CustomStatistic
+     * @return CustomStatistic
      *
      * @throws \Exception
      */

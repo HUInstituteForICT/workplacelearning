@@ -5,7 +5,7 @@ namespace App\Tips\Services;
 use App\Tips\Models\CustomStatistic;
 use App\Tips\Models\PredefinedStatistic;
 use App\Tips\Models\StatisticVariable;
-use App\Tips\Statistics\PredefinedStatisticHelper;
+use App\Tips\Statistics\Predefined\PredefinedStatisticInterface;
 
 class StatisticService
 {
@@ -22,7 +22,7 @@ class StatisticService
      *
      * @throws \Exception
      */
-    public function createStatistic(array $data)
+    public function createStatistic(array $data): CustomStatistic
     {
         $statistic = new CustomStatistic();
 
@@ -38,10 +38,12 @@ class StatisticService
      *
      * @throws \Exception
      */
-    public function updateStatistic(CustomStatistic $statistic, array $data)
+    public function updateStatistic(CustomStatistic $statistic, array $data): CustomStatistic
     {
-        $variableOne = $this->statisticVariableService->updateStatisticVariable($data['statisticVariableOne'], $statistic->statisticVariableOne);
-        $variableTwo = $this->statisticVariableService->updateStatisticVariable($data['statisticVariableTwo'], $statistic->statisticVariableTwo);
+        $variableOne = $this->statisticVariableService->updateStatisticVariable($data['statisticVariableOne'],
+            $statistic->statisticVariableOne);
+        $variableTwo = $this->statisticVariableService->updateStatisticVariable($data['statisticVariableTwo'],
+            $statistic->statisticVariableTwo);
 
         $variableOne->save();
         $variableTwo->save();
@@ -50,7 +52,7 @@ class StatisticService
 
         $statistic->education_program_type = $data['education_program_type'];
         $statistic->select_type = $data['select_type'];
-        $statistic->operator = $this->getOperator($data['operator']);
+        $statistic->operator = self::getOperator($data['operator']);
 
         $statistic->statisticVariableOne()->associate($variableOne);
         $statistic->statisticVariableTwo()->associate($variableTwo);
@@ -60,30 +62,28 @@ class StatisticService
         return $statistic;
     }
 
-    public function createPredefinedStatistic($methodName)
+    public function createPredefinedStatistic(string $predefinedStatisticClassName): PredefinedStatistic
     {
         $statistic = new PredefinedStatistic();
 
-        if (PredefinedStatisticHelper::isActingMethod($methodName)) {
-            $statistic->education_program_type = 'acting';
-            $statistic->name = collect(PredefinedStatisticHelper::getData())->first(function ($annotation) use ($methodName) {
-                return $methodName === $annotation['method'] && 'Acting' === $annotation['epType'];
-            })['name'];
-        } elseif (PredefinedStatisticHelper::isProducingMethod($methodName)) {
-            $statistic->education_program_type = 'producing';
-            $statistic->name = collect(PredefinedStatisticHelper::getData())->first(function ($annotation) use ($methodName) {
-                return $methodName === $annotation['method'] && 'Producing' === $annotation['epType'];
-            })['name'];
-        } else {
-            throw new \RuntimeException("Method not found in a PredefinedStatisticCollector: {$methodName}");
-        }
+        /** @var PredefinedStatisticInterface $predefinedStatistic */
+        $predefinedStatistic = new $predefinedStatisticClassName;
+
+        $statistic->education_program_type = strtolower($predefinedStatistic->getEducationProgramType());
+        $statistic->name = $predefinedStatistic->getName();
+        $statistic->className = $predefinedStatisticClassName;
 
         $statistic->save();
 
         return $statistic;
     }
 
-    private function getOperator($operator)
+    /**
+     * @param $operator
+     * @return mixed
+     * @throws \RuntimeException
+     */
+    private static function getOperator($operator)
     {
         if (!isset(CustomStatistic::OPERATORS[$operator])) {
             throw new \RuntimeException("Operator with id {$operator} not found in Statistic::OPERATORS");

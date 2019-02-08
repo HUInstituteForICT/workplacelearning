@@ -2,11 +2,11 @@
 
 namespace App\Tips;
 
-use App\Tips\DataCollectors\Collector;
-use App\Tips\DataCollectors\CollectorDataAggregator;
 use App\Tips\Models\CustomStatistic;
 use App\Tips\Models\PredefinedStatistic;
 use App\Tips\Models\Statistic;
+use App\Tips\Services\StatisticValueFetcher;
+use App\Tips\Statistics\Predefined\BasePredefinedStatistic;
 use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
 use DivisionByZeroError;
@@ -14,11 +14,11 @@ use DivisionByZeroError;
 class StatisticCalculator
 {
     /**
-     * @var Collector
+     * @var StatisticValueFetcher
      */
     private $collector;
 
-    public function __construct(Collector $collector)
+    public function __construct(StatisticValueFetcher $collector)
     {
         $this->collector = $collector;
     }
@@ -39,13 +39,16 @@ class StatisticCalculator
 
     /**
      * @throws \ErrorException
+     * @throws \RuntimeException
      */
     private function calculateCustomStatistic(CustomStatistic $statistic): Resultable
     {
         $statistic->load(['statisticVariableOne', 'statisticVariableTwo']);
 
-        $valueVarOne = $this->collector->getValueForVariable($statistic->statisticVariableOne, $statistic->education_program_type);
-        $valueVarTwo = $this->collector->getValueForVariable($statistic->statisticVariableTwo, $statistic->education_program_type);
+        $valueVarOne = $this->collector->getValueForVariable($statistic->statisticVariableOne,
+            $statistic->education_program_type);
+        $valueVarTwo = $this->collector->getValueForVariable($statistic->statisticVariableTwo,
+            $statistic->education_program_type);
 
         try {
             switch ($statistic->operator) {
@@ -71,17 +74,18 @@ class StatisticCalculator
 
     private function calculatePredefinedStatistic(PredefinedStatistic $statistic): Resultable
     {
-        /** @var StatisticCalculationResult $result */
-        $method = $this->getPredefinedMethodName($statistic->name)['method'];
 
-        return $this->collector->predefinedStatisticCollector->{$method}();
-    }
+        /** @var BasePredefinedStatistic $predefinedStatisticClass */
+        $predefinedStatisticClass = new $statistic->className;
 
-    private function getPredefinedMethodName(string $name)
-    {
-        return collect((new CollectorDataAggregator($this->collector->predefinedStatisticCollector))->getInformation())
-            ->first(function (array $annotation) use ($name) {
-                return $annotation['name'] === $name;
-            });
+        $predefinedStatisticClass->setYearAndMonth($this->collector->year, $this->collector->month);
+        $predefinedStatisticClass->setLearningPeriod($this->collector->learningPeriod);
+
+        return $predefinedStatisticClass->calculate();
+//
+//        /** @var StatisticCalculationResult $result */
+//        $method = $this->getPredefinedMethodName($statistic->name)['method'];
+//
+//        return $this->collector->predefinedStatisticCollector->{$method}();
     }
 }

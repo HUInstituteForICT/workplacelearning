@@ -60,7 +60,7 @@ class CoupledStatistics extends React.Component {
             tip_id: tip.id,
             statistic_id: coupleStatisticForm.statistic,
             threshold: coupleStatisticForm.threshold,
-            method: statistics[coupleStatisticForm.statistic].hasOwnProperty('method') ? statistics[coupleStatisticForm.statistic].method : null,
+            className: statistics[coupleStatisticForm.statistic].className,
             comparisonOperator: coupleStatisticForm.comparisonOperator,
 
         }).then(response => {

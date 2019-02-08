@@ -9,6 +9,7 @@ use App\Tips\Models\CustomStatistic;
 use App\Tips\Models\Tip;
 use App\Tips\Models\TipCoupledStatistic;
 use App\Tips\Services\StatisticService;
+use App\Tips\Statistics\Predefined\PredefinedStatisticsProvider;
 
 class TipCoupledStatisticController extends Controller
 {
@@ -28,15 +29,22 @@ class TipCoupledStatisticController extends Controller
             $statistic = CustomStatistic::with('statisticVariableOne',
                 'statisticVariableTwo')->findOrFail($request->get('statistic_id'));
         } else {
-            $statistic = $statisticService->createPredefinedStatistic($request->get('method'));
+            $predefinedStatisticClassName = $request->get('className');
+
+            if (!in_array($predefinedStatisticClassName,
+                PredefinedStatisticsProvider::getPredefinedStatisticClassNames(), true)) {
+                throw new \InvalidArgumentException($predefinedStatisticClassName . ' is not a predefined statistics class');
+            }
+
+            $statistic = $statisticService->createPredefinedStatistic($predefinedStatisticClassName);
         }
         $tip = (new Tip())->findOrFail($request->get('tip_id'));
 
         $coupledStatistic = new TipCoupledStatistic([
-            'statistic_id' => $statistic->id,
-            'tip_id' => $tip->id,
+            'statistic_id'        => $statistic->id,
+            'tip_id'              => $tip->id,
             'comparison_operator' => $request->get('comparisonOperator'),
-            'threshold' => $request->get('threshold'),
+            'threshold'           => $request->get('threshold'),
         ]);
 
         $coupledStatistic->statistic()->associate($statistic);
@@ -75,6 +83,7 @@ class TipCoupledStatisticController extends Controller
         $coupledStatisic = (new TipCoupledStatistic())->findOrFail($id);
         $coupledStatisic->delete();
 
-        return response()->json([], 200);
+        // Just return empty json response - status 200 matters
+        return response()->json();
     }
 }
