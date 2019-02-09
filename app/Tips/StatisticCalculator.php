@@ -35,13 +35,20 @@ class StatisticCalculator
      */
     public function calculate(Statistic $statistic): Resultable
     {
-        if ($statistic instanceof CustomStatistic) {
-            return $this->calculateCustomStatistic($statistic);
+        try {
+            if ($statistic instanceof CustomStatistic) {
+                return $this->calculateCustomStatistic($statistic);
+            }
+
+            if ($statistic instanceof PredefinedStatistic) {
+                return $this->calculatePredefinedStatistic($statistic);
+            }
+        } catch (\Exception $exception) {
+            $this->logger->error('Unable to calculate statistic ' . $statistic->name, [$exception]);
+
+            return new InvalidStatisticResult();
         }
 
-        if ($statistic instanceof PredefinedStatistic) {
-            return $this->calculatePredefinedStatistic($statistic);
-        }
     }
 
     /**
@@ -90,8 +97,9 @@ class StatisticCalculator
 
         try {
             return $predefinedStatisticClass->calculate();
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             $this->logger->error('Unable to calculate predefined statistic', [$exception]);
+
             return new InvalidStatisticResult();
         }
 
