@@ -6,10 +6,12 @@ use App\Tips\Models\CustomStatistic;
 use App\Tips\Models\PredefinedStatistic;
 use App\Tips\Models\Statistic;
 use App\Tips\Services\StatisticValueFetcher;
+use App\Tips\Statistics\InvalidStatisticResult;
 use App\Tips\Statistics\Predefined\BasePredefinedStatistic;
 use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
 use DivisionByZeroError;
+use Psr\Log\LoggerInterface;
 
 class StatisticCalculator
 {
@@ -17,10 +19,15 @@ class StatisticCalculator
      * @var StatisticValueFetcher
      */
     private $collector;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
-    public function __construct(StatisticValueFetcher $collector)
+    public function __construct(StatisticValueFetcher $collector, LoggerInterface $logger)
     {
         $this->collector = $collector;
+        $this->logger = $logger;
     }
 
     /**
@@ -81,7 +88,13 @@ class StatisticCalculator
         $predefinedStatisticClass->setYearAndMonth($this->collector->year, $this->collector->month);
         $predefinedStatisticClass->setLearningPeriod($this->collector->learningPeriod);
 
-        return $predefinedStatisticClass->calculate();
+        try {
+            return $predefinedStatisticClass->calculate();
+        } catch(\Exception $exception) {
+            $this->logger->error('Unable to calculate predefined statistic', [$exception]);
+            return new InvalidStatisticResult();
+        }
+
 //
 //        /** @var StatisticCalculationResult $result */
 //        $method = $this->getPredefinedMethodName($statistic->name)['method'];

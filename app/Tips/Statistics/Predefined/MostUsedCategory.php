@@ -19,7 +19,7 @@ class MostUsedCategory extends BasePredefinedStatistic
 
     public function getResultDescription(): string
     {
-        return 'The category\'s label';
+        return 'The category\'s name';
     }
 
     public function calculate(): Resultable

@@ -27,11 +27,22 @@ return [
         'Category with highest difficulty' => 'Category with highest difficulty',
         'Person easiest to work with' => 'Person easiest to work with',
         'Percentage learning moments for every learning question without use of theory' => 'Percentage learning moments for every learning question without use of theory',
+        'Category done mostly with one resource person' => 'Category done mostly with one resource person',
+        'Learning goal done mostly with one resource person' => 'Learning goal done mostly with one resource person',
+        'Percentage the least used learning goal is used' => 'Percentage the least used learning goal is used',
+        'Percentage the least used category is used' => 'Percentage the least used category is used',
+        'Percentage the least used resource person is used' => 'Percentage the least used resource person is used',
+        'Category with the most activities without theory' => 'Category with the most activities without theory',
+        'Category with the most activities done alone (without theory or person)' => 'Category with the most activities done alone (without theory or person)'
     ],
     'predefined-value-name-params' => [
         'The found category\'s name' => 'The found category\'s name',
         'The found person\'s name' => 'The found person\'s name',
         'The names of the learning moments (e.g. \'Unplanned moment, individual session\')' => 'The names of the learning moments (e.g. \'Unplanned moment, individual session\')',
+        'The category\'s name' => 'The category\'s name',
+        'The learning goal\'s label' => 'The learning goal\'s label',
+        'The resource material\'s label' => 'The resource material\'s label',
+        'The resource person\'s label' => 'The resource person\'s label',
     ],
 
     'filters' => [
