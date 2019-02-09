@@ -34,7 +34,8 @@ return [
         'Percentage the least used category is used' => 'De categorie dat als minst wordt gebruikt en het percentage',
         'Percentage the least used resource person is used' => 'De persoon die als minst wordt gebruikt en het percentage',
         'Category with the most activities without theory' => 'De categorie met de meeste leermomenten zonder theorie',
-        'Category with the most activities done alone (without theory or person)' => 'De categorie met de meeste activiteiten die alleen zijn gedaan (zonder theorie of bronpersoon)'
+        'Category with the most activities done alone (without theory or person)' => 'De categorie met de meeste activiteiten die alleen zijn gedaan (zonder theorie of bronpersoon)',
+        'Percentage the most used category is used' => 'De categorie die als meest wordt gebruikt en het percentage'
     ],
 
     'predefined-value-name-params' => [

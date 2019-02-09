@@ -33,7 +33,8 @@ return [
         'Percentage the least used category is used' => 'Percentage the least used category is used',
         'Percentage the least used resource person is used' => 'Percentage the least used resource person is used',
         'Category with the most activities without theory' => 'Category with the most activities without theory',
-        'Category with the most activities done alone (without theory or person)' => 'Category with the most activities done alone (without theory or person)'
+        'Category with the most activities done alone (without theory or person)' => 'Category with the most activities done alone (without theory or person)',
+        'Percentage the most used category is used' => 'The category that is used most and its percentage'
     ],
     'predefined-value-name-params' => [
         'The found category\'s name' => 'The found category\'s name',
