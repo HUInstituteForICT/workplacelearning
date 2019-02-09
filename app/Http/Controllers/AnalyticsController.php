@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Analysis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 
@@ -171,6 +172,12 @@ class AnalyticsController extends Controller
 
         /** @var Analysis $analysis */
         $analysis = $this->analysis->findOrFail($id);
+
+        try {
+            DB::select($request->get('query'));
+        } catch(\Exception $exception) {
+            return redirect()->back()->withInput()->withErrors(['Query cannot be executed: ' . $exception->getMessage()]);
+        }
 
         $analysis->name = Input::get('name');
         $analysis->query = Input::get('query');

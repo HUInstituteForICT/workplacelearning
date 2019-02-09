@@ -120,7 +120,13 @@ class ProducingAnalysis
     public function statistic($name)
     {
         if (method_exists($this->statistics, $name)) {
-            return $this->statistics->$name();
+            try {
+                return $this->statistics->$name();
+            } catch (\Exception $exception) {
+                \Log::error('Error with statistic', [$exception]);
+                return 0;
+            }
+
         }
         throw new \Exception('Method not found on '.Statistics::class);
     }

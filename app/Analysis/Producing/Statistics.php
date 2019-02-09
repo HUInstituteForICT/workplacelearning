@@ -27,7 +27,10 @@ class Statistics
      */
     public function percentageDifficultTasks()
     {
-        return round((($this->analysisData['num_difficult_lap'] / $this->analysisData['num_lap']) * 100), 1);
+        if($this->analysisData['num_lap'] === 0) {
+            return 0;
+        }
+        return round(($this->analysisData['num_difficult_lap'] / $this->analysisData['num_lap']) * 100, 1);
     }
 
     /**
@@ -35,6 +38,10 @@ class Statistics
      */
     public function percentageEasyHours()
     {
+        if($this->analysisData['num_hours'] === 0) {
+            return 0;
+        }
+
         return round(($this->analysisData['hours_difficult_lap'] / $this->analysisData['num_hours']) * 100, 1);
     }
 
