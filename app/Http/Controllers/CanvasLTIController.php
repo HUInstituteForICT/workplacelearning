@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CanvasLTIRequest;
 use App\Services\Canvas\CanvasAuthenticator;
 use App\Services\Canvas\OAuth1SignatureVerifier;
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 
 class CanvasLTIController
 {
