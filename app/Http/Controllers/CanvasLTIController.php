@@ -24,7 +24,8 @@ class CanvasLTIController
     public function __invoke(CanvasLTIRequest $request, OAuth1SignatureVerifier $OAuth1SignatureVerifier)
     {
         if (!$OAuth1SignatureVerifier->verifyRequest($request)) {
-            throw new InvalidArgumentException('Invalid request, oauth_signature does not match');
+            throw new InvalidArgumentException('Invalid request, oauth_signature does not match (' . $request->get('oauth_signature') . ' vs. ' . $OAuth1SignatureVerifier->signature . ')',
+                [$request]);
         }
 
         $email = $request->get('lis_person_contact_email_primary');

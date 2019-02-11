@@ -14,6 +14,9 @@ class OAuth1SignatureVerifier
      */
     private $auth1SignatureBuilder;
 
+    /** @var string|null */
+    public $signature;
+
     public function __construct(OAuth1SignatureBuilder $auth1SignatureBuilder)
     {
         $this->auth1SignatureBuilder = $auth1SignatureBuilder;
