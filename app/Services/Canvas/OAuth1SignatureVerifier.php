@@ -24,14 +24,15 @@ class OAuth1SignatureVerifier
 
     public function verifyRequest(Request $request): bool
     {
-        return $this->verify($request->getMethod(), $request->getUri(), $request->all(), $request->get('oauth_signature'));
+        return $this->verify($request->getMethod(), $request->getUri(), $request->all(),
+            $request->get('oauth_signature'));
     }
 
     public function verify(string $method, string $url, array $data, string $receivedSignature): bool
     {
-        $signature = $this->auth1SignatureBuilder->build($method, $url, $data);
+        $this->signature = $this->auth1SignatureBuilder->build($method, $url, $data);
 
-        return $signature === $receivedSignature;
+        return $this->signature === $receivedSignature;
     }
 
 

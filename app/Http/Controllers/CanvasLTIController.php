@@ -8,6 +8,7 @@ use App\Http\Requests\CanvasLTIRequest;
 use App\Services\Canvas\CanvasAuthenticator;
 use App\Services\Canvas\OAuth1SignatureVerifier;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 
 class CanvasLTIController
 {
@@ -15,17 +16,22 @@ class CanvasLTIController
      * @var CanvasAuthenticator
      */
     private $authenticator;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
-    public function __construct(CanvasAuthenticator $authenticator)
+    public function __construct(CanvasAuthenticator $authenticator, LoggerInterface $logger)
     {
         $this->authenticator = $authenticator;
+        $this->logger = $logger;
     }
 
     public function __invoke(CanvasLTIRequest $request, OAuth1SignatureVerifier $OAuth1SignatureVerifier)
     {
         if (!$OAuth1SignatureVerifier->verifyRequest($request)) {
-            throw new InvalidArgumentException('Invalid request, oauth_signature does not match (' . $request->get('oauth_signature') . ' vs. ' . $OAuth1SignatureVerifier->signature . ')',
-                [$request]);
+            $this->logger->error('Oauth signature mismatch', [$request->toArray()]);
+            throw new InvalidArgumentException('Invalid request, oauth_signature does not match (' . $request->get('oauth_signature') . ' vs. ' . $OAuth1SignatureVerifier->signature . ')');
         }
 
         $email = $request->get('lis_person_contact_email_primary');
