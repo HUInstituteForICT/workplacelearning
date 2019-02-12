@@ -24,8 +24,17 @@ class OAuth1SignatureVerifier
 
     public function verifyRequest(Request $request): bool
     {
-        return $this->verify($request->getMethod(), $request->getUri(), $request->all(),
+        return $this->verify($request->method(), $this->getUrlWithCorrectScheme($request->url()), $request->all(),
             $request->get('oauth_signature'));
+    }
+
+    private function getUrlWithCorrectScheme(string $url): string
+    {
+        if (str_contains($url, 'localhost')) {
+            return $url;
+        }
+
+        return str_replace('http://', 'https://', $url);
     }
 
     public function verify(string $method, string $url, array $data, string $receivedSignature): bool
