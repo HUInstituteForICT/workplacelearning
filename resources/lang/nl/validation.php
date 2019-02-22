@@ -153,6 +153,8 @@ return array(
         'tipText'            => 'tip tekst',
         'showInAnalysis'     => 'zichtbaar in analyse',
         'evidence.*' => 'Bewijsstuk',
+        'internetsource' => 'Internetbron',
+        'booksource'=> 'Boek- / artikelbron'
   ),
 
     'newnotfinished'                          => 'De omschrijving is verplicht en mag maximaal 150 tekens zijn.',

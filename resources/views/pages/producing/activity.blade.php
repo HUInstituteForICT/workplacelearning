@@ -73,7 +73,7 @@
                     </div>
 
                     <h5>{{ Lang::get('activity.description') }}:</h5>
-                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="300" rows="5" cols="19"></textarea>
+                    <textarea class="form-control fit-bs" name="omschrijving" required maxlength="300" rows="5" cols="19">{{ old('omschrijving') }}</textarea>
 
 
                     <h5>{{ Lang::get('activity.chain-to') }}:</h5>
@@ -144,11 +144,11 @@
                     </div>
                     <div id="internetcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="internet" /><span>{{ Lang::get('activity.internetsource') }}</span></label>
-                        <input class="cond-hidden" type="text" name="internetsource" maxlength="150" value="" placeholder="http://www.source.com/" />
+                        <input class="cond-hidden" type="text" name="internetsource" value="{{ old('internetsource') }}" placeholder="http://www.source.com/" />
                     </div>
                     <div id="boekcontainer">
                         <label class="expand-click"><input type="radio" name="resource" value="boek" /><span>{{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}</span></label>
-                        <input class="cond-hidden" type="text" name="booksource" maxlength="150" value="" placeholder="{{ Lang::get('dashboard.name') }} {{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}" />
+                        <input class="cond-hidden" type="text" name="booksource" maxlength="150" value="{{ old('booksource')  }}" placeholder="{{ Lang::get('dashboard.name') }} {{ Lang::get('activity.book') }}/{{ Lang::get('activity.article') }}" />
                     </div>
                 </div>
                 <div class="col-md-2 form-group buttons">
