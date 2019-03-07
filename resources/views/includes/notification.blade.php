@@ -14,7 +14,7 @@
                     </div>
                 @endif
                 @if(session()->has('no-internship'))
-                    <div class="alert alert-error">
+                    <div class="alert alert-error" style="line-height: 60px;height: 80px;">
                         <span>{{ __('elements.alerts.warning') }}: </span>{!! session('no-internship') !!}
                     </div>
                 @endif
