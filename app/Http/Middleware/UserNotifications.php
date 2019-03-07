@@ -30,7 +30,7 @@ class UserNotifications
         /** @var Student $student */
         $student = $this->guard->user();
         if (!$student->hasCurrentWorkplaceLearningPeriod()) {
-            $request->session()->flash('notification',
+            $request->session()->flash('no-internship',
                 __('notifications.generic.nointernshipactive', ['profile-url' => route('profile')]));
         }
 
