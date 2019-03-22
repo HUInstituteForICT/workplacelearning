@@ -25,16 +25,15 @@ export default class ActingActivityProcessExporter {
         });
         this.output(translatedHeaders.join(";") + "\n");
 
-        const encode = input => '"' + input + '"';
 
         this.activities.forEach((activity, index) => {
             let values = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
                 if(Array.isArray(activity[header])) {
                     if (header === 'evidence') {
-                        return encode(activity[header].map(evidence => evidence.url).join(', '));
+                        return activity[header].map(evidence => evidence.url).join(', ');
                     }
-                    return encode(activity[header].join(', '));
+                    return activity[header].join(', ');
                 }
                 return activity[header];
             }).map(this.escapeCsv);
