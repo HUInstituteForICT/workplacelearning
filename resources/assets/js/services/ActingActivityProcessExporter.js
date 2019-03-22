@@ -37,7 +37,7 @@ export default class ActingActivityProcessExporter {
                     return encode(activity[header].join(', '));
                 }
                 return activity[header];
-            });
+            }).map(this.escapeCsv);
             let dataString = values.join(";");
             this.output(index < this.activities.length ? dataString + "\n" : dataString);
 
@@ -89,6 +89,13 @@ export default class ActingActivityProcessExporter {
         a.download = 'export.' + this.type;
         document.body.appendChild(a);
         a.click();
+    }
+
+    /**
+     * @param string {string}
+     */
+    escapeCsv(string) {
+        return '"' + string.replace('"', '""') + '"';
     }
 
 }

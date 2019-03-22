@@ -40,7 +40,7 @@ export default class ProducingActivityProcessExporter {
                     return this.getFeedbackUrl(activity[header]);
                 }
                 return activity[header];
-            });
+            }).map(this.escapeCsv);
             let dataString = values.join(";");
             this.output(index < this.activities.length ? dataString + "\n" : dataString);
 
@@ -94,6 +94,13 @@ export default class ProducingActivityProcessExporter {
         a.download = 'export.' + this.type;
         document.body.appendChild(a);
         a.click();
+    }
+
+    /**
+     * @param string {string}
+     */
+    escapeCsv(string) {
+        return '"' + string.replace('"', '""') + '"';
     }
 
 }
