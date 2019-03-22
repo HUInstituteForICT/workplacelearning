@@ -100,7 +100,7 @@ export default class ProducingActivityProcessExporter {
      * @param string {string}
      */
     escapeCsv(string) {
-        return '"' + string.replace('"', '""') + '"';
+        return '"' + string.replace(/"/g, '""') + '"';
     }
 
 }

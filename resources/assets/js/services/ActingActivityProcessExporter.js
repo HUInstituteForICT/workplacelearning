@@ -95,7 +95,7 @@ export default class ActingActivityProcessExporter {
      * @param string {string}
      */
     escapeCsv(string) {
-        return '"' + string.replace('"', '""') + '"';
+        return '"' + string.replace(/"/g, '""') + '"';
     }
 
 }
