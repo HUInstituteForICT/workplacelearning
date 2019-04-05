@@ -19,9 +19,7 @@ class UserNotifications
         $this->guard = $guard;
     }
 
-    /**
-     * Handle an incoming request.
-     */
+
     public function handle(Request $request, Closure $next)
     {
         if ($this->guard->guest()) {
@@ -29,9 +27,16 @@ class UserNotifications
         }
         /** @var Student $student */
         $student = $this->guard->user();
-        if (!$student->hasCurrentWorkplaceLearningPeriod()) {
+        if (!$student->hasCurrentWorkplaceLearningPeriod() && !str_contains($request->url(),
+                ['period/', 'profile', 'profiel'])) {
+
             $request->session()->flash('no-internship',
                 __('notifications.generic.nointernshipactive', ['profile-url' => route('profile')]));
+            if ($student->educationProgram->educationprogramType->isActing()) {
+                return redirect()->action('ActingWorkplaceLearningController@create');
+            }
+
+            return redirect()->action('ProducingWorkplaceLearningController@create');
         }
 
         return $next($request);
