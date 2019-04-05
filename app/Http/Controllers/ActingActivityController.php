@@ -89,14 +89,24 @@ class ActingActivityController
         ActingCreateRequest $request,
         LAAFactory $LAAFactory,
         EvidenceUploadHandler $evidenceUploadHandler
-    ): RedirectResponse {
+    ) {
         $learningActivityActing = $LAAFactory->createLAA($request->all());
 
         if ($request->hasFile('evidence')) {
             $evidenceUploadHandler->process($request, $learningActivityActing);
         }
 
-        return $this->redirector->route('process-acting')->with('success', __('activity.saved-successfully'));
+        session()->flash('success', __('activity.saved-successfully'));
+        $url = route('process-acting');
+
+        if ($request->acceptsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'url'    => $url,
+            ]);
+        }
+
+        return redirect($url);
     }
 
     /**
@@ -107,14 +117,24 @@ class ActingActivityController
         LearningActivityActing $learningActivityActing,
         EvidenceUploadHandler $evidenceUploadHandler,
         LAAUpdater $LAAUpdater
-    ): RedirectResponse {
+    ) {
         if ($request->hasFile('evidence')) {
             $evidenceUploadHandler->process($request, $learningActivityActing);
         }
 
         $LAAUpdater->update($learningActivityActing, $request->all());
 
-        return $this->redirector->route('process-acting')->with('success', __('activity.saved-successfully'));
+        session()->flash('success', __('activity.saved-successfully'));
+        $url = route('process-acting');
+
+        if ($request->acceptsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'url'    => $url,
+            ]);
+        }
+
+        return redirect($url);
     }
 
     public function delete(LearningActivityActing $learningActivityActing): RedirectResponse

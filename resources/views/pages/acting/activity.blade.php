@@ -68,7 +68,7 @@
         </script>
         <div class="row">
             <div class="col-md-12 well">
-                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>{{Lang::get('activity.how-does-this-page-work')}}</h4>
+                <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>&nbsp;{{Lang::get('activity.how-does-this-page-work')}}</h4>
                 <div id="help-text">
                     <ol>
                         <li>{{ Lang::get('activity.acting.steps.1') }}</li>
@@ -82,8 +82,12 @@
                 </div>
             </div>
         </div>
-        {{ Form::open(array('url' => route('process-acting-create'), 'class' => 'form-horizontal', "files" => true)) }}
-            <div class="row well">
+
+        <div class="row">
+            {{ Form::open(array('id' => 'taskForm',  'url' => route('process-acting-create'), 'class' => 'form-horizontal well', "files" => true)) }}
+                <div id="taskFormError" class="alert alert-error" style="display: none">
+
+                </div>
                 <div class="col-md-2 form-group">
                     <h4>{{ Lang::get('activity.activity') }}</h4>
                     <div class='input-group date fit-bs' id='date-deadline'>
@@ -178,6 +182,7 @@
                         <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />
                     </div>
                 </div>
+                {{ Form::close() }}
             </div>
             <script type="text/javascript">
                 $(document).ready(function () {
@@ -192,7 +197,9 @@
                     $('#datum').attr('value', moment(e.date).format("DD-MM-YYYY"));
                 });
             </script>
-        {{ Form::close() }}
+            @include('js.activity_save')
+
+
         <div class="row">
             <script>
                 window.activities = {!! $activitiesJson !!};

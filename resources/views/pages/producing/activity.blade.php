@@ -61,7 +61,13 @@
             </div>
         </div>
         <div class="row">
+
+
+
             {!! Form::open(array('id' => 'taskForm', 'class' => 'form-horizontal well', 'url' => route('process-producing-create'))) !!}
+            <div id="taskFormError" class="alert alert-error" style="display: none">
+
+            </div>
                 <div class="col-md-2 form-group">
                     <h4>{{ Lang::get('activity.activity') }}</h4>
 
@@ -202,4 +208,5 @@
             $('#datum').attr('value', moment(e.date).format("DD-MM-YYYY"));
         });
     </script>
+    @include('js.activity_save')
 @stop

@@ -67,8 +67,13 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                 });
             });
         </script>
-        {{ Form::open(array('url' => route('process-producing-update', ['id' => $activity->lap_id]), 'class' => 'form-horizontal')) }}
-        <div class="row well">
+
+
+        <div class="row">
+            {!! Form::open(array('id' => 'taskForm', 'url' => route('process-producing-update', ['id' => $activity->lap_id]), 'class' => 'form-horizontal well')) !!}
+            <div id="taskFormError" class="alert alert-error" style="display: none">
+
+            </div>
             <div class="col-md-2 form-group">
                 <h4>{{ __('activity.activity') }}</h4>
                 <input class="form-control dateinput fit-bs" type="text" name="datum"
@@ -224,7 +229,10 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                 <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;"
                        value="{{ __('general.save') }}"/>
             </div>
+            {{ Form::close() }}
         </div>
-        {{ Form::close() }}
+
     </div>
+    @include('js.activity_save')
+
 @stop

@@ -19,6 +19,7 @@ use App\Services\LAPUpdater;
 use App\Services\LearningActivityProducingExportBuilder;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 class ProducingActivityController
 {
@@ -47,7 +48,6 @@ class ProducingActivityController
 
         $activitiesJson = $exportBuilder->getJson($this->learningActivityProducingRepository->getActivitiesForStudent($student),
             8);
-
 
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
@@ -92,7 +92,7 @@ class ProducingActivityController
         ProducingCreateRequest $request,
         LAPFactory $LAPFactory,
         CustomProducingEntityHandler $customProducingEntityHandler
-    ): RedirectResponse {
+    ) {
         // Because related entities can be created during this route, create them first and set their ids
         // in the request data so that the factory can be relatively simple
         $data = $customProducingEntityHandler->process($request->all());
@@ -100,21 +100,51 @@ class ProducingActivityController
         $learningActivityProducing = $LAPFactory->createLAP($data);
 
         if ($learningActivityProducing->feedback) {
-            return redirect()
-                ->route('feedback-producing', ['feedback' => $learningActivityProducing->feedback])
-                ->with('notification', __('notifications.feedback-hard'));
+            session()->flash('notification', __('notifications.feedback-hard'));
+            $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
+
+            if ($request->acceptsJson()) {
+                return response()->json([
+                    'status' => 'success',
+                    'url'    => $url,
+                ]);
+            }
+
+            return redirect($url);
         }
 
-        return redirect()
-            ->route('process-producing')
-            ->with('success', __('activity.saved-successfully'));
+
+        session()->flash('success', __('activity.saved-successfully'));
+        $url = route('process-producing');
+
+        if ($request->acceptsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'url'    => $url,
+            ]);
+        }
+
+        return redirect($url);
     }
 
-    public function update(ProducingUpdateRequest $request, LearningActivityProducing $learningActivityProducing, LAPUpdater $LAPUpdater): RedirectResponse
-    {
+    public function update(
+        ProducingUpdateRequest $request,
+        LearningActivityProducing $learningActivityProducing,
+        LAPUpdater $LAPUpdater
+    ) {
         $LAPUpdater->update($learningActivityProducing, $request->all());
 
-        return redirect()->route('process-producing')->with('success', __('activity.saved-successfully'));
+        session()->flash('success', __('activity.saved-successfully'));
+        $url = route('process-producing');
+
+        if ($request->acceptsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'url'    => $url,
+            ]);
+        }
+
+        return redirect($url);
     }
 
     public function delete(LearningActivityProducing $learningActivityProducing): RedirectResponse

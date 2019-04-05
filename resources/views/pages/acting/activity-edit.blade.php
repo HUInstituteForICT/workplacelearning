@@ -25,8 +25,12 @@
                 });
             });
         </script>
-        {{ Form::open(array('url' => route('process-acting-update', ['id' => $activity->laa_id]), 'class' => 'form-horizontal', 'files' => true)) }}
-        <div class="row well">
+
+        <div class="row">
+            {{ Form::open(array('id' => 'taskForm', 'url' => route('process-acting-update', ['id' => $activity->laa_id]), 'class' => 'form-horizontal well', 'files' => true)) }}
+            <div id="taskFormError" class="alert alert-error" style="display: none">
+
+            </div>
             <div class="col-md-2 form-group">
                 <h4>{{ Lang::get('activity.activity') }}</h4>
                 <input class="form-control dateinput fit-bs" type="text" name="date"
@@ -132,7 +136,10 @@
                            value="{{ __('general.save') }}"/>
                 </div>
             </div>
+
+            {{ Form::close() }}
         </div>
-        {{ Form::close() }}
     </div>
+    @include('js.activity_save')
+
 @stop
