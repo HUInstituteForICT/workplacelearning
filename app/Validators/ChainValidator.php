@@ -38,6 +38,6 @@ class ChainValidator
         }
 
         // Check if selected chain is bound to same WPLP as student's current WPLP
-        return $chain->wplp_id === $this->user->getCurrentWorkplaceLearningPeriod()->wplp_id;
+        return $chain->wplp_id === $this->user->getCurrentWorkplaceLearningPeriod()->wplp_id && $chain->status === 0;
     }
 }
