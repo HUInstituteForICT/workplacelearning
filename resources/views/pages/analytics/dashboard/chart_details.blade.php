@@ -35,12 +35,18 @@
                   <tbody id="table_body">
 
                   </tbody>
-            </table>`
+            </table>
+            <a id='description-copier' title='@lang("dashboard.copy-descriptions-title")'>@lang('dashboard.copy-descriptions')</a>
+            `
         );
+
+        const descriptionsCollection = [];
 
         data.forEach(function(entry) {
             let desc = entry['description'];
             let duration = entry['duration'];
+
+            descriptionsCollection.push(desc);
 
             let template = `<tr>
                     <td>${desc}</td>
@@ -55,6 +61,22 @@
 
             $('#table_body').append(template);
         });
+
+        $('#description-copier').click(function() {
+            navigator.clipboard.writeText(descriptionsCollection.join("\t"))
+                .catch(function() {
+                    $('#description-copier').text('@lang("dashboard.copy-descriptions-error")');
+                })
+                .then(function() {
+                    $('#description-copier').text('@lang("dashboard.copy-descriptions-success")');
+                })
+                .finally(function() {
+                    setTimeout(function() {
+                        $('#description-copier').text('@lang("dashboard.copy-descriptions")');
+                    }, 5000);
+                })
+            ;
+        })
     });
 
 </script>

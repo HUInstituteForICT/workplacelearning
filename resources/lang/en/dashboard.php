@@ -54,4 +54,9 @@ return array(
 
     'analysis-removed-fail' => 'Failed to remove analysis',
     'analysis-removed' => 'Analysis removed.',
+
+    'copy-descriptions' => 'Copy descriptions',
+    'copy-descriptions-success'=> 'The descriptions have been copied!',
+    'copy-descriptions-error'=> 'Unable to copy the descriptions, please try another browser.',
+    'copy-descriptions-title' => 'Copy the descriptions with the tab character as the delimiter'
 );

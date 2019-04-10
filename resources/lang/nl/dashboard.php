@@ -55,4 +55,9 @@ return array(
 
     'analysis-removed-fail' => 'Niet gelukt om analyse te verwijderen',
     'analysis-removed' => 'Analyse is verwijderd.',
+
+    'copy-descriptions'=> 'Kopieer omschrijvingen',
+    'copy-descriptions-success'=> 'De omschrijvingen zijn gekopieerd!',
+    'copy-descriptions-error'=> 'Het is niet gelukt de omschrijvingen te kopiëren, probeer het met een andere browser.',
+    'copy-descriptions-title' => 'Kopieer de omschrijvingen van deze grafiek met tabs als scheidingsteken.'
 );
