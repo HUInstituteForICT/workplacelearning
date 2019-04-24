@@ -12,7 +12,9 @@ use App\Services\EvidenceUploadHandler;
 use App\Services\Factories\LAAFactory;
 use App\Services\LAAUpdater;
 use App\Services\LearningActivityActingExportBuilder;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 
 class ActingActivityController
@@ -30,15 +32,21 @@ class ActingActivityController
      * @var LearningActivityActingRepository
      */
     private $learningActivityActingRepository;
+    /**
+     * @var Session
+     */
+    private $session;
 
     public function __construct(
         Redirector $redirector,
         CurrentUserResolver $currentUserResolver,
-        LearningActivityActingRepository $learningActivityActingRepository
+        LearningActivityActingRepository $learningActivityActingRepository,
+        Session $session
     ) {
         $this->redirector = $redirector;
         $this->currentUserResolver = $currentUserResolver;
         $this->learningActivityActingRepository = $learningActivityActingRepository;
+        $this->session = $session;
     }
 
     public function show(
@@ -60,8 +68,16 @@ class ActingActivityController
 
     public function edit(
         LearningActivityActing $learningActivityActing,
-        AvailableActingEntitiesFetcher $availableActingEntitiesFetcher
+        AvailableActingEntitiesFetcher $availableActingEntitiesFetcher,
+        Request $request
     ) {
+        $referrer = $request->header('referer');
+        $redirect = route('process-acting');
+        if ($referrer && $referrer === route('progress-acting')) {
+            $redirect = route('progress-acting');
+        }
+        $this->session->put('acting.activity.edit.referrer', $redirect);
+
         return view('pages.acting.activity-edit', $availableActingEntitiesFetcher->getEntities())
             ->with('activity', $learningActivityActing);
     }
@@ -126,6 +142,9 @@ class ActingActivityController
 
         session()->flash('success', __('activity.saved-successfully'));
         $url = route('process-acting');
+        if ($this->session->has('acting.activity.edit.referrer')) {
+            $url = $this->session->remove('acting.activity.edit.referrer');
+        }
 
         if ($request->acceptsJson()) {
             return response()->json([

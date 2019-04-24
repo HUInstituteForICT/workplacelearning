@@ -18,7 +18,9 @@ use App\Services\Factories\LAPFactory;
 use App\Services\LAPUpdater;
 use App\Services\LearningActivityProducingExportBuilder;
 use Carbon\Carbon;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ProducingActivityController
@@ -31,13 +33,19 @@ class ProducingActivityController
      * @var LearningActivityProducingRepository
      */
     private $learningActivityProducingRepository;
+    /**
+     * @var Session
+     */
+    private $session;
 
     public function __construct(
         CurrentUserResolver $currentUserResolver,
-        LearningActivityProducingRepository $learningActivityProducingRepository
+        LearningActivityProducingRepository $learningActivityProducingRepository,
+        Session $session
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->session = $session;
     }
 
     public function show(
@@ -60,8 +68,16 @@ class ProducingActivityController
 
     public function edit(
         LearningActivityProducing $learningActivityProducing,
-        AvailableProducingEntitiesFetcher $availableProducingEntitiesFetcher
+        AvailableProducingEntitiesFetcher $availableProducingEntitiesFetcher,
+        Request $request
     ) {
+        $referrer = $request->header('referer');
+        $redirect = route('process-producing');
+        if ($referrer && $referrer === route('progress-producing')) {
+            $redirect = route('progress-producing');
+        }
+        $this->session->put('producing.activity.edit.referrer', $redirect);
+
         return view('pages.producing.activity-edit', $availableProducingEntitiesFetcher->getEntities())
             ->with('activity', $learningActivityProducing);
     }
@@ -136,6 +152,9 @@ class ProducingActivityController
 
         session()->flash('success', __('activity.saved-successfully'));
         $url = route('process-producing');
+        if ($this->session->has('producing.activity.edit.referrer')) {
+            $url = $this->session->remove('producing.activity.edit.referrer');
+        }
 
         if ($request->acceptsJson()) {
             return response()->json([
