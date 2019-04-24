@@ -66,7 +66,7 @@ class ProducingReportController extends Controller
         $internTable->addRow();
         // total days
         $internTable->addCell()->addText(Lang::get('process_export.wordexport.total-days').': ');
-        $internTable->addCell()->addText('');
+        $globalTotalDaysCell = $internTable->addCell();
         $internTable->addRow();
         // Mentor
         $internTable->addCell()->addText(Lang::get('process_export.wordexport.mentor').': ');
@@ -122,6 +122,7 @@ class ProducingReportController extends Controller
             'EEE'
         );
 
+        $daysWorkedTotal = 0;
         while (strtotime($date_loop) < $request->get('endDate') && strtotime($date_loop) < time()) {
             $table = $activityPage->addTable('table');
             $table->addRow();
@@ -151,6 +152,7 @@ class ProducingReportController extends Controller
                 $days_this_week += ($hrs >= Auth::user()->getCurrentWorkplaceLearningPeriod()->hours_per_day) ? 1 : 0;
                 $date_loop = date('d-m-Y', strtotime('+1 day', strtotime($date_loop)));
             }
+            $daysWorkedTotal += $days_this_week;
 
             $weekMetaTable = $activityPage->addTable();
             $weekMetaTable->addRow();
@@ -173,6 +175,8 @@ class ProducingReportController extends Controller
 
             $date_loop = date('d-m-Y', strtotime('+2 days', strtotime($date_loop)));
         }
+
+        $globalTotalDaysCell->addText(($daysWorkedTotal.(($daysWorkedTotal== 1) ? ' '.Lang::get('process_export.wordexport.day') : ' '.Lang::get('process_export.wordexport.days'))));
 
         $fileName = Auth::user()->studentnr.' '.
             Auth::user()->getInitials().' '.Auth::user()->lastname.
