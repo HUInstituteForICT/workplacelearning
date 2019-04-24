@@ -25,7 +25,10 @@
             duration = `<th scope="col"> @lang('dashboard.hour') </th>`;
 
         $('#values').append(
-            `<table class="table" id="table">
+            `
+            <a id='description-copier' title='@lang("dashboard.copy-descriptions-title")'>@lang('dashboard.copy-descriptions')</a>
+            <br/>
+            <table class="table" id="table">
                  <thead>
                     <tr>
                       <th scope="col"> @lang('dashboard.description') </th>
@@ -36,7 +39,6 @@
 
                   </tbody>
             </table>
-            <a id='description-copier' title='@lang("dashboard.copy-descriptions-title")'>@lang('dashboard.copy-descriptions')</a>
             `
         );
 
