@@ -298,6 +298,7 @@ export default class ActivityProducingProcessTable extends React.Component {
             <table className="table blockTable">
                 <thead className="blue_tile">
                 <tr>
+                    <td>{/* Edit URL, no table header */}</td>
                     <td>{Lang.get('react.time')}</td>
                     <td colSpan={2}>{Lang.get('react.description')}</td>
                     <td>{Lang.get('react.aid')}</td>
@@ -306,7 +307,7 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <td>{Lang.get('react.status')}</td>
                     <td>{Lang.get('react.chain')}</td>
                     <td/>
-                    <td>{/* Edit URL, no table header */}</td>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -315,10 +316,10 @@ export default class ActivityProducingProcessTable extends React.Component {
                     const activities = groupedByDay[day].sort((a, b) => a.id - b.id);
                     const statistics = this.calculateStatisticsForActivities(activities);
 
-                    let hoursCell = <td>{Lang.get('activity.hours')}: {statistics.totalHours}</td>;
+                    let hoursCell = <td>{Lang.get('activity.hours')}: {statistics.totalHours.toFixed(2)}</td>;
 
                     if (statistics.totalHours < 1) {
-                        hoursCell = <td>{Lang.get('activity.minutes')}: {statistics.totalHours * 60}</td>;
+                        hoursCell = <td>{Lang.get('activity.minutes')}: {(statistics.totalHours * 60).toFixed(2)}</td>;
                     }
 
                     return [<tr style={{backgroundColor: 'rgba(0,161,226, 0.45)', color: 'rgba(255,255,255)', fontWeight: 'bold'}}>

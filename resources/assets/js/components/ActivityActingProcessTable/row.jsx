@@ -22,6 +22,10 @@ export default class Row extends React.Component {
 
         return <tr className="activityExport">
             <td>
+                <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
+                <a style={actionStyle} onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/acting/process/delete/" + activity.id: null}><i className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
+            </td>
+            <td>
                 {(activity.situation.length > 30 || activity.lessonsLearned.length > 30) &&
                 <i onClick={() => this.setState({visible: !this.state.visible})}
                    className={className}/>
@@ -64,10 +68,7 @@ export default class Row extends React.Component {
                     </ul>
                 }
             </td>
-            <td>
-                <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
-                <a style={actionStyle} onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/acting/process/delete/" + activity.id: null}><i className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
-            </td>
+
         </tr>
     }
 

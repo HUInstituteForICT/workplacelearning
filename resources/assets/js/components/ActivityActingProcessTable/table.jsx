@@ -254,6 +254,7 @@ export default class ActivityActingProcessTable extends React.Component {
             <table className="table blockTable">
                 <thead className="blue_tile">
                 <tr>
+                    <td>{/* Edit URL, no table header */}</td>
                     <td></td>
                     <td>{Lang.get('react.date')}</td>
                     <td>{Lang.get('react.situation')}</td>
@@ -264,7 +265,7 @@ export default class ActivityActingProcessTable extends React.Component {
                     <td>{Lang.get('react.learningquestion')}</td>
                     <td>{Lang.get('react.competence')}</td>
                     <td>{Lang.get('react.evidence')}</td>
-                    <td>{/* Edit URL, no table header */}</td>
+
                 </tr>
                 </thead>
                 <tbody>

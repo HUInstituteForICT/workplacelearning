@@ -21,6 +21,10 @@ export default class Row extends React.Component {
         };
 
         return <tr className="activityExport">
+            <td>
+                <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
+                <a style={actionStyle} onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/producing/process/delete/" + activity.id: null}><i className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
+            </td>
             <td>{activity.duration}</td>
 
             {(activity.description.length > 30) &&
@@ -51,10 +55,7 @@ export default class Row extends React.Component {
             <td>
                 {activity.feedback !== null && <a href={`/producing/feedback/${activity.feedback}`}>Feedback</a>}
             </td>
-            <td>
-                <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
-                <a style={actionStyle} onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/producing/process/delete/" + activity.id: null}><i className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
-            </td>
+
         </tr>
     }
 
