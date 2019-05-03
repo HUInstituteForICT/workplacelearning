@@ -45,8 +45,9 @@ class LearningActivityTest extends \Tests\TestCase
             'competence' => $competence->competence_id,
         ]);
 
+
         // Controller redirects back to process creation page -- consider that success
-        $response->assertRedirect('/acting/process');
+        $response->assertJson(['status' => 'success', 'url' => 'https://localhost/acting/process']);
         $this->assertDatabaseHas('learningactivityacting', ['situation' => 'Some test activity!']);
     }
 
@@ -72,7 +73,7 @@ class LearningActivityTest extends \Tests\TestCase
         ]);
 
         // Controller redirects back to process creation page -- consider that success
-        $response->assertRedirect('/producing/process');
+        $response->assertJson(['status' => 'success', 'url' => 'https://localhost/producing/process']);
         $this->assertDatabaseHas('learningactivityproducing', ['description' => 'Some test activity!']);
     }
 
@@ -96,7 +97,7 @@ class LearningActivityTest extends \Tests\TestCase
 
         $learningActivityActing->competence()->save($wplp->cohort->competencies()->first());
 
-        $this->actingAs($user)->post('acting/process/update/'.$learningActivityActing->laa_id, [
+        $response = $this->actingAs($user)->post('acting/process/update/'.$learningActivityActing->laa_id, [
             'date' => $learningActivityActing->date,
             'description' => 'new text', // gets saved in $laa->situation !!!!!!
             'timeslot' => $learningActivityActing->timeslot_id,
@@ -109,7 +110,7 @@ class LearningActivityTest extends \Tests\TestCase
             'learning_goal' => $learningActivityActing->learninggoal_id,
             'competence' => $learningActivityActing->competence()->first()->competence_id,
         ])
-            ->assertRedirect('/acting/process');
+            ->assertJson(['status' => 'success', 'url' => 'https://localhost/acting/process']);
 
         $this->assertDatabaseHas('learningactivityacting', ['situation' => 'new text']);
     }

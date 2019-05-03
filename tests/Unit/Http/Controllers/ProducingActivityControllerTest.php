@@ -14,6 +14,8 @@ use App\Services\Factories\LAPFactory;
 use App\Services\LAPUpdater;
 use App\Services\LearningActivityProducingExportBuilder;
 use App\Student;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
 class ProducingActivityControllerTest extends TestCase
@@ -36,7 +38,9 @@ class ProducingActivityControllerTest extends TestCase
         $availableEntitiesFetcher = $this->createMock(AvailableProducingEntitiesFetcher::class);
         $availableEntitiesFetcher->expects(self::once())->method('getEntities')->willReturn([]);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository);
+        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository, $session);
         $producingActivityController->show($availableEntitiesFetcher, $exportBuilder);
     }
 
@@ -51,8 +55,11 @@ class ProducingActivityControllerTest extends TestCase
 
         $activity = $this->createMock(LearningActivityProducing::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository);
-        $producingActivityController->edit($activity, $availableEntitiesFetcher);
+        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository, $session);
+        $request = $this->createMock(Request::class);
+        $producingActivityController->edit($activity, $availableEntitiesFetcher, $request);
     }
 
     public function testProgress(): void
@@ -71,7 +78,9 @@ class ProducingActivityControllerTest extends TestCase
         $exportBuilder->expects(self::once())->method('getJson')->with([], null)->willReturn('some json string');
         $exportBuilder->expects(self::once())->method('getFieldLanguageMapping')->willReturn([]);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository);
+        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository, $session);
         $producingActivityController->progress($exportBuilder);
     }
 
@@ -93,7 +102,9 @@ class ProducingActivityControllerTest extends TestCase
 
         $repository = $this->createMock(LearningActivityProducingRepository::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository);
+        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository, $session);
         $producingActivityController->create($request, $lapFactory, $customProducingEntityHandler);
     }
 
@@ -110,7 +121,9 @@ class ProducingActivityControllerTest extends TestCase
         $currentUserResolver = $this->createMock(CurrentUserResolver::class);
         $repository = $this->createMock(LearningActivityProducingRepository::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository);
+        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository, $session);
         $producingActivityController->update($request, $activity, $lapUpdater);
     }
 
@@ -122,7 +135,9 @@ class ProducingActivityControllerTest extends TestCase
         $repository = $this->createMock(LearningActivityProducingRepository::class);
         $repository->expects(self::once())->method('delete')->with($activity);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository);
+        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository, $session);
         $producingActivityController->delete($activity);
     }
 }

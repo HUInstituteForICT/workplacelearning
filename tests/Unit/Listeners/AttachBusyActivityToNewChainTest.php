@@ -23,9 +23,9 @@ class AttachBusyActivityToNewChainTest extends TestCase
         $status->expects(self::once())->method('isBusy')->willReturn(true);
 
         $activity = $this->createMock(LearningActivityProducing::class);
-        $activity->expects(self::exactly(3))->method('__get')
-            ->withConsecutive(['status'], ['description'], ['wplp_id'])
-            ->willReturnOnConsecutiveCalls($status, 'joejoe', 1);
+        $activity->expects(self::exactly(4))->method('__get')
+            ->withConsecutive(['chain'], ['status'], ['description'], ['wplp_id'])
+            ->willReturnOnConsecutiveCalls(null, $status, 'joejoe', 1);
         $activity->expects(self::once())->method('chain');
 
         $learningActivityProducingRepository = $this->createMock(LearningActivityProducingRepository::class);
