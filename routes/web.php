@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Misc\DecideForReflectionMethodBetaParticipation;
 use App\Http\Middleware\CheckUserLevel;
 use App\Http\Middleware\RequireActiveInternship;
 
@@ -93,6 +94,8 @@ Route::group([
         Route::get('/education-programs', 'EducationProgramsController@index')
             ->name('education-programs');
 
+        Route::get('/beta-participations', 'Misc\Admin\BetaParticipations')->name('admin.beta-participations');
+
         Route::group(['prefix' => '/dashboard'], function (): void {
             Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
             Route::get('/add', 'AnalyticsDashboardController@add')->name('dashboard.add');
@@ -156,6 +159,7 @@ Route::group([
     // User Creation and modification
     Route::get('profiel', 'ProfileController@show')->name('profile');
     Route::post('profiel/update', 'ProfileController@update');
+    Route::get('beta-leave', 'Misc\LeaveBeta')->name('leave-beta');
     Route::put('profiel/change-password', 'ProfileController@changePassword');
     Route::get('canvas-uncouple', 'ProfileController@removeCanvasCoupling')->name('uncouple-canvas');
 
@@ -265,6 +269,8 @@ Route::group([
             ->name('evidence-remove');
 
         Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')->name('evidence-download');
+
+        Route::get('beta-reflection-method-participation/{participate}', 'Misc\DecideForReflectionMethodBetaParticipation')->name('reflection-beta-participation');
     });
 
     /* EP Type: Producing */

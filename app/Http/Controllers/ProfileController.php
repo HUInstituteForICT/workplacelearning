@@ -8,6 +8,7 @@
 namespace App\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
+use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\Repository\Eloquent\StudentRepository;
 use App\Services\CurrentUserResolver;
 use App\Student;
@@ -32,11 +33,16 @@ class ProfileController extends Controller
         $this->redirector = $redirector;
     }
 
-    public function show(CurrentUserResolver $currentUserResolver)
+    public function show(CurrentUserResolver $currentUserResolver, ReflectionMethodBetaParticipationRepository $betaParticipationRepository)
     {
+
+        $participatesInReflectionBeta = $betaParticipationRepository->doesStudentParticipate($currentUserResolver->getCurrentUser());
+
         return view('pages.profile')
             ->with('student', $currentUserResolver->getCurrentUser())
-            ->with('locales', Student::$locales);
+            ->with('locales', Student::$locales)
+            ->with('participatesInReflectionBeta', $participatesInReflectionBeta)
+            ;
     }
 
     public function update(Request $request, CurrentUserResolver $currentUserResolver)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BugReportRequest;
 use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
+use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\Services\CurrentUserResolver;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;
@@ -53,7 +54,7 @@ class HomeController extends Controller
         return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
-    public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
+    public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, ReflectionMethodBetaParticipationRepository $betaParticipationRepository)
     {
         $student = $this->currentUserResolver->getCurrentUser();
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
@@ -66,7 +67,9 @@ class HomeController extends Controller
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
 
-        return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
+        $hasStudentDecidedBeta = $betaParticipationRepository->hasStudentDecided($student);
+
+        return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null, 'hasStudentDecidedBeta' => $hasStudentDecidedBeta]);
     }
 
     public function showDefault(): \Illuminate\Http\RedirectResponse
