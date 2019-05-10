@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use RuntimeException;
 
 /**
  * App\LearningActivityActing.
@@ -35,6 +37,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Collection|Competence[]                                  $competence
  * @property \Illuminate\Database\Eloquent\Collection|\App\Evidence[] $evidence
  * @property \App\WorkplaceLearningPeriod                             $workplaceLearningPeriod
+ * @property bool                                                     $is_from_reflection_beta
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLaaId($value)
@@ -119,5 +122,18 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     public function evidence(): HasMany
     {
         return $this->hasMany(Evidence::class, 'learning_activity_acting_id', 'laa_id');
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    public function reflection(): HasOne
+    {
+        if (!$this->is_from_reflection_beta) {
+            throw new RuntimeException('Tried to retrieve ActivityReflection on LAA that is not in reflection beta');
+        }
+
+        return $this->hasOne(ActivityReflection::class, 'learning_activity_id', 'laa_id')->where('type', '=',
+            ActivityReflection::LEARNING_ACTIVITY_ACTING)->first();
     }
 }
