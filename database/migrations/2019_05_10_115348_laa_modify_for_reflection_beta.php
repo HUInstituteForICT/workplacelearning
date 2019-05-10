@@ -15,6 +15,8 @@ class LAAAddReflectionFlag extends Migration
     {
         Schema::table('learningactivityacting', function (Blueprint $table) {
             $table->boolean('is_from_reflection_beta')->default(false);
+            $table->string('support_wp', 500)->nullable()->change();
+            $table->string('support_ed', 500)->nullable()->change();
         });
     }
 
@@ -26,6 +28,8 @@ class LAAAddReflectionFlag extends Migration
     public function down()
     {
         Schema::table('learningactivityacting', function (Blueprint $table) {
+            $table->string('support_wp', 500)->change();
+            $table->string('support_ed', 500)->change();
             $table->removeColumn('is_from_reflection_beta');
         });
     }
