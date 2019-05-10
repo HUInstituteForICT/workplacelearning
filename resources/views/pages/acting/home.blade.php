@@ -10,7 +10,7 @@
 
                 @if(!$hasStudentDecidedBeta)
                     <div class="alert alert-info">
-                        {{ __('misc.reflection-beta-text') }}
+                        {!! nl2br(__('misc.reflection-beta-text')) !!}
                         <br/><br/>
                         <a class='btn btn-primary'
                            href='{{ route('reflection-beta-participation', ['participate' => 1]) }}'>{{ __('misc.participate-accept') }}</a>
