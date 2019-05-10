@@ -63,7 +63,7 @@ class LAAFactory
         $activityActing->res_material_detail = $data['res_material_detail'];
         $activityActing->save();
 
-        // Needs to be after save because the relation is many-to-many for some reason, thus association table is used
+        // Needs to be after save because the relation is many-to-many, thus association table is used
         $activityActing->competence()->sync($data['competence']);
 
         return $activityActing;
