@@ -28,6 +28,6 @@ class ActivityReflectionCreateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ActivityReflection');
+        Schema::dropIfExists('activity_reflection');
     }
 }

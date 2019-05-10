@@ -271,6 +271,7 @@ Route::group([
         Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')->name('evidence-download');
 
         Route::get('beta-reflection-method-participation/{participate}', 'Misc\DecideForReflectionMethodBetaParticipation')->name('reflection-beta-participation');
+        Route::get('render-reflection-type/{type}', 'Reflection\RenderCreateForm')->name('render-reflection-type');
     });
 
     /* EP Type: Producing */

@@ -15,7 +15,7 @@ class ActivityReflectionFieldCreateTable extends Migration
     {
         Schema::create('activity_reflection_field', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('activity_reflection_id');
+            $table->integer('activity_reflection_id')->unsigned();
             $table->string('name');
             $table->text('value');
         });

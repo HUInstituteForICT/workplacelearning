@@ -16,6 +16,7 @@
         event.preventDefault();
 
         const data = new FormData(form);
+        console.log(data);
         const url = form.getAttribute('action');
 
         errorElement.style = 'display:none;';
@@ -85,18 +86,6 @@
         })
     }
 
-    /**
-     * Serialise the form data to JSON
-     * @param data {FormData}
-     */
-    function prepareFormData(data) {
-        const jsonData = {};
-        for (var entry of data.entries()) {
-            console.log(entry);
-            jsonData[entry[0]] = entry[1];
-        }
-        return jsonData;
-    }
 
 
 </script>

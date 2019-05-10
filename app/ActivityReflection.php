@@ -17,6 +17,9 @@ class ActivityReflection extends Model
     public const LEARNING_ACTIVITY_ACTING = 'acting';
     public const LEARNING_ACTIVITY_PRODUCING = 'producing';
 
+    public const TYPES = ['STARR', 'KORTHAGEN', 'ABCD', 'PDCA', 'CUSTOM'];
+    public const READABLE_TYPES = ['STARR' => 'STARR', 'KORTHAGEN' => 'Korthagen', 'ABCD' => 'ABCD', 'PDCA' => 'PDCA', 'CUSTOM' => 'Custom'];
+
     public function fields(): HasMany
     {
         return $this->hasMany(ActivityReflectionField::class);

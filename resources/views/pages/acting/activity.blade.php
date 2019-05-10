@@ -69,7 +69,7 @@
         <div class="row">
             <div class="col-md-12 well">
                 <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>&nbsp;{{Lang::get('activity.how-does-this-page-work')}}</h4>
-                <div id="help-text">
+                <div id="help-text" style="display:none">
                     <ol>
                         <li>{{ Lang::get('activity.acting.steps.1') }}</li>
                         <li>{{ Lang::get('activity.acting.steps.2') }}</li>
@@ -133,6 +133,8 @@
                     <label><input type="radio" name="res_material" id="new_rm" value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">{{ trans('activity.other') }}<br />({{ Lang::get('activity.add') }})</span></label>
                     <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}" placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
                 </div>
+
+            @if(!$reflectionBetaActive)
                 <div class="col-md-2 form-group">
                     <div>
                         <h4>{{ Lang::get('activity.learned') }}<br />{{ Lang::get('activity.whatnow') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
@@ -151,6 +153,7 @@
 
                     </div>
                 </div>
+            @endif
                 <div class="col-md-2 form-group">
                     <div>
                         <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ trans('tooltips.acting_learninggoal') }}"></i></h4>
@@ -182,7 +185,11 @@
                         <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save" />
                     </div>
                 </div>
-                {{ Form::close() }}
+
+            @if($reflectionBetaActive)
+                @include('pages.acting.includes.create-reflection')
+            @endif
+            {{ Form::close() }}
             </div>
             <script type="text/javascript">
                 $(document).ready(function () {
