@@ -16,6 +16,10 @@
         </ul>
     </div>
 
+    <div id="currentReflection">
+        {{ __('reflection.none-attached') }}
+    </div>
+
     <div class="modal fade" id="reflectionModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -43,9 +47,13 @@
     const formWrapper = document.getElementById('reflectionFormWrapper');
     const reflectionTitleElement = document.getElementById('reflectionTitle');
     const reflectionModal = $('#reflectionModal');
+    const currentReflection = $('#currentReflection');
+
     for (let type of reflectionTypeElements) {
         type.onclick = onClickReflectionType
     }
+
+    var reflectionAttached = false;
 
     function onClickReflectionType(event) {
         reflectionModal.modal('hide');
@@ -63,7 +71,28 @@
     function renderReflectionForm(reflectionForm, type) {
         reflectionModal.modal('show');
         formWrapper.innerHTML = reflectionForm;
-        reflectionTitleElement.innerText = '{{__('reflection.reflection')}}: ' + type
+        reflectionTitleElement.innerText = '{{__('reflection.reflection')}}: ' + type;
+        reflectionAttached = true;
+
+        updateCurrentReflectionText(type);
+    }
+
+    function updateCurrentReflectionText(type) {
+        if (reflectionAttached) {
+
+            const remover = $('<a></a>');
+            remover.text('{{__('reflection.remove')}}');
+            remover.click(function () {
+                formWrapper.innerHTML = '';
+                reflectionAttached = false;
+                updateCurrentReflectionText(null);
+            });
+
+            currentReflection.html('{{__('reflection.reflection')}}: ' + type + ' - ');
+            currentReflection.append(remover)
+        } else {
+            currentReflection.html('{{ __('reflection.none-attached') }}');
+        }
     }
 
 

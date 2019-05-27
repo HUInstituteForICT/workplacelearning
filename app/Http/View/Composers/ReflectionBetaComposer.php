@@ -4,6 +4,7 @@
 namespace App\Http\View\Composers;
 
 
+use App\Exceptions\UnexpectedUser;
 use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\Services\CurrentUserResolver;
 
@@ -33,7 +34,12 @@ class ReflectionBetaComposer
 
     private function getStudentReflectionBetaStatus(): bool
     {
-        $student = $this->currentUserResolver->getCurrentUser();
+        // getCurrentUser will throw if no user is found so catch that and assume not in beta because logged out
+        try {
+            $student = $this->currentUserResolver->getCurrentUser();
+        } catch (UnexpectedUser $unexpectedUser) {
+            return false;
+        }
 
         if (!$student->hasCurrentWorkplaceLearningPeriod()) {
             return false;

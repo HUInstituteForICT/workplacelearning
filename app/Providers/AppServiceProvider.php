@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\ChainManager;
-use App\Http\View\Composers\ReflectionBetaComposer;
+
 use App\Repository\Eloquent\LikeRepository;
 use App\Repository\Eloquent\StudentTipViewRepository;
 use App\Repository\LikeRepositoryInterface;
