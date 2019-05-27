@@ -36,7 +36,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[]          $resourceMaterial
  * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[]            $resourcePerson
  * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[]                  $timeslot
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereEnddate($value)
@@ -48,6 +47,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereWpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereWplpId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod query()
  */
 class WorkplaceLearningPeriod extends Model
 {

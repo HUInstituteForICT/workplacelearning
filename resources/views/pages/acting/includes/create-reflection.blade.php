@@ -2,7 +2,7 @@
     <h4>{{ Lang::get('reflection.reflection') }}</h4>
 
     <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="addReflectionButton">
             {{ __('reflection.add-new-reflection') }} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
@@ -48,6 +48,7 @@
     const reflectionTitleElement = document.getElementById('reflectionTitle');
     const reflectionModal = $('#reflectionModal');
     const currentReflection = $('#currentReflection');
+    const addReflectioButton = $('#addReflectionButton');
 
     for (let type of reflectionTypeElements) {
         type.onclick = onClickReflectionType
@@ -89,9 +90,22 @@
             });
 
             currentReflection.html('{{__('reflection.reflection')}}: ' + type + ' - ');
-            currentReflection.append(remover)
+            currentReflection.append(remover);
+            currentReflection.append('<br/><br/><br/>');
+
+
+            const modalOpener = $('<a class="btn btn-primary"></a>');
+            modalOpener.text('Open {{ __("reflection.reflection") }}');
+            modalOpener.click(function() {
+                reflectionModal.modal('show');
+            });
+            currentReflection.append(modalOpener);
+
+
+            addReflectioButton.prop('disabled', true);
         } else {
             currentReflection.html('{{ __('reflection.none-attached') }}');
+            addReflectioButton.prop('disabled', false);
         }
     }
 

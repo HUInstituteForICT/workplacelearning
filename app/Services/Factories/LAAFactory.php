@@ -2,8 +2,11 @@
 
 namespace App\Services\Factories;
 
+use App\ActivityReflection;
 use App\LearningActivityActing;
 use App\LearningGoal;
+use App\Repository\Eloquent\LearningActivityActingRepository;
+use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\ResourceMaterial;
 use App\ResourcePerson;
 use App\Services\CurrentUserResolver;
@@ -28,21 +31,40 @@ class LAAFactory
      * @var CurrentUserResolver
      */
     private $currentUserResolver;
+    /**
+     * @var ReflectionMethodBetaParticipationRepository
+     */
+    private $betaParticipationRepository;
+    /**
+     * @var ActivityReflection
+     */
+    private $activityReflection;
+    /**
+     * @var LearningActivityActingRepository
+     */
+    private $learningActivityActingRepository;
 
     public function __construct(
+        LearningActivityActingRepository $learningActivityActingRepository,
         TimeslotFactory $timeslotFactory,
         ResourcePersonFactory $resourcePersonFactory,
         ResourceMaterialFactory $resourceMaterialFactory,
-        CurrentUserResolver $currentUserResolver
+        CurrentUserResolver $currentUserResolver,
+        ReflectionMethodBetaParticipationRepository $betaParticipationRepository,
+        ActivityReflectionFactory $activityReflectionFactory
     ) {
         $this->timeslotFactory = $timeslotFactory;
         $this->resourcePersonFactory = $resourcePersonFactory;
         $this->resourceMaterialFactory = $resourceMaterialFactory;
         $this->currentUserResolver = $currentUserResolver;
+        $this->betaParticipationRepository = $betaParticipationRepository;
+        $this->activityReflectionFactory = $activityReflectionFactory;
+        $this->learningActivityActingRepository = $learningActivityActingRepository;
     }
 
     public function createLAA(array $data): LearningActivityActing
     {
+        $student = $this->currentUserResolver->getCurrentUser();
         $activityActing = new LearningActivityActing();
 
         $activityActing->resourcePerson()->associate($this->getResourcePerson($data));
@@ -52,19 +74,31 @@ class LAAFactory
         }
 
         $activityActing->timeslot()->associate($this->getTimeslot($data));
-        $activityActing->workplaceLearningPeriod()->associate($this->currentUserResolver->getCurrentUser()->getCurrentWorkplaceLearningPeriod());
+        $activityActing->workplaceLearningPeriod()->associate($student->getCurrentWorkplaceLearningPeriod());
         $activityActing->learningGoal()->associate((new LearningGoal())::find($data['learning_goal']));
 
         $activityActing->date = Carbon::parse($data['date'])->format('Y-m-d');
         $activityActing->situation = $data['description'];
-        $activityActing->lessonslearned = $data['learned'];
-        $activityActing->support_wp = $data['support_wp'];
-        $activityActing->support_ed = $data['support_ed'];
+
+        // Only in non-reflection
+        if (!$this->betaParticipationRepository) {
+            $activityActing->lessonslearned = $data['learned'];
+            $activityActing->support_wp = $data['support_wp'];
+            $activityActing->support_ed = $data['support_ed'];
+        }
+
         $activityActing->res_material_detail = $data['res_material_detail'];
-        $activityActing->save();
+        $this->learningActivityActingRepository->save($activityActing);
 
         // Needs to be after save because the relation is many-to-many, thus association table is used
         $activityActing->competence()->sync($data['competence']);
+
+        if ($this->betaParticipationRepository->doesStudentParticipate($student)) {
+            $activityActing->is_from_reflection_beta = true;
+            $this->activityReflectionFactory->create($data['reflection'], $activityActing);
+            $this->learningActivityActingRepository->save($activityActing);
+        }
+
 
         return $activityActing;
     }

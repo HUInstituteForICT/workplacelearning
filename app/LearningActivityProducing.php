@@ -35,7 +35,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int                                 $difficulty_id
  * @property \App\LearningActivityProducing      $nextLearningActivityProducing
  * @property \App\LearningActivityProducing|null $previousLearningActivityProducing
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereChainId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereDate($value)
@@ -50,6 +49,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereWplpId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing query()
  */
 class LearningActivityProducing extends Model implements LearningActivityInterface
 {

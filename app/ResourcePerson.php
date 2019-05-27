@@ -20,20 +20,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $person_label
  * @property int    $wplp_id
  * @property int    $ep_id
- *
- *
  * @property int|null                       $cohort_id
  * @property \App\Cohort|null               $cohort
  * @property \App\EducationProgram|null     $educationProgram
  * @property \App\LearningActivityProducing $learningActivityProducing
  * @property \App\WorkplaceLearningPeriod   $workplaceLearningPeriod
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereEpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson wherePersonLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereRpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereWplpId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson query()
  */
 class ResourcePerson extends Model implements HasLabelProperty, IsTranslatable
 {

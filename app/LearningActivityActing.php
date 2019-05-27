@@ -38,7 +38,6 @@ use RuntimeException;
  * @property \Illuminate\Database\Eloquent\Collection|\App\Evidence[] $evidence
  * @property \App\WorkplaceLearningPeriod                             $workplaceLearningPeriod
  * @property bool                                                     $is_from_reflection_beta
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLaaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLearninggoalId($value)
@@ -55,6 +54,11 @@ use RuntimeException;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceFilename($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceMime($value)
  * @mixin \Eloquent
+ * @property-read \App\ActivityReflection $reflection
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereIsFromReflectionBeta($value)
  */
 class LearningActivityActing extends Model implements LearningActivityInterface
 {
@@ -133,7 +137,6 @@ class LearningActivityActing extends Model implements LearningActivityInterface
             throw new RuntimeException('Tried to retrieve ActivityReflection on LAA that is not in reflection beta');
         }
 
-        return $this->hasOne(ActivityReflection::class, 'learning_activity_id', 'laa_id')->where('type', '=',
-            ActivityReflection::LEARNING_ACTIVITY_ACTING)->first();
+        return $this->hasOne(ActivityReflection::class, 'learning_activity_id', 'laa_id');
     }
 }

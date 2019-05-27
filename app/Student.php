@@ -34,7 +34,6 @@ use Illuminate\Notifications\Notifiable;
  * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[]                                               $usersettings
  * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[]                                   $workplaceLearningPeriods
  * @property \Illuminate\Database\Eloquent\Collection|\App\Workplace[]                                                 $workplaces
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereAnswer($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereBirthdate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereEmail($value)
@@ -50,8 +49,12 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereStudentnr($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereUserlevel($value)
  * @mixin \Eloquent
- *
  * @property \Illuminate\Database\Eloquent\Collection|\App\Cohort[] $cohorts
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereCanvasUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereIsRegisteredThroughCanvas($value)
  */
 class Student extends Authenticatable
 {

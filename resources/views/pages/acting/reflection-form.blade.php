@@ -1,5 +1,5 @@
-<div style="max-height: 80vh; overflow: scroll">
-
+<div style="max-height: 80vh; overflow-y: scroll">
+        <input type="hidden" name="reflection[type]" value="{{$type}}" />
     @foreach($fields as $name => $field)
 
         <h4>{{ __('reflection.fields.' . $type .'.'.$name) }}</h4>
