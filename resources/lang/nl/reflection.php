@@ -3,7 +3,8 @@
 return [
     'reflection' => 'Reflectie',
     'add-new-reflection' => 'Reflectie toevoegen',
-
+    'none-attached' => 'Geen reflectie toegevoegd',
+    'remove' => 'Verwijderen',
 
     'fields' => [
         'STARR' => [
