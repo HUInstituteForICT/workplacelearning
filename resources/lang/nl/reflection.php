@@ -7,7 +7,11 @@ return [
 
     'fields' => [
         'STARR' => [
-            'situation' => 'Situatie'
+            'situation' => 'Situatie',
+            'task' => 'Taak',
+            'action' => 'Actie',
+            'result' => 'Resultaat',
+            'reflection' => 'Reflectie'
         ]
     ]
 ];

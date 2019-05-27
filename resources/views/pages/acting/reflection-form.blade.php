@@ -1,12 +1,10 @@
-<div>
+<div style="max-height: 80vh; overflow: scroll">
 
     @foreach($fields as $name => $field)
 
-        <strong>{{ __('reflection.fields.' . $type .'.'.$name) }}</strong>
+        <h4>{{ __('reflection.fields.' . $type .'.'.$name) }}</h4>
+        <textarea class="form-control" rows="8" name="reflection[field][{{$name}}]">{{$field}}</textarea>
         <br/>
-
-        <textarea class="form-control" rows="10" name="reflection[field][{{$name}}]">{{$field}}</textarea>
-
     @endforeach
 
 </div>
