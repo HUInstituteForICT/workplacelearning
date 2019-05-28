@@ -17,4 +17,9 @@ class ActivityReflectionFieldRepository
     {
         return $activityReflectionField->save();
     }
+
+    public function delete(ActivityReflectionField $activityReflectionField): bool
+    {
+        return $activityReflectionField->delete();
+    }
 }

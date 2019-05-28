@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Interfaces\LearningActivityInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,7 +16,7 @@ use RuntimeException;
  * @property string $learning_activity_type
  * @property string $reflection_type
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ActivityReflectionField[] $fields
- * @property-read \App\LearningActivityActing $learningActivity
+ * @property-read LearningActivityInterface $learningActivity
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection query()

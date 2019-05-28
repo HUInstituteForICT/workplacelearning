@@ -82,4 +82,5 @@ return array(
     'translations' => 'Vertalingen',
     'en' => 'Engels',
     'nl' => 'Nederlands',
+    'hide' => 'Sluiten'
 );

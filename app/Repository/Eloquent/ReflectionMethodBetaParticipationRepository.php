@@ -3,13 +3,35 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Exceptions\UnexpectedUser;
 use App\ReflectionMethodBetaParticipation;
+use App\Services\CurrentUserResolver;
 use App\Student;
 use Illuminate\Support\Collection;
 
 
 class ReflectionMethodBetaParticipationRepository
 {
+
+    /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
+
+    public function __construct(CurrentUserResolver $currentUserResolver)
+    {
+        $this->currentUserResolver = $currentUserResolver;
+    }
+
+    public function doesCurrentUserParticipate(): bool
+    {
+        try {
+            return $this->doesStudentParticipate($this->currentUserResolver->getCurrentUser());
+        } catch (UnexpectedUser $unexpectedUser) {
+            return false;
+        }
+    }
+
     public function doesStudentParticipate(Student $student): bool
     {
         return ReflectionMethodBetaParticipation::where('student_id', '=', $student->student_id)

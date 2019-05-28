@@ -269,7 +269,13 @@ Route::group([
             ->name('evidence-remove');
 
         Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')->name('evidence-download');
-        Route::get('reflection/{activityReflection}', 'Reflection\Download')->name('reflection-download');
+        Route::get('reflection/{activityReflection}', 'Reflection\Download')
+            ->middleware('can:view,activityReflection')
+            ->name('reflection-download');
+
+        Route::get('reflection/{activityReflection}/delete', 'Reflection\Delete')
+            ->middleware('can:view,activityReflection')
+            ->name('reflection-delete');
 
         Route::get('beta-reflection-method-participation/{participate}', 'Misc\DecideForReflectionMethodBetaParticipation')->name('reflection-beta-participation');
         Route::get('render-reflection-type/{type}', 'Reflection\RenderCreateForm')->name('render-reflection-type');

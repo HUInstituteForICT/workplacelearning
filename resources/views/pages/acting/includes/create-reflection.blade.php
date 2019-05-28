@@ -1,38 +1,49 @@
 <div class="col-md-2 form-group">
     <h4>{{ Lang::get('reflection.reflection') }}</h4>
 
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="addReflectionButton">
-            {{ __('reflection.add-new-reflection') }} <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
+    <div id="currentReflection" style="text-align: center;">
+        {{ __('reflection.none-attached') }}
+    </div>
+
+    <br/><br/>
+
+
+    <div class="fab">
+        <span class="fab-action-button" id="actionButton">
+            <i class="fab-action-button__icon">
+                <img id="actionImage" src="{{ secure_asset('assets/img/plus.svg') }}"/>
+            </i>
+        </span>
+        <ul class="fab-buttons">
+
             @foreach(\App\ActivityReflection::TYPES as $reflectionType)
-                <li>
-                    <a class="addReflectionType" data-type='{{$reflectionType}}'>
-                        {{ \App\ActivityReflection::READABLE_TYPES[$reflectionType] }}
+                <li class="fab-buttons__item addReflectionType" data-type='{{$reflectionType}}'>
+                    <a href="#" class="fab-buttons__link"
+                       data-tooltip="{{ \App\ActivityReflection::READABLE_TYPES[$reflectionType] }}">
+                        <img class="logout" src="{{ secure_asset('assets/img/'.strtolower($reflectionType).'.svg') }}"/>
+
                     </a>
                 </li>
             @endforeach
         </ul>
     </div>
 
-    <div id="currentReflection">
-        {{ __('reflection.none-attached') }}
-    </div>
 
-    <div class="modal fade" id="reflectionModal">
+    <div class=" modal fade" id="reflectionModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
                     <h4 class="modal-title" id="reflectionTitle"></h4>
                 </div>
                 <div class="modal-body">
                     <div id="reflectionFormWrapper"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+
+                    <button type="button" class="btn btn-primary">{{ __('general.hide')  }}</button>
                 </div>
             </div>
         </div>
@@ -48,7 +59,9 @@
     const reflectionTitleElement = document.getElementById('reflectionTitle');
     const reflectionModal = $('#reflectionModal');
     const currentReflection = $('#currentReflection');
-    const addReflectioButton = $('#addReflectionButton');
+    const actionButton = $('#actionButton');
+    const actionImage = $('#actionImage');
+    const fabButtons = $('.fab-buttons');
 
     for (let type of reflectionTypeElements) {
         type.onclick = onClickReflectionType
@@ -59,7 +72,7 @@
     function onClickReflectionType(event) {
         reflectionModal.modal('hide');
 
-        const type = event.target.dataset.type;
+        const type = event.currentTarget.dataset.type;
 
         const url = reflectionUrl.replace('type-param', type);
         fetch(url).then(function (response) {
@@ -91,21 +104,29 @@
 
             currentReflection.html('{{__('reflection.reflection')}}: ' + type + ' - ');
             currentReflection.append(remover);
-            currentReflection.append('<br/><br/><br/>');
 
-
-            const modalOpener = $('<a class="btn btn-primary"></a>');
-            modalOpener.text('Open {{ __("reflection.reflection") }}');
-            modalOpener.click(function() {
-                reflectionModal.modal('show');
+            // Update FAB
+            actionButton.fadeOut(600, function () {
+                actionImage.prop('src', '{{ \secure_asset('assets/img/edit.svg') }}');
+                actionButton.click(function () {
+                    reflectionModal.modal('show');
+                });
+                actionButton.fadeIn(600);
             });
-            currentReflection.append(modalOpener);
 
+            fabButtons.css('display', 'none');
 
-            addReflectioButton.prop('disabled', true);
         } else {
+            // Update FAB
+            actionButton.fadeOut(600, function () {
+                actionImage.prop('src', '{{ \secure_asset('assets/img/plus.svg') }}');
+                actionButton.unbind('click');
+                fabButtons.css('display', 'block');
+                actionButton.fadeIn(600);
+
+            });
+
             currentReflection.html('{{ __('reflection.none-attached') }}');
-            addReflectioButton.prop('disabled', false);
         }
     }
 

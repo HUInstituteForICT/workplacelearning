@@ -81,4 +81,5 @@ return array(
     'translations' => 'Translations',
     'en' => 'English',
     'nl' => 'Dutch',
+    'hide' => 'Hide'
 );

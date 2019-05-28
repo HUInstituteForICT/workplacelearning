@@ -19,14 +19,13 @@ class ActingCreateRequest extends FormRequest
 
     public function rules(): array
     {
-        /** @var CurrentUserResolver $currentUserResolver */
-        $currentUserResolver = $this->container->get(CurrentUserResolver::class);
+
         /** @var ReflectionMethodBetaParticipationRepository $betaRepo */
         $betaRepo = $this->container->get(ReflectionMethodBetaParticipationRepository::class);
-        $student = $currentUserResolver->getCurrentUser();
 
 
-        if ($betaRepo->doesStudentParticipate($student)) {
+
+        if ($betaRepo->doesCurrentUserParticipate()) {
             return [
                 'reflection.type'  => ['sometimes', Rule::in(ActivityReflection::TYPES)],
                 'reflection.field' => ['sometimes', 'array'],

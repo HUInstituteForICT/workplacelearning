@@ -195,6 +195,11 @@
                     </div>
                 </div>
             @endif
+
+            @if($reflectionBetaActive)
+                @include('pages.acting.includes.create-reflection')
+            @endif
+
             <div class="col-md-2 form-group">
                 <div>
                     <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle" aria-hidden="true"
@@ -232,10 +237,6 @@
                     <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save"/>
                 </div>
             </div>
-
-            @if($reflectionBetaActive)
-                @include('pages.acting.includes.create-reflection')
-            @endif
             {{ Form::close() }}
         </div>
         <script type="text/javascript">
