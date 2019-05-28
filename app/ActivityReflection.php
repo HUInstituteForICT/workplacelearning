@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Interfaces\LearningActivityInterface;
+
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,7 +26,7 @@ use RuntimeException;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection whereLearningActivityId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection whereLearningActivityType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection whereReflectionType($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class ActivityReflection extends Model
 {

@@ -279,7 +279,9 @@ export default class ActivityActingProcessTable extends React.Component {
                         <td>{Lang.get('react.competence')}</td>
                         <td>{Lang.get('react.evidence')}</td>
                         {window.reflectionBetaActive &&
-                        <td>{Lang.get('react.reflection')}</td>}
+                        <td>{Lang.get('react.reflection')} <i onClick={this.downloadMultiple}
+                                                              style={{cursor: 'pointer'}}
+                                                              className="glyphicon glyphicon-cloud-download"/></td>}
 
                     </tr>
                     </thead>
@@ -294,5 +296,10 @@ export default class ActivityActingProcessTable extends React.Component {
         </div>
     }
 
+    downloadMultiple = () => {
+        const ids = this.filterActivities(this.state.activities).filter(activity => activity.reflection !== null).map(activity => activity.reflection.id);
+        const url = window.reflectionDownloadMultipleUrl + '?' + ids.map(id => 'ids[]=' + id).join('&');
+        window.location.href = url;
+    }
 
 }

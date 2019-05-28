@@ -79,7 +79,7 @@ export default class Row extends React.Component {
             </td>
             {window.reflectionBetaActive &&
             <td>
-                {activity.reflection && <a href={activity.reflection}>Download</a>}
+                {activity.reflection && <a href={activity.reflection.url}>Download</a>}
             </td>}
 
         </tr>

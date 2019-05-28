@@ -269,9 +269,12 @@ Route::group([
             ->name('evidence-remove');
 
         Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')->name('evidence-download');
+        Route::get('reflection/multiple', 'Reflection\DownloadMultiple')
+            ->name('reflection-download-multiple');
         Route::get('reflection/{activityReflection}', 'Reflection\Download')
             ->middleware('can:view,activityReflection')
             ->name('reflection-download');
+
 
         Route::get('reflection/{activityReflection}/delete', 'Reflection\Delete')
             ->middleware('can:view,activityReflection')

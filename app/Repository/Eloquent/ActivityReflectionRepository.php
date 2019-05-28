@@ -38,4 +38,13 @@ class ActivityReflectionRepository
 
         return $activityReflection->delete();
     }
+
+    /**
+     * @param int[] $ids
+     * @return ActivityReflection[]
+     */
+    public function getMany(array $ids): array
+    {
+        return ActivityReflection::whereIn('id', $ids)->get()->all();
+    }
 }

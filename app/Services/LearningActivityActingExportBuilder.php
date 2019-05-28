@@ -57,7 +57,10 @@ class LearningActivityActingExportBuilder
                     if(!$activity->is_from_reflection_beta) {
                         return null;
                     }
-                    return $activity->reflection === null ? null : route('reflection-download', ['reflection' => $activity->reflection]);
+                    return [
+                        'url' => $activity->reflection === null ? null : route('reflection-download', ['reflection' => $activity->reflection]),
+                        'id' => $activity->reflection->id
+                    ];
                 })()
             ];
         });

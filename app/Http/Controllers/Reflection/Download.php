@@ -26,5 +26,7 @@ class Download
     {
         $document = $this->exporter->exportReflections([$activityReflection]);
         $document->save(strtolower(__('reflection.reflection')) . '.docx', 'Word2007', true);
+        // We need to quit Laravel otherwise the docx will get corrupted
+        exit;
     }
 }
