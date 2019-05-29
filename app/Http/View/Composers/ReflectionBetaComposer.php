@@ -5,7 +5,7 @@ namespace App\Http\View\Composers;
 
 
 use App\Exceptions\UnexpectedUser;
-use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
+use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\Services\CurrentUserResolver;
 
 class ReflectionBetaComposer

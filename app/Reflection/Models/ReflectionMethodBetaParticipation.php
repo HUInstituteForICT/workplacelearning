@@ -1,17 +1,16 @@
 <?php
 
 
-namespace App;
+namespace App\Reflection\Models;
 
 
+use App\Student;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\ReflectionMethodBetaParticipation
  *
- * @property bool participates
- * @property Student student
  * @property int $id
  * @property int $student_id
  * @property int $participates

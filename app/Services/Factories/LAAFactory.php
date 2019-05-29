@@ -2,11 +2,12 @@
 
 namespace App\Services\Factories;
 
-use App\ActivityReflection;
+use App\Reflection\Models\ActivityReflection;
 use App\LearningActivityActing;
 use App\LearningGoal;
+use App\Reflection\Services\Factories\ActivityReflectionFactory;
 use App\Repository\Eloquent\LearningActivityActingRepository;
-use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
+use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\ResourceMaterial;
 use App\ResourcePerson;
 use App\Services\CurrentUserResolver;
@@ -81,7 +82,7 @@ class LAAFactory
         $activityActing->situation = $data['description'];
 
         // Only in non-reflection
-        if (!$this->betaParticipationRepository) {
+        if (!$this->betaParticipationRepository->doesCurrentUserParticipate()) {
             $activityActing->lessonslearned = $data['learned'];
             $activityActing->support_wp = $data['support_wp'];
             $activityActing->support_ed = $data['support_ed'];
@@ -93,7 +94,7 @@ class LAAFactory
         // Needs to be after save because the relation is many-to-many, thus association table is used
         $activityActing->competence()->sync($data['competence']);
 
-        if ($this->betaParticipationRepository->doesStudentParticipate($student)) {
+        if ($this->betaParticipationRepository->doesCurrentUserParticipate()) {
             $activityActing->is_from_reflection_beta = true;
             $this->activityReflectionFactory->create($data['reflection'], $activityActing);
             $this->learningActivityActingRepository->save($activityActing);

@@ -11,7 +11,7 @@
     <div class="fab">
         <span class="fab-action-button" id="actionButton">
             <i class="fab-action-button__icon">
-                <img id="actionImage" src="{{ secure_asset('assets/img/plus.svg') }}"/>
+                <img id="actionImage" src="{{ secure_asset('assets/img/edit.svg') }}"/>
             </i>
         </span>
         <ul class="fab-buttons">
@@ -38,7 +38,10 @@
                     <h4 class="modal-title" id="reflectionTitle"></h4>
                 </div>
                 <div class="modal-body">
-                    <div id="reflectionFormWrapper"></div>
+                    <div id="reflectionFormWrapper">
+                        <input type="hidden" name="reflection_id" value="{{$reflection->id}}"/>
+                        @include('pages.acting.reflection-form', ['type' => $reflection->reflection_type, 'fields' => $reflection->renderableFields()])
+                    </div>
                 </div>
                 <div class="modal-footer">
 
@@ -66,7 +69,8 @@
         type.onclick = onClickReflectionType
     }
 
-    var reflectionAttached = false;
+    var reflectionAttached = true;
+    updateCurrentReflectionText('{{$reflection->reflection_type}}');
 
     function onClickReflectionType(event) {
         reflectionModal.modal('hide');
@@ -84,6 +88,7 @@
     function renderReflectionForm(reflectionForm, type) {
         reflectionModal.modal('show');
         formWrapper.innerHTML = reflectionForm;
+
         reflectionAttached = true;
 
         updateCurrentReflectionText(type);
@@ -96,9 +101,12 @@
             const remover = $('<a></a>');
             remover.text('{{__('reflection.remove')}}');
             remover.click(function () {
-                formWrapper.innerHTML = '';
-                reflectionAttached = false;
-                updateCurrentReflectionText(null);
+                if (confirm('{{ __('reflection.delete-confirmation') }}')) {
+                    window.location.href = '{{ route('reflection-delete', ['activityReflection' => $reflection]) }}'
+                    formWrapper.innerHTML = '';
+                    reflectionAttached = false;
+                    updateCurrentReflectionText(null);
+                }
             });
 
             currentReflection.html('{{__('reflection.reflection')}}: ' + type + ' - ');

@@ -277,7 +277,7 @@ Route::group([
 
 
         Route::get('reflection/{activityReflection}/delete', 'Reflection\Delete')
-            ->middleware('can:view,activityReflection')
+            ->middleware('can:delete,activityReflection')
             ->name('reflection-delete');
 
         Route::get('beta-reflection-method-participation/{participate}', 'Misc\DecideForReflectionMethodBetaParticipation')->name('reflection-beta-participation');

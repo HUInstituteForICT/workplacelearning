@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Interfaces\LearningActivityInterface;
+use App\Reflection\Models\ActivityReflection;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -15,8 +16,8 @@ use RuntimeException;
 /**
  * App\LearningActivityActing.
  *
- * @property int                                                      $laa_id
- * @property int                                                      $wplp_id
+ * @property int                                            $laa_id
+ * @property int                                            $wplp_id
  * @property Carbon                                                   $date
  * @property int                                                      $timeslot_id
  * @property string                                                   $situation
@@ -54,7 +55,7 @@ use RuntimeException;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceFilename($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceMime($value)
  * @mixin \Eloquent
- * @property-read \App\ActivityReflection $reflection
+ * @property-read \App\Reflection\Models\ActivityReflection $reflection
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing query()
@@ -133,10 +134,6 @@ class LearningActivityActing extends Model implements LearningActivityInterface
      */
     public function reflection(): HasOne
     {
-        if (!$this->is_from_reflection_beta) {
-            throw new RuntimeException('Tried to retrieve ActivityReflection on LAA that is not in reflection beta');
-        }
-
         return $this->hasOne(ActivityReflection::class, 'learning_activity_id', 'laa_id');
     }
 }

@@ -1,9 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Reflection\Models;
 
+use App\Reflection\Models\ActivityReflectionField;
 use App\Interfaces\LearningActivityInterface;
 
+use App\LearningActivityActing;
+use App\LearningActivityProducing;
 use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,12 +16,12 @@ use RuntimeException;
 /**
  * App\ActivityReflection
  *
- * @property int $id
- * @property int $learning_activity_id
- * @property string $learning_activity_type
- * @property string $reflection_type
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\ActivityReflectionField[] $fields
- * @property-read LearningActivityInterface $learningActivity
+ * @property int                                                                                            $id
+ * @property int                                                                                            $learning_activity_id
+ * @property string                                                                                         $learning_activity_type
+ * @property string                                                                                         $reflection_type
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Reflection\Models\ActivityReflectionField[] $fields
+ * @property-read LearningActivityInterface                                                                 $learningActivity
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection query()
@@ -34,10 +37,17 @@ class ActivityReflection extends Model
 
     public const LEARNING_ACTIVITY_ACTING = 'acting';
     public const LEARNING_ACTIVITY_PRODUCING = 'producing';
-    public const LEARNING_ACTIVITY_TYPE = [LearningActivityActing::class => self::LEARNING_ACTIVITY_ACTING, LearningActivityProducing::class => self::LEARNING_ACTIVITY_PRODUCING];
+    public const LEARNING_ACTIVITY_TYPE = [LearningActivityActing::class    => self::LEARNING_ACTIVITY_ACTING,
+                                           LearningActivityProducing::class => self::LEARNING_ACTIVITY_PRODUCING,
+    ];
 
     public const TYPES = ['STARR', 'KORTHAGEN', 'ABCD', 'PDCA', 'CUSTOM'];
-    public const READABLE_TYPES = ['STARR' => 'STARR', 'KORTHAGEN' => 'Korthagen', 'ABCD' => 'ABCD', 'PDCA' => 'PDCA', 'CUSTOM' => 'Custom'];
+    public const READABLE_TYPES = ['STARR'     => 'STARR',
+                                   'KORTHAGEN' => 'Korthagen',
+                                   'ABCD'      => 'ABCD',
+                                   'PDCA'      => 'PDCA',
+                                   'CUSTOM'    => 'Custom',
+    ];
 
     public function fields(): HasMany
     {
@@ -58,5 +68,14 @@ class ActivityReflection extends Model
         }
 
         throw new RuntimeException("ActivityReflection with type {$this->type} cannot be related to a learning activity");
+    }
+
+    public function renderableFields(): array
+    {
+        return $this->fields->reduce(function (array $carry, ActivityReflectionField $field) {
+            $carry[$field->name] = $field->value;
+
+            return $carry;
+        }, []);
     }
 }

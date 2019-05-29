@@ -1,11 +1,12 @@
 <?php
 
 
-namespace App\Repository\Eloquent;
+namespace App\Reflection\Repository\Eloquent;
 
 
-use App\ActivityReflection;
-use App\ActivityReflectionField;
+use App\Reflection\Models\ActivityReflection;
+use App\Reflection\Models\ActivityReflectionField;
+use App\Reflection\Repository\Eloquent\ActivityReflectionFieldRepository;
 
 class ActivityReflectionRepository
 {
@@ -41,7 +42,7 @@ class ActivityReflectionRepository
 
     /**
      * @param int[] $ids
-     * @return ActivityReflection[]
+     * @return \App\Reflection\Models\ActivityReflection[]
      */
     public function getMany(array $ids): array
     {

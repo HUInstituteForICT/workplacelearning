@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests\LearningActivity;
 
-use App\ActivityReflection;
-use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
-use App\Services\CurrentUserResolver;
+use App\Reflection\Models\ActivityReflection;
+use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -17,18 +16,13 @@ class ActingCreateRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+    public function rules(ReflectionMethodBetaParticipationRepository $betaParticipationRepository): array
     {
-
-        /** @var ReflectionMethodBetaParticipationRepository $betaRepo */
-        $betaRepo = $this->container->get(ReflectionMethodBetaParticipationRepository::class);
-
-
-
-        if ($betaRepo->doesCurrentUserParticipate()) {
+        if ($betaParticipationRepository->doesCurrentUserParticipate()) {
             return [
                 'reflection.type'  => ['sometimes', Rule::in(ActivityReflection::TYPES)],
-                'reflection.field' => ['sometimes', 'array'],
+                'reflection.field' => 'sometimes|array',
+
                 // Normal rules
                 'date'             => 'required|date|date_in_wplp',
                 'description'      => 'required|max:2000',

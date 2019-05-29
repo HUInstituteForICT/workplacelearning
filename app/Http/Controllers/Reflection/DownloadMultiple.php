@@ -4,10 +4,10 @@
 namespace App\Http\Controllers\Reflection;
 
 
-use App\ActivityReflection;
-use App\Repository\Eloquent\ActivityReflectionRepository;
+use App\Reflection\Models\ActivityReflection;
+use App\Reflection\Repository\Eloquent\ActivityReflectionRepository;
 use App\Services\CurrentUserResolver;
-use App\Services\Reflection\Exporter;
+use App\Reflection\Services\Exporter;
 use Illuminate\Http\Request;
 
 

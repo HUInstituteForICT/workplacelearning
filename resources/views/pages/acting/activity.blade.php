@@ -234,7 +234,7 @@
                     </ul>
                 </div>
                 <div>
-                    <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="Save"/>
+                    <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="{{ __('general.save') }}"/>
                 </div>
             </div>
             {{ Form::close() }}

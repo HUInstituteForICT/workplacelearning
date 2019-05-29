@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Services\Reflection;
+namespace App\Reflection\Services;
 
 
-use App\ActivityReflection;
-use App\ActivityReflectionField;
+use App\Reflection\Models\ActivityReflection;
+use App\Reflection\Models\ActivityReflectionField;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Style\Font;
 
@@ -13,7 +13,7 @@ class Exporter
 {
 
     /**
-     * @param ActivityReflection[] $reflections
+     * @param \App\Reflection\Models\ActivityReflection[] $reflections
      * @return PhpWord
      */
     public function exportReflections(array $reflections): PhpWord
@@ -29,6 +29,7 @@ class Exporter
 
         foreach ($reflections as $reflection) {
             $section->addTitle(__('reflection.reflection') . ': ' . $reflection->reflection_type);
+            $section->addText(strftime('%d-%m-%Y', $reflection->learningActivity->date->getTimestamp()));
             $section->addText('', [], ['borderBottomSize' => 6]);
             $section->addTextBreak();
 

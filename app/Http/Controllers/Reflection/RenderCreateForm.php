@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Reflection;
 
 
-use App\Interfaces\ReflectionType;
+use App\Reflection\Interfaces\ReflectionType;
 use App\Reflection\Types\Custom;
 use App\Reflection\Types\Starr;
 

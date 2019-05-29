@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\ActivityReflection;
+use App\Reflection\Models\ActivityReflection;
 use App\Feedback;
 use App\LearningActivityActing;
 use App\LearningActivityProducing;

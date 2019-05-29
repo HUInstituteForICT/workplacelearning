@@ -4,7 +4,7 @@
 namespace App\Reflection\Types;
 
 
-use App\Interfaces\ReflectionType;
+use App\Reflection\Interfaces\ReflectionType;
 
 class Custom implements ReflectionType
 {

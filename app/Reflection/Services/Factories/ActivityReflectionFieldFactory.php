@@ -1,12 +1,12 @@
 <?php
 
 
-namespace App\Services\Factories;
+namespace App\Reflection\Services\Factories;
 
 
-use App\ActivityReflection;
-use App\ActivityReflectionField;
-use App\Repository\Eloquent\ActivityReflectionFieldRepository;
+use App\Reflection\Models\ActivityReflection;
+use App\Reflection\Models\ActivityReflectionField;
+use App\Reflection\Repository\Eloquent\ActivityReflectionFieldRepository;
 
 class ActivityReflectionFieldFactory
 {

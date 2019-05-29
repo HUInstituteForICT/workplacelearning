@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Repository\Eloquent;
+namespace App\Reflection\Repository\Eloquent;
 
 
-use App\ActivityReflectionField;
+use App\Reflection\Models\ActivityReflectionField;
 
 class ActivityReflectionFieldRepository
 {

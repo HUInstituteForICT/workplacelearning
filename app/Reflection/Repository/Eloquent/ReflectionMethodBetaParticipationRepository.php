@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Repository\Eloquent;
+namespace App\Reflection\Repository\Eloquent;
 
 use App\Exceptions\UnexpectedUser;
-use App\ReflectionMethodBetaParticipation;
+use App\Reflection\Models\ReflectionMethodBetaParticipation;
 use App\Services\CurrentUserResolver;
 use App\Student;
 use Illuminate\Support\Collection;
