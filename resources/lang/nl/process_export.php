@@ -21,6 +21,7 @@ return array(
   'learningGoalDescription' => 'omschrijving leerdoel',
   'evidence' => 'bewijsstuk',
   'chain' => 'keten',
+  'reflection' => 'reflectie',
   'mail-subject' => 'Leermomenten export gedeeld met u',
   'text-mail' => 'Goedendag,
 

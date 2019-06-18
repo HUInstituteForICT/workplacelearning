@@ -11,7 +11,8 @@ return [
     'chain' => 'Keten',
     'complexity' => 'Complexiteit',
     'reflection' => 'Reflectie',
-    'export-to' => 'Export naar',
+    'export-to' => 'Exporteer activiteiten naar',
+    'export-reflections' => 'Exporteer reflecties',
     'mail-to' => 'Mailen naar',
     'mail-comment' => 'Opmerking',
     'mail' => [

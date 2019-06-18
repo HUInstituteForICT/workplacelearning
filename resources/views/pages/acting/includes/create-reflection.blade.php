@@ -117,9 +117,10 @@
 
         } else {
             // Update FAB
+            actionButton.unbind('click');
             actionButton.fadeOut(600, function () {
                 actionImage.prop('src', '{{ \secure_asset('assets/img/plus.svg') }}');
-                actionButton.unbind('click');
+
                 fabButtons.css('display', 'block');
                 actionButton.fadeIn(600);
 

@@ -17,7 +17,8 @@ return [
     'chain' => 'Chain',
     'complexity' => 'Complexity',
     'reflection' => 'Reflection',
-    'export-to' => 'Export to',
+    'export-to' => 'Export activities to',
+    'export-reflections' => 'Export reflections',
     'mail-to' => 'Mail to',
     'mail' => [
             'sending' => 'Sending...',

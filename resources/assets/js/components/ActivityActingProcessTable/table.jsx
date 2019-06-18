@@ -259,6 +259,8 @@ export default class ActivityActingProcessTable extends React.Component {
                 </div>
                 }
 
+                <br/>
+                <button className="btn btn-info" disabled={filteredActivities.filter(activity => activity.reflection !== null).length === 0} onClick={this.downloadMultiple}>{Lang.get('react.export-reflections')}</button>
             </div>
 
             <div className="table-responsive">
@@ -279,9 +281,7 @@ export default class ActivityActingProcessTable extends React.Component {
                         <td>{Lang.get('react.competence')}</td>
                         <td>{Lang.get('react.evidence')}</td>
                         {window.reflectionBetaActive &&
-                        <td>{Lang.get('react.reflection')} <i onClick={this.downloadMultiple}
-                                                              style={{cursor: 'pointer'}}
-                                                              className="glyphicon glyphicon-cloud-download"/></td>}
+                        <td>{Lang.get('react.reflection')}</td>}
 
                     </tr>
                     </thead>

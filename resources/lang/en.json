@@ -4,10 +4,8 @@
   "Percentage leermomenten per categorie": "Percentage learning activities per category",
   "Percentage leermomenten per leerdoel": "Percentage learning activities per learning goal",
   "Percentage leermomenten per competentie": "Percentage learning activities per competence",
-
   "Op een ander moment": "At another time",
   "Ongepland leermoment": "Unplanned learning activity",
-
   "Interpersoonlijk": "Interpersonal",
   "Vakinhoudelijk en (vak)didactisch": "Subject-specific and (subject) didactic",
   "Samenwerken met collega’s": "Collaborating with colleagues",
@@ -26,8 +24,6 @@
   "Implementeren / configureren": "Implementing / configuring",
   "Onderzoek Doen": "Doing research",
   "Zorgverlener": "Caregiver",
-
-
   "1e lesuur": "1st hour",
   "2e lesuur": "2nd hour",
   "3e lesuur": "3rd hour",
@@ -38,12 +34,9 @@
   "8e lesuur": "8th hour",
   "9e lesuur": "9th hour",
   "10e lesuur": "10th hour",
-
   "Leervraag 1": "Learning question 1",
   "Leervraag 2": "Learning question 2",
   "Leervraag 3": "Learning question 3",
-
-
   "Oefentherapeutisch handelen": "Practice therapy",
   "Communiceren": "Communicating",
   "Samenwerken": "Collaborating",
@@ -51,10 +44,8 @@
   "Maatschappelijk handelen": "Acting in relation to society",
   "Organiseren": "Organizing",
   "Professioneel handelen": "Acting professionally",
-
   "Niet aan een patiënt gebonden": "Not bound to a patient",
   "Niet aan een klas gebonden": "Not bound to a class",
-
   "Boek/Artikel": "Book/Article",
   "Stagebegeleider": "Internship advisor",
   "Stagebegeleider bedrijf": "Workplace advisor",
@@ -75,7 +66,6 @@
   "Flex-werker / Oproepkracht": "Flex worker",
   "Één patiënt": "One patient",
   "Patiëntenkamer/team": "Patient room/team",
-
   "minutes": "minutes",
   "Het Werkplekleren account met als email :email is al gekoppeld aan een ander Canvas account.": "The Workplace Learning account with e-mail :email is already linked to another Canvas account",
   "Jouw Canvas account is nu gekoppeld aan je Werkplekleren account.": "Your Canvas account is now linked to your Workplace Learning account.",
@@ -85,5 +75,4 @@
   "Je Werkplekleren account is aangemaakt, je kunt via Canvas inloggen op dit account.": "Your Workplace Learning account has been created. You can log in to this account via Canvas.",
   "Je Werkplekleren account is bijna aangemaakt, het is enkel nog nodig om je studentennummer en opleiding door te geven.": "Your Workplace Learning account is almost created, you only need to fill in your student number and the programme you're in.",
   "Je opleiding staat er niet tussen? Neem dan contact op met je stage coördinator.": "Is your programme not in the list? Contact your internship coordinator."
-
 }

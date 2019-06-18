@@ -53,7 +53,7 @@ class LearningActivityActingExportBuilder
                             ['evidence' => $evidence, 'diskFileName' => $evidence->disk_filename]),
                     ];
                 })->all(),
-                'reflection'              =>  (function() use($activity) {
+                'reflection'              =>  (static function() use($activity) {
                     if(!$activity->is_from_reflection_beta) {
                         return null;
                     }
@@ -84,6 +84,7 @@ class LearningActivityActingExportBuilder
             'supportEd',
             'competence',
             'evidence',
+            'reflection'
         ])->each(function ($field) use (&$mapping): void {
             $mapping[$field] = $this->translator->get('process_export.' . $field);
         });
