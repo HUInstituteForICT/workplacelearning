@@ -43,7 +43,7 @@ return [
     'types' => [
         'starr'     => [
             'situation'  => "Wat was de situatie?\n\n- Wat gebeurde er?\n\n\n- Wie waren er bij betrokken?\n\n\n- Waar speelde de situatie zich af?\n\n\n- Wanneer speelde deze situatie?\n\n",
-            'task'       => "Algemeen:\n- Was was je taak?\n\n\n- Wat was je rol?\n\n\n- Wat werd er van je verwacht?\n\n\nPersoonlijk:\n- Wat wilde je bereiken?\n\n\n- Wat verwachtte je van jezelf in die situatie?\n\n\n- Wat vond je dat je moest doen?\n\n",
+            'task'       => "Algemeen:\n- Wat was je taak?\n\n\n- Wat was je rol?\n\n\n- Wat werd er van je verwacht?\n\n\nPersoonlijk:\n- Wat wilde je bereiken?\n\n\n- Wat verwachtte je van jezelf in die situatie?\n\n\n- Wat vond je dat je moest doen?\n\n",
             'action'     => "- Wat heb je precies gezegd en/of gedaan?\n\n\n- Hoe was je aanpak?\n\n\n- En toen?\n\n\n- Hoe reageerde(n) de ander(en) op jou?\n\n\n- Wat heb je vervolgens gedzegd en/of gedaan?\n\n\n- En toen?\n\n",
             'result'     => "- Wat kwam er uit?\n\n\n- Hoe is het afgelopen?\n\n\n- Wat was het resultaat van je handelen?\n\n\n- Hoe reageerde(n) de ander(en)?\n\n",
             'reflection' => "- Hoe vond je dat je het deed?\n\n\n- Was je tevreden met het resultaat?\n\n\n- Wat zou je een volgende keer anders doen?\n\n\n- Wat heb je daarvoor nodig?\n\n",
