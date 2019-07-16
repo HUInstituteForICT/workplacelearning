@@ -37,20 +37,19 @@ class ProducingWorkplaceLearningController extends Controller
             ->with('cohorts', Auth::user()->educationProgram->cohorts()->where('disabled', '=', 0)->get());
     }
 
-    public function edit($id)
+    public function edit(WorkplaceLearningPeriod $workplaceLearningPeriod)
     {
-        $wplPeriod = WorkplaceLearningPeriod::find($id);
-        if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
+        if ($workplaceLearningPeriod->student_id !== Auth::user()->student_id) {
             return redirect()->route('profile')
                 ->with('error', Lang::get('general.profile-permission'));
         }
 
         return view('pages.producing.internship')
-                ->with('period', $wplPeriod)
-                ->with('workplace', Workplace::find($wplPeriod->wp_id))
-                ->with('categories', $wplPeriod->categories()->get())
+                ->with('period', $workplaceLearningPeriod)
+                ->with('workplace', Workplace::find($workplaceLearningPeriod->wp_id))
+                ->with('categories', $workplaceLearningPeriod->categories()->get())
                 ->with('resource', new Collection())
-                ->with('cohorts', collect($wplPeriod->cohort()->get()));
+                ->with('cohorts', collect($workplaceLearningPeriod->cohort()->get()));
     }
 
     public function create(Request $request)
@@ -125,7 +124,7 @@ class ProducingWorkplaceLearningController extends Controller
         return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, WorkplaceLearningPeriod $workplaceLearningPeriod)
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
@@ -154,14 +153,13 @@ class ProducingWorkplaceLearningController extends Controller
         }
 
         // Input is valid. Attempt to fetch the WPLP and validate it belongs to the user
-        $wplPeriod = WorkplaceLearningPeriod::find($id);
-        if (is_null($wplPeriod) || $wplPeriod->student_id != Auth::user()->student_id) {
+        if ($workplaceLearningPeriod->student_id !== Auth::user()->student_id) {
             return redirect()->route('profile')
-                ->with('error', Lang::get('general.profile-permission'));
+                ->with('error', __('general.profile-permission'));
         }
 
         // Succes. Also fetch the associated Workplace Eloquent object and update
-        $workplace = Workplace::find($wplPeriod->wp_id);
+        $workplace = Workplace::find($workplaceLearningPeriod->wp_id);
 
         // Todo use model->fill()
         // Save the workplace first
@@ -178,18 +176,18 @@ class ProducingWorkplaceLearningController extends Controller
         $workplace->save();
 
         // Todo use model->fill()
-        $wplPeriod->student_id = Auth::user()->student_id;
-        $wplPeriod->wp_id = $workplace->wp_id;
-        $wplPeriod->startdate = new Carbon($request['startdate']);
-        $wplPeriod->enddate = new Carbon($request['enddate']);
-        $wplPeriod->nrofdays = $request['numdays'];
-        $wplPeriod->hours_per_day = $request['numhours'];
-        $wplPeriod->description = $request['internshipAssignment'];
-        $wplPeriod->save();
+        $workplaceLearningPeriod->student_id = Auth::user()->student_id;
+        $workplaceLearningPeriod->wp_id = $workplace->wp_id;
+        $workplaceLearningPeriod->startdate = new Carbon($request['startdate']);
+        $workplaceLearningPeriod->enddate = new Carbon($request['enddate']);
+        $workplaceLearningPeriod->nrofdays = $request['numdays'];
+        $workplaceLearningPeriod->hours_per_day = $request['numhours'];
+        $workplaceLearningPeriod->description = $request['internshipAssignment'];
+        $workplaceLearningPeriod->save();
 
         // Set the user setting to the current Internship ID
         if ($request['isActive'] == 1) {
-            Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
+            Auth::user()->setUserSetting('active_internship', $workplaceLearningPeriod->wplp_id);
         }
 
         return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
