@@ -15,12 +15,13 @@ Route::match(['get', 'post'], '/canvas/register', 'CanvasRegistrationController'
 Route::post('locale', 'LocaleSwitcher@switchLocale')->name('localeswitcher');
 
 
+// General user routes
+Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth');
 
 
-Route::middleware('auth')->group(static function (): void {
+Route::middleware(['auth', 'verified'])->group(static function (): void {
 
-    // General user routes
-    Route::get('/logout', 'Auth\LoginController@logout');
+
 
     // Routes for non-students
     Route::middleware(CheckUserLevel::class)->group(static function (): void {
@@ -336,3 +337,7 @@ Route::middleware('auth')->group(static function (): void {
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

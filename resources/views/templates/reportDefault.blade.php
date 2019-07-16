@@ -1,5 +1,5 @@
 <link type="text/css" rel="stylesheet" href="{{ URL::asset('public/css/PDFstyle.css') }}">
-<div id="hu-logo"><img src="{{ URL::asset('public/assets/img/hu-logo-medium.png') }}" /></div>
+<div id="hu-logo"><img src="{{ URL::asset('public/assets/img/hu-logo-medium.svg') }}" /></div>
 <div id="info-block">
     <b>{{ Lang::get('rapportages.studentnumber') }}:</b> {{ $data['student']['studentnummer'] }}<br />
     <b>{{ Lang::get('rapportages.studentname') }}:</b> {{ $data['student']['initialen'] ." ". $data['student']['achternaam'] ." (". $data['student']['voornaam'] .")" }}<br /><br />
