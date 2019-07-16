@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -53,7 +54,7 @@ use Illuminate\Notifications\Notifiable;
  *
  * @property \Illuminate\Database\Eloquent\Collection|\App\Cohort[] $cohorts
  */
-class Student extends Authenticatable
+class Student extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, CanResetPassword;
     // Override the table used for the User Model
