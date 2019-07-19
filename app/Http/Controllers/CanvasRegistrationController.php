@@ -62,7 +62,8 @@ class CanvasRegistrationController extends Controller
             'registrationdate' => date('Y-m-d H:i:s'),
             'locale'           => $request->session()->get('locale', 'nl'),
             'canvas_user_id'   => $canvasData['canvasUserId'],
-            'is_registered_through_canvas' => true
+            'is_registered_through_canvas' => true,
+            'email_verified_at' => date('Y-m-d H:i:s'),
         ]);
 
         \Auth::login($student);
