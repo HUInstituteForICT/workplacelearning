@@ -85,4 +85,9 @@ class ResourcePerson extends Model implements HasLabelProperty, IsTranslatable
     {
         return $this->person_label ?? 'Unknown person';
     }
+
+    public function isAlone(): bool
+    {
+        return in_array(strtolower($this->person_label), ['alleen', 'alone']);
+    }
 }

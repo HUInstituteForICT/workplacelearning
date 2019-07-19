@@ -23,6 +23,24 @@ class LearningActivityActingRepository
         return LearningActivityActing::findOrFail($id);
     }
 
+    /**
+     * @param int[] $ids
+     * @return LearningActivityActing[]
+     */
+    public function getMultiple(array $ids): array
+    {
+        return LearningActivityActing::findMany($ids)->all();
+    }
+
+    /**
+     * @param int[] $ids
+     * @return LearningActivityActing[]
+     */
+    public function getMultipleForUser(Student $student, array $ids): array
+    {
+        return $student->getCurrentWorkplaceLearningPeriod()->learningActivityActing()->whereIn('laa_id', $ids)->get()->all();
+    }
+
     public function save(LearningActivityActing $learningActivityActing): bool
     {
         return $learningActivityActing->save();

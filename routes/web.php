@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 
 Auth::routes(['verify' => true]);
 
+
 Route::post('/canvas', 'CanvasLTIController');
 Route::match(['get', 'post'], '/canvas/register', 'CanvasRegistrationController')->middleware('guest')->name('canvas-registration');
 Route::post('locale', 'LocaleSwitcher@switchLocale')->name('localeswitcher');
@@ -221,6 +222,8 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
 
             Route::middleware(RequireActiveInternship::class)->group(static function(): void {
+
+                Route::get('/laa-export', 'ActingActivityExport');
 
                 Route::get('progress', 'ActingActivityController@progress')->name('progress-acting');
                 Route::get('analysis', 'ActingAnalysisController@showChoiceScreen')->name('analysis-acting-choice');
