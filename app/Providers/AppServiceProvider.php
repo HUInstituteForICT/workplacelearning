@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\ChainManager;
+
 use App\Repository\Eloquent\LikeRepository;
 use App\Repository\Eloquent\StudentTipViewRepository;
 use App\Repository\LikeRepositoryInterface;
@@ -14,6 +15,7 @@ use App\Tips\Services\StatisticValueFetcher;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
             \URL::forceScheme('https');
         }
     }
+
 
     /**
      * Register any application services.

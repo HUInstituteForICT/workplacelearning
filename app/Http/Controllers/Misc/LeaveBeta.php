@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Misc;
 
 
-use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
+use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\Services\CurrentUserResolver;
 use Illuminate\Http\Request;
 

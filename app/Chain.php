@@ -16,12 +16,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int                                    $status
  * @property int                                    $wplp_id
  * @property \App\WorkplaceLearningPeriod           $workplaceLearningPeriod
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereWplpId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain query()
  */
 class Chain extends Model
 {

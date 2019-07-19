@@ -230,6 +230,18 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 Route::get('evidence/{evidence}/remove', 'EvidenceController@remove')->name('evidence-remove');
                 Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')->name('evidence-download');
 
+                Route::get('beta-reflection-method-participation/{participate}', 'Misc\DecideForReflectionMethodBetaParticipation')->name('reflection-beta-participation');
+                Route::get('reflection/multiple', 'Reflection\DownloadMultiple')
+                    ->name('reflection-download-multiple');
+                Route::get('reflection/{activityReflection}', 'Reflection\Download')
+                    ->middleware('can:view,activityReflection')
+                    ->name('reflection-download');
+                Route::get('reflection/{activityReflection}/delete', 'Reflection\Delete')
+                    ->middleware('can:delete,activityReflection')
+                    ->name('reflection-delete');
+                Route::get('render-reflection-type/{type}', 'Reflection\RenderCreateForm')->name('render-reflection-type');
+
+
                 Route::get('competence-description/{competenceDescription}',
                     static function (App\CompetenceDescription $competenceDescription) {
                         return response()->download(storage_path('app/' . $competenceDescription->file_name),
@@ -259,8 +271,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 }); // Actions relating to acting activities
 
 
-            });
-        });
+    });
 
 
         Route::prefix('producing')->group(static function (): void {

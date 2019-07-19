@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string                                                             $contact_phone
  * @property int                                                                $numberofemployees
  * @property \Illuminate\Database\Eloquent\Collection|WorkplaceLearningPeriod[] $internshipperiod
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereContactEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereContactName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereContactPhone($value)
@@ -37,8 +36,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereWpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace whereWpName($value)
  * @mixin \Eloquent
- *
  * @property \App\WorkplaceLearningPeriod $workplaceLearningPeriod
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Workplace query()
  */
 class Workplace extends Model
 {

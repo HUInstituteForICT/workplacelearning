@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\LearningActivityActing;
+use App\Reflection\Services\Updaters\ActivityReflectionUpdater;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Services\AvailableActingEntitiesFetcher;
 use App\Services\CurrentUserResolver;

@@ -72,26 +72,37 @@
                        placeholder="{{ Lang::get('activity.source-description') }}"
                        value="{{ $activity->res_material_detail }}"/>
             </div>
+            @if(!$reflectionBetaActive)
+                <div class="col-md-2 from-group">
+                    <h4>{{ Lang::get('activity.learned') }}<br/>{{ Lang::get('activity.whatnow') }} <i
+                                class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                data-placement="bottom"
+                                title="{{ trans('tooltips.acting_learned') }}"></i></h4>
+                    <textarea class="form-control fit-bs" name="learned" required rows="5"
+                              cols="19">{{ (count($errors) > 0) ? old('learned') : $activity->lessonslearned }}</textarea>
+                    <h4>{{ Lang::get('activity.whatdoyouneed') }}<i class="fa fa-info-circle" aria-hidden="true"
+                                                                    data-toggle="tooltip" data-placement="bottom"
+                                                                    title="{{ trans('tooltips.acting_required_wp') }}"></i>
+                    </h4>
+                    <textarea class="form-control fit-bs" name="support_wp" rows="5"
+                              cols="19">{{ (count($errors) > 0) ? old('support_wp') : $activity->support_wp }}</textarea>
+                    <h4>{{ Lang::get('activity.whatdoyouneedschool') }}<i class="fa fa-info-circle" aria-hidden="true"
+                                                                          data-toggle="tooltip" data-placement="bottom"
+                                                                          title="{{ trans('tooltips.acting_required_ep') }}"></i>
+                    </h4>
+                    <textarea class="form-control fit-bs" name="support_ed" rows="5"
+                              cols="19">{{ (count($errors) > 0) ? old('support_ed') : $activity->support_ed }}</textarea>
+                </div>
+            @endif
 
-            <div class="col-md-2 from-group">
-                <h4>{{ Lang::get('activity.learned') }}<br/>{{ Lang::get('activity.whatnow') }} <i
-                            class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
-                            title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                <textarea class="form-control fit-bs" name="learned" required rows="5"
-                          cols="19">{{ (count($errors) > 0) ? old('learned') : $activity->lessonslearned }}</textarea>
-                <h4>{{ Lang::get('activity.whatdoyouneed') }}<i class="fa fa-info-circle" aria-hidden="true"
-                                                                data-toggle="tooltip" data-placement="bottom"
-                                                                title="{{ trans('tooltips.acting_required_wp') }}"></i>
-                </h4>
-                <textarea class="form-control fit-bs" name="support_wp" rows="5"
-                          cols="19">{{ (count($errors) > 0) ? old('support_wp') : $activity->support_wp }}</textarea>
-                <h4>{{ Lang::get('activity.whatdoyouneedschool') }}<i class="fa fa-info-circle" aria-hidden="true"
-                                                                      data-toggle="tooltip" data-placement="bottom"
-                                                                      title="{{ trans('tooltips.acting_required_ep') }}"></i>
-                </h4>
-                <textarea class="form-control fit-bs" name="support_ed" rows="5"
-                          cols="19">{{ (count($errors) > 0) ? old('support_ed') : $activity->support_ed }}</textarea>
-            </div>
+            @if($reflectionBetaActive)
+                @if($activity->reflection)
+                    @include('pages.acting.includes.edit-reflection', ['reflection' => $activity->reflection])
+                @else
+                    @include('pages.acting.includes.create-reflection')
+                @endif
+            @endif
+
             <div class="col-md-2 from-group">
                 <div>
                     <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle" aria-hidden="true"

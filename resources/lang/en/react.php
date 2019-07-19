@@ -16,7 +16,9 @@ return [
     'category' => 'Category',
     'chain' => 'Chain',
     'complexity' => 'Complexity',
-    'export-to' => 'Export to',
+    'reflection' => 'Reflection',
+    'export-to' => 'Export activities to',
+    'export-reflections' => 'Export reflections',
     'mail-to' => 'Mail to',
     'mail' => [
             'sending' => 'Sending...',

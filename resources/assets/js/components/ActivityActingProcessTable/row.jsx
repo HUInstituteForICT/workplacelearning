@@ -22,11 +22,14 @@ export default class Row extends React.Component {
 
         return <tr className="activityExport">
             <td>
-                <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
-                <a style={actionStyle} onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/acting/process/delete/" + activity.id: null}><i className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
+                <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil"
+                                                              aria-hidden="true"/></a>
+                <a style={actionStyle}
+                   onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/acting/process/delete/" + activity.id : null}><i
+                    className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
             </td>
             <td>
-                {(activity.situation.length > 30 || activity.lessonsLearned.length > 30) &&
+                {(activity.situation.length > 30 || (activity.lessonsLearned !== null && activity.lessonsLearned.length > 30)) &&
                 <i onClick={() => this.setState({visible: !this.state.visible})}
                    className={className}/>
                 }
@@ -47,17 +50,23 @@ export default class Row extends React.Component {
             <td>{activity.timeslot}</td>
             <td>{activity.resourcePerson}</td>
             <td>{activity.resourceMaterial}</td>
+            {!window.reflectionBetaActive &&
             <td>
-                {activity.lessonsLearned.length > 30 &&
-                <span>
+
+                {activity.lessonsLearned !== null && <div>
+
+                    {activity.lessonsLearned.length > 30 &&
+                    <span>
                         {this.state.visible && <span>{activity.lessonsLearned}</span>}
-                    {!this.state.visible && <span>{activity.lessonsLearned.substr(0, 30)}...</span>}
+                        {!this.state.visible && <span>{activity.lessonsLearned.substr(0, 30)}...</span>}
                     </span>
-                }
-                {activity.lessonsLearned.length <= 30 &&
-                activity.lessonsLearned
-                }
-            </td>
+                    }
+                    {activity.lessonsLearned.length <= 30 &&
+                    activity.lessonsLearned
+                    }
+                </div> || '-'}
+
+            </td>}
             <td>{activity.learningGoal}</td>
             <td>{activity.competence.join(', ')}</td>
             <td>
@@ -68,6 +77,10 @@ export default class Row extends React.Component {
                     </ul>
                 }
             </td>
+            {window.reflectionBetaActive &&
+            <td>
+                {activity.reflection && <a href={activity.reflection.url}>Download</a>}
+            </td>}
 
         </tr>
     }

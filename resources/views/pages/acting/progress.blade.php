@@ -22,6 +22,7 @@
             <script>
                 window.activities = {!! $activitiesJson !!};
                 window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
+                window.reflectionDownloadMultipleUrl = '{{ route('reflection-download-multiple') }}';
             </script>
 
             <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>

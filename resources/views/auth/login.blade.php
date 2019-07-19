@@ -22,7 +22,7 @@
                         <div class="cols-sm-11">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
-                                <input class="form-control" placeholder="student@student.com" type="text" name="email" value="{{ old('email') }}"/>
+                                <input class="form-control" placeholder="student@student.com" type="email" name="email" value="{{ old('email') }}"/>
                             </div>
                         </div>
                     </div>

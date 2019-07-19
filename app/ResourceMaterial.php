@@ -14,11 +14,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int                                                                       $rm_id
  * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
  * @property \App\WorkplaceLearningPeriod                                              $workplaceLearningPeriod
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial whereRmId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial whereRmLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial whereWplpId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial query()
  */
 class ResourceMaterial extends Model
 {

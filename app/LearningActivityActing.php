@@ -3,18 +3,21 @@
 namespace App;
 
 use App\Interfaces\LearningActivityInterface;
+use App\Reflection\Models\ActivityReflection;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use RuntimeException;
 
 /**
  * App\LearningActivityActing.
  *
- * @property int                                                      $laa_id
- * @property int                                                      $wplp_id
+ * @property int                                            $laa_id
+ * @property int                                            $wplp_id
  * @property Carbon                                                   $date
  * @property int                                                      $timeslot_id
  * @property string                                                   $situation
@@ -35,7 +38,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Collection|Competence[]                                  $competence
  * @property \Illuminate\Database\Eloquent\Collection|\App\Evidence[] $evidence
  * @property \App\WorkplaceLearningPeriod                             $workplaceLearningPeriod
- *
+ * @property bool                                                     $is_from_reflection_beta
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLaaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLearninggoalId($value)
@@ -52,6 +55,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceFilename($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceMime($value)
  * @mixin \Eloquent
+ * @property-read \App\Reflection\Models\ActivityReflection $reflection
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereIsFromReflectionBeta($value)
  */
 class LearningActivityActing extends Model implements LearningActivityInterface
 {
@@ -119,5 +127,13 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     public function evidence(): HasMany
     {
         return $this->hasMany(Evidence::class, 'learning_activity_acting_id', 'laa_id');
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    public function reflection(): HasOne
+    {
+        return $this->hasOne(ActivityReflection::class, 'learning_activity_id', 'laa_id');
     }
 }

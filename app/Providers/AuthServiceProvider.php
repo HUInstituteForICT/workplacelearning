@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Reflection\Models\ActivityReflection;
 use App\Feedback;
 use App\LearningActivityActing;
 use App\LearningActivityProducing;
+use App\Policies\ActivityReflectionPolicy;
 use App\Policies\FeedbackPolicy;
 use App\Policies\LearningActivityPolicy;
 use App\Policies\WorkplaceLearningPeriodPolicy;
@@ -26,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         LearningActivityActing::class    => LearningActivityPolicy::class,
         Workplace::class                 => WorkplacePolicy::class,
         WorkplaceLearningPeriod::class   => WorkplaceLearningPeriodPolicy::class,
+        ActivityReflection::class        => ActivityReflectionPolicy::class,
     ];
 
     /**

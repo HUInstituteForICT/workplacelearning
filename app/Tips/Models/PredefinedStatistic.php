@@ -19,7 +19,6 @@ use Illuminate\Support\Collection;
  * @property int|null $statistic_variable_one_id
  * @property int|null $statistic_variable_two_id
  * @property mixed $value_parameter_description
- *
  * @method static Builder|PredefinedStatistic whereEducationProgramType($value)
  * @method static Builder|PredefinedStatistic whereId($value)
  * @method static Builder|PredefinedStatistic whereName($value)
@@ -29,8 +28,11 @@ use Illuminate\Support\Collection;
  * @method static Builder|PredefinedStatistic whereStatisticVariableTwoId($value)
  * @method static Builder|PredefinedStatistic whereType($value)
  * @mixin \Eloquent
- *
  * @property Collection|TipCoupledStatistic[] $coupledStatistics
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic whereClassName($value)
  */
 class PredefinedStatistic extends Statistic
 {

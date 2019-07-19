@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BugReportRequest;
 use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
-use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
+use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\Services\CurrentUserResolver;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;

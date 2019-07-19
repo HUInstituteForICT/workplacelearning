@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Misc\Admin;
 
 
-use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
+use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 
 class BetaParticipations
 {

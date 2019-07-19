@@ -26,12 +26,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[] $resourcePerson
  * @property \Illuminate\Database\Eloquent\Collection|\App\Student[]        $student
  * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[]       $timeslot
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram whereDisabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram whereEpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram whereEpName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram whereEptypeId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgram query()
  */
 class EducationProgram extends Model
 {

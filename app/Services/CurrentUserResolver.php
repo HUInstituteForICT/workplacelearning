@@ -18,6 +18,9 @@ class CurrentUserResolver
         $this->guard = $guard;
     }
 
+    /**
+     * @throws UnexpectedUser
+     */
     public function getCurrentUser(): Student
     {
         $student = $this->guard->user();
@@ -26,6 +29,6 @@ class CurrentUserResolver
             return $student;
         }
 
-        throw new UnexpectedUser('Expected instance of Student::class, instead received '.\get_class($student));
+        throw new UnexpectedUser('Expected instance of Student::class, instead received ' . \get_class($student));
     }
 }

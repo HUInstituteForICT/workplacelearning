@@ -12,10 +12,10 @@ export default class ActivityActingProcessTable extends React.Component {
         super(props);
         let earliestDate = moment(), latestDate = moment();
         window.activities.forEach(activity => {
-            if(moment(activity.date, "DD-MM-YYYY") < earliestDate || earliestDate === undefined) {
+            if (moment(activity.date, "DD-MM-YYYY") < earliestDate || earliestDate === undefined) {
                 earliestDate = moment(activity.date, "DD-MM-YYYY");
             }
-            if(moment(activity.date, "DD-MM-YYYY") > latestDate || latestDate === undefined) {
+            if (moment(activity.date, "DD-MM-YYYY") > latestDate || latestDate === undefined) {
                 latestDate = moment(activity.date, "DD-MM-YYYY");
             }
         });
@@ -99,7 +99,7 @@ export default class ActivityActingProcessTable extends React.Component {
     filterActivities(activities) {
 
         return activities
-            // Filter for Timeslot
+        // Filter for Timeslot
             .filter((activity) => {
                 if (this.state.filters.timeslot.selectedRules.length === 0) {
                     return true;
@@ -135,10 +135,10 @@ export default class ActivityActingProcessTable extends React.Component {
         const exporter = new ActingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
 
 
-        if(this.state.selectedExport === "email") {
+        if (this.state.selectedExport === "email") {
             this.setState({emailAlert: undefined});
             exporter.mail(this.state.email, this.state.emailComment, response => {
-                if(response.hasOwnProperty("data") && response.data.status === "success") {
+                if (response.hasOwnProperty("data") && response.data.status === "success") {
                     this.setState({email: "", emailComment: '', emailAlert: true});
                 } else {
                     this.setState({email: "", emailComment: '', emailAlert: false});
@@ -147,13 +147,13 @@ export default class ActivityActingProcessTable extends React.Component {
 
 
             });
-        } else if(this.state.selectedExport === "word") {
+        } else if (this.state.selectedExport === "word") {
             exporter.txt();
             const exportText = exporter.outputData;
             axios.post('/activity-export-doc', {exportText})
                 .then(response => {
-                window.location.href = response.data.download;
-            });
+                    window.location.href = response.data.download;
+                });
         } else {
             exporter[this.state.selectedExport]();
             exporter.download();
@@ -165,16 +165,20 @@ export default class ActivityActingProcessTable extends React.Component {
     render() {
         let filteredActivities = this.filterActivities(this.state.activities);
         return <div>
-            <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> {Lang.get('react.filters')}</h3>
-            <div className="filters row" style={this.isOnProgressPage() ? {} : {display:"none"}}>
+            <h3 style={{cursor: "pointer"}} onClick={() => {
+                $('.filters').slideToggle()
+            }}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> {Lang.get('react.filters')}</h3>
+            <div className="filters row" style={this.isOnProgressPage() ? {} : {display: "none"}}>
                 <div className="date col-md-3">
                     <h4>{Lang.get('react.date')}</h4>
                     <div>
                         <strong>{Lang.get('react.startdate')}:</strong>
-                        <DatePicker className={"form-control"} selected={this.state.startDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({startDate: date})} />
+                        <DatePicker className={"form-control"} selected={this.state.startDate} dateFormat="DD/MM/YYYY"
+                                    onChange={date => this.setState({startDate: date})}/>
                         <br/>
                         <strong>{Lang.get('react.enddate')}:</strong>
-                        <DatePicker className={"form-control"} selected={this.state.endDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({endDate: date})} />
+                        <DatePicker className={"form-control"} selected={this.state.endDate} dateFormat="DD/MM/YYYY"
+                                    onChange={date => this.setState({endDate: date})}/>
                     </div>
                     <div style={{clear: 'both'}}/>
                 </div>
@@ -214,24 +218,31 @@ export default class ActivityActingProcessTable extends React.Component {
 
             </div>
             <br/>
-            <div className="export" style={{paddingBottom:"15px"}}>
+            <div className="export" style={{paddingBottom: "15px"}}>
 
                 <label>{Lang.get('react.export-to')}&nbsp;
-                    <select onChange={e => {this.setState({selectedExport: e.target.value})}} defaultValue={this.state.selectedExport}>
+                    <select onChange={e => {
+                        this.setState({selectedExport: e.target.value})
+                    }} defaultValue={this.state.selectedExport}>
                         {this.state.exports.map(type => {
                             return <option key={type} value={type}>{type}</option>
                         })}
                     </select>
                 </label> &nbsp;
-                <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) )}>{Lang.get('react.export')}</button>
+                <button className="btn btn-info" onClick={this.exportHandler}
+                        disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')))}>{Lang.get('react.export')}</button>
                 <br/>
                 {this.state.selectedExport === 'email' &&
                 <div style={{maxWidth: "400px"}}>
                     <label>
-                        {Lang.get('react.mail-to')}: <input type="email" className="form-control" onChange={e => this.setState({email: e.target.value})} value={this.state.email} />
+                        {Lang.get('react.mail-to')}: <input type="email" className="form-control"
+                                                            onChange={e => this.setState({email: e.target.value})}
+                                                            value={this.state.email}/>
                     </label><br/>
                     <label>
-                        {Lang.get('react.mail-comment')}: <textarea className="form-control" onChange={e => this.setState({emailComment: e.target.value})} value={this.state.emailComment} />
+                        {Lang.get('react.mail-comment')}: <textarea className="form-control"
+                                                                    onChange={e => this.setState({emailComment: e.target.value})}
+                                                                    value={this.state.emailComment}/>
                     </label>
                     {
                         this.state.emailAlert === undefined &&
@@ -248,36 +259,47 @@ export default class ActivityActingProcessTable extends React.Component {
                 </div>
                 }
 
+                <br/>
+                <button className="btn btn-info" disabled={filteredActivities.filter(activity => activity.reflection !== null).length === 0} onClick={this.downloadMultiple}>{Lang.get('react.export-reflections')}</button>
             </div>
 
             <div className="table-responsive">
-            <table className="table blockTable">
-                <thead className="blue_tile">
-                <tr>
-                    <td>{/* Edit URL, no table header */}</td>
-                    <td></td>
-                    <td>{Lang.get('react.date')}</td>
-                    <td>{Lang.get('react.situation')}</td>
-                    <td>{Lang.get('react.category')}</td>
-                    <td>{Lang.get('react.with-whom')}</td>
-                    <td>{Lang.get('react.theory')}</td>
-                    <td>{Lang.get('react.learningpoints-followup')}</td>
-                    <td>{Lang.get('react.learningquestion')}</td>
-                    <td>{Lang.get('react.competence')}</td>
-                    <td>{Lang.get('react.evidence')}</td>
+                <table className="table blockTable">
+                    <thead className="blue_tile">
+                    <tr>
+                        <td>{/* Edit URL, no table header */}</td>
+                        <td></td>
+                        <td>{Lang.get('react.date')}</td>
+                        <td>{Lang.get('react.situation')}</td>
+                        <td>{Lang.get('react.category')}</td>
+                        <td>{Lang.get('react.with-whom')}</td>
+                        <td>{Lang.get('react.theory')}</td>
+                        {!window.reflectionBetaActive &&
+                        <td>{Lang.get('react.learningpoints-followup')}</td>
+                        }
+                        <td>{Lang.get('react.learningquestion')}</td>
+                        <td>{Lang.get('react.competence')}</td>
+                        <td>{Lang.get('react.evidence')}</td>
+                        {window.reflectionBetaActive &&
+                        <td>{Lang.get('react.reflection')}</td>}
 
-                </tr>
-                </thead>
-                <tbody>
-                {filteredActivities.map((activity) => {
-                    return <Row key={activity.id} activity={activity}/>
-                })}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {filteredActivities.map((activity) => {
+                        return <Row key={activity.id} activity={activity}/>
+                    })}
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
             </div>
         </div>
     }
 
+    downloadMultiple = () => {
+        const ids = this.filterActivities(this.state.activities).filter(activity => activity.reflection !== null).map(activity => activity.reflection.id);
+        const url = window.reflectionDownloadMultipleUrl + '?' + ids.map(id => 'ids[]=' + id).join('&');
+        window.location.href = url;
+    }
 
 }

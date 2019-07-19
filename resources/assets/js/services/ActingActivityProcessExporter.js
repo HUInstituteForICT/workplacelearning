@@ -29,9 +29,11 @@ export default class ActingActivityProcessExporter {
         this.activities.forEach((activity, index) => {
             let values = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
-                if(Array.isArray(activity[header])) {
+                if (Array.isArray(activity[header])) {
                     if (header === 'evidence') {
                         return activity[header].map(evidence => evidence.url).join(', ');
+                    } else if (header === 'reflection') {
+                        return activity[header] !== null ? activity[header].url : '-';
                     }
                     return activity[header].join(', ');
                 }
@@ -55,12 +57,14 @@ export default class ActingActivityProcessExporter {
         this.activities.forEach((activity, index) => {
             let lines = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
-                if(header === 'situation' || header === 'lessonsLearned') {
-                    return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" + activity[header] + " \n";
-                } else if(header === 'competence') {
+                if (header === 'situation' || header === 'lessonsLearned') {
+                    return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" +(activity[header] !== null ? activity[header] : '-') + " \n";
+                } else if (header === 'competence') {
                     return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header].join(', ')
-                } else if(header === 'evidence') {
-                    return _.capitalize(exportTranslatedFieldMapping[header]) +  ":\n" + activity[header].map(evidence => evidence.name + ": \t" + evidence.url).join("\n");
+                } else if (header === 'evidence') {
+                    return _.capitalize(exportTranslatedFieldMapping[header]) + ":\n" + activity[header].map(evidence => evidence.name + ": \t" + evidence.url).join("\n");
+                } else if (header === 'reflection') {
+                    return _.capitalize(exportTranslatedFieldMapping[header]) + ":\t" + (activity[header] !== null ? activity[header].url : '-');
                 }
                 return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header];
             });

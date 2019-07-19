@@ -15,13 +15,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property float     $threshold
  * @property Statistic $statistic
  * @property mixed     $condition
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereComparisonOperator($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereStatisticId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereThreshold($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic whereTipId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\TipCoupledStatistic query()
  */
 class TipCoupledStatistic extends Model
 {

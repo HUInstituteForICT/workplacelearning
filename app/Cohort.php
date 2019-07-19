@@ -26,13 +26,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int                                                                     $ep_id
  * @property CompetenceDescription                                                   $competenceDescription
  * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[] $workplaceLearningPeriods
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereDisabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereEpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereName($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort query()
  */
 class Cohort extends Model
 {

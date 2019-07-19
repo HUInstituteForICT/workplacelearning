@@ -10,7 +10,9 @@ return [
     'category' => 'Categorie',
     'chain' => 'Keten',
     'complexity' => 'Complexiteit',
-    'export-to' => 'Export naar',
+    'reflection' => 'Reflectie',
+    'export-to' => 'Exporteer activiteiten naar',
+    'export-reflections' => 'Exporteer reflecties',
     'mail-to' => 'Mailen naar',
     'mail-comment' => 'Opmerking',
     'mail' => [

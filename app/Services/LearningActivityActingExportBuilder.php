@@ -48,11 +48,20 @@ class LearningActivityActingExportBuilder
                 'url'                     => route('process-acting-edit', ['id' => $activity->laa_id]),
                 'evidence'                => $activity->evidence->map(function (Evidence $evidence) {
                     return [
-                        'name'          => $evidence->filename,
-                        'url'           => route('evidence-download',
+                        'name' => $evidence->filename,
+                        'url'  => route('evidence-download',
                             ['evidence' => $evidence, 'diskFileName' => $evidence->disk_filename]),
                     ];
                 })->all(),
+                'reflection'              =>  (static function() use($activity) {
+                    if(!$activity->is_from_reflection_beta) {
+                        return null;
+                    }
+                    return [
+                        'url' => $activity->reflection === null ? null : route('reflection-download', ['reflection' => $activity->reflection]),
+                        'id' => $activity->reflection->id
+                    ];
+                })()
             ];
         });
 
@@ -75,8 +84,9 @@ class LearningActivityActingExportBuilder
             'supportEd',
             'competence',
             'evidence',
+            'reflection'
         ])->each(function ($field) use (&$mapping): void {
-            $mapping[$field] = $this->translator->get('process_export.'.$field);
+            $mapping[$field] = $this->translator->get('process_export.' . $field);
         });
 
         return $mapping;

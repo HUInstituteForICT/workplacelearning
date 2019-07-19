@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int                    $rangeStart
  * @property int                    $rangeEnd
  * @property Moment[]|Collection    $moments
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereRangeEnd($value)
@@ -33,6 +32,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereTipText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip whereTrigger($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Tips\Models\StudentTipView[] $studentTipViews
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Tip query()
  */
 class Tip extends Model implements HasLabelProperty
 {

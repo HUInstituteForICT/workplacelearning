@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests\LearningActivity;
 
+use App\Reflection\Models\ActivityReflection;
+use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ActingUpdateRequest extends FormRequest
 {
@@ -12,8 +15,25 @@ class ActingUpdateRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+    public function rules(ReflectionMethodBetaParticipationRepository $betaParticipationRepository): array
     {
+        if ($betaParticipationRepository->doesCurrentUserParticipate()) {
+            return [
+                'reflection.field' => 'sometimes|array',
+
+                // Normal rules
+                'date' => 'required|date|date_in_wplp',
+                'description' => 'required|max:2000',
+                'timeslot' => 'required|exists:timeslot,timeslot_id',
+                'new_rp' => 'required_if:res_person,new|max:45|',
+                'new_rm' => 'required_if:res_material,new|max:45',
+                'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
+                'competence' => 'required|min:1|max:3',
+                'competence.*' => 'required|exists:competence,competence_id',
+                'evidence.*' => 'file|max:5000',
+            ];
+        }
+
         return [
             'date' => 'required|date|date_in_wplp',
             'description' => 'required|max:2000',

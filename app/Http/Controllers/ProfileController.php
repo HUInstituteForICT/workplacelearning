@@ -8,7 +8,7 @@
 namespace App\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
-use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
+use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\Repository\Eloquent\StudentRepository;
 use App\Services\CurrentUserResolver;
 use App\Student;
