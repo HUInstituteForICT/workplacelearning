@@ -7,9 +7,10 @@ namespace App\Services;
 use App\Competence;
 use App\Evidence;
 use App\LearningActivityActing;
+use App\Reflection\Models\ActivityReflectionField;
 use PhpOffice\PhpWord\Element\Section;
 use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\Style;
+use PhpOffice\PhpWord\SimpleType\Jc;
 use PhpOffice\PhpWord\Style\Font;
 
 class ActingActivityExporter
@@ -38,6 +39,7 @@ class ActingActivityExporter
         $section->addImage(public_path('assets/img/hu-logo-medium.png'), [
             'width'  => 5 * 28,
             'height' => 1.63 * 28,
+            'alignment' => Jc::END
         ]);
 
 
@@ -93,7 +95,7 @@ class ActingActivityExporter
                     $domain = parse_url($activity->res_material_detail, PHP_URL_HOST);
                     $theoryRun->addText(' - ');
                     $theoryRun->addLink($activity->res_material_detail, $domain,
-                        ['color' => '1FD8E3', 'underline' => Font::UNDERLINE_SINGLE]);
+                        ['color' => '0000FF', 'underline' => Font::UNDERLINE_SINGLE]);
                 } else {
                     $theoryRun->addText(" ({$activity->res_material_detail})");
                 }
@@ -121,6 +123,10 @@ class ActingActivityExporter
             return $competence->localizedLabel();
         }, $activity->competence->all());
         $competenceRun->addText(implode(', ', $labels));
+
+        $section->addTextBreak();
+        $section->addText(__('export_laa.situation') . ':', ['bold' => true]);
+        $section->addText($activity->situation);
 
 
         // Add short reflection if exists
@@ -160,14 +166,38 @@ class ActingActivityExporter
         $section->addText(__('export_laa.evidence') . ':', ['bold' => true]);
 
         $evidence = $activity->evidence->all();
+        if(count($evidence) === 0) {
+            $section->addText(__('export_laa.none'));
+        }
         array_walk($evidence, static function (Evidence $evidence) use ($section): void {
             $listItemRun = $section->addListItemRun();
             $url = route('evidence-download', ['learningActivity' => $evidence->id, 'diskFileName' => $evidence->disk_filename]);
-            $listItemRun->addLink($url, $evidence->filename, ['color' => '1FD8E3', 'underline' => Font::UNDERLINE_SINGLE]);
+            $listItemRun->addLink($url, $evidence->filename, ['color' => '0000FF', 'underline' => Font::UNDERLINE_SINGLE]);
         });
 
 
-        // Full reflection
+        // Full reflection if exists
+        if($activity->reflection) {
+            $section->addTextBreak(2);
+            $section->addLine(['weight' => 1, 'color' => '#00A1E1', 'width' => 612, 'height' => 1]);
+
+            $reflection = $activity->reflection;
+
+            // Misc section (e.g. evidence pieces)
+            $section->addTextBreak(2);
+            $section->addTitle(__('export_laa.full-reflection', ['type' => $reflection->reflection_type]), 3);
+
+            $section->addTextBreak();
+
+            /** @var ActivityReflectionField $field */
+            foreach ($reflection->fields as $field) {
+                $section->addText(ucfirst(__('reflection.fields.' . strtolower($reflection->reflection_type) . '.' . $field->name)), ['bold' => true]);
+                $section->addTextBreak();
+                $section->addText($field->value);
+                $section->addTextBreak(2);
+            }
+        }
+
     }
 
     private function getNewDocument(): PhpWord

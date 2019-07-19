@@ -50,7 +50,6 @@ export default class Row extends React.Component {
             <td>{activity.timeslot}</td>
             <td>{activity.resourcePerson}</td>
             <td>{activity.resourceMaterial}</td>
-            {!window.reflectionBetaActive &&
             <td>
 
                 {activity.lessonsLearned !== null && <div>
@@ -66,7 +65,7 @@ export default class Row extends React.Component {
                     }
                 </div> || '-'}
 
-            </td>}
+            </td>
             <td>{activity.learningGoal}</td>
             <td>{activity.competence.join(', ')}</td>
             <td>
@@ -77,10 +76,9 @@ export default class Row extends React.Component {
                     </ul>
                 }
             </td>
-            {window.reflectionBetaActive &&
             <td>
                 {activity.reflection && <a href={activity.reflection.url}>Download</a>}
-            </td>}
+            </td>
 
         </tr>
     }

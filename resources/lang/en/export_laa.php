@@ -11,10 +11,12 @@ return [
     'none' => 'None',
     'learninggoal' => 'Learning goal',
     'competence' => 'Competence|Competences',
+    'situation' => 'Situation',
     'short-reflection' => 'Short reflection',
     'lessons-learned' => 'Lessons learned',
     'support-wp' => 'Support needed from workplace',
     'support-ed' => 'Support needed from HU',
     'miscellaneous' => 'Miscellaneous',
     'evidence' => 'Evidence',
+    'full-reflection' => 'Reflection: :type'
 ];

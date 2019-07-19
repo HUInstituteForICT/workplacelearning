@@ -68,6 +68,7 @@
             width:227px;
             height:74px;
             background-image:url('{{ secure_asset('assets/img/hu-logo-medium.svg') }}');
+            background-repeat: no-repeat;
         }
     </style>
 </head>

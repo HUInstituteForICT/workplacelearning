@@ -75,13 +75,7 @@
                 <input type="submit" class="btn btn-info" value="{{ Lang::get("elements.profile.btnsave") }}"/>
                 {!! Form::close() !!}
 
-                @if($participatesInReflectionBeta)
-                    <div class="well">
-                        <h2>{{ __('misc.beta-participations') }}</h2>
-                        {{__('misc.reflection-method-beta')}} - <a
-                                href="{{ route('leave-beta') }}">{{ __('misc.leave-beta') }}</a>
-                    </div>
-                @endif
+
             </div>
             @endif
             @if(Auth::user()->hasCurrentWorkplaceLearningPeriod())

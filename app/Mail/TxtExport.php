@@ -19,7 +19,7 @@ class TxtExport extends Mailable
      *
      * @param $txt
      */
-    public function __construct($txt, $comment)
+    public function __construct($txt, string $comment)
     {
         $this->txt = $txt;
         $this->comment = $comment;

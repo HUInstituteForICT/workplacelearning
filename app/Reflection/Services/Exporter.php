@@ -35,7 +35,7 @@ class Exporter
 
             /** @var ActivityReflectionField $field */
             foreach ($reflection->fields as $field) {
-                $section->addText(ucfirst($field->name), $fieldNameStyle);
+                $section->addText(ucfirst(__('reflection.fields.' . strtolower($reflection->reflection_type) . '.' . $field->name)), $fieldNameStyle);
                 $section->addTextBreak();
                 $section->addText($this->processText($field->value));
                 $section->addTextBreak(2);

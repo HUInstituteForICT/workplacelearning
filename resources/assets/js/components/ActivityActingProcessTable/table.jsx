@@ -23,8 +23,8 @@ export default class ActivityActingProcessTable extends React.Component {
         this.state = {
             activities: window.activities,
             filters: this.buildFilter(window.activities),
-            exports: ["csv", "txt", "email", "word"],
-            selectedExport: "csv",
+            exports: ["Word (.docx)", "E-mail Word document"],
+            selectedExport: "Word (.docx)",
             email: "",
             emailComment: "",
             emailAlert: null,
@@ -132,31 +132,29 @@ export default class ActivityActingProcessTable extends React.Component {
 
 
     exportHandler() {
-        const exporter = new ActingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
-
-
-        if (this.state.selectedExport === "email") {
+        let ids = this.filterActivities(this.state.activities).map(activity => activity.id);
+        if (this.state.selectedExport === "E-mail Word document") {
             this.setState({emailAlert: undefined});
-            exporter.mail(this.state.email, this.state.emailComment, response => {
+            let email = this.state.email;
+            let comment = this.state.emailComment;
+
+
+            const cb = response => {
                 if (response.hasOwnProperty("data") && response.data.status === "success") {
                     this.setState({email: "", emailComment: '', emailAlert: true});
                 } else {
                     this.setState({email: "", emailComment: '', emailAlert: false});
                 }
                 setTimeout(() => this.setState({emailAlert: null}), 3000);
+            };
 
+            axios.post(window.mailExportActivitiesUrl, {email, comment, ids})
+                .then(cb)
+                .catch(cb);
 
-            });
-        } else if (this.state.selectedExport === "word") {
-            exporter.txt();
-            const exportText = exporter.outputData;
-            axios.post('/activity-export-doc', {exportText})
-                .then(response => {
-                    window.location.href = response.data.download;
-                });
-        } else {
-            exporter[this.state.selectedExport]();
-            exporter.download();
+        } else if (this.state.selectedExport === "Word (.docx)") {
+
+            window.location.href = `${window.exportActivitiesUrl}?ids[]=${ids.join('&ids[]=')}`;
         }
     }
 
@@ -230,9 +228,9 @@ export default class ActivityActingProcessTable extends React.Component {
                     </select>
                 </label> &nbsp;
                 <button className="btn btn-info" onClick={this.exportHandler}
-                        disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')))}>{Lang.get('react.export')}</button>
+                        disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'E-mail Word document' && (!this.state.email.includes('@') || !this.state.email.includes('.')))}>{Lang.get('react.export')}</button>
                 <br/>
-                {this.state.selectedExport === 'email' &&
+                {this.state.selectedExport === 'E-mail Word document' &&
                 <div style={{maxWidth: "400px"}}>
                     <label>
                         {Lang.get('react.mail-to')}: <input type="email" className="form-control"
@@ -274,15 +272,11 @@ export default class ActivityActingProcessTable extends React.Component {
                         <td>{Lang.get('react.category')}</td>
                         <td>{Lang.get('react.with-whom')}</td>
                         <td>{Lang.get('react.theory')}</td>
-                        {!window.reflectionBetaActive &&
                         <td>{Lang.get('react.learningpoints-followup')}</td>
-                        }
                         <td>{Lang.get('react.learningquestion')}</td>
                         <td>{Lang.get('react.competence')}</td>
                         <td>{Lang.get('react.evidence')}</td>
-                        {window.reflectionBetaActive &&
-                        <td>{Lang.get('react.reflection')}</td>}
-
+                        <td>{Lang.get('react.reflection')}</td>
                     </tr>
                     </thead>
                     <tbody>

@@ -8,7 +8,6 @@ use App\Reflection\Interfaces\ReflectionType;
 use App\Reflection\Types\Abcd;
 use App\Reflection\Types\Custom;
 use App\Reflection\Types\Korthagen;
-use App\Reflection\Types\Pdca;
 use App\Reflection\Types\Starr;
 
 class RenderCreateForm
@@ -19,7 +18,6 @@ class RenderCreateForm
         'CUSTOM'    => Custom::class,
         'KORTHAGEN' => Korthagen::class,
         'ABCD'      => Abcd::class,
-        'PDCA'      => Pdca::class,
     ];
 
 

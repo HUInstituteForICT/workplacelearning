@@ -27,7 +27,7 @@ return array(
 
 Student :name heeft u een aantal leermomenten gestuurd vanuit de stage-app https://werkplekleren.hu.nl.
 
-Onder deze mail vindt u de tekst van de betreffende leermomenten.
+In de bijlage vindt u de betreffende leermomenten.
 
 Opmerking van de student:
 :comment

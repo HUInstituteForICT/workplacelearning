@@ -67,7 +67,7 @@
             });
         </script>
         <div class="row">
-            <div class="col-md-12 well">
+            <div class="col-md-12">
                 <h4 id="help-click" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u"><i
                             class="fa fa-arrow-circle-o-down"
                             aria-hidden="true"></i>&nbsp;{{Lang::get('activity.how-does-this-page-work')}}</h4>
@@ -85,12 +85,12 @@
             </div>
         </div>
 
-        <div class="row">
-            {{ Form::open(array('id' => 'taskForm',  'url' => route('process-acting-create'), 'class' => 'form-horizontal well', "files" => true)) }}
-            <div id="taskFormError" class="alert alert-error" style="display: none">
+        {{ Form::open(array('id' => 'taskForm',  'url' => route('process-acting-create'), 'class' => '', "files" => true)) }}
+        <div id="taskFormError" class="alert alert-error" style="display: none">
 
-            </div>
-            <div class="col-md-2 form-group">
+        </div>
+        <div class="row">
+            <div class="col-md-3">
                 <h4>{{ Lang::get('activity.activity') }}</h4>
                 <div class='input-group date fit-bs' id='date-deadline'>
                     <input style="z-index:1;" id="datum" name="date" type='text' class="form-control"
@@ -102,14 +102,14 @@
                 <h4>{{ Lang::get('activity.situation') }}</h4>
                 <div>
                     <textarea id="description" class="form-control fit-bs" name="description" required maxlength="2000"
-                              rows="16" cols="19">{{ old('description') }}</textarea>
+                              rows="8" cols="19">{{ old('description') }}</textarea>
                     <a data-target-text="#description"
                        data-target-title="{{ ucfirst(trans('process_export.situation')) }}"
                        class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
                 </div>
 
             </div>
-            <div class="col-md-2 form-group buttons">
+            <div class="col-md-3 buttons">
                 <h4>{{Lang::get('activity.category')}} <i class="fa fa-info-circle" aria-hidden="true"
                                                           data-toggle="tooltip" data-placement="bottom"
                                                           title="{{ trans('tooltips.acting_when') }}"></i></h4>
@@ -119,13 +119,18 @@
                 @endforeach
                 <div>
                     <label><input type="radio" name="timeslot" id="new_timeslot"
-                                  value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}><span class="new">{{  Lang::get('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span></label>
-                    <input id="new-timeslot-hidden" type="text" name="new_timeslot"
-                           value="{{ old('new-timeslot-hidden') }}"
-                           placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
+                                  value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}>
+                        <span class="new">{{  Lang::get('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span>
+                        <br/>
+                        <input id="new-timeslot-hidden" type="text" name="new_timeslot" class="form-control"
+                               style="width:150px;"
+                               value="{{ old('new-timeslot-hidden') }}"
+                               placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
+                    </label>
+
                 </div>
             </div>
-            <div class="col-md-2 form-group buttons">
+            <div class="col-md-3 buttons">
                 <h4>{{ Lang::get('activity.with') }}<i class="fa fa-info-circle" aria-hidden="true"
                                                        data-toggle="tooltip" data-placement="bottom"
                                                        title="{{ trans('tooltips.acting_with') }}"></i></h4>
@@ -135,12 +140,16 @@
                 @endforeach
                 <div>
                     <label><input type="radio" name="res_person" id="new_rp"
-                                  value="new" {{ (old('res_person') == 'new') ? 'checked' : null }}><span class="new">{{ Lang::get('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span></label>
-                    <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}"
-                           placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
+                                  value="new" {{ (old('res_person') == 'new') ? 'checked' : null }}><span class="new">{{ Lang::get('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span>
+                        <br/>
+                        <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}"
+                               class="form-control" style="width:150px;"
+                               placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
+                    </label>
+
                 </div>
             </div>
-            <div class="col-md-2 form-group buttons">
+            <div class="col-md-3 buttons">
                 <h4>{{ Lang::get('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                           data-toggle="tooltip" data-placement="bottom"
                                                           title="{{ trans('tooltips.acting_theory') }}"></i></h4>
@@ -148,59 +157,86 @@
                               value="none" {{ (old('res_material') === 'none' || old('res_material') === null) ? 'checked' : null }}><span>{{ Lang::get('activity.none') }}</span></label>
                 @foreach ($resourceMaterials as $key => $value)
                     <label><input type="radio" name="res_material"
-                                  value="{{ $value->rm_id }}" {{ (old('res_material') != null && old('res_material') == $value->rm_id) ? "checked" : null }} /><span>{{ __($value->rm_label) }}</span></label>
+                                  value="{{ $value->rm_id }}" {{ old('res_material') === $value->rm_id ? 'checked' : null }} /><span>{{ __($value->rm_label) }}</span></label>
                 @endforeach
-                <input type="text" name="res_material_detail" id="res_material_detail"
-                       placeholder="{{ Lang::get('activity.source-description') }}"
-                       value="{{ old('res_material_detail') }}"/>
+
+
                 <label><input type="radio" name="res_material" id="new_rm"
-                              value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">{{ trans('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span></label>
-                <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}"
-                       placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
+                              value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">{{ trans('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span>
+                    <br/>
+                    <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}"
+                           class="form-control" style="width:150px;"
+                           placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
+                </label>
+
+                <div style="text-align: center">
+                    <input type="text" name="res_material_detail" id="res_material_detail" class="form-control"
+                           style="width:90%"
+                           placeholder="{{ Lang::get('activity.source-description') }}"
+                           value="{{ old('res_material_detail') }}"/>
+                </div>
+
             </div>
 
-            @if(!$reflectionBetaActive)
-                <div class="col-md-2 form-group">
-                    <div>
-                        <h4>{{ Lang::get('activity.learned') }}<br/>{{ Lang::get('activity.whatnow') }} <i
-                                    class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                                    data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                        <textarea id="learned" class="form-control fit-bs" name="learned" required maxlength="1000"
-                                  rows="5" cols="19">{{ old('learned') }}</textarea>
-                        <a data-target-text="#learned" data-target-title="{{ Lang::get('activity.learned') }}"
-                           class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
-                    </div>
-                    <div>
-                        <h4>{{ Lang::get('activity.whatdoyouneed') }} <i class="fa fa-info-circle" aria-hidden="true"
-                                                                         data-toggle="tooltip" data-placement="bottom"
-                                                                         title="{{ trans('tooltips.acting_required_wp') }}"></i>
-                        </h4>
-                        <textarea id="support_wp" max-length="500" class="form-control fit-bs" name="support_wp"
-                                  rows="5" cols="19">{{ old('support_wp') }}</textarea>
-                        <a data-target-text="#support_wp" data-target-title="{{ Lang::get('activity.whatdoyouneed') }}"
-                           class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
-                    </div>
-                    <div>
-                        <h4>{{ Lang::get('activity.whatdoyouneedschool') }} <i class="fa fa-info-circle"
-                                                                               aria-hidden="true" data-toggle="tooltip"
-                                                                               data-placement="bottom"
-                                                                               title="{{ trans('tooltips.acting_required_ep') }}"></i>
-                        </h4>
-                        <textarea id="support_ed" maxlength="500" class="form-control fit-bs" name="support_ed" rows="5"
-                                  cols="19">{{ old('support_ed') }}</textarea>
-                        <a data-target-text="#support_ed"
-                           data-target-title="{{ Lang::get('activity.whatdoyouneedschool') }}"
-                           class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+        </div>
 
-                    </div>
-                </div>
-            @endif
 
-            @if($reflectionBetaActive)
-                @include('pages.acting.includes.create-reflection')
-            @endif
+        <div class="row">
 
-            <div class="col-md-2 form-group">
+            <div class="col-md-2">
+                <h4>{{ Lang::get('activity.learned') }}<br/>{{ Lang::get('activity.whatnow') }} <i
+                            class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                            data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
+                <textarea id="learned" class="form-control fit-bs" name="learned" required maxlength="1000"
+                          rows="5" cols="19">{{ old('learned') }}</textarea>
+                <a data-target-text="#learned" data-target-title="{{ Lang::get('activity.learned') }}"
+                   class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+            </div>
+            <div class="col-md-2">
+                <h4>{{ Lang::get('activity.whatdoyouneed') }} <i class="fa fa-info-circle" aria-hidden="true"
+                                                                 data-toggle="tooltip" data-placement="bottom"
+                                                                 title="{{ trans('tooltips.acting_required_wp') }}"></i>
+                </h4>
+                <textarea id="support_wp" max-length="500" class="form-control fit-bs" name="support_wp"
+                          rows="5" cols="19">{{ old('support_wp') }}</textarea>
+                <a data-target-text="#support_wp" data-target-title="{{ Lang::get('activity.whatdoyouneed') }}"
+                   class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+            </div>
+            <div class="col-md-2">
+                <h4>{{ Lang::get('activity.whatdoyouneedschool') }} <i class="fa fa-info-circle"
+                                                                       aria-hidden="true" data-toggle="tooltip"
+                                                                       data-placement="bottom"
+                                                                       title="{{ trans('tooltips.acting_required_ep') }}"></i>
+                </h4>
+                <textarea id="support_ed" maxlength="500" class="form-control fit-bs" name="support_ed" rows="5"
+                          cols="19">{{ old('support_ed') }}</textarea>
+                <a data-target-text="#support_ed"
+                   data-target-title="{{ Lang::get('activity.whatdoyouneedschool') }}"
+                   class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+
+            </div>
+
+
+            @include('pages.acting.includes.create-reflection')
+
+            <div class="col-md-2">
+                <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true"
+                                                              data-toggle="tooltip" data-placement="bottom"
+                                                              title="{{ trans('tooltips.acting_competence') }}"></i>
+                </h4>
+                <select name="competence[]" class="form-control fit-bs" multiple>
+                    @foreach ($competencies as $value)
+                        <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', []), false) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
+                    @endforeach
+                </select>
+                @if($competenceDescription !== null)
+                    <h5>
+                        <a href="{{ $competenceDescription->download_url }}">{{ Lang::get('elements.competences.competencedetails') }}</a>
+                    </h5>
+                @endif
+            </div>
+
+            <div class="col-md-2">
                 <div>
                     <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                         data-toggle="tooltip" data-placement="bottom"
@@ -211,20 +247,6 @@
                             <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'selected' : null }}>{{ __($value->learninggoal_label) }}</option>
                         @endforeach
                     </select>
-                    <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true"
-                                                                  data-toggle="tooltip" data-placement="bottom"
-                                                                  title="{{ trans('tooltips.acting_competence') }}"></i>
-                    </h4>
-                    <select name="competence[]" class="form-control fit-bs" multiple>
-                        @foreach ($competencies as $value)
-                            <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', []), false) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
-                        @endforeach
-                    </select>
-                    @if($competenceDescription !== null)
-                        <h5>
-                            <a href="{{ $competenceDescription->download_url }}">{{ Lang::get('elements.competences.competencedetails') }}</a>
-                        </h5>
-                    @endif
                 </div>
                 <div style="margin-top: 20px;">
                     <h4>{{ __('process.evidence') }}</h4>
@@ -234,7 +256,8 @@
                     </ul>
                 </div>
                 <div>
-                    <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;" value="{{ __('general.save') }}"/>
+                    <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;"
+                           value="{{ __('general.save') }}"/>
                 </div>
             </div>
             {{ Form::close() }}
@@ -257,15 +280,11 @@
 
         <div class="row">
             <script>
-                @if($reflectionBetaActive)
-                    window.reflectionBetaActive = true;
-                @else
-                    window.reflectionBetaActive = false;
-                @endif
-
                 window.activities = {!! $activitiesJson !!};
                 window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
                 window.reflectionDownloadMultipleUrl = '{{ route('reflection-download-multiple') }}';
+                window.exportActivitiesUrl = '{{ route('acting-activities-word-export') }}';
+                window.mailExportActivitiesUrl = '{{ route('mail-acting-activities-word-export') }}';
             </script>
 
             <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>
@@ -301,7 +320,6 @@
             var fileList = document.getElementById('fileList');
 
             function updateFileList(fileInput) {
-                console.log(fileInput);
                 var files = [];
                 for (var i = 0; i < fileInput.files.length; i++) {
                     files.push(fileInput.files[i].name);

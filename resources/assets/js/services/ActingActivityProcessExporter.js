@@ -74,8 +74,6 @@ export default class ActingActivityProcessExporter {
     }
 
     mail(email, comment, callback) {
-        this.txt();
-
         axios.post('/activity-export-mail', {txt: this.outputData, email, comment})
             .then(callback)
             .catch(callback);

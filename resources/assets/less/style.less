@@ -52,6 +52,10 @@ h1, h2, h3, h4, h5 {
   text-transform: uppercase;
 }
 
+.row {
+
+}
+
 a {
   cursor: pointer;
 }
@@ -381,8 +385,8 @@ a.nav-tile {
 }
 
 #taskForm {
-  display: block;
-  overflow: auto;
+  //display: block;
+  //overflow: auto;
 }
 
 // Tasks specific styling
@@ -688,16 +692,17 @@ a.nav-tile {
 }
 
 .fab-buttons {
-  //position: absolute;
+  position: absolute;
   left: 0;
   right: 0;
-  bottom: 50px;
+  //bottom: 50px;
   list-style: none;
   margin: 0;
   padding: 0;
   opacity: 0;
   visibility: hidden;
   transition: 0.2s;
+  z-index: 999;
 }
 
 .fab-action-button__icon {

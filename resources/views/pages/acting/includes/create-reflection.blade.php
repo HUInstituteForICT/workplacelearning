@@ -1,4 +1,4 @@
-<div class="col-md-2 form-group">
+<div class="col-md-2">
     <h4>{{ Lang::get('reflection.reflection') }}</h4>
 
     <div id="currentReflection" style="text-align: center;">

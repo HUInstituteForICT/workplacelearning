@@ -41,11 +41,10 @@ class ActivityReflection extends Model
                                            LearningActivityProducing::class => self::LEARNING_ACTIVITY_PRODUCING,
     ];
 
-    public const TYPES = ['STARR', 'KORTHAGEN', 'ABCD', 'PDCA', 'CUSTOM'];
+    public const TYPES = ['STARR', 'KORTHAGEN', 'ABCD', 'CUSTOM'];
     public const READABLE_TYPES = ['STARR'     => 'STARR',
                                    'KORTHAGEN' => 'Korthagen',
                                    'ABCD'      => 'ABCD',
-                                   'PDCA'      => 'PDCA',
                                    'CUSTOM'    => 'Custom',
     ];
 

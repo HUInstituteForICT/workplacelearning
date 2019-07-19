@@ -12,9 +12,12 @@ Auth::routes(['verify' => true]);
 
 
 Route::post('/canvas', 'CanvasLTIController');
-Route::match(['get', 'post'], '/canvas/register', 'CanvasRegistrationController')->middleware('guest')->name('canvas-registration');
+Route::match(['get', 'post'], '/canvas/register',
+    'CanvasRegistrationController')->middleware('guest')->name('canvas-registration');
 Route::post('locale', 'LocaleSwitcher@switchLocale')->name('localeswitcher');
 
+// Evidence can be a public route because we use a UUID and the id of the evidence entity. Random access is next to impossible
+Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')->name('evidence-download');
 
 // General user routes
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth');
@@ -23,13 +26,14 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth');
 Route::middleware(['auth', 'verified'])->group(static function (): void {
 
 
-
     // Routes for non-students
     Route::middleware(CheckUserLevel::class)->group(static function (): void {
-        Route::get('/education-programs', 'EducationProgramsController@index')->name('education-programs'); // Entry to Education programs management
+        Route::get('/education-programs',
+            'EducationProgramsController@index')->name('education-programs'); // Entry to Education programs management
         Route::view('/manage/tips', 'pages.tips.tips-app')->name('tips-app'); // Entry to tips management
 
-        Route::get('/beta-participations', 'Misc\Admin\BetaParticipations')->name('admin.beta-participations'); // Show beta participations
+        Route::get('/beta-participations',
+            'Misc\Admin\BetaParticipations')->name('admin.beta-participations'); // Show beta participations
 
         Route::group(['prefix' => '/dashboard'], function (): void {
             Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
@@ -95,8 +99,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         }); // Routes of the templates used in analytics
 
 
-
-        Route::prefix('/api/')->group(static function(): void {
+        Route::prefix('/api/')->group(static function (): void {
             Route::resource('tip-coupled-statistics', 'TipApi\TipCoupledStatisticController');
             Route::resource('statistics', 'TipApi\StatisticController');
             Route::resource('tips', 'TipApi\TipsController');
@@ -106,7 +109,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
             Route::put('tips/{tip}/cohorts', 'TipApi\TipsController@updateCohorts')->name('tips.updateCohorts');
         }); // Routes of generic API (mostly tips)
 
-        Route::prefix('/education-programs/api')->group(static function(): void {
+        Route::prefix('/education-programs/api')->group(static function (): void {
             Route::get('education-programs', 'EducationProgramsController@getEducationPrograms');
             Route::post('education-program', 'EducationProgramsController@createEducationProgram');
             Route::delete('education-program/{program}', 'EducationProgramsController@deleteEducationProgram');
@@ -135,10 +138,12 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
         // Dev stuff
         Route::get('/reactlogs', 'ReactLogController@index')->name('reactlogs'); // View React errors
-        Route::get('/reactlogs/{reactLog}/fix', 'ReactLogController@fix')->name('fix-reactlog'); // Remove React error from log
+        Route::get('/reactlogs/{reactLog}/fix',
+            'ReactLogController@fix')->name('fix-reactlog'); // Remove React error from log
         Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index'); // Normal logs (exceptions etc)
-        Route::get('switch-user/{id}', static function (int $id, CurrentUserResolver $userResolver) : RedirectResponse {
-            if (!in_array($userResolver->getCurrentUser()->email, ['rogier@inesta.com', 'rogier+producing@inesta.com'])) {
+        Route::get('switch-user/{id}', static function (int $id, CurrentUserResolver $userResolver): RedirectResponse {
+            if (!in_array($userResolver->getCurrentUser()->email,
+                ['rogier@inesta.com', 'rogier+producing@inesta.com'])) {
                 redirect('/');
             }
             Auth::loginUsingId($id);
@@ -151,9 +156,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     });
 
 
-
     // Student routes
-
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
     Route::post('/activity-export-doc', 'ActivityExportController@exportActivitiesToWord');
     Route::get('/download/activity-export-doc/{fileName}','ActivityExportController@downloadWordExport')->name('docx-export-download');
@@ -178,15 +181,16 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
         Route::get('/tip/{tip}/like', 'TipApi\TipsController@likeTip')->name('tips.like');
 
-        Route::middleware(RequireActiveInternship::class)->group(static function(): void {
-            Route::post('categorie/update/{id}', 'ProducingWorkplaceLearningController@updateCategories')->name('categories-update')->where('id', '[0-9]*'); // Producing categories
-            Route::post('learninggoal/update', 'ActingWorkplaceLearningController@updateLearningGoals')->name('learninggoals-update'); // Acting learning goals
+        Route::middleware(RequireActiveInternship::class)->group(static function (): void {
+            Route::post('categorie/update/{id}',
+                'ProducingWorkplaceLearningController@updateCategories')->name('categories-update')->where('id',
+                '[0-9]*'); // Producing categories
+            Route::post('learninggoal/update',
+                'ActingWorkplaceLearningController@updateLearningGoals')->name('learninggoals-update'); // Acting learning goals
         });
 
 
-
-
-        Route::middleware('taskTypeRedirect')->group(static function(): void {
+        Route::middleware('taskTypeRedirect')->group(static function (): void {
             Route::get('/', 'HomeController@showHome')->name('default');
             Route::get('home', 'HomeController@showHome')->name('home');
             Route::get('process', 'ActingActivityController@show')->name('process');
@@ -197,7 +201,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         });
 
 
-        Route::prefix('acting')->group(static function(): void {
+        Route::prefix('acting')->group(static function (): void {
             Route::get('home', 'HomeController@showActingTemplate')->name('home-acting');
 
             Route::get('beta-reflection-method-participation/{participate}',
@@ -221,19 +225,24 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 ->name('period-acting-update');
 
 
-            Route::middleware(RequireActiveInternship::class)->group(static function(): void {
+            Route::middleware(RequireActiveInternship::class)->group(static function (): void {
 
-                Route::get('/laa-export', 'ActingActivityExport');
+                Route::get('/activities/export', 'Acting\Export\WordExport')->name('acting-activities-word-export');
+                Route::post('/activities/export/mail', 'Acting\Export\WordMailExport')->name('mail-acting-activities-word-export')->middleware('throttle:3,1');
 
                 Route::get('progress', 'ActingActivityController@progress')->name('progress-acting');
                 Route::get('analysis', 'ActingAnalysisController@showChoiceScreen')->name('analysis-acting-choice');
                 Route::get('analysis/{year}/{month}', 'ActingAnalysisController@showDetail')
-                    ->where(['year'  => '^(20)(\d{2})|all$', 'month' => '^([0-1]{1}\d{1})|all$',])->name('analysis-acting-detail');
+                    ->where([
+                        'year'  => '^(20)(\d{2})|all$',
+                        'month' => '^([0-1]{1}\d{1})|all$',
+                    ])->name('analysis-acting-detail');
 
                 Route::get('evidence/{evidence}/remove', 'EvidenceController@remove')->name('evidence-remove');
-                Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')->name('evidence-download');
 
-                Route::get('beta-reflection-method-participation/{participate}', 'Misc\DecideForReflectionMethodBetaParticipation')->name('reflection-beta-participation');
+
+                Route::get('beta-reflection-method-participation/{participate}',
+                    'Misc\DecideForReflectionMethodBetaParticipation')->name('reflection-beta-participation');
                 Route::get('reflection/multiple', 'Reflection\DownloadMultiple')
                     ->name('reflection-download-multiple');
                 Route::get('reflection/{activityReflection}', 'Reflection\Download')
@@ -242,7 +251,8 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 Route::get('reflection/{activityReflection}/delete', 'Reflection\Delete')
                     ->middleware('can:delete,activityReflection')
                     ->name('reflection-delete');
-                Route::get('render-reflection-type/{type}', 'Reflection\RenderCreateForm')->name('render-reflection-type');
+                Route::get('render-reflection-type/{type}',
+                    'Reflection\RenderCreateForm')->name('render-reflection-type');
 
 
                 Route::get('competence-description/{competenceDescription}',
@@ -274,8 +284,8 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 }); // Actions relating to acting activities
 
 
-    });
-
+            });
+        });
 
         Route::prefix('producing')->group(static function (): void {
             Route::get('home', 'HomeController@showProducingTemplate')->name('home-producing');
@@ -297,19 +307,22 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 ->name('period-producing-update');
 
 
-            Route::middleware(RequireActiveInternship::class)->group(static function(): void {
+            Route::middleware(RequireActiveInternship::class)->group(static function (): void {
 
                 Route::get('progress', 'ProducingActivityController@progress')->name('progress-producing');
 
-                Route::get('report/export', 'ProducingReportController@wordExport')->name('report-producing-export');
+                Route::get('report/export',
+                    'ProducingReportController@wordExport')->name('report-producing-export');
 
-                Route::get('analysis', 'ProducingAnalysisController@showChoiceScreen')->name('analysis-producing-choice');
+                Route::get('analysis',
+                    'ProducingAnalysisController@showChoiceScreen')->name('analysis-producing-choice');
                 Route::get('analysis/{year}/{month}', 'ProducingAnalysisController@showDetail')
                     ->where(['year' => '^(20)(\d{2})|all$', 'month' => '^([0-1]{1}\d{1})|all$',])
                     ->name('analysis-producing-detail');
 
                 Route::get('feedback/{feedback}', 'FeedbackController@show')->name('feedback-producing');
-                Route::post('feedback/update/{feedback}', 'FeedbackController@update')->name('feedback-producing-update');
+                Route::post('feedback/update/{feedback}',
+                    'FeedbackController@update')->name('feedback-producing-update');
 
                 Route::post('/chain/create', 'ChainController@create')->name('chain-create');
                 Route::put('/chain/{chain}', 'ChainController@save')->name('chain-save');
@@ -337,21 +350,10 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                         ->name('process-producing-delete');
                 }); // Actions relating to producing activities
             });
-
-
         });
-
 
 
         Route::get('bugreport', 'HomeController@showBugReport')->name('bugreport');
         Route::post('bugreport/create', 'HomeController@createBugReport')->name('bugreport-create');
     });
 });
-
-
-
-
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

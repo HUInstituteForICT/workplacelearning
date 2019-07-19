@@ -72,7 +72,7 @@
                        placeholder="{{ Lang::get('activity.source-description') }}"
                        value="{{ $activity->res_material_detail }}"/>
             </div>
-            @if(!$reflectionBetaActive)
+
                 <div class="col-md-2 from-group">
                     <h4>{{ Lang::get('activity.learned') }}<br/>{{ Lang::get('activity.whatnow') }} <i
                                 class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
@@ -93,15 +93,15 @@
                     <textarea class="form-control fit-bs" name="support_ed" rows="5"
                               cols="19">{{ (count($errors) > 0) ? old('support_ed') : $activity->support_ed }}</textarea>
                 </div>
-            @endif
 
-            @if($reflectionBetaActive)
+
+
                 @if($activity->reflection)
                     @include('pages.acting.includes.edit-reflection', ['reflection' => $activity->reflection])
                 @else
                     @include('pages.acting.includes.create-reflection')
                 @endif
-            @endif
+
 
             <div class="col-md-2 from-group">
                 <div>
