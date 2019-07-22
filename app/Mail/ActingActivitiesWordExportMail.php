@@ -32,7 +32,7 @@ class ActingActivitiesWordExportMail extends Mailable
 
         return $this->from('noreply@werkplekleren.hu.nl')
             ->subject(__('process_export.mail-subject'))
-            ->attachFromStorageDisk('local', 'word-exports/' . $fileName.'.docx', 'export_' . __('export_laa.learningactivities') . '.docx')
+            ->attachFromStorageDisk('local', 'word-exports/' . $fileName.'.docx', 'export_' . strtolower(__('export_laa.learningactivities')) . '.docx')
             ->text('mail.text-export', ['student' => Auth::user(), 'comment' => $this->comment]);
     }
 }

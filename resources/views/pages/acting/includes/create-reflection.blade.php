@@ -1,26 +1,19 @@
-<div class="col-md-2">
-    <h4>{{ Lang::get('reflection.reflection') }}</h4>
-
-    <div id="currentReflection" style="text-align: center;">
-        {{ __('reflection.none-attached') }}
-    </div>
-
-    <br/><br/>
-
+<div class="col-md-3 fullReflection" @if(!$reflectionSettings['fullReflection']) style="display: none;" @endif>
+    <h4>{{ Lang::get('reflection.full_reflection') }}<span id="currentReflection"></span></h4>
 
     <div class="fab">
         <span class="fab-action-button" id="actionButton">
             <i class="fab-action-button__icon">
-                <img id="actionImage" src="{{ secure_asset('assets/img/plus.svg') }}"/>
+                <img id="actionImage" class="state-add" src="{{ secure_asset('assets/img/plus.svg') }}"/>
             </i>
         </span>
         <ul class="fab-buttons">
 
-            @foreach(\App\Reflection\Models\ActivityReflection::TYPES as $reflectionType)
+            @foreach($orderedReflectionTypes as $reflectionType)
                 <li class="fab-buttons__item addReflectionType" data-type='{{$reflectionType}}'>
-                    <a href="#" class="fab-buttons__link"
+                    <a class="fab-buttons__link"
                        data-tooltip="{{ \App\Reflection\Models\ActivityReflection::READABLE_TYPES[$reflectionType] }}">
-                        <img class="logout" src="{{ secure_asset('assets/img/'.strtolower($reflectionType).'.svg') }}"/>
+                        <img src="{{ secure_asset('assets/img/'.strtolower($reflectionType).'.svg') }}"/>
                     </a>
                 </li>
             @endforeach
@@ -43,6 +36,7 @@
                 <div class="modal-footer">
 
                     <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __('general.hide')  }}</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="detachReflection()">{{__('reflection.remove')}}</button>
                 </div>
             </div>
         </div>
@@ -89,24 +83,22 @@
         updateCurrentReflectionText(type);
     }
 
+    function detachReflection() {
+        formWrapper.innerHTML = '';
+        reflectionAttached = false;
+        updateCurrentReflectionText(null);
+    }
+
     function updateCurrentReflectionText(type) {
         if (reflectionAttached) {
             reflectionTitleElement.innerText = '{{__('reflection.reflection')}}: ' + type;
 
-            const remover = $('<a></a>');
-            remover.text('{{__('reflection.remove')}}');
-            remover.click(function () {
-                formWrapper.innerHTML = '';
-                reflectionAttached = false;
-                updateCurrentReflectionText(null);
-            });
-
-            currentReflection.html('{{__('reflection.reflection')}}: ' + type + ' - ');
-            currentReflection.append(remover);
+            currentReflection.text(': ' + type);
 
             // Update FAB
             actionButton.fadeOut(600, function () {
                 actionImage.prop('src', '{{ \secure_asset('assets/img/edit.svg') }}');
+                actionImage.removeClass('state-add');
                 actionButton.click(function () {
                     reflectionModal.modal('show');
                 });
@@ -120,13 +112,13 @@
             actionButton.unbind('click');
             actionButton.fadeOut(600, function () {
                 actionImage.prop('src', '{{ \secure_asset('assets/img/plus.svg') }}');
-
+                actionImage.addClass('state-add');
                 fabButtons.css('display', 'block');
                 actionButton.fadeIn(600);
 
             });
 
-            currentReflection.html('{{ __('reflection.none-attached') }}');
+            currentReflection.text('');
         }
     }
 

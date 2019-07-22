@@ -3,7 +3,6 @@
 namespace App\Http\Requests\LearningActivity;
 
 use App\Reflection\Models\ActivityReflection;
-use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

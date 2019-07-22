@@ -29,7 +29,8 @@ $factory->define(\App\Student::class, function (Faker\Generator $faker) {
         'phonenr' => $faker->phoneNumber,
         'locale' => 'en',
         'canvas_user_id' => null,
-        'is_registered_through_canvas' => false
+        'is_registered_through_canvas' => false,
+        'email_verified_at' => date('Y-m-d H:i:s')
     ];
 });
 

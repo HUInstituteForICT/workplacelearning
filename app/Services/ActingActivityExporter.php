@@ -28,7 +28,7 @@ class ActingActivityExporter
     /**
      * @param LearningActivityActing[] $activities
      */
-    public function export(array $activities): PhpWord
+    public function export(array $activities, $includeReflections = true): PhpWord
     {
         $document = $this->getNewDocument();
         $section = $document->addSection();
@@ -54,7 +54,7 @@ class ActingActivityExporter
         $section->addTOC(['font' => 'Arial', 'size' => 14], null, 1, 1);
 
 
-        array_walk($activities, [$this, 'addActivityToSection'], $section);
+        array_walk($activities, [$this, 'addActivityToSection'], ['section' => $section, 'includeReflections' => $includeReflections]);
 
 
         return $document;
@@ -64,8 +64,14 @@ class ActingActivityExporter
      * Here we add each activity to the document
      * It is all done in this function because splitting it doesn't make much sense for this
      */
-    private function addActivityToSection(LearningActivityActing $activity, int $key, Section $section): void
+    private function addActivityToSection(LearningActivityActing $activity, int $key, $arguments): void
     {
+        /** @var Section $section */
+        $section = $arguments['section'];
+
+        /** @var bool $includeReflections */
+        $includeReflections = $arguments['includeReflections'];
+
         $section->addPageBreak();
 
         // Add title
@@ -177,7 +183,7 @@ class ActingActivityExporter
 
 
         // Full reflection if exists
-        if($activity->reflection) {
+        if($activity->reflection && $includeReflections) {
             $section->addTextBreak(2);
             $section->addLine(['weight' => 1, 'color' => '#00A1E1', 'width' => 612, 'height' => 1]);
 

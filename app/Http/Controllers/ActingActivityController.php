@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\LearningActivityActing;
-use App\Reflection\Services\Updaters\ActivityReflectionUpdater;
+use App\Reflection\Models\ActivityReflection;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Services\AvailableActingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
@@ -61,10 +61,14 @@ class ActingActivityController
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
 
+        $orderedReflectionTypes = $student->orderReflectionTypes(ActivityReflection::TYPES);
+
         return view('pages.acting.activity', $availableActingEntitiesFetcher->getEntities())
             ->with('activitiesJson', $activitiesJson)
             ->with('exportTranslatedFieldMapping', json_encode($exportTranslatedFieldMapping))
-            ->with('workplacelearningperiod', $student->getCurrentWorkplaceLearningPeriod());
+            ->with('workplacelearningperiod', $student->getCurrentWorkplaceLearningPeriod())
+            ->with('orderedReflectionTypes', $orderedReflectionTypes)
+            ->with('reflectionSettings', $student->reflectionSettings());
     }
 
     public function edit(
@@ -79,8 +83,15 @@ class ActingActivityController
         }
         $this->session->put('acting.activity.edit.referrer', $redirect);
 
+        $student = $this->currentUserResolver->getCurrentUser();
+
+
+        $orderedReflectionTypes = $student->orderReflectionTypes(ActivityReflection::TYPES);
+
         return view('pages.acting.activity-edit', $availableActingEntitiesFetcher->getEntities())
-            ->with('activity', $learningActivityActing);
+            ->with('activity', $learningActivityActing)
+            ->with('orderedReflectionTypes', $orderedReflectionTypes)
+            ->with('reflectionSettings', $student->reflectionSettings());
     }
 
     public function progress(LearningActivityActingExportBuilder $exportBuilder)

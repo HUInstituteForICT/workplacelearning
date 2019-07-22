@@ -6,6 +6,8 @@ return [
     'none-attached'       => 'Geen reflectie toegevoegd',
     'remove'              => 'Verwijderen',
     'delete-confirmation' => 'Weet je zeker dat je deze reflectie wilt verwijderen? Data die nog niet is opgeslagen zal verloren gaan.',
+    'short_reflection'    => 'Korte reflectie',
+    'full_reflection'     => 'Gedetailleerde reflectie',
 
     'fields' => [
         'starr'     => [
@@ -34,9 +36,9 @@ return [
             'check' => 'Check',
             'act'   => 'Act',
         ],
-        'custom' => [
-            'reflection' => 'Reflectie'
-        ]
+        'custom'    => [
+            'reflection' => 'Reflectie',
+        ],
     ],
 
 

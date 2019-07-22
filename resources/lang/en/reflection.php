@@ -6,6 +6,8 @@ return [
     'none-attached'       => 'No reflection added',
     'remove'              => 'Remove',
     'delete-confirmation' => 'Are you sure you want to delete this reflection? Any unsaved data will be lost.',
+    'short_reflection' => 'Short reflection',
+    'full_reflection' => 'Detailed reflection',
 
     'fields' => [
         'starr'     => [

@@ -8,17 +8,6 @@
             <div class="col-lg-7">
                 <h1>{{ Lang::get('dashboard.title') }}</h1>
 
-                @if(!$hasStudentDecidedBeta)
-                    <div class="alert alert-info">
-                        {!! nl2br(__('misc.reflection-beta-text')) !!}
-                        <br/><br/>
-                        <a class='btn btn-primary'
-                           href='{{ route('reflection-beta-participation', ['participate' => 1]) }}'>{{ __('misc.participate-accept') }}</a>
-                        &nbsp;
-                        <a href='{{ route('reflection-beta-participation', ['participate' => 0]) }}'>{{ __('misc.participate-decline') }}</a>
-                    </div>
-                @endif
-
                 @if($evaluatedTip !== null)
                     <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
                         <h4>{{ __('tips.personal-tip') }}</h4>

@@ -1,8 +1,6 @@
 <?php
 
 
-use App\CompetenceDescription;
-use App\Http\Controllers\Misc\DecideForReflectionMethodBetaParticipation;
 use App\Http\Middleware\CheckUserLevel;
 use App\Http\Middleware\RequireActiveInternship;
 use App\Services\CurrentUserResolver;
@@ -32,8 +30,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
             'EducationProgramsController@index')->name('education-programs'); // Entry to Education programs management
         Route::view('/manage/tips', 'pages.tips.tips-app')->name('tips-app'); // Entry to tips management
 
-        Route::get('/beta-participations',
-            'Misc\Admin\BetaParticipations')->name('admin.beta-participations'); // Show beta participations
 
         Route::group(['prefix' => '/dashboard'], function (): void {
             Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
@@ -172,7 +168,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         Route::get('profiel', 'ProfileController@show')->name('profile');
         Route::post('profiel/update', 'ProfileController@update');
         Route::put('profiel/change-password', 'ProfileController@changePassword');
-        Route::get('beta-leave', 'Misc\LeaveBeta')->name('leave-beta');
         Route::get('canvas-uncouple', 'ProfileController@removeCanvasCoupling')->name('uncouple-canvas');
 
         Route::get('deadline', 'CalendarController@show')->name('deadline');
@@ -204,8 +199,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         Route::prefix('acting')->group(static function (): void {
             Route::get('home', 'HomeController@showActingTemplate')->name('home-acting');
 
-            Route::get('beta-reflection-method-participation/{participate}',
-                'Misc\DecideForReflectionMethodBetaParticipation')->name('reflection-beta-participation');
+            Route::post('/user-settings/reflection/save', 'Acting\StoreReflectionUserSettings')->name('acting-store-reflection-user-settings');
 
             // Internships & Internship Periods
             Route::get('period/create', 'ActingWorkplaceLearningController@show')
@@ -240,9 +234,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
                 Route::get('evidence/{evidence}/remove', 'EvidenceController@remove')->name('evidence-remove');
 
-
-                Route::get('beta-reflection-method-participation/{participate}',
-                    'Misc\DecideForReflectionMethodBetaParticipation')->name('reflection-beta-participation');
                 Route::get('reflection/multiple', 'Reflection\DownloadMultiple')
                     ->name('reflection-download-multiple');
                 Route::get('reflection/{activityReflection}', 'Reflection\Download')

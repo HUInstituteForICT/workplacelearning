@@ -3,6 +3,7 @@
 return [
     'enlarge' => 'Enlarge field',
     'evidence' => 'Evidence (1 or more)',
+    'evidence_uploaded' => 'Uploaded',
     'remove' => 'remove',
     'chain' => [
         'chain-activity' => 'Chain activity',

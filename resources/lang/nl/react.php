@@ -86,4 +86,5 @@ return [
     ],
     'edit' => 'Wijzigen',
     'clone' => 'Kloon',
+    'with-reflections' => 'inclusief reflecties',
 ];

@@ -2,12 +2,10 @@
 
 namespace App\Services\Factories;
 
-use App\Reflection\Models\ActivityReflection;
 use App\LearningActivityActing;
 use App\LearningGoal;
 use App\Reflection\Services\Factories\ActivityReflectionFactory;
 use App\Repository\Eloquent\LearningActivityActingRepository;
-use App\Reflection\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\ResourceMaterial;
 use App\ResourcePerson;
 use App\Services\CurrentUserResolver;
@@ -33,14 +31,6 @@ class LAAFactory
      */
     private $currentUserResolver;
     /**
-     * @var ReflectionMethodBetaParticipationRepository
-     */
-    private $betaParticipationRepository;
-    /**
-     * @var ActivityReflection
-     */
-    private $activityReflection;
-    /**
      * @var LearningActivityActingRepository
      */
     private $learningActivityActingRepository;
@@ -51,14 +41,12 @@ class LAAFactory
         ResourcePersonFactory $resourcePersonFactory,
         ResourceMaterialFactory $resourceMaterialFactory,
         CurrentUserResolver $currentUserResolver,
-        ReflectionMethodBetaParticipationRepository $betaParticipationRepository,
         ActivityReflectionFactory $activityReflectionFactory
     ) {
         $this->timeslotFactory = $timeslotFactory;
         $this->resourcePersonFactory = $resourcePersonFactory;
         $this->resourceMaterialFactory = $resourceMaterialFactory;
         $this->currentUserResolver = $currentUserResolver;
-        $this->betaParticipationRepository = $betaParticipationRepository;
         $this->activityReflectionFactory = $activityReflectionFactory;
         $this->learningActivityActingRepository = $learningActivityActingRepository;
     }
@@ -81,12 +69,10 @@ class LAAFactory
         $activityActing->date = Carbon::parse($data['date'])->format('Y-m-d');
         $activityActing->situation = $data['description'];
 
-        // Only in non-reflection
-        if (!$this->betaParticipationRepository->doesCurrentUserParticipate()) {
-            $activityActing->lessonslearned = $data['learned'];
-            $activityActing->support_wp = $data['support_wp'];
-            $activityActing->support_ed = $data['support_ed'];
-        }
+        // Are null if not used by user, still process it
+        $activityActing->lessonslearned = $data['learned'];
+        $activityActing->support_wp = $data['support_wp'];
+        $activityActing->support_ed = $data['support_ed'];
 
         $activityActing->res_material_detail = $data['res_material_detail'];
         $this->learningActivityActingRepository->save($activityActing);
@@ -94,8 +80,8 @@ class LAAFactory
         // Needs to be after save because the relation is many-to-many, thus association table is used
         $activityActing->competence()->sync($data['competence']);
 
-        if ($this->betaParticipationRepository->doesCurrentUserParticipate()) {
-            $activityActing->is_from_reflection_beta = true;
+        // Check if a reflection is attached and if so process it
+        if (isset($data['reflection'])) {
             $this->activityReflectionFactory->create($data['reflection'], $activityActing);
             $this->learningActivityActingRepository->save($activityActing);
         }

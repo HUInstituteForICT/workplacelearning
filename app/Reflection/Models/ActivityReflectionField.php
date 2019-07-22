@@ -13,16 +13,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string                                         $value
  * @method static findOrFail(int $id)
  * @property-read \App\Reflection\Models\ActivityReflection $activityReflection
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflectionField newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflectionField newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflectionField query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflectionField newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflectionField newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflectionField query()
  * @mixin \Eloquent
  * @property int                                            $id
  * @property int                                            $activity_reflection_id
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflectionField whereActivityReflectionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflectionField whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflectionField whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflectionField whereValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflectionField whereActivityReflectionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflectionField whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflectionField whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflectionField whereValue($value)
  */
 class ActivityReflectionField extends Model
 {

@@ -407,14 +407,17 @@ a.nav-tile {
       font-size: 12px;
       padding: 8px;
       text-align: center;
+      transition: 300ms all ease-in-out;
     }
 
     span.new {
       background-color: @hu-green;
+      transition: 300ms all ease-in-out;
     }
   }
 
   input:checked + span {
+    transition: 500ms all ease-in-out;
     background-color: @hu-red;
   }
 
@@ -652,19 +655,27 @@ a.nav-tile {
   //position: fixed;
   width: 56px;
 
-
-  margin-left: auto;
-  margin-right: auto;
-
-
   //left: 50%;
   //bottom: 15px;
   //margin-left: -28px;
+  #actionImage.state-add {
+    transition: transform 600ms ease-in-out;
+    transform: rotate(0deg);
+  }
+
+  &:hover {
+    #actionImage.state-add {
+      transition: transform 300ms ease-in-out;
+      transform: rotate(225deg);
+    }
+  }
 }
 
 .fab:hover .fab-buttons, .fab:active .fab-buttons {
   opacity: 1;
   visibility: visible;
+
+
 }
 
 .fab:hover .fab-buttons__link, .fab:active .fab-buttons__link {
@@ -687,15 +698,21 @@ a.nav-tile {
   width: 56px;
   height: 56px;
   background-color: @hu-blue;
+  transition: background-color 300ms ease-in-out;
   border-radius: 50%;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+
+
+  &:hover {
+    transition: background-color 300ms ease-in-out;
+    background-color: lighten(@hu-blue, 15%);
+
+  }
 }
 
 .fab-buttons {
   position: absolute;
-  left: 0;
-  right: 0;
-  //bottom: 50px;
+  width: 56px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -728,6 +745,7 @@ a.nav-tile {
 
 .fab-buttons__link {
   display: inline-block;
+  cursor: pointer;
   width: 40px;
   height: 40px;
   text-decoration: none;
@@ -748,6 +766,7 @@ a.nav-tile {
   }
 }
 
+
 [data-tooltip]:before {
   top: 50%;
   margin-top: -11px;
@@ -761,12 +780,12 @@ a.nav-tile {
   visibility: hidden;
   opacity: 0;
   padding: 4px 7px;
-  margin-right: 12px;
+  margin-left: 12px;
   position: absolute;
   transform: scale(0);
-  right: 100%;
+  left: 100%;
   white-space: nowrap;
-  transform-origin: top right;
+  transform-origin: top left;
   transition: all .3s cubic-bezier(.25, .8, .25, 1);
 }
 
@@ -774,12 +793,13 @@ a.nav-tile {
   visibility: visible;
   opacity: 1;
   transform: scale(1);
-  transform-origin: right center 0;
+  transform-origin: left center 0;
+
 }
+
 
 .icon-material {
   display: inline-block;
   width: 40px;
   height: 40px;
 }
-

@@ -2,7 +2,6 @@ import React from "react";
 import Row from "./row";
 import FilterRule from "./filterRule";
 import _ from "lodash";
-import ActingActivityProcessExporter from "../../services/ActingActivityProcessExporter";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 
@@ -25,6 +24,7 @@ export default class ActivityActingProcessTable extends React.Component {
             filters: this.buildFilter(window.activities),
             exports: ["Word (.docx)", "E-mail Word document"],
             selectedExport: "Word (.docx)",
+            exportReflections: true,
             email: "",
             emailComment: "",
             emailAlert: null,
@@ -133,6 +133,7 @@ export default class ActivityActingProcessTable extends React.Component {
 
     exportHandler() {
         let ids = this.filterActivities(this.state.activities).map(activity => activity.id);
+        const includeReflections = (this.state.exportReflections ? 1: 0);
         if (this.state.selectedExport === "E-mail Word document") {
             this.setState({emailAlert: undefined});
             let email = this.state.email;
@@ -148,13 +149,13 @@ export default class ActivityActingProcessTable extends React.Component {
                 setTimeout(() => this.setState({emailAlert: null}), 3000);
             };
 
-            axios.post(window.mailExportActivitiesUrl, {email, comment, ids})
+            axios.post(window.mailExportActivitiesUrl, {email, comment, ids, 'reflections': includeReflections})
                 .then(cb)
                 .catch(cb);
 
         } else if (this.state.selectedExport === "Word (.docx)") {
 
-            window.location.href = `${window.exportActivitiesUrl}?ids[]=${ids.join('&ids[]=')}`;
+            window.location.href = `${window.exportActivitiesUrl}?reflections=${includeReflections}&ids[]=${ids.join('&ids[]=')}`;
         }
     }
 
@@ -216,50 +217,67 @@ export default class ActivityActingProcessTable extends React.Component {
 
             </div>
             <br/>
-            <div className="export" style={{paddingBottom: "15px"}}>
 
-                <label>{Lang.get('react.export-to')}&nbsp;
-                    <select onChange={e => {
-                        this.setState({selectedExport: e.target.value})
-                    }} defaultValue={this.state.selectedExport}>
-                        {this.state.exports.map(type => {
-                            return <option key={type} value={type}>{type}</option>
-                        })}
-                    </select>
-                </label> &nbsp;
-                <button className="btn btn-info" onClick={this.exportHandler}
-                        disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'E-mail Word document' && (!this.state.email.includes('@') || !this.state.email.includes('.')))}>{Lang.get('react.export')}</button>
-                <br/>
-                {this.state.selectedExport === 'E-mail Word document' &&
-                <div style={{maxWidth: "400px"}}>
-                    <label>
-                        {Lang.get('react.mail-to')}: <input type="email" className="form-control"
-                                                            onChange={e => this.setState({email: e.target.value})}
-                                                            value={this.state.email}/>
-                    </label><br/>
-                    <label>
-                        {Lang.get('react.mail-comment')}: <textarea className="form-control"
-                                                                    onChange={e => this.setState({emailComment: e.target.value})}
-                                                                    value={this.state.emailComment}/>
-                    </label>
-                    {
-                        this.state.emailAlert === undefined &&
-                        <div className="alert alert-info" role="alert">{Lang.get('react.mail.sending')}</div>
-                    }
-                    {
-                        this.state.emailAlert === true &&
-                        <div className="alert alert-success" role="alert">{Lang.get('react.mail.sent')}</div>
-                    }
-                    {
-                        this.state.emailAlert === false &&
-                        <div className="alert alert-danger" role="alert">{Lang.get('react.mail.failed')}</div>
-                    }
+            <div className="row">
+                <div className="col-md-2">
+                    <div className="panel panel-default">
+                        <div className="panel-body">
+                            <div className="export" style={{paddingBottom: "15px"}}>
+
+                                <label>{Lang.get('react.export-to')}</label>
+                                <br/>
+                                <select onChange={e => {
+                                    this.setState({selectedExport: e.target.value})
+                                }} defaultValue={this.state.selectedExport} style={{marginTop: '5px'}}>
+                                    {this.state.exports.map(type => {
+                                        return <option key={type} value={type}>{type}</option>
+                                    })}
+                                </select>
+                                <br/>
+                                <label style={{marginTop: '5px'}}>
+                                <input type="checkbox" checked={this.state.exportReflections} onChange={() => this.setState({exportReflections: !this.state.exportReflections})}/>
+                                    &nbsp;{Lang.get('react.with-reflections')}
+                                </label>
+                                <br/>
+                                {this.state.selectedExport === 'E-mail Word document' &&
+                                <div style={{maxWidth: "400px", marginTop: '5px'}} >
+                                    <label>
+                                        {Lang.get('react.mail-to')}: <input type="email" className="form-control"
+                                                                            onChange={e => this.setState({email: e.target.value})}
+                                                                            value={this.state.email}/>
+                                    </label><br/>
+                                    <label>
+                                        {Lang.get('react.mail-comment')}: <textarea className="form-control"
+                                                                                    onChange={e => this.setState({emailComment: e.target.value})}
+                                                                                    value={this.state.emailComment}/>
+                                    </label>
+                                    {
+                                        this.state.emailAlert === undefined &&
+                                        <div className="alert alert-info" role="alert">{Lang.get('react.mail.sending')}</div>
+                                    }
+                                    {
+                                        this.state.emailAlert === true &&
+                                        <div className="alert alert-success" role="alert">{Lang.get('react.mail.sent')}</div>
+                                    }
+                                    {
+                                        this.state.emailAlert === false &&
+                                        <div className="alert alert-danger" role="alert">{Lang.get('react.mail.failed')}</div>
+                                    }
+                                </div>
+                                }
+
+                                <button className="btn btn-info" onClick={this.exportHandler} style={{marginTop: '5px'}}
+                                        disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'E-mail Word document' && (!this.state.email.includes('@') || !this.state.email.includes('.')))}>
+                                    {Lang.get('react.export')}</button>
+
+                            </div>
+                        </div>
+
+                        {/*<button className="btn btn-info" disabled={filteredActivities.filter(activity => activity.reflection !== null).length === 0} onClick={this.downloadMultiple}>{Lang.get('react.export-reflections')}</button>*/}
+                    </div>
                 </div>
-                }
-
-                <br/>
-                <button className="btn btn-info" disabled={filteredActivities.filter(activity => activity.reflection !== null).length === 0} onClick={this.downloadMultiple}>{Lang.get('react.export-reflections')}</button>
             </div>
+
 
             <div className="table-responsive">
                 <table className="table blockTable">

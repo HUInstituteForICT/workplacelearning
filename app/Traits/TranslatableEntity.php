@@ -12,7 +12,7 @@ trait TranslatableEntity
         $translation = __($this->getTranslationKey(), []);
 
         // If there is no translation, return the default label value for the Entity
-        if ($translation === $this->getTranslationKey() && method_exists(static::class, 'getLabel')) {
+        if ($translation === $this->getTranslationKey() && method_exists($this, 'getLabel')) {
             return $this->getLabel();
         }
 

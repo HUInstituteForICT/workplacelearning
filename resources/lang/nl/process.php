@@ -3,6 +3,7 @@
 return [
     'enlarge' => 'Vergroot tekstveld',
     'evidence' => 'Bewijsstukken (1 of meer)',
+    'evidence_uploaded' => 'Al geüpload',
     'remove' => 'verwijderen',
     'chain' => [
         'chain-activity' => 'Keten activiteit',

@@ -7,63 +7,67 @@
         <script>
             $(document).ready(function () {
                 // Add new resource person or material
-                (function () {
-                    $('#new-rp-hidden').hide();
-                    $('#new-rm-hidden').hide();
-                    $('#new-timeslot-hidden').hide();
-                    $('#res_material_detail').hide();
+                $('#new-rp-hidden').hide();
+                $('#new-rm-hidden').hide();
+                $('#new-timeslot-hidden').hide();
+                $('#res_material_detail').hide();
 
-                    $('[name="res_person"]').click(function () {
-                        if ($('#new_rp').is(':checked')) {
-                            $('#new-rp-hidden').show();
-                        } else {
-                            $('#new-rp-hidden').hide();
-                        }
-                    });
+                $('[name="res_person"]').click(function () {
+                    if ($('#new_rp').is(':checked')) {
+                        $('#new-rp-hidden').show().focus();
 
-                    $('[name="res_material"]').click(function () {
-                        if ($('#new_rm').is(':checked')) {
-                            $('#new-rm-hidden').show();
-                        } else {
-                            $('#new-rm-hidden').hide();
-                        }
+                    } else {
+                        $('#new-rp-hidden').hide();
+                    }
+                });
 
-                        if ($('#rm_none').is(':checked')) {
-                            $('#res_material_detail').hide();
-                        } else {
-                            $('#res_material_detail').show();
-                        }
-                    });
-                    $('[name="timeslot"]').click(function () {
-                        if ($('#new_timeslot').is(':checked')) {
-                            $('#new-timeslot-hidden').show();
-                        } else {
-                            $('#new-timeslot-hidden').hide();
-                        }
+                $('[name="res_material"]').click(function () {
+                    if ($('#new_rm').is(':checked')) {
+                        $('#new-rm-hidden').show().focus();
+                    } else {
+                        $('#new-rm-hidden').hide();
+                    }
 
-                    });
-                })();
+                    if ($('#rm_none').is(':checked')) {
+                        $('#res_material_detail').hide();
+                    } else {
+                        $('#res_material_detail').show().focus();
+                    }
+                });
+                $('[name="timeslot"]').click(function () {
+                    if ($('#new_timeslot').is(':checked')) {
+                        $('#new-timeslot-hidden').show().focus();
+                    } else {
+                        $('#new-timeslot-hidden').hide();
+                    }
+
+                });
 
                 // Help Text
-                (function () {
-                    $("#help-text").hide();
+                $("#help-text").hide();
 
-                    $(".expand-click").click(function () {
-                        $(".cond-hidden").hide();
-                        $(this).siblings().show();
-                        $("#cond-select-hidden").hide();
-                        $("#rp_id").trigger("change");
-                    });
+                $(".expand-click").click(function () {
+                    $(".cond-hidden").hide();
+                    $(this).siblings().show();
+                    $("#cond-select-hidden").hide();
+                    $("#rp_id").trigger("change");
+                });
 
-                    $("#help-click").click(function () {
-                        $('#help-text').slideToggle('slow');
-                    });
-                })();
+                $("#help-click").click(function () {
+                    $('#help-text').slideToggle();
+                });
 
                 // Tooltips
-                (function () {
-                    $('[data-toggle="tooltip"]').tooltip();
-                })();
+                $('[data-toggle="tooltip"]').tooltip();
+
+                // Allow multi select to be used more easily
+                $('select[multiple] option').mousedown(function (e) {
+                    e.preventDefault();
+                    $(this).prop('selected', !this.selected);
+                    return false;
+                }).mousemove(function (e) {
+                    e.preventDefault()
+                });
             });
         </script>
         <div class="row">
@@ -85,183 +89,227 @@
             </div>
         </div>
 
-        {{ Form::open(array('id' => 'taskForm',  'url' => route('process-acting-create'), 'class' => '', "files" => true)) }}
+        {{ Form::open(array('id' => 'taskForm',  'url' => route('process-acting-create'), 'files' => true)) }}
         <div id="taskFormError" class="alert alert-error" style="display: none">
 
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <h4>{{ Lang::get('activity.activity') }}</h4>
-                <div class='input-group date fit-bs' id='date-deadline'>
-                    <input style="z-index:1;" id="datum" name="date" type='text' class="form-control"
-                           value="{{ (!is_null(old('datum'))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y') }}"/>
-                    <span class="input-group-addon">
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3>{{ Lang::get('activity.activity') }}</h3>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4>{{ Lang::get('activity.date') }}</h4>
+                        <div class='input-group date fit-bs' id='date-deadline'>
+                            <input style="z-index:1;" id="datum" name="date" type='text' class="form-control"
+                                   value="{{ (!is_null(old('datum'))) ? date('d-m-Y', strtotime(old('datum'))) : date('d-m-Y') }}"/>
+                            <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
-                </div>
-                <h4>{{ Lang::get('activity.situation') }}</h4>
-                <div>
+                        </div>
+                        <h4>{{ Lang::get('activity.situation') }}</h4>
+                        <div>
                     <textarea id="description" class="form-control fit-bs" name="description" required maxlength="2000"
                               rows="8" cols="19">{{ old('description') }}</textarea>
-                    <a data-target-text="#description"
-                       data-target-title="{{ ucfirst(trans('process_export.situation')) }}"
-                       class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
-                </div>
+                            <a data-target-text="#description"
+                               data-target-title="{{ ucfirst(trans('process_export.situation')) }}"
+                               class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+                        </div>
 
-            </div>
-            <div class="col-md-3 buttons">
-                <h4>{{Lang::get('activity.category')}} <i class="fa fa-info-circle" aria-hidden="true"
-                                                          data-toggle="tooltip" data-placement="bottom"
-                                                          title="{{ trans('tooltips.acting_when') }}"></i></h4>
-                @foreach ($timeslots as $key => $value)
-                    <label><input type="radio" name="timeslot"
-                                  value="{{ $value->timeslot_id }}" {{ (old('timeslot') != null && old('timeslot') == $value->timeslot_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->localizedLabel() }}</span></label>
-                @endforeach
-                <div>
-                    <label><input type="radio" name="timeslot" id="new_timeslot"
-                                  value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}>
-                        <span class="new">{{  Lang::get('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span>
-                        <br/>
-                        <input id="new-timeslot-hidden" type="text" name="new_timeslot" class="form-control"
-                               style="width:150px;"
-                               value="{{ old('new-timeslot-hidden') }}"
-                               placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
-                    </label>
-
-                </div>
-            </div>
-            <div class="col-md-3 buttons">
-                <h4>{{ Lang::get('activity.with') }}<i class="fa fa-info-circle" aria-hidden="true"
-                                                       data-toggle="tooltip" data-placement="bottom"
-                                                       title="{{ trans('tooltips.acting_with') }}"></i></h4>
-                @foreach ($resourcePersons as $key => $value)
-                    <label><input type="radio" name="res_person"
-                                  value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->localizedLabel() }}</span></label>
-                @endforeach
-                <div>
-                    <label><input type="radio" name="res_person" id="new_rp"
-                                  value="new" {{ (old('res_person') == 'new') ? 'checked' : null }}><span class="new">{{ Lang::get('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span>
-                        <br/>
-                        <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}"
-                               class="form-control" style="width:150px;"
-                               placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
-                    </label>
-
-                </div>
-            </div>
-            <div class="col-md-3 buttons">
-                <h4>{{ Lang::get('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true"
-                                                          data-toggle="tooltip" data-placement="bottom"
-                                                          title="{{ trans('tooltips.acting_theory') }}"></i></h4>
-                <label><input type="radio" name="res_material" id="rm_none"
-                              value="none" {{ (old('res_material') === 'none' || old('res_material') === null) ? 'checked' : null }}><span>{{ Lang::get('activity.none') }}</span></label>
-                @foreach ($resourceMaterials as $key => $value)
-                    <label><input type="radio" name="res_material"
-                                  value="{{ $value->rm_id }}" {{ old('res_material') === $value->rm_id ? 'checked' : null }} /><span>{{ __($value->rm_label) }}</span></label>
-                @endforeach
-
-
-                <label><input type="radio" name="res_material" id="new_rm"
-                              value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span class="new">{{ trans('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span>
-                    <br/>
-                    <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}"
-                           class="form-control" style="width:150px;"
-                           placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
-                </label>
-
-                <div style="text-align: center">
-                    <input type="text" name="res_material_detail" id="res_material_detail" class="form-control"
-                           style="width:90%"
-                           placeholder="{{ Lang::get('activity.source-description') }}"
-                           value="{{ old('res_material_detail') }}"/>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="row">
-
-            <div class="col-md-2">
-                <h4>{{ Lang::get('activity.learned') }}<br/>{{ Lang::get('activity.whatnow') }} <i
-                            class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
-                            data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                <textarea id="learned" class="form-control fit-bs" name="learned" required maxlength="1000"
-                          rows="5" cols="19">{{ old('learned') }}</textarea>
-                <a data-target-text="#learned" data-target-title="{{ Lang::get('activity.learned') }}"
-                   class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
-            </div>
-            <div class="col-md-2">
-                <h4>{{ Lang::get('activity.whatdoyouneed') }} <i class="fa fa-info-circle" aria-hidden="true"
-                                                                 data-toggle="tooltip" data-placement="bottom"
-                                                                 title="{{ trans('tooltips.acting_required_wp') }}"></i>
-                </h4>
-                <textarea id="support_wp" max-length="500" class="form-control fit-bs" name="support_wp"
-                          rows="5" cols="19">{{ old('support_wp') }}</textarea>
-                <a data-target-text="#support_wp" data-target-title="{{ Lang::get('activity.whatdoyouneed') }}"
-                   class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
-            </div>
-            <div class="col-md-2">
-                <h4>{{ Lang::get('activity.whatdoyouneedschool') }} <i class="fa fa-info-circle"
-                                                                       aria-hidden="true" data-toggle="tooltip"
-                                                                       data-placement="bottom"
-                                                                       title="{{ trans('tooltips.acting_required_ep') }}"></i>
-                </h4>
-                <textarea id="support_ed" maxlength="500" class="form-control fit-bs" name="support_ed" rows="5"
-                          cols="19">{{ old('support_ed') }}</textarea>
-                <a data-target-text="#support_ed"
-                   data-target-title="{{ Lang::get('activity.whatdoyouneedschool') }}"
-                   class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
-
-            </div>
-
-
-            @include('pages.acting.includes.create-reflection')
-
-            <div class="col-md-2">
-                <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true"
-                                                              data-toggle="tooltip" data-placement="bottom"
-                                                              title="{{ trans('tooltips.acting_competence') }}"></i>
-                </h4>
-                <select name="competence[]" class="form-control fit-bs" multiple>
-                    @foreach ($competencies as $value)
-                        <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', []), false) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
-                    @endforeach
-                </select>
-                @if($competenceDescription !== null)
-                    <h5>
-                        <a href="{{ $competenceDescription->download_url }}">{{ Lang::get('elements.competences.competencedetails') }}</a>
-                    </h5>
-                @endif
-            </div>
-
-            <div class="col-md-2">
-                <div>
-                    <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle" aria-hidden="true"
-                                                                        data-toggle="tooltip" data-placement="bottom"
-                                                                        title="{{ trans('tooltips.acting_learninggoal') }}"></i>
-                    </h4>
-                    <select name="learning_goal" class="form-control fit-bs">
-                        @foreach ($learningGoals as $key => $value)
-                            <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'selected' : null }}>{{ __($value->learninggoal_label) }}</option>
+                    </div>
+                    <div class="col-md-3 buttons">
+                        <h4>{{Lang::get('activity.category')}} <i class="fa fa-info-circle" aria-hidden="true"
+                                                                  data-toggle="tooltip" data-placement="bottom"
+                                                                  title="{{ trans('tooltips.acting_when') }}"></i></h4>
+                        @foreach ($timeslots as $key => $value)
+                            <label><input type="radio" name="timeslot"
+                                          value="{{ $value->timeslot_id }}" {{ (old('timeslot') != null && old('timeslot') == $value->timeslot_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->localizedLabel() }}</span></label>
                         @endforeach
-                    </select>
-                </div>
-                <div style="margin-top: 20px;">
-                    <h4>{{ __('process.evidence') }}</h4>
-                    <input type="file" name="evidence[]" multiple onchange="updateFileList(this)"/>
-                    <ul id="fileList">
+                        <label><input type="radio" name="timeslot" id="new_timeslot"
+                                      value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}>
+                            <span class="new">{{  Lang::get('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span>
+                            <br/>
+                            <input id="new-timeslot-hidden" type="text" name="new_timeslot" class="form-control"
+                                   style="width:150px;"
+                                   value="{{ old('new-timeslot-hidden') }}"
+                                   placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
+                        </label>
 
-                    </ul>
+                        <span class="clearfix"></span>
+                    </div>
+                    <div class="col-md-2 buttons">
+                        <h4>{{ Lang::get('activity.with') }}&nbsp;<i class="fa fa-info-circle" aria-hidden="true"
+                                                                     data-toggle="tooltip" data-placement="bottom"
+                                                                     title="{{ trans('tooltips.acting_with') }}"></i>
+                        </h4>
+                        @foreach ($resourcePersons as $key => $value)
+                            <label><input type="radio" name="res_person"
+                                          value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->localizedLabel() }}</span></label>
+                        @endforeach
+                        <div>
+                            <label><input type="radio" name="res_person" id="new_rp"
+                                          value="new" {{ (old('res_person') == 'new') ? 'checked' : null }}><span
+                                        class="new">{{ Lang::get('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span>
+                                <br/>
+                                <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}"
+                                       class="form-control" style="width:150px;"
+                                       placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
+                            </label>
+
+                        </div>
+                        <span class="clearfix"></span>
+
+                    </div>
+                    <div class="col-md-2 buttons">
+                        <h4>{{ Lang::get('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true"
+                                                                  data-toggle="tooltip" data-placement="bottom"
+                                                                  title="{{ trans('tooltips.acting_theory') }}"></i>
+                        </h4>
+                        <label><input type="radio" name="res_material" id="rm_none"
+                                      value="none" {{ (old('res_material') === 'none' || old('res_material') === null) ? 'checked' : null }}><span>{{ Lang::get('activity.none') }}</span></label>
+                        @foreach ($resourceMaterials as $key => $value)
+                            <label><input type="radio" name="res_material"
+                                          value="{{ $value->rm_id }}" {{ old('res_material') === $value->rm_id ? 'checked' : null }} /><span>{{ __($value->rm_label) }}</span></label>
+                        @endforeach
+
+
+                        <label><input type="radio" name="res_material" id="new_rm"
+                                      value="new" {{ (old('res_material') == 'new') ? 'checked' : null }}><span
+                                    class="new">{{ trans('activity.other') }}<br/>({{ Lang::get('activity.add') }})</span>
+                            <br/>
+                            <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}"
+                                   class="form-control" style="width:150px;"
+                                   placeholder="{{ Lang::get('process_export.description') }}" maxlength="50"/>
+                        </label>
+
+                        <div style="text-align: center">
+                            <input type="text" name="res_material_detail" id="res_material_detail" class="form-control"
+                                   style="width:150px; margin: 5px;"
+                                   placeholder="{{ Lang::get('activity.source-description') }}"
+                                   value="{{ old('res_material_detail') }}"/>
+                        </div>
+                        <span class="clearfix"></span>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <div>
+                            <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle"
+                                                                                aria-hidden="true"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="bottom"
+                                                                                title="{{ trans('tooltips.acting_learninggoal') }}"></i>
+                            </h4>
+                            <select name="learning_goal" class="form-control fit-bs">
+                                @foreach ($learningGoals as $key => $value)
+                                    <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'selected' : null }}>{{ __($value->learninggoal_label) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <br/>
+                        <div>
+                            <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true"
+                                                                          data-toggle="tooltip" data-placement="bottom"
+                                                                          title="{{ trans('tooltips.acting_competence') }}"></i>
+                            </h4>
+                            <select name="competence[]" class="form-control fit-bs" multiple>
+                                @foreach ($competencies as $value)
+                                    <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', []), false) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
+                                @endforeach
+                            </select>
+                            @if($competenceDescription !== null)
+                                <h5>
+                                    <a href="{{ $competenceDescription->download_url }}">{{ Lang::get('elements.competences.competencedetails') }}</a>
+                                </h5>
+                            @endif
+                        </div>
+
+                        <br/>
+
+                        <div>
+                            <h4>{{ __('process.evidence') }}</h4>
+                            <input type="file" name="evidence[]" multiple onchange="updateFileList(this)"/>
+                            <ul id="fileList">
+
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
-                <div>
-                    <input type="submit" class="btn btn-info" style="margin: 44px 0 0 30px;"
-                           value="{{ __('general.save') }}"/>
-                </div>
+
             </div>
-            {{ Form::close() }}
         </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3>{{__('reflection.reflection')}}</h3>
+                    </div>
+                    <div class="col-md-2 col-md-offset-6 text-right ">
+                        @include('pages.acting.includes.reflection-settings')
+                    </div>
+                </div>
+
+                <div class="row">
+
+
+                    <div class="col-md-3 shortReflection"
+                         @if(!$reflectionSettings['shortReflection']) style="display: none;" @endif>
+                        <h4>{{ Lang::get('activity.learned') }}, {{ Lang::get('activity.whatnow') }} <i
+                                    class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
+                                    data-placement="bottom" title="{{ trans('tooltips.acting_learned') }}"></i></h4>
+                        <textarea id="learned" class="form-control fit-bs" name="learned" maxlength="1000"
+                                  rows="5" cols="19">{{ old('learned') }}</textarea>
+                        <a data-target-text="#learned" data-target-title="{{ Lang::get('activity.learned') }}"
+                           class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+                    </div>
+                    <div class="col-md-3 shortReflection"
+                         @if(!$reflectionSettings['shortReflection']) style="display: none;" @endif>
+                        <h4>{{ Lang::get('activity.whatdoyouneed') }} <i class="fa fa-info-circle" aria-hidden="true"
+                                                                         data-toggle="tooltip" data-placement="bottom"
+                                                                         title="{{ trans('tooltips.acting_required_wp') }}"></i>
+                        </h4>
+                        <textarea id="support_wp" max-length="500" class="form-control fit-bs" name="support_wp"
+                                  rows="5" cols="19">{{ old('support_wp') }}</textarea>
+                        <a data-target-text="#support_wp" data-target-title="{{ Lang::get('activity.whatdoyouneed') }}"
+                           class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+                    </div>
+                    <div class="col-md-3 shortReflection"
+                         @if(!$reflectionSettings['shortReflection']) style="display: none;" @endif>
+                        <h4>{{ Lang::get('activity.whatdoyouneedschool') }} <i class="fa fa-info-circle"
+                                                                               aria-hidden="true" data-toggle="tooltip"
+                                                                               data-placement="bottom"
+                                                                               title="{{ trans('tooltips.acting_required_ep') }}"></i>
+                        </h4>
+                        <textarea id="support_ed" maxlength="500" class="form-control fit-bs" name="support_ed" rows="5"
+                                  cols="19">{{ old('support_ed') }}</textarea>
+                        <a data-target-text="#support_ed"
+                           data-target-title="{{ Lang::get('activity.whatdoyouneedschool') }}"
+                           class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
+
+                    </div>
+
+
+                    @include('pages.acting.includes.create-reflection')
+
+
+                </div>
+
+                <div class="row" style="margin-top:25px;">
+                    <div class="col-md-12 text-right">
+                        <input type="submit" class="btn btn-info" value="{{ __('general.save') }}"/>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        {{ Form::close() }}
+        @include('js.activity_save')
+
+
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#date-deadline').datetimepicker({
@@ -275,7 +323,9 @@
                 $('#datum').attr('value', moment(e.date).format("DD-MM-YYYY"));
             });
         </script>
-        @include('js.activity_save')
+
+
+        <hr>
 
 
         <div class="row">

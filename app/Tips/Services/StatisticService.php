@@ -79,11 +79,10 @@ class StatisticService
     }
 
     /**
-     * @param $operator
      * @return mixed
      * @throws \RuntimeException
      */
-    private static function getOperator($operator)
+    private static function getOperator(int $operator)
     {
         if (!isset(CustomStatistic::OPERATORS[$operator])) {
             throw new \RuntimeException("Operator with id {$operator} not found in Statistic::OPERATORS");

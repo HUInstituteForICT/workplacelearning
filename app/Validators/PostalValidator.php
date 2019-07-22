@@ -2,7 +2,8 @@
 
 namespace App\Validators;
 
-use Illuminate\Contracts\Validation\Validator;
+
+use Illuminate\Validation\Validator;
 
 class PostalValidator
 {

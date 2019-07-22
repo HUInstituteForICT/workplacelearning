@@ -70,9 +70,6 @@ class StatisticValueFetcher
         });
     }
 
-    /**
-     * @return int
-     */
     public function getValueForVariable(StatisticVariable $statisticVariable, string $type): float
     {
         $builder = $this->getQueryBuilder($type);

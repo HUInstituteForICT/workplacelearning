@@ -50,10 +50,8 @@ class Analysis extends Model
 
     /**
      * Get cached data if any.
-     *
-     * @param $value
      */
-    public function getDataAttribute($value)
+    public function getDataAttribute()
     {
         if (!Cache::has(self::CACHE_KEY.$this->id)) {
             $this->refresh();
@@ -65,7 +63,7 @@ class Analysis extends Model
     /**
      * Refresh the cached data, if any.
      */
-    public function refresh(): void
+    public function refresh(): self
     {
         if (Cache::has(self::CACHE_KEY.$this->id)) {
             Cache::forget(self::CACHE_KEY.$this->id);

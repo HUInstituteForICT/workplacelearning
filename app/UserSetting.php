@@ -8,6 +8,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\UserSetting.
@@ -43,8 +44,8 @@ class UserSetting extends Model
         'setting_value',
     ];
 
-    public function student()
+    public function student(): BelongsTo
     {
-        return $this->belongsTo(\App\Student::class);
+        return $this->belongsTo(Student::class);
     }
 }

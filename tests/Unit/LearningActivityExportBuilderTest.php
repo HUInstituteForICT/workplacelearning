@@ -55,6 +55,7 @@ class LearningActivityExportBuilderTest extends TestCase
         $mock->shouldReceive('getAttribute')->with('laa_id')->andReturn('1');
 
         $mock->shouldReceive('getAttribute')->with('evidence')->andReturn(collect([]));
+        $mock->shouldReceive('getAttribute')->with('reflection')->andReturn(null);
 
         return $mock;
     }

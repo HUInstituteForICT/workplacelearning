@@ -41,8 +41,6 @@ class StatisticTriggerEvaluator
 
     /**
      * @param Resultable[]|array $tipCoupledStatisticResults
-     *
-     * @return TextParameter[]|array
      */
     private function addParameters(EvaluatedTip $evaluatedTip, array $tipCoupledStatisticResults): void
     {

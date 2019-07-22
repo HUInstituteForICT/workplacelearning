@@ -22,13 +22,13 @@ use RuntimeException;
  * @property string                                                                                         $reflection_type
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Reflection\Models\ActivityReflectionField[] $fields
  * @property-read LearningActivityInterface                                                                 $learningActivity
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection whereLearningActivityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection whereLearningActivityType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\ActivityReflection whereReflectionType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection whereLearningActivityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection whereLearningActivityType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection whereReflectionType($value)
  * @mixin Eloquent
  */
 class ActivityReflection extends Model
@@ -66,7 +66,7 @@ class ActivityReflection extends Model
             return $this->belongsTo(LearningActivityProducing::class, 'learning_activity_id', 'lap_id');
         }
 
-        throw new RuntimeException("ActivityReflection with type {$this->type} cannot be related to a learning activity");
+        throw new RuntimeException("ActivityReflection with type {$this->learning_activity_type} cannot be related to a learning activity");
     }
 
     public function renderableFields(): array

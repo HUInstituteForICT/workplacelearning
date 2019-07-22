@@ -32,8 +32,9 @@ class WordExport extends Controller
     {
 
         $activities = $this->actingRepository->getMultipleForUser($userResolver->getCurrentUser(), $request->get('ids'));
+        $includeReflections = (bool) $request->get('reflections');
 
-        $document = $this->actingActivityExporter->export($activities);
+        $document = $this->actingActivityExporter->export($activities, $includeReflections);
 
         $this->downloadDocument($document, 'activities.docx');
     }

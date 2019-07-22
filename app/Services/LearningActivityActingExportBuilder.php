@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Competence;
 use App\Evidence;
 use App\LearningActivityActing;
-use Carbon\Carbon;
 use Illuminate\Translation\Translator;
 
 class LearningActivityActingExportBuilder
@@ -53,15 +52,16 @@ class LearningActivityActingExportBuilder
                             ['evidence' => $evidence, 'diskFileName' => $evidence->disk_filename]),
                     ];
                 })->all(),
-                'reflection'              =>  (static function() use($activity) {
-                    if(!$activity->is_from_reflection_beta) {
-                        return null;
+                'reflection'              => (static function () use ($activity) {
+                    if ($activity->reflection === null) {
+                        return ['url' => null, 'id' => null];
                     }
+
                     return [
-                        'url' => $activity->reflection === null ? null : route('reflection-download', ['reflection' => $activity->reflection]),
-                        'id' => $activity->reflection->id
+                        'url' => route('reflection-download', ['reflection' => $activity->reflection]),
+                        'id'  => $activity->reflection->id,
                     ];
-                })()
+                })(),
             ];
         });
 
@@ -84,7 +84,7 @@ class LearningActivityActingExportBuilder
             'supportEd',
             'competence',
             'evidence',
-            'reflection'
+            'reflection',
         ])->each(function ($field) use (&$mapping): void {
             $mapping[$field] = $this->translator->get('process_export.' . $field);
         });

@@ -23,7 +23,6 @@ class DateInLearningPeriodValidator
     {
         /** @var Student $user */
         $user = $this->request->user();
-        $workplaceLearningPeriod = $user->getCurrentWorkplaceLearningPeriod();
 
         $activityDate = new Carbon($value);
 
@@ -31,9 +30,10 @@ class DateInLearningPeriodValidator
             return str_replace(':date', $activityDate->toDateString(), $message);
         });
 
-        if (null === $workplaceLearningPeriod) {
+        if (!$user->hasCurrentWorkplaceLearningPeriod()) {
             return false;
         }
+        $workplaceLearningPeriod = $user->getCurrentWorkplaceLearningPeriod();
 
         $startDate = new Carbon($workplaceLearningPeriod->startdate);
         $endDate = new Carbon($workplaceLearningPeriod->enddate);

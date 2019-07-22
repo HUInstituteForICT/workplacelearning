@@ -6,15 +6,11 @@ namespace App\Http\Controllers\Acting\Export;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ActingActivitiesWordExportMail;
-use App\Mail\TxtExport;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Services\ActingActivityExporter;
 use App\Services\CurrentUserResolver;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
-use PhpOffice\PhpWord\PhpWord;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class WordMailExport extends Controller
 {
@@ -32,8 +28,11 @@ class WordMailExport extends Controller
      */
     private $userResolver;
 
-    public function __construct(ActingActivityExporter $actingActivityExporter, LearningActivityActingRepository $actingRepository, CurrentUserResolver $userResolver)
-    {
+    public function __construct(
+        ActingActivityExporter $actingActivityExporter,
+        LearningActivityActingRepository $actingRepository,
+        CurrentUserResolver $userResolver
+    ) {
         $this->actingActivityExporter = $actingActivityExporter;
         $this->actingRepository = $actingRepository;
         $this->userResolver = $userResolver;
@@ -49,7 +48,9 @@ class WordMailExport extends Controller
         $ids = $request->get('ids');
 
         $activities = $this->actingRepository->getMultipleForUser($student, $ids);
-        $document = $this->actingActivityExporter->export($activities);
+        $includeReflections = (bool) $request->get('reflections');
+
+        $document = $this->actingActivityExporter->export($activities, $includeReflections);
 
         Mail::to($email)->send(new ActingActivitiesWordExportMail($comment, $document));
 
