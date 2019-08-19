@@ -65,14 +65,15 @@ class RegisterController extends Controller
      *
      * @return Student
      */
-    protected function create(array $data)
+    protected function create(array $data): Student
     {
         $educationProgram = EducationProgram::find($data['education']);
         if ($educationProgram->disabled) {
             throw new InvalidParameterException();
         }
 
-        return Student::create([
+        /** @var Student $student */
+        $student = Student::create([
             'studentnr' => $data['studentnr'],
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
@@ -87,5 +88,9 @@ class RegisterController extends Controller
             //'answer'            => $data['answer'],       // Deprecated,
             'locale' => Session::get('locale', 'nl'),
         ]);
+
+        $student->sendEmailVerificationNotification();
+
+        return $student;
     }
 }
