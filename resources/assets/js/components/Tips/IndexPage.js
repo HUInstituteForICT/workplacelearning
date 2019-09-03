@@ -349,7 +349,7 @@ const TipItemMapping = {
                 const {tip} = props;
                 const toggledTip = {...tip, showInAnalysis: tip.showInAnalysis === 0 ? 1 : 0};
 
-                axios.put(`/api/tips/${tip.id}`, toggledTip).then(() => {
+                axios.put(`/api/tips/${tip.id}`, {tip: toggledTip}).then(() => {
                     dispatch(entityActions.updateEntity('tips', toggledTip.id, toggledTip));
                 }).catch(error => {
                     Object.values(error.response.data).forEach(err => {

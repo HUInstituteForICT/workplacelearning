@@ -37,21 +37,26 @@ export class EntityCreator extends React.Component {
     }
 
     onKeyPress(event) {
-        if(event.key === 'Enter') {
+        if (event.key === 'Enter') {
             this.onCreateEntityClick();
         }
     }
 
     render() {
         return <div style={{marginTop: '25px'}}>
-                <div className="form-group">
+            <div className="form-group">
 
-                    <input onKeyPress={this.onKeyPress} className="form-control" type="text" placeholder="Name of item to add" onChange={this.onFieldChange}
+                <div className="input-group">
+                    <input onKeyPress={this.onKeyPress} className="form-control" type="text"
+                           placeholder="Name of item to add" onChange={this.onFieldChange}
+                           maxLength="45"
                            value={this.state.fieldValue}/>
-                    <br/>
-                    <span className="btn btn-success" onClick={this.onCreateEntityClick}>{Lang.get('react.add')}</span>
+                    <span className="input-group-addon">{this.state.fieldValue.length} / 45</span>
                 </div>
-                <hr/>
+                <br/>
+                <span className="btn btn-success" onClick={this.onCreateEntityClick}>{Lang.get('react.add')}</span>
+            </div>
+            <hr/>
 
 
         </div>

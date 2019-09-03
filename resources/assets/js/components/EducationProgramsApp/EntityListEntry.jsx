@@ -43,10 +43,14 @@ export default class EntityListEntry extends React.Component {
     save() {
         this.setState({loading: true});
 
-        EducationProgramService.updateEntity(this.props.id, {type: this.props.type, name: this.state.fieldValue, translations: this.state.translations},
+        EducationProgramService.updateEntity(this.props.id, {
+                type: this.props.type,
+                name: this.state.fieldValue,
+                translations: this.state.translations
+            },
             response => {
                 this.props.onEntityUpdatedName(this.props.id, this.props.type, this.state.fieldValue, response.data.mappedNameField);
-                this.setState({loading:false, editMode:false});
+                this.setState({loading: false, editMode: false});
 
             });
 
@@ -100,13 +104,18 @@ export default class EntityListEntry extends React.Component {
                 {this.state.loading && <div className="loader"/>}
                 {!this.state.loading && <div className="">
 
-                    <input onKeyPress={this.onKeyPress} type="text" className="form-control"
-                           style={{display: 'inline-block', width: '100%'}} value={this.state.fieldValue}
-                           onChange={this.onChangeFieldValue}/>
+                    <div className="input-group">
+                        <input onKeyPress={this.onKeyPress} type="text" className="form-control"
+                               maxLength="45"
+                                value={this.state.fieldValue}
+                               onChange={this.onChangeFieldValue}/>
+                        <span className="input-group-addon">{this.state.fieldValue.length} / 45</span>
+                    </div>
 
                     <hr/>
                     {this.state.loadingTranslations && <div className="loader">Loading...</div>}
-                    {!this.state.loadingTranslations && <div>{this.renderTranslationButton()}{this.renderTranslations()}</div>}
+                    {!this.state.loadingTranslations &&
+                    <div>{this.renderTranslationButton()}{this.renderTranslations()}</div>}
 
                     <hr/>
                     <br/>
@@ -114,8 +123,8 @@ export default class EntityListEntry extends React.Component {
                     <span className="btn btn-success" onClick={this.save}>
                         {Lang.get('react.save')}
                         </span>
-                    <span className="btn btn-danger"
-                          onClick={() => this.props.onRemoveClick(this.props.id, this.props.type)}>
+                        <span className="btn btn-danger"
+                              onClick={() => this.props.onRemoveClick(this.props.id, this.props.type)}>
                         {Lang.get('react.delete')}
                         </span>
                     </div>

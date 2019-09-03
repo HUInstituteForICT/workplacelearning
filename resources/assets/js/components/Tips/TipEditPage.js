@@ -4,7 +4,7 @@ import {actions as entityActions} from "./redux/entities";
 import axios from "axios/index";
 import {Link} from "react-router-dom";
 import Joyride from "react-joyride";
-import {ACTIONS, EVENTS} from 'react-joyride/es/constants';
+import {ACTIONS, EVENTS} from 'react-joyride';
 import CoupledStatistics from "./CoupledStatistics";
 import Moments from "./Moments";
 import EducationProgramService from "../../services/EducationProgramService";
