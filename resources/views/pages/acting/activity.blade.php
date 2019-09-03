@@ -14,31 +14,31 @@
 
                 $('[name="res_person"]').click(function () {
                     if ($('#new_rp').is(':checked')) {
-                        $('#new-rp-hidden').show().focus();
+                        $('#new-rp-hidden').fadeIn().focus();
 
                     } else {
-                        $('#new-rp-hidden').hide();
+                        $('#new-rp-hidden').fadeOut()();
                     }
                 });
 
                 $('[name="res_material"]').click(function () {
                     if ($('#new_rm').is(':checked')) {
-                        $('#new-rm-hidden').show().focus();
+                        $('#new-rm-hidden').fadeIn().focus();
                     } else {
-                        $('#new-rm-hidden').hide();
+                        $('#new-rm-hidden').fadeOut();
                     }
 
                     if ($('#rm_none').is(':checked')) {
-                        $('#res_material_detail').hide();
+                        $('#res_material_detail').fadeOut();
                     } else {
-                        $('#res_material_detail').show().focus();
+                        $('#res_material_detail').fadeIn().focus();
                     }
                 });
                 $('[name="timeslot"]').click(function () {
                     if ($('#new_timeslot').is(':checked')) {
-                        $('#new-timeslot-hidden').show().focus();
+                        $('#new-timeslot-hidden').fadeIn().focus();
                     } else {
-                        $('#new-timeslot-hidden').hide();
+                        $('#new-timeslot-hidden').fadeOut();
                     }
 
                 });
@@ -137,7 +137,7 @@
 
                         <span class="clearfix"></span>
                     </div>
-                    <div class="col-md-2 buttons">
+                    <div class="col-md-3 buttons">
                         <h4>{{ Lang::get('activity.with') }}&nbsp;<i class="fa fa-info-circle" aria-hidden="true"
                                                                      data-toggle="tooltip" data-placement="bottom"
                                                                      title="{{ trans('tooltips.acting_with') }}"></i>
@@ -160,7 +160,7 @@
                         <span class="clearfix"></span>
 
                     </div>
-                    <div class="col-md-2 buttons">
+                    <div class="col-md-3 buttons">
                         <h4>{{ Lang::get('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                   data-toggle="tooltip" data-placement="bottom"
                                                                   title="{{ trans('tooltips.acting_theory') }}"></i>
@@ -191,8 +191,10 @@
                         <span class="clearfix"></span>
 
                     </div>
-
-                    <div class="col-md-2">
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-3">
                         <div>
                             <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle"
                                                                                 aria-hidden="true"
@@ -202,12 +204,16 @@
                             </h4>
                             <select name="learning_goal" class="form-control fit-bs">
                                 @foreach ($learningGoals as $key => $value)
-                                    <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'selected' : null }}>{{ __($value->learninggoal_label) }}</option>
+                                    <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'selected' : null }}>
+                                        {{ __($value->learninggoal_label) }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
-
                         <br/>
+                    </div>
+                    <div class="col-md-3">
+
                         <div>
                             <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                           data-toggle="tooltip" data-placement="bottom"
@@ -215,7 +221,9 @@
                             </h4>
                             <select name="competence[]" class="form-control fit-bs" multiple>
                                 @foreach ($competencies as $value)
-                                    <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', []), false) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
+                                    <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', []), false) ? 'selected' : null }}>
+                                        {{ $value->localizedLabel() }}
+                                    </option>
                                 @endforeach
                             </select>
                             @if($competenceDescription !== null)
@@ -224,8 +232,9 @@
                                 </h5>
                             @endif
                         </div>
-
                         <br/>
+                    </div>
+                    <div class="col-md-3">
 
                         <div>
                             <h4>{{ __('process.evidence') }}</h4>
@@ -234,15 +243,14 @@
 
                             </ul>
                         </div>
+                        <br/>
                     </div>
 
                 </div>
 
-            </div>
-        </div>
 
-        <div class="panel panel-default">
-            <div class="panel-body">
+                <hr/>
+
                 <div class="row">
                     <div class="col-md-4">
                         <h3>{{__('reflection.reflection')}}</h3>
@@ -299,7 +307,7 @@
 
                 <div class="row" style="margin-top:25px;">
                     <div class="col-md-12 text-right">
-                        <input type="submit" class="btn btn-info" value="{{ __('general.save') }}"/>
+                        <input type="submit" class="btn btn-lg btn-info" value="{{ __('activity.save') }}"/>
                     </div>
                 </div>
 

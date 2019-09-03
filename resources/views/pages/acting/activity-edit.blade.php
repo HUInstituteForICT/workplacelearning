@@ -51,7 +51,7 @@
 
                         <h4>{{ Lang::get('activity.situation') }}</h4>
                         <div>
-                        <textarea class="form-control fit-bs" name="description" required rows="5" id="description"
+                        <textarea class="form-control fit-bs" name="description" required rows="8" id="description"
                                   maxlength="2000"
                                   cols="19">{{ (count($errors) > 0) ? old('description') : $activity->situation }}</textarea>
                             <a data-target-text="#description"
@@ -70,7 +70,7 @@
                         @endforeach
                         <div class="clearfix"></div>
                     </div>
-                    <div class="col-md-2 buttons">
+                    <div class="col-md-3 buttons">
                         <h4>{{ Lang::get('activity.with') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="{{ trans('tooltips.acting_with') }}"></i></h4>
@@ -81,7 +81,7 @@
                         <div class="clearfix"></div>
                     </div>
 
-                    <div class="col-md-2 buttons">
+                    <div class="col-md-3 buttons">
                         <h4>{{ Lang::get('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                   data-toggle="tooltip" data-placement="bottom"
                                                                   title="{{ trans('tooltips.acting_theory') }}"></i>
@@ -102,7 +102,13 @@
                         <div class="clearfix"></div>
                     </div>
 
-                    <div class="col-md-2">
+                </div>
+
+                <hr/>
+
+                <div class="row">
+
+                    <div class="col-md-3 col-md-offset-3">
                         <div>
                             <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle"
                                                                                 aria-hidden="true"
@@ -117,7 +123,8 @@
                             </select>
                         </div>
 
-                        <br/>
+                    </div>
+                    <div class="col-md-3">
 
                         <div>
                             <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true"
@@ -136,7 +143,9 @@
                             @endif
                         </div>
 
-                        <br/>
+                    </div>
+                    <div class="col-md-3">
+
                         <div>
 
                             <h4>{{ __('process.evidence') }}</h4>
@@ -163,11 +172,9 @@
 
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="panel panel-default">
-            <div class="panel-body">
+                <hr/>
+
                 <div class="row">
                     <div class="col-md-4">
                         <h3>{{__('reflection.reflection')}}</h3>
@@ -230,7 +237,7 @@
 
                 <div class="row" style="margin-top:25px;">
                     <div class="col-md-12 text-right">
-                        <input type="submit" class="btn btn-info" value="{{ __('general.save') }}"/>
+                        <input type="submit" class="btn btn-lg btn-info" value="{{ __('activity.save') }}"/>
                     </div>
                 </div>
 

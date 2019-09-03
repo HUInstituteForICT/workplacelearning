@@ -1,14 +1,20 @@
 <div class="btn-group">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
-        <i class="icon fa fa-cog"></i> <span class="caret"></span>
+        <i class="icon fa fa-cog"></i>
+        {{ __('activity.reflection-methods') }}
+        <span class="caret"></span>
     </button>
     <ul class="dropdown-menu dropdown-menu-right">
+        <li>
+            <a class="disabled">{{ __('activity.reflection-methods-help') }}</a>
+        </li>
+        <li class="divider"></li>
         <li><a class="reflectionSettingToggle" data-reflection-setting="shortReflection">
                 @if($reflectionSettings['shortReflection'])
                     <i class="shortReflectionIcon icon fa fa-check"></i>
                 @else
-                    <i class="ShortReflectionIcon icon fa fa-close"></i>
+                    <i class="shortReflectionIcon icon fa fa-close"></i>
                 @endif
                 - {{ __('reflection.short_reflection') }}
             </a></li>
@@ -66,6 +72,10 @@
             }
         });
     }
+
+    (function() {
+        updateReflectionUI()
+    })()
 
 
 </script>

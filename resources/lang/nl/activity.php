@@ -102,4 +102,7 @@ return [
     'saved-successfully'      => 'De leeractiviteit is opgeslagen.',
 
     'feedback-activity-saved' => 'Zowel de activiteit als de feedback zijn opgeslagen.',
+    'save' => 'Leermoment opslaan',
+    'reflection-methods' => 'Reflectiemethoden',
+    'reflection-methods-help' => 'Kies welke reflectiemethoden jij wil gebruiken.'
 ];

@@ -228,7 +228,7 @@ export default class ActivityActingProcessTable extends React.Component {
                                 <br/>
                                 <select onChange={e => {
                                     this.setState({selectedExport: e.target.value})
-                                }} defaultValue={this.state.selectedExport} style={{marginTop: '5px'}}>
+                                }} defaultValue={this.state.selectedExport} style={{marginTop: '5px', width: '100%'}}>
                                     {this.state.exports.map(type => {
                                         return <option key={type} value={type}>{type}</option>
                                     })}
