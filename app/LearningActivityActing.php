@@ -38,7 +38,6 @@ use RuntimeException;
  * @property Collection|Competence[]                                  $competence
  * @property \Illuminate\Database\Eloquent\Collection|\App\Evidence[] $evidence
  * @property \App\WorkplaceLearningPeriod                             $workplaceLearningPeriod
- * @property bool                                                     $is_from_reflection_beta
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLaaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLearninggoalId($value)
@@ -59,7 +58,6 @@ use RuntimeException;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereIsFromReflectionBeta($value)
  */
 class LearningActivityActing extends Model implements LearningActivityInterface
 {
