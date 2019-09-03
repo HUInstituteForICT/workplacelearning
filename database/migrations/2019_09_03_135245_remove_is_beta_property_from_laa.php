@@ -25,7 +25,7 @@ class RemoveIsBetaPropertyFromLaa extends Migration
      */
     public function down()
     {
-        Schema::table('laa', static function (Blueprint $table) {
+        Schema::table('learningactivityacting', static function (Blueprint $table) {
             $table->boolean('is_from_reflection_beta')->default(false);
         });
     }

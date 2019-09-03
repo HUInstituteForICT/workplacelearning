@@ -24,6 +24,7 @@ class WplpDateValidationTestTest extends TestCase
     {
         /** @var Student|\PHPUnit_Framework_MockObject_MockObject $mock */
         $mock = $this->createMock(Student::class);
+        $mock->expects($this->once())->method('hasCurrentWorkplaceLearningPeriod')->willReturn(true);
         $mock->expects($this->once())->method('getCurrentWorkplaceLearningPeriod')->willReturn($this->getWplpMock());
 
         return $mock;
