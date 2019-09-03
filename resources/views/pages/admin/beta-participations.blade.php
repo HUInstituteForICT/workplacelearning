@@ -1,4 +1,5 @@
 @extends('layout.HUdefault')
+{{--DEPRECATED VIEW--}}
 @section('title')
     {{ __('misc.beta-participations') }}
 @stop
