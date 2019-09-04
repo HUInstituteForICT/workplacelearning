@@ -17,7 +17,7 @@ class LaaModifyForReflectionBeta extends Migration
             $table->boolean('is_from_reflection_beta')->default(false);
             $table->string('support_wp', 500)->nullable()->change();
             $table->string('support_ed', 500)->nullable()->change();
-            $table->string('lessonslearned')->nullable()->change();
+            $table->string('lessonslearned', 1000)->nullable()->change();
         });
     }
 
