@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Eloquent;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,28 +14,28 @@ use Illuminate\Notifications\Notifiable;
 /**
  * App\Student.
  *
- * @property int                                                                                                       $student_id
- * @property string                                                                                                    $email
- * @property string                                                                                                    $firstname
- * @property string                                                                                                    $lastname
- * @property int                                                                                                       $userlevel
- * @property EducationProgram                                                                                          $educationProgram
- * @property string                                                                                                    $pw_hash
- * @property int                                                                                                       $studentnr
- * @property int                                                                                                       $ep_id
- * @property string                                                                                                    $gender
- * @property string|null                                                                                               $birthdate
- * @property string|null                                                                                               $phonenr
- * @property string|null                                                                                               $registrationdate
- * @property string|null                                                                                               $answer
- * @property string                                                                                                    $locale
- * @property string|null                                                                                               $canvas_user_id
- * @property bool                                                                                                      $is_registered_through_canvas
- * @property \Illuminate\Database\Eloquent\Collection|\App\Deadline[]                                                  $deadlines
+ * @property int $student_id
+ * @property string $email
+ * @property string $firstname
+ * @property string $lastname
+ * @property int $userlevel
+ * @property EducationProgram $educationProgram
+ * @property string $pw_hash
+ * @property int $studentnr
+ * @property int $ep_id
+ * @property string $gender
+ * @property string|null $birthdate
+ * @property string|null $phonenr
+ * @property string|null $registrationdate
+ * @property string|null $answer
+ * @property string $locale
+ * @property string|null $canvas_user_id
+ * @property bool $is_registered_through_canvas
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Deadline[] $deadlines
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[]                                               $usersettings
- * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[]                                   $workplaceLearningPeriods
- * @property \Illuminate\Database\Eloquent\Collection|\App\Workplace[]                                                 $workplaces
+ * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[] $usersettings
+ * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[] $workplaceLearningPeriods
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Workplace[] $workplaces
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereAnswer($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereBirthdate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereEmail($value)
@@ -49,8 +50,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereStudentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereStudentnr($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereUserlevel($value)
- * @mixin \Eloquent
- * @property \Illuminate\Database\Eloquent\Collection|\App\Cohort[]                                                    $cohorts
+ * @mixin Eloquent
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Cohort[] $cohorts
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student query()
@@ -62,16 +63,21 @@ use Illuminate\Notifications\Notifiable;
 class Student extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, CanResetPassword;
+
     // Override the table used for the User Model
     public static $locales = [
         'nl' => 'Nederlands',
         'en' => 'English',
     ];
+
     // Disable using created_at and updated_at columns
     public $timestamps = false;
+
     // Override the primary key column
     protected $table = 'student';
+
     protected $primaryKey = 'student_id';
+
     protected $fillable = [
         'student_id',
         'studentnr',
@@ -89,6 +95,7 @@ class Student extends Authenticatable implements MustVerifyEmail
         'canvas_user_id',
         'is_registered_through_canvas',
     ];
+
     protected $hidden = [
         'remember_token',
     ];
@@ -121,7 +128,12 @@ class Student extends Authenticatable implements MustVerifyEmail
 
     public function isAdmin(): bool
     {
-        return $this->userlevel > 0;
+        return $this->getUserLevel() === 2;
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->getUserLevel() === 1 || $this->isAdmin();
     }
 
     public function educationProgram(): BelongsTo
@@ -164,7 +176,7 @@ class Student extends Authenticatable implements MustVerifyEmail
 
     public function hasCurrentWorkplaceLearningPeriod(): bool
     {
-        return (bool) $this->getUserSetting('active_internship');
+        return (bool)$this->getUserSetting('active_internship');
     }
 
     public function getUserSetting($label, $forceRefresh = false): ?UserSetting

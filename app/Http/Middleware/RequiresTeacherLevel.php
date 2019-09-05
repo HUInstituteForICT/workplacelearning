@@ -5,14 +5,17 @@ namespace App\Http\Middleware;
 use App\Exceptions\UnexpectedUser;
 use App\Services\CurrentUserResolver;
 use Closure;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 
-class CheckUserLevel
+class RequiresTeacherLevel
 {
     /**
      * @var CurrentUserResolver
      */
     private $currentUserResolver;
+
     /**
      * @var Redirector
      */
@@ -27,16 +30,17 @@ class CheckUserLevel
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @throws \Illuminate\Validation\UnauthorizedException
+     * @param Closure $next
+     * @return RedirectResponse|mixed
      */
     public function handle($request, Closure $next)
     {
         try {
             $user = $this->currentUserResolver->getCurrentUser();
 
-            if ($user->getUserLevel() !== 1) {
+            if (!$user->isTeacher()) {
                 return $this->redirector->route('home');
             }
         } catch (UnexpectedUser $exception) {

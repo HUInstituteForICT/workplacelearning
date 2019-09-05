@@ -36,7 +36,7 @@
             <div class="nav-title">{{ Lang::get('elements.sidebar.labels.settings') }}</div>
         </div>
     </a>
-    @if(Auth::user()->getUserLevel() === 1)
+    @if(Auth::user()->isTeacher())
 
         <a class="nav-tile" href="{{ route('tips-app') }}">
             <div class="tile blue_tile">
@@ -65,6 +65,15 @@
             <div class="tile white_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/agenda_blauw.svg', true) }}"/>
                 <div class="nav-title">{{ Lang::get('elements.sidebar.labels.template') }}</div>
+            </div>
+        </a>
+    @endif
+
+    @if(Auth::user()->isAdmin())
+        <a class="nav-tile" href="{{ route('admin-dashboard') }}">
+            <div class="tile blue_tile">
+                <img class="icon" src="{{ URL::asset('assets/img/BewijsInschrijving_wit.svg', true) }}"/>
+                <div class="nav-title">Admin</div>
             </div>
         </a>
     @endif
