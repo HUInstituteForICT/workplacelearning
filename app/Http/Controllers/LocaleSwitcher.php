@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CurrentUserResolver;
 use App\Student;
 use Exception;
 use Illuminate\Support\Facades\App;
@@ -11,11 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class LocaleSwitcher extends Controller
 {
+
     public function switchLocale(Request $request)
     {
-        if (!in_array($request->get('locale'), array_keys(Student::$locales))) {
-            throw new Exception('Selected unsupported locale');
+        if (!array_key_exists($request->get('locale'), Student::$locales)) {
+            return redirect(route('home'));
         }
+
         Session::put('locale', $request->get('locale'));
         Session::save();
         if (Auth::check()) {
