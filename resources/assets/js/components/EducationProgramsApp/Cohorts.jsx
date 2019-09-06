@@ -9,7 +9,7 @@ export default class Cohorts extends React.Component {
 
     constructor(props) {
         super();
-        this.state = Object.assign({}, props, {selectedCohortId: null, loading: false});
+        this.state = Object.assign({}, props, {selectedCohortId: null, loading: false, showDisabledCohorts: false});
 
         this.autoUpdaterTimeout = null;
     }
@@ -54,20 +54,67 @@ export default class Cohorts extends React.Component {
         return <div>
 
             <h3>{Lang.get('react.cohorts')}</h3>
-            <a onClick={() => EducationProgramService.createCohort(this.props.programId, response => {
-                const cohorts = this.state.cohorts.slice();
-                cohorts.push(response.data);
-                this.setState({cohorts: cohorts});
-            })}>{Lang.get('react.add-cohort')}</a>
+            <div className="row">
+                <div className="col-md-2">
+                    <a onClick={() => EducationProgramService.createCohort(this.props.programId, response => {
+                        const cohorts = this.state.cohorts.slice();
+                        cohorts.push(response.data);
+                        this.setState({cohorts: cohorts});
+                    })}>{Lang.get('react.add-cohort')}</a>
+                </div>
+
+                <div className="col-md-2 col-md-offset-8">
+                    <a className="btn btn-info pull-right" onClick={() => this.setState({showDisabledCohorts: !this.state.showDisabledCohorts})}>
+                        {this.state.showDisabledCohorts && Lang.get('react.cohorts-hide-disabled')}
+                        {!this.state.showDisabledCohorts && Lang.get('react.cohorts-show-disabled')}
+                    </a>
+                </div>
+
+            </div>
+
+
+
             <div className={"row"}>
 
-                {this.state.cohorts.map(cohort => {
+                {this.state.cohorts.filter(cohort => !cohort.disabled).map(cohort => {
+                    let buttonClass = "defaultButton list ";
+                    if (this.state.selectedCohortId === cohort.id) {
+                        buttonClass += 'red';
+                    }
+
                     return <div className={"col-md-4"} key={cohort.id}>
-                        <span className="defaultButton list"
-                              onClick={() => this.setState({loading: true, selectedCohortId: cohort.id}, () => this.loadCohort(cohort.id))}>{cohort.name}
+                        <span className={buttonClass}
+                              onClick={() => this.setState({
+                                  loading: true,
+                                  selectedCohortId: cohort.id
+                              }, () => this.loadCohort(cohort.id))}>{cohort.name}
                         </span>
                     </div>;
                 })}
+
+                {
+                    this.state.showDisabledCohorts &&
+
+                    this.state.cohorts.filter(cohort => cohort.disabled).map(cohort => {
+                        let buttonClass = "defaultButton list ";
+                        if (this.state.selectedCohortId === cohort.id) {
+                            buttonClass += 'red';
+                        } else {
+                            buttonClass += 'yellow';
+                        }
+
+                        return <div className={"col-md-4"} key={cohort.id}>
+                        <span className={buttonClass}
+                              style={{opacity: '0.6'}}
+                              onClick={() => this.setState({
+                                  loading: true,
+                                  selectedCohortId: cohort.id
+                              }, () => this.loadCohort(cohort.id))}>{cohort.name}
+
+                        </span>
+                        </div>;
+                    })
+                }
             </div>
             <hr/>
 
@@ -113,7 +160,9 @@ export default class Cohorts extends React.Component {
                         </div>
                     </div>
                     <div className="col-md-2">
-                        <button onClick={() => this.cloneCohort(selectedCohort.id)} className="btn btn-success">{Lang.get('react.clone')} cohort</button>
+                        <button onClick={() => this.cloneCohort(selectedCohort.id)}
+                                className="btn btn-success">{Lang.get('react.clone')} cohort
+                        </button>
                     </div>
                 </div>
                 <div className={"row"}>
@@ -124,12 +173,12 @@ export default class Cohorts extends React.Component {
                                 this.setState({cohorts: update(this.state.cohorts, {[index]: {disabled: {$set: response.data.disabled}}})});
                             }
                         })}>
-                            {selectedCohort.disabled ? Lang.get('react.cohort-enable'):Lang.get('react.cohort-disable')}
+                            {selectedCohort.disabled ? Lang.get('react.cohort-enable') : Lang.get('react.cohort-disable')}
                         </a>
                     </div>
                     <div className={"col-md-3"}>
                         <a disabled={selectedCohort.canBeDeleted} onClick={() => {
-                            if(selectedCohort.canBeDeleted) {
+                            if (selectedCohort.canBeDeleted) {
                                 EducationProgramService.deleteCohort(selectedCohort.id, response => {
                                     if (response.data.status === "success") {
                                         const index = this.cohortIndex(selectedCohort.id);
@@ -145,6 +194,8 @@ export default class Cohorts extends React.Component {
 
                 </div>
 
+                <br/>
+
                 {
                     this.props.programType === 1 &&
                     <div>
@@ -154,7 +205,7 @@ export default class Cohorts extends React.Component {
                         />
                         <Timeslot timeslots={selectedCohort.timeslots}
                                   programId={this.props.programId} cohortId={this.state.selectedCohortId}
-                         />
+                        />
                         <ResourcePerson resourcePersons={selectedCohort.resource_persons}
                                         programId={this.props.programId} cohortId={this.state.selectedCohortId}
                         />
@@ -163,14 +214,14 @@ export default class Cohorts extends React.Component {
 
                 {
                     this.props.programType === 2 &&
-                        <div>
-                            <Category categories={selectedCohort.categories}
-                                      programId={this.props.programId} cohortId={this.state.selectedCohortId}
-                            />
-                            <ResourcePerson resourcePersons={selectedCohort.resource_persons}
-                                            programId={this.props.programId} cohortId={this.state.selectedCohortId}
-                            />
-                        </div>
+                    <div>
+                        <Category categories={selectedCohort.categories}
+                                  programId={this.props.programId} cohortId={this.state.selectedCohortId}
+                        />
+                        <ResourcePerson resourcePersons={selectedCohort.resource_persons}
+                                        programId={this.props.programId} cohortId={this.state.selectedCohortId}
+                        />
+                    </div>
 
                 }
 

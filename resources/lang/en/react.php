@@ -89,4 +89,6 @@ return [
     'edit' => 'Edit',
     'clone' => 'Clone',
     'with-reflections' => 'include reflections',
+    'cohorts-show-disabled' => 'Show disabled',
+    'cohorts-hide-disabled' => 'Hide disabled',
 ];
