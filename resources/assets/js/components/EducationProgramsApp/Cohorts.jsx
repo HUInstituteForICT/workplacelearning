@@ -55,7 +55,7 @@ export default class Cohorts extends React.Component {
 
             <h3>{Lang.get('react.cohorts')}</h3>
             <div className="row">
-                <div className="col-md-1">
+                <div className="col-md-2">
                     <a onClick={() => EducationProgramService.createCohort(this.props.programId, response => {
                         const cohorts = this.state.cohorts.slice();
                         cohorts.push(response.data);
@@ -63,7 +63,7 @@ export default class Cohorts extends React.Component {
                     })}>{Lang.get('react.add-cohort')}</a>
                 </div>
 
-                <div className="col-md-1 col-md-offset-10">
+                <div className="col-md-2 col-md-offset-8">
                     <a className="btn btn-info pull-right" onClick={() => this.setState({showDisabledCohorts: !this.state.showDisabledCohorts})}>
                         {this.state.showDisabledCohorts && Lang.get('react.cohorts-hide-disabled')}
                         {!this.state.showDisabledCohorts && Lang.get('react.cohorts-show-disabled')}
@@ -193,6 +193,8 @@ export default class Cohorts extends React.Component {
                     </div>
 
                 </div>
+
+                <br/>
 
                 {
                     this.props.programType === 1 &&

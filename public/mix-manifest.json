@@ -1,8 +1,14 @@
 {
-    "/js/app.js": "/js/app.js?id=45a2b44438fda8748cbb",
-    "/css/style.css": "/css/style.css?id=c18b651d2b742735c688",
-    "/css/animations.css": "/css/animations.css?id=db47d8518be79668fd51",
-    "/css/fonts.css": "/css/fonts.css?id=5e01f21557535ea11dd7",
-    "/css/weekstaten.css": "/css/weekstaten.css?id=683abaed886ce3515f0a",
-    "/css/PDFstyle.css": "/css/PDFstyle.css?id=5fbf9d12b48c7b3e5eb8"
+    "/js/app.js": "/js/app.js?id=c602042aa70e45401baa",
+    "/css/style.css": "/css/style.css?id=2a49bf75505f9d6594fa",
+    "/css/animations.css": "/css/animations.css?id=98ebf5a8b701b1ff5671",
+    "/css/fonts.css": "/css/fonts.css?id=88a2c6228ba053844f6c",
+    "/css/weekstaten.css": "/css/weekstaten.css?id=d2df1837f72cf57a87d4",
+    "/css/PDFstyle.css": "/css/PDFstyle.css?id=a2f949fbaf50a3952032",
+    "/js/app.js.map": "/js/app.js.map?id=defc17e5e4caf6c9c37a",
+    "/css/style.css.map": "/css/style.css.map?id=0f01c340a6b7730e61be",
+    "/css/animations.css.map": "/css/animations.css.map?id=925db6502f9432bba4df",
+    "/css/fonts.css.map": "/css/fonts.css.map?id=fde1500b91c22775f570",
+    "/css/weekstaten.css.map": "/css/weekstaten.css.map?id=3d2eb56160d31122e662",
+    "/css/PDFstyle.css.map": "/css/PDFstyle.css.map?id=8410125cd38db4f3dfbd"
 }

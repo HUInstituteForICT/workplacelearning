@@ -65,7 +65,7 @@ export default class educationProgramsApp extends React.Component {
 
     onDeleteEducationProgram(id) {
         const index = this.state.programs.findIndex(program => parseInt(program.ep_id) === parseInt(id));
-        if(index < 0) {
+        if (index < 0) {
             throw "Unknown program id " + id;
         } else {
             this.setState({selectedProgramId: null});
@@ -81,23 +81,26 @@ export default class educationProgramsApp extends React.Component {
         return <div>
             <div className="row">
                 <div className="col-md-2">
-                    <h4>{Lang.get('react.educationprogram')}</h4>
-                    <p>{Lang.get('react.educprogram-manage')}</p>
-                    {this.state.programs.map(programme => {
+                    <div className="panel panel-default">
+                        <div className="panel-body">
+                            <h4>{Lang.get('react.educationprogram')}</h4>
+                            <p>{Lang.get('react.educprogram-manage')}</p>
+                            {this.state.programs.map(programme => {
 
-                        let buttonClass = 'defaultButton list';
-                        if(this.state.selectedProgramId === programme.ep_id) {
-                            buttonClass += ' red'
-                        }
+                                let buttonClass = 'defaultButton list';
+                                if (this.state.selectedProgramId === programme.ep_id) {
+                                    buttonClass += ' red'
+                                }
 
-                        return <span className={buttonClass} key={programme.ep_id}
-                                     onClick={() => this.setState({selectedProgramId: programme.ep_id})}>{programme.ep_name}
+                                return <span className={buttonClass} key={programme.ep_id}
+                                             onClick={() => this.setState({selectedProgramId: programme.ep_id})}>{programme.ep_name}
                             </span>;
-                    })}
+                            })}
 
-                    <hr/>
-                    {this.renderCreateForm()}
-
+                            <hr/>
+                            {this.renderCreateForm()}
+                        </div>
+                    </div>
                 </div>
 
                 <div className="col-md-10 ">
@@ -125,7 +128,8 @@ export default class educationProgramsApp extends React.Component {
                     <option value="2">{Lang.get('react.producing')}</option>
                 </select>
                 <br/>
-                <span className="btn btn-success fill" onClick={this.onClickAddEducationProgram}>{Lang.get('react.add')}</span>
+                <span className="btn btn-success fill"
+                      onClick={this.onClickAddEducationProgram}>{Lang.get('react.add')}</span>
             </div>
         </div>
     }
@@ -137,7 +141,7 @@ export default class educationProgramsApp extends React.Component {
         }
 
         return <EditProgram id={this.state.selectedProgramId}
-                                  programOnNameChange={this.updateProgramName}
+                            programOnNameChange={this.updateProgramName}
                             onDelete={this.onDeleteEducationProgram.bind(this)}
 
         />;
