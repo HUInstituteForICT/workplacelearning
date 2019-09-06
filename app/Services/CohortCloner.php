@@ -9,6 +9,7 @@ use App\Interfaces\IsTranslatable;
 use App\Repository\Eloquent\LanguageLineRepository;
 use App\ResourcePerson;
 use App\Timeslot;
+use Illuminate\Support\Facades\Storage;
 use Spatie\TranslationLoader\LanguageLine;
 
 class CohortCloner
@@ -35,6 +36,7 @@ class CohortCloner
         $this->cloneCompetencies($cohort, $clone);
         $this->cloneResourcePersons($cohort, $clone);
         $this->cloneTimeslots($cohort, $clone);
+        $this->cloneCompetenceDescription($cohort, $clone);
 
         $clone->push();
         $clone->refresh();
@@ -111,5 +113,19 @@ class CohortCloner
                 $this->cloneLanguageLine($languageLine, $clonedEntity);
             }
         }
+    }
+
+    private function cloneCompetenceDescription(Cohort $cohort, Cohort $clone): void
+    {
+        $competenceDescription = $cohort->competenceDescription;
+        $clonedCompetenceDescription = $competenceDescription->replicate();
+
+        $clonedCompetenceDescription->cohort()->associate($clone);
+        $clonedCompetenceDescription->save();
+
+        if($competenceDescription->has_data) {
+            Storage::disk('local')->copy($competenceDescription->file_name, $clonedCompetenceDescription->file_name);
+        }
+
     }
 }

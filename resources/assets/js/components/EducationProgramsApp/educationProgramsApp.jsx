@@ -83,9 +83,15 @@ export default class educationProgramsApp extends React.Component {
                 <div className="col-md-2">
                     <h4>{Lang.get('react.educationprogram')}</h4>
                     <p>{Lang.get('react.educprogram-manage')}</p>
-                    {this.state.programs.map(program => {
-                        return <span className="defaultButton list" key={program.ep_id}
-                                     onClick={() => this.setState({selectedProgramId: program.ep_id})}>{program.ep_name}
+                    {this.state.programs.map(programme => {
+
+                        let buttonClass = 'defaultButton list';
+                        if(this.state.selectedProgramId === programme.ep_id) {
+                            buttonClass += ' red'
+                        }
+
+                        return <span className={buttonClass} key={programme.ep_id}
+                                     onClick={() => this.setState({selectedProgramId: programme.ep_id})}>{programme.ep_name}
                             </span>;
                     })}
 

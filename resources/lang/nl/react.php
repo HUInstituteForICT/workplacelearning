@@ -87,4 +87,6 @@ return [
     'edit' => 'Wijzigen',
     'clone' => 'Kloon',
     'with-reflections' => 'inclusief reflecties',
+    'cohorts-show-disabled' => 'Laat alle cohorten zien',
+    'cohorts-hide-disabled' => 'Verberg uitgezette cohorten',
 ];

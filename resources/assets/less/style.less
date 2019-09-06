@@ -36,7 +36,7 @@
 }
 
 /* Element Sizes */
-@nav-width: 330px;
+@nav-width: 345px;
 @menu-height: 60px;
 @footer-height: 40px;
 
@@ -73,10 +73,10 @@ a {
   top: 0;
   left: 0;
   z-index: 3;
-  box-shadow: 0px -2px 15px #888888;
+  box-shadow: 0px 1px 10px -2px rgba(0, 0, 0, 0.26);
   margin: 0;
   background: @clr-bg-top;
-  border-bottom: 1px solid #CFCFCF;
+  //border-bottom: 1px solid #CFCFCF;
   padding: 0;
   width: 100%;
   @media screen {
@@ -166,7 +166,7 @@ a {
   height: 100%;
   margin-left: -@nav-width;
   overflow-y: auto;
-  background: @clr-bg-nav;
+  //background: @clr-bg-nav;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -226,6 +226,15 @@ a.nav-tile {
   height: 100px;
   margin: 10px 5px;
   float: left;
+  border-radius: 4px;
+  transition: 0.3s all ease-in-out;
+
+  box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.3);
+
+  &:hover {
+    box-shadow: 0px 0px 20px -2px rgba(0,0,0,0.3);
+    transition: 0.3s all ease-in-out;
+  }
 
   img.icon {
     width: 50px;
@@ -240,6 +249,7 @@ a.nav-tile {
     background: @hu-red;
     padding: 3px 5px;
     overflow-wrap: break-word;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
   }
 }
 
@@ -575,6 +585,7 @@ a.nav-tile {
 
   &:hover {
     background-color: @hu-red;
+    transition: 300ms all ease-in-out;
     color: white;
   }
 
@@ -583,6 +594,14 @@ a.nav-tile {
 
     &:hover {
       background-color: darken(@hu-red, 20%)
+    }
+  }
+
+  &.yellow {
+    background-color: #ffb500;
+
+    &:hover {
+      background-color: darken(#ffb500, 20%)
     }
   }
 
