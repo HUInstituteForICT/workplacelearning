@@ -50,6 +50,7 @@
                                     <th>First name</th>
                                     <th>Last name</th>
                                     <th>E-mail</th>
+                                    <th>Role</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -64,11 +65,19 @@
                                         <td>{{ $student->firstname }}</td>
                                         <td>{{ $student->lastname }}</td>
                                         <td>{{ $student->email }}</td>
-                                        <th>
+                                        <td>
+                                            @if($student->userlevel === 1)
+                                                <span class="label label-info">Teacher</span>
+                                            @elseif($student->userlevel === 2)
+                                                <span class="label label-danger">Admin</span>
+                                            @endif
+                                        </td>
+                                        <td>
                                             <a href="{{route('admin-student-details', ['$student' => $student])}}">
                                                 details
                                             </a>
-                                        </th>
+
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

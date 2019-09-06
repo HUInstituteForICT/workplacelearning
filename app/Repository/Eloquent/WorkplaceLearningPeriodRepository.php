@@ -46,18 +46,21 @@ class WorkplaceLearningPeriodRepository
         DB::transaction(function () use ($workplaceLearningPeriod) {
             // Go from bottom to top in relationship chain
 
-            /** @var LearningActivityActing $activityActing */
+
             foreach ($workplaceLearningPeriod->learningActivityActing as $activityActing) {
                 $activityActing->competence()->detach();
                 $activityActing->reflection()->delete();
                 foreach ($activityActing->evidence as $evidence) {
                     $this->evidenceFileHandler->delete($evidence);
+                    $evidence->delete();
                 }
             }
 
             foreach ($workplaceLearningPeriod->learningActivityProducing as $activityProducing) {
                 $activityProducing->feedback()->delete();
             }
+
+            // Counter foreign key exceptions
             $workplaceLearningPeriod->learningActivityProducing()->update(['prev_lap_id' => null]);
 
             $workplaceLearningPeriod->learningActivityProducing()->delete();

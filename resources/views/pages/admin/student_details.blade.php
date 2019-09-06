@@ -47,11 +47,36 @@
                             </p>
 
 
+                            <hr/>
+
+
+                                {{ Form::open() }}
+
+                                <div class="form-group">
+                                    <label for="user_level">User level</label>
+                                    <br/>
+                                    <select class="select" id="user_level" name="user_level">
+                                        <option value="student" @if($student->userlevel === 0) selected @endif>Student</option>
+                                        <option value="teacher" @if($student->userlevel === 1) selected @endif>Teacher</option>
+                                        <option value="admin" @if($student->userlevel === 2) selected @endif>Admin</option>
+                                    </select>
+
+                                    <br/>
+
+                                    <button class="btn btn-success">Apply user level</button>
+
+                                </div>
+
+                                {{ Form::close() }}
+
+
+                            <hr/>
+
                             <p>
                                 @if($student->student_id !== Auth::user()->student_id)
                                     <a class="student-delete-link"
                                        data-url="{{ route('admin-student-delete', ['student' => $student]) }}">
-                                        delete student
+                                        Delete student
                                     </a>
                                 @endif
                             </p>

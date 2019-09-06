@@ -160,7 +160,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         ->namespace('Admin')
         ->group(static function (): void {
             Route::get('/', 'Dashboard')->name('admin-dashboard');
-            Route::get('/student/{student}', 'StudentDetails')->name('admin-student-details');
+            Route::match(['GET', 'POST'],'/student/{student}', 'StudentDetails')->name('admin-student-details');
 
             Route::get('/student/{student}/delete', 'DeleteStudent')->name('admin-student-delete');
             Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete', 'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
