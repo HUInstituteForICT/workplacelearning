@@ -89,7 +89,10 @@ class RegisterController extends Controller
             'locale' => Session::get('locale', 'nl'),
         ]);
 
-        $student->sendEmailVerificationNotification();
+
+        // todo re-enable once we're on a proper hosting
+        // $student->sendEmailVerificationNotification();
+        $student->markEmailAsVerified();
 
         return $student;
     }
