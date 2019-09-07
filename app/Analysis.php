@@ -63,7 +63,7 @@ class Analysis extends Model
     /**
      * Refresh the cached data, if any.
      */
-    public function refresh(): self
+    public function refresh(): void
     {
         if (Cache::has(self::CACHE_KEY.$this->id)) {
             Cache::forget(self::CACHE_KEY.$this->id);
