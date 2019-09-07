@@ -265,7 +265,9 @@ a.nav-tile {
     color: @hu-white;
     background: @hu-red;
     padding: 3px 5px;
-    overflow-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
   }
 }

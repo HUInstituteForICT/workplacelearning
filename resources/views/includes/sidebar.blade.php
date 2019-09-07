@@ -50,6 +50,7 @@
             <div class="tile white_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/nieuws_blauw.svg', true) }}"/>
                 <div class="nav-title"
+                     title="{{ __('elements.sidebar.labels.educationprograms') }}"
                      style="word-break: break-all">{{ __('elements.sidebar.labels.educationprograms') }}</div>
             </div>
         </a>
@@ -57,14 +58,14 @@
         <a class="nav-tile" href="{{ route('dashboard.index') }}">
             <div class="tile blue_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/graph_wit.svg', true) }}"/>
-                <div class="nav-title">{{ __('elements.sidebar.labels.analytics_dashboard') }}</div>
+                <div title="{{ __('elements.sidebar.labels.analytics_dashboard') }}" class="nav-title">{{ __('elements.sidebar.labels.analytics_dashboard') }}</div>
             </div>
         </a>
 
         <a class="nav-tile" href="{{ route('template.index') }}">
             <div class="tile white_tile">
                 <img class="icon" src="{{ URL::asset('assets/img/agenda_blauw.svg', true) }}"/>
-                <div class="nav-title">{{ __('elements.sidebar.labels.template') }}</div>
+                <div title="{{ __('elements.sidebar.labels.template') }}" class="nav-title">{{ __('elements.sidebar.labels.template') }}</div>
             </div>
         </a>
     @endif
