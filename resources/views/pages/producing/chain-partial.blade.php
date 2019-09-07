@@ -18,7 +18,7 @@
                         <input type="text" class="form-control" id="chainName"/>
                         <br/>
                         <a type="button" class="btn btn-primary"
-                           id="createChainButton">{{ Lang::get('process.chain.create') }}</a>
+                           id="createChainButton">{{ __('process.chain.create') }}</a>
                     </div>
                 </div>
 
@@ -71,7 +71,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"
-                        data-dismiss="modal">{{ Lang::get('general.close') }}</button>
+                        data-dismiss="modal">{{ __('general.close') }}</button>
 
             </div>
         </div>
@@ -93,14 +93,14 @@
                         <input type="text" class="form-control" id="chainUpdateName" maxlength="255"/>
                         <br/>
                         <a type="button" class="btn btn-primary"
-                           id="chainUpdateSaveButton">{{ Lang::get('process.chain.save') }}</a>
+                           id="chainUpdateSaveButton">{{ __('process.chain.save') }}</a>
                     </div>
                 </div>
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"
-                        data-dismiss="modal">{{ Lang::get('general.close') }}</button>
+                        data-dismiss="modal">{{ __('general.close') }}</button>
 
             </div>
         </div>

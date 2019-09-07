@@ -35,8 +35,8 @@
                 <br/><br/>
 
                 <p>{{ trans('analysis.acting.description') }}</p>
-                <p>{{ Lang::get('general.tip_request') }}
-                    <a href="{{ route('bugreport') }}">{{ Lang::get('general.this_page') }}</a>.</p>
+                <p>{{ __('general.tip_request') }}
+                    <a href="{{ route('bugreport') }}">{{ __('general.this_page') }}</a>.</p>
                 <h1>{{ __('tips.personal-tip') }}s</h1>
 
 
@@ -76,9 +76,9 @@
             <div class="col-lg-6">
 
 
-                <h1>{{ Lang::get('analyses.analyses-statistics-title') }}</h1>
+                <h1>{{ __('analyses.analyses-statistics-title') }}</h1>
 
-                <h3>{{ Lang::get('analysis.graphs.categories') }}</h3>
+                <h3>{{ __('analysis.graphs.categories') }}</h3>
                 <canvas id="chart_timeslots"></canvas>
                 <script>
                     var canvas_timeslots = document.getElementById("chart_timeslots");
@@ -111,7 +111,7 @@
                     });
                 </script>
 
-                <h3>{{ Lang::get('analysis.graphs.learninggoals') }}</h3>
+                <h3>{{ __('analysis.graphs.learninggoals') }}</h3>
                 <canvas id="chart_learninggoals"></canvas>
                 <script>
                     var canvas_learninggoals = document.getElementById("chart_learninggoals");
@@ -143,7 +143,7 @@
                     });
                 </script>
 
-                <h3>{{ Lang::get('analysis.graphs.competencies') }}</h3>
+                <h3>{{ __('analysis.graphs.competencies') }}</h3>
                 <canvas id="chart_competencies"></canvas>
                 <script>
                     var canvas_competencies = document.getElementById("chart_competencies");
@@ -175,7 +175,7 @@
                     });
                 </script>
 
-                <h3>{{ Lang::get('analysis.graphs.persons') }}</h3>
+                <h3>{{ __('analysis.graphs.persons') }}</h3>
                 <canvas id="chart_persons"></canvas>
                 <script>
                     var canvas_persons = document.getElementById('chart_persons');

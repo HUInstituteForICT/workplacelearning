@@ -1,11 +1,11 @@
 <link type="text/css" rel="stylesheet" href="{{ URL::asset('public/css/PDFstyle.css') }}">
 <div id="hu-logo"><img src="{{ URL::asset('public/assets/img/hu-logo-medium.svg') }}" /></div>
 <div id="info-block">
-    <b>{{ Lang::get('rapportages.studentnumber') }}:</b> {{ $data['student']['studentnummer'] }}<br />
-    <b>{{ Lang::get('rapportages.studentname') }}:</b> {{ $data['student']['initialen'] ." ". $data['student']['achternaam'] ." (". $data['student']['voornaam'] .")" }}<br /><br />
-    <b>{{ Lang::get('rapportages.companyname') }}: </b><br />
-    <b>{{ Lang::get('rapportages.internshipperiod') }}: </b>{{ date("d-m-Y", strtotime($data['internship']['startDate'])) ." ". Lang::get("rapportages.uptoincluding") ." ". date("d-m-Y", strtotime($data['internship']['endDate'])) }}<br />
-    <b>{{ Lang::get('rapportages.reportperiod') }}: </b>{{ date("d-m-Y", strtotime($data['report']['startDate'])) ." ". Lang::get("rapportages.uptoincluding") ." ". date("d-m-Y", strtotime($data['report']['endDate'])) }}
+    <b>{{ __('rapportages.studentnumber') }}:</b> {{ $data['student']['studentnummer'] }}<br />
+    <b>{{ __('rapportages.studentname') }}:</b> {{ $data['student']['initialen'] ." ". $data['student']['achternaam'] ." (". $data['student']['voornaam'] .")" }}<br /><br />
+    <b>{{ __('rapportages.companyname') }}: </b><br />
+    <b>{{ __('rapportages.internshipperiod') }}: </b>{{ date("d-m-Y", strtotime($data['internship']['startDate'])) ." ". __("rapportages.uptoincluding") ." ". date("d-m-Y", strtotime($data['internship']['endDate'])) }}<br />
+    <b>{{ __('rapportages.reportperiod') }}: </b>{{ date("d-m-Y", strtotime($data['report']['startDate'])) ." ". __("rapportages.uptoincluding") ." ". date("d-m-Y", strtotime($data['report']['endDate'])) }}
 </div>
 <div class="page-content">
 </div>

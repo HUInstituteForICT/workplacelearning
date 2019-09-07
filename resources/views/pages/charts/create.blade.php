@@ -1,15 +1,15 @@
 @extends('layout.HUdefault')
-@section('title', Lang::get('charts.title') . ' - New')
+@section('title', __('charts.title') . ' - New')
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1>{{ Lang::get('charts.title') }}</h1>
+                <h1>{{ __('charts.title') }}</h1>
                 <form action="{{ route('charts.create_step_2') }}" class="form-horizontal" accept-charset="UTF-8"
                       method="post">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">{{ Lang::get('dashboard.name') }}</label>
+                        <label for="name" class="col-sm-2 control-label">{{ __('dashboard.name') }}</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Name"
                                    required="required"
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="analysis_id" class="col-sm-2 control-label">{{ Lang::get('dashboard.analysis') }}</label>
+                        <label for="analysis_id" class="col-sm-2 control-label">{{ __('dashboard.analysis') }}</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="analysis_id" id="analysis_id" required="required">
                                 <option></option>
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="type_id" class="col-sm-2 control-label">{{ Lang::get('dashboard.type') }}</label>
+                        <label for="type_id" class="col-sm-2 control-label">{{ __('dashboard.type') }}</label>
                         <div class="col-sm-10">
                             <select class="form-control" id="type_id" name="type_id" required="required">
                                 <option></option>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary">{{ Lang::get('general.create') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ __('general.create') }}</button>
                         </div>
                     </div>
                 </form>

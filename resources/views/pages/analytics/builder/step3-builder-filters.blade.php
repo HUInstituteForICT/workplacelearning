@@ -11,7 +11,7 @@
                     <option {{ isset($data['query_data'][$i]['table']) ? ($data['query_data'][$i]['table'] == $data['analysis_entity'] ? 'selected' : '') : '' }} value="{{ $data['analysis_entity'] }}">@lang('querybuilder.'.$data['analysis_entity'])</option>
                     @if(isset($relations))
                     @foreach($relations as $r)
-                        <option {{ isset($data['query_data'][$i]['table']) ? ($data['query_data'][$i]['table'] == $r ? 'selected' : '') : '' }} value="{{ $r }}">{{ Lang::get('querybuilder.'.$r) }}</option>
+                        <option {{ isset($data['query_data'][$i]['table']) ? ($data['query_data'][$i]['table'] == $r ? 'selected' : '') : '' }} value="{{ $r }}">{{ __('querybuilder.'.$r) }}</option>
                     @endforeach
                     @endif
                 </select>
@@ -49,7 +49,7 @@
                         @if(isset($relations))
                         @foreach($relations as $r)
                             <option value="{{ $r }}" {{ ($data['query_filter'][$i]['table'] == $r) ? 'selected' : '' }}>
-                                {{ Lang::get('querybuilder.'.$r) }}
+                                {{ __('querybuilder.'.$r) }}
                             </option>
                         @endforeach
                         @endif
@@ -93,7 +93,7 @@
                     @if(isset($relations))
                     @foreach($relations as $r)
                         <option {{ isset($data['query_sort'][$i]['table']) ? ($data['query_sort'][$i]['table'] == $r ? 'selected' : '') : '' }}
-                                value="{{ $r }}">{{ Lang::get('querybuilder.'.$r) }}</option>
+                                value="{{ $r }}">{{ __('querybuilder.'.$r) }}</option>
                     @endforeach
                     @endif
                 </select>

@@ -114,19 +114,19 @@ class QueryBuilderController extends Controller
                 $errors = [];
 
                 if (empty($data['name'])) {
-                    $errors[] = \Lang::get('querybuilder.step4.error-name');
+                    $errors[] = __('querybuilder.step4.error-name');
                 }
 
                 if (empty($data['cache_duration']) || empty($data['type_time'])) {
-                    $errors[] = \Lang::get('querybuilder.step4.error-cache-duration');
+                    $errors[] = __('querybuilder.step4.error-cache-duration');
                 }
 
                 if (empty($data['type_id'])) {
-                    $errors[] = \Lang::get('querybuilder.step4.error-chart-id');
+                    $errors[] = __('querybuilder.step4.error-chart-id');
                 }
 
                 if (empty($data['x_axis']) || empty($data['y_axis'])) {
-                    $errors[] = \Lang::get('querybuilder.step4.error-axis');
+                    $errors[] = __('querybuilder.step4.error-axis');
                 }
 
                 if (!empty($errors)) {
@@ -309,7 +309,7 @@ class QueryBuilderController extends Controller
         $entities = [];
 
         if (isset($data['analysis_entity'])) {
-            $entities[$data['analysis_entity']] = \Lang::get('querybuilder.'.$data['analysis_entity']);
+            $entities[$data['analysis_entity']] = __('querybuilder.'.$data['analysis_entity']);
         }
 
         if (isset($data['analysis_relation'])) {
@@ -318,7 +318,7 @@ class QueryBuilderController extends Controller
                 $tableModel = new $tableString();
                 $r = class_basename(\get_class($tableModel->$relation()->getRelated()));
 
-                $entities[$r] = \Lang::get('querybuilder.'.$r);
+                $entities[$r] = __('querybuilder.'.$r);
             }
         }
 

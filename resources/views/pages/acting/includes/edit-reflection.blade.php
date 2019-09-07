@@ -1,5 +1,5 @@
 <div class="col-md-2 fullReflection" @if(!$reflectionSettings['fullReflection']) style="display: none;" @endif>
-    <h4>{{ Lang::get('reflection.full_reflection') }}<span id="currentReflection"></span></h4>
+    <h4>{{ __('reflection.full_reflection') }}<span id="currentReflection"></span></h4>
 
 
     <div class="fab">

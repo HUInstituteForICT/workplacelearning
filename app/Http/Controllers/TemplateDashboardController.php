@@ -75,7 +75,7 @@ class TemplateDashboardController extends Controller
         if (null == $data) {
             return redirect()
                 ->back()
-                ->withErrors([Lang::get('template.no_parameters')]);
+                ->withErrors([__('template.no_parameters')]);
         }
 
         $templateID = $request->input('templateID');
@@ -96,7 +96,7 @@ class TemplateDashboardController extends Controller
             }
 
             return redirect()->action('TemplateDashboardController@index')
-                ->with('success', Lang::get('template.template_updated'));
+                ->with('success', __('template.template_updated'));
         }
 
         $template = new Template(['name' => $name, 'description' => $description, 'query' => $query]);
@@ -104,7 +104,7 @@ class TemplateDashboardController extends Controller
         $this->saveParameters($data, $template);
 
         return redirect()->action('TemplateDashboardController@index')
-            ->with('success', Lang::get('template.template_saved'));
+            ->with('success', __('template.template_saved'));
     }
 
     private function saveParameters($data, $template): void
@@ -188,13 +188,13 @@ class TemplateDashboardController extends Controller
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors([Lang::get('template.template_not_updated')]);
+                ->withErrors([__('template.template_not_updated')]);
         }
 
         $template->refresh();
 
         return redirect()->action('TemplateDashboardController@show', [$template['id']])
-            ->with('success', Lang::get('template.template_updated'));
+            ->with('success', __('template.template_updated'));
     }
 
     public function destroy($id)
@@ -205,11 +205,11 @@ class TemplateDashboardController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->withErrors([Lang::get('template.template_not_removed')]);
+                ->withErrors([__('template.template_not_removed')]);
         }
 
         return redirect()->route('template.index')
-            ->with('success', Lang::get('template.template_removed'));
+            ->with('success', __('template.template_removed'));
     }
 
     public function getTables()

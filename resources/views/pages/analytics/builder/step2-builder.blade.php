@@ -7,7 +7,7 @@
             <label for="analysis_entity">@lang('querybuilder.step2.entity')</label>
             <select class="form-control" name="analysis_entity" id="analysis_entity">
                 @foreach($models as $model)
-                    <option {{ isset($data['analysis_entity']) && $data['analysis_entity'] == $model ? "selected" : "" }} value="{{ $model }}">{{ Lang::get('querybuilder.'.$model) }}</option>
+                    <option {{ isset($data['analysis_entity']) && $data['analysis_entity'] == $model ? "selected" : "" }} value="{{ $model }}">{{ __('querybuilder.'.$model) }}</option>
                 @endforeach
             </select>
         </div>

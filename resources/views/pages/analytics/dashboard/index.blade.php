@@ -101,7 +101,7 @@
 
         (function () {
             $('.frmDelete').on('submit', function (e) {
-                if (!confirm('{{ Lang::get('dashboard.warning') }}')) {
+                if (!confirm('{{ __('dashboard.warning') }}')) {
                     e.preventDefault();
                     return false
                 }

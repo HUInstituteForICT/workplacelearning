@@ -9,7 +9,7 @@
 <html>
 <head>
     @include('includes.head')
-    <title>@yield('title') - {{ Lang::get('general.werkplekleren') }}</title>
+    <title>@yield('title') - {{ __('general.werkplekleren') }}</title>
 </head>
 <body>
 

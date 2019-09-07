@@ -128,7 +128,7 @@ class Builder
         try {
             return $this->query->get();
         } catch (\Illuminate\Database\QueryException $e) {
-            return collect(['error' => \Lang::get('querybuilder.query-error')]);
+            return collect(['error' => __('querybuilder.query-error')]);
         }
     }
 

@@ -6,12 +6,12 @@
  */
 ?>
         <a href="#menu-toggle"><img class="toggle" id="menu-toggle" src="{{ secure_asset('assets/img/menu-toggle.png') }}" /></a>
-        <a class="nav-tile" href="{{ url('/') }}"><img class="logo" src="{{ secure_asset('assets/img/hu-logo.png') }}" /> <span>{{ Lang::get('elements.header.title') }}</span></a>
+        <a class="nav-tile" href="{{ url('/') }}"><img class="logo" src="{{ secure_asset('assets/img/hu-logo.png') }}" /> <span>{{ __('elements.header.title') }}</span></a>
         @if(Auth::check())
         <a href="{{ url('/logout') }}"><img class="logout" src="{{ secure_asset('assets/img/btn-logout.svg') }}" /></a>
         <a href="{{ url('/profiel') }}"><img class="logout" src="{{ secure_asset('assets/img/btn-setting.svg') }}" /></a>
                 <div class="stud-info-header">
                 <p>{{ Auth::user()->lastname .", ". Auth::user()->getInitials() }}<br />
-                {{ (Auth::user()->hasCurrentWorkplaceLearningPeriod()) ? Auth::user()->getCurrentWorkplace()->wp_name ." (".Lang::get('general.until-header') ." ".date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->enddate)).")" : Lang::get('general.no-internship-active-header') }}
+                {{ (Auth::user()->hasCurrentWorkplaceLearningPeriod()) ? Auth::user()->getCurrentWorkplace()->wp_name ." (".__('general.until-header') ." ".date('d-m-Y', strtotime(Auth::user()->getCurrentWorkplaceLearningPeriod()->enddate)).")" : __('general.no-internship-active-header') }}
         </div>
         @endif
