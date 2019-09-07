@@ -77,6 +77,15 @@
             </div>
         </a>
     @endif
+
+
 </div>
+
+
+<div class="footer-tile">
+    &copy; {{ date('Y') }} - HU University of Applied Sciences
+    <br/> Icons courtesy of <a href="http://famfamfam.com">FamFamFam.com</a>
+</div>
+
 
 

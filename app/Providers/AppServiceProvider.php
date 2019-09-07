@@ -15,6 +15,7 @@ use App\Tips\Services\StatisticValueFetcher;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
         if (!\App::environment('debug')) {
             \URL::forceScheme('https');
         }
+
+        Blade::component('components.card', 'card');
     }
 
 
