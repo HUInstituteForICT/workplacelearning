@@ -147,7 +147,7 @@ class ProducingWorkplaceLearningController extends Controller
 
         if ($validator->fails()) {
             return redirect()
-                ->route('period-producing-edit', ['id' => $id])
+                ->route('period-producing-edit', ['workplaceLearningPeriod' => $workplaceLearningPeriod])
                 ->withErrors($validator)
                 ->withInput();
         }
