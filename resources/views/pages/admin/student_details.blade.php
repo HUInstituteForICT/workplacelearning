@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Profile Info -->
-            <div class="col-md-2">
+            <div class="col-md-4">
 
                 <div class="panel panel-default">
 
@@ -55,7 +55,7 @@
                                 <div class="form-group">
                                     <label for="user_level">User level</label>
                                     <br/>
-                                    <select class="select" id="user_level" name="user_level">
+                                    <select class="select form-control" id="user_level" name="user_level">
                                         <option value="student" @if($student->userlevel === 0) selected @endif>Student</option>
                                         <option value="teacher" @if($student->userlevel === 1) selected @endif>Teacher</option>
                                         <option value="admin" @if($student->userlevel === 2) selected @endif>Admin</option>
@@ -87,14 +87,14 @@
 
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-body">
 
                         <h3>Workplace learning periods</h3>
 
-                        <div class="table">
-                            <table class="table">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
                                 <thead>
                                 <tr>
                                     <th>Period</th>
@@ -124,7 +124,7 @@
                                         <td>
                                             <a class="wplp-delete-link"
                                                data-url="{{ route('admin-student-delete-wplp', ['student' => $student, 'workplacelearningperiod' => $wplp]) }}">
-                                                delete
+                                                Delete
                                             </a>
                                         </td>
                                     </tr>
