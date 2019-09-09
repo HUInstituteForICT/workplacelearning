@@ -1,10 +1,5 @@
 import * as React from "react";
 import EducationProgramService from "../../services/EducationProgramService";
-import update from 'immutability-helper';
-import {EntityCreator, EntityTypes} from "./EntityCreator";
-import EntityListEntry from "./EntityListEntry";
-import Dropzone from "react-dropzone";
-import * as EditableEntities from "./EditableEntities";
 import Cohorts from "./Cohorts";
 
 export default class EditProgram extends React.Component {
@@ -75,14 +70,17 @@ export default class EditProgram extends React.Component {
         return <div>
             <div>
                 <h4>{Lang.get('react.program-details')}</h4>
-                <div className="form-group">
-                    <label>
-                        {Lang.get('react.educprogram-name')}
-                        <input type="text" className="form-control" name="ep_name" value={program.ep_name}
-                               onChange={this.programOnNameChange}/>
-                    </label>
-                </div>
                 <div className={"row"}>
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label>
+                                {Lang.get('react.educprogram-name')}
+                                <input type="text" className="form-control" name="ep_name" value={program.ep_name}
+                                       onChange={this.programOnNameChange}/>
+                            </label>
+                        </div>
+                    </div>
+
 
                     <div className={"col-md-3"}>
                         <a onClick={() => this.onClickToggleDisableProgram(this.props.id)}>
@@ -92,7 +90,7 @@ export default class EditProgram extends React.Component {
 
                     <div className={"col-md-3"}>
                         <a disabled={program.canBeDeleted} onClick={() => {
-                            if(program.canBeDeleted) {
+                            if (program.canBeDeleted) {
                                 EducationProgramService.deleteEducationProgram(program.ep_id, response => {
                                     if (response.data.status === "success") {
                                         this.props.onDelete(program.ep_id);

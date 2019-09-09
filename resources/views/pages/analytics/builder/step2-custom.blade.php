@@ -8,7 +8,7 @@
         <div class="col-md-9">
             <form id="wizard-form">
                 <div class="form-group">
-                    <label for="Query">{{Lang::get('custom_query.query')}}</label>
+                    <label for="Query">{{__('custom_query.query')}}</label>
                     <textarea rows="4" cols="50" maxlength="1000" id="customQuery" name="customQuery"
                               class="form-control">{{ (isset($data['customQuery'])) ? $data['customQuery'] : '' }}</textarea>
                 </div>
@@ -17,7 +17,7 @@
                         title="testQuery" id="testQuery">Test Query</button>
 
                 <div class="form-group">
-                    <label for="dataFromQuery">{{Lang::get('custom_query.dataQuery')}}</label>
+                    <label for="dataFromQuery">{{__('custom_query.dataQuery')}}</label>
                     <div id="dataCustomQuery"></div>
                 </div>
             </form>

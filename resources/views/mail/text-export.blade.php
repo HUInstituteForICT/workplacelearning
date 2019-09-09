@@ -1,1 +1,1 @@
-{{ Lang::get('process_export.text-mail', ['name' => $student->firstname . ' ' . $student->lastname, 'comment' => $comment]) }}
+{{ __('process_export.text-mail', ['name' => $student->firstname . ' ' . $student->lastname, 'comment' => $comment]) }}

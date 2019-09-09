@@ -1,8 +1,9 @@
 <?php
 
 
-use App\Http\Middleware\CheckUserLevel;
 use App\Http\Middleware\RequireActiveInternship;
+use App\Http\Middleware\RequiresAdminLevel;
+use App\Http\Middleware\RequiresTeacherLevel;
 use App\Services\CurrentUserResolver;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
 
     // Routes for non-students
-    Route::middleware(CheckUserLevel::class)->group(static function (): void {
+    Route::middleware(RequiresTeacherLevel::class)->group(static function (): void {
         Route::get('/education-programs',
             'EducationProgramsController@index')->name('education-programs'); // Entry to Education programs management
         Route::view('/manage/tips', 'pages.tips.tips-app')->name('tips-app'); // Entry to tips management
@@ -154,10 +155,22 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     });
 
 
+    Route::middleware(RequiresAdminLevel::class)
+        ->prefix('admin')
+        ->namespace('Admin')
+        ->group(static function (): void {
+            Route::get('/', 'Dashboard')->name('admin-dashboard');
+            Route::match(['GET', 'POST'],'/student/{student}', 'StudentDetails')->name('admin-student-details');
+
+            Route::get('/student/{student}/delete', 'DeleteStudent')->name('admin-student-delete');
+            Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete', 'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
+        });
+
     // Student routes
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
     Route::post('/activity-export-doc', 'ActivityExportController@exportActivitiesToWord');
-    Route::get('/download/activity-export-doc/{fileName}','ActivityExportController@downloadWordExport')->name('docx-export-download');
+    Route::get('/download/activity-export-doc/{fileName}',
+        'ActivityExportController@downloadWordExport')->name('docx-export-download');
 
 
     Route::post('/log', 'LogController@log'); // Logs info of the user's device
@@ -201,7 +214,8 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         Route::prefix('acting')->group(static function (): void {
             Route::get('home', 'HomeController@showActingTemplate')->name('home-acting');
 
-            Route::post('/user-settings/reflection/save', 'Acting\StoreReflectionUserSettings')->name('acting-store-reflection-user-settings');
+            Route::post('/user-settings/reflection/save',
+                'Acting\StoreReflectionUserSettings')->name('acting-store-reflection-user-settings');
 
             // Internships & Internship Periods
             Route::get('period/create', 'ActingWorkplaceLearningController@show')
@@ -224,7 +238,8 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
             Route::middleware(RequireActiveInternship::class)->group(static function (): void {
 
                 Route::get('/activities/export', 'Acting\Export\WordExport')->name('acting-activities-word-export');
-                Route::post('/activities/export/mail', 'Acting\Export\WordMailExport')->name('mail-acting-activities-word-export')->middleware('throttle:3,1');
+                Route::post('/activities/export/mail',
+                    'Acting\Export\WordMailExport')->name('mail-acting-activities-word-export')->middleware('throttle:3,1');
 
                 Route::get('progress', 'ActingActivityController@progress')->name('progress-acting');
                 Route::get('analysis', 'ActingAnalysisController@showChoiceScreen')->name('analysis-acting-choice');

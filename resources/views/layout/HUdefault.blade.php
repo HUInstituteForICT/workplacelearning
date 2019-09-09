@@ -9,7 +9,7 @@
 <html>
 <head>
     @include('includes.head')
-    <title>@yield('title') - {{ Lang::get('general.werkplekleren') }}</title>
+    <title>@yield('title') - {{ __('general.werkplekleren') }}</title>
 </head>
 <body>
 
@@ -31,20 +31,19 @@
 
     <!-- /#wrapper -->
 </div>
-<div id="footer">
-    <p>&copy; {{ date('Y') }} - HU University of Applied Sciences | Icons courtesy of <a href="http://famfamfam.com">FamFamFam.com</a></p>
-    <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-    </script>
-</div>
+
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
 <script src="/messages.js"></script>
 <script>
     Lang.setLocale('{{ App::getLocale() }}')
 </script>
 <script src="{{ mix('/js/app.js') }}"></script>
+@yield('scripts')
 </body>
 </html>

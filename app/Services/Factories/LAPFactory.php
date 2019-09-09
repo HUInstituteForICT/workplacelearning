@@ -104,10 +104,6 @@ class LAPFactory
 
     private function getResourcePerson(): ResourcePerson
     {
-        if ($this->data['personsource'] === 'new' && $this->data['resource'] === 'persoon') {
-            return $this->resourcePersonFactory->createResourcePerson($this->data['newswv']);
-        }
-
-        return (new ResourcePerson())->find($this->data['personsource']);
+        return (new ResourcePerson())->find($this->data['resource_person_id']);
     }
 }

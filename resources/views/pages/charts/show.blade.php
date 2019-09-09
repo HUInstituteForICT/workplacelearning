@@ -1,10 +1,10 @@
 @extends('layout.HUdefault')
-@section('title', Lang::get('charts.title') . ' - Show')
+@section('title', __('charts.title') . ' - Show')
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1>{{ Lang::get('charts.title') }}</h1>
+                <h1>{{ __('charts.title') }}</h1>
                 <h2>{{ $chart->label }}</h2>
                 <div class="row">
                     <div class="col-sm-6">
@@ -16,7 +16,7 @@
                             <input type="hidden" name="id" value="{{ $chart->analysis->id }}">
                             <div class="form-group">
                                 <button class="btn btn-primary"
-                                        type="submit">{{ Lang::get('general.refresh') }}</button>
+                                        type="submit">{{ __('general.refresh') }}</button>
                             </div>
                         </form>
                     </div>

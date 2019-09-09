@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ Lang::get('passwords.sendreset') }}
+                                    {{ __('passwords.sendreset') }}
                                 </button>
                             </div>
                         </div>

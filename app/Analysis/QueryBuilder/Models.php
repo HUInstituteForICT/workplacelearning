@@ -54,7 +54,7 @@ class Models
             foreach ($tmpRelations as $relation) {
                 $className = class_basename(\get_class($model->$relation()->getRelated()));
                 if ($className !== $string && \in_array($className, self::$models, true)) {
-                    $relationships[$relation] = \Lang::get('querybuilder.'.$className);
+                    $relationships[$relation] = __('querybuilder.'.$className);
                 }
             }
         }

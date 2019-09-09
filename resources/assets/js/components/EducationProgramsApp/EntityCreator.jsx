@@ -44,6 +44,7 @@ export class EntityCreator extends React.Component {
 
     render() {
         return <div style={{marginTop: '25px'}}>
+            <hr/>
             <div className="form-group">
 
                 <div className="input-group">
@@ -56,7 +57,7 @@ export class EntityCreator extends React.Component {
                 <br/>
                 <span className="btn btn-success" onClick={this.onCreateEntityClick}>{Lang.get('react.add')}</span>
             </div>
-            <hr/>
+
 
 
         </div>

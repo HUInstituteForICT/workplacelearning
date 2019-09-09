@@ -5,7 +5,7 @@
 
 @extends('layout.HUdefault')
 @section('title')
-    {{ Lang::get('activity.activities') }} - {{ Lang::get('general.edit') }}
+    {{ __('activity.activities') }} - {{ __('general.edit') }}
 @stop
 @section('content')
     <div class="container-fluid">
@@ -41,15 +41,15 @@
 
         <div class="panel panel-default">
             <div class="panel-body">
-                <h3>{{ Lang::get('activity.activity') }}</h3>
+                <h3>{{ __('activity.activity') }}</h3>
                 <div class="row">
 
                     <div class="col-md-3">
-                        <h4>{{ Lang::get('activity.date') }}</h4>
+                        <h4>{{ __('activity.date') }}</h4>
                         <input class="form-control dateinput fit-bs" type="text" name="date"
                                value="{{ (count($errors) > 0) ? old('datum') : $activity->date->format('d-m-Y') }}"/><br/>
 
-                        <h4>{{ Lang::get('activity.situation') }}</h4>
+                        <h4>{{ __('activity.situation') }}</h4>
                         <div>
                         <textarea class="form-control fit-bs" name="description" required rows="8" id="description"
                                   maxlength="2000"
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="col-md-3 buttons">
-                        <h4>{{ Lang::get('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true"
+                        <h4>{{ __('activity.category') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                     data-toggle="tooltip" data-placement="bottom"
                                                                     title="{{ trans('tooltips.acting_when') }}"></i>
                         </h4>
@@ -71,7 +71,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="col-md-3 buttons">
-                        <h4>{{ Lang::get('activity.with') }} <i class="fa fa-info-circle" aria-hidden="true"
+                        <h4>{{ __('activity.with') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="{{ trans('tooltips.acting_with') }}"></i></h4>
                         @foreach ($resourcePersons as $key => $value)
@@ -82,12 +82,12 @@
                     </div>
 
                     <div class="col-md-3 buttons">
-                        <h4>{{ Lang::get('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true"
+                        <h4>{{ __('activity.theory') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                   data-toggle="tooltip" data-placement="bottom"
                                                                   title="{{ trans('tooltips.acting_theory') }}"></i>
                         </h4>
                         <label><input type="radio" name="res_material" id="rm_none"
-                                      value="none" {{ (old('res_material') === 'none' || !$activity->res_material_id) ? 'checked' : null }}/><span>{{ Lang::get('activity.none') }}</span></label>
+                                      value="none" {{ (old('res_material') === 'none' || !$activity->res_material_id) ? 'checked' : null }}/><span>{{ __('activity.none') }}</span></label>
                         @foreach ($resourceMaterials as $key => $value)
                             <label><input type="radio" name="res_material"
                                           value="{{ $value->rm_id }}" {{ (old('res_material') == $value->rm_id) ? 'checked' : ($activity->res_material_id == $value->rm_id) ? 'checked' : null }} /><span>{{ $value->rm_label }}</span></label>
@@ -95,7 +95,7 @@
                         <div style="text-align: center">
                             <input type="text" name="res_material_detail" id="res_material_detail" class="form-control"
                                    style="width:150px; margin: 5px;"
-                                   placeholder="{{ Lang::get('activity.source-description') }}"
+                                   placeholder="{{ __('activity.source-description') }}"
                                    value="{{ $activity->res_material_detail }}"/>
                         </div>
 
@@ -110,7 +110,7 @@
 
                     <div class="col-md-3 col-md-offset-3">
                         <div>
-                            <h4>{{ Lang::get('activity.learningquestion') }} <i class="fa fa-info-circle"
+                            <h4>{{ __('activity.learningquestion') }} <i class="fa fa-info-circle"
                                                                                 aria-hidden="true"
                                                                                 data-toggle="tooltip"
                                                                                 data-placement="bottom"
@@ -127,7 +127,7 @@
                     <div class="col-md-3">
 
                         <div>
-                            <h4>{{ Lang::get('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true"
+                            <h4>{{ __('activity.competence') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                           data-toggle="tooltip" data-placement="bottom"
                                                                           title="{{ trans('tooltips.acting_competence') }}"></i>
                             </h4>
@@ -138,7 +138,7 @@
                             </select>
                             @if($competenceDescription !== null)
                                 <h5>
-                                    <a href="{{ $competenceDescription->download_url }}">{{ Lang::get('elements.competences.competencedetails') }}</a>
+                                    <a href="{{ $competenceDescription->download_url }}">{{ __('elements.competences.competencedetails') }}</a>
                                 </h5>
                             @endif
                         </div>
@@ -188,32 +188,32 @@
 
                     <div class="col-md-3 shortReflection"
                          @if(!$reflectionSettings['shortReflection']) style="display: none;" @endif>
-                        <h4>{{ Lang::get('activity.learned') }}, {{ Lang::get('activity.whatnow') }} <i
+                        <h4>{{ __('activity.learned') }}, {{ __('activity.whatnow') }} <i
                                     class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
                                     data-placement="bottom"
                                     title="{{ trans('tooltips.acting_learned') }}"></i></h4>
                         <textarea class="form-control fit-bs" name="learned" required rows="5" id="learned"
                                   cols="19">{{ (count($errors) > 0) ? old('learned') : $activity->lessonslearned }}</textarea>
-                        <a data-target-text="#learned" data-target-title="{{ Lang::get('activity.learned') }}"
+                        <a data-target-text="#learned" data-target-title="{{ __('activity.learned') }}"
                            class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
                     </div>
 
                     <div class="col-md-3 shortReflection"
                          @if(!$reflectionSettings['shortReflection']) style="display: none;" @endif>
-                        <h4>{{ Lang::get('activity.whatdoyouneed') }} <i class="fa fa-info-circle" aria-hidden="true"
+                        <h4>{{ __('activity.whatdoyouneed') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                          data-toggle="tooltip" data-placement="bottom"
                                                                          title="{{ trans('tooltips.acting_required_wp') }}"></i>
                         </h4>
                         <textarea class="form-control fit-bs" name="support_wp" rows="5" id="support_wp"
                                   cols="19">{{ (count($errors) > 0) ? old('support_wp') : $activity->support_wp }}</textarea>
-                        <a data-target-text="#support_wp" data-target-title="{{ Lang::get('activity.whatdoyouneed') }}"
+                        <a data-target-text="#support_wp" data-target-title="{{ __('activity.whatdoyouneed') }}"
                            class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
                     </div>
 
 
                     <div class="col-md-3 shortReflection"
                          @if(!$reflectionSettings['shortReflection']) style="display: none;" @endif>
-                        <h4>{{ Lang::get('activity.whatdoyouneedschool') }} <i class="fa fa-info-circle"
+                        <h4>{{ __('activity.whatdoyouneedschool') }} <i class="fa fa-info-circle"
                                                                                aria-hidden="true"
                                                                                data-toggle="tooltip"
                                                                                data-placement="bottom"
@@ -222,7 +222,7 @@
                         <textarea class="form-control fit-bs" name="support_ed" rows="5" id="support_ed"
                                   cols="19">{{ (count($errors) > 0) ? old('support_ed') : $activity->support_ed }}</textarea>
                         <a data-target-text="#support_ed"
-                           data-target-title="{{ Lang::get('activity.whatdoyouneedschool') }}"
+                           data-target-title="{{ __('activity.whatdoyouneedschool') }}"
                            class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
                     </div>
 
@@ -268,9 +268,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
-                            data-dismiss="modal">{{ Lang::get('general.close') }}</button>
+                            data-dismiss="modal">{{ __('general.close') }}</button>
                     <a type="button" class="btn btn-primary"
-                       id="enlargedTextareaSave">{{ Lang::get('general.confirm') }}</a>
+                       id="enlargedTextareaSave">{{ __('general.confirm') }}</a>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

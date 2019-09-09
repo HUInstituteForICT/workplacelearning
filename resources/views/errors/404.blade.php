@@ -3,8 +3,8 @@
     404
 @stop
 @section('title')
-    {{ Lang::get('errors.http.404.title') }}
+    {{ __('errors.http.404.title') }}
 @stop
 @section('content')
-    {{ Lang::get('errors.http.404.message') }}
+    {{ __('errors.http.404.message') }}
 @stop

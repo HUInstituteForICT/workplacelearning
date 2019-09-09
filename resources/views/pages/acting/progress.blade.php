@@ -7,14 +7,14 @@
 ?>
 @extends('layout.HUdefault')
 @section('title')
-    {{ Lang::get('home.progress') }}
+    {{ __('home.progress') }}
 @stop
 @section('content')
     <div class="container-fluid">
         <!-- Internship Info -->
         <div class="row">
             <div class="col-md-11">
-                <h3>{{ Lang::get('general.learningmoments') }}</h3>
+                <h3>{{ __('general.learningmoments') }}</h3>
             </div>
         </div>
 

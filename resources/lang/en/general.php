@@ -81,5 +81,7 @@ return array(
     'translations' => 'Translations',
     'en' => 'English',
     'nl' => 'Dutch',
-    'hide' => 'Hide'
+    'hide' => 'Hide',
+    'found-bug' => 'Found a bug?',
+    'bug-tell-us' => 'Tell us!',
 );

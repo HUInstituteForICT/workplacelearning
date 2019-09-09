@@ -7,7 +7,7 @@
 ?>
 @extends('layout.HUdefault')
 @section('title')
-    {{ Lang::get('general.calendar') }}
+    {{ __('general.calendar') }}
 @stop
 @section('content')
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.8.0/fullcalendar.min.js"></script>
@@ -34,7 +34,7 @@
                 height: 475,
                 customButtons: {
                     newEvent: {
-                        text: '{{ Lang::get('elements.calendar.btntext.newdeadline') }}',
+                        text: '{{ __('elements.calendar.btntext.newdeadline') }}',
                         click: function() {
                             if($("#newCalendarEvent").length) {
                                 $('#eventForm').attr('action', '{{ route('deadline-create') }}');
@@ -75,8 +75,8 @@
         <input type="hidden" id="idDeadline" name="id" value="0" />
         <div class="col-sm-3 col-md-3">
         <div class="form-group">
-            <label for="nameDeadline">{{ Lang::get('elements.calendar.labels.newdeadline') }}: </label>
-            <input type="text" id="nameDeadline" name="nameDeadline" class="form-control" value="{{ old('nameDeadline') }}" placeholder="{{ Lang::get('elements.calendar.placeholders.description') }}" />
+            <label for="nameDeadline">{{ __('elements.calendar.labels.newdeadline') }}: </label>
+            <input type="text" id="nameDeadline" name="nameDeadline" class="form-control" value="{{ old('nameDeadline') }}" placeholder="{{ __('elements.calendar.placeholders.description') }}" />
         </div>
         </div>
 
@@ -90,8 +90,8 @@
             </div>
         </div>
         </div>
-        <button type="submit" name="action" value="submit" class="btn btn-default">{{ Lang::get('elements.calendar.btntext.adddeadline') }}</button>
-        <button type="submit" name="action" value="delete" class="btn btn-danger" id="delButton">{{ Lang::get('elements.calendar.btntext.removedeadline') }}</button>
+        <button type="submit" name="action" value="submit" class="btn btn-default">{{ __('elements.calendar.btntext.adddeadline') }}</button>
+        <button type="submit" name="action" value="delete" class="btn btn-danger" id="delButton">{{ __('elements.calendar.btntext.removedeadline') }}</button>
         <script type="text/javascript">
             $(function () {
                 $('#date-deadline').datetimepicker({

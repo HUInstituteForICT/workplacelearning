@@ -82,5 +82,7 @@ return array(
     'translations' => 'Vertalingen',
     'en' => 'Engels',
     'nl' => 'Nederlands',
-    'hide' => 'Sluiten'
+    'hide' => 'Sluiten',
+    'found-bug' => 'Heb je een bug gevonden?',
+    'bug-tell-us' => 'Vertel het ons!',
 );

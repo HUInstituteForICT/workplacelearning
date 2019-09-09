@@ -7,7 +7,7 @@
 ?>
 @extends('layout.HUdefault')
 @section('title')
-    {{ Lang::get('home.progress') }}
+    {{ __('home.progress') }}
 @stop
 @section('content')
     <div class="container-fluid">
@@ -15,7 +15,7 @@
         <div class="row">
 
             <div class="col-md-12">
-                <h3>{{ Lang::get('general.weekstates') }}</h3>
+                <h3>{{ __('general.weekstates') }}</h3>
                 <div id="ProducingWeekStatesExport" class="__reactRoot" data-latest="{{ $weekStatesDates['latest'] }}"
                      data-earliest="{{ $weekStatesDates['earliest'] }}"
                      data-url="{{ route('report-producing-export') }}"></div>
@@ -23,7 +23,7 @@
         </div>
         <div class="row" style="margin-top:50px;">
             <div class="col-md-12">
-                <h3>{{ Lang::get('home.progress') }}</h3>
+                <h3>{{ __('home.progress') }}</h3>
             <script>
                 window.activities = {!! $activitiesJson !!};
                 window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};

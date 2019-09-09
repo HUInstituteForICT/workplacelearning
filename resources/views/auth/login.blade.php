@@ -30,7 +30,7 @@
                         <div class="cols-sm-11">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock" aria-hidden="true"></i></span>
-                                <input class="form-control" type="password" name='password' placeholder="{{ Lang::get('elements.profile.labels.password') }}"/>
+                                <input class="form-control" type="password" name='password' placeholder="{{ __('elements.profile.labels.password') }}"/>
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                         <input type="submit" class="btn btn-def btn-block" value="Login" />
                     </div>
                     <div class="form-group text-center">
-                        <a href="{{ url('/register') }}">{{ Lang::get('elements.registration.buttons.register') }}</a>&nbsp;|&nbsp;<a href="{{ url('/password/reset') }}">{{ Lang::get('passwords.reset_password') }}</a>
+                        <a href="{{ url('/register') }}">{{ __('elements.registration.buttons.register') }}</a>&nbsp;|&nbsp;<a href="{{ url('/password/reset') }}">{{ __('passwords.reset_password') }}</a>
                     </div>
 
                 </form>
@@ -60,7 +60,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="alert alert-{{ (session()->has('success')) ? 'success' : 'error' }}">
-                                <span>{{ Lang::get('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
+                                <span>{{ __('elements.alerts.'.((session()->has('success') ? 'success' : 'error'))) }}: </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
                             </div>
                         </div>
                     </div>
