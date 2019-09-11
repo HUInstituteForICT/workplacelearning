@@ -11,12 +11,7 @@
 @stop
 @section('content')
     <div class="container-fluid">
-        <!-- Internship Info -->
-        <div class="row">
-            <div class="col-md-11">
-                <h3>{{ __('general.learningmoments') }}</h3>
-            </div>
-        </div>
+        <h3>{{ __('general.learningmoments') }}</h3>
 
         <div class="row">
             <script>
@@ -25,6 +20,8 @@
                 window.reflectionDownloadMultipleUrl = '{{ route('reflection-download-multiple') }}';
                 window.exportActivitiesUrl = '{{ route('acting-activities-word-export') }}';
                 window.mailExportActivitiesUrl = '{{ route('mail-acting-activities-word-export') }}';
+                window.activityActingTableMode = 'detail';
+                window.progressLink = '{{ route('progress-acting') }}';
             </script>
 
             <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>

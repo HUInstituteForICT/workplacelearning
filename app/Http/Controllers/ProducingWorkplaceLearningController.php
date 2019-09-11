@@ -220,7 +220,7 @@ class ProducingWorkplaceLearningController extends Controller
         if ($validator->fails()) {
             // Noes. errors occured. Exit back to profile page with errors
             return redirect()
-                ->route('period-producing-edit', ['id' => $id])
+                ->route('period-producing-edit', ['workplaceLearningPeriod' => Auth::user()->getCurrentWorkplaceLearningPeriod()])
                 ->withErrors($validator)
                 ->withInput();
         }

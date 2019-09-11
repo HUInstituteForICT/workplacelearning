@@ -40,7 +40,7 @@
                 <div class="col-lg-12">
                     @if(Auth::user()->hasCurrentWorkplaceLearningPeriod() && Auth::user()->getCurrentWorkplaceLearningPeriod()->hasLoggedHours())
                         <h1>{{ __('dashboard.lastWZHtitle') }}</h1>
-                        @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(5) as $a)
+                        @foreach(Auth::user()->getCurrentWorkplaceLearningPeriod()->getLastActivity(5) as $activity)
                             <div class="dash-bar">
                                 <?php
                                 $fmt = new IntlDateFormatter(
@@ -53,17 +53,17 @@
                                 );
                                 ?>
                                 <div class="dash-date">
-                                    {{ucwords($fmt->format(strtotime($a->date))) }}
+                                    {{ucwords($fmt->format(strtotime($activity->date))) }}
                                 </div>
                                 <div class="dash-description">
-                                    <b>{{ $a->description }}</b>
+                                    <b>{{ $activity->description }}</b>
                                 </div>
                                 <div class="dash-hours">
                                     <strong>
-                                        @if($a->duration < 1)
-                                            ({{ round($a->duration * 60) }} {{ __('minutes') }})
+                                        @if($activity->duration < 1)
+                                            ({{ round($activity->duration * 60) }} {{ __('minutes') }})
                                         @else
-                                            ({{ $a->duration }} {{ __('hours') }})
+                                            ({{ $activity->duration }} {{ __('hours') }})
                                         @endif
                                     </strong>
                                 </div>
@@ -74,6 +74,7 @@
                 </div>
             </div>
 
+            {{ Auth::user()->getCurrentWorkplaceLearningPeriod()->getEffectiveDays() }}
 
 
 

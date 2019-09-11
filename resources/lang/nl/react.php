@@ -89,4 +89,5 @@ return [
     'with-reflections' => 'inclusief reflecties',
     'cohorts-show-disabled' => 'Laat alle cohorten zien',
     'cohorts-hide-disabled' => 'Verberg uitgezette cohorten',
+    'progress-link-label' => 'Klik hier om alle voorgaande leermomenten te zien',
 ];

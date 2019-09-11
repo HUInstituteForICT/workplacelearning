@@ -17,7 +17,7 @@ class LearningActivityProducingExportBuilder
         $this->translator = $translator;
     }
 
-    public function getJson(array $learningActivities, ?int $limit): string
+    public function getJson(array $learningActivities, ?int $limit = null): string
     {
         $jsonArray = [];
 

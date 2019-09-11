@@ -28,6 +28,20 @@ class LearningActivityProducingRepository
             ->get()->all();
     }
 
+    public function getActivitiesOfLastActiveDayForStudent(Student $student): array
+    {
+        /** @var LearningActivityProducing $lastActiveActivity */
+        $lastActiveActivity = $student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()->orderBy('date', 'DESC')->first();
+
+        $dateOfLastActivity = $lastActiveActivity->date;
+
+
+        return $student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
+            ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial', 'chain', 'feedback')
+            ->where('date', '=', $dateOfLastActivity)
+            ->get()->all();
+    }
+
     public function delete(LearningActivityProducing $learningActivityProducing): bool
     {
         try {

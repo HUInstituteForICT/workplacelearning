@@ -416,7 +416,7 @@ a.nav-tile {
 
 // Tasks specific styling
 .buttons {
-  min-width: 200px;
+  //min-width: 200px;
 
   label {
     float: left;
@@ -459,21 +459,28 @@ a.nav-tile {
   label span {
     width: 40px;
     max-width: 100px;
+
+    em {
+      font-style: normal;
+      display: block;
+      font-size: 0.85rem;
+    }
   }
 
   .custom {
+    width: 100%;
+
+    #hours_custom {
+      width: 100%;
+    }
+
     label span {
-      width: 140px;
-      max-width: 140px;
+      width: 100%;
+      max-width: 100%;
     }
 
-    input {
-      margin-left: 15px;
-      width: 40%;
-      display: inline-block;
-
-    }
   }
+
 }
 
 .fit-bs {

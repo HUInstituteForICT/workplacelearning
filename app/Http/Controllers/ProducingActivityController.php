@@ -54,8 +54,7 @@ class ProducingActivityController
     ) {
         $student = $this->currentUserResolver->getCurrentUser();
 
-        $activitiesJson = $exportBuilder->getJson($this->learningActivityProducingRepository->getActivitiesForStudent($student),
-            8);
+        $activitiesJson = $exportBuilder->getJson($this->learningActivityProducingRepository->getActivitiesOfLastActiveDayForStudent($student));
 
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
@@ -85,7 +84,7 @@ class ProducingActivityController
     public function progress(LearningActivityProducingExportBuilder $exportBuilder)
     {
         $student = $this->currentUserResolver->getCurrentUser();
-        $activities = $this->learningActivityProducingRepository->getActivitiesForStudent($student, 'ASC');
+        $activities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
 
         $activitiesJson = $exportBuilder->getJson($activities, null);
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
