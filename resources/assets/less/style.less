@@ -160,13 +160,13 @@ a {
 
 #sidebar-wrapper {
   z-index: 1;
+  background-color: white;
   position: fixed;
   left: @nav-width;
   width: 0;
   height: 100%;
   margin-left: -@nav-width;
   overflow-y: auto;
-  //background: @clr-bg-nav;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -182,6 +182,7 @@ a {
 /* Sidebar Styles */
 .sidebar-nav {
   position: absolute;
+  background-color: white;
   top: 0;
   margin-top: 10px;
   width: @nav-width;
@@ -222,23 +223,15 @@ a.nav-tile {
 }
 
 .footer-tile {
-  position: absolute;
-  @media handheld {
-    position: static;
-  }
+  padding: 3px 5px;
   text-align: center;
-  bottom: 100px;
   font-size: 1rem;
   width: 320px;
   margin: 10px 5px;
   float: left;
   border-radius: 4px;
-
-  transition: 0.3s all ease-in-out;
-
-
-  padding: 3px 5px;
-
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
 }
 
 .tile {
@@ -249,10 +242,10 @@ a.nav-tile {
   border-radius: 4px;
   transition: 0.3s all ease-in-out;
 
-  box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.3);
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.3);
 
   &:hover {
-    box-shadow: 0px 0px 20px -2px rgba(0,0,0,0.3);
+    box-shadow: 0px 0px 20px -2px rgba(0, 0, 0, 0.3);
     transition: 0.3s all ease-in-out;
   }
 
@@ -271,7 +264,7 @@ a.nav-tile {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
   }
 }
 
