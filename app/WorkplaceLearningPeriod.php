@@ -244,10 +244,11 @@ class WorkplaceLearningPeriod extends Model
     /**
      * Calculates the effective hours worked for producing activities
      */
-    public function getEffectiveDays(): float
+    public function getEffectiveDays(): int
     {
         $activities = $this->learningActivityProducing->all();
         $daysWithHours = array_reduce($activities, static function (array $carry, LearningActivityProducing $activity) {
+            // Timestamp is okay for string representation because DB field type is "date" and has no H:i:s indication
             if (!isset($carry[$activity->date->timestamp])) {
                 $carry[$activity->date->timestamp] = 0;
             }
@@ -262,6 +263,6 @@ class WorkplaceLearningPeriod extends Model
         $totalHours = array_sum(array_values($daysWithHours));
         $fullDays = floor($totalHours / $this->hours_per_day);
 
-        return min($daysRegistered, $fullDays);
+        return (int) min($daysRegistered, $fullDays);
     }
 }

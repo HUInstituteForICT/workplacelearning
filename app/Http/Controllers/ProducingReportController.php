@@ -181,7 +181,10 @@ class ProducingReportController extends Controller
             $date_loop = date('d-m-Y', strtotime('+2 days', strtotime($date_loop)));
         }
 
-        $globalTotalDaysCell->addText($daysWorkedTotal . (($daysWorkedTotal === 1) ? ' ' . __('process_export.wordexport.day') : ' ' . __('process_export.wordexport.days')));
+
+        // Now using ->effectiveDays() : https://github.com/HUInstituteForICT/workplacelearning/issues/108
+        $daysWorked = $wplp->getEffectiveDays();
+        $globalTotalDaysCell->addText($daysWorked . (($daysWorked === 1) ? ' ' . __('process_export.wordexport.day') : ' ' . __('process_export.wordexport.days')));
 
         $fileName = $student->studentnr . ' ' . $student->getInitials() . ' ' . $student->lastname . ' - ' . $wp->wp_name;
 
