@@ -10,6 +10,7 @@ use App\LearningActivityActing;
 use App\Reflection\Models\ActivityReflectionField;
 use PhpOffice\PhpWord\Element\Section;
 use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\SimpleType\Jc;
 use PhpOffice\PhpWord\Style\Font;
 
@@ -209,6 +210,7 @@ class ActingActivityExporter
     private function getNewDocument(): PhpWord
     {
         $document = new PhpWord();
+        Settings::setOutputEscapingEnabled(true);
         $document->addTitleStyle(1, ['name' => 'Arial', 'size' => 18, 'bold' => true]);
         $document->addTitleStyle(2, ['name' => 'Arial', 'size' => 14, 'bold' => true]);
         $document->addTitleStyle(3, ['name' => 'Arial', 'size' => 12, 'bold' => true]);
