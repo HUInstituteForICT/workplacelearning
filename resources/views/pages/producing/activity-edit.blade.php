@@ -129,7 +129,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                         <div class="col-md-4">
                             <label>
                                 <input type="radio" name="aantaluren" value="{{$i}}"
-                                        {{ (float) old('aantaluren', $activity->duration) === $i ? 'checked'  : null }}
+                                        {{ old('aantaluren', $activity->duration) === (float) $i ? 'checked'  : null }}
                                 />
                                 <span>{{ $i }} <em>{{ trans_choice('elements.tasks.hour', $i) }}</em></span>
                             </label>
@@ -142,7 +142,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                                                         @if($isCustomActivityDuration) checked @endif
                                                         value="x"/><span>{{ __('activity.other') }}</span></label>
                         <br/>
-                        <div id="custom_hours_container" class="" style="margin-left: 5px; width:100%">
+                        <div id="custom_hours_container" class="" style="margin-left: 5px; width:100%; @if(!$isCustomActivityDuration) display:none; @endif">
 
                             <div class="input-group">
 
@@ -161,7 +161,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                                            name="aantaluren_custom" value="60">
 
                                 @endif
-                                <span class="input-group-addon" id="basic-addon1">{{ __('dashboard.minutes') }}</span>
+                                <span class="input-group-addon">{{ __('dashboard.minutes') }}</span>
                             </div>
 
                             <div class="btn-group btn-group-justified" style="width:100%; margin-top: 5px;">
