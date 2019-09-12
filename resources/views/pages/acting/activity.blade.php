@@ -305,11 +305,22 @@
 
                 </div>
 
-                <div class="row" style="margin-top:25px;">
-                    <div class="col-md-12 text-right">
-                        <input type="submit" class="btn btn-lg btn-info" value="{{ __('activity.save') }}"/>
+                <div class="visible-xs-block visible-sm-block">
+                    <hr/>
+
+
+                    <input type="submit" class="btn btn-info btn-block" value="{{ __('activity.save') }}"/>
+
+                </div>
+                <div class="hidden-xs hidden-sm">
+                    <div class="row">
+
+                        <div class="col-md-12 text-right">
+                            <input type="submit" class="btn btn-info" value="{{ __('activity.save') }}"/>
+                        </div>
                     </div>
                 </div>
+                
 
 
             </div>
