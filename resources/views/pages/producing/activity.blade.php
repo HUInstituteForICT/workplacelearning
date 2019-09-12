@@ -16,20 +16,15 @@ use App\ResourcePerson;
     <div class="container-fluid">
         <script>
             $(document).ready(function () {
-                $('#custom_hours_container').hide();
+
                 $("#rp_id").on('change', function () {
-                    if ($(this).val() == "new" && $(this).is(":visible")) {
+                    if ($(this).val() === "new" && $(this).is(":visible")) {
                         $("#cond-select-hidden").show();
                     } else {
                         $("#cond-select-hidden").hide();
                     }
                 });
-                $(".expand-click").click(function () {
-                    $(".cond-hidden").hide();
-                    $(this).siblings().show();
-                    $("#cond-select-hidden").hide();
-                    $("#rp_id").trigger("change");
-                });
+                $(".expand-click").click(resourcePersonUIUpdate);
                 $("#hours_custom").click(function () {
                     $('#custom_hours_container').show();
                 });
@@ -40,12 +35,23 @@ use App\ResourcePerson;
                 $("#cond-select-hidden").hide();
                 $("#category").hide();
                 $("#help-text").hide();
-                $(".expand-click :input[value='persoon']").click();
+                // $(".expand-click :input[value='persoon']").click();
                 $("#newcat").click(function () {
                     $("#category").show();
                 });
 
                 $('[data-toggle="tooltip"]').tooltip();
+
+
+                function resourcePersonUIUpdate() {
+                    $(".cond-hidden").hide();
+                    $(this).siblings().show();
+                    $("#cond-select-hidden").hide();
+                    $("#rp_id").trigger("change");
+                }
+
+                // set current state
+                resourcePersonUIUpdate();
             });
         </script>
         <div class="row">
@@ -142,7 +148,7 @@ use App\ResourcePerson;
                         <label id="hours_custom"><input type="radio" name="aantaluren"
                                                         value="x"/><span>{{ __('activity.other') }}</span></label>
                         <br/>
-                        <div id="custom_hours_container" class="" style="margin-left: 5px; width:100%">
+                        <div id="custom_hours_container" class="" style="margin-left: 5px; width:100%; display: none">
 
                             <div class="input-group">
                                 <input class="form-control" type="number" step="1" min="1" max="480"
@@ -181,7 +187,7 @@ use App\ResourcePerson;
                     <label class="newcat"><input type="radio" name="category_id" value="new"/><span class="new"
                                                                                                     id="newcat">{{ __('activity.other') }}<br/>({{ __('activity.add') }})</span></label>
                     <input id="category" type="text" maxlength="50" name="newcat" class="form-control"
-                           style="width: 150px; margin: 5px;"
+                           style="width: 150px; margin: 5px; display: none;"
                            placeholder="{{ __('activity.description') }}"/>
                 </div>
                 <div class="clearfix"></div>
@@ -196,12 +202,12 @@ use App\ResourcePerson;
                 <div id="swvcontainer">
 
                     <label class="expand-click">
-                        <input type="radio" name="resource" value="persoon" checked/>
+                        <input type="radio" name="resource" value="persoon"/>
                         <span>{{ __('activity.person') }}</span>
                     </label>
 
                     <select id="rp_id" name="personsource" class="cond-hidden select form-control"
-                            style="width: 150px; margin: 5px;">
+                            style="width: 150px; margin: 5px; display: none">
                         @foreach($resourcePersons as $resourcePerson)
                             <option value="{{ $resourcePerson->rp_id }}">{{ __($resourcePerson->localizedLabel()) }}</option>
                         @endforeach
@@ -210,26 +216,26 @@ use App\ResourcePerson;
                     </select>
 
                     <input class="form-control" id="cond-select-hidden" type="text" maxlength="50" name="newswv"
-                           style="width: 150px; margin: 5px;"
+                           style="width: 150px; margin: 5px; display: none"
                            placeholder="Omschrijving"/>
 
 
                 </div>
                 <div id="solocontainer">
-                    <label class="expand-click"><input type="radio" name="resource"
+                    <label class="expand-click"><input type="radio" name="resource" checked
                                                        value="alleen"/><span>{{ __('activity.alone') }}</span></label>
                 </div>
                 <div id="internetcontainer">
                     <label class="expand-click"><input type="radio" name="resource"
                                                        value="internet"/><span>{{ __('activity.internetsource') }}</span></label>
                     <input class="cond-hidden form-control" type="text" name="internetsource"
-                           style="width: 150px; margin: 5px;"
+                           style="width: 150px; margin: 5px; display: none"
                            value="{{ old('internetsource') }}" placeholder="http://www.source.com/"/>
                 </div>
                 <div id="boekcontainer">
                     <label class="expand-click"><input type="radio" name="resource" value="boek"/><span>{{ __('activity.book') }}/{{ __('activity.article') }}</span></label>
                     <input class="cond-hidden form-control" type="text" name="booksource" maxlength="150"
-                           value="{{ old('booksource')  }}" style="width: 150px; margin: 5px;"
+                           value="{{ old('booksource')  }}" style="width: 150px; margin: 5px; display: none"
                            placeholder="{{ __('dashboard.name') }} {{ __('activity.book') }} / {{ __('activity.article') }}"/>
                 </div>
             </div>
