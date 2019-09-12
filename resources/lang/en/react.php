@@ -91,4 +91,5 @@ return [
     'with-reflections' => 'include reflections',
     'cohorts-show-disabled' => 'Show disabled',
     'cohorts-hide-disabled' => 'Hide disabled',
+    'progress-link-label' => 'To see all previous activities, click here',
 ];

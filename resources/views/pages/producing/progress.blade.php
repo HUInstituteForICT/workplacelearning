@@ -27,6 +27,7 @@
             <script>
                 window.activities = {!! $activitiesJson !!};
                 window.exportTranslatedFieldMapping = {!! $exportTranslatedFieldMapping !!};
+                window.activityProducingTableMode = 'detail';
             </script>
 
                 <div class="row">

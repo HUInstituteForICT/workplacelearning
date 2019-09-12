@@ -10,6 +10,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default class ActivityProducingProcessTable extends React.Component {
 
+    mode = window.activityProducingTableMode;
+
     constructor(props) {
         super(props);
         let earliestDate = moment(), latestDate = moment();
@@ -183,10 +185,67 @@ export default class ActivityProducingProcessTable extends React.Component {
         }
     }
 
+    isMini = () => this.mode === 'mini';
+    isDetail = () => this.mode === 'detail';
+
 
     render() {
         let filteredActivities = this.filterActivities(this.state.activities);
         let groupedByDay = this.groupByDay(filteredActivities);
+        return <div>
+
+            {this.isDetail() && this.renderFilter()}
+
+            {this.isDetail() && this.renderExport()}
+
+            {this.isMini() && <a href={window.progressLink}>{Lang.get('react.progress-link-label')}</a>}
+            <div className="table-responsive">
+            <table className="table blockTable">
+                <thead className="blue_tile">
+                <tr>
+                    <td>{/* Edit URL, no table header */}</td>
+                    <td>{Lang.get('react.time')}</td>
+                    <td colSpan={2}>{Lang.get('react.description')}</td>
+                    <td>{Lang.get('react.aid')}</td>
+                    <td>{Lang.get('react.category')}</td>
+                    <td>{Lang.get('react.complexity')}</td>
+                    <td>{Lang.get('react.status')}</td>
+                    <td>{Lang.get('react.chain')}</td>
+                    <td/>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                {Object.keys(groupedByDay).map(day => {
+                    const activities = groupedByDay[day].sort((a, b) => a.id - b.id);
+                    const statistics = this.calculateStatisticsForActivities(activities);
+
+                    let hoursCell = <td>{Lang.get('activity.hours')}: {statistics.totalHours.toFixed(2)}</td>;
+
+                    if (statistics.totalHours < 1) {
+                        hoursCell = <td>{Lang.get('activity.minutes')}: {(statistics.totalHours * 60).toFixed(2)}</td>;
+                    }
+
+                    return [<tr style={{backgroundColor: 'rgba(0,161,226, 0.45)', color: 'rgba(255,255,255)', fontWeight: 'bold'}}>
+                        <td>{day}</td>
+                        {hoursCell}
+                        <td>{Lang.get('activity.difficulty')}: {statistics.difficulty}</td>
+                        <td>{Lang.get('activity.mostOftenCategory')}: {statistics.mostOftenCategory}</td>
+                        <td colSpan={8}/>
+                    </tr>, activities.map((activity) => {
+                        return <Row key={activity.id} activity={activity}/>
+                    })];
+                })}
+
+
+                </tbody>
+            </table>
+            </div>
+        </div>
+    }
+
+    renderFilter() {
         return <div>
             <h3 style={{cursor:"pointer"}} onClick={ () => {$('.filters').slideToggle()}}><i className="fa fa-arrow-circle-o-down" aria-hidden="true"/> {Lang.get('react.filters')}</h3>
             <div className="filters row" style={{display:"none"}}>
@@ -195,7 +254,7 @@ export default class ActivityProducingProcessTable extends React.Component {
                     <div>
                         <strong>{Lang.get('react.startdate')}:</strong>
                         <DatePicker className={"form-control"} selected={this.state.startDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({startDate: date})} />
-                    <br/>
+                        <br/>
                         <strong>{Lang.get('react.enddate')}:</strong>
                         <DatePicker className={"form-control"} selected={this.state.endDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({endDate: date})} />
                     </div>
@@ -259,84 +318,43 @@ export default class ActivityProducingProcessTable extends React.Component {
 
             </div>
             <br/>
-            <div className="export" style={{paddingBottom:"15px"}}>
+        </div>
+    }
 
-                <label>{Lang.get('react.export-to')}&nbsp;
-                    <select onChange={e => {this.setState({selectedExport: e.target.value})}} defaultValue={this.state.selectedExport}>
-                        {this.state.exports.map(type => {
-                            return <option key={type} value={type}>{type}</option>
-                        })}
-                    </select>
-                </label> &nbsp;
-                <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) )}>{Lang.get('react.export')}</button>
-                <br/>
-                {this.state.selectedExport === 'email' &&
-                    <div style={{maxWidth: "400px"}}>
-                        <label>
-                            {Lang.get('react.mail-to')}: <input type="email" className="form-control" onChange={e => this.setState({email: e.target.value})} value={this.state.email} />
-                        </label><br/>
-                        <label>
-                            {Lang.get('react.mail-comment')}: <textarea className="form-control" onChange={e => this.setState({emailComment: e.target.value})} value={this.state.emailComment} />
-                        </label>
-                        {
-                            this.state.emailAlert === undefined &&
-                            <div className="alert alert-info" role="alert">{Lang.get('react.mail.sending')}</div>
-                        }
-                        {
-                            this.state.emailAlert === true &&
-                            <div className="alert alert-success" role="alert">{Lang.get('react.mail.sent')}</div>
-                        }
-                        {
-                            this.state.emailAlert === false &&
-                            <div className="alert alert-danger" role="alert">{Lang.get('react.mail.failed')}</div>
-                        }
-                    </div>
+    renderExport() {
+        return <div className="export" style={{paddingBottom:"15px"}}>
+
+            <label>{Lang.get('react.export-to')}&nbsp;
+                <select onChange={e => {this.setState({selectedExport: e.target.value})}} defaultValue={this.state.selectedExport}>
+                    {this.state.exports.map(type => {
+                        return <option key={type} value={type}>{type}</option>
+                    })}
+                </select>
+            </label> &nbsp;
+            <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) )}>{Lang.get('react.export')}</button>
+            <br/>
+            {this.state.selectedExport === 'email' &&
+            <div style={{maxWidth: "400px"}}>
+                <label>
+                    {Lang.get('react.mail-to')}: <input type="email" className="form-control" onChange={e => this.setState({email: e.target.value})} value={this.state.email} />
+                </label><br/>
+                <label>
+                    {Lang.get('react.mail-comment')}: <textarea className="form-control" onChange={e => this.setState({emailComment: e.target.value})} value={this.state.emailComment} />
+                </label>
+                {
+                    this.state.emailAlert === undefined &&
+                    <div className="alert alert-info" role="alert">{Lang.get('react.mail.sending')}</div>
+                }
+                {
+                    this.state.emailAlert === true &&
+                    <div className="alert alert-success" role="alert">{Lang.get('react.mail.sent')}</div>
+                }
+                {
+                    this.state.emailAlert === false &&
+                    <div className="alert alert-danger" role="alert">{Lang.get('react.mail.failed')}</div>
                 }
             </div>
-
-            <div className="table-responsive">
-            <table className="table blockTable">
-                <thead className="blue_tile">
-                <tr>
-                    <td>{/* Edit URL, no table header */}</td>
-                    <td>{Lang.get('react.time')}</td>
-                    <td colSpan={2}>{Lang.get('react.description')}</td>
-                    <td>{Lang.get('react.aid')}</td>
-                    <td>{Lang.get('react.category')}</td>
-                    <td>{Lang.get('react.complexity')}</td>
-                    <td>{Lang.get('react.status')}</td>
-                    <td>{Lang.get('react.chain')}</td>
-                    <td/>
-
-                </tr>
-                </thead>
-                <tbody>
-
-                {Object.keys(groupedByDay).map(day => {
-                    const activities = groupedByDay[day].sort((a, b) => a.id - b.id);
-                    const statistics = this.calculateStatisticsForActivities(activities);
-
-                    let hoursCell = <td>{Lang.get('activity.hours')}: {statistics.totalHours.toFixed(2)}</td>;
-
-                    if (statistics.totalHours < 1) {
-                        hoursCell = <td>{Lang.get('activity.minutes')}: {(statistics.totalHours * 60).toFixed(2)}</td>;
-                    }
-
-                    return [<tr style={{backgroundColor: 'rgba(0,161,226, 0.45)', color: 'rgba(255,255,255)', fontWeight: 'bold'}}>
-                        <td>{day}</td>
-                        {hoursCell}
-                        <td>{Lang.get('activity.difficulty')}: {statistics.difficulty}</td>
-                        <td>{Lang.get('activity.mostOftenCategory')}: {statistics.mostOftenCategory}</td>
-                        <td colSpan={8}/>
-                    </tr>, activities.map((activity) => {
-                        return <Row key={activity.id} activity={activity}/>
-                    })];
-                })}
-
-
-                </tbody>
-            </table>
-            </div>
+            }
         </div>
     }
 

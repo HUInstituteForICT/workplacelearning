@@ -57,7 +57,7 @@ class ActingActivityController
         $student = $this->currentUserResolver->getCurrentUser();
 
         $activitiesJson = $exportBuilder->getJson($this->learningActivityActingRepository->getActivitiesForStudent($student),
-            8);
+            1);
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
 

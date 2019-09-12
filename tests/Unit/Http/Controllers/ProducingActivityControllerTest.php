@@ -29,10 +29,10 @@ class ProducingActivityControllerTest extends TestCase
         $currentUserResolver->expects(self::once())->method('getCurrentUser')->willReturn($student);
 
         $repository = $this->createMock(LearningActivityProducingRepository::class);
-        $repository->expects(self::once())->method('getActivitiesForStudent')->willReturn([]);
+        $repository->expects(self::once())->method('getActivitiesOfLastActiveDayForStudent')->willReturn([]);
 
         $exportBuilder = $this->createMock(LearningActivityProducingExportBuilder::class);
-        $exportBuilder->expects(self::once())->method('getJson')->with([], 8)->willReturn('some json string');
+        $exportBuilder->expects(self::once())->method('getJson')->with([], null)->willReturn('some json string');
         $exportBuilder->expects(self::once())->method('getFieldLanguageMapping')->willReturn([]);
 
         $availableEntitiesFetcher = $this->createMock(AvailableProducingEntitiesFetcher::class);

@@ -343,6 +343,8 @@
                 window.reflectionDownloadMultipleUrl = '{{ route('reflection-download-multiple') }}';
                 window.exportActivitiesUrl = '{{ route('acting-activities-word-export') }}';
                 window.mailExportActivitiesUrl = '{{ route('mail-acting-activities-word-export') }}';
+                window.activityActingTableMode = 'mini';
+                window.progressLink = '{{ route('progress-acting') }}';
             </script>
 
             <div id="ActivityActingProcessTable" class="__reactRoot col-md-12"></div>

@@ -39,7 +39,7 @@ class ActingActivityControllerTest extends TestCase
         $availableActingEntitiesFetcher->expects(self::once())->method('getEntities')->willReturn([]);
 
         $exportBuilder = $this->createMock(LearningActivityActingExportBuilder::class);
-        $exportBuilder->expects(self::once())->method('getJson')->with([], 8)->willReturn(json_encode([]));
+        $exportBuilder->expects(self::once())->method('getJson')->with([], 1)->willReturn(json_encode([]));
         $exportBuilder->expects(self::once())->method('getFieldLanguageMapping')->willReturn([]);
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);

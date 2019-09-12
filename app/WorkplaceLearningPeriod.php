@@ -15,27 +15,27 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * App\WorkplaceLearningPeriod.
  *
- * @property int                                                                       $wplp_id
- * @property Cohort                                                                    $cohort
- * @property int                                                                       $student_id
- * @property Student                                                                   $student
- * @property int                                                                       $wp_id
- * @property \DateTime                                                                 $startdate
- * @property \DateTime                                                                 $enddate
- * @property int                                                                       $nrofdays
- * @property string                                                                    $description
- * @property int                                                                       $cohort_id
- * @property float                                                                     $hours_per_day
- * @property Collection                                                                $chains
- * @property Workplace                                                                 $workplace
- * @property int                                                                       $is_in_analytics
- * @property \Illuminate\Database\Eloquent\Collection|\App\Category[]                  $categories
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[]    $learningActivityActing
+ * @property int $wplp_id
+ * @property Cohort $cohort
+ * @property int $student_id
+ * @property Student $student
+ * @property int $wp_id
+ * @property \DateTime $startdate
+ * @property \DateTime $enddate
+ * @property int $nrofdays
+ * @property string $description
+ * @property int $cohort_id
+ * @property float $hours_per_day
+ * @property Collection $chains
+ * @property Workplace $workplace
+ * @property int $is_in_analytics
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Category[] $categories
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[] $learningActivityActing
  * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningGoal[]              $learningGoals
- * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[]          $resourceMaterial
- * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[]            $resourcePerson
- * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[]                  $timeslot
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningGoal[] $learningGoals
+ * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[] $resourceMaterial
+ * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[] $resourcePerson
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[] $timeslot
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereEnddate($value)
@@ -54,10 +54,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class WorkplaceLearningPeriod extends Model
 {
     // Override the table used for the User Model
-    protected $table = 'workplacelearningperiod';
-    // Disable using created_at and updated_at columns
     public $timestamps = false;
+
+    // Disable using created_at and updated_at columns
+
+    protected $table = 'workplacelearningperiod';
+
     // Override the primary key column
+
     protected $primaryKey = 'wplp_id';
 
     protected $dates = [
@@ -103,31 +107,6 @@ class WorkplaceLearningPeriod extends Model
         return $this->hasMany(LearningGoal::class, 'wplp_id', 'wplp_id');
     }
 
-    public function resourcePerson(): HasMany
-    {
-        return $this->hasMany(ResourcePerson::class, 'wplp_id', 'wplp_id');
-    }
-
-    public function timeslot(): HasMany
-    {
-        return $this->hasMany(Timeslot::class, 'wplp_id', 'wplp_id');
-    }
-
-    public function resourceMaterial(): HasMany
-    {
-        return $this->hasMany(ResourceMaterial::class, 'wplp_id', 'wplp_id');
-    }
-
-    public function learningActivityProducing(): HasMany
-    {
-        return $this->hasMany(LearningActivityProducing::class, 'wplp_id', 'wplp_id');
-    }
-
-    public function learningActivityActing(): HasMany
-    {
-        return $this->hasMany(LearningActivityActing::class, 'wplp_id', 'wplp_id');
-    }
-
     public function getLearningActivityActingById($id)
     {
         return $this->learningActivityActing()
@@ -135,11 +114,21 @@ class WorkplaceLearningPeriod extends Model
             ->first();
     }
 
+    public function learningActivityActing(): HasMany
+    {
+        return $this->hasMany(LearningActivityActing::class, 'wplp_id', 'wplp_id');
+    }
+
     public function getLearningActivityProducingById($id)
     {
         return $this->learningActivityProducing()
             ->where('lap_id', '=', $id)
             ->first();
+    }
+
+    public function learningActivityProducing(): HasMany
+    {
+        return $this->hasMany(LearningActivityProducing::class, 'wplp_id', 'wplp_id');
     }
 
     public function getUnfinishedActivityProducing(): Collection
@@ -154,31 +143,6 @@ class WorkplaceLearningPeriod extends Model
     public function hasLoggedHours(): bool
     {
         return \count($this->getLastActivity(1)) > 0;
-    }
-
-    public function getNumLoggedHours()
-    {
-        return $this->getLastActivity(1000000, 0)->sum('duration');
-    }
-
-    public function getResourcePersons(): Collection
-    {
-        return $this->resourcePerson()
-            ->orderBy('rp_id', 'asc')
-            ->get();
-    }
-
-    public function getTimeslots(): Collection
-    {
-        return $this->timeslot()->orderBy('timeslot_id', 'asc')->get();
-    }
-
-    public function getResourceMaterials(): Collection
-    {
-        return $this->resourceMaterial()
-            ->orWhere('wplp_id', '=', '0')
-            ->orderBy('rm_id', 'asc')
-            ->get();
     }
 
     public function getLastActivity($count, $offset = 0)
@@ -215,6 +179,46 @@ class WorkplaceLearningPeriod extends Model
             ->get();
     }
 
+    public function getNumLoggedHours()
+    {
+        return $this->getLastActivity(1000000, 0)->sum('duration');
+    }
+
+    public function getResourcePersons(): Collection
+    {
+        return $this->resourcePerson()
+            ->orderBy('rp_id', 'asc')
+            ->get();
+    }
+
+    public function resourcePerson(): HasMany
+    {
+        return $this->hasMany(ResourcePerson::class, 'wplp_id', 'wplp_id');
+    }
+
+    public function getTimeslots(): Collection
+    {
+        return $this->timeslot()->orderBy('timeslot_id', 'asc')->get();
+    }
+
+    public function timeslot(): HasMany
+    {
+        return $this->hasMany(Timeslot::class, 'wplp_id', 'wplp_id');
+    }
+
+    public function getResourceMaterials(): Collection
+    {
+        return $this->resourceMaterial()
+            ->orWhere('wplp_id', '=', '0')
+            ->orderBy('rm_id', 'asc')
+            ->get();
+    }
+
+    public function resourceMaterial(): HasMany
+    {
+        return $this->hasMany(ResourceMaterial::class, 'wplp_id', 'wplp_id');
+    }
+
     public function chains(): HasMany
     {
         return $this->hasMany(Chain::class, 'wplp_id', 'wplp_id');
@@ -235,5 +239,30 @@ class WorkplaceLearningPeriod extends Model
             'learningActivityProducing',
             'learningActivityActing',
         ];
+    }
+
+    /**
+     * Calculates the effective hours worked for producing activities
+     */
+    public function getEffectiveDays(): int
+    {
+        $activities = $this->learningActivityProducing->all();
+        $daysWithHours = array_reduce($activities, static function (array $carry, LearningActivityProducing $activity) {
+            // Timestamp is okay for string representation because DB field type is "date" and has no H:i:s indication
+            if (!isset($carry[$activity->date->timestamp])) {
+                $carry[$activity->date->timestamp] = 0;
+            }
+
+            $carry[$activity->date->timestamp] += $activity->duration;
+
+            return $carry;
+        }, []);
+
+        $daysRegistered = count(array_keys($daysWithHours));
+
+        $totalHours = array_sum(array_values($daysWithHours));
+        $fullDays = floor($totalHours / $this->hours_per_day);
+
+        return (int) min($daysRegistered, $fullDays);
     }
 }
