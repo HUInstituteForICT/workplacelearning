@@ -59,4 +59,5 @@ Hogeschool Utrecht – werkplekleren.hu.nl',
       'absence-reason' => 'Reden eventuele absentie',
       'remarks-week' => 'Opmerkingen',
   ],
+  'activity-export-filename' => 'leermomenten'
 );

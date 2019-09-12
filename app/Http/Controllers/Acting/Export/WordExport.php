@@ -36,6 +36,6 @@ class WordExport extends Controller
 
         $document = $this->actingActivityExporter->export($activities, $includeReflections);
 
-        $this->downloadDocument($document, 'activities.docx');
+        $this->downloadDocument($document, __('process_export.activity-export-filename').'.docx');
     }
 }
