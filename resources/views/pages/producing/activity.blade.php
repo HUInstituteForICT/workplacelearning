@@ -246,29 +246,36 @@ use App\ResourcePerson;
 
         <div class="row">
 
-            <div class="col-md-3 buttons col-md-offset-3">
-                <h4>{{ __('activity.status') }} <i class="fa fa-info-circle" aria-hidden="true"
-                                                   data-toggle="tooltip" data-placement="bottom"
-                                                   title="{{ trans('tooltips.producing_status') }}"></i>
-                </h4>
-                <label><input type="radio" name="status" value="1"
-                              checked/><span>{{ __('activity.finished') }}</span></label>
-                <label><input type="radio" name="status"
-                              value="2"/><span>{{ __('activity.busy') }}</span></label>
-                <label><input type="radio" name="status"
-                              value="3"/><span>{{ __('activity.transfered') }}</span></label>
-            </div>
-            <div class="col-md-3 buttons">
-                <h4>{{ __('activity.difficulty') }} <i class="fa fa-info-circle" aria-hidden="true"
+            <div class="col-md-3  col-md-offset-3">
+                <div class="buttons">
+                    <h4>{{ __('activity.status') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                        data-toggle="tooltip" data-placement="bottom"
-                                                       title="{{ trans('tooltips.producing_difficulty') }}"></i>
-                </h4>
-                <label><input type="radio" name="moeilijkheid" value="1"
-                              checked/><span>{{ __('activity.easy') }}</span></label>
-                <label><input type="radio" name="moeilijkheid"
-                              value="2"/><span>{{ __('activity.average') }}</span></label>
-                <label><input type="radio" name="moeilijkheid"
-                              value="3"/><span>{{ __('activity.hard') }}</span></label>
+                                                       title="{{ trans('tooltips.producing_status') }}"></i>
+                    </h4>
+                    <label><input type="radio" name="status" value="1"
+                                  checked/><span>{{ __('activity.finished') }}</span></label>
+                    <label><input type="radio" name="status"
+                                  value="2"/><span>{{ __('activity.busy') }}</span></label>
+                    <label><input type="radio" name="status"
+                                  value="3"/><span>{{ __('activity.transfered') }}</span></label>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="col-md-3 ">
+                <div class="buttons">
+                    <h4>{{ __('activity.difficulty') }} <i class="fa fa-info-circle" aria-hidden="true"
+                                                           data-toggle="tooltip" data-placement="bottom"
+                                                           title="{{ trans('tooltips.producing_difficulty') }}"></i>
+                    </h4>
+                    <label><input type="radio" name="moeilijkheid" value="1"
+                                  checked/><span>{{ __('activity.easy') }}</span></label>
+                    <label><input type="radio" name="moeilijkheid"
+                                  value="2"/><span>{{ __('activity.average') }}</span></label>
+                    <label><input type="radio" name="moeilijkheid"
+                                  value="3"/><span>{{ __('activity.hard') }}</span></label>
+                    <div class="clearfix"></div>
+                </div>
             </div>
 
         </div>
@@ -324,12 +331,12 @@ use App\ResourcePerson;
                 useCurrent: false,
             });
 
-            $('#hourDecrease').click(function() {
+            $('#hourDecrease').click(function () {
                 const newVal = Math.max(0, parseInt($('input[name="aantaluren_custom"]').val()) - 15);
                 $('input[name="aantaluren_custom"]').val(newVal);
             });
 
-            $('#hourIncrease').click(function() {
+            $('#hourIncrease').click(function () {
                 const newVal = parseInt($('input[name="aantaluren_custom"]').val()) + 15;
                 $('input[name="aantaluren_custom"]').val(newVal);
             });
