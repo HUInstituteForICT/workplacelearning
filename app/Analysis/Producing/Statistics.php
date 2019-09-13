@@ -58,6 +58,9 @@ class Statistics
      */
     public function percentageAloneHours()
     {
+        if($this->analysisData['num_hours'] === 0) {
+            return 0;
+        }
         return round(($this->analysisData['num_hours_alone'] / $this->analysisData['num_hours']) * 100, 1);
     }
 
