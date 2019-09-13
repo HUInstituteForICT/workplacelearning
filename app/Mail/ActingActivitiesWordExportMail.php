@@ -18,7 +18,7 @@ class ActingActivitiesWordExportMail extends Mailable
      */
     private $document;
 
-    public function __construct(string $comment, PhpWord $document)
+    public function __construct(?string $comment, PhpWord $document)
     {
         $this->comment = $comment;
         $this->document = $document;
@@ -33,6 +33,6 @@ class ActingActivitiesWordExportMail extends Mailable
         return $this->from('noreply@werkplekleren.hu.nl')
             ->subject(__('process_export.mail-subject'))
             ->attachFromStorageDisk('local', 'word-exports/' . $fileName.'.docx', 'export_' . strtolower(__('export_laa.learningactivities')) . '.docx')
-            ->text('mail.text-export', ['student' => Auth::user(), 'comment' => $this->comment]);
+            ->text('mail.text-export', ['student' => Auth::user(), 'comment' => $this->comment ?? '']);
     }
 }
