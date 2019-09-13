@@ -132,7 +132,7 @@
                             <input id="new-timeslot-hidden" type="text" name="new_timeslot" class="form-control"
                                    style="width:150px;"
                                    value="{{ old('new-timeslot-hidden') }}"
-                                   placeholder="{{ __('process_export.description') }}" maxlength="50"/>
+                                   placeholder="{{ __('process_export.description') }}" maxlength="45"/>
                         </label>
 
                         <span class="clearfix"></span>
@@ -153,7 +153,7 @@
                                 <br/>
                                 <input id="new-rp-hidden" type="text" name="new_rp" value="{{ old('new-rp-hidden') }}"
                                        class="form-control" style="width:150px;"
-                                       placeholder="{{ __('process_export.description') }}" maxlength="50"/>
+                                       placeholder="{{ __('process_export.description') }}" maxlength="45"/>
                             </label>
 
                         </div>
@@ -179,7 +179,7 @@
                             <br/>
                             <input type="text" name="new_rm" id="new-rm-hidden" value="{{ old('new_rm') }}"
                                    class="form-control" style="width:150px;"
-                                   placeholder="{{ __('process_export.description') }}" maxlength="50"/>
+                                   placeholder="{{ __('process_export.description') }}" maxlength="45"/>
                         </label>
 
                         <div style="text-align: center">

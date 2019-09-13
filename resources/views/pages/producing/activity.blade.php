@@ -186,7 +186,7 @@ use App\ResourcePerson;
                 <div>
                     <label class="newcat"><input type="radio" name="category_id" value="new"/><span class="new"
                                                                                                     id="newcat">{{ __('activity.other') }}<br/>({{ __('activity.add') }})</span></label>
-                    <input id="category" type="text" maxlength="50" name="newcat" class="form-control"
+                    <input id="category" type="text" maxlength="45" name="newcat" class="form-control"
                            style="width: 150px; margin: 5px; display: none;"
                            placeholder="{{ __('activity.description') }}"/>
                 </div>
@@ -215,7 +215,7 @@ use App\ResourcePerson;
                             / {{ __('activity.other') }}</option>
                     </select>
 
-                    <input class="form-control" id="cond-select-hidden" type="text" maxlength="50" name="newswv"
+                    <input class="form-control" id="cond-select-hidden" type="text" maxlength="45" name="newswv"
                            style="width: 150px; margin: 5px; display: none"
                            placeholder="Omschrijving"/>
 
