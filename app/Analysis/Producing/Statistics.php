@@ -27,9 +27,10 @@ class Statistics
      */
     public function percentageDifficultTasks()
     {
-        if($this->analysisData['num_lap'] === 0) {
+        if ($this->analysisData['num_lap'] === 0) {
             return 0;
         }
+
         return round(($this->analysisData['num_difficult_lap'] / $this->analysisData['num_lap']) * 100, 1);
     }
 
@@ -38,7 +39,7 @@ class Statistics
      */
     public function percentageEasyHours()
     {
-        if($this->analysisData['num_hours'] === 0) {
+        if ($this->analysisData['num_hours'] === 0) {
             return 0;
         }
 
@@ -50,6 +51,10 @@ class Statistics
      */
     public function percentageDifficultHours()
     {
+        if ($this->analysisData['num_hours'] === 0) {
+            return 0;
+        }
+
         return round((($this->analysisData['hours_difficult_lap'] / $this->analysisData['num_hours']) * 100), 1);
     }
 
@@ -58,14 +63,15 @@ class Statistics
      */
     public function percentageAloneHours()
     {
-        if($this->analysisData['num_hours'] === 0) {
+        if ($this->analysisData['num_hours'] === 0) {
             return 0;
         }
+
         return round(($this->analysisData['num_hours_alone'] / $this->analysisData['num_hours']) * 100, 1);
     }
 
     /**
-     *   @return float persentage of average person difficulty
+     * @return float persentage of average person difficulty
      */
     public function persentageAveragePersonDifficulty()
     {
@@ -73,11 +79,12 @@ class Statistics
             return 0;
         }
 
-        return round(($this->analysisData['person_difficulty']->difficult_activities / $this->analysisData['num_total_lap']) * 100, 1);
+        return round(($this->analysisData['person_difficulty']->difficult_activities / $this->analysisData['num_total_lap']) * 100,
+            1);
     }
 
     /**
-     *   @return string name of person where the activities are the easiest
+     * @return string name of person where the activities are the easiest
      */
     public function averagePersonDifficultyName()
     {
@@ -89,7 +96,7 @@ class Statistics
     }
 
     /**
-     * @return name of the most difficult category
+     * @return string name of the most difficult category
      */
     public function mostDifficultCategoryName()
     {
