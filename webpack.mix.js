@@ -12,7 +12,8 @@ const mix = require('laravel-mix');
  */
 
 
-mix.react('resources/assets/js/app.js', 'public/js')
+mix
+    .react('resources/assets/js/app.js', 'public/js')
     .less('resources/assets/less/style.less', 'public/css')
     .less('resources/assets/less/animations.less', 'public/css')
     .less('resources/assets/less/fonts.less', 'public/css')
@@ -22,4 +23,6 @@ mix.react('resources/assets/js/app.js', 'public/js')
 ;
 mix.sourceMaps();
 
-    mix.version();
+mix.version();
+
+mix.extract();
