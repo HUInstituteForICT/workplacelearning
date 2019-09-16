@@ -1,4 +1,3 @@
-/vendor-ol
 /vendor
 /node_modules
 /public/storage
@@ -36,3 +35,4 @@ public/css/fonts.css.map
 public/css/weekstaten.css.map
 storage/debugbar/
 public/js/app.js.map
+storage/framework/*
