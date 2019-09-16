@@ -129,9 +129,14 @@ class Competence extends Entity {
                         </span>
                             <Dropzone className="dropzone" accept="application/pdf" multiple={false}
                                       onDrop={this.onDrop.bind(this)}>
-                                <span>
-                                    {Lang.get('react.upload-instructions')}
-                                </span>
+                                {({getRootProps, getInputProps}) => (
+                                    <div {...getRootProps({className: 'dropzone'})}>
+                                        <input {...getInputProps({value: ''})} />
+                                         <span>
+                                            {Lang.get('react.upload-instructions')}
+                                        </span>
+                                    </div>
+                                )}
                             </Dropzone>
                         </div>
                     </div>

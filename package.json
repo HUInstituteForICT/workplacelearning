@@ -22,10 +22,10 @@
     "less-loader": "^4.0.5",
     "lodash": "^4.17.*",
     "moment": "^2.19.1",
-    "react": "^16.4.2",
+    "react": "^16.9.*",
     "react-datepicker": "^0.57.0",
-    "react-dom": "^16.4.2",
-    "react-dropzone": "^3.13.4"
+    "react-dom": "^16.9.*",
+    "react-dropzone": "^10.1.*"
   },
   "dependencies": {
     "node-sass": "^4.9.3",
