@@ -53,7 +53,7 @@ class Moments extends React.Component {
                 }
             </div>
 
-            <Modal open={this.state.showNewMomentModal} little
+            <Modal open={this.state.showNewMomentModal} center
                    onClose={() => this.setState({showNewMomentModal: false})}
                    classNames={{'modal': "panel panel-default"}}>
                 <div className="panel-body" id="step-8">

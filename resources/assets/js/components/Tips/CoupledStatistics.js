@@ -21,22 +21,24 @@ class CoupledStatistics extends React.Component {
         }
     }
 
-    componentWillReceiveProps(newProps) {
-        if(newProps.stepIndex === 2 && newProps.stepIndex !== this.props.stepIndex) {
-            this.setState({showCoupleStatisticModal: true});
+    static getDerivedStateFromProps(props, state) {
+        if (props.stepIndex === 2) {
+            state.showCoupleStatisticModal = true;
         }
 
-        if(newProps.stepIndex === 3 && newProps.stepIndex !== this.props.stepIndex) {
-            this.setState({showNewStatisticModal: true});
+        if (props.stepIndex === 3) {
+            state.showNewStatisticModal = true;
         }
 
-        if(newProps.stepIndex === 11 && newProps.stepIndex !== this.props.stepIndex) {
-            this.setState({showNewStatisticModal: false});
+        if (props.stepIndex === 11) {
+            state.showNewStatisticModal = false;
         }
 
-        if(newProps.stepIndex === 15 && newProps.stepIndex !== this.props.stepIndex) {
-            this.setState({showCoupleStatisticModal: false});
+        if (props.stepIndex === 15) {
+            state.showCoupleStatisticModal = false;
         }
+
+        return state;
     }
 
     toggleCoupleModal = () => {
@@ -119,7 +121,7 @@ class CoupledStatistics extends React.Component {
             </div>
 
 
-            <Modal open={this.state.showCoupleStatisticModal} little
+            <Modal open={this.state.showCoupleStatisticModal} center
                    onClose={() => this.setState({showCoupleStatisticModal: false})}
                    classNames={{'modal': "panel panel-default"}}>
                 <div className="panel-body">
@@ -196,7 +198,7 @@ class CoupledStatistics extends React.Component {
                 </div>
             </Modal>
 
-            <Modal open={this.state.showNewStatisticModal} little
+            <Modal open={this.state.showNewStatisticModal} center
                    onClose={() => this.setState({showNewStatisticModal: false})}
                    classNames={{'modal': "panel panel-default"}}>
                 <div className="panel-body" id="step-8">
