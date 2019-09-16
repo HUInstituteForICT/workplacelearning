@@ -8,6 +8,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CurrentUserResolver;
+use App\Traits\PhpWordDownloader;
 use App\WorkplaceLearningPeriod;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,6 +21,8 @@ use PhpOffice\PhpWord\Style\Font;
 
 class ProducingReportController extends Controller
 {
+    use PhpWordDownloader;
+
     protected $pdf;
 
     private $html;
@@ -46,8 +49,8 @@ class ProducingReportController extends Controller
 
         $bold = tap(new Font())->setBold(true);
 
-        $w = new PhpWord();
-        $page = $w->addSection();
+        $document = new PhpWord();
+        $page = $document->addSection();
         $page->addText(__('process_export.wordexport.by-intern'), $bold);
         $internTable = $page->addTable('');
 
@@ -109,7 +112,7 @@ class ProducingReportController extends Controller
             'cellMargin'  => 50,
         ];
         $firstRowStyle = ['bgColor' => '66BBFF'];
-        $w->addTableStyle('table', $tableStyle, $firstRowStyle);
+        $document->addTableStyle('table', $tableStyle, $firstRowStyle);
         $lap_array = $this->getWerkzaamheden(Carbon::createFromTimestamp($request->get('startDate')),
             Carbon::createFromTimestamp($request->get('endDate')), $wplp);
 
@@ -188,7 +191,7 @@ class ProducingReportController extends Controller
 
         $fileName = $student->studentnr . ' ' . $student->getInitials() . ' ' . $student->lastname . ' - ' . $wp->wp_name;
 
-        $w->save("{$fileName}.docx", 'Word2007', true);
+        $this->downloadDocument($document, "{$fileName}.docx");
     }
 
     private function getWerkzaamheden(

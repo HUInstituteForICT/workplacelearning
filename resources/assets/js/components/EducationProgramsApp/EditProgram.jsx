@@ -29,14 +29,14 @@ export default class EditProgram extends React.Component {
     }
 
     // Update component when the ID changes, fired by parent
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.id !== this.props.id) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.id !== this.props.id) {
             this.setState({loading: true});
 
             EducationProgramService.getEditableEducationProgram(response => {
                 this.setState(response.data);
                 this.setState({loading: false});
-            }, nextProps.id);
+            }, this.props.id);
         }
     }
 

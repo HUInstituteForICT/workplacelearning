@@ -10,30 +10,28 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
-    "axios": "^0.15.3",
+    "@babel/preset-react": "^7.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
+    "axios": "^0.15.3",
     "cross-env": "^3.2.4",
     "immutability-helper": "^2.2.3",
-    "laravel-mix": "^1.6.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "lodash": "^4.17.*",
     "moment": "^2.19.1",
     "react": "^16.9.*",
-    "react-datepicker": "^0.57.0",
+    "react-datepicker": "^2.9.6",
     "react-dom": "^16.9.*",
     "react-dropzone": "^10.1.*"
   },
   "dependencies": {
+    "laravel-mix": "^4.1.4",
     "node-sass": "^4.9.3",
     "normalizr": "^3.2.4",
     "react-joyride": "^2.0.0-8",
-    "react-redux": "^5.0.6",
-    "react-responsive-modal": "^2.1.0",
-    "react-router-dom": "^4.2.2",
-    "redux": "^3.7.2"
+    "react-redux": "^7.1.1",
+    "react-responsive-modal": "^4.0.1",
+    "react-router-dom": "^5.0.1",
+    "redux": "^4.0.4"
   }
 }

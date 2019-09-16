@@ -52,7 +52,7 @@ class IndexPage extends React.Component {
     render() {
         const {tips, statistics} = this.props;
         return <div>
-            <Modal open={this.state.showTipDeleteModal} little
+            <Modal open={this.state.showTipDeleteModal} center
                    onClose={() => this.setState({showTipDeleteModal: false, deleteTipId: null})}
                    classNames={{'modal': "panel panel-default"}}>
 
@@ -64,7 +64,7 @@ class IndexPage extends React.Component {
 
                 </div>
             </Modal>
-            <Modal open={this.state.showStatisticDeleteModal} little
+            <Modal open={this.state.showStatisticDeleteModal} center
                    onClose={() => this.setState({showStatisticDeleteModal: false, deleteStatisticId: null})}
                    classNames={{'modal': "panel panel-default"}}>
 
@@ -176,7 +176,7 @@ class IndexPage extends React.Component {
                         </tbody>
                     </table>
 
-                    <Modal open={this.state.showNewStatisticModal} little
+                    <Modal open={this.state.showNewStatisticModal} center
                            onClose={() => this.setState({showNewStatisticModal: false})}
                            classNames={{'modal': "panel panel-default"}}>
                         <div className="panel-body" id="step-8">
@@ -190,9 +190,9 @@ class IndexPage extends React.Component {
                         </div>
                     </Modal>
 
-                    <Modal open={this.state.showUpdateStatisticModal} little
+                    <Modal open={this.state.showUpdateStatisticModal} center
                            onClose={() => this.setState({showUpdateStatisticModal: false})}
-                           classNames={{'modal': "panel panel-default"}}>
+                           classNames={{modal: "panel panel-default"}}>
                         <div className="panel-body" id="step-8">
                             <h3>{Lang.get('statistics.edit')}</h3>
                             <UpdateForm id={this.state.updateStatisticId}/>
