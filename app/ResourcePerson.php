@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (Samenwerkingsverband.php) was created on 06/06/2016 at 15:22.
  * (C) Max Cassee

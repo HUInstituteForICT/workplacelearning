@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Reflection\Repository\Eloquent;
 
 use App\Reflection\Models\ActivityReflection;

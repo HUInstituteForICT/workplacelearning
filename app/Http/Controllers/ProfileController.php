@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (ProfileController.php) was created on 06/19/2016 at 16:01.
  * (C) Max Cassee
@@ -16,7 +18,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Lang;
 use Validator;
 
 class ProfileController extends Controller

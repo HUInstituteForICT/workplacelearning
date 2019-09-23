@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Reflection\Services\Factories;
 
 use App\Reflection\Models\ActivityReflection;

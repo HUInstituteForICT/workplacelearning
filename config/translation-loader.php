@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
      * Language lines will be fetched by these loaders. You can put any class here that implements

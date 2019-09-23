@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Eloquent;
@@ -277,7 +279,7 @@ class Student extends Authenticatable implements MustVerifyEmail
 
     public function isRegisteredThroughCanvas(): bool
     {
-        return $this->is_registered_through_canvas;
+        return (bool) $this->is_registered_through_canvas;
     }
 
     public function orderReflectionTypes(array $reflectionTypes): array

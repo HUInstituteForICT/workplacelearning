@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Analysis;
@@ -8,7 +10,6 @@ use App\DashboardChart;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Lang;
 
 class AnalyticsDashboardController extends Controller
 {

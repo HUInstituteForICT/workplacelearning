@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (Status.php) was created on 02/12/2017 at 14:02.
  * (C) Max Cassee

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (UserSetting.php) was created on 06/22/2016 at 14:21.
  * (C) Max Cassee

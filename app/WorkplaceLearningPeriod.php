@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (WorkplaceLearningPeriod.php) was created on 20/01/2017 at 12:32.
  * (C) Max Cassee
@@ -262,6 +264,11 @@ class WorkplaceLearningPeriod extends Model
 
         $totalHours = array_sum(array_values($daysWithHours));
 
-        return floor($totalHours / $this->hours_per_day);
+        return (int) floor($totalHours / $this->hours_per_day);
+    }
+
+    public function hasActivities(): bool
+    {
+        return $this->learningActivityActing()->count() > 0 || $this->learningActivityProducing()->count() > 0;
     }
 }

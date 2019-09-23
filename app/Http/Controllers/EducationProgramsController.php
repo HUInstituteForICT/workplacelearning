@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Cohort;
@@ -18,7 +20,6 @@ use App\Services\EntityTranslationManager;
 use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Request;

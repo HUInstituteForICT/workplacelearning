@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (InternshipController.php) was created on 06/20/2016 at 01:11.
  * (C) Max Cassee
@@ -11,6 +13,8 @@ namespace app\Http\Controllers;
 
 use App\Category;
 use App\Cohort;
+use App\Repository\Eloquent\CohortRepository;
+use App\Services\CurrentUserResolver;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use Carbon\Carbon;
@@ -18,12 +22,28 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
 use InvalidArgumentException;
 use Validator;
 
 class ProducingWorkplaceLearningController extends Controller
 {
+    /**
+     * @var CohortRepository
+     */
+    private $cohortRepository;
+
+    /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
+
+    public function __construct(CohortRepository $cohortRepository, CurrentUserResolver $currentUserResolver)
+    {
+        $this->middleware('auth');
+        $this->cohortRepository = $cohortRepository;
+        $this->currentUserResolver = $currentUserResolver;
+    }
+
     public function show()
     {
         $workplace = new Workplace();
@@ -34,7 +54,7 @@ class ProducingWorkplaceLearningController extends Controller
         return view('pages.producing.internship')
             ->with('period', $period)
             ->with('workplace', $workplace)
-            ->with('cohorts', Auth::user()->educationProgram->cohorts()->where('disabled', '=', 0)->get());
+            ->with('cohorts', $this->cohortRepository->cohortsAvailableForStudent($this->currentUserResolver->getCurrentUser()));
     }
 
     public function edit(WorkplaceLearningPeriod $workplaceLearningPeriod)
@@ -45,11 +65,11 @@ class ProducingWorkplaceLearningController extends Controller
         }
 
         return view('pages.producing.internship')
-                ->with('period', $workplaceLearningPeriod)
-                ->with('workplace', Workplace::find($workplaceLearningPeriod->wp_id))
-                ->with('categories', $workplaceLearningPeriod->categories()->get())
-                ->with('resource', new Collection())
-                ->with('cohorts', collect($workplaceLearningPeriod->cohort()->get()));
+            ->with('period', $workplaceLearningPeriod)
+            ->with('workplace', $workplaceLearningPeriod->workplace)
+            ->with('categories', $workplaceLearningPeriod->categories)
+            ->with('resource', new Collection())
+            ->with('cohorts', collect($workplaceLearningPeriod->cohort));
     }
 
     public function create(Request $request)
@@ -220,7 +240,8 @@ class ProducingWorkplaceLearningController extends Controller
         if ($validator->fails()) {
             // Noes. errors occured. Exit back to profile page with errors
             return redirect()
-                ->route('period-producing-edit', ['workplaceLearningPeriod' => Auth::user()->getCurrentWorkplaceLearningPeriod()])
+                ->route('period-producing-edit',
+                    ['workplaceLearningPeriod' => Auth::user()->getCurrentWorkplaceLearningPeriod()])
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -235,12 +256,8 @@ class ProducingWorkplaceLearningController extends Controller
             $category->category_label = $cat['cg_label'];
             $category->save();
         }
+
         // Done, redirect back to profile page
         return redirect()->route('period-producing-edit', ['id' => $id])->with('succes', __('general.edit-saved'));
-    }
-
-    public function __construct()
-    {
-        $this->middleware('auth');
     }
 }

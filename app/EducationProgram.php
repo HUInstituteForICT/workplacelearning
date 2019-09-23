@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (EducationProgram.php) was created on 01/20/2017 at 10:44.
  * (C) Max Cassee
