@@ -69,7 +69,7 @@ class ProducingWorkplaceLearningController extends Controller
             ->with('workplace', $workplaceLearningPeriod->workplace)
             ->with('categories', $workplaceLearningPeriod->categories)
             ->with('resource', new Collection())
-            ->with('cohorts', collect($workplaceLearningPeriod->cohort));
+            ->with('cohorts', [$workplaceLearningPeriod->cohort]);
     }
 
     public function create(Request $request)

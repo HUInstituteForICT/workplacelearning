@@ -20,17 +20,13 @@
                             <strong>Filters</strong>
                             {{Form::open(['method' => 'GET'])}}
                             <div class="row">
-                                @foreach($filters as $filter)
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>
-                                                {{ __('filters.' . $filter) }}
-                                                <input class="form-control" type="text"
-                                                       value="{{ request('filter.' . $filter, '') }}"
-                                                       name="filter[{{$filter}}]"/>
-                                            </label>
-                                        </div>
-                                    </div>
+                                @foreach($filters as $filterName => $filterOptions)
+
+                                    @if($filterOptions['type'] === 'text')
+                                        @include('pages.admin.filters.filter_text', ['filterName' => $filterName, 'filterOptions' => $filterOptions])
+                                    @elseif($filterOptions['type'] === 'select')
+                                        @include('pages.admin.filters.filter_select', ['filterName' => $filterName, 'filterOptions' => $filterOptions])
+                                    @endif
                                 @endforeach
                             </div>
                             <button class="btn btn-info">Filter</button>

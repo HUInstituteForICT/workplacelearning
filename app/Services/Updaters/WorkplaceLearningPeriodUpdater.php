@@ -51,6 +51,7 @@ class WorkplaceLearningPeriodUpdater
 
         $workplaceLearningPeriod->nrofdays = $data['workplaceLearningPeriod']['days'];
         $workplaceLearningPeriod->hours_per_day = $data['workplaceLearningPeriod']['hours_per_day'];
+        $workplaceLearningPeriod->is_in_analytics = isset($data['workplaceLearningPeriod']['is_in_analytics']);
 
         $this->workplaceLearningPeriodRepository->save($workplaceLearningPeriod);
     }

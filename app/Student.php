@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use Carbon\Carbon;
 use Eloquent;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -28,7 +29,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string                                                                                                    $gender
  * @property string|null                                                                                               $birthdate
  * @property string|null                                                                                               $phonenr
- * @property string|null                                                                                               $registrationdate
+ * @property Carbon|null                                                                                               $registrationdate
  * @property string|null                                                                                               $answer
  * @property string                                                                                                    $locale
  * @property string|null                                                                                               $canvas_user_id
@@ -77,6 +78,8 @@ class Student extends Authenticatable implements MustVerifyEmail
         'nl' => 'Nederlands',
         'en' => 'English',
     ];
+
+    protected $dates = ['registrationdate'];
 
     // Disable using created_at and updated_at columns
     public $timestamps = false;
