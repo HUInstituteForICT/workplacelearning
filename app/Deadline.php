@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (Deadline.php) was created on 06/21/2016 at 13:44.
  * (C) Max Cassee

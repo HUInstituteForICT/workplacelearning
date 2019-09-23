@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (ProducingReportController.php) was created on 05/15/2016 at 13:15.
  * (C) Max Cassee

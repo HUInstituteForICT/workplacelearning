@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (InternshipController.php) was created on 06/20/2016 at 01:11.
  * (C) Max Cassee
@@ -18,7 +20,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
 use InvalidArgumentException;
 use Validator;
 

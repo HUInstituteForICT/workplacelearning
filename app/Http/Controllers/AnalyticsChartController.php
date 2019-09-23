@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Analysis;
@@ -10,7 +12,6 @@ use App\Label;
 use App\LearningActivityActing;
 use App\LearningActivityProducing;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Lang;
 
 class AnalyticsChartController extends Controller
 {

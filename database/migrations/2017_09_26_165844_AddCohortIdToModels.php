@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Category;
 use App\Cohort;
 use App\Competence;

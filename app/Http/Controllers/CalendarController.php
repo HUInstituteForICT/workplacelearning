@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (CalendarController.php) was created on 06/19/2016 at 16:01.
  * (C) Max Cassee
@@ -8,7 +10,6 @@
 namespace app\Http\Controllers;
 
 use App\Deadline;
-use Illuminate\Support\Facades\Lang;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

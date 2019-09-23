@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class RegisterTest extends \Tests\TestCase
 {
     public function testRegistration(): void

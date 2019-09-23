@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Student;
 
 class LoginTest extends \Tests\TestCase

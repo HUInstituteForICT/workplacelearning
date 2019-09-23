@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Middleware\RequireActiveInternship;
 use App\Http\Middleware\RequiresAdminLevel;
 use App\Http\Middleware\RequiresTeacherLevel;

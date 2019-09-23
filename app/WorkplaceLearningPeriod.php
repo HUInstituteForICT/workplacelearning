@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (WorkplaceLearningPeriod.php) was created on 20/01/2017 at 12:32.
  * (C) Max Cassee

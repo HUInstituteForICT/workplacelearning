@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Test\Unit\Http\Controllers;
 
 use App\Http\Controllers\ProducingActivityController;

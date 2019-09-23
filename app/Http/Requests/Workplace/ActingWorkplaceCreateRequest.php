@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Workplace;
 
 use App\Repository\Eloquent\CohortRepository;
