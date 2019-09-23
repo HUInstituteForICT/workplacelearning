@@ -34,7 +34,7 @@ class MomentTriggerEvaluator
 
         $textParameter = new TextParameter(':days-percentage', $percentage.'%');
 
-        $passes = $this->hasFittingMoment($tip->moments->all(), $percentage);
+        $passes = $this->hasFittingMoment($tip->moments->all(), (float) $percentage);
 
         $evaluatedTip->addTextParameter($textParameter);
         $evaluatedTip->addEvaluationResult($passes);
