@@ -162,14 +162,14 @@ class AnalyticsChartController extends Controller
             if (!$chart->delete()) {
                 return redirect()
                     ->back()
-                    ->withErrors(['error', Lang::get('charts.removed-fail')]);
+                    ->withErrors(['error', __('charts.removed-fail')]);
             }
             $this->dchart->where('chart_id', $chart->id)
                 ->delete();
         });
 
         return redirect()->route('charts.index')
-            ->with('success', Lang::get('charts.removed'));
+            ->with('success', __('charts.removed'));
     }
 
     public function getChartDetails($idLabel)

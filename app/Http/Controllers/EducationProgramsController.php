@@ -82,7 +82,7 @@ class EducationProgramsController extends Controller
     {
         if ($cohort->workplaceLearningPeriods()->count() > 0) {
             return response()->json(['status'  => 'error',
-                                     'message' => Lang::get('general.cohort.delete-has-children'),
+                                     'message' => __('general.cohort.delete-has-children'),
             ], 405);
         }
 
@@ -129,7 +129,7 @@ class EducationProgramsController extends Controller
     {
         if ($program->cohorts()->count() > 0) {
             return response()->json(['status'  => 'error',
-                                     'message' => Lang::get('general.ep.delete-has-cohorts'),
+                                     'message' => __('general.ep.delete-has-cohorts'),
             ], 405);
         }
         $program->delete();
@@ -173,7 +173,7 @@ class EducationProgramsController extends Controller
             if (Str::contains($exception->getMessage(), 'foreign key constraint fails')) {
                 return response()->json([
                     'status'  => 'error',
-                    'message' => Lang::get('general.ep.entity-delete-references'),
+                    'message' => __('general.ep.entity-delete-references'),
                 ], 422);
             }
         } catch (\Exception $exception) {

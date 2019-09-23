@@ -57,10 +57,10 @@ class AnalyticsController extends Controller
         if (!$analysis->save()) {
             return redirect()
                 ->back()
-                ->withErrors(['error', Lang::get('analysis.create-error')]);
+                ->withErrors(['error', __('analysis.create-error')]);
         }
 
-        return redirect()->route('analytics-show', $analysis->id)->with('success', Lang::get('analysis.create'));
+        return redirect()->route('analytics-show', $analysis->id)->with('success', __('analysis.create'));
     }
 
     /**
@@ -119,7 +119,7 @@ class AnalyticsController extends Controller
         $analysis = $this->analysis->findOrFail($data['id']);
         $analysis->refresh();
 
-        return redirect()->back()->with('success', Lang::get('analysis.query-data-expired'));
+        return redirect()->back()->with('success', __('analysis.query-data-expired'));
     }
 
     /**
@@ -131,7 +131,7 @@ class AnalyticsController extends Controller
             $analysis->refresh();
         });
 
-        return redirect()->route('analytics-index')->with('success', Lang::get('analysis.query-data-expired'));
+        return redirect()->route('analytics-index')->with('success', __('analysis.query-data-expired'));
     }
 
     /**
@@ -210,10 +210,10 @@ class AnalyticsController extends Controller
         if (!$analysis->delete()) {
             return redirect()
                 ->back()
-                ->withErrors(['error', Lang::get('analysis.remove-error')]);
+                ->withErrors(['error', __('analysis.remove-error')]);
         }
 
         return redirect()->route('analytics-index')
-            ->with('success', Lang::get('analysis.removed'));
+            ->with('success', __('analysis.removed'));
     }
 }

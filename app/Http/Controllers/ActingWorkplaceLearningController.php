@@ -90,7 +90,7 @@ class ActingWorkplaceLearningController
             $student->setActiveWorkplaceLearningPeriod($workplaceLearningPeriod);
         }
 
-        return $redirector->route('profile')->with('success', Lang::get('general.edit-saved'));
+        return $redirector->route('profile')->with('success', __('general.edit-saved'));
     }
 
     public function updateLearningGoals(

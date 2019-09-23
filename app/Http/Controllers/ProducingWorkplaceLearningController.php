@@ -41,7 +41,7 @@ class ProducingWorkplaceLearningController extends Controller
     {
         if ($workplaceLearningPeriod->student_id !== Auth::user()->student_id) {
             return redirect()->route('profile')
-                ->with('error', Lang::get('general.profile-permission'));
+                ->with('error', __('general.profile-permission'));
         }
 
         return view('pages.producing.internship')
@@ -121,7 +121,7 @@ class ProducingWorkplaceLearningController extends Controller
             Auth::user()->setUserSetting('active_internship', $wplPeriod->wplp_id);
         }
 
-        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
+        return redirect()->route('profile')->with('success', __('general.edit-saved'));
     }
 
     public function update(Request $request, WorkplaceLearningPeriod $workplaceLearningPeriod)
@@ -190,7 +190,7 @@ class ProducingWorkplaceLearningController extends Controller
             Auth::user()->setUserSetting('active_internship', $workplaceLearningPeriod->wplp_id);
         }
 
-        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
+        return redirect()->route('profile')->with('success', __('general.edit-saved'));
     }
 
     public function updateCategories(Request $request, $id)
@@ -204,7 +204,7 @@ class ProducingWorkplaceLearningController extends Controller
             }
         }
         if (!$belongsToStudent) {
-            return redirect()->route('profile')->withErrors(Lang::get('general.profile-permission')); // $id is invalid or does not belong to the student
+            return redirect()->route('profile')->withErrors(__('general.profile-permission')); // $id is invalid or does not belong to the student
         }
 
         // Inject the new item into the request array for processing and validation if it is filled in by the user
@@ -236,7 +236,7 @@ class ProducingWorkplaceLearningController extends Controller
             $category->save();
         }
         // Done, redirect back to profile page
-        return redirect()->route('period-producing-edit', ['id' => $id])->with('succes', Lang::get('general.edit-saved'));
+        return redirect()->route('period-producing-edit', ['id' => $id])->with('succes', __('general.edit-saved'));
     }
 
     public function __construct()
