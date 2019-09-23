@@ -260,11 +260,8 @@ class WorkplaceLearningPeriod extends Model
             return $carry;
         }, []);
 
-        $daysRegistered = count(array_keys($daysWithHours));
-
         $totalHours = array_sum(array_values($daysWithHours));
-        $fullDays = floor($totalHours / $this->hours_per_day);
 
-        return (int) min($daysRegistered, $fullDays);
+        return floor($totalHours / $this->hours_per_day);
     }
 }
