@@ -28,6 +28,6 @@ class BooleanParameterType extends ParameterType
 
     public function getErrorMsg()
     {
-        return Lang::get('template.error.boolean');
+        return __('template.error.boolean');
     }
 }

@@ -29,6 +29,6 @@ class ColumnParameterType extends ParameterType
 
     public function getErrorMsg()
     {
-        return Lang::get('template.error.table');
+        return __('template.error.table');
     }
 }

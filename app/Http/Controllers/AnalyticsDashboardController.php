@@ -99,7 +99,7 @@ class AnalyticsDashboardController extends Controller
 
         return $this->redirector
             ->back()
-            ->withErrors([Lang::get('dashboard.failed-to-move')]);
+            ->withErrors([__('dashboard.failed-to-move')]);
     }
 
     public function store(Request $request)
@@ -115,10 +115,10 @@ class AnalyticsDashboardController extends Controller
         if (!$dchart->save()) {
             return redirect()
                 ->back()
-                ->withErrors(['error', Lang::get('dashboard.chart-added-fail')]);
+                ->withErrors(['error', __('dashboard.chart-added-fail')]);
         }
 
-        return redirect()->route('dashboard.index')->with('success', Lang::get('dashboard.chart-added'));
+        return redirect()->route('dashboard.index')->with('success', __('dashboard.chart-added'));
     }
 
     public function destroy($id)
@@ -130,10 +130,10 @@ class AnalyticsDashboardController extends Controller
         if (!$analysis->delete()) {
             return redirect()
                 ->back()
-                ->withErrors(['error', Lang::get('dashboard.analysis-removed-fail')]);
+                ->withErrors(['error', __('dashboard.analysis-removed-fail')]);
         }
 
         return redirect()->back()
-            ->with('success', Lang::get('dashboard.analysis-removed'));
+            ->with('success', __('dashboard.analysis-removed'));
     }
 }

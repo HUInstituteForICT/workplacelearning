@@ -40,7 +40,7 @@ class CalendarController extends Controller
         $deadline->dl_datetime = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
         $deadline->save();
 
-        return redirect()->route('deadline')->with('success', Lang::get('general.calendar-deadline-saved'));
+        return redirect()->route('deadline')->with('success', __('general.calendar-deadline-saved'));
     }
 
     public function update(Request $request)
@@ -59,17 +59,17 @@ class CalendarController extends Controller
 
         $deadline = Deadline::find($request['id']);
         if (is_null($deadline) || $deadline->student_id != Auth::user()->student_id) {
-            return redirect('deadline')->withErrors(['error', Lang::get('general.calendar-deadline-permission')]);
+            return redirect('deadline')->withErrors(['error', __('general.calendar-deadline-permission')]);
         } elseif ($request->input('action') === 'submit') {
             $deadline->dl_value = $request['nameDeadline'];
             $deadline->dl_datetime = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
             $deadline->save();
-            $msg = Lang::get('general.calendar-deadline-edited');
+            $msg = __('general.calendar-deadline-edited');
         } elseif ($request->input('action') === 'delete') {
             $deadline->delete();
-            $msg = Lang::get('general.calendar-deadline-removed');
+            $msg = __('general.calendar-deadline-removed');
         } else {
-            return redirect()->route('deadline')->withErrors(['error', Lang::get('errors.occurred')]);
+            return redirect()->route('deadline')->withErrors(['error', __('errors.occurred')]);
         }
 
         return redirect()->route('deadline')->with('success', $msg);
