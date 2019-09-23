@@ -19,7 +19,7 @@
 
                         <div>
                             <p>
-                                <strong>Studentnumber:</strong><br/>
+                                <strong>Student number:</strong><br/>
                                 {{ $student->studentnr }}
 
                             </p>
@@ -122,8 +122,12 @@
                                             @endif
                                         </td>
                                         <td>
+                                            <a href="{{ route('admin-student-edit-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
+                                                Edit
+                                            </a>
+
                                             <a class="wplp-delete-link"
-                                               data-url="{{ route('admin-student-delete-wplp', ['student' => $student, 'workplacelearningperiod' => $wplp]) }}">
+                                               data-url="{{ route('admin-student-delete-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
                                                 Delete
                                             </a>
                                         </td>

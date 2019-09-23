@@ -264,6 +264,11 @@ class WorkplaceLearningPeriod extends Model
 
         $totalHours = array_sum(array_values($daysWithHours));
 
-        return floor($totalHours / $this->hours_per_day);
+        return (int) floor($totalHours / $this->hours_per_day);
+    }
+
+    public function hasActivities(): bool
+    {
+        return $this->learningActivityActing()->count() > 0 || $this->learningActivityProducing()->count() > 0;
     }
 }

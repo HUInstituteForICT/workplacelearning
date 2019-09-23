@@ -156,8 +156,12 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
             Route::get('/', 'Dashboard')->name('admin-dashboard');
             Route::match(['GET', 'POST'], '/student/{student}', 'StudentDetails')->name('admin-student-details');
 
+            Route::match(['GET', 'POST'], '/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/edit',
+                'EditWorkplaceLearningPeriod')->name('admin-student-edit-wplp');
+
             Route::get('/student/{student}/delete', 'DeleteStudent')->name('admin-student-delete');
-            Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete', 'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
+            Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete',
+                'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
         });
 
     // Student routes
