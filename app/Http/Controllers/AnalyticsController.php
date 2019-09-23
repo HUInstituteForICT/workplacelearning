@@ -164,10 +164,10 @@ class AnalyticsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'query' => 'required',
+            'name'           => 'required',
+            'query'          => 'required',
             'cache_duration' => 'required',
-            'type_time' => 'required',
+            'type_time'      => 'required',
         ]);
 
         /** @var Analysis $analysis */
@@ -175,8 +175,8 @@ class AnalyticsController extends Controller
 
         try {
             DB::select($request->get('query'));
-        } catch(\Exception $exception) {
-            return redirect()->back()->withInput()->withErrors(['Query cannot be executed: ' . $exception->getMessage()]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->withInput()->withErrors(['Query cannot be executed: '.$exception->getMessage()]);
         }
 
         $analysis->name = Input::get('name');

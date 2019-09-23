@@ -15,7 +15,7 @@ class MomentUpdateRequest extends FormRequest
     {
         return [
             'rangeStart' => 'required|min:0|max:100',
-            'rangeEnd' => 'required|min:0|max:100',
+            'rangeEnd'   => 'required|min:0|max:100',
         ];
     }
 }

@@ -18,8 +18,6 @@ class StatisticService
     }
 
     /**
-     * @return CustomStatistic
-     *
      * @throws \Exception
      */
     public function createStatistic(array $data): CustomStatistic
@@ -34,8 +32,6 @@ class StatisticService
     }
 
     /**
-     * @return CustomStatistic
-     *
      * @throws \Exception
      */
     public function updateStatistic(CustomStatistic $statistic, array $data): CustomStatistic
@@ -67,7 +63,7 @@ class StatisticService
         $statistic = new PredefinedStatistic();
 
         /** @var PredefinedStatisticInterface $predefinedStatistic */
-        $predefinedStatistic = new $predefinedStatisticClassName;
+        $predefinedStatistic = new $predefinedStatisticClassName();
 
         $statistic->education_program_type = strtolower($predefinedStatistic->getEducationProgramType());
         $statistic->name = $predefinedStatistic->getName();
@@ -79,7 +75,6 @@ class StatisticService
     }
 
     /**
-     * @return mixed
      * @throws \RuntimeException
      */
     private static function getOperator(int $operator)

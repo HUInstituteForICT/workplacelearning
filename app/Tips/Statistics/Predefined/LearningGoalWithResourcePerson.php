@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\LearningGoal;
 use App\Tips\Statistics\InvalidStatisticResult;
@@ -11,7 +9,6 @@ use App\Tips\Statistics\StatisticCalculationResult;
 
 class LearningGoalWithResourcePerson extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Learning goal done mostly with one resource person';
@@ -24,7 +21,6 @@ class LearningGoalWithResourcePerson extends BasePredefinedStatistic
 
     public function calculate(): Resultable
     {
-
         $differentCategories = $this->wherePeriod(
             $this->learningPeriod->learningActivityActing()->selectRaw('learninggoal_id, COUNT(learninggoal_id) as count')->groupBy('learninggoal_id')
                 ->getBaseQuery()
@@ -48,7 +44,6 @@ class LearningGoalWithResourcePerson extends BasePredefinedStatistic
                     $categoryData->bestCombo = $combo;
                 }
             }
-
         });
 
         $highestPercentageCombo = null;
@@ -76,6 +71,4 @@ class LearningGoalWithResourcePerson extends BasePredefinedStatistic
     {
         return self::ACTING_TYPE;
     }
-
-
 }

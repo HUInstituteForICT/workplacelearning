@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\Category;
 use App\Tips\Statistics\InvalidStatisticResult;
@@ -11,7 +9,6 @@ use App\Tips\Statistics\StatisticResult;
 
 class CategoryWithHighestDifficulty extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Category with highest difficulty';
@@ -35,10 +32,8 @@ class CategoryWithHighestDifficulty extends BasePredefinedStatistic
             return new InvalidStatisticResult();
         }
 
-        return new StatisticResult((float)$result->category_difficulty, $category->localizedLabel());
+        return new StatisticResult((float) $result->category_difficulty, $category->localizedLabel());
     }
-
-
 
     public function getEducationProgramType(): string
     {

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\Traits;
-
 
 use App\WorkplaceLearningPeriod;
 

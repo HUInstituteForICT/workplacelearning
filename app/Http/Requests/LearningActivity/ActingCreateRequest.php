@@ -9,7 +9,6 @@ use Illuminate\Validation\Rule;
 
 class ActingCreateRequest extends FormRequest
 {
-
     public function authorize(): bool
     {
         return true;

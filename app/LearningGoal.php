@@ -14,11 +14,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int                          $wplp_id
  * @property \App\LearningActivityActing  $learningActivityActing
  * @property \App\WorkplaceLearningPeriod $workplaceLearningPeriod
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal whereLearninggoalId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal whereLearninggoalLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal whereWplpId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal query()

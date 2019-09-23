@@ -1,14 +1,10 @@
 <?php
 
-
 namespace App\Reflection\Services\Factories;
-
 
 use App\Reflection\Models\ActivityReflection;
 use App\Interfaces\LearningActivityInterface;
-use App\LearningActivityActing;
 use App\Reflection\Repository\Eloquent\ActivityReflectionRepository;
-use App\Reflection\Services\Factories\ActivityReflectionFieldFactory;
 use function get_class;
 
 class ActivityReflectionFactory
@@ -28,7 +24,6 @@ class ActivityReflectionFactory
         $this->fieldFactory = $fieldFactory;
     }
 
-
     public function create(array $data, LearningActivityInterface $learningActivity): ActivityReflection
     {
         $reflection = new ActivityReflection();
@@ -47,5 +42,4 @@ class ActivityReflectionFactory
 
         return $reflection;
     }
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Admin;
-
 
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
@@ -11,7 +9,6 @@ use App\WorkplaceLearningPeriod;
 
 class DeleteWorkplaceLearningPeriod extends Controller
 {
-
     /**
      * @var WorkplaceLearningPeriodRepository
      */

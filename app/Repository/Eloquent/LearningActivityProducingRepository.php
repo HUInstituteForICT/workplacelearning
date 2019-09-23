@@ -33,12 +33,11 @@ class LearningActivityProducingRepository
         /** @var LearningActivityProducing $lastActiveActivity */
         $lastActiveActivity = $student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()->orderBy('date', 'DESC')->first();
 
-        if(!$lastActiveActivity) {
+        if (!$lastActiveActivity) {
             return [];
         }
 
         $dateOfLastActivity = $lastActiveActivity->date;
-
 
         return $student->getCurrentWorkplaceLearningPeriod()->learningActivityProducing()
             ->with('category', 'difficulty', 'status', 'resourcePerson', 'resourceMaterial', 'chain', 'feedback')

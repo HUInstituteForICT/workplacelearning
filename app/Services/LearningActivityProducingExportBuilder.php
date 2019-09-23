@@ -35,15 +35,14 @@ class LearningActivityProducingExportBuilder
                 'description'     => $activity->description,
                 'resourceDetail'  => $this->formatResourceDetail($activity),
                 'category'        => $activity->category->localizedLabel(),
-                'difficulty'      => $this->translator->get('general.' . strtolower($activity->difficulty->difficulty_label)),
+                'difficulty'      => $this->translator->get('general.'.strtolower($activity->difficulty->difficulty_label)),
                 'difficultyValue' => $activity->difficulty->difficulty_id,
-                'status'          => $this->translator->get('general.' . strtolower($activity->status->status_label)),
+                'status'          => $this->translator->get('general.'.strtolower($activity->status->status_label)),
                 'url'             => route('process-producing-edit', ['id' => $activity->lap_id]),
                 'chain'           => $this->formatChain($activity),
                 'feedback'        => $activity->feedback->fb_id ?? null,
             ];
         });
-
 
         return json_encode($jsonArray);
     }
@@ -58,20 +57,20 @@ class LearningActivityProducingExportBuilder
             case 0.75:
                 return '45 min';
             case $duration < 1:
-                return round($duration * 60) . ' min';
+                return round($duration * 60).' min';
             default:
-                return $duration . ' ' . $this->translator->get('general.hour');
+                return $duration.' '.$this->translator->get('general.hour');
         }
     }
 
     private function formatResourceDetail(LearningActivityProducing $learningActivityProducing): string
     {
         if ($learningActivityProducing->resourceMaterial) {
-            return $this->translator->get($learningActivityProducing->resourceMaterial->rm_label) . ': ' . $learningActivityProducing->res_material_detail;
+            return $this->translator->get($learningActivityProducing->resourceMaterial->rm_label).': '.$learningActivityProducing->res_material_detail;
         }
 
         if ($learningActivityProducing->resourcePerson) {
-            return $this->translator->get('activity.producing.person') . ': ' . __($learningActivityProducing->resourcePerson->localizedLabel());
+            return $this->translator->get('activity.producing.person').': '.__($learningActivityProducing->resourcePerson->localizedLabel());
         }
 
         return $this->translator->get('activity.alone');
@@ -84,7 +83,7 @@ class LearningActivityProducingExportBuilder
         }
         $hours = strtolower($this->translator->get('activity.hours'));
 
-        return $learningActivityProducing->chain->name . " ({$learningActivityProducing->chain->hours()} {$hours})";
+        return $learningActivityProducing->chain->name." ({$learningActivityProducing->chain->hours()} {$hours})";
     }
 
     public function getFieldLanguageMapping(): array
@@ -102,7 +101,7 @@ class LearningActivityProducingExportBuilder
             'status',
             'chain',
         ])->each(function ($field) use (&$mapping): void {
-            $mapping[$field] = $this->translator->get('process_export.' . $field);
+            $mapping[$field] = $this->translator->get('process_export.'.$field);
         });
         $mapping['feedback'] = 'feedback';
 

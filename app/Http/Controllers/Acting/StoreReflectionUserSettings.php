@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Acting;
-
 
 use App\Services\CurrentUserResolver;
 use Illuminate\Http\Request;

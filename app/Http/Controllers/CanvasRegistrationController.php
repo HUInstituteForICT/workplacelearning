@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use App\Http\Requests\CanvasRegisterRequest;
 use App\Student;
@@ -11,7 +9,6 @@ use Illuminate\Routing\Redirector;
 
 class CanvasRegistrationController extends Controller
 {
-
     /**
      * @var Redirector
      */
@@ -56,14 +53,14 @@ class CanvasRegistrationController extends Controller
             'ep_id'            => $request->get('education'),
             'pw_hash'          => bcrypt(random_bytes(128)),
             // As user logs in through Canvas no password is necessary, but DB does not allow NULL (User can still set password from profile)
-            'gender'           => '-',
-            'email'            => $canvasData['email'],
-            'userlevel'        => 0,
-            'registrationdate' => date('Y-m-d H:i:s'),
-            'locale'           => $request->session()->get('locale', 'nl'),
-            'canvas_user_id'   => $canvasData['canvasUserId'],
+            'gender'                       => '-',
+            'email'                        => $canvasData['email'],
+            'userlevel'                    => 0,
+            'registrationdate'             => date('Y-m-d H:i:s'),
+            'locale'                       => $request->session()->get('locale', 'nl'),
+            'canvas_user_id'               => $canvasData['canvasUserId'],
             'is_registered_through_canvas' => true,
-            'email_verified_at' => date('Y-m-d H:i:s'),
+            'email_verified_at'            => date('Y-m-d H:i:s'),
         ]);
 
         \Auth::login($student);

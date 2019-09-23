@@ -20,20 +20,20 @@ class ChainValidator
     public function validate($attribute, $value, $parameters, Validator $validator): bool
     {
         // We can consider absence to mean no chaining
-        if (null === $value) {
+        if ($value === null) {
             return true;
         }
 
         $chainId = (int) $value;
 
         // Student selected "don't chain", always allow
-        if (-1 === $chainId) {
+        if ($chainId === -1) {
             return true;
         }
 
         $chain = (new Chain())->find($chainId);
 
-        if (null === $chain) {
+        if ($chain === null) {
             return false;
         }
 

@@ -13,6 +13,4 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 interface LearningActivityInterface
 {
     public function workplaceLearningPeriod(): BelongsTo;
-
-
 }

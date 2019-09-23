@@ -8,8 +8,6 @@ class DropReflectionMethodBetaParticipations extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -18,8 +16,6 @@ class DropReflectionMethodBetaParticipations extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

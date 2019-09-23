@@ -24,8 +24,8 @@ class TipUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'tip.name' => 'required',
-            'tip.tipText' => 'required|max:1000',
+            'tip.name'            => 'required',
+            'tip.tipText'         => 'required|max:1000',
             'tip.enabled_cohorts' => 'array',
         ];
     }

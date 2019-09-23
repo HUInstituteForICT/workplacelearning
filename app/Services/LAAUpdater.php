@@ -57,7 +57,7 @@ class LAAUpdater
         $learningActivityActing->res_material_detail = $data['res_material_detail'];
 
         // If a reflection already exists the user is trying to update its contents
-        if(isset($data['reflection'])) {
+        if (isset($data['reflection'])) {
             if ($learningActivityActing->reflection) {
                 $this->activityReflectionUpdater->update($learningActivityActing->reflection, $data['reflection']);
             } else {

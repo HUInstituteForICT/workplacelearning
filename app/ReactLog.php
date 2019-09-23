@@ -13,12 +13,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property int                             $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereFixed($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereLog($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ReactLog query()

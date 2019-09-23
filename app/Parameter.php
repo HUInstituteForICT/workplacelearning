@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \App\Template                   $template
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Parameter whereColumn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Parameter whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Parameter whereId($value)
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Parameter whereTypeName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Parameter whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Parameter newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Parameter newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Parameter query()

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
 
 use App\Http\Requests\CanvasLTIRequest;
 use App\Services\Canvas\CanvasAuthenticator;
@@ -31,12 +29,12 @@ class CanvasLTIController
     {
         if (!$OAuth1SignatureVerifier->verifyRequest($request)) {
             $this->logger->error('Oauth signature mismatch', [$request->toArray()]);
-            throw new InvalidArgumentException('Invalid request, oauth_signature does not match (' . $request->get('oauth_signature') . ' vs. ' . $OAuth1SignatureVerifier->signature . ')');
+            throw new InvalidArgumentException('Invalid request, oauth_signature does not match ('.$request->get('oauth_signature').' vs. '.$OAuth1SignatureVerifier->signature.')');
         }
 
         // Roles is a string with commas separating each role
         $roles = $request->get('ext_roles');
-        if(!str_contains($roles, 'urn:lti:instrole:ims/lis/Student')) {
+        if (!str_contains($roles, 'urn:lti:instrole:ims/lis/Student')) {
             return view('auth.canvas.students-only');
         }
 

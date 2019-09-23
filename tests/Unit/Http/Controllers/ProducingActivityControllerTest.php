@@ -15,7 +15,6 @@ use App\Services\LAPUpdater;
 use App\Services\LearningActivityProducingExportBuilder;
 use App\Student;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
 class ProducingActivityControllerTest extends TestCase

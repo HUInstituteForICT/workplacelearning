@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Reflection\Repository\Eloquent;
-
 
 use App\Reflection\Models\ActivityReflectionField;
 

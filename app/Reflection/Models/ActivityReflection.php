@@ -2,9 +2,7 @@
 
 namespace App\Reflection\Models;
 
-use App\Reflection\Models\ActivityReflectionField;
 use App\Interfaces\LearningActivityInterface;
-
 use App\LearningActivityActing;
 use App\LearningActivityProducing;
 use Barryvdh\LaravelIdeHelper\Eloquent;
@@ -14,14 +12,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use RuntimeException;
 
 /**
- * App\ActivityReflection
+ * App\ActivityReflection.
  *
- * @property int                                                                                            $id
- * @property int                                                                                            $learning_activity_id
- * @property string                                                                                         $learning_activity_type
- * @property string                                                                                         $reflection_type
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Reflection\Models\ActivityReflectionField[] $fields
- * @property-read LearningActivityInterface                                                                 $learningActivity
+ * @property int                                                                                       $id
+ * @property int                                                                                       $learning_activity_id
+ * @property string                                                                                    $learning_activity_type
+ * @property string                                                                                    $reflection_type
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Reflection\Models\ActivityReflectionField[] $fields
+ * @property LearningActivityInterface                                                                 $learningActivity
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ActivityReflection query()

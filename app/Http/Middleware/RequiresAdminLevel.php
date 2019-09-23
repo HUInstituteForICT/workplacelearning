@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use Illuminate\Validation\UnauthorizedException;
 
 class RequiresAdminLevel
 {
@@ -33,7 +32,6 @@ class RequiresAdminLevel
      *
      * @param Request $request
      *
-     * @param Closure $next
      * @return RedirectResponse|mixed
      */
     public function handle($request, Closure $next)
