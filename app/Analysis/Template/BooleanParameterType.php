@@ -23,11 +23,11 @@ class BooleanParameterType extends ParameterType
         }
         $boolStr = strtolower($types[0]);
 
-        return 'true' == $boolStr || 'false' == $boolStr;
+        return $boolStr == 'true' || $boolStr == 'false';
     }
 
     public function getErrorMsg()
     {
-        return Lang::get('template.error.boolean');
+        return __('template.error.boolean');
     }
 }

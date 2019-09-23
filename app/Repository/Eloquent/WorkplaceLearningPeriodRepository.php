@@ -2,7 +2,6 @@
 
 namespace App\Repository\Eloquent;
 
-use App\LearningActivityActing;
 use App\Services\EvidenceFileHandler;
 use App\UserSetting;
 use App\WorkplaceLearningPeriod;
@@ -46,7 +45,6 @@ class WorkplaceLearningPeriodRepository
         DB::transaction(function () use ($workplaceLearningPeriod) {
             // Go from bottom to top in relationship chain
 
-
             foreach ($workplaceLearningPeriod->learningActivityActing as $activityActing) {
                 $activityActing->competence()->detach();
                 $activityActing->reflection()->delete();
@@ -73,13 +71,11 @@ class WorkplaceLearningPeriodRepository
             $workplaceLearningPeriod->timeslot()->delete();
             $workplaceLearningPeriod->resourceMaterial()->delete();
 
-
             UserSetting::where([
                 ['setting_label', '=', 'active_internship'],
                 ['setting_value', '=', $workplaceLearningPeriod->wplp_id],
                 ['student_id', '=', $workplaceLearningPeriod->student_id],
             ])->delete();
-
 
             $workplace = $workplaceLearningPeriod->workplace;
             // Finally, delete itself
@@ -87,7 +83,5 @@ class WorkplaceLearningPeriodRepository
 
             $workplace->delete();
         });
-
-
     }
 }

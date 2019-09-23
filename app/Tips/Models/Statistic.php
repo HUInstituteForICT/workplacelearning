@@ -18,6 +18,7 @@ use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
  * @property int|null                                                                        $statistic_variable_one_id
  * @property int|null                                                                        $statistic_variable_two_id
  * @property \Illuminate\Database\Eloquent\Collection|\App\Tips\Models\TipCoupledStatistic[] $coupledStatistics
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereEducationProgramType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereName($value)
@@ -27,7 +28,9 @@ use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereStatisticVariableTwoId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic whereType($value)
  * @mixin \Eloquent
+ *
  * @property string|null $className
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Statistic query()

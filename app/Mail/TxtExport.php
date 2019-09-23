@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class TxtExport extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     protected $txt;
     private $comment;

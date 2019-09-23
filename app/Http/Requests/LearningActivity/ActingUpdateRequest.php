@@ -14,7 +14,6 @@ class ActingUpdateRequest extends FormRequest
 
     public function rules(): array
     {
-
         return [
             'reflection.field' => 'sometimes|array',
             'date'             => 'required|date|date_in_wplp',
@@ -30,8 +29,6 @@ class ActingUpdateRequest extends FormRequest
             'support_wp'       => 'max:500',
             'support_ed'       => 'max:500',
         ];
-
-
     }
 
     public function withValidator(Validator $validator): void

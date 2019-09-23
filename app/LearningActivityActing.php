@@ -16,8 +16,8 @@ use RuntimeException;
 /**
  * App\LearningActivityActing.
  *
- * @property int                                            $laa_id
- * @property int                                            $wplp_id
+ * @property int                                                      $laa_id
+ * @property int                                                      $wplp_id
  * @property Carbon                                                   $date
  * @property int                                                      $timeslot_id
  * @property string                                                   $situation
@@ -38,6 +38,7 @@ use RuntimeException;
  * @property Collection|Competence[]                                  $competence
  * @property \Illuminate\Database\Eloquent\Collection|\App\Evidence[] $evidence
  * @property \App\WorkplaceLearningPeriod                             $workplaceLearningPeriod
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLaaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLearninggoalId($value)
@@ -54,7 +55,9 @@ use RuntimeException;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceFilename($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereEvidenceMime($value)
  * @mixin \Eloquent
- * @property-read \App\Reflection\Models\ActivityReflection $reflection
+ *
+ * @property \App\Reflection\Models\ActivityReflection $reflection
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing query()

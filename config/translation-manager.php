@@ -10,7 +10,7 @@ return array(
     |
     */
     'route' => [
-        'prefix' => 'translations',
+        'prefix'     => 'translations',
         'middleware' => [
             'web',
             'auth',

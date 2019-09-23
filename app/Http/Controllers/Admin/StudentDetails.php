@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Admin;
-
 
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\StudentRepository;
@@ -11,8 +9,6 @@ use Illuminate\Http\Request;
 
 class StudentDetails extends Controller
 {
-
-
     /**
      * @var StudentRepository
      */
@@ -22,7 +18,6 @@ class StudentDetails extends Controller
     {
         $this->studentRepository = $studentRepository;
     }
-
 
     public function __invoke(Student $student, Request $request)
     {

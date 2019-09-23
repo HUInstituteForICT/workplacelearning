@@ -31,9 +31,9 @@ class EvidenceFileHandler
         }
 
         return new Evidence([
-            'filename' => $evidenceFile->getClientOriginalName(),
+            'filename'      => $evidenceFile->getClientOriginalName(),
             'disk_filename' => $diskFileName,
-            'mime' => $evidenceFile->getClientMimeType(),
+            'mime'          => $evidenceFile->getClientMimeType(),
         ]);
     }
 

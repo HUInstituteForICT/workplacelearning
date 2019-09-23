@@ -66,7 +66,6 @@ class HomeController extends Controller
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
 
-
         return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 

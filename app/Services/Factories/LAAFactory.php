@@ -86,7 +86,6 @@ class LAAFactory
             $this->learningActivityActingRepository->save($activityActing);
         }
 
-
         return $activityActing;
     }
 

@@ -11,7 +11,7 @@ class StudentTipViewRepository implements StudentTipViewRepositoryInterface
 {
     public function createForTip(Tip $tip, Student $student): void
     {
-        if (0 === $tip->studentTipViews()->where('student_id', '=', $student->student_id)->count()) {
+        if ($tip->studentTipViews()->where('student_id', '=', $student->student_id)->count() === 0) {
             $studentTipView = new StudentTipView();
             $studentTipView->student_id = $student->student_id;
 

@@ -22,6 +22,6 @@ class TextParameterType extends ParameterType
 
     public function getErrorMsg()
     {
-        return Lang::get('template.error.text');
+        return __('template.error.text');
     }
 }
