@@ -19,17 +19,17 @@ trait GenericUserTrait
         /** @var \App\WorkplaceLearningPeriod $wplp */
         $wplp = factory(\App\WorkplaceLearningPeriod::class)->make([
             'startdate' => \Carbon\Carbon::now()->subDay(5),
-            'enddate' => \Carbon\Carbon::now()->addDay(5),
+            'enddate'   => \Carbon\Carbon::now()->addDay(5),
             'cohort_id' => $cohort->id,
         ]);
 
         $user->workplaceLearningPeriods()->save($wplp);
         $user->setActiveWorkplaceLearningPeriod($wplp);
 
-        if ('acting' === $type) {
+        if ($type === 'acting') {
             $user->getCurrentWorkplaceLearningPeriod()->learningGoals()->create([
                 'learninggoal_label' => 'Test',
-                'description' => 'some test label',
+                'description'        => 'some test label',
             ]);
 
             $wplp->cohort->competencies()->create(['competence_label' => 'Test competence']);

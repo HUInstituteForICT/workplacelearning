@@ -25,6 +25,7 @@ class LearningActivityActingRepository
 
     /**
      * @param int[] $ids
+     *
      * @return LearningActivityActing[]
      */
     public function getMultiple(array $ids): array
@@ -34,6 +35,7 @@ class LearningActivityActingRepository
 
     /**
      * @param int[] $ids
+     *
      * @return LearningActivityActing[]
      */
     public function getMultipleForUser(Student $student, array $ids): array

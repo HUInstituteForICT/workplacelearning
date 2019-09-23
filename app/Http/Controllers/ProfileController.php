@@ -47,11 +47,10 @@ class ProfileController extends Controller
         $rules = [
             'firstname' => 'required|max:255|min:3',
             'lastname'  => 'required|max:255|min:3',
-
         ];
 
         if (!$user->isRegisteredThroughCanvas()) {
-            $rules['email'] = 'email|max:255|unique:student,email,' . $request->student_id . ',student_id';
+            $rules['email'] = 'email|max:255|unique:student,email,'.$request->student_id.',student_id';
         }
 
         // Validate the input

@@ -1,18 +1,14 @@
 <?php
 
-
 namespace App\Tips\Statistics\Predefined;
 
-
 use App\ResourceMaterial;
-use App\ResourcePerson;
 use App\Tips\Statistics\InvalidStatisticResult;
 use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
 
 class LeastUsedResourceMaterial extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Percentage the least used resource material is used';

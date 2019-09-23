@@ -36,9 +36,9 @@ class StatisticCalculationResult implements Resultable
 
     public function doThresholdComparison(float $threshold, int $operator): void
     {
-        if (TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN === $operator) {
+        if ($operator === TipCoupledStatistic::COMPARISON_OPERATOR_LESS_THAN) {
             $this->passed = $this->result < $threshold;
-        } elseif (TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN === $operator) {
+        } elseif ($operator === TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN) {
             $this->passed = $this->result > $threshold;
         }
     }

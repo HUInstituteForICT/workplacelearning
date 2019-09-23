@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\Tips\Interfaces\LearningPeriodAwareInterface;
 use App\Tips\Traits\LearningPeriodAwareTrait;

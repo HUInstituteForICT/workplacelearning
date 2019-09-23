@@ -44,11 +44,10 @@ class StatisticCalculator
                 return $this->calculatePredefinedStatistic($statistic);
             }
         } catch (\Exception $exception) {
-            $this->logger->error('Unable to calculate statistic ' . $statistic->name, [$exception]);
+            $this->logger->error('Unable to calculate statistic '.$statistic->name, [$exception]);
 
             return new InvalidStatisticResult();
         }
-
     }
 
     /**
@@ -78,7 +77,7 @@ class StatisticCalculator
         } catch (DivisionByZeroError $exception) {
             return new StatisticCalculationResult(0, $statistic->name);
         } catch (\ErrorException $exception) {
-            if ('Division by zero' === $exception->getMessage()) {
+            if ($exception->getMessage() === 'Division by zero') {
                 return new StatisticCalculationResult(0, $statistic->name);
             }
             throw $exception; // unexpected exception, bubble up
@@ -88,9 +87,8 @@ class StatisticCalculator
 
     private function calculatePredefinedStatistic(PredefinedStatistic $statistic): Resultable
     {
-
         /** @var BasePredefinedStatistic $predefinedStatisticClass */
-        $predefinedStatisticClass = new $statistic->className;
+        $predefinedStatisticClass = new $statistic->className();
 
         $predefinedStatisticClass->setYearAndMonth($this->collector->year, $this->collector->month);
         $predefinedStatisticClass->setLearningPeriod($this->collector->learningPeriod);

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Acting\Export;
-
 
 use App\Http\Controllers\Controller;
 use App\Mail\ActingActivitiesWordExportMail;
@@ -14,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class WordMailExport extends Controller
 {
-
     /**
      * @var ActingActivityExporter
      */
@@ -40,7 +37,6 @@ class WordMailExport extends Controller
 
     public function __invoke(Request $request)
     {
-
         $student = $this->userResolver->getCurrentUser();
 
         $email = $request->get('email');
@@ -56,6 +52,4 @@ class WordMailExport extends Controller
 
         return \response(json_encode(['status' => 'success']));
     }
-
-
 }

@@ -21,12 +21,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \App\Cohort|null                                                       $cohort
  * @property \App\EducationProgram|null                                             $educationProgram
  * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[] $learningActivitiesActing
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot whereEdprogId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot whereTimeslotId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot whereTimeslotText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot whereWplpId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot query()

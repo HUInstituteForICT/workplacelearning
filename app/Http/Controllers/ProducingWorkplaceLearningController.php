@@ -56,22 +56,22 @@ class ProducingWorkplaceLearningController extends Controller
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'companyName' => 'required|max:255|min:3',
-            'companyStreet' => 'required|max:45|min:3',
-            'companyHousenr' => 'required|max:9|min:1',
-            'companyPostalcode' => 'required|postalcode',
-            'companyLocation' => 'required|max:255|min:3',
-            'companyCountry' => 'required|max:255|min:2',
-            'contactPerson' => 'required|max:255|min:3',
-            'contactPhone' => 'required',
-            'contactEmail' => 'required|email|max:255',
-            'numdays' => 'required|integer|min:1',
-            'numhours' => 'required|numeric|min:1|max:24',
-            'startdate' => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
-            'enddate' => 'required|date|after:startdate',
+            'companyName'          => 'required|max:255|min:3',
+            'companyStreet'        => 'required|max:45|min:3',
+            'companyHousenr'       => 'required|max:9|min:1',
+            'companyPostalcode'    => 'required|postalcode',
+            'companyLocation'      => 'required|max:255|min:3',
+            'companyCountry'       => 'required|max:255|min:2',
+            'contactPerson'        => 'required|max:255|min:3',
+            'contactPhone'         => 'required',
+            'contactEmail'         => 'required|email|max:255',
+            'numdays'              => 'required|integer|min:1',
+            'numhours'             => 'required|numeric|min:1|max:24',
+            'startdate'            => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
+            'enddate'              => 'required|date|after:startdate',
             'internshipAssignment' => 'required|min:15|max:500',
-            'isActive' => 'sometimes|required|in:1,0',
-            'cohort' => 'required|exists:cohorts,id',
+            'isActive'             => 'sometimes|required|in:1,0',
+            'cohort'               => 'required|exists:cohorts,id',
         ]);
 
         if ($validator->fails()) {
@@ -128,21 +128,21 @@ class ProducingWorkplaceLearningController extends Controller
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'companyName' => 'required|max:255|min:3',
-            'companyStreet' => 'required|max:45|min:3',
-            'companyHousenr' => 'required|max:4|min:1',
-            'companyPostalcode' => 'required|postalcode',
-            'companyLocation' => 'required|max:255|min:3',
-            'companyCountry' => 'required|max:255|min:2',
-            'contactPerson' => 'required|max:255|min:3',
-            'contactPhone' => 'required|',
-            'contactEmail' => 'required|email|max:255',
-            'numdays' => 'required|integer|min:1',
-            'numhours' => 'required|numeric|min:1|max:24',
-            'startdate' => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
-            'enddate' => 'required|date|after:startdate',
+            'companyName'          => 'required|max:255|min:3',
+            'companyStreet'        => 'required|max:45|min:3',
+            'companyHousenr'       => 'required|max:4|min:1',
+            'companyPostalcode'    => 'required|postalcode',
+            'companyLocation'      => 'required|max:255|min:3',
+            'companyCountry'       => 'required|max:255|min:2',
+            'contactPerson'        => 'required|max:255|min:3',
+            'contactPhone'         => 'required|',
+            'contactEmail'         => 'required|email|max:255',
+            'numdays'              => 'required|integer|min:1',
+            'numhours'             => 'required|numeric|min:1|max:24',
+            'startdate'            => 'required|date|after:'.date('Y-m-d', strtotime('-6 months')),
+            'enddate'              => 'required|date|after:startdate',
             'internshipAssignment' => 'required|min:15|max:500',
-            'isActive' => 'sometimes|required|in:1,0',
+            'isActive'             => 'sometimes|required|in:1,0',
         ]);
 
         if ($validator->fails()) {
@@ -213,8 +213,8 @@ class ProducingWorkplaceLearningController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'cat.*.wplp_id' => 'required|digits_between:1,5',
-            'cat.*.cg_id' => 'required|digits_between:1,5',
+            'cat.*.wplp_id'  => 'required|digits_between:1,5',
+            'cat.*.cg_id'    => 'required|digits_between:1,5',
             'cat.*.cg_label' => 'required|min:3|max:50',
         ]);
         if ($validator->fails()) {

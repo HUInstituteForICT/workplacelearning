@@ -24,7 +24,7 @@ class CreateEducationProgramRequest extends FormRequest
     public function rules()
     {
         return [
-            'ep_name' => 'required',
+            'ep_name'   => 'required',
             'eptype_id' => 'required|exists:educationprogramtype,eptype_id',
         ];
     }

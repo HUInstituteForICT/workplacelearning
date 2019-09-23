@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\ResourcePerson;
 use App\Tips\Statistics\InvalidStatisticResult;

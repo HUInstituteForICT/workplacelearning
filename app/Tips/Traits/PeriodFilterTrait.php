@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\Traits;
-
 
 use Illuminate\Database\Query\Builder;
 
@@ -11,7 +9,8 @@ trait PeriodFilterTrait
     protected $year;
     protected $month;
 
-    public function setYearAndMonth($year, $month): void {
+    public function setYearAndMonth($year, $month): void
+    {
         $this->year = $year;
         $this->month = $month;
     }
@@ -24,5 +23,4 @@ trait PeriodFilterTrait
 
         return $queryBuilder->whereRaw('YEAR(date) = ? AND MONTH(date) = ?', [$this->year, $this->month]);
     }
-
 }

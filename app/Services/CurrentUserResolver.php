@@ -29,6 +29,6 @@ class CurrentUserResolver
             return $student;
         }
 
-        throw new UnexpectedUser('Expected instance of Student::class, instead received ' . \get_class($student));
+        throw new UnexpectedUser('Expected instance of Student::class, instead received '.\get_class($student));
     }
 }

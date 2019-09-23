@@ -54,14 +54,14 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'taskTypeRedirect' => \App\Http\Middleware\TaskTypeRedirect::class,
+        'guest'             => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle'          => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'auth'              => \Illuminate\Auth\Middleware\Authenticate::class,
+        'bindings'          => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can'               => \Illuminate\Auth\Middleware\Authorize::class,
+        'taskTypeRedirect'  => \App\Http\Middleware\TaskTypeRedirect::class,
         'usernotifications' => \App\Http\Middleware\UserNotifications::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'verified'          => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'signed'            => \Illuminate\Routing\Middleware\ValidateSignature::class,
     ];
 }

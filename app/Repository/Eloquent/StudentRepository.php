@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class StudentRepository
 {
-
     private $allowedSearchFilters = [
         'studentnr',
         'firstname',
@@ -52,25 +51,19 @@ class StudentRepository
     }
 
     /**
-     * @param array $filters
-     * @param array $orderBy
-     * @param int|null $pages
      * @return LengthAwarePaginator|Collection
      */
     public function search(array $filters = [], array $orderBy = ['studentnr', 'ASC'], ?int $pages = 25)
     {
-
         /** @var Builder $queryBuilder */
-        $queryBuilder = Student::where(function (Builder $builder) use ($filters) : void {
-
+        $queryBuilder = Student::where(function (Builder $builder) use ($filters): void {
             $queryFilters = [];
             array_walk($filters, function (?string $filterValue, string $filterName) use (&$queryFilters): void {
-
                 if (!$filterValue || !in_array($filterName, $this->allowedSearchFilters, true)) {
                     return;
                 }
 
-                $queryFilters[] = [$filterName, 'LIKE', '%' . $filterValue . '%'];
+                $queryFilters[] = [$filterName, 'LIKE', '%'.$filterValue.'%'];
             });
 
             $builder->where($queryFilters);
@@ -95,7 +88,6 @@ class StudentRepository
         DB::transaction(function () use ($student) {
             $student->deadlines()->delete();
 
-
             foreach ($student->workplaceLearningPeriods as $workplaceLearningPeriod) {
                 $workplace = $workplaceLearningPeriod->workplace;
                 $this->workplaceLearningPeriodRepository->delete($workplaceLearningPeriod);
@@ -110,8 +102,6 @@ class StudentRepository
             DB::delete('DELETE FROM password_reset WHERE email = ?', [$student->email]);
 
             $student->delete();
-
-
         });
     }
 }

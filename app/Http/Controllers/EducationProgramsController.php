@@ -81,7 +81,7 @@ class EducationProgramsController extends Controller
     public function deleteCohort(Cohort $cohort, CohortManager $cohortManager)
     {
         if ($cohort->workplaceLearningPeriods()->count() > 0) {
-            return response()->json(['status' => 'error',
+            return response()->json(['status'  => 'error',
                                      'message' => Lang::get('general.cohort.delete-has-children'),
             ], 405);
         }
@@ -128,7 +128,7 @@ class EducationProgramsController extends Controller
     public function deleteEducationProgram(EducationProgram $program)
     {
         if ($program->cohorts()->count() > 0) {
-            return response()->json(['status' => 'error',
+            return response()->json(['status'  => 'error',
                                      'message' => Lang::get('general.ep.delete-has-cohorts'),
             ], 405);
         }
@@ -172,7 +172,7 @@ class EducationProgramsController extends Controller
         } catch (QueryException $exception) {
             if (Str::contains($exception->getMessage(), 'foreign key constraint fails')) {
                 return response()->json([
-                    'status' => 'error',
+                    'status'  => 'error',
                     'message' => Lang::get('general.ep.entity-delete-references'),
                 ], 422);
             }
@@ -232,9 +232,9 @@ class EducationProgramsController extends Controller
 
         return response()->json([
             'description' => $clonedCohort->description,
-            'ep_id' => $clonedCohort->ep_id,
-            'id' => $clonedCohort->id,
-            'name' => $clonedCohort->name,
+            'ep_id'       => $clonedCohort->ep_id,
+            'id'          => $clonedCohort->id,
+            'name'        => $clonedCohort->name,
         ]);
     }
 

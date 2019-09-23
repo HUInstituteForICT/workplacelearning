@@ -85,7 +85,6 @@ class ActingActivityController
 
         $student = $this->currentUserResolver->getCurrentUser();
 
-
         $orderedReflectionTypes = $student->orderReflectionTypes(ActivityReflection::TYPES);
 
         return view('pages.acting.activity-edit', $availableActingEntitiesFetcher->getEntities())

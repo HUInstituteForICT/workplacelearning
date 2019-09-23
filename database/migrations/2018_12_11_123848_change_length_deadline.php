@@ -8,24 +8,20 @@ class ChangeLengthDeadline extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-        Schema::table('deadline', function(Blueprint $table) {
+        Schema::table('deadline', function (Blueprint $table) {
             $table->string('dl_value', 255)->change();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
-        Schema::table('deadline', function(Blueprint $table) {
+        Schema::table('deadline', function (Blueprint $table) {
             $table->string('dl_value', 45)->change();
         });
     }

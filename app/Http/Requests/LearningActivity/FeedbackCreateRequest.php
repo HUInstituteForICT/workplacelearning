@@ -15,13 +15,13 @@ class FeedbackCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'notfinished' => 'required',
-            'support_requested' => 'in:0,1,2',
-            'supported_provided_wp' => 'max:150',
-            'initiatief' => 'max:500',
-            'progress_satisfied' => 'in:1,2',
-            'vervolgstap_zelf' => 'max:150',
-            'ondersteuning_werkplek' => 'max:150',
+            'notfinished'             => 'required',
+            'support_requested'       => 'in:0,1,2',
+            'supported_provided_wp'   => 'max:150',
+            'initiatief'              => 'max:500',
+            'progress_satisfied'      => 'in:1,2',
+            'vervolgstap_zelf'        => 'max:150',
+            'ondersteuning_werkplek'  => 'max:150',
             'ondersteuning_opleiding' => 'max:150',
         ];
     }
@@ -29,7 +29,7 @@ class FeedbackCreateRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->sometimes('newnotfinished', 'required|max:150', function ($input) {
-            return 'Anders' === $input->notfinished;
+            return $input->notfinished === 'Anders';
         });
     }
 }

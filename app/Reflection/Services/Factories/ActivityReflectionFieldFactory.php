@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Reflection\Services\Factories;
-
 
 use App\Reflection\Models\ActivityReflection;
 use App\Reflection\Models\ActivityReflectionField;
@@ -25,7 +23,6 @@ class ActivityReflectionFieldFactory
         string $value,
         ActivityReflection $activityReflection
     ): ActivityReflectionField {
-
         $field = new ActivityReflectionField();
         $field->name = $name;
         $field->value = $value;
