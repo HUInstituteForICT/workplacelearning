@@ -30,8 +30,8 @@ export default class ActivityActingProcessTable extends React.Component {
             email: "",
             emailComment: "",
             emailAlert: null,
-            startDate: earliestDate,
-            endDate: latestDate,
+            startDate: earliestDate.toDate(),
+            endDate: latestDate.toDate(),
         };
 
         this.updateFilter = this.updateFilter.bind(this);
@@ -128,7 +128,8 @@ export default class ActivityActingProcessTable extends React.Component {
                 });
             })
             .filter((activity) => {
-                return moment(activity.date, "DD-MM-YYYY").isSameOrAfter(this.state.startDate) && moment(activity.date, "DD-MM-YYYY").isSameOrBefore(this.state.endDate)
+                return moment(activity.date, "DD-MM-YYYY").isSameOrAfter(this.state.startDate) &&
+                    moment(activity.date, "DD-MM-YYYY").isSameOrBefore(this.state.endDate)
             })
     }
 
@@ -218,12 +219,12 @@ export default class ActivityActingProcessTable extends React.Component {
                 <div className="date col-md-3">
                     <h4>{Lang.get('react.date')}</h4>
                     <div>
-                        <strong>{Lang.get('react.startdate')}:</strong>
-                        <DatePicker className={"form-control"} selected={this.state.startDate} dateFormat="DD/MM/YYYY"
+                        <strong>{Lang.get('react.startdate')}:</strong><br/>
+                        <DatePicker className={"form-control"} selected={this.state.startDate} dateFormat="dd/MM/yyyy"
                                     onChange={date => this.setState({startDate: date})}/>
-                        <br/>
-                        <strong>{Lang.get('react.enddate')}:</strong>
-                        <DatePicker className={"form-control"} selected={this.state.endDate} dateFormat="DD/MM/YYYY"
+                        <br/><br/>
+                        <strong>{Lang.get('react.enddate')}:</strong><br/>
+                        <DatePicker className={"form-control"} selected={this.state.endDate} dateFormat="dd/MM/yyyy"
                                     onChange={date => this.setState({endDate: date})}/>
                     </div>
                     <div style={{clear: 'both'}}/>

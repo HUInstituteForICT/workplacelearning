@@ -25,18 +25,19 @@ class UpdateForm extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
-        this.setState(
-            {
-                name: nextProps.source.name,
-                education_program_type: nextProps.source.education_program_type,
-                select_type: nextProps.source.select_type,
-                statisticVariableOneFilters: nextProps.source.statisticVariableOneFilters,
-                statisticVariableTwoFilters: nextProps.source.statisticVariableTwoFilters,
-                operatorIndex: nextProps.source.operator,
-            }
-        );
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.id !== this.props.id) {
+            this.setState(
+                {
+                    name: prevProps.source.name,
+                    education_program_type: prevProps.source.education_program_type,
+                    select_type: prevProps.source.select_type,
+                    statisticVariableOneFilters: prevProps.source.statisticVariableOneFilters,
+                    statisticVariableTwoFilters: prevProps.source.statisticVariableTwoFilters,
+                    operatorIndex: prevProps.source.operator,
+                }
+            );
+        }
     }
 
     operatorIndex(operatorToFind) {
@@ -96,7 +97,6 @@ class UpdateForm extends React.Component {
         }).then(response => {
             this.setState({submitting: false});
             this.props.onUpdated(response.data);
-            this.props.history.push('/');
         }).catch(error => {
             console.log(error);
             this.setState({submitting: false});
@@ -241,7 +241,7 @@ class UpdateForm extends React.Component {
 }
 
 
-const mapState = (state, {id}) => {
+const mapState = (state, {id, history}) => {
     const selectedStatistic = state.entities.statistics[id];
 
     if (selectedStatistic === undefined) {
