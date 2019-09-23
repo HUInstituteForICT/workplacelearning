@@ -14,28 +14,29 @@ use Illuminate\Notifications\Notifiable;
 /**
  * App\Student.
  *
- * @property int $student_id
- * @property string $email
- * @property string $firstname
- * @property string $lastname
- * @property int $userlevel
- * @property EducationProgram $educationProgram
- * @property string $pw_hash
- * @property int $studentnr
- * @property int $ep_id
- * @property string $gender
- * @property string|null $birthdate
- * @property string|null $phonenr
- * @property string|null $registrationdate
- * @property string|null $answer
- * @property string $locale
- * @property string|null $canvas_user_id
- * @property bool $is_registered_through_canvas
- * @property \Illuminate\Database\Eloquent\Collection|\App\Deadline[] $deadlines
+ * @property int                                                                                                       $student_id
+ * @property string                                                                                                    $email
+ * @property string                                                                                                    $firstname
+ * @property string                                                                                                    $lastname
+ * @property int                                                                                                       $userlevel
+ * @property EducationProgram                                                                                          $educationProgram
+ * @property string                                                                                                    $pw_hash
+ * @property int                                                                                                       $studentnr
+ * @property int                                                                                                       $ep_id
+ * @property string                                                                                                    $gender
+ * @property string|null                                                                                               $birthdate
+ * @property string|null                                                                                               $phonenr
+ * @property string|null                                                                                               $registrationdate
+ * @property string|null                                                                                               $answer
+ * @property string                                                                                                    $locale
+ * @property string|null                                                                                               $canvas_user_id
+ * @property bool                                                                                                      $is_registered_through_canvas
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Deadline[]                                                  $deadlines
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[] $usersettings
- * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[] $workplaceLearningPeriods
- * @property \Illuminate\Database\Eloquent\Collection|\App\Workplace[] $workplaces
+ * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[]                                               $usersettings
+ * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[]                                   $workplaceLearningPeriods
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Workplace[]                                                 $workplaces
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereAnswer($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereBirthdate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereEmail($value)
@@ -51,18 +52,23 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereStudentnr($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereUserlevel($value)
  * @mixin Eloquent
+ *
  * @property \Illuminate\Database\Eloquent\Collection|\App\Cohort[] $cohorts
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereCanvasUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereIsRegisteredThroughCanvas($value)
+ *
  * @property string|null $email_verified_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereEmailVerifiedAt($value)
  */
 class Student extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, CanResetPassword;
+    use Notifiable;
+    use CanResetPassword;
 
     // Override the table used for the User Model
     public static $locales = [
@@ -111,11 +117,11 @@ class Student extends Authenticatable implements MustVerifyEmail
         if (preg_match('/\s/', $this->firstname)) {
             $names = explode(' ', $this->lastname);
             foreach ($names as $name) {
-                $initials = ($initials === '') ? substr($name, 0, 1) . '.' : $initials . ' ' . substr($name, 0,
-                        1) . '.';
+                $initials = ($initials === '') ? substr($name, 0, 1).'.' : $initials.' '.substr($name, 0,
+                        1).'.';
             }
         } else {
-            $initials = substr($this->firstname, 0, 1) . '.';
+            $initials = substr($this->firstname, 0, 1).'.';
         }
 
         return $initials;
@@ -176,7 +182,7 @@ class Student extends Authenticatable implements MustVerifyEmail
 
     public function hasCurrentWorkplaceLearningPeriod(): bool
     {
-        return (bool)$this->getUserSetting('active_internship');
+        return (bool) $this->getUserSetting('active_internship');
     }
 
     public function getUserSetting($label, $forceRefresh = false): ?UserSetting
@@ -196,7 +202,7 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function getCurrentWorkplaceLearningPeriod(): WorkplaceLearningPeriod
     {
         if (!$this->hasCurrentWorkplaceLearningPeriod()) {
-            throw new \UnexpectedValueException(__METHOD__ . ' should not have been called');
+            throw new \UnexpectedValueException(__METHOD__.' should not have been called');
         }
         if ($this->currentWorkplaceLearningPeriod === null) {
             $this->currentWorkplaceLearningPeriod = $this->workplaceLearningPeriods()
@@ -284,7 +290,7 @@ class Student extends Authenticatable implements MustVerifyEmail
 
         $activities = $this->currentWorkplaceLearningPeriod->learningActivityActing()->whereHas('reflection')->get()->all();
         array_walk($activities, static function (LearningActivityActing $laa) use (&$count) {
-            $count[$laa->reflection->reflection_type]++;
+            ++$count[$laa->reflection->reflection_type];
         });
         arsort($count);
 
@@ -298,5 +304,4 @@ class Student extends Authenticatable implements MustVerifyEmail
             'fullReflection'  => $this->getUserSetting('fullReflection') ? (bool) $this->getUserSetting('fullReflection')->setting_value : true,
         ];
     }
-
 }

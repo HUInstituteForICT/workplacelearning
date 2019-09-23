@@ -32,7 +32,6 @@ class RequiresTeacherLevel
      *
      * @param Request $request
      *
-     * @param Closure $next
      * @return RedirectResponse|mixed
      */
     public function handle($request, Closure $next)

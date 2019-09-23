@@ -56,7 +56,6 @@ class ProducingActivityController
 
         $activitiesJson = $exportBuilder->getJson($this->learningActivityProducingRepository->getActivitiesOfLastActiveDayForStudent($student));
 
-
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
 
         return view('pages.producing.activity', $availableProducingEntitiesFetcher->getEntities())
@@ -127,7 +126,6 @@ class ProducingActivityController
 
             return redirect($url);
         }
-
 
         session()->flash('success', __('activity.saved-successfully'));
         $url = route('process-producing');

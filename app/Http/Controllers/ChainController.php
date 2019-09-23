@@ -17,10 +17,9 @@ class ChainController extends Controller
         CreateRequest $request,
         ChainFactory $chainFactory,
         CurrentPeriodResolver $currentPeriodResolver
-    ): Chain
-    {
+    ): Chain {
         return $chainFactory->createChain([
-            'name' => $request->get('name'),
+            'name'    => $request->get('name'),
             'wplp_id' => $currentPeriodResolver->getPeriod()->wplp_id,
         ]);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-
 use App\Student;
 use App\Reflection\Models\ActivityReflection;
 use Illuminate\Auth\Access\HandlesAuthorization;

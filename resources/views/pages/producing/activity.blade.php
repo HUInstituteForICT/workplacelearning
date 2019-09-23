@@ -1,12 +1,11 @@
 <?php
 /** @var ResourcePerson[] $resourcePersons */
-
 use App\Category;
 use App\Chain;
 use App\ResourcePerson;
 
-/** @var Category[] $categories */
-/** @var Chain[] $chains */
+/* @var Category[] $categories */
+/* @var Chain[] $chains */
 ?>
 @extends('layout.HUdefault')
 @section('title')

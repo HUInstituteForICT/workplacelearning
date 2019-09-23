@@ -9,18 +9,18 @@ use Illuminate\Support\Facades\Storage;
 class EducationProgramsService
 {
     const entityTypes = [
-        'competence' => 1,
-        'timeslot' => 2,
+        'competence'     => 1,
+        'timeslot'       => 2,
         'resourcePerson' => 3,
-        'category' => 4,
+        'category'       => 4,
     ];
 
     // Mapping necessary due to inconsistent naming of model properties
     const nameToEntityNameMapping = [
-        'competence' => 'competence_label',
-        'timeslot' => 'timeslot_text',
+        'competence'     => 'competence_label',
+        'timeslot'       => 'timeslot_text',
         'resourcePerson' => 'person_label',
-        'category' => 'category_label',
+        'category'       => 'category_label',
     ];
 
     /**

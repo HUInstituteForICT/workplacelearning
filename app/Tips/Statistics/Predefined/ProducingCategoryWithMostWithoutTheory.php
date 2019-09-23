@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\Category;
 use App\Tips\Statistics\InvalidStatisticResult;
@@ -12,7 +10,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ProducingCategoryWithMostWithoutTheory extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Category with the most activities done alone (without theory or person)';
@@ -26,7 +23,6 @@ class ProducingCategoryWithMostWithoutTheory extends BasePredefinedStatistic
     public function calculate(): Resultable
     {
         $categoryData = $this->wherePeriod(
-
             $this->learningPeriod->learningActivityProducing()
                 ->selectRaw('category_id, COUNT(category_id) as count')
                 ->where(function (Builder $builder) {

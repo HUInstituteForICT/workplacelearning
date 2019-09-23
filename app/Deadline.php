@@ -17,11 +17,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null  $dl_value
  * @property string|null  $dl_datetime
  * @property \App\Student $User
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereDlDatetime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereDlId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereDlValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereStudentId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline query()

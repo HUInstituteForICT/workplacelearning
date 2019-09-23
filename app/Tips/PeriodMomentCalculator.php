@@ -25,10 +25,10 @@ class PeriodMomentCalculator
 
     public function getMomentAsPercentage(): string
     {
-        if($this->workplaceLearningPeriod === null) {
+        if ($this->workplaceLearningPeriod === null) {
             $this->workplaceLearningPeriod = $this->currentPeriodResolver->getPeriod();
         }
-        
+
         $startDate = new Carbon($this->workplaceLearningPeriod->startdate);
         $endDate = new Carbon($this->workplaceLearningPeriod->enddate);
         $currentDate = new Carbon();

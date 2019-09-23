@@ -8,8 +8,6 @@ class ReflectionMethodBetaParticipation extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -21,7 +19,7 @@ class ReflectionMethodBetaParticipation extends Migration
             $table->dateTime('updated_at');
         });
 
-        Schema::table('reflection_method_beta_participations', function(Blueprint $table) {
+        Schema::table('reflection_method_beta_participations', function (Blueprint $table) {
             $table->foreign('student_id', 'optin_to_student_id')
                 ->references('student_id')->on('student')->onDelete('CASCADE');
         });
@@ -29,8 +27,6 @@ class ReflectionMethodBetaParticipation extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -47,11 +47,10 @@ class ProfileController extends Controller
         $rules = [
             'firstname' => 'required|max:255|min:3',
             'lastname'  => 'required|max:255|min:3',
-
         ];
 
         if (!$user->isRegisteredThroughCanvas()) {
-            $rules['email'] = 'email|max:255|unique:student,email,' . $request->student_id . ',student_id';
+            $rules['email'] = 'email|max:255|unique:student,email,'.$request->student_id.',student_id';
         }
 
         // Validate the input
@@ -72,7 +71,7 @@ class ProfileController extends Controller
         $user->locale = $request->get('locale');
         $user->save();
 
-        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
+        return redirect()->route('profile')->with('success', __('general.edit-saved'));
     }
 
     public function changePassword(Request $request)
@@ -100,7 +99,7 @@ class ProfileController extends Controller
         $user->pw_hash = Hash::make($request->get('new_password'));
         $user->save();
 
-        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
+        return redirect()->route('profile')->with('success', __('general.edit-saved'));
     }
 
     public function removeCanvasCoupling(

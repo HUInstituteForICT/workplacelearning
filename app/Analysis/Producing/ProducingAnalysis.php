@@ -69,7 +69,7 @@ class ProducingAnalysis
         $this->analysisData['num_hours_category'] = $this->analysisCollector->getNumHoursCategory($year, $month)->toArray();
 
         $this->statistics = new Statistics($this->analysisData);
-        
+
         return $this->analysisData;
     }
 
@@ -124,9 +124,9 @@ class ProducingAnalysis
                 return $this->statistics->$name();
             } catch (\Exception $exception) {
                 \Log::error('Error with statistic', [$exception]);
+
                 return 0;
             }
-
         }
         throw new \Exception('Method not found on '.Statistics::class);
     }

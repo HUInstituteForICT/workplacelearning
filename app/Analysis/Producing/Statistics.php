@@ -75,7 +75,7 @@ class Statistics
      */
     public function persentageAveragePersonDifficulty()
     {
-        if (null === $this->analysisData['person_difficulty']) {
+        if ($this->analysisData['person_difficulty'] === null) {
             return 0;
         }
 
@@ -88,7 +88,7 @@ class Statistics
      */
     public function averagePersonDifficultyName()
     {
-        if (null === $this->analysisData['person_difficulty']) {
+        if ($this->analysisData['person_difficulty'] === null) {
             return false;
         }
 

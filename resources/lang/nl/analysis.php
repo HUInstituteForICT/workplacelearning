@@ -2,27 +2,27 @@
 
 return array(
     'no-activity' => 'Helaas, wij kunnen geen analyse uitvoeren als er nog geen activiteiten zijn ingevoerd.',
-  'acting' => array(
+  'acting'        => array(
     'description' => 'Op deze pagina kun je je ingevoerde leermomenten analyseren en kun je persoonlijke tips krijgen op basis van jouw leermomenten',
   ),
   'graphs' => array(
-    'categories' => 'Grafiek categorieën',
+    'categories'    => 'Grafiek categorieën',
     'learninggoals' => 'Grafiek leerdoelen',
-    'competencies' => 'Grafiek competenties',
-    'persons' => 'Grafiek personen',
+    'competencies'  => 'Grafiek competenties',
+    'persons'       => 'Grafiek personen',
   ),
   'statistics' => array(
     'most_occurring_combo' => 'Meest voorkomende combinaties',
   ),
-  'analysis' => 'Analyse',
-  'detail' => 'Details',
-  'category-learninggoal' => 'Categorie & leervraag',
-  'category-competence' => 'Categorie & competentie',
-  'learninggoal-competence' => 'Leerdoel & competentie',
+  'analysis'                   => 'Analyse',
+  'detail'                     => 'Details',
+  'category-learninggoal'      => 'Categorie & leervraag',
+  'category-competence'        => 'Categorie & competentie',
+  'learninggoal-competence'    => 'Leerdoel & competentie',
   'activities-with-this-combo' => '% van je activiteiten zijn met deze combinatie',
-  'tip' => 'Tip',
-  'tips' => array(
-      'tips' => 'tips',
+  'tip'                        => 'Tip',
+  'tips'                       => array(
+      'tips'                => 'tips',
     'learninggoal-material' => 'Bij :percentage%
                         van de leermomenten behorende bij :label
                         gebruik je geen theorie. Misschien weet je niet goed welke theorie je hier bij zou
@@ -49,17 +49,17 @@ return array(
       'averagePersonDifficultyName' => 'Wanneer jij samenwerk met :person, vind je jouw werk het makkelijkst. Ga eens voor jezelf na hoe deze persoon jou helpt,
                         waardoor je meer kunt bereiken. En bedank deze persoon eens voor zijn of haar ondersteuning ;-)',
   ),
-    'create-error' => 'Het is niet gelukt de analyse op te slaan.',
-    'create' => 'De analyse is aangemaakt.',
-    'remove-error' => 'Het is niet gelukt de analyse te verwijderen.',
-    'removed' => 'Analyse verwijderd uit de database.',
-    'query-removed' => 'Query is uit de cache verwijderd',
+    'create-error'       => 'Het is niet gelukt de analyse op te slaan.',
+    'create'             => 'De analyse is aangemaakt.',
+    'remove-error'       => 'Het is niet gelukt de analyse te verwijderen.',
+    'removed'            => 'Analyse verwijderd uit de database.',
+    'query-removed'      => 'Query is uit de cache verwijderd',
     'query-data-expired' => 'De query data is ververst',
-    'producing' => [
+    'producing'          => [
         'ordered-list-monthly-activities' => 'Hieronder zie je alle series van opeenvolgende activiteiten in deze maand.',
-        'activities-lookback' => 'Je kunt hier op terugblikken en bekijken wat je in deze maand moeilijk vond en hoe je moeilijke situaties hebt overwonnen. Als je deze informatie wilt delen, zou je het kunnen bespreken bij een voortgangsgesprek met je bedrijfsbegeleider of je stagedocent.',
-        'show-details' => 'Toon Details',
-        'time-spent' => 'Tijd besteed',
+        'activities-lookback'             => 'Je kunt hier op terugblikken en bekijken wat je in deze maand moeilijk vond en hoe je moeilijke situaties hebt overwonnen. Als je deze informatie wilt delen, zou je het kunnen bespreken bij een voortgangsgesprek met je bedrijfsbegeleider of je stagedocent.',
+        'show-details'                    => 'Toon Details',
+        'time-spent'                      => 'Tijd besteed',
     ],
     'expire-all' => 'Ververs alle queries',
 );

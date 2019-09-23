@@ -104,5 +104,5 @@ return [
     'feedback-activity-saved' => 'Both the activity and the feedback have been saved.',
     'save'                    => 'Save learning activity',
     'reflection-methods'      => 'Reflection methods',
-    'reflection-methods-help' => 'Select which of the reflection methods you use.'
+    'reflection-methods-help' => 'Select which of the reflection methods you use.',
 ];

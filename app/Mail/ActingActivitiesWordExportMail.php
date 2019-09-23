@@ -10,7 +10,8 @@ use PhpOffice\PhpWord\PhpWord;
 
 class ActingActivitiesWordExportMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     private $comment;
     /**
@@ -27,12 +28,12 @@ class ActingActivitiesWordExportMail extends Mailable
     public function build(): self
     {
         $fileName = md5(time());
-        $filePath = storage_path('app/word-exports/' . $fileName . '.docx');
+        $filePath = storage_path('app/word-exports/'.$fileName.'.docx');
         $this->document->save($filePath);
 
         return $this->from('noreply@werkplekleren.hu.nl')
             ->subject(__('process_export.mail-subject'))
-            ->attachFromStorageDisk('local', 'word-exports/' . $fileName.'.docx', 'export_' . strtolower(__('export_laa.learningactivities')) . '.docx')
+            ->attachFromStorageDisk('local', 'word-exports/'.$fileName.'.docx', 'export_'.strtolower(__('export_laa.learningactivities')).'.docx')
             ->text('mail.text-export', ['student' => Auth::user(), 'comment' => $this->comment ?? '']);
     }
 }

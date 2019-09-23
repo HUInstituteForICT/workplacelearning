@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Reflection\Types;
-
 
 use App\Reflection\Interfaces\ReflectionType;
 
@@ -13,7 +11,7 @@ class Abcd implements ReflectionType
     private static $translationNamespace = 'abcd';
 
     /**
-     * Get the fields of the reflection type and their default values
+     * Get the fields of the reflection type and their default values.
      */
     public function getFields(): array
     {

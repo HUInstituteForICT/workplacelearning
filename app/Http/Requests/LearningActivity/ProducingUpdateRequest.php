@@ -15,13 +15,13 @@ class ProducingUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'datum' => 'required|date|date_in_wplp',
+            'datum'        => 'required|date|date_in_wplp',
             'omschrijving' => 'required|max:300',
-            'aantaluren' => 'required',
-            'resource' => 'required|in:persoon,alleen,internet,boek,new',
+            'aantaluren'   => 'required',
+            'resource'     => 'required|in:persoon,alleen,internet,boek,new',
             'moeilijkheid' => 'required|exists:difficulty,difficulty_id',
-            'status' => 'required|exists:status,status_id',
-            'chain_id' => 'canChain',
+            'status'       => 'required|exists:status,status_id',
+            'chain_id'     => 'canChain',
         ];
     }
 

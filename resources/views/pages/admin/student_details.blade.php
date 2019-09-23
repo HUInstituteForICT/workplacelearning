@@ -4,8 +4,10 @@
 @stop
 @section('content')
     <?php
-    use App\Student;use App\WorkplaceLearningPeriod;
-    /** @var Student $student */
+    use App\Student;
+use App\WorkplaceLearningPeriod;
+
+/* @var Student $student */
     ?>
     <div class="container-fluid">
         <div class="row">

@@ -63,7 +63,7 @@ class AnalyticsChartController extends Controller
         $data = $request->all();
         $this->validate($request, [
             'analysis_id' => 'required|numeric',
-            'type_id' => 'required|numeric',
+            'type_id'     => 'required|numeric',
         ]);
         $analysis = $this->analysis->findOrFail($data['analysis_id']);
         $type = $this->chartType->findOrFail($data['type_id']);
@@ -162,14 +162,14 @@ class AnalyticsChartController extends Controller
             if (!$chart->delete()) {
                 return redirect()
                     ->back()
-                    ->withErrors(['error', Lang::get('charts.removed-fail')]);
+                    ->withErrors(['error', __('charts.removed-fail')]);
             }
             $this->dchart->where('chart_id', $chart->id)
                 ->delete();
         });
 
         return redirect()->route('charts.index')
-            ->with('success', Lang::get('charts.removed'));
+            ->with('success', __('charts.removed'));
     }
 
     public function getChartDetails($idLabel)
@@ -179,9 +179,9 @@ class AnalyticsChartController extends Controller
         $label = $array[1];
 
         $queryResult = (new \App\Analysis())->where('id', $analysisID)->get(['query']);
-        if (null != $queryResult[0]) {
+        if ($queryResult[0] != null) {
             $query = $queryResult[0]['query'];
-            if (null != $query) {
+            if ($query != null) {
                 // Splitting the query on new line and space
                 $queryArray = preg_split('/[\s]+/', $query);
 
@@ -192,27 +192,27 @@ class AnalyticsChartController extends Controller
 
                 for ($i = 0; $i < count($queryArray); ++$i) {
                     $index = stripos($queryArray[$i], 'FROM');
-                    if ($index > -1 && 'learningactivityproducing' == strtolower($queryArray[$i + 1])) {
+                    if ($index > -1 && strtolower($queryArray[$i + 1]) == 'learningactivityproducing') {
                         $programTypeID = 2;
                         break;
                     }
                     $index = stripos($queryArray[$i], 'FROM');
-                    if ($index > -1 && 'learningactivityacting' == strtolower($queryArray[$i + 1])) {
+                    if ($index > -1 && strtolower($queryArray[$i + 1]) == 'learningactivityacting') {
                         $programTypeID = 1;
                         break;
                     }
 
                     $index = stripos($queryArray[$i], 'cohort_id');
 
-                    if ($index > -1 && '=' == $queryArray[$i + 1] && is_numeric($queryArray[$i + 2])) {
+                    if ($index > -1 && $queryArray[$i + 1] == '=' && is_numeric($queryArray[$i + 2])) {
                         $cohort = $queryArray[$i + 2];
                     }
                 }
 
-                if (null == $programTypeID || 2 == $programTypeID) {
+                if ($programTypeID == null || $programTypeID == 2) {
                     $id = (new \App\Category())->where('category_label', $label)
                         ->where(function ($query) use ($cohort): void {
-                            if (null != $cohort) {
+                            if ($cohort != null) {
                                 $query->where('cohort_id', $cohort);
                             }
                         })
@@ -226,7 +226,7 @@ class AnalyticsChartController extends Controller
                 } else {
                     $id = (new \App\Timeslot())->where('timeslot_text', $label)
                         ->where(function ($query) use ($cohort): void {
-                            if (null != $cohort) {
+                            if ($cohort != null) {
                                 $query->where('cohort_id', $cohort);
                             }
                         })

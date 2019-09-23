@@ -53,37 +53,37 @@ class ProducingReportController extends Controller
 
         $internTable->addRow();
         // Intern name
-        $internTable->addCell(2000)->addText(__('process_export.wordexport.intern-name') . ': ');
+        $internTable->addCell(2000)->addText(__('process_export.wordexport.intern-name').': ');
         $internTable->addCell(2500)->addText("{$student->firstname} {$student->lastname}");
         // Organisation
-        $internTable->addCell(2000)->addText(__('process_export.wordexport.organisation') . ': ');
+        $internTable->addCell(2000)->addText(__('process_export.wordexport.organisation').': ');
         $internTable->addCell(2000)->addText($wp->wp_name);
         $internTable->addRow();
         // Student nr
-        $internTable->addCell(2000)->addText(__('process_export.wordexport.studentnr') . ': ');
+        $internTable->addCell(2000)->addText(__('process_export.wordexport.studentnr').': ');
         $internTable->addCell()->addText($student->studentnr);
         // Address org
-        $internTable->addCell()->addText(__('process_export.wordexport.address') . ': ');
+        $internTable->addCell()->addText(__('process_export.wordexport.address').': ');
         $internTable->addCell()->addText("{$wp->street} {$wp->housenr}, {$wp->postalcode}, {$wp->town}");
         $internTable->addRow();
         // total days
-        $internTable->addCell()->addText(__('process_export.wordexport.total-days') . ': ');
+        $internTable->addCell()->addText(__('process_export.wordexport.total-days').': ');
         $globalTotalDaysCell = $internTable->addCell();
         $internTable->addRow();
         // Mentor
-        $internTable->addCell()->addText(__('process_export.wordexport.mentor') . ': ');
+        $internTable->addCell()->addText(__('process_export.wordexport.mentor').': ');
         $internTable->addCell()->addText('');
 
-        $page->addText("\n\n" . __('process_export.wordexport.by-workplace'), $bold);
+        $page->addText("\n\n".__('process_export.wordexport.by-workplace'), $bold);
         $orgTable = $page->addTable();
         $orgTable->addRow(900);
 
         // name contact
-        $orgTable->addCell(2000)->addText(__('process_export.wordexport.name') . ': ');
+        $orgTable->addCell(2000)->addText(__('process_export.wordexport.name').': ');
         $orgTable->addCell(2500)->addText($wp->contact_name);
         // Date
         $date = Carbon::now();
-        $orgTable->addCell(2000)->addText(__('process_export.wordexport.date') . ': ');
+        $orgTable->addCell(2000)->addText(__('process_export.wordexport.date').': ');
         $orgTable->addCell(2000)->addText($date->format('d-m-Y'));
         $orgTable->addRow(1200);
         $confirmCell = $orgTable->addCell();
@@ -92,13 +92,13 @@ class ProducingReportController extends Controller
 
         // Signature
         $orgTable->addRow(1200);
-        $orgTable->addCell()->addText(__('process_export.wordexport.signature') . ':');
+        $orgTable->addCell()->addText(__('process_export.wordexport.signature').':');
         $orgTable->addCell()->getStyle()->setGridSpan(3);
 
         // Remarks
         $orgTable->addRow(1200);
         $remarksCell = $orgTable->addCell();
-        $remarksCell->addText(__('process_export.wordexport.remarks') . ':');
+        $remarksCell->addText(__('process_export.wordexport.remarks').':');
         $remarksCell->getStyle()->setGridSpan(4);
 
         $activityPage = $page;
@@ -112,7 +112,6 @@ class ProducingReportController extends Controller
         $w->addTableStyle('table', $tableStyle, $firstRowStyle);
         $lap_array = $this->getWerkzaamheden(Carbon::createFromTimestamp($request->get('startDate')),
             Carbon::createFromTimestamp($request->get('endDate')), $wplp);
-
 
         $date_loop = date('Y-m-d',
             strtotime('monday this week', $request->get('startDate')));
@@ -129,7 +128,7 @@ class ProducingReportController extends Controller
         while (strtotime($date_loop) < $request->get('endDate') && strtotime($date_loop) < time()) {
             $table = $activityPage->addTable('table');
             $table->addRow();
-            $table->addCell(2000)->addText(__('process_export.wordexport.week') . ' ' . date('W',
+            $table->addCell(2000)->addText(__('process_export.wordexport.week').' '.date('W',
                     strtotime($date_loop)), $bold);
             $table->addCell(2000)->addText(__('process_export.wordexport.date'), $bold);
             $table->addCell(8000)->addText(__('process_export.wordexport.activities'), $bold);
@@ -142,11 +141,11 @@ class ProducingReportController extends Controller
                 $table->addCell(2000)->addText(Carbon::createFromTimestamp(strtotime($date_loop))->format('d-m-Y'));
 
                 $hrs = 0;
-                if (array_key_exists('' . date('d-m-Y', strtotime($date_loop)), $lap_array)) {
+                if (array_key_exists(''.date('d-m-Y', strtotime($date_loop)), $lap_array)) {
                     $textEntries = [];
-                    foreach ($lap_array['' . date('d-m-Y', strtotime($date_loop))] as $lap) {
+                    foreach ($lap_array[''.date('d-m-Y', strtotime($date_loop))] as $lap) {
                         $hrs += $lap['duration'];
-                        $textEntries[] = '- ' . htmlspecialchars($lap['description']);
+                        $textEntries[] = '- '.htmlspecialchars($lap['description']);
                     }
                     $table->addCell(8000)->addText(implode("\n", $textEntries));
                 } else {
@@ -162,31 +161,30 @@ class ProducingReportController extends Controller
             $weekMetaTable->addRow();
             $totalDaysCell = $weekMetaTable->addCell(4000);
             $totalDaysCell->addText(__('process_export.wordexport.days-worked',
-                    ['hours' => Auth::user()->getCurrentWorkplaceLearningPeriod()->hours_per_day]) . ': ');
+                    ['hours' => Auth::user()->getCurrentWorkplaceLearningPeriod()->hours_per_day]).': ');
             $totalDaysCell->getStyle()->setGridSpan(1);
-            $weekMetaTable->addCell(8000)->addText(($days_this_week . (($days_this_week == 1) ? ' ' . __('process_export.wordexport.day') : ' ' . __('process_export.wordexport.days'))));
+            $weekMetaTable->addCell(8000)->addText(($days_this_week.(($days_this_week == 1) ? ' '.__('process_export.wordexport.day') : ' '.__('process_export.wordexport.days'))));
 
             $weekMetaTable->addRow();
             $absenceCell = $weekMetaTable->addCell(4000);
-            $absenceCell->addText(__('process_export.wordexport.absence-reason') . ': ');
+            $absenceCell->addText(__('process_export.wordexport.absence-reason').': ');
             $absenceCell->getStyle()->setGridSpan(1);
             $weekMetaTable->addCell(8000)->addText('');
 
             $weekMetaTable->addRow(1200);
             $weekRemarksCell = $weekMetaTable->addCell(4000);
-            $weekRemarksCell->addText(__('process_export.wordexport.remarks-week') . ': ');
+            $weekRemarksCell->addText(__('process_export.wordexport.remarks-week').': ');
             $weekRemarksCell->getStyle()->setGridSpan(1);
             $weekMetaTable->addCell(8000)->addText('');
 
             $date_loop = date('d-m-Y', strtotime('+2 days', strtotime($date_loop)));
         }
 
-
         // Now using ->effectiveDays() : https://github.com/HUInstituteForICT/workplacelearning/issues/108
         $daysWorked = $wplp->getEffectiveDays();
-        $globalTotalDaysCell->addText($daysWorked . (($daysWorked === 1) ? ' ' . __('process_export.wordexport.day') : ' ' . __('process_export.wordexport.days')));
+        $globalTotalDaysCell->addText($daysWorked.(($daysWorked === 1) ? ' '.__('process_export.wordexport.day') : ' '.__('process_export.wordexport.days')));
 
-        $fileName = $student->studentnr . ' ' . $student->getInitials() . ' ' . $student->lastname . ' - ' . $wp->wp_name;
+        $fileName = $student->studentnr.' '.$student->getInitials().' '.$student->lastname.' - '.$wp->wp_name;
 
         $w->save("{$fileName}.docx", 'Word2007', true);
     }
@@ -204,7 +202,6 @@ class ProducingReportController extends Controller
             ->orderBy('date')
             ->orderBy('lap_id')
             ->get()->all();
-
 
         foreach ($activities as $activity) {
             $activityDate = Carbon::createFromTimestamp(strtotime($activity->date));

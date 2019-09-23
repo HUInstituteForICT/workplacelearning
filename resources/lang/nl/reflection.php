@@ -41,7 +41,6 @@ return [
         ],
     ],
 
-
     'types' => [
         'starr'     => [
             'situation'  => "Wat was de situatie?\n\n- Wat gebeurde er?\n\n\n- Wie waren er bij betrokken?\n\n\n- Waar speelde de situatie zich af?\n\n\n- Wanneer speelde deze situatie?\n\n",
@@ -55,19 +54,18 @@ return [
             'fase2' => "Terugblikken\n\nIK\n2 Wat deed ik?\n\n\n3 Wat dacht ik?\n\n\n4 Wat voelde ik?\n\nDE LEERLINGEN\n5 Wat dachten de leerlingen, denk je?\n\n\n6 Hoe voelden ze zich, denk je?\n\n\n7 Wat deden de leerlingen?\n\n",
             'fase3' => "Formuleren van essentiële aspecten\n\n8 Hoe hangen de antwoorden op de vorige vragen met elkaar samen?\n(Zie je samenhang tussen jouw (re)actie en de reactie van de leerlingen? Je kunt deze eventueel mbv de Roos van Leary verklaren)\n\n\n9 Wat is daarbij de invloed van de context / de school als geheel?\n\n\n10 Wat betekent dat nu voor mij?\n(Betrek 8 en 9 in je antwoord)\n\nEn/of\n\n11 Wat is dus het probleem (of de positieve ontdekking)?\n(Op basis van je antwoorden op 8, 9 en 10)\n\n",
             'fase4' => "Alternatieven\n\n12 Welke alternatieven zie ik (welke oplossingen voor het probleem of manieren om gebruik te maken van mijn ontdekking)?\n\n\n13 Welke voor- en nadelen hebben die?\n(Geef dit per alternatief aan!)\n\n\n14 Wat neem ik me nu voor ten aanzien van de volgende keer?\n(Wees hierbij zo concreet mogelijk!)",
-
         ],
         'abcd'      => [
             'cause'      => "Wat is er gebeurd? Aanleiding?\n\n",
             'importance' => "Wat was daaraan Belangrijk voor mij?\n\n",
             'conclusion' => "Tot welk inzicht leidt dit?\nConclusie\n\n",
-            'todo'       => "Wat neem je je voor om te gaan Doen?",
+            'todo'       => 'Wat neem je je voor om te gaan Doen?',
         ],
         'pdca'      => [
-            'plan'  => "",
-            'do'    => "",
-            'check' => "",
-            'act'   => "",
+            'plan'  => '',
+            'do'    => '',
+            'check' => '',
+            'act'   => '',
         ],
     ],
 ];

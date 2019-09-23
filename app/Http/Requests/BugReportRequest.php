@@ -20,7 +20,7 @@ class BugReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'feedback_subject' => 'required|max:40|min:3',
+            'feedback_subject'     => 'required|max:40|min:3',
             'feedback_description' => 'required|max:800|min:5',
         ];
     }

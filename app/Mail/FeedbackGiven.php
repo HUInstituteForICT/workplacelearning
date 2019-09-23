@@ -9,7 +9,8 @@ use Illuminate\Queue\SerializesModels;
 
 class FeedbackGiven extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /** @var Student $user */
     private $user;
@@ -38,11 +39,11 @@ class FeedbackGiven extends Mailable
         return $this->view('templates.bugreport-email')
             ->with(
                 [
-                    'student_name' => $this->user->getInitials().' '.$this->user->lastname.' ('.$this->user->firstname.')',
+                    'student_name'  => $this->user->getInitials().' '.$this->user->lastname.' ('.$this->user->firstname.')',
                     'student_email' => $this->user->email,
-                    'education' => $this->user->educationProgram,
-                    'subject' => $this->subject,
-                    'content' => $this->description,
+                    'education'     => $this->user->educationProgram,
+                    'subject'       => $this->subject,
+                    'content'       => $this->description,
                 ]
             );
     }

@@ -58,7 +58,8 @@
                                 <tbody>
                                 <?php
                                 use App\Student;
-                                /** @var Student $student */ ?>
+
+/* @var Student $student */ ?>
                                 @foreach($students as $student)
                                     <tr>
                                         <td>{{ $student->studentnr }}</td>

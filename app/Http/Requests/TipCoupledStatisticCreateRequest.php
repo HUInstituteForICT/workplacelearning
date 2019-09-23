@@ -24,10 +24,10 @@ class TipCoupledStatisticCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'statistic_id' => 'required',
-            'tip_id' => 'required',
+            'statistic_id'       => 'required',
+            'tip_id'             => 'required',
             'comparisonOperator' => 'required',
-            'threshold' => 'required|numeric',
+            'threshold'          => 'required|numeric',
         ];
     }
 }

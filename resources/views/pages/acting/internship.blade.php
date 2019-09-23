@@ -5,7 +5,8 @@
 @section('content')
     <?php
     use App\WorkplaceLearningPeriod;
-    /** @var WorkplaceLearningPeriod $period */
+
+/* @var WorkplaceLearningPeriod $period */
     ?>
     <div class="container-fluid">
         <a href="{{ url('/profiel') }}">{{ __('elements.profile.internships.backtoprofile') }}</a>

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Reflection;
-
 
 use App\Reflection\Models\ActivityReflection;
 use App\Reflection\Repository\Eloquent\ActivityReflectionRepository;
@@ -10,10 +8,8 @@ use App\Services\CurrentUserResolver;
 use App\Reflection\Services\Exporter;
 use Illuminate\Http\Request;
 
-
 class DownloadMultiple
 {
-
     /**
      * @var Exporter
      */
@@ -37,7 +33,6 @@ class DownloadMultiple
         $this->currentUserResolver = $currentUserResolver;
     }
 
-
     public function __invoke(Request $request)
     {
         ob_start();
@@ -52,7 +47,7 @@ class DownloadMultiple
 
         $document = $this->exporter->exportReflections($activityReflections);
 
-        $document->save(strtolower(__('reflection.reflection')) . 's.docx', 'Word2007', true);
+        $document->save(strtolower(__('reflection.reflection')).'s.docx', 'Word2007', true);
         // We need to quit Laravel otherwise the docx will get corrupted
         exit;
     }

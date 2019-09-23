@@ -6,8 +6,8 @@ return [
     'none-attached'       => 'No reflection added',
     'remove'              => 'Remove',
     'delete-confirmation' => 'Are you sure you want to delete this reflection? Any unsaved data will be lost.',
-    'short_reflection' => 'Short reflection',
-    'full_reflection' => 'Detailed reflection',
+    'short_reflection'    => 'Short reflection',
+    'full_reflection'     => 'Detailed reflection',
 
     'fields' => [
         'starr'     => [
@@ -38,7 +38,6 @@ return [
         ],
     ],
 
-
     'types' => [
         'starr'     => [
             'situation'  => "What was the situation?\n\n- What happened?\n\n\n- Who were involved?\n\n\n- Where did it happen?\n\n\n- When did it happen?\n\n",
@@ -54,7 +53,6 @@ return [
             'fase4' => "Alternatives\n\n- What alternatives do I see (solutions or ways to make use of my discovery)?\n\n\n- What are the (dis)advantages?\n\n\n- What do you intend to do for the next time?\n\n",
             'fase5' => "Trying out\n\n- What do I want to achieve?\n\n\n- What do I want to pay attention to?\n\n\n- What do I want to try?\n\n",
 
-
             'fase1' => "Act/Gaining experience\n\nAnswer one of the following questions?\n\n1 What did I want to achieve?\n\n\n1 What did I want to pay attention to?\n\n\n1 What did I want to try?\n\n",
             'fase2' => "Looking back\n\nME\n2 What did I do?\n\n\n3 What did I think?\n\n\n4 What did I feel?\n\nTHE STUDENTS\n5 What did you think the students thought?\n\n\n6 How did you think the students felt?\n\n\n7 What did the students do?\n\n",
             'fase3' => "Formulating essential aspects\n\n8 How are the previous questions related?\n\n\n9 What is the influence of the context / school in total?\n\n\n10 What does that now mean for me?\n(Use 8 and 9 in your answer)\n\nAnd/or\n\n11 What is the problem (or positive discovery)?\n(Based on your answers of 8, 9 and 10)\n\n",
@@ -67,10 +65,10 @@ return [
             'todo'       => "What do you intend to do?\n\n",
         ],
         'pdca' => [
-            'plan'  => "",
-            'do'    => "",
-            'check' => "",
-            'act' => ""
-        ]
+            'plan'  => '',
+            'do'    => '',
+            'check' => '',
+            'act'   => '',
+        ],
     ],
 ];
