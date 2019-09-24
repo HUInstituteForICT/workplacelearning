@@ -28,7 +28,6 @@
         "filp/whoops": "~2.0",
         "barryvdh/laravel-ide-helper": "^2.3",
         "barryvdh/laravel-dompdf": "^0.8.0",
-        "barryvdh/laravel-translation-manager": "^0.5",
         "barryvdh/laravel-debugbar": "^3.2",
         "nunomaduro/larastan": "^0.3.17"
     },
