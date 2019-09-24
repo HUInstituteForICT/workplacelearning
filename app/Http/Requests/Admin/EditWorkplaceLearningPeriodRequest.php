@@ -38,8 +38,9 @@ class EditWorkplaceLearningPeriodRequest extends FormRequest
             'workplace.phone'  => ['required', 'max:20'],
             'workplace.email'  => ['required', 'email', 'max:255'],
 
-            'workplaceLearningPeriod.days'          => ['required', 'integer', 'min:1'],
-            'workplaceLearningPeriod.hours_per_day' => ['required', 'numeric', 'min: 1', 'max:24'],
+            'workplaceLearningPeriod.days'            => ['required', 'integer', 'min:1'],
+            'workplaceLearningPeriod.hours_per_day'   => ['required', 'numeric', 'min: 1', 'max:24'],
+            'workplaceLearningPeriod.is_in_analytics' => ['sometimes', 'boolean'],
         ];
     }
 

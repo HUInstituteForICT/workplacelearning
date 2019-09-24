@@ -124,12 +124,23 @@
                                 </div>
                             @endif
 
+
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox"
+                                           name="workplaceLearningPeriod[is_in_analytics]" value="1"
+                                           @if($wplp->is_in_analytics) checked="checked" @endif
+                                    />
+                                    In analytics
+                                </label>
+                            </div>
+
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-12 col-md-4 col-md-offset-8">
-                            <input type="submit" class="btn btn-info btn-block" value="{{ __('activity.save') }}">
+                            <input type="submit" class="btn btn-info btn-block" value="{{ __('general.save') }}">
                         </div>
                     </div>
 

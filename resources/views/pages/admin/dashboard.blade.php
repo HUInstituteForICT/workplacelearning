@@ -18,19 +18,21 @@
                         <hr/>
                         <div>
                             <strong>Filters</strong>
-                            {{Form::open(['method' => 'GET'])}}
+                            {{ Form::open(['method' => 'GET']) }}
+
+                            <input type="hidden" name="sort" value="{{ request('sort') }}" />
+                            <input type="hidden" name="direction" value="{{ request('direction') }}" />
                             <div class="row">
+                                <?php
+                                /** @var SearchFilter $filter */
+                                ?>
                                 @foreach($filters as $filter)
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>
-                                                {{ __('filters.' . $filter) }}
-                                                <input class="form-control" type="text"
-                                                       value="{{ request('filter.' . $filter, '') }}"
-                                                       name="filter[{{$filter}}]"/>
-                                            </label>
-                                        </div>
-                                    </div>
+
+                                    @if($filter->isTextType())
+                                        @include('pages.admin.filters.filter_text', ['filter' => $filter])
+                                    @elseif($filter->isSelectType())
+                                        @include('pages.admin.filters.filter_select', ['filter' => $filter])
+                                    @endif
                                 @endforeach
                             </div>
                             <button class="btn btn-info">Filter</button>
@@ -46,18 +48,18 @@
 
                                 <thead>
                                 <tr>
-                                    <th>Student number</th>
-                                    <th>First name</th>
-                                    <th>Last name</th>
-                                    <th>E-mail</th>
-                                    <th>Role</th>
+                                    <th>@sortablelink('studentnr', 'Student number')</th>
+                                    <th>@sortablelink('firstname', 'First name')</th>
+                                    <th>@sortablelink('lastname', 'Last name')</th>
+                                    <th>@sortablelink('email', 'E-mail')</th>
+                                    <th>@sortablelink('userlevel', 'Role')</th>
                                     <th></th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
                                 <?php
-                                use App\Student;
+                                use App\Repository\SearchFilter;use App\Student;
                                 /** @var Student $student */ ?>
                                 @foreach($students as $student)
                                     <tr>

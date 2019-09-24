@@ -73,19 +73,16 @@ class RegisterController extends Controller
 
         /** @var Student $student */
         $student = Student::create([
-            'studentnr' => $data['studentnr'],
-            'firstname' => $data['firstname'],
-            'lastname'  => $data['lastname'],
-            'ep_id'     => $data['education'],
-            'pw_hash'   => bcrypt($data['password']),
-            'gender'    => strtoupper(substr($data['gender'], 0, 1)),
-            //'birthdate'        => $data['birthdate'],     // Deprecated
-            'email' => $data['email'],
-            //'phonenr'          => $data['phone'],         // Deprecated
+            'studentnr'        => $data['studentnr'],
+            'firstname'        => $data['firstname'],
+            'lastname'         => $data['lastname'],
+            'ep_id'            => $data['education'],
+            'pw_hash'          => bcrypt($data['password']),
+            'gender'           => strtoupper(substr($data['gender'], 0, 1)),
+            'email'            => $data['email'],
             'userlevel'        => 0,
             'registrationdate' => date('Y-m-d H:i:s'),
-            //'answer'            => $data['answer'],       // Deprecated,
-            'locale' => Session::get('locale', 'nl'),
+            'locale'           => Session::get('locale', 'nl'),
         ]);
 
         // todo re-enable once we're on a proper hosting
