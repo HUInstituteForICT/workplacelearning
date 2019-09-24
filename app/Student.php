@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Kyslik\ColumnSortable\Sortable;
 
 /**
  * App\Student.
@@ -72,6 +73,7 @@ class Student extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
     use CanResetPassword;
+    use Sortable;
 
     // Override the table used for the User Model
     public static $locales = [
@@ -105,6 +107,10 @@ class Student extends Authenticatable implements MustVerifyEmail
         'locale',
         'canvas_user_id',
         'is_registered_through_canvas',
+    ];
+
+    public $sortable = [
+        'studentnr', 'firstname', 'lastname', 'email', 'userlevel',
     ];
 
     protected $hidden = [
