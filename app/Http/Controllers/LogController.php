@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class LogController extends Controller
                 'user_agent'    => $request['agent'],
                 'OS'            => $request['OS'],
                 'url'           => $request['url'],
-                'timestamp'     => date_format(date_create(null, timezone_open('Europe/Amsterdam')), 'Y-m-d H:i:s'),
+                'timestamp'     => Carbon::now(),
             ]
         );
     }
