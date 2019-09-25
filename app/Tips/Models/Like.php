@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tips\Models;
 
 use App\Student;
@@ -13,10 +15,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property Student $student
  * @property Tip     $tip
  * @property int     $type
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Like whereStudentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Like whereTipId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Like whereType($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Like newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Like newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Like query()

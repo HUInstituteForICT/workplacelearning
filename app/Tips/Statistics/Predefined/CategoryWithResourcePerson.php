@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\Timeslot;
 use App\Tips\Statistics\InvalidStatisticResult;
@@ -10,11 +10,10 @@ use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
 
 /**
- * In this class the Category represents a timeslot (acting's type of categories)
+ * In this class the Category represents a timeslot (acting's type of categories).
  */
 class CategoryWithResourcePerson extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Category done mostly with one resource person';
@@ -27,7 +26,6 @@ class CategoryWithResourcePerson extends BasePredefinedStatistic
 
     public function calculate(): Resultable
     {
-
         $differentCategories = $this->wherePeriod(
             $this->learningPeriod->learningActivityActing()->selectRaw('timeslot_id, COUNT(timeslot_id) as count')->groupBy('timeslot_id')
                 ->getBaseQuery()
@@ -49,7 +47,6 @@ class CategoryWithResourcePerson extends BasePredefinedStatistic
                     $categoryData->bestCombo = $combo;
                 }
             }
-
         });
 
         $highestPercentageCombo = null;
@@ -77,6 +74,4 @@ class CategoryWithResourcePerson extends BasePredefinedStatistic
     {
         return self::ACTING_TYPE;
     }
-
-
 }

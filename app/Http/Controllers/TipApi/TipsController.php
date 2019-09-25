@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\TipApi;
 
 use App\Cohort;
@@ -31,13 +33,12 @@ class TipsController extends Controller
         // Add predefined statistics to the collection because they can also be chosen but aren't in the DB
 
         $predefined = array_map(function (string $className) {
-
             /** @var PredefinedStatisticInterface $predefinedStatistic */
-            $predefinedStatistic = new $className;
+            $predefinedStatistic = new $className();
 
             $id = $predefinedStatistic->getEducationProgramType() === PredefinedStatisticInterface::PRODUCING_TYPE ?
-                'p-p-' . md5($predefinedStatistic->getName()) :
-                'p-a-' . md5($predefinedStatistic->getName());
+                'p-p-'.md5($predefinedStatistic->getName()) :
+                'p-a-'.md5($predefinedStatistic->getName());
 
             return [
                 'name'                   => $predefinedStatistic->getName(),
@@ -47,7 +48,6 @@ class TipsController extends Controller
                 'education_program_type' => strtolower($predefinedStatistic->getEducationProgramType()),
                 'type'                   => 'predefinedstatistic',
             ];
-
         }, PredefinedStatisticsProvider::getPredefinedStatisticClassNames());
 
         return array_merge($statistics, $predefined);
@@ -96,7 +96,7 @@ class TipsController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
+     * @param int     $id
      */
     public function update(TipUpdateRequest $request, $id, EntityTranslationManager $entityTranslationManager): Tip
     {
@@ -106,8 +106,8 @@ class TipsController extends Controller
         $tip->tipText = $request->input('tip.tipText');
         $tip->showInAnalysis = $request->input('tip.showInAnalysis') ?: false;
         if ($tip->trigger === 'moment') {
-            $tip->rangeStart = (int)$request->input('tip.rangeStart');
-            $tip->rangeEnd = (int)$request->input('tip.rangeEnd');
+            $tip->rangeStart = (int) $request->input('tip.rangeStart');
+            $tip->rangeEnd = (int) $request->input('tip.rangeEnd');
         }
         $tip->save();
         $tip->enabledCohorts()->sync($request->input('tip.enabled_cohorts'));
@@ -147,7 +147,7 @@ class TipsController extends Controller
 
     public function likeTip(Tip $tip, TipManager $tipService, Request $request)
     {
-        $liked = $tipService->likeTip($tip, (int)$request->get('type', 1), $request->user());
+        $liked = $tipService->likeTip($tip, (int) $request->get('type', 1), $request->user());
 
         return response()->json(['status' => $liked ? 'success' : 'error']);
     }

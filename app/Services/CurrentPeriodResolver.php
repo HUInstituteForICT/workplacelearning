@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\WorkplaceLearningPeriod;
@@ -21,7 +23,7 @@ class CurrentPeriodResolver
         $student = $this->currentUserResolver->getCurrentUser();
 
         if (!$student->hasCurrentWorkplaceLearningPeriod()) {
-            throw new \RuntimeException('Expected student to have a active period, but student does not. Is ' . self::class . '#getPeriod called too soon? e.g. in middleware');
+            throw new \RuntimeException('Expected student to have a active period, but student does not. Is '.self::class.'#getPeriod called too soon? e.g. in middleware');
         }
 
         return $this->currentUserResolver->getCurrentUser()->getCurrentWorkplaceLearningPeriod();

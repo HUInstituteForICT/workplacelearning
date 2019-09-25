@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use App\Student;
@@ -19,7 +21,6 @@ class UserNotifications
         $this->guard = $guard;
     }
 
-
     public function handle(Request $request, Closure $next)
     {
         if ($this->guard->guest()) {
@@ -29,7 +30,6 @@ class UserNotifications
         $student = $this->guard->user();
         if (!$student->hasCurrentWorkplaceLearningPeriod() && !str_contains($request->url(),
                 ['period/', 'profile', 'profiel'])) {
-
             $request->session()->flash('no-internship',
                 __('notifications.generic.nointernshipactive', ['profile-url' => route('profile')]));
             if ($student->educationProgram->educationprogramType->isActing()) {

@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Acting\Export;
 
 use App\Http\Controllers\Controller;
-use App\LearningActivityActing;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Services\ActingActivityExporter;
 use App\Services\CurrentUserResolver;
@@ -30,7 +31,6 @@ class WordExport extends Controller
 
     public function __invoke(Request $request, CurrentUserResolver $userResolver)
     {
-
         $activities = $this->actingRepository->getMultipleForUser($userResolver->getCurrentUser(), $request->get('ids'));
         $includeReflections = (bool) $request->get('reflections');
 

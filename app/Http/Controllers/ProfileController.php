@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (ProfileController.php) was created on 06/19/2016 at 16:01.
  * (C) Max Cassee
@@ -16,7 +18,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Lang;
 use Validator;
 
 class ProfileController extends Controller
@@ -47,11 +48,10 @@ class ProfileController extends Controller
         $rules = [
             'firstname' => 'required|max:255|min:3',
             'lastname'  => 'required|max:255|min:3',
-
         ];
 
         if (!$user->isRegisteredThroughCanvas()) {
-            $rules['email'] = 'email|max:255|unique:student,email,' . $request->student_id . ',student_id';
+            $rules['email'] = 'email|max:255|unique:student,email,'.$request->student_id.',student_id';
         }
 
         // Validate the input
@@ -72,7 +72,7 @@ class ProfileController extends Controller
         $user->locale = $request->get('locale');
         $user->save();
 
-        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
+        return redirect()->route('profile')->with('success', __('general.edit-saved'));
     }
 
     public function changePassword(Request $request)
@@ -100,7 +100,7 @@ class ProfileController extends Controller
         $user->pw_hash = Hash::make($request->get('new_password'));
         $user->save();
 
-        return redirect()->route('profile')->with('success', Lang::get('general.edit-saved'));
+        return redirect()->route('profile')->with('success', __('general.edit-saved'));
     }
 
     public function removeCanvasCoupling(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\LearningActivity;
 
 use App\Reflection\Models\ActivityReflection;
@@ -9,7 +11,6 @@ use Illuminate\Validation\Rule;
 
 class ActingCreateRequest extends FormRequest
 {
-
     public function authorize(): bool
     {
         return true;
@@ -29,7 +30,7 @@ class ActingCreateRequest extends FormRequest
             'learning_goal' => 'required|exists:learninggoal,learninggoal_id',
             'competence'    => 'required|min:1|max:3',
             'competence.*'  => 'required|exists:competence,competence_id',
-            'evidence.*'    => 'file|max:5000',
+            'evidence.*'    => 'file|max:20000',
         ];
     }
 

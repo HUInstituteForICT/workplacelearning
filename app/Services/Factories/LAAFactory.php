@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Factories;
 
 use App\LearningActivityActing;
@@ -85,7 +87,6 @@ class LAAFactory
             $this->activityReflectionFactory->create($data['reflection'], $activityActing);
             $this->learningActivityActingRepository->save($activityActing);
         }
-
 
         return $activityActing;
     }

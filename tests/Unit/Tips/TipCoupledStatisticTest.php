@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Tips\Models\CustomStatistic;
 use App\Tips\Models\Tip;
 use App\Tips\Models\TipCoupledStatistic;
@@ -14,10 +16,10 @@ class TipCoupledStatisticTest extends \Tests\TestCase
         $statistic = factory(CustomStatistic::class)->create();
 
         $tipCoupledStatistic = new TipCoupledStatistic([
-            'statistic_id' => $statistic->id,
-            'tip_id' => $tip->id,
+            'statistic_id'        => $statistic->id,
+            'tip_id'              => $tip->id,
             'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
-            'threshold' => 0.5,
+            'threshold'           => 0.5,
         ]);
 
         $tip->coupledStatistics()->save($tipCoupledStatistic);
@@ -26,7 +28,7 @@ class TipCoupledStatisticTest extends \Tests\TestCase
 
         $count = (int) DB::select('SELECT COUNT(*) as count FROM tip_coupled_statistic')[0]->count;
 
-        $this->assertTrue(1 === $count, 'TipCoupledStatistic relation inserting');
+        $this->assertTrue($count === 1, 'TipCoupledStatistic relation inserting');
 
         $this->assertInstanceOf(TipCoupledStatistic::class, $tip->coupledStatistics->first());
     }
@@ -41,10 +43,10 @@ class TipCoupledStatisticTest extends \Tests\TestCase
         $statistic = factory(CustomStatistic::class)->create();
 
         $tipCoupledStatistic = new TipCoupledStatistic([
-            'statistic_id' => $statistic->id,
-            'tip_id' => $tip->id,
+            'statistic_id'        => $statistic->id,
+            'tip_id'              => $tip->id,
             'comparison_operator' => TipCoupledStatistic::COMPARISON_OPERATOR_GREATER_THAN,
-            'threshold' => 0.5,
+            'threshold'           => 0.5,
         ]);
 
         $tip->coupledStatistics()->save($tipCoupledStatistic);

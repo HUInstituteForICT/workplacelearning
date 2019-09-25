@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Analysis\Producing;
 
 use App\LearningActivityProducing;
@@ -13,7 +15,6 @@ use Illuminate\Support\Facades\DB;
  */
 class ProducingAnalysisCollector
 {
-
     /**
      * @var CurrentPeriodResolver
      */
@@ -50,7 +51,7 @@ class ProducingAnalysisCollector
     public function limitCollectionByDate($collection, $year, $month)
     {
         if ($year !== 'all' && $month !== 'all') {
-            $dtime = mktime(0, 0, 0, (int)$month, 1, (int)$year);
+            $dtime = mktime(0, 0, 0, (int) $month, 1, (int) $year);
             $collection->whereDate('date', '>=', date('Y-m-d', $dtime))
                 ->whereDate('date', '<=', date('Y-m-d', strtotime('+1 month', $dtime)));
         }
@@ -194,7 +195,7 @@ class ProducingAnalysisCollector
                 continue;
             }
             $task_chains[$arr_key][] = $nw;
-            while (null != ($nw = $nw->getNextLearningActivity())) {
+            while (($nw = $nw->getNextLearningActivity()) != null) {
                 $task_chains[$arr_key][] = $nw;
             }
         }
@@ -216,7 +217,7 @@ class ProducingAnalysisCollector
                 continue;
             }
             array_unshift($task_chains[$arr_key], $pw);
-            while (null != ($pw = $pw->getPrevousLearningActivity())) {
+            while (($pw = $pw->getPrevousLearningActivity()) != null) {
                 array_unshift($task_chains[$arr_key], $pw);
             }
         }
@@ -331,9 +332,6 @@ class ProducingAnalysisCollector
 
     /**
      * Get the amount of full working days (>7.5 hours || wplp defined hours amount).
-     *
-     * @param $year
-     * @param $month
      */
     public function getFullWorkingDays()
     {

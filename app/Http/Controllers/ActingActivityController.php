@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
@@ -84,7 +86,6 @@ class ActingActivityController
         $this->session->put('acting.activity.edit.referrer', $redirect);
 
         $student = $this->currentUserResolver->getCurrentUser();
-
 
         $orderedReflectionTypes = $student->orderReflectionTypes(ActivityReflection::TYPES);
 

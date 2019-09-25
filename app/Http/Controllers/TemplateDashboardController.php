@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Parameter;
 use Illuminate\Http\Request;
 use App\Template;
-use Illuminate\Support\Facades\Lang;
 use App\Analysis\Template\ParameterManager;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -41,10 +42,10 @@ class TemplateDashboardController extends Controller
             return $type->getName();
         }, $paramTypes);
 
-        if (null != $id) {
+        if ($id != null) {
             $template = (new \App\Template())->findOrFail($id);
             $parameters = $template->getParameters();
-            if (null == $parameters) {
+            if ($parameters == null) {
                 $parameters = [];
             }
         }
@@ -68,11 +69,11 @@ class TemplateDashboardController extends Controller
         $data = $request->input('data');
 
         $this->validate($request, [
-            'name' => 'required',
+            'name'  => 'required',
             'query' => 'required',
         ]);
 
-        if (null == $data) {
+        if ($data == null) {
             return redirect()
                 ->back()
                 ->withErrors([__('template.no_parameters')]);
@@ -81,15 +82,15 @@ class TemplateDashboardController extends Controller
         $templateID = $request->input('templateID');
         $name = $request->input('name');
         $description = $request->input('description');
-        if (null == $description) {
+        if ($description == null) {
             $description = '';
         }
         $query = $request->input('query');
 
-        if (null != $templateID) {
+        if ($templateID != null) {
             $template = (new \App\Template())->find($templateID);
 
-            if (null != $template) {
+            if ($template != null) {
                 $template->update(['name' => $name, 'description' => $description]);
                 $template->update(['name' => $name, 'description' => $description, 'query' => $query]);
                 $this->saveParameters($data, $template);
@@ -111,7 +112,7 @@ class TemplateDashboardController extends Controller
     {
         $existingParams = $template->getParameters();
 
-        if (null != $existingParams && count($existingParams) > count($data)) {
+        if ($existingParams != null && count($existingParams) > count($data)) {
             $ids = array_map(function ($values) {
                 $values = array_values($values);
 
@@ -137,26 +138,26 @@ class TemplateDashboardController extends Controller
             $values = array_values($values);
 
             $id = intval($values[0]);
-            if (null != $id && $id > 0) {
+            if ($id != null && $id > 0) {
                 $existingPar = (new \App\Parameter())->find($id);
-                if (null != $existingPar) {
+                if ($existingPar != null) {
                     $existingPar->update([
-                        'name' => $values[1],
+                        'name'      => $values[1],
                         'type_name' => $values[2],
-                        'table' => $values[3],
-                        'column' => $values[4],
+                        'table'     => $values[3],
+                        'column'    => $values[4],
                     ]);
                     Log::debug('not null, updating');
                     continue;
                 }
             } else {
                 $parameter = new Parameter([
-                    'id' => $values[0],
+                    'id'          => $values[0],
                     'template_id' => $template->id,
-                    'name' => $values[1],
-                    'type_name' => $values[2],
-                    'table' => $values[3],
-                    'column' => $values[4],
+                    'name'        => $values[1],
+                    'type_name'   => $values[2],
+                    'table'       => $values[3],
+                    'column'      => $values[4],
                 ]);
 
                 Log::debug(json_encode($parameter));
@@ -172,7 +173,7 @@ class TemplateDashboardController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name'  => 'required',
             'query' => 'required',
         ]);
 
@@ -231,7 +232,7 @@ class TemplateDashboardController extends Controller
     public function getParameters($templateID)
     {
         $template = (new \App\Template())->find($templateID);
-        if (null == $template) {
+        if ($template == null) {
             return [];
         }
 

@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Services\Canvas;
-
 
 use App\Repository\Eloquent\StudentRepository;
 use Illuminate\Http\RedirectResponse;
@@ -31,10 +31,8 @@ class CanvasAuthenticator
         string $canvasUserId,
         string $firstName,
         string $lastName
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $student = $this->studentRepository->findByEmailOrCanvasId($email, $canvasUserId);
-
 
         if ($student === null) {
             session()->put('canvasRegistrationData', [
@@ -65,7 +63,6 @@ class CanvasAuthenticator
         }
 
         if ($student->canvas_user_id !== $canvasUserId) {
-
             Auth::logout();
 
             return $this->redirector->route('login')->with('error',
@@ -85,9 +82,5 @@ class CanvasAuthenticator
             return $this->redirector->route($route)->with('success',
                 __('Je bent successvol via Canvas ingelogd.'));
         }
-
-
     }
-
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Exceptions\UnexpectedUser;
@@ -29,6 +31,6 @@ class CurrentUserResolver
             return $student;
         }
 
-        throw new UnexpectedUser('Expected instance of Student::class, instead received ' . \get_class($student));
+        throw new UnexpectedUser('Expected instance of Student::class, instead received '.\get_class($student));
     }
 }

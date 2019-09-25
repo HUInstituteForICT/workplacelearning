@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use App\Exceptions\UnexpectedUser;
@@ -32,7 +34,6 @@ class RequiresTeacherLevel
      *
      * @param Request $request
      *
-     * @param Closure $next
      * @return RedirectResponse|mixed
      */
     public function handle($request, Closure $next)

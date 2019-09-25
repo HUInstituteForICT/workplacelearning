@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Interfaces\HasLabelProperty;
@@ -17,11 +19,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property \App\Cohort|null                                                       $cohort
  * @property \App\EducationProgram|null                                             $educationProgram
  * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[] $learningActivityActing
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence whereCompetenceId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence whereCompetenceLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence whereEducationprogramId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Competence query()

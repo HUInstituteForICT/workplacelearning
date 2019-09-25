@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
-
 
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\StudentRepository;
@@ -11,7 +11,6 @@ use App\Student;
 
 class DeleteStudent extends Controller
 {
-
     /**
      * @var StudentRepository
      */

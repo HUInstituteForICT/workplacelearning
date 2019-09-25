@@ -1,14 +1,15 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('./resources')
-    ->exclude('./storage')
-    ->exclude('./vendor')
-    ->exclude('./node_modules')
+    ->exclude('resources/')
+    ->exclude('storage/')
+    ->exclude('vendor/')
+    ->exclude('node_modules/')
     ->in(__DIR__)
 ;
 
 return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2'                        => true,
         '@Symfony'                     => true,
@@ -25,6 +26,7 @@ return PhpCsFixer\Config::create()
             'align_double_arrow' => true,
             'align_equals'       => false,
         ],
+        'declare_strict_types'          => true,
     ])
     ->setFinder($finder)
 ;

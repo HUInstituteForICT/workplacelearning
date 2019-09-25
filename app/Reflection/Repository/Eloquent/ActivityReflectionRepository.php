@@ -1,16 +1,13 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Reflection\Repository\Eloquent;
 
-
 use App\Reflection\Models\ActivityReflection;
-use App\Reflection\Models\ActivityReflectionField;
-use App\Reflection\Repository\Eloquent\ActivityReflectionFieldRepository;
 
 class ActivityReflectionRepository
 {
-
     /**
      * @var ActivityReflectionFieldRepository
      */
@@ -33,7 +30,7 @@ class ActivityReflectionRepository
 
     public function delete(ActivityReflection $activityReflection): bool
     {
-        foreach($activityReflection->fields as $field) {
+        foreach ($activityReflection->fields as $field) {
             $this->reflectionFieldRepository->delete($field);
         }
 
@@ -42,6 +39,7 @@ class ActivityReflectionRepository
 
     /**
      * @param int[] $ids
+     *
      * @return \App\Reflection\Models\ActivityReflection[]
      */
     public function getMany(array $ids): array

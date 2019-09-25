@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Interfaces;
 
 use App\WorkplaceLearningPeriod;
@@ -13,6 +15,4 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 interface LearningActivityInterface
 {
     public function workplaceLearningPeriod(): BelongsTo;
-
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Carbon\Carbon;
@@ -20,12 +22,14 @@ use Illuminate\Support\Str;
  * @property string                                                        $time_type
  * @property \Illuminate\Database\Eloquent\Collection|\App\AnalysisChart[] $charts
  * @property mixed                                                         $data
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereCacheDuration($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereQuery($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis whereTypeTime($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Analysis query()

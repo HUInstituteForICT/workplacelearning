@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tips\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -13,11 +15,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $rangeEnd
  * @property Tip $tip
  * @property int $tip_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Moment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Moment whereRangeEnd($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Moment whereRangeStart($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Moment whereTipId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Moment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Moment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\Moment query()

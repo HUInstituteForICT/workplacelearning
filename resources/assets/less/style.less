@@ -426,6 +426,7 @@ a.nav-tile {
     span {
       display: block;
       width: 150px;
+      max-width: 100%;
       border-radius: 4px;
       color: @hu-white;
       background-color: @hu-blue;
@@ -433,13 +434,17 @@ a.nav-tile {
       padding: 8px;
       text-align: center;
       transition: 300ms all ease-in-out;
-      word-break: break-all;
+      word-break: break-word;
     }
 
     span.new {
       background-color: @hu-green;
       transition: 300ms all ease-in-out;
     }
+  }
+
+  input, select {
+    max-width: 100%;
   }
 
   input:checked + span {
@@ -844,4 +849,8 @@ a.nav-tile {
   display: inline-block;
   width: 40px;
   height: 40px;
+}
+
+div[class*=' styles_modalCenter'].panel {
+  margin: auto;
 }

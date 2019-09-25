@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Student;
 use App\Tips\Models\Tip;
 use App\Tips\Services\TipManager;

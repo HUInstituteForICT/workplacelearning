@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -20,11 +22,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string             $label
  * @property mixed              $x_label
  * @property mixed              $y_label
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart whereAnalysisId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart whereLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart whereTypeId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AnalysisChart query()

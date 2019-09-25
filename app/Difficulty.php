@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,9 +13,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string                                                                    $difficulty_label
  * @property int                                                                       $difficulty_id
  * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Difficulty whereDifficultyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Difficulty whereDifficultyLabel($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Difficulty newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Difficulty newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Difficulty query()

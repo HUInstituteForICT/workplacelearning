@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\LearningActivityActing;
 use Illuminate\Database\Migrations\Migration;
 
@@ -16,9 +18,9 @@ class MoveEvidenceFromLAAToEvidenceTable extends Migration
 
         $activities->each(function (LearningActivityActing $learningActivityActing) {
             $learningActivityActing->evidence()->create([
-                'filename' => $learningActivityActing->evidence_filename,
+                'filename'      => $learningActivityActing->evidence_filename,
                 'disk_filename' => $learningActivityActing->evidence_disk_filename,
-                'mime' => $learningActivityActing->evidence_mime,
+                'mime'          => $learningActivityActing->evidence_mime,
             ]);
         });
     }

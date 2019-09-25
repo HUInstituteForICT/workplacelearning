@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\Tips\Statistics\Resultable;
 
@@ -12,8 +12,10 @@ interface PredefinedStatisticInterface
     public const PRODUCING_TYPE = 'Producing';
 
     public function getName(): string;
-    public function getResultDescription(): string;
-    public function calculate(): Resultable;
-    public function getEducationProgramType(): string;
 
+    public function getResultDescription(): string;
+
+    public function calculate(): Resultable;
+
+    public function getEducationProgramType(): string;
 }

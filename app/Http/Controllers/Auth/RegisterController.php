@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\EducationProgram;
@@ -51,19 +53,16 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'studentnr' => 'required|digits:7|unique:student',
             'firstname' => 'required|max:255|min:3',
-            'lastname' => 'required|max:255|min:3',
-            'gender' => 'required|in:male,female',
-            'email' => 'required|email|max:255|unique:student',
-            'password' => 'required|min:8|confirmed',
-            'secret' => 'required|in:ICTstage2016,Stage2017,Stage2018,Stage2019,Stage2020',
+            'lastname'  => 'required|max:255|min:3',
+            'gender'    => 'required|in:male,female',
+            'email'     => 'required|email|max:255|unique:student',
+            'password'  => 'required|min:8|confirmed',
+            'secret'    => 'required|in:ICTstage2016,Stage2017,Stage2018,Stage2019,Stage2020',
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
-     *
-     *
-     * @return Student
      */
     protected function create(array $data): Student
     {
@@ -74,21 +73,17 @@ class RegisterController extends Controller
 
         /** @var Student $student */
         $student = Student::create([
-            'studentnr' => $data['studentnr'],
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'ep_id' => $data['education'],
-            'pw_hash' => bcrypt($data['password']),
-            'gender' => strtoupper(substr($data['gender'], 0, 1)),
-            //'birthdate'        => $data['birthdate'],     // Deprecated
-            'email' => $data['email'],
-            //'phonenr'          => $data['phone'],         // Deprecated
-            'userlevel' => 0,
+            'studentnr'        => $data['studentnr'],
+            'firstname'        => $data['firstname'],
+            'lastname'         => $data['lastname'],
+            'ep_id'            => $data['education'],
+            'pw_hash'          => bcrypt($data['password']),
+            'gender'           => strtoupper(substr($data['gender'], 0, 1)),
+            'email'            => $data['email'],
+            'userlevel'        => 0,
             'registrationdate' => date('Y-m-d H:i:s'),
-            //'answer'            => $data['answer'],       // Deprecated,
-            'locale' => Session::get('locale', 'nl'),
+            'locale'           => Session::get('locale', 'nl'),
         ]);
-
 
         // todo re-enable once we're on a proper hosting
         // $student->sendEmailVerificationNotification();

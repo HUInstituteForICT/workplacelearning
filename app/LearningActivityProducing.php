@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Events\LearningActivityProducingCreated;
@@ -12,29 +14,30 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * App\LearningActivityProducing.
  *
- * @property int $lap_id
- * @property int $chain_id
- * @property string $description
- * @property Chain $chain
- * @property int $wplp_id
- * @property WorkplaceLearningPeriod $workplaceLearningPeriod
- * @property float $duration
- * @property string $res_material_id
- * @property string $res_material_detail
- * @property Category $category
- * @property Difficulty $difficulty
- * @property Status $status
- * @property ResourceMaterial $resourceMaterial
- * @property ResourcePerson $resourcePerson
- * @property int $status_id
- * @property Carbon $date
- * @property Feedback $feedback
- * @property int|null $prev_lap_id
- * @property int|null $res_person_id
- * @property int $category_id
- * @property int $difficulty_id
- * @property \App\LearningActivityProducing $nextLearningActivityProducing
+ * @property int                                 $lap_id
+ * @property int                                 $chain_id
+ * @property string                              $description
+ * @property Chain                               $chain
+ * @property int                                 $wplp_id
+ * @property WorkplaceLearningPeriod             $workplaceLearningPeriod
+ * @property float                               $duration
+ * @property string                              $res_material_id
+ * @property string                              $res_material_detail
+ * @property Category                            $category
+ * @property Difficulty                          $difficulty
+ * @property Status                              $status
+ * @property ResourceMaterial                    $resourceMaterial
+ * @property ResourcePerson                      $resourcePerson
+ * @property int                                 $status_id
+ * @property Carbon                              $date
+ * @property Feedback                            $feedback
+ * @property int|null                            $prev_lap_id
+ * @property int|null                            $res_person_id
+ * @property int                                 $category_id
+ * @property int                                 $difficulty_id
+ * @property \App\LearningActivityProducing      $nextLearningActivityProducing
  * @property \App\LearningActivityProducing|null $previousLearningActivityProducing
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereChainId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereDate($value)
@@ -49,6 +52,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing whereWplpId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing query()
@@ -150,7 +154,7 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
     // Note: DND, object comparison
     public function __toString()
     {
-        return $this->lap_id . '';
+        return $this->lap_id.'';
     }
 
     public function chain(): BelongsTo

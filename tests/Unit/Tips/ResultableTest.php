@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class ResultableTest extends \Tests\TestCase
 {
     public function testStatisticResult(): void

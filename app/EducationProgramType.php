@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (EducationProgram.php) was created on 01/20/2017 at 10:44.
  * (C) Max Cassee
@@ -16,9 +18,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int                                                              $eptype_id
  * @property string                                                           $eptype_name       Name of the program type
  * @property \Illuminate\Database\Eloquent\Collection|\App\EducationProgram[] $educationPrograms
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgramType whereEptypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgramType whereEptypeName($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgramType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgramType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\EducationProgramType query()

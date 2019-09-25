@@ -1,26 +1,22 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Reflection\Services;
 
-
-use App\Reflection\Models\ActivityReflection;
 use App\Reflection\Models\ActivityReflectionField;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Style\Font;
 
 class Exporter
 {
-
     /**
      * @param \App\Reflection\Models\ActivityReflection[] $reflections
-     * @return PhpWord
      */
     public function exportReflections(array $reflections): PhpWord
     {
         $document = $this->getNewDocument();
         $section = $document->addSection();
-
 
         $document->addTitleStyle(1, ['size' => 16, 'bold' => true]);
 
@@ -28,21 +24,19 @@ class Exporter
         $fieldNameStyle->setBold();
 
         foreach ($reflections as $reflection) {
-            $section->addTitle(__('reflection.reflection') . ': ' . $reflection->reflection_type);
+            $section->addTitle(__('reflection.reflection').': '.$reflection->reflection_type);
             $section->addText(strftime('%d-%m-%Y', $reflection->learningActivity->date->getTimestamp()));
             $section->addText('', [], ['borderBottomSize' => 6]);
             $section->addTextBreak();
 
             /** @var ActivityReflectionField $field */
             foreach ($reflection->fields as $field) {
-                $section->addText(ucfirst(__('reflection.fields.' . strtolower($reflection->reflection_type) . '.' . $field->name)), $fieldNameStyle);
+                $section->addText(ucfirst(__('reflection.fields.'.strtolower($reflection->reflection_type).'.'.$field->name)), $fieldNameStyle);
                 $section->addTextBreak();
                 $section->addText($this->processText($field->value));
                 $section->addTextBreak(2);
             }
             $section->addTextBreak(3);
-
-
         }
 
         return $document;
@@ -59,6 +53,4 @@ class Exporter
     {
         return new PhpWord();
     }
-
-
 }

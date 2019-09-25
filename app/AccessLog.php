@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $OS
  * @property string      $url
  * @property string      $timestamp
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AccessLog whereAccessId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AccessLog whereOS($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AccessLog whereScreenHeight($value)
@@ -28,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AccessLog whereUserAgent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AccessLog whereUserIp($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AccessLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AccessLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\AccessLog query()

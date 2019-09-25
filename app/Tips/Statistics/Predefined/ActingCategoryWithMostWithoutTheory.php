@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\Timeslot;
 use App\Tips\Statistics\InvalidStatisticResult;
@@ -10,11 +10,10 @@ use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
 
 /**
- * In this class the Category represents a timeslot (acting's type of categories)
+ * In this class the Category represents a timeslot (acting's type of categories).
  */
 class ActingCategoryWithMostWithoutTheory extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Category with the most activities without theory';
@@ -28,7 +27,6 @@ class ActingCategoryWithMostWithoutTheory extends BasePredefinedStatistic
     public function calculate(): Resultable
     {
         $categoryData = $this->wherePeriod(
-
             $this->learningPeriod->learningActivityActing()
                 ->selectRaw('timeslot_id, COUNT(timeslot_id) as count')
                 ->whereNull('res_material_id')

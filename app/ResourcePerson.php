@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (Samenwerkingsverband.php) was created on 06/06/2016 at 15:22.
  * (C) Max Cassee
@@ -16,21 +18,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Class ResourcePerson.
  *
- * @property int    $rp_id
- * @property string $person_label
- * @property int    $wplp_id
- * @property int    $ep_id
+ * @property int                            $rp_id
+ * @property string                         $person_label
+ * @property int                            $wplp_id
+ * @property int                            $ep_id
  * @property int|null                       $cohort_id
  * @property \App\Cohort|null               $cohort
  * @property \App\EducationProgram|null     $educationProgram
  * @property \App\LearningActivityProducing $learningActivityProducing
  * @property \App\WorkplaceLearningPeriod   $workplaceLearningPeriod
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereEpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson wherePersonLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereRpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereWplpId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson query()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -14,12 +16,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int                             $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\DashboardChart whereChartId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\DashboardChart whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\DashboardChart whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\DashboardChart wherePosition($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\DashboardChart whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\DashboardChart newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\DashboardChart newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\DashboardChart query()

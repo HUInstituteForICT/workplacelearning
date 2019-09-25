@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (ProducingAnalysisController.php) was created on 08/31/2016 at 14:15.
  * (C) Max Cassee

@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tips\Statistics\Predefined;
 
-
 class PredefinedStatisticsProvider
 {
-
     public static function getPredefinedStatisticClassNames(): array
     {
         return [
@@ -20,7 +19,7 @@ class PredefinedStatisticsProvider
             LeastUsedResourcePerson::class,
             MostUsedCategory::class,
             ActingCategoryWithMostWithoutTheory::class,
-            ProducingCategoryWithMostWithoutTheory::class
+            ProducingCategoryWithMostWithoutTheory::class,
         ];
     }
 }

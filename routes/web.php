@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 use App\Http\Middleware\RequireActiveInternship;
 use App\Http\Middleware\RequiresAdminLevel;
@@ -10,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes(['verify' => true]);
-
 
 Route::post('/canvas', 'CanvasLTIController');
 Route::match(['get', 'post'], '/canvas/register',
@@ -23,16 +23,12 @@ Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')-
 // General user routes
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth');
 
-
 Route::middleware(['auth', 'verified'])->group(static function (): void {
-
-
     // Routes for non-students
     Route::middleware(RequiresTeacherLevel::class)->group(static function (): void {
         Route::get('/education-programs',
             'EducationProgramsController@index')->name('education-programs'); // Entry to Education programs management
         Route::view('/manage/tips', 'pages.tips.tips-app')->name('tips-app'); // Entry to tips management
-
 
         Route::group(['prefix' => '/dashboard'], function (): void {
             Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
@@ -56,7 +52,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
             Route::get('/chart_details/{id}/{label}', function ($id, $label) {
                 $label = str_replace('_', ' ', $label);
-                $idLabel = $id . ';' . $label;
+                $idLabel = $id.';'.$label;
 
                 return View::make('pages.analytics.dashboard.chart_details', compact('label', 'idLabel'));
             });
@@ -96,7 +92,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 Route::get('param_html/{id?}', 'TemplateDashboardController@getHTML')->name('template.param-html');
             });
         }); // Routes of the templates used in analytics
-
 
         Route::prefix('/api/')->group(static function (): void {
             Route::resource('tip-coupled-statistics', 'TipApi\TipCoupledStatisticController');
@@ -154,16 +149,19 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         }); // Pulls branch -- often doesn't work. Only necessary due to VPN situation on HU network
     });
 
-
     Route::middleware(RequiresAdminLevel::class)
         ->prefix('admin')
         ->namespace('Admin')
         ->group(static function (): void {
             Route::get('/', 'Dashboard')->name('admin-dashboard');
-            Route::match(['GET', 'POST'],'/student/{student}', 'StudentDetails')->name('admin-student-details');
+            Route::match(['GET', 'POST'], '/student/{student}', 'StudentDetails')->name('admin-student-details');
+
+            Route::match(['GET', 'POST'], '/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/edit',
+                'EditWorkplaceLearningPeriod')->name('admin-student-edit-wplp');
 
             Route::get('/student/{student}/delete', 'DeleteStudent')->name('admin-student-delete');
-            Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete', 'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
+            Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete',
+                'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
         });
 
     // Student routes
@@ -172,13 +170,10 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     Route::get('/download/activity-export-doc/{fileName}',
         'ActivityExportController@downloadWordExport')->name('docx-export-download');
 
-
     Route::post('/log', 'LogController@log'); // Logs info of the user's device
     Route::post('/reactlog', 'ReactLogController@store'); // Logs errors occurring in React
 
-
     Route::middleware('usernotifications')->group(static function (): void {
-
         // Actions on the profile of a student
         Route::get('profiel', 'ProfileController@show')->name('profile');
         Route::post('profiel/update', 'ProfileController@update');
@@ -199,7 +194,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 'ActingWorkplaceLearningController@updateLearningGoals')->name('learninggoals-update'); // Acting learning goals
         });
 
-
         Route::middleware('taskTypeRedirect')->group(static function (): void {
             Route::get('/', 'HomeController@showHome')->name('default');
             Route::get('home', 'HomeController@showHome')->name('home');
@@ -209,7 +203,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
             Route::get('period/edit/{id}', 'ProducingWorkplaceLearningController@edit')->name('period-edit');
             Route::get('period/create', 'ProducingWorkplaceLearningController@show')->name('period');
         });
-
 
         Route::prefix('acting')->group(static function (): void {
             Route::get('home', 'HomeController@showActingTemplate')->name('home-acting');
@@ -234,9 +227,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 ->middleware(['can:update,workplaceLearningPeriod'])
                 ->name('period-acting-update');
 
-
             Route::middleware(RequireActiveInternship::class)->group(static function (): void {
-
                 Route::get('/activities/export', 'Acting\Export\WordExport')->name('acting-activities-word-export');
                 Route::post('/activities/export/mail',
                     'Acting\Export\WordMailExport')->name('mail-acting-activities-word-export')->middleware('throttle:3,1');
@@ -262,10 +253,9 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 Route::get('render-reflection-type/{type}',
                     'Reflection\RenderCreateForm')->name('render-reflection-type');
 
-
                 Route::get('competence-description/{competenceDescription}',
                     static function (App\CompetenceDescription $competenceDescription) {
-                        return response()->download(storage_path('app/' . $competenceDescription->file_name),
+                        return response()->download(storage_path('app/'.$competenceDescription->file_name),
                             'competence-description.pdf');
                     })->name('competence-description');
 
@@ -290,8 +280,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                         ->middleware('can:delete,learningActivityActing')
                         ->name('process-acting-delete');
                 }); // Actions relating to acting activities
-
-
             });
         });
 
@@ -314,9 +302,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 ->middleware(['can:update,workplaceLearningPeriod'])
                 ->name('period-producing-update');
 
-
             Route::middleware(RequireActiveInternship::class)->group(static function (): void {
-
                 Route::get('progress', 'ProducingActivityController@progress')->name('progress-producing');
 
                 Route::get('report/export',
@@ -325,7 +311,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 Route::get('analysis',
                     'ProducingAnalysisController@showChoiceScreen')->name('analysis-producing-choice');
                 Route::get('analysis/{year}/{month}', 'ProducingAnalysisController@showDetail')
-                    ->where(['year' => '^(20)(\d{2})|all$', 'month' => '^([0-1]{1}\d{1})|all$',])
+                    ->where(['year' => '^(20)(\d{2})|all$', 'month' => '^([0-1]{1}\d{1})|all$'])
                     ->name('analysis-producing-detail');
 
                 Route::get('feedback/{feedback}', 'FeedbackController@show')->name('feedback-producing');
@@ -359,7 +345,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 }); // Actions relating to producing activities
             });
         });
-
 
         Route::get('bugreport', 'HomeController@showBugReport')->name('bugreport');
         Route::post('bugreport/create', 'HomeController@createBugReport')->name('bugreport-create');

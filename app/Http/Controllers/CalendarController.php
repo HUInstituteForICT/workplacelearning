@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (CalendarController.php) was created on 06/19/2016 at 16:01.
  * (C) Max Cassee
@@ -8,7 +10,6 @@
 namespace app\Http\Controllers;
 
 use App\Deadline;
-use Illuminate\Support\Facades\Lang;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -40,14 +41,14 @@ class CalendarController extends Controller
         $deadline->dl_datetime = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
         $deadline->save();
 
-        return redirect()->route('deadline')->with('success', Lang::get('general.calendar-deadline-saved'));
+        return redirect()->route('deadline')->with('success', __('general.calendar-deadline-saved'));
     }
 
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required|exists:deadline,dl_id',
-            'action' => 'required|in:submit,delete',
+            'id'           => 'required|exists:deadline,dl_id',
+            'action'       => 'required|in:submit,delete',
             'nameDeadline' => 'required|max:255|min:3',
             'dateDeadline' => 'required|date_format:d-m-Y H:i',
         ]);
@@ -59,17 +60,17 @@ class CalendarController extends Controller
 
         $deadline = Deadline::find($request['id']);
         if (is_null($deadline) || $deadline->student_id != Auth::user()->student_id) {
-            return redirect('deadline')->withErrors(['error', Lang::get('general.calendar-deadline-permission')]);
-        } elseif ('submit' === $request->input('action')) {
+            return redirect('deadline')->withErrors(['error', __('general.calendar-deadline-permission')]);
+        } elseif ($request->input('action') === 'submit') {
             $deadline->dl_value = $request['nameDeadline'];
             $deadline->dl_datetime = date('Y-m-d H:i:s', strtotime($request['dateDeadline']));
             $deadline->save();
-            $msg = Lang::get('general.calendar-deadline-edited');
-        } elseif ('delete' === $request->input('action')) {
+            $msg = __('general.calendar-deadline-edited');
+        } elseif ($request->input('action') === 'delete') {
             $deadline->delete();
-            $msg = Lang::get('general.calendar-deadline-removed');
+            $msg = __('general.calendar-deadline-removed');
         } else {
-            return redirect()->route('deadline')->withErrors(['error', Lang::get('errors.occurred')]);
+            return redirect()->route('deadline')->withErrors(['error', __('errors.occurred')]);
         }
 
         return redirect()->route('deadline')->with('success', $msg);

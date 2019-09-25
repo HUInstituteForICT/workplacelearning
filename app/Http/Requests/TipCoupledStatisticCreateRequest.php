@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,10 +26,10 @@ class TipCoupledStatisticCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'statistic_id' => 'required',
-            'tip_id' => 'required',
+            'statistic_id'       => 'required',
+            'tip_id'             => 'required',
             'comparisonOperator' => 'required',
-            'threshold' => 'required|numeric',
+            'threshold'          => 'required|numeric',
         ];
     }
 }

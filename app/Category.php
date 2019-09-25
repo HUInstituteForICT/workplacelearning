@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (Internship.php) was created on 06/06/2016 at 15:22.
  * (C) Max Cassee
@@ -26,12 +28,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \App\EducationProgram|null     $educationProgram
  * @property \App\LearningActivityProducing $learningactivitiesproducing
  * @property \App\WorkplaceLearningPeriod   $workplaceLearningPeriod
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereCategoryLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereEpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category whereWplpId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Category query()

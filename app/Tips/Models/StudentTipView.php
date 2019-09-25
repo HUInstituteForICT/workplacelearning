@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tips\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,9 +11,11 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $student_id
  * @property int $tip_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StudentTipView whereStudentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StudentTipView whereTipId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StudentTipView newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StudentTipView newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StudentTipView query()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Chain;
 
 class SaveRequest extends \Illuminate\Foundation\Http\FormRequest
@@ -12,7 +14,7 @@ class SaveRequest extends \Illuminate\Foundation\Http\FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'max:255|min:1',
+            'name'   => 'max:255|min:1',
             'status' => 'digits_between:0,1',
         ];
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -20,7 +22,7 @@ class BugReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'feedback_subject' => 'required|max:40|min:3',
+            'feedback_subject'     => 'required|max:40|min:3',
             'feedback_description' => 'required|max:800|min:5',
         ];
     }

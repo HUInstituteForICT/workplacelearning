@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Reflection\Types;
-
 
 use App\Reflection\Interfaces\ReflectionType;
 
@@ -13,7 +13,7 @@ class Starr implements ReflectionType
     private static $translationNamespace = 'starr';
 
     /**
-     * Get the fields of the reflection type and their default values
+     * Get the fields of the reflection type and their default values.
      */
     public function getFields(): array
     {

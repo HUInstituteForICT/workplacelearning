@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "01b511acc2909076fbe08dad21b82a2b",
+    "content-hash": "83a933de1437efd9f0b6c7eb5d70b99b",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1131,6 +1131,63 @@
             ],
             "description": "Update helper",
             "time": "2019-07-29T11:03:54+00:00"
+        },
+        {
+            "name": "kyslik/column-sortable",
+            "version": "5.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Kyslik/column-sortable.git",
+                "reference": "db597b886cefc0cadb21b0fa5c9350fc44577bfb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Kyslik/column-sortable/zipball/db597b886cefc0cadb21b0fa5c9350fc44577bfb",
+                "reference": "db597b886cefc0cadb21b0fa5c9350fc44577bfb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "5.5.*|5.6.*|5.7.*",
+                "illuminate/support": "5.5.*|5.6.*|5.7.*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.5.*|3.6.*|3.7.*",
+                "phpunit/phpunit": "^6.0|^7.0"
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kyslik\\ColumnSortable\\ColumnSortableServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kyslik\\ColumnSortable\\": "src/ColumnSortable/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Kiesel",
+                    "email": "martin.kiesel@gmail.com",
+                    "role": "Developer and maintainer"
+                }
+            ],
+            "description": "Package for handling column sorting in Laravel 5.x",
+            "keywords": [
+                "column",
+                "laravel",
+                "sort",
+                "sortable",
+                "sorting"
+            ],
+            "time": "2018-09-04T15:41:33+00:00"
         },
         {
             "name": "laravel/framework",
@@ -4712,61 +4769,6 @@
             "time": "2019-09-08T09:56:38+00:00"
         },
         {
-            "name": "barryvdh/laravel-translation-manager",
-            "version": "v0.5.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/barryvdh/laravel-translation-manager.git",
-                "reference": "cab405d30c235e75d87b09045dab46fec7822e8d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-translation-manager/zipball/cab405d30c235e75d87b09045dab46fec7822e8d",
-                "reference": "cab405d30c235e75d87b09045dab46fec7822e8d",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^5.5|^6",
-                "illuminate/translation": "^5.5|^6",
-                "php": ">=7",
-                "symfony/finder": "^3|^4",
-                "tanmuhittin/laravel-google-translate": "^1.0.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.5-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Barryvdh\\TranslationManager\\ManagerServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Barryvdh\\TranslationManager\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "Manage Laravel Translations",
-            "keywords": [
-                "laravel",
-                "translations",
-                "translator"
-            ],
-            "time": "2019-09-11T07:31:15+00:00"
-        },
-        {
             "name": "barryvdh/reflection-docblock",
             "version": "v2.0.6",
             "source": {
@@ -7349,12 +7351,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "ea693fa060702164985511acc3ceb5389c9ac761"
+                "reference": "99b60dd3718d19e6627b6dfc0e5a99dbce1b915d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ea693fa060702164985511acc3ceb5389c9ac761",
-                "reference": "ea693fa060702164985511acc3ceb5389c9ac761",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/99b60dd3718d19e6627b6dfc0e5a99dbce1b915d",
+                "reference": "99b60dd3718d19e6627b6dfc0e5a99dbce1b915d",
                 "shasum": ""
             },
             "conflict": {
@@ -7465,6 +7467,7 @@
                 "spoonity/tcpdf": "<6.2.22",
                 "squizlabs/php_codesniffer": ">=1,<2.8.1|>=3,<3.0.1",
                 "stormpath/sdk": ">=0,<9.9.99",
+                "studio-42/elfinder": "<2.1.48",
                 "swiftmailer/swiftmailer": ">=4,<5.4.5",
                 "sylius/admin-bundle": ">=1,<1.0.17|>=1.1,<1.1.9|>=1.2,<1.2.2",
                 "sylius/grid": ">=1,<1.1.19|>=1.2,<1.2.18|>=1.3,<1.3.13|>=1.4,<1.4.5|>=1.5,<1.5.1",
@@ -7556,7 +7559,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-07-18T15:17:58+00:00"
+            "time": "2019-09-23T15:43:18+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -8263,55 +8266,6 @@
             "time": "2015-10-13T18:44:15+00:00"
         },
         {
-            "name": "stichoza/google-translate-php",
-            "version": "v4.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Stichoza/google-translate-php.git",
-                "reference": "6109b1e0035c6694aac38c2f9e119b6264c2bfb1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Stichoza/google-translate-php/zipball/6109b1e0035c6694aac38c2f9e119b6264c2bfb1",
-                "reference": "6109b1e0035c6694aac38c2f9e119b6264c2bfb1",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "guzzlehttp/guzzle": "~6.0",
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Stichoza\\GoogleTranslate\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Levan Velijanashvili",
-                    "email": "me@stichoza.com"
-                }
-            ],
-            "description": "Free Google Translate API PHP Package",
-            "homepage": "http://github.com/Stichoza/google-translate-php",
-            "keywords": [
-                "google",
-                "php",
-                "translate",
-                "translator"
-            ],
-            "time": "2019-07-22T22:28:03+00:00"
-        },
-        {
             "name": "symfony/filesystem",
             "version": "v4.3.4",
             "source": {
@@ -8360,54 +8314,6 @@
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
             "time": "2019-08-20T14:07:54+00:00"
-        },
-        {
-            "name": "tanmuhittin/laravel-google-translate",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tanmuhittin/laravel-google-translate.git",
-                "reference": "83275a6f32090dd54fe7d33f6498243943b5961c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tanmuhittin/laravel-google-translate/zipball/83275a6f32090dd54fe7d33f6498243943b5961c",
-                "reference": "83275a6f32090dd54fe7d33f6498243943b5961c",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/console": ">=5.1",
-                "illuminate/support": "^5.5|^6",
-                "illuminate/translation": "^5.5|^6",
-                "php": ">=7.0.0",
-                "stichoza/google-translate-php": "^4.0"
-            },
-            "require-dev": {
-                "ext-json": "*",
-                "phpunit/phpunit": "^8.3@dev"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Tanmuhittin\\LaravelGoogleTranslate\\LaravelGoogleTranslateServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Tanmuhittin\\LaravelGoogleTranslate\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Muhittin Tan",
-                    "email": "tanmuhittin@gmail.com"
-                }
-            ],
-            "description": "Translate translation files to other languages using google translate api",
-            "time": "2019-09-07T19:26:02+00:00"
         },
         {
             "name": "theseer/tokenizer",

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Category;
@@ -27,7 +29,7 @@ class LAPUpdater
     {
         $learningActivityProducing->date = Carbon::parse($data['datum'])->format('Y-m-d');
         $learningActivityProducing->description = $data['omschrijving'];
-        $learningActivityProducing->duration = 'x' !== $data['aantaluren'] ? $data['aantaluren'] : round(
+        $learningActivityProducing->duration = $data['aantaluren'] !== 'x' ? $data['aantaluren'] : round(
             ((int) $data['aantaluren_custom']) / 60,
             2
         );
@@ -62,11 +64,11 @@ class LAPUpdater
         $chainId = $data['chain_id'] ?? null;
 
         if ($chainId !== null) {
-            if (-1 === ((int) $chainId)) {
+            if (((int) $chainId) === -1) {
                 $learningActivityProducing->chain_id = null;
-            } elseif (-1 !== ((int) $chainId)) {
+            } elseif (((int) $chainId) !== -1) {
                 $chain = (new Chain())->find($chainId);
-                if (Chain::STATUS_FINISHED !== $chain->status) {
+                if ($chain->status !== Chain::STATUS_FINISHED) {
                     $this->chainManager->attachActivity($learningActivityProducing, $chain);
                 }
             }

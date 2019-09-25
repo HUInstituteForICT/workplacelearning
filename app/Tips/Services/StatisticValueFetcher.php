@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tips\Services;
 
 use App\Tips\Models\StatisticVariable;
@@ -26,7 +28,7 @@ class StatisticValueFetcher
 
     protected function applyPeriod(Builder $queryBuilder)
     {
-        if (null === $this->year || null === $this->month) {
+        if ($this->year === null || $this->month === null) {
             return $queryBuilder;
         }
 
@@ -36,11 +38,11 @@ class StatisticValueFetcher
     private function getQueryBuilder(string $educationProgramType): Builder
     {
         // Get the base query from the correct Model
-        if ('acting' === $educationProgramType) {
+        if ($educationProgramType === 'acting') {
             return $this->learningPeriod->learningActivityActing()->getBaseQuery();
         }
 
-        if ('producing' === $educationProgramType) {
+        if ($educationProgramType === 'producing') {
             return $this->learningPeriod->learningActivityProducing()->getBaseQuery();
         }
 
@@ -78,7 +80,7 @@ class StatisticValueFetcher
         $this->applyPeriod($builder);
 
         // Hours select can onle be used on a statistic variable
-        if ('hours' === $statisticVariable->selectType && 'producing' === $statisticVariable->type) {
+        if ($statisticVariable->selectType === 'hours' && $statisticVariable->type === 'producing') {
             return $builder->sum('duration');
         }
 

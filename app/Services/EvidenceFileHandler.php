@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Evidence;
@@ -31,9 +33,9 @@ class EvidenceFileHandler
         }
 
         return new Evidence([
-            'filename' => $evidenceFile->getClientOriginalName(),
+            'filename'      => $evidenceFile->getClientOriginalName(),
             'disk_filename' => $diskFileName,
-            'mime' => $evidenceFile->getClientMimeType(),
+            'mime'          => $evidenceFile->getClientMimeType(),
         ]);
     }
 

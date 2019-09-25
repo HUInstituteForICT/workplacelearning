@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Services\Canvas;
-
 
 use Illuminate\Http\Request;
 
 class OAuth1SignatureVerifier
 {
-
     /**
      * @var OAuth1SignatureBuilder
      */
@@ -43,6 +42,4 @@ class OAuth1SignatureVerifier
 
         return $this->signature === $receivedSignature;
     }
-
-
 }

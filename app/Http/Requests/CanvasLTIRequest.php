@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Http\Requests;
-
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,7 +11,7 @@ class CanvasLTIRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'oauth_consumer_key'               => 'in:' . config('canvas.consumer_key'),
+            'oauth_consumer_key'               => 'in:'.config('canvas.consumer_key'),
             'oauth_signature_method'           => 'required',
             'oauth_timestamp'                  => 'required',
             'oauth_nonce'                      => 'required',

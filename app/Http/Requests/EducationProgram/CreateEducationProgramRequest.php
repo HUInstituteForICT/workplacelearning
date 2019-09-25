@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\EducationProgram;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,7 +26,7 @@ class CreateEducationProgramRequest extends FormRequest
     public function rules()
     {
         return [
-            'ep_name' => 'required',
+            'ep_name'   => 'required',
             'eptype_id' => 'required|exists:educationprogramtype,eptype_id',
         ];
     }

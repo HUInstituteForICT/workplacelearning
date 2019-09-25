@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\TipApi;
 
 use App\Http\Controllers\Controller;
@@ -33,7 +35,7 @@ class TipCoupledStatisticController extends Controller
 
             if (!in_array($predefinedStatisticClassName,
                 PredefinedStatisticsProvider::getPredefinedStatisticClassNames(), true)) {
-                throw new \InvalidArgumentException($predefinedStatisticClassName . ' is not a predefined statistics class');
+                throw new \InvalidArgumentException($predefinedStatisticClassName.' is not a predefined statistics class');
             }
 
             $statistic = $statisticService->createPredefinedStatistic($predefinedStatisticClassName);

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: sivar
@@ -22,6 +24,6 @@ class NumberParameterType extends ParameterType
 
     public function getErrorMsg()
     {
-        return Lang::get('template.error.number');
+        return __('template.error.number');
     }
 }

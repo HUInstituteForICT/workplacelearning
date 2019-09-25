@@ -33,8 +33,8 @@ export default class ActivityProducingProcessTable extends React.Component {
             emailComment: "",
 
             emailAlert: null,
-            startDate: earliestDate,
-            endDate: latestDate,
+            startDate: earliestDate.toDate(),
+            endDate: latestDate.toDate(),
         };
 
         this.updateFilter = this.updateFilter.bind(this);
@@ -142,7 +142,8 @@ export default class ActivityProducingProcessTable extends React.Component {
                 return this.state.filters.chain.selectedRules.indexOf(activity.chain) > -1;
             })
             .filter((activity) => {
-                return moment(activity.date, "DD-MM-YYYY").isSameOrAfter(this.state.startDate) && moment(activity.date, "DD-MM-YYYY").isSameOrBefore(this.state.endDate)
+                return moment(activity.date, "DD-MM-YYYY").isSameOrAfter(this.state.startDate) &&
+                    moment(activity.date, "DD-MM-YYYY").isSameOrBefore(this.state.endDate)
             })
     }
 
@@ -227,7 +228,7 @@ export default class ActivityProducingProcessTable extends React.Component {
                         hoursCell = <td>{Lang.get('activity.minutes')}: {(statistics.totalHours * 60).toFixed(2)}</td>;
                     }
 
-                    return [<tr style={{backgroundColor: 'rgba(0,161,226, 0.45)', color: 'rgba(255,255,255)', fontWeight: 'bold'}}>
+                    return [<tr key={day} style={{backgroundColor: 'rgba(0,161,226, 0.45)', color: 'rgba(255,255,255)', fontWeight: 'bold'}}>
                         <td>{day}</td>
                         {hoursCell}
                         <td>{Lang.get('activity.difficulty')}: {statistics.difficulty}</td>
@@ -252,11 +253,11 @@ export default class ActivityProducingProcessTable extends React.Component {
                 <div className="date col-md-2">
                     <h4>{ Lang.get('react.date') }</h4>
                     <div>
-                        <strong>{Lang.get('react.startdate')}:</strong>
-                        <DatePicker className={"form-control"} selected={this.state.startDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({startDate: date})} />
-                        <br/>
-                        <strong>{Lang.get('react.enddate')}:</strong>
-                        <DatePicker className={"form-control"} selected={this.state.endDate} dateFormat="DD/MM/YYYY" onChange={date => this.setState({endDate: date})} />
+                        <strong>{Lang.get('react.startdate')}:</strong><br/>
+                        <DatePicker className={"form-control"} selected={this.state.startDate} dateFormat="dd/MM/yyyy" onChange={date => this.setState({startDate: date})} />
+                        <br/><br/>
+                        <strong>{Lang.get('react.enddate')}:</strong><br/>
+                        <DatePicker className={"form-control"} selected={this.state.endDate} dateFormat="dd/MM/yyyy" onChange={date => this.setState({endDate: date})} />
                     </div>
                     <div style={{clear: 'both'}}/>
                 </div>

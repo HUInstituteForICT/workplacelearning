@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\LearningGoal;
 use App\Tips\Statistics\InvalidStatisticResult;
@@ -11,7 +11,6 @@ use App\Tips\Statistics\StatisticCalculationResult;
 
 class LeastUsedLearningGoal extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Percentage the least used learning goal is used';

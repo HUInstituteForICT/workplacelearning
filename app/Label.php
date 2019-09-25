@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -12,11 +14,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string             $name
  * @property string             $type
  * @property \App\AnalysisChart $chart
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Label whereChartId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Label whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Label whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Label whereType($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Label newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Label newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Label query()

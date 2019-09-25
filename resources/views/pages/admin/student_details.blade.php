@@ -8,81 +8,93 @@
     /** @var Student $student */
     ?>
     <div class="container-fluid">
+        <a href="{{ route('admin-dashboard') }}">
+            Back to admin dashboard
+        </a>
+
+        <br/><br/>
         <div class="row">
             <!-- Profile Info -->
             <div class="col-md-4">
 
-                <div class="panel panel-default">
 
-                    <div class="panel-body">
-                        <h3>Details</h3>
+                @card
+                <h4>Details</h4>
 
-                        <div>
-                            <p>
-                                <strong>Studentnumber:</strong><br/>
-                                {{ $student->studentnr }}
+                <div>
+                    <p>
+                        <strong>Database ID:</strong><br/>
+                        {{ $student->student_id }}
+                    </p>
+                    <p>
+                        <strong>Student number:</strong><br/>
+                        {{ $student->studentnr }}
 
-                            </p>
-                            <p>
-                                <strong>Name: </strong><br/>
-                                {{ $student->firstname }}  {{ $student->lastname }}
-                            </p>
-                            <p>
-                                <strong>E-mail:</strong><br/>
-                                {{ $student->email }}
-                            </p>
+                    </p>
+                    <p>
+                        <strong>Name: </strong><br/>
+                        {{ $student->firstname }}  {{ $student->lastname }}
+                    </p>
+                    <p>
+                        <strong>E-mail:</strong><br/>
+                        {{ $student->email }}
+                    </p>
+                    <p>
+                        <strong>Registration date</strong><br/>
+                        {{ $student->registrationdate->toFormattedDateString() }}
+                    </p>
 
-                            <p>
-                                <strong>Canvas:</strong><br/>
-                                @if($student->isCoupledToCanvasAccount())
-                                    <span class="label label-success">Canvas attached</span>
-                                @else
-                                    <span class="label label-danger">No canvas</span>
-                                @endif
-                                @if($student->isRegisteredThroughCanvas())
-                                    <span class="label label-info">Registered through canvas</span>
-                                @else
-                                    <span class="label label-info">Normal registration</span>
-                                @endif
-                            </p>
-
-
-                            <hr/>
-
-
-                                {{ Form::open() }}
-
-                                <div class="form-group">
-                                    <label for="user_level">User level</label>
-                                    <br/>
-                                    <select class="select form-control" id="user_level" name="user_level">
-                                        <option value="student" @if($student->userlevel === 0) selected @endif>Student</option>
-                                        <option value="teacher" @if($student->userlevel === 1) selected @endif>Teacher</option>
-                                        <option value="admin" @if($student->userlevel === 2) selected @endif>Admin</option>
-                                    </select>
-
-                                    <br/>
-
-                                    <button class="btn btn-success">Apply user level</button>
-
-                                </div>
-
-                                {{ Form::close() }}
+                    <p>
+                        <strong>Canvas:</strong><br/>
+                        @if($student->isCoupledToCanvasAccount())
+                            <span class="label label-success">Canvas attached</span>
+                        @else
+                            <span class="label label-danger">No canvas</span>
+                        @endif
+                        @if($student->isRegisteredThroughCanvas())
+                            <span class="label label-info">Registered through canvas</span>
+                        @else
+                            <span class="label label-info">Normal registration</span>
+                        @endif
+                    </p>
 
 
-                            <hr/>
+                    <hr/>
 
-                            <p>
-                                @if($student->student_id !== Auth::user()->student_id)
-                                    <a class="student-delete-link"
-                                       data-url="{{ route('admin-student-delete', ['student' => $student]) }}">
-                                        Delete student
-                                    </a>
-                                @endif
-                            </p>
-                        </div>
+                    <h4>Actions</h4>
+
+                    {{ Form::open() }}
+
+                    <div class="form-group">
+                        <label for="user_level">User level</label>
+                        <br/>
+                        <select class="select form-control" id="user_level" name="user_level">
+                            <option value="student" @if($student->userlevel === 0) selected @endif>Student</option>
+                            <option value="teacher" @if($student->userlevel === 1) selected @endif>Teacher</option>
+                            <option value="admin" @if($student->userlevel === 2) selected @endif>Admin</option>
+                        </select>
+
+                        <br/>
+
+                        <button class="btn btn-success">Apply user level</button>
+
                     </div>
+
+                    {{ Form::close() }}
+
+
+                    <hr/>
+
+                    <p>
+                        @if($student->student_id !== Auth::user()->student_id)
+                            <a class="student-delete-link"
+                               data-url="{{ route('admin-student-delete', ['student' => $student]) }}">
+                                Delete student
+                            </a>
+                        @endif
+                    </p>
                 </div>
+                @endcard
 
 
             </div>
@@ -101,6 +113,7 @@
                                     <th>Days</th>
                                     <th>Place</th>
                                     <th>Activities</th>
+                                    <th>In analytics?</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -122,8 +135,19 @@
                                             @endif
                                         </td>
                                         <td>
+                                            @if($wplp->is_in_analytics)
+                                                <span class="label label-success">Yes</span>
+                                            @else
+                                                <span class="label label-danger">No</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin-student-edit-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
+                                                Edit
+                                            </a>
+
                                             <a class="wplp-delete-link"
-                                               data-url="{{ route('admin-student-delete-wplp', ['student' => $student, 'workplacelearningperiod' => $wplp]) }}">
+                                               data-url="{{ route('admin-student-delete-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
                                                 Delete
                                             </a>
                                         </td>

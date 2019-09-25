@@ -165,11 +165,11 @@
                     <div class="form-group">
                         <label class="col-lg-4 control-label"
                                for='cohort'>{{ __('elements.profile.internships.cohort') }}</label>
-
                         <div class="col-lg-8">
                             <select @if($period->cohort) disabled @endif class="form-control"
                                     name="cohort">
                                 @foreach($cohorts as $cohort)
+
                                     @if($period->cohort === null)
                                         <option @if(old('cohort') === $cohort->id) selected
                                                 @endif value="{{ $cohort->id }}">{{ $cohort->name }}</option>

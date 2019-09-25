@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Policies;
+declare(strict_types=1);
 
+namespace App\Policies;
 
 use App\Student;
 use App\Reflection\Models\ActivityReflection;

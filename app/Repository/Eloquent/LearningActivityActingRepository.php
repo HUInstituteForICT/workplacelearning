@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Eloquent;
 
 use App\Evidence;
@@ -25,6 +27,7 @@ class LearningActivityActingRepository
 
     /**
      * @param int[] $ids
+     *
      * @return LearningActivityActing[]
      */
     public function getMultiple(array $ids): array
@@ -34,6 +37,7 @@ class LearningActivityActingRepository
 
     /**
      * @param int[] $ids
+     *
      * @return LearningActivityActing[]
      */
     public function getMultipleForUser(Student $student, array $ids): array

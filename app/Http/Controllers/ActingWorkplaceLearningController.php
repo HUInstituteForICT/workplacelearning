@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (InternshipController.php) was created on 06/20/2016 at 01:11.
  * (C) Max Cassee
@@ -25,11 +27,6 @@ use App\WorkplaceLearningPeriod;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use App\LearningGoal;
-use Carbon\Carbon;
-use http\Exception\InvalidArgumentException;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Lang;
 
 class ActingWorkplaceLearningController
 {
@@ -94,7 +91,7 @@ class ActingWorkplaceLearningController
             $student->setActiveWorkplaceLearningPeriod($workplaceLearningPeriod);
         }
 
-        return $redirector->route('profile')->with('success', Lang::get('general.edit-saved'));
+        return $redirector->route('profile')->with('success', __('general.edit-saved'));
     }
 
     public function updateLearningGoals(

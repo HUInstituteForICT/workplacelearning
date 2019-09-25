@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\Timeslot;
 use App\Tips\Statistics\InvalidStatisticResult;
@@ -10,11 +10,10 @@ use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
 
 /**
- * In this class the Category represents a timeslot (acting's type of categories)
+ * In this class the Category represents a timeslot (acting's type of categories).
  */
 class LeastUsedCategory extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Percentage the least used category is used';

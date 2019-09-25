@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Feedback;
@@ -17,7 +19,7 @@ class FeedbackController
 
     public function update(FeedbackCreateRequest $request, Feedback $feedback): RedirectResponse
     {
-        $feedback->notfinished = ('Anders' === $request->get('notfinished')) ? $request->get('newnotfinished') : $request->get('notfinished');
+        $feedback->notfinished = ($request->get('notfinished') === 'Anders') ? $request->get('newnotfinished') : $request->get('notfinished');
         $feedback->initiative = $request->get('initiatief');
         $feedback->progress_satisfied = $request->get('progress_satisfied');
         $feedback->support_requested = $request->get('support_requested');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null                           $updated_at
  * @property string|null                                               $description
  * @property \Illuminate\Database\Eloquent\Collection|\App\Parameter[] $parameters
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereId($value)
@@ -21,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereQuery($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Template whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Template newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Template newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Template query()

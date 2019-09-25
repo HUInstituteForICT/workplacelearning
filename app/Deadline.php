@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (Deadline.php) was created on 06/21/2016 at 13:44.
  * (C) Max Cassee
@@ -17,11 +19,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null  $dl_value
  * @property string|null  $dl_datetime
  * @property \App\Student $User
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereDlDatetime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereDlId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereDlValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline whereStudentId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Deadline query()

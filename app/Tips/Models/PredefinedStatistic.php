@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tips\Models;
 
 use App\Tips\Statistics\Predefined\PredefinedStatisticInterface;
@@ -9,16 +11,17 @@ use Illuminate\Support\Collection;
 /**
  * App\Tips\Models\PredefinedStatistic.
  *
- * @property string $name
- * @property string $className
- * @property int $id
- * @property string $type
- * @property int|null $operator
- * @property string $education_program_type
+ * @property string      $name
+ * @property string      $className
+ * @property int         $id
+ * @property string      $type
+ * @property int|null    $operator
+ * @property string      $education_program_type
  * @property string|null $select_type
- * @property int|null $statistic_variable_one_id
- * @property int|null $statistic_variable_two_id
- * @property mixed $value_parameter_description
+ * @property int|null    $statistic_variable_one_id
+ * @property int|null    $statistic_variable_two_id
+ * @property mixed       $value_parameter_description
+ *
  * @method static Builder|PredefinedStatistic whereEducationProgramType($value)
  * @method static Builder|PredefinedStatistic whereId($value)
  * @method static Builder|PredefinedStatistic whereName($value)
@@ -28,7 +31,9 @@ use Illuminate\Support\Collection;
  * @method static Builder|PredefinedStatistic whereStatisticVariableTwoId($value)
  * @method static Builder|PredefinedStatistic whereType($value)
  * @mixin \Eloquent
+ *
  * @property Collection|TipCoupledStatistic[] $coupledStatistics
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\PredefinedStatistic query()
@@ -45,7 +50,7 @@ class PredefinedStatistic extends Statistic
     public function getValueParameterDescriptionAttribute(): string
     {
         /** @var PredefinedStatisticInterface $statisticClass */
-        $statisticClass = new $this->className;
+        $statisticClass = new $this->className();
 
         return $statisticClass->getResultDescription();
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Category;
@@ -14,11 +16,11 @@ use Spatie\TranslationLoader\LanguageLine;
 class EntityTranslationManager
 {
     private const entityTypes = [
-        'competence' => Competence::class,
-        'timeslot' => Timeslot::class,
+        'competence'     => Competence::class,
+        'timeslot'       => Timeslot::class,
         'resourcePerson' => ResourcePerson::class,
-        'category' => Category::class,
-        'tip' => Tip::class,
+        'category'       => Category::class,
+        'tip'            => Tip::class,
     ];
 
     /**
@@ -40,8 +42,8 @@ class EntityTranslationManager
             $languageLine = new LanguageLine();
             $languageLine->fill([
                 'group' => 'entity',
-                'key' => $entity->uniqueSlug(),
-                'text' => $translations,
+                'key'   => $entity->uniqueSlug(),
+                'text'  => $translations,
             ]);
         } else {
             $languageLine->text = $translations;

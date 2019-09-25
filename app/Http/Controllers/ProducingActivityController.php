@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (ProducingActivityController.php) was created on 06/27/2016 at 16:10.
  * (C) Max Cassee
@@ -55,7 +57,6 @@ class ProducingActivityController
         $student = $this->currentUserResolver->getCurrentUser();
 
         $activitiesJson = $exportBuilder->getJson($this->learningActivityProducingRepository->getActivitiesOfLastActiveDayForStudent($student));
-
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
 
@@ -127,7 +128,6 @@ class ProducingActivityController
 
             return redirect($url);
         }
-
 
         session()->flash('success', __('activity.saved-successfully'));
         $url = route('process-producing');

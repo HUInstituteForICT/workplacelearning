@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Category;
@@ -48,7 +50,7 @@ class CohortCloner
     {
         /** @var Cohort $clone */
         $clone = $cohort->replicate();
-        $clone->name = 'Copy ' . $clone->name;
+        $clone->name = 'Copy '.$clone->name;
 
         $clone->save();
 
@@ -132,6 +134,5 @@ class CohortCloner
         if ($competenceDescription->has_data) {
             Storage::disk('local')->copy($competenceDescription->file_name, $clonedCompetenceDescription->file_name);
         }
-
     }
 }

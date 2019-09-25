@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BugReportRequest;
@@ -65,7 +67,6 @@ class HomeController extends Controller
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
-
 
         return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (WorkplaceLearningPeriod.php) was created on 20/01/2017 at 12:32.
  * (C) Max Cassee
@@ -15,27 +17,28 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * App\WorkplaceLearningPeriod.
  *
- * @property int $wplp_id
- * @property Cohort $cohort
- * @property int $student_id
- * @property Student $student
- * @property int $wp_id
- * @property \DateTime $startdate
- * @property \DateTime $enddate
- * @property int $nrofdays
- * @property string $description
- * @property int $cohort_id
- * @property float $hours_per_day
- * @property Collection $chains
- * @property Workplace $workplace
- * @property int $is_in_analytics
- * @property \Illuminate\Database\Eloquent\Collection|\App\Category[] $categories
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[] $learningActivityActing
+ * @property int                                                                       $wplp_id
+ * @property Cohort                                                                    $cohort
+ * @property int                                                                       $student_id
+ * @property Student                                                                   $student
+ * @property int                                                                       $wp_id
+ * @property \DateTime                                                                 $startdate
+ * @property \DateTime                                                                 $enddate
+ * @property int                                                                       $nrofdays
+ * @property string                                                                    $description
+ * @property int                                                                       $cohort_id
+ * @property float                                                                     $hours_per_day
+ * @property Collection                                                                $chains
+ * @property Workplace                                                                 $workplace
+ * @property int                                                                       $is_in_analytics
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Category[]                  $categories
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[]    $learningActivityActing
  * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningGoal[] $learningGoals
- * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[] $resourceMaterial
- * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[] $resourcePerson
- * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[] $timeslot
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningGoal[]              $learningGoals
+ * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[]          $resourceMaterial
+ * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[]            $resourcePerson
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[]                  $timeslot
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereEnddate($value)
@@ -47,6 +50,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereWpId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereWplpId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod query()
@@ -242,7 +246,7 @@ class WorkplaceLearningPeriod extends Model
     }
 
     /**
-     * Calculates the effective hours worked for producing activities
+     * Calculates the effective hours worked for producing activities.
      */
     public function getEffectiveDays(): int
     {
@@ -258,11 +262,13 @@ class WorkplaceLearningPeriod extends Model
             return $carry;
         }, []);
 
-        $daysRegistered = count(array_keys($daysWithHours));
-
         $totalHours = array_sum(array_values($daysWithHours));
-        $fullDays = floor($totalHours / $this->hours_per_day);
 
-        return (int) min($daysRegistered, $fullDays);
+        return (int) floor($totalHours / $this->hours_per_day);
+    }
+
+    public function hasActivities(): bool
+    {
+        return $this->learningActivityActing()->count() > 0 || $this->learningActivityProducing()->count() > 0;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tips\Statistics;
 
 /**
@@ -42,7 +44,7 @@ class StatisticResultCollection implements Resultable
     public function hasPassed(): bool
     {
         // In case all results failed and have been removed
-        if (0 === \count($this->results)) {
+        if (\count($this->results) === 0) {
             return false;
         }
         $passed = true;

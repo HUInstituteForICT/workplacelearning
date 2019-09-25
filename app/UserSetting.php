@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (UserSetting.php) was created on 06/22/2016 at 14:21.
  * (C) Max Cassee
@@ -18,11 +20,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null  $setting_value
  * @property int          $student_id
  * @property \App\Student $student
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting whereSettingId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting whereSettingLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting whereSettingValue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting whereStudentId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\UserSetting query()

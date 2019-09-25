@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tips\Models;
 
 /**
@@ -15,6 +17,7 @@ namespace App\Tips\Models;
  * @property string            $education_program_type
  * @property int|null          $statistic_variable_one_id
  * @property int|null          $statistic_variable_two_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic whereEducationProgramType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic whereName($value)
@@ -24,8 +27,10 @@ namespace App\Tips\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic whereStatisticVariableTwoId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic whereType($value)
  * @mixin \Eloquent
+ *
  * @property \Illuminate\Database\Eloquent\Collection|\App\Tips\Models\TipCoupledStatistic[] $coupledStatistics
- * @property string|null $className
+ * @property string|null                                                                     $className
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\CustomStatistic query()

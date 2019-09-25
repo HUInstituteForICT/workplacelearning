@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (Deadline.php) was created on 08/18/2016 at 15:30.
  * (C) Max Cassee
@@ -24,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string                    $support_needed_wp
  * @property string                    $support_needed_ed
  * @property int                       $learningactivity_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereFbId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereInitiative($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereLearningactivityId($value)
@@ -35,6 +38,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportRequested($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportedProvidedWp($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback query()

@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Eloquent;
 
 use App\AccessLog;
+use App\Cohort;
+use App\EducationProgram;
+use App\Repository\Searchable;
+use App\Repository\SearchFilter;
 use App\Student;
 use App\Tips\Models\StudentTipView;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -10,16 +16,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-class StudentRepository
+class StudentRepository implements Searchable
 {
-
-    private $allowedSearchFilters = [
-        'studentnr',
-        'firstname',
-        'lastname',
-        'email',
-    ];
-
     /**
      * @var WorkplaceLearningPeriodRepository
      */
@@ -52,49 +50,102 @@ class StudentRepository
     }
 
     /**
-     * @param array $filters
-     * @param array $orderBy
-     * @param int|null $pages
      * @return LengthAwarePaginator|Collection
      */
-    public function search(array $filters = [], array $orderBy = ['studentnr', 'ASC'], ?int $pages = 25)
+    public function search(array $filters = [], ?int $pages = 25)
     {
+        /** @var Builder $builder */
+        $builder = Student::sortable('studentnr');
+        $allowedFilters = $this->getSearchFilters();
 
-        /** @var Builder $queryBuilder */
-        $queryBuilder = Student::where(function (Builder $builder) use ($filters) : void {
+        /*
+         * For each search filter, check if the user has it enabled
+         * If so, apply it
+         */
+        array_walk($allowedFilters, static function (SearchFilter $searchFilter) use ($filters, $builder) {
+            // Skip filters that aren't enabled by the user
+            if (!array_key_exists($searchFilter->getProperty(), $filters)) {
+                return;
+            }
 
-            $queryFilters = [];
-            array_walk($filters, function (?string $filterValue, string $filterName) use (&$queryFilters): void {
-
-                if (!$filterValue || !in_array($filterName, $this->allowedSearchFilters, true)) {
-                    return;
-                }
-
-                $queryFilters[] = [$filterName, 'LIKE', '%' . $filterValue . '%'];
-            });
-
-            $builder->where($queryFilters);
+            $searchFilter->applyFilter($builder, $filters[$searchFilter->getProperty()]);
         });
 
-        $queryBuilder->orderBy($orderBy[0], $orderBy[1] ?? 'ASC');
+//        $builder->orderBy($orderBy[0], $orderBy[1] ?? 'ASC');
 
         if ($pages) {
-            return $queryBuilder->paginate($pages);
+            return $builder->paginate($pages);
         }
 
-        return $queryBuilder->get();
+        return $builder->get();
     }
 
     public function getSearchFilters(): array
     {
-        return $this->allowedSearchFilters;
+        return [
+            new SearchFilter('studentnr'),
+            new SearchFilter('firstname'),
+            new SearchFilter('lastname'),
+            new SearchFilter('email'),
+            new SearchFilter('userlevel', SearchFilter::TYPE_SELECT, 'role', [
+                0 => 'Student',
+                1 => 'Teacher',
+                2 => 'Admin',
+            ]),
+
+            new SearchFilter('ep_id', SearchFilter::TYPE_SELECT, 'education_programme',
+                EducationProgram::all()->reduce(static function (
+                    array $carry,
+                    EducationProgram $educationProgram
+                ) {
+                    $carry[$educationProgram->ep_id] = $educationProgram->ep_name;
+
+                    return $carry;
+                }, [])),
+
+            new SearchFilter(
+                'cohort',
+                SearchFilter::TYPE_SELECT,
+                null,
+                Cohort::orderBy('name', 'ASC')
+                    ->get()
+                    ->reduce(static function (
+                        array $carry,
+                        Cohort $cohort
+                    ) {
+                        if ($cohort->disabled) {
+                            $carry['disabled'][$cohort->id] = $cohort->name;
+                        } else {
+                            $carry['enabled'][$cohort->id] = $cohort->name;
+                        }
+
+                        return $carry;
+                    }, ['enabled' => [], 'disabled' => []]),
+
+                static function (Builder $builder, string $value): void {
+                    // Try to account for "no selection"
+                    if (!$value || (int) $value === -1) {
+                        return;
+                    }
+
+                    // We get the cohorts through the following relation:
+                    // student -> WPLPs -> usersettings for active WPLP -> cohort_id
+                    $builder
+                        ->leftJoin('workplacelearningperiod', 'student.student_id', '=',
+                            'workplacelearningperiod.student_id')
+                        ->leftJoin('usersetting', 'student.student_id', '=', 'usersetting.student_id')
+                        ->where('setting_label', 'active_internship')
+                        ->whereRaw('workplacelearningperiod.wplp_id = usersetting.setting_value')
+                        ->where('workplacelearningperiod.cohort_id', $value);
+                }
+            ),
+        ];
     }
 
     public function delete(Student $student): void
     {
         DB::transaction(function () use ($student) {
             $student->deadlines()->delete();
-
 
             foreach ($student->workplaceLearningPeriods as $workplaceLearningPeriod) {
                 $workplace = $workplaceLearningPeriod->workplace;
@@ -110,8 +161,6 @@ class StudentRepository
             DB::delete('DELETE FROM password_reset WHERE email = ?', [$student->email]);
 
             $student->delete();
-
-
         });
     }
 }

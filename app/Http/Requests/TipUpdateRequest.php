@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,8 +26,8 @@ class TipUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'tip.name' => 'required',
-            'tip.tipText' => 'required|max:1000',
+            'tip.name'            => 'required',
+            'tip.tipText'         => 'required|max:1000',
             'tip.enabled_cohorts' => 'array',
         ];
     }

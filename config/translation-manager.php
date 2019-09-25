@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return array(
     /*
     |--------------------------------------------------------------------------
@@ -10,7 +12,7 @@ return array(
     |
     */
     'route' => [
-        'prefix' => 'translations',
+        'prefix'     => 'translations',
         'middleware' => [
             'web',
             'auth',

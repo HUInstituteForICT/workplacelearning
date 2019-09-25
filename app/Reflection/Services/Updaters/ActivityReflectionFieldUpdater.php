@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Reflection\Services\Updaters;
-
 
 use App\Reflection\Models\ActivityReflectionField;
 use App\Reflection\Repository\Eloquent\ActivityReflectionFieldRepository;

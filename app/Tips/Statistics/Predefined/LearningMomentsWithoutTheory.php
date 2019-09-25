@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\LearningGoal;
 use App\Tips\Statistics\Resultable;
@@ -11,7 +11,6 @@ use App\Tips\Statistics\StatisticResultCollection;
 
 class LearningMomentsWithoutTheory extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Percentage learning moments for every learning question without use of theory';

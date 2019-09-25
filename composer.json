@@ -17,7 +17,8 @@
         "nanigans/single-table-inheritance": "0.8.*",
         "doctrine/common": "^2.9",
         "rap2hpoutre/laravel-log-viewer": "^0.22.0",
-        "spatie/laravel-translation-loader": "^2.2"
+        "spatie/laravel-translation-loader": "^2.2",
+        "kyslik/column-sortable": "5.7.*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
@@ -27,7 +28,6 @@
         "filp/whoops": "~2.0",
         "barryvdh/laravel-ide-helper": "^2.3",
         "barryvdh/laravel-dompdf": "^0.8.0",
-        "barryvdh/laravel-translation-manager": "^0.5",
         "barryvdh/laravel-debugbar": "^3.2",
         "nunomaduro/larastan": "^0.3.17"
     },

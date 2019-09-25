@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tips\Models;
 
 use App\Tips\Statistics\Filters\CategoryFilter;
@@ -18,9 +20,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property CustomStatistic $statistic
  * @property string          $type
  * @property string          $selectType
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StatisticVariable whereFilters($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StatisticVariable whereId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StatisticVariable newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StatisticVariable newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tips\Models\StatisticVariable query()
@@ -53,8 +57,8 @@ class StatisticVariable extends Model
                 ],
             ],
             [
-                'class' => CompetenceFilter::class,
-                'name' => 'Competence',
+                'class'      => CompetenceFilter::class,
+                'name'       => 'Competence',
                 'parameters' => [
                     ['name' => 'Label', 'propertyName' => 'competence_label'],
                 ],

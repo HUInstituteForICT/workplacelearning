@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: sivar
@@ -29,6 +31,6 @@ class ColumnParameterType extends ParameterType
 
     public function getErrorMsg()
     {
-        return Lang::get('template.error.table');
+        return __('template.error.table');
     }
 }

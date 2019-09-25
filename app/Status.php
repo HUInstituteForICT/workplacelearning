@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file (Status.php) was created on 02/12/2017 at 14:02.
  * (C) Max Cassee
@@ -15,9 +17,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string                                                                    $status_label
  * @property int                                                                       $status_id
  * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereStatusLabel($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Status newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Status newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Status query()

@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tips\Statistics\Predefined;
-
 
 use App\Category;
 use App\Tips\Statistics\InvalidStatisticResult;
@@ -11,7 +11,6 @@ use App\Tips\Statistics\StatisticCalculationResult;
 
 class MostUsedCategory extends BasePredefinedStatistic
 {
-
     public function getName(): string
     {
         return 'Percentage the most used category is used';
@@ -32,7 +31,6 @@ class MostUsedCategory extends BasePredefinedStatistic
                 ->limit(1)
                 ->getBaseQuery()
         )->first();
-
 
         $totalActivities = $this->wherePeriod($this->learningPeriod->learningActivityProducing()->getBaseQuery())->count();
 

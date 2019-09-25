@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -16,10 +18,12 @@ use Illuminate\Support\Facades\Storage;
  * @property string                     $download_url
  * @property string                     $file_name
  * @property bool                       $has_data
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CompetenceDescription whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CompetenceDescription whereEducationProgramId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CompetenceDescription whereId($value)
  * @mixin \Eloquent
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CompetenceDescription newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CompetenceDescription newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\CompetenceDescription query()
