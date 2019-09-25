@@ -194,7 +194,7 @@ use App\ResourcePerson;
             </div>
 
 
-            <div class="col-md-2 buttons">
+            <div class="col-md-3 buttons">
                 <h4>{{ __('activity.work-learn-with') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                             data-toggle="tooltip" data-placement="bottom"
                                                             title="{{ trans('tooltips.producing_with') }}"></i>
@@ -264,7 +264,7 @@ use App\ResourcePerson;
 
             <div class="col-md-3 ">
                 <div class="buttons">
-                    <h4>{{ __('activity.difficulty') }} <i class="fa fa-info-circle" aria-hidden="true"
+                    <h4>{{ __('activity.difficulty') }}<i class="fa fa-info-circle" aria-hidden="true"
                                                            data-toggle="tooltip" data-placement="bottom"
                                                            title="{{ trans('tooltips.producing_difficulty') }}"></i>
                     </h4>

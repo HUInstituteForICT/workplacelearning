@@ -192,7 +192,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                 </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="buttons">
                     <h4>{{ __('activity.work-learn-with') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                                 data-toggle="tooltip" data-placement="bottom"
@@ -255,7 +255,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
             </div>
             <div class="col-md-3 ">
                 <div class="buttons">
-                    <h4>{{ __('activity.difficulty') }}<i class="fa fa-info-circle" aria-hidden="true"
+                    <h4>{{ __('activity.difficulty') }} <i class="fa fa-info-circle" aria-hidden="true"
                                                           data-toggle="tooltip" data-placement="bottom"
                                                           title="{{ trans('tooltips.producing_difficulty') }}"></i>
                     </h4>
@@ -324,6 +324,11 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                 $(this).siblings().show();
                 $("#cond-select-hidden").hide();
                 $("#rp_id").trigger("change");
+                if($('input[name="resource"]:checked').val() === 'persoon') {
+                    $('#rp_id').show();
+                } else {
+                    $('#rp_id').hide();
+                }
             }
         })()
     </script>
