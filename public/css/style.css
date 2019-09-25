@@ -326,6 +326,7 @@ a.nav-tile:focus {
 .buttons label span {
   display: block;
   width: 150px;
+  max-width: 100%;
   border-radius: 4px;
   color: #ffffff;
   background-color: #00A1E2;
@@ -333,11 +334,15 @@ a.nav-tile:focus {
   padding: 8px;
   text-align: center;
   transition: 300ms all ease-in-out;
-  word-break: break-all;
+  word-break: break-word;
 }
 .buttons label span.new {
   background-color: #6aea7a;
   transition: 300ms all ease-in-out;
+}
+.buttons input,
+.buttons select {
+  max-width: 100%;
 }
 .buttons input:checked + span {
   transition: 500ms all ease-in-out;
