@@ -28,7 +28,15 @@ class ChainController extends Controller
 
     public function save(SaveRequest $request, ChainManager $chainManager, Chain $chain): Chain
     {
-        $chainManager->updateChain($chain, $request->get('name'), $request->get('status'));
+        $status = $request->get('status', null);
+        // We need to manually cast it to int, in transport it is a string
+        // However updateChain allows null values, but casting a null to int gives 0, which is a valid status
+        // So first check if it is a value
+        if (is_string($status)) {
+            $status = (int) $status;
+        }
+
+        $chainManager->updateChain($chain, $request->get('name'), $status);
 
         return $chain;
     }

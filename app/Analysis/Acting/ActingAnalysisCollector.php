@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Analysis\Acting;
 
 use App\Competence;
+use App\LearningActivityActing;
 use App\LearningGoal;
 use App\ResourceMaterial;
 use App\ResourcePerson;
 use App\Timeslot;
-use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -34,20 +36,13 @@ class ActingAnalysisCollector
 
     /**
      * Limit a Collection from a certain date and +1 month.
-     *
-     * @param $collection
-     * @param $year
-     * @param $month
      */
-    public function limitCollectionByDate(Collection $collection, $year, $month)
+    public function limitCollectionByDate(Collection $collection, $year, $month): Collection
     {
         if ($year != 'all' && $month != 'all') {
-            $dtime = mktime(0, 0, 0, intval($month), 1, intval($year));
-            $collection = $collection->filter(function ($activity) use ($dtime) {
-                $activityDate = strtotime($activity->date);
-                $x = $activityDate >= $dtime && $activityDate <= strtotime('+1 month', $dtime);
-
-                return $x;
+            $selectedDate = Carbon::create($year, $month);
+            $collection = $collection->filter(static function (LearningActivityActing $activity) use ($selectedDate): bool {
+                return $activity->date >= $selectedDate && $activity->date < $selectedDate->addMonth();
             });
         }
 

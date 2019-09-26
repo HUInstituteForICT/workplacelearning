@@ -68,7 +68,11 @@ class Feedback extends Model
 
     public function isSaved(): bool
     {
-        return \strlen($this->notfinished) > 0;
+        if (!$this->notfinished) {
+            return false;
+        }
+
+        return $this->notfinished !== '';
     }
 
     public function learningActivityProducing(): BelongsTo
