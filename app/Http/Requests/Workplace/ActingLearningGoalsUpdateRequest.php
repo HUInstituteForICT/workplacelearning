@@ -28,7 +28,7 @@ class ActingLearningGoalsUpdateRequest extends FormRequest
             'new_learninggoal_name',
             'required|min:3|max:50',
             function ($input) {
-                return strlen($input->new_learninggoal_name) > 0;
+                return !empty($input->new_learninggoal_name);
             }
         );
 
@@ -36,7 +36,7 @@ class ActingLearningGoalsUpdateRequest extends FormRequest
             'new_learninggoal_description',
             'required|min:3|max:1000',
             function ($input) {
-                return strlen($input->new_learninggoal_name) > 0;
+                return !empty($input->new_learninggoal_name);
             }
         );
     }
