@@ -105,7 +105,7 @@ class ActingWorkplaceLearningController
             $learningGoalUpdater->updateLearningGoals($request->get('learningGoal'));
         }
 
-        if ($request->has('new_learninggoal_name') && \strlen($request->get('new_learninggoal_name')) > 0) {
+        if ($request->has('new_learninggoal_name') && !empty($request->get('new_learninggoal_name'))) {
             $learningGoalFactory->createLearningGoal([
                 'label'       => $request->get('new_learninggoal_name'),
                 'description' => $request->get('new_learninggoal_description'),

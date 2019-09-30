@@ -6,10 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Mail\TxtExport;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpWord\PhpWord;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ActivityExportController extends Controller
 {
@@ -28,13 +28,14 @@ class ActivityExportController extends Controller
         $text = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $text);
         $section->addText($text);
 
-        $fileName = md5(time());
+        $fileName = md5((string) time());
         $filePath = storage_path('app/word-exports/').$fileName.'.docx';
-        try {
-            $phpWord->save($filePath);
-        } catch (\Exception $e) {
-            die($e->getMessage());
+
+        if (!Storage::disk('local')->exists('word-exports/')) {
+            Storage::disk('local')->makeDirectory('word-exports/');
         }
+
+        $phpWord->save($filePath);
 
         return response()->json(['download' => route('docx-export-download', ['fileName' => $fileName])]);
     }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\LearningActivityProducing;
 use App\Services\CurrentUserResolver;
 use App\Traits\PhpWordDownloader;
 use App\WorkplaceLearningPeriod;
@@ -48,6 +49,9 @@ class ProducingReportController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
         $wp = $student->getCurrentWorkplace();
         $wplp = $student->getCurrentWorkplaceLearningPeriod();
+
+        $startTimestamp = (int) $request->get('startDate');
+        $endTimestamp = (int) $request->get('endDate');
 
         $bold = tap(new Font())->setBold(true);
 
@@ -115,11 +119,11 @@ class ProducingReportController extends Controller
         ];
         $firstRowStyle = ['bgColor' => '66BBFF'];
         $document->addTableStyle('table', $tableStyle, $firstRowStyle);
-        $lap_array = $this->getWerkzaamheden(Carbon::createFromTimestamp($request->get('startDate')),
-            Carbon::createFromTimestamp($request->get('endDate')), $wplp);
+        $lap_array = $this->getWerkzaamheden(Carbon::createFromTimestamp($startTimestamp),
+            Carbon::createFromTimestamp($endTimestamp), $wplp);
 
         $date_loop = date('Y-m-d',
-            strtotime('monday this week', $request->get('startDate')));
+            strtotime('monday this week', $startTimestamp));
         $datefmt = new IntlDateFormatter(
             App::getLocale(),
             IntlDateFormatter::GREGORIAN,
@@ -130,7 +134,7 @@ class ProducingReportController extends Controller
         );
 
         $daysWorkedTotal = 0;
-        while (strtotime($date_loop) < $request->get('endDate') && strtotime($date_loop) < time()) {
+        while ($endTimestamp > strtotime($date_loop) && strtotime($date_loop) < time()) {
             $table = $activityPage->addTable('table');
             $table->addRow();
             $table->addCell(2000)->addText(__('process_export.wordexport.week').' '.date('W',
@@ -201,6 +205,7 @@ class ProducingReportController extends Controller
     ): array {
         $dataset = [];
 
+        /** @var LearningActivityProducing[] $activities */
         $activities = $workplaceLearningPeriod->learningActivityProducing()
             ->whereDate('date', '>=', $workplaceLearningPeriod->startdate)
             ->whereDate('date', '<=', $workplaceLearningPeriod->enddate)
@@ -209,7 +214,7 @@ class ProducingReportController extends Controller
             ->get()->all();
 
         foreach ($activities as $activity) {
-            $activityDate = Carbon::createFromTimestamp(strtotime($activity->date));
+            $activityDate = $activity->date;
             if ($activityDate->lessThan($startDate) || $activityDate->greaterThan($endDate)) {
                 continue;
             }
