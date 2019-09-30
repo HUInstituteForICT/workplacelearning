@@ -36,6 +36,6 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | APT_KEY_DONT_WARN_ON_DAN
     apt-get update && \
     apt-get install --no-install-recommends yarn
 
-# Install packages using Yarn
+COPY ./uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 WORKDIR /var/www
 
