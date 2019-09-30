@@ -39,7 +39,7 @@ class ActivityReflectionFactory
         $this->repository->save($reflection);
 
         foreach ($data['field'] as $field => $value) {
-            $this->fieldFactory->create($field, $value, $reflection);
+            $this->fieldFactory->create($field, $value ?? '', $reflection);
         }
 
         return $reflection;
