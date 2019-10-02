@@ -19,13 +19,13 @@ class FeedbackGiven extends Mailable
     /**
      * @var string
      */
+    private $bug_subject;
     private $description;
 
-    public function __construct(Student $user, string $subject, string $description)
+    public function __construct(Student $user, string $bug_subject, string $description)
     {
-        $this->subject = null;
         $this->user = $user;
-        $this->bug_subject = $subject;
+        $this->bug_subject = $bug_subject;
         $this->description = $description;
     }
 
