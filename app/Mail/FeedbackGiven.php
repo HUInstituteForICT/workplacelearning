@@ -19,12 +19,13 @@ class FeedbackGiven extends Mailable
     /**
      * @var string
      */
+    private $bug_subject;
     private $description;
 
-    public function __construct(Student $user, string $subject, string $description)
+    public function __construct(Student $user, string $bug_subject, string $description)
     {
         $this->user = $user;
-        $this->subject = $subject;
+        $this->bug_subject = $bug_subject;
         $this->description = $description;
     }
 
@@ -45,6 +46,7 @@ class FeedbackGiven extends Mailable
                     'student_email' => $this->user->email,
                     'education'     => $this->user->educationProgram,
                     'subject'       => $this->subject,
+                    'bug_subject'   => $this->bug_subject,
                     'content'       => $this->description,
                 ]
             );
