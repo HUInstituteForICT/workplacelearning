@@ -22,7 +22,12 @@
         </tr>
         </tbody>
 </table>
-<h4>Detail:</h4>
+<h4>Onderwerp van het bugrapport:</h4>
+<p>
+    {{ $bug_subject }}
+</p>
+
+<h4>Omschrijving:</h4>
 <p>
     {{ $content }}
 </p>
