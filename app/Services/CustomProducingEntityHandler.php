@@ -33,7 +33,7 @@ class CustomProducingEntityHandler
             $data['category_id'] = $this->categoryFactory->createCategory($data['newcat'])->category_id;
         }
 
-        if ($data['personsource'] === 'new') {
+        if ($data['personsource'] === 'new' && $data['resource'] === 'persoon') {
             $data['resource_person_id'] = $this->resourcePersonFactory->createResourcePerson($data['newswv'])->rp_id;
         } else {
             $data['resource_person_id'] = $data['personsource'];
