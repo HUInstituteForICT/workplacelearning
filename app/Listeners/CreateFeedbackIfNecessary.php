@@ -23,7 +23,7 @@ class CreateFeedbackIfNecessary
     {
         $activity = $event->getActivity();
 
-        if ($activity->status->isBusy() && !$activity->difficulty->isEasy()) {
+        if ($activity->status->isBusy() && !$activity->difficulty->isEasy() || $activity->extrafeedback == 1) {
             $this->feedbackFactory->createFeedback($activity);
         }
     }

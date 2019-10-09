@@ -104,6 +104,7 @@ class ProducingActivityController
         );
     }
 
+
     public function create(
         ProducingCreateRequest $request,
         LAPFactory $LAPFactory,
@@ -115,18 +116,40 @@ class ProducingActivityController
 
         $learningActivityProducing = $LAPFactory->createLAP($data);
 
-        if ($learningActivityProducing->feedback) {
-            session()->flash('notification', __('notifications.feedback-hard'));
-            $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
+        $student = $this->currentUserResolver->getCurrentUser();
+        $cohortChance = $student->currentCohort()->feedback_chance;
 
-            if ($request->acceptsJson()) {
-                return response()->json([
-                    'status' => 'success',
-                    'url'    => $url,
-                ]);
+        // If the student wants extra feedback
+        if ($learningActivityProducing->feedback && $data['extrafeedback'] == 1) {
+                session()->flash('notification', __('notifications.feedback-hard'));
+                $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
+
+                if ($request->acceptsJson()) {
+                    return response()->json([
+                        'status' => 'success',
+                        'url'    => $url,
+                    ]);
+                }
+
+                return redirect($url);
+        }
+
+        // If the student wants no extra feedback there is a given chance to get feedback
+        if ($learningActivityProducing->feedback && $data['extrafeedback'] == 0) {
+            $givenChange = $cohortChance;
+            if(mt_rand(1,100) <= $givenChange){
+                session()->flash('notification', __('notifications.feedback-hard'));
+                $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
+
+                if ($request->acceptsJson()) {
+                    return response()->json([
+                        'status' => 'success',
+                        'url'    => $url,
+                    ]);
+                }
+
+                return redirect($url);
             }
-
-            return redirect($url);
         }
 
         session()->flash('success', __('activity.saved-successfully'));

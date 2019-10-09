@@ -1,1 +1,43 @@
-h1,h2,h3,h4{font-family:husansnormal;color:#e72e2a}div{position:absolute}table{font-size:17px}thead{text-align:center;font-weight:700;background:#00a1e2;color:#fff;padding:3px}.page-content{left:0;top:0}.chartcontainer{margin:0 auto}.chartcontainer>img{margin:5px}#info-block{left:15;top:15;padding:30px}#hu-logo{right:15px;top:15px;padding:15px 15px 0 0}.page-break{page-break-after:always}
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'husansnormal';
+  color: #e72e2a;
+}
+div {
+  position: absolute;
+}
+table {
+  font-size: 17px;
+}
+thead {
+  text-align: center;
+  font-weight: bold;
+  background: #00A1E2;
+  color: #FFFFFF;
+  padding: 3px;
+}
+.page-content {
+  left: 0;
+  top: 0;
+}
+.chartcontainer {
+  margin: 0 auto;
+}
+.chartcontainer > img {
+  margin: 5px;
+}
+#info-block {
+  left: 15;
+  top: 15;
+  padding: 30px;
+}
+#hu-logo {
+  right: 15px;
+  top: 15px;
+  padding: 15px 15px 0 0;
+}
+.page-break {
+  page-break-after: always;
+}

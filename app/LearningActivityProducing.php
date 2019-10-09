@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int                                 $lap_id
  * @property int                                 $chain_id
  * @property string                              $description
+ * @property int                                 $extrafeedback
  * @property Chain                               $chain
  * @property int                                 $wplp_id
  * @property WorkplaceLearningPeriod             $workplaceLearningPeriod
@@ -84,6 +85,7 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
         'category_id',
         'difficulty_id',
         'status_id',
+        'extrafeedback'
     ];
 
     protected $dispatchesEvents = [
