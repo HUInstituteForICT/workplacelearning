@@ -104,7 +104,6 @@ class ProducingActivityController
         );
     }
 
-
     public function create(
         ProducingCreateRequest $request,
         LAPFactory $LAPFactory,
@@ -123,14 +122,14 @@ class ProducingActivityController
                 session()->flash('notification', __('notifications.feedback-hard'));
                 $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
 
-                if ($request->acceptsJson()) {
-                    return response()->json([
+            if ($request->acceptsJson()) {
+                return response()->json([
                         'status' => 'success',
                         'url'    => $url,
                     ]);
-                }
+            }
 
-                return redirect($url);
+            return redirect($url);
         }
 
         session()->flash('success', __('activity.saved-successfully'));
