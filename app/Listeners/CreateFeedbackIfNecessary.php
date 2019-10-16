@@ -22,9 +22,14 @@ class CreateFeedbackIfNecessary
     public function handle(LearningActivityProducingCreated $event): void
     {
         $activity = $event->getActivity();
+        $givenChange = $activity->workplaceLearningPeriod->cohort->feedback_chance;
 
-        if ($activity->status->isBusy() && !$activity->difficulty->isEasy() || $activity->extrafeedback == 1) {
+        if ($activity->extrafeedback == 1) {
             $this->feedbackFactory->createFeedback($activity);
         }
+        else if ($activity->status->isBusy() && !$activity->difficulty->isEasy() && mt_rand(1,100) <= $givenChange) {
+            $this->feedbackFactory->createFeedback($activity);
+        }
+        
     }
 }
