@@ -131,11 +131,15 @@
                                                                           data-toggle="tooltip" data-placement="bottom"
                                                                           title="{{ trans('tooltips.acting_competence') }}"></i>
                             </h4>
-                            <select id="competence-select" name="competence[]" class="form-control fit-bs" multiple>
-                                @foreach ($competencies as $value)
-                                    <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', $activity->competence->pluck('competence_id')->all()), false) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
-                                @endforeach
-                            </select>
+                            <div class="wrap form-control fit-bs">
+                                <div class="crop">
+                                    <select id="competence-select" name="competence[]" size="{{ count($competencies) }}" multiple>
+                                        @foreach ($competencies as $value)
+                                            <option value="{{ $value->competence_id }}" {{ in_array($value->competence_id, old('competence', $activity->competence->pluck('competence_id')->all()), false) ? 'selected' : null }}>{{ $value->localizedLabel() }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             @if($competenceDescription !== null)
                                 <h5>
                                     <a href="{{ $competenceDescription->download_url }}">{{ __('elements.competences.competencedetails') }}</a>
