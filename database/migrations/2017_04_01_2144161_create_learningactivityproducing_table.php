@@ -25,7 +25,6 @@ class CreateLearningactivityproducingTable extends Migration
             $table->integer('category_id')->index('fk_LearningActivityProducing_Category1_idx');
             $table->integer('difficulty_id')->index('fk_LearningActivityProducing_Difficulty1_idx');
             $table->integer('status_id')->index('fk_LearningActivityProducing_Status1_idx');
-            $table->integer('extrafeedback')->nullable();
         });
     }
 

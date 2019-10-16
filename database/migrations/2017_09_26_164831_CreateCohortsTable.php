@@ -19,7 +19,6 @@ class CreateCohortsTable extends Migration
             $table->text('description')->nullable();
             $table->integer('ep_id')->nullable();
             $table->boolean('disabled')->default(false);
-            $table->integer('feedback_chance')->default(30);
 
             $table->foreign('ep_id', 'fk_Cohorts_EducationProgram')
                 ->references('ep_id')
