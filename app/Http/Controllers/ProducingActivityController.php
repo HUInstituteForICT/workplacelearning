@@ -104,7 +104,6 @@ class ProducingActivityController
         );
     }
 
-
     public function create(
         ProducingCreateRequest $request,
         LAPFactory $LAPFactory,
@@ -121,23 +120,23 @@ class ProducingActivityController
 
         // If the student wants extra feedback
         if ($learningActivityProducing->feedback && $data['extrafeedback'] == 1) {
-                session()->flash('notification', __('notifications.feedback-hard'));
-                $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
+            session()->flash('notification', __('notifications.feedback-hard'));
+            $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
 
-                if ($request->acceptsJson()) {
-                    return response()->json([
+            if ($request->acceptsJson()) {
+                return response()->json([
                         'status' => 'success',
                         'url'    => $url,
                     ]);
-                }
+            }
 
-                return redirect($url);
+            return redirect($url);
         }
 
         // If the student wants no extra feedback there is a given chance to get feedback
         if ($learningActivityProducing->feedback && $data['extrafeedback'] == 0) {
             $givenChange = $cohortChance;
-            if(mt_rand(1,100) <= $givenChange){
+            if ($givenChange >= mt_rand(1, 100)) {
                 session()->flash('notification', __('notifications.feedback-hard'));
                 $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
 
