@@ -25,8 +25,12 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth');
 
 Route::middleware(['auth', 'verified'])->group(static function (): void {
     // Routes for non-students
-    Route::middleware(RequiresTeacherLevel::class)->group(static function (): void {
-    });
+    Route::middleware(RequiresTeacherLevel::class)
+        ->prefix('teacher')
+        ->namespace('Teacher')
+        ->group(static function (): void {
+            Route::get('/', 'Dashboard')->name('teacher-dashboard');
+        });
 
     Route::middleware(RequiresAdminLevel::class)->group(static function (): void {
         Route::get('/education-programs',
