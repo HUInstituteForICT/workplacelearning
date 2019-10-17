@@ -25,7 +25,14 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth');
 
 Route::middleware(['auth', 'verified'])->group(static function (): void {
     // Routes for non-students
-    Route::middleware(RequiresTeacherLevel::class)->group(static function (): void {
+    Route::middleware(RequiresTeacherLevel::class)
+        ->prefix('teacher')
+        ->namespace('Teacher')
+        ->group(static function (): void {
+            Route::get('/', 'Dashboard')->name('teacher-dashboard');
+        });
+
+    Route::middleware(RequiresAdminLevel::class)->group(static function (): void {
         Route::get('/education-programs',
             'EducationProgramsController@index')->name('education-programs'); // Entry to Education programs management
         Route::view('/manage/tips', 'pages.tips.tips-app')->name('tips-app'); // Entry to tips management
@@ -147,22 +154,24 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         Route::get('/pull-update', static function (): string {
             return shell_exec('git -C /sites/werkplekleren.hu.nl/htdocs fetch && git -C /sites/werkplekleren.hu.nl/htdocs reset --hard origin/master && git -C /sites/werkplekleren.hu.nl/htdocs pull');
         }); // Pulls branch -- often doesn't work. Only necessary due to VPN situation on HU network
+
+        Route::prefix('admin')
+            ->namespace('Admin')
+            ->group(
+                static function (): void {
+                    Route::get('/', 'Dashboard')->name('admin-dashboard');
+                    Route::match(['GET', 'POST'], '/student/{student}',
+                        'StudentDetails')->name('admin-student-details');
+
+                    Route::match(['GET', 'POST'],
+                        '/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/edit',
+                        'EditWorkplaceLearningPeriod')->name('admin-student-edit-wplp');
+
+                    Route::get('/student/{student}/delete', 'DeleteStudent')->name('admin-student-delete');
+                    Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete',
+                        'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
+                });
     });
-
-    Route::middleware(RequiresAdminLevel::class)
-        ->prefix('admin')
-        ->namespace('Admin')
-        ->group(static function (): void {
-            Route::get('/', 'Dashboard')->name('admin-dashboard');
-            Route::match(['GET', 'POST'], '/student/{student}', 'StudentDetails')->name('admin-student-details');
-
-            Route::match(['GET', 'POST'], '/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/edit',
-                'EditWorkplaceLearningPeriod')->name('admin-student-edit-wplp');
-
-            Route::get('/student/{student}/delete', 'DeleteStudent')->name('admin-student-delete');
-            Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete',
-                'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
-        });
 
     // Student routes
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');

@@ -57,6 +57,8 @@ class LAPFactory
             round(((int) $data['aantaluren_custom']) / 60, 2);
         $learningActivityProducing->date = Carbon::parse($data['datum'])->format('Y-m-d');
 
+        $learningActivityProducing->extrafeedback = $data['extrafeedback'];
+
         // Set relations
         $learningActivityProducing->workplaceLearningPeriod()->associate(Auth::user()->getCurrentWorkplaceLearningPeriod());
         $learningActivityProducing->category()->associate($category);

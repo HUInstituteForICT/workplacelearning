@@ -62,6 +62,7 @@ return [
         'used-source'                => 'You used a source for this theory',
         'which-person'               => 'Which person/theory can you use?',
         'why-hard'                   => 'What made this activity difficult for you?',
+        'extra-feedback'             => 'I would like to give myself feedback on this activity',
     ],
     'finished'                => 'Finished',
     'hard'                    => 'Difficult',

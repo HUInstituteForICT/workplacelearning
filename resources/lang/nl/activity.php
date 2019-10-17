@@ -71,6 +71,7 @@ return [
         'help-school-needed'         => 'Welke ondersteuning heb je nodig vanuit je opleiding?',
         'help-school-needed-example' => 'Bijvoorbeeld: Contact leggen met mijn vakdocent/stagebegeleider.',
         'no-school-help-needed'      => 'Ik heb geen ondersteuning nodig van mijn opleiding',
+        'extra-feedback'             => 'Ik wil mijzelf graag feedback geven op deze activiteit',
     ],
     'source-description'      => 'Beschrijving bron',
     'how-does-this-page-work' => 'Hoe werkt deze pagina?',
