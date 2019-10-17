@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int                                                                     $ep_id
  * @property CompetenceDescription                                                   $competenceDescription
  * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[] $workplaceLearningPeriods
+ * @property int                                                                     $feedback_chance
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Cohort whereDisabled($value)
@@ -42,8 +43,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Cohort extends Model
 {
-    protected $fillable = ['name', 'description', 'ep_id'];
     public $timestamps = false;
+
+    protected $fillable = ['name', 'description', 'ep_id'];
 
     public function categories(): HasMany
     {
@@ -89,6 +91,14 @@ class Cohort extends Model
     // Relations for query builder
     public function getRelationships(): array
     {
-        return ['categories', 'competencies', 'competenceDescription', 'educationProgram', 'resourcePersons', 'timeslots', 'workplaceLearningPeriods'];
+        return [
+            'categories',
+            'competencies',
+            'competenceDescription',
+            'educationProgram',
+            'resourcePersons',
+            'timeslots',
+            'workplaceLearningPeriods',
+        ];
     }
 }

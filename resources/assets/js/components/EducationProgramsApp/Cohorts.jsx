@@ -163,6 +163,20 @@ export default class Cohorts extends React.Component {
                                                        });
                                                    this.updateCohort();
                                                }}/>
+                                     <div className="form-group">
+                                        <label htmlFor="cohort-feedback">{Lang.get('react.cohort-feedback')}</label>
+                                        <input name="cohort-feedback-chance" type="text" className="form-control"
+                                               value={selectedCohort.feedback_chance}
+                                               onChange={e => {
+                                                   this.setState(
+                                                       {
+                                                           cohorts: update(this.state.cohorts, {
+                                                               [this.cohortIndex(selectedCohort.id)]: {feedback_chance: {$set: e.target.value}}
+                                                           })
+                                                       });
+                                                   this.updateCohort();
+                                               }}/>
+                                    </div>
 
                                     </div>
                                 </div>

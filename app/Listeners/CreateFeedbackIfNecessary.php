@@ -22,8 +22,11 @@ class CreateFeedbackIfNecessary
     public function handle(LearningActivityProducingCreated $event): void
     {
         $activity = $event->getActivity();
+        $givenChance = $activity->workplaceLearningPeriod->cohort->feedback_chance;
 
-        if ($activity->status->isBusy() && !$activity->difficulty->isEasy()) {
+        if ($activity->extrafeedback === 1) {
+            $this->feedbackFactory->createFeedback($activity);
+        } elseif ($activity->status->isBusy() && !$activity->difficulty->isEasy() && $givenChance >= random_int(1, 100)) {
             $this->feedbackFactory->createFeedback($activity);
         }
     }

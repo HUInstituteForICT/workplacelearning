@@ -278,6 +278,18 @@ use App\ResourcePerson;
                 </div>
             </div>
 
+            <div class="col-md-3 ">
+                <div class="buttons">
+                    <h4>{{ __('activity.feedback.feedback') }}<i class="fa fa-info-circle" aria-hidden="true"
+                                                           data-toggle="tooltip" data-placement="bottom"
+                                                           title="{{ trans('tooltips.producing_feedback') }}"></i>
+                    </h4>
+                    <input type="hidden" name="extrafeedback" value="0" />
+                    <label><input type="checkbox" name="extrafeedback" value="1"/>  {{ __('activity.feedback.extra-feedback')}}</label>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
         </div>
         <div class="visible-xs-block visible-sm-block">
             <hr/>
