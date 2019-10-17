@@ -85,7 +85,7 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
         'category_id',
         'difficulty_id',
         'status_id',
-        'extrafeedback'
+        'extrafeedback',
     ];
 
     protected $dispatchesEvents = [

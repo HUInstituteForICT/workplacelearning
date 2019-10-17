@@ -115,12 +115,9 @@ class ProducingActivityController
 
         $learningActivityProducing = $LAPFactory->createLAP($data);
 
-        $student = $this->currentUserResolver->getCurrentUser();
-        $cohortChance = $student->currentCohort()->feedback_chance;
-
         if ($learningActivityProducing->feedback) {
-                session()->flash('notification', __('notifications.feedback-hard'));
-                $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
+            session()->flash('notification', __('notifications.feedback-hard'));
+            $url = route('feedback-producing', ['feedback' => $learningActivityProducing->feedback]);
 
             if ($request->acceptsJson()) {
                 return response()->json([
