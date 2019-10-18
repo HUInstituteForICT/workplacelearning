@@ -121,9 +121,9 @@ class ProducingActivityController
 
             if ($request->acceptsJson()) {
                 return response()->json([
-                    'status' => 'success',
-                    'url'    => $url,
-                ]);
+                        'status' => 'success',
+                        'url'    => $url,
+                    ]);
             }
 
             return redirect($url);

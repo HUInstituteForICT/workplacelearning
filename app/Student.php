@@ -153,6 +153,11 @@ class Student extends Authenticatable implements MustVerifyEmail
         return $this->getUserLevel() === 1 || $this->isAdmin();
     }
 
+    public function isStudent(): bool
+    {
+        return $this->getUserLevel() === 0 || $this->isAdmin();
+    }
+
     public function educationProgram(): BelongsTo
     {
         return $this->belongsTo(EducationProgram::class, 'ep_id', 'ep_id');
