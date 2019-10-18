@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BugReportRequest;
 use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
+use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\Services\CurrentUserResolver;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;
@@ -38,7 +39,7 @@ class HomeController extends Controller
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
+    public function showProducingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, ReflectionMethodBetaParticipationRepository $betaParticipationRepository)
     {
         $student = $this->currentUserResolver->getCurrentUser();
 
@@ -52,7 +53,8 @@ class HomeController extends Controller
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
 
-        return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null]);
+        $hasStudentDecided = $betaParticipationRepository->hasStudentDecided($student);
+        return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null, 'hasStudentDecided' => $hasStudentDecided]);
     }
 
     public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
