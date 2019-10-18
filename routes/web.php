@@ -279,6 +279,8 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/delete/{learningActivityActing}', 'ActingActivityController@delete')
                         ->middleware('can:delete,learningActivityActing')
                         ->name('process-acting-delete');
+
+                        Route::get('beta-reflection-method-participation/{participate}', 'Misc\DecideForReflectionMethodInterviewParticipation')->name('reflection-interview-participation');
                 }); // Actions relating to acting activities
             });
         });
@@ -348,5 +350,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
         Route::get('bugreport', 'HomeController@showBugReport')->name('bugreport');
         Route::post('bugreport/create', 'HomeController@createBugReport')->name('bugreport-create');
+   
+        
     });
 });
