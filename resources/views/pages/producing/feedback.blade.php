@@ -107,7 +107,7 @@
                 <input class="cond-hidden" type="text"
                        name="newnotfinished"
                        placeholder="{{ __('activity.description') }}"
-                       maxlength="80"
+                       maxlength="1000"
                        value="{{ ($feedback->notfinished !== 'Geen/Weinig Ervaring' && $feedback->notfinished !== 'Geen Hulpbron beschikbaar' && $feedback->notfinished !== 'Tijdgebrek') ? $feedback->notfinished : '' }}"
                 />
             </div>
@@ -139,7 +139,7 @@
                 <h4>{{ __('activity.feedback.help-received-wp') }}</h4>
                 <textarea class="form-control fit-bs"
                           name="supported_provided_wp"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.help-received-example') }}" rows="8"
                           cols="40">{{ $feedback->supported_provided_wp }}</textarea>
             </div>
@@ -166,7 +166,7 @@
                 <h4>{{ __('activity.feedback.own-initiative') }}</h4>
                 <textarea class="form-control fit-bs"
                           name="initiatief"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.initiative-explanation') }}" rows="8"
                           cols="40">{{ $feedback->initiative }}</textarea>
             </div>
@@ -180,7 +180,7 @@
 
                 <textarea class="form-control fit-bs"
                           name="vervolgstap_zelf"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.which-person') }}" rows="8"
                           cols="40">{{ $feedback->nextstep_self }}</textarea>
             </div>
@@ -188,7 +188,7 @@
                 <h4>{{ __('activity.feedback.help-needed') }}</h4>
                 <textarea class="form-control fit-bs"
                           name="ondersteuning_werkplek"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.help-needed-example') }}" rows="8"
                           cols="40">{{ $feedback->support_needed_wp }}</textarea>
                 <br/>
@@ -201,7 +201,7 @@
                 <h4>{{ __('activity.feedback.help-school-needed') }}</h4>
                 <textarea class="form-control fit-bs"
                           name="ondersteuning_opleiding"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.help-school-needed-example') }}" rows="8"
                           cols="40">{{ $feedback->support_needed_ed }}</textarea>
                 <br/>
