@@ -23,6 +23,7 @@ return [
     'category'                => 'Category',
     'chain-to'                => 'Chain to previous activity',
     'competence'              => 'Competences',
+    'date'                    => 'Date',
     'description'             => 'Description',
     'difficulty'              => 'Difficulty',
     'easy'                    => 'Easy',
