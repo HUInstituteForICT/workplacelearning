@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -17,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property learningActivityProducing $learningActivityProducing
  * @property int                       $fb_id
- * @property int                       $notfinished
+ * @property string                    $notfinished
  * @property string                    $initiative
  * @property string                    $progress_satisfied
  * @property string                    $support_requested
@@ -27,29 +29,33 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string                    $support_needed_ed
  * @property int                       $learningactivity_id
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereFbId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereInitiative($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereLearningactivityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereNextstepSelf($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereNotfinished($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereProgressSatisfied($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportNeededEd($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportNeededWp($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportRequested($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback whereSupportedProvidedWp($value)
- * @mixin \Eloquent
+ * @method static Builder|Feedback whereFbId($value)
+ * @method static Builder|Feedback whereInitiative($value)
+ * @method static Builder|Feedback whereLearningactivityId($value)
+ * @method static Builder|Feedback whereNextstepSelf($value)
+ * @method static Builder|Feedback whereNotfinished($value)
+ * @method static Builder|Feedback whereProgressSatisfied($value)
+ * @method static Builder|Feedback whereSupportNeededEd($value)
+ * @method static Builder|Feedback whereSupportNeededWp($value)
+ * @method static Builder|Feedback whereSupportRequested($value)
+ * @method static Builder|Feedback whereSupportedProvidedWp($value)
+ * @mixin Eloquent
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Feedback query()
+ * @method static Builder|Feedback newModelQuery()
+ * @method static Builder|Feedback newQuery()
+ * @method static Builder|Feedback query()
  */
 class Feedback extends Model
 {
     // Override the table used for the User Model
-    protected $table = 'feedback';
-    // Disable using created_at and updated_at columns
     public $timestamps = false;
+
+    // Disable using created_at and updated_at columns
+
+    protected $table = 'feedback';
+
     // Override the primary key column
+
     protected $primaryKey = 'fb_id';
 
     // Default
