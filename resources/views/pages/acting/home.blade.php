@@ -20,6 +20,16 @@
                         </p>
                     </div>
                 @endif
+                @if(!$hasStudentDecided)
+                        <div class="alert alert-info">
+                            {{ __('misc.reflection-beta-text') }}
+                            <br/><br/>
+                            <a class='btn btn-primary'
+                            href='{{ route('reflection-interview-participation', ['participate' => 1]) }}'>{{ __('misc.participate-accept') }}</a>
+                            &nbsp;
+                            <a href='{{ route('reflection-interview-participation', ['participate' => 0]) }}'>{{ __('misc.participate-decline') }}</a>
+                        </div>
+                    @endif
 
                 <p>{{ __('home.welcome') }}
                     <br/><br/>{{ __('home.see-menu') }}</p>
