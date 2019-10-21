@@ -30,6 +30,8 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
             'EducationProgramsController@index')->name('education-programs'); // Entry to Education programs management
         Route::view('/manage/tips', 'pages.tips.tips-app')->name('tips-app'); // Entry to tips management
 
+        Route::get('/beta-participations', 'Misc\Admin\InterviewParticipations')->name('admin.beta-participations');
+
         Route::group(['prefix' => '/dashboard'], function (): void {
             Route::get('/', 'AnalyticsDashboardController@index')->name('dashboard.index');
             Route::get('/add', 'AnalyticsDashboardController@add')->name('dashboard.add');
