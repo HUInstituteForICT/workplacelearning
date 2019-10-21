@@ -31,6 +31,15 @@
                 });
                 $("[name='support_requested']:checked").trigger("click");
                 //$(".expand-click > input").trigger("click");
+
+                <?php
+                $notFinishedOther = $feedback->notfinished !== 'Geen/Weinig Ervaring' && $feedback->notfinished !== 'Geen Hulpbron beschikbaar' && $feedback->notfinished !== 'Tijdgebrek';
+                ?>
+
+                @if($notFinishedOther)
+                        $('.cond-hidden[name="newnotfinished"]').show();
+                @endif
+
             });
         </script>
         <div class="row">
@@ -98,18 +107,21 @@
                     <span>{{ __('activity.feedback.lack-of-time') }}</span>
                 </label>
 
+
+
                 <label class="expand-click">
                     <input type="radio" name="notfinished" value="Anders"
-                           @if($feedback->notfinished === 'Anders') checked @endif
+                           @if($notFinishedOther) checked @endif
                     />
                     <span class="new">{{ __('activity.other') }} ({{ __('activity.add') }})</span>
                 </label>
-                <input class="cond-hidden" type="text"
+                <input class="cond-hidden form-control" type="text"
                        name="newnotfinished"
                        placeholder="{{ __('activity.description') }}"
                        maxlength="80"
-                       value="{{ ($feedback->notfinished !== 'Geen/Weinig Ervaring' && $feedback->notfinished !== 'Geen Hulpbron beschikbaar' && $feedback->notfinished !== 'Tijdgebrek') ? $feedback->notfinished : '' }}"
+                       value="{{ $notFinishedOther ? $feedback->notfinished : '' }}"
                 />
+
             </div>
             <div class="col-md-2 form-group buttons">
                 <h4>{{ __('activity.feedback.how-help') }}</h4>
@@ -139,7 +151,7 @@
                 <h4>{{ __('activity.feedback.help-received-wp') }}</h4>
                 <textarea class="form-control fit-bs"
                           name="supported_provided_wp"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.help-received-example') }}" rows="8"
                           cols="40">{{ $feedback->supported_provided_wp }}</textarea>
             </div>
@@ -166,7 +178,7 @@
                 <h4>{{ __('activity.feedback.own-initiative') }}</h4>
                 <textarea class="form-control fit-bs"
                           name="initiatief"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.initiative-explanation') }}" rows="8"
                           cols="40">{{ $feedback->initiative }}</textarea>
             </div>
@@ -180,7 +192,7 @@
 
                 <textarea class="form-control fit-bs"
                           name="vervolgstap_zelf"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.which-person') }}" rows="8"
                           cols="40">{{ $feedback->nextstep_self }}</textarea>
             </div>
@@ -188,7 +200,7 @@
                 <h4>{{ __('activity.feedback.help-needed') }}</h4>
                 <textarea class="form-control fit-bs"
                           name="ondersteuning_werkplek"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.help-needed-example') }}" rows="8"
                           cols="40">{{ $feedback->support_needed_wp }}</textarea>
                 <br/>
@@ -201,7 +213,7 @@
                 <h4>{{ __('activity.feedback.help-school-needed') }}</h4>
                 <textarea class="form-control fit-bs"
                           name="ondersteuning_opleiding"
-                          maxlength="150"
+                          maxlength="1000"
                           placeholder="{{ __('activity.feedback.help-school-needed-example') }}" rows="8"
                           cols="40">{{ $feedback->support_needed_ed }}</textarea>
                 <br/>
