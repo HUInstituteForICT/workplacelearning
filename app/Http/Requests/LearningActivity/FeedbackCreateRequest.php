@@ -19,18 +19,18 @@ class FeedbackCreateRequest extends FormRequest
         return [
             'notfinished'             => 'required',
             'support_requested'       => 'in:0,1,2',
-            'supported_provided_wp'   => 'max:150',
-            'initiatief'              => 'max:500',
+            'supported_provided_wp'   => 'max:1000',
+            'initiatief'              => 'max:1000',
             'progress_satisfied'      => 'in:1,2',
-            'vervolgstap_zelf'        => 'max:150',
-            'ondersteuning_werkplek'  => 'max:150',
-            'ondersteuning_opleiding' => 'max:150',
+            'vervolgstap_zelf'        => 'max:1000',
+            'ondersteuning_werkplek'  => 'max:1000',
+            'ondersteuning_opleiding' => 'max:1000',
         ];
     }
 
     public function withValidator(Validator $validator): void
     {
-        $validator->sometimes('newnotfinished', 'required|max:150', function ($input) {
+        $validator->sometimes('newnotfinished', 'required|max:80', static function ($input) {
             return $input->notfinished === 'Anders';
         });
     }
