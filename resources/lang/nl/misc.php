@@ -1,16 +1,16 @@
 <?php
 
 return [
-    'reflection-beta-text' => "Beste gebruiker van de Stage-App,
-
-Naar aanleiding van vragen van studenten gaan we de komende tijd aan de slag om het mogelijk te maken je reflecties in de app vast te leggen. Hierbij vinden we het belangrijk om de ontwerpen en de eerste versies van deze nieuwe functionaliteit met jullie als gebruikers te testen! Dit gaat plaatsvinden tussen half en eind juni. Zou je hier graag aan willen meedoen? Klik dan op de knop “Ja, ik wil meedoen”, dan nemen we binnenkort contact met je op! Heb je nog vragen of wil je meer informatie over deze ontwikkeling, dan kun je mailen naar esther.vanderstappen@hu.nl.
-
-Met vriendelijke groeten,
-het ontwikkelteam van de Stage-App",
-    'reflection-beta-participate-success-text' => 'Je bent ingeschreven voor de reflectiemethode beta.',
+    'reflection-beta-text' => 
+    "Wil je meehelpen aan het verbeteren en uitbreiden van de applicatie?
+    Denk dan nu mee met ons onderzoek!
+    Wij (derdejaars HBO-ICT) gaan de komende maanden de applicatie uitbreiden met functionaliteit zodat jouw docent jou nog beter kan begeleiden bij je stage.
+    We willen dit op zo'n manier ontwikkelen dat het aansluit bij jouw werkproces en jouw wensen. Geef hieronder aan of je mee wilt doen.
+    (Voor vragen over dit onderzoek kun je contact opnemen met Marco van Kesteren: marco.vankesteren@student.hu.nl)",
+    'reflection-beta-participate-success-text' => 'Bedankt dat je mee wilt doen met ons onderzoek. Je ontvangt spoedig meer informatie.',
     'participate-accept' => 'Ja, ik wil meedoen',
     'participate-decline' => 'Nee, ik wil niet meedoen',
-    'beta-participations' => 'Betainschrijvingen',
+    'beta-participations' => 'Deelnemers interview',
     'reflection-method-beta' => 'Reflectiemethode beta',
     'leave-beta' => 'Verlaat beta',
     'beta-leave-success' => 'Je hebt de beta verlaten.',

@@ -35,3 +35,10 @@
         <div title="{{ __('elements.sidebar.labels.template') }}" class="nav-title">{{ __('elements.sidebar.labels.template') }}</div>
     </div>
 </a>
+
+<a class="nav-tile"  href="{{ route('admin.beta-participations') }}">
+            <div class="tile blue_tile">
+                <img class="icon" src="{{ URL::asset('assets/img/beta_wit.svg', true) }}"/>
+                <div class="nav-title">{{ __('elements.sidebar.labels.beta-signups')  }}</div>
+            </div>
+</a>
