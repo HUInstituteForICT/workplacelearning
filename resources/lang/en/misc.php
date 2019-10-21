@@ -1,12 +1,11 @@
 <?php
 
 return [
-    'reflection-beta-text' => "Dear student,
-
-In response to questions from students, we will be working in the near future to make it possible to record your reflections in the app. For this we find it important to test the designs and the first versions of this new functionality with you as users! This will take place between mid and late June. Would you like to participate? Then click on the \"Yes, I want to participate\" button, we will contact you shortly! If you have any questions or would like more information about this development, you can mail to esther.vanderstappen@hu.nl.
-
-The development team",
-    'reflection-beta-participate-success-text' => 'You have successfully enrolled for the upcoming reflection method beta.',
+    'reflection-beta-text' => "Do you want to help improve and extend the functionality of this application? Please help us with our research! We are third year students of the study HBO-ICT and in the following months we want to extend the functionality of this application so your teacher can support you even better during your internship!
+    We want to develop these functionalities to align them with your working process and your wishes. Please let us know if you want to help us through one of the buttons below. 
+    (For any questions about this research, please contact Marco van Kesteren: marco.vankesteren@student.hu.nl)
+    ",
+    'reflection-beta-participate-success-text' => 'Thank you for participating in our research. You will receive more information soon.',
     'participate-accept' => 'Yes, I want to participate',
     'participate-decline' => 'No, I do not want to participate',
     'beta-participations' => 'Beta participations',
