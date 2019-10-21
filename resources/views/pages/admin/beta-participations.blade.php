@@ -11,19 +11,21 @@
 
             <h1>{{ __('misc.beta-participations') }}</h1>
 
-            <strong>Reflection method beta</strong><br/>
-            Total participations: {{ count($participations) }}
+            <strong>Deelnemers die mee willen doen aan het interview</strong><br/>
+            Totaal aantal deelnemers {{ count($participations) }}
             <table class="table">
                 <thead>
                 <tr>
                     <th>Student</th>
-                    <th>Accept date</th>
+                    <th>Mail</th>
+                    <th>Acceptatie datum</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($participations as $participation)
                     <tr>
                         <td>{{ $participation->student->getInitials() }} {{ $participation->student->lastname }}</td>
+                        <td>{{ $participation->student->email }}</td>
                         <td>{{ $participation->created_at->format('d-m-Y') }}</td>
                     </tr>
                 @endforeach
