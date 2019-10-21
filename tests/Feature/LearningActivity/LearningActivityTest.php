@@ -60,17 +60,18 @@ class LearningActivityTest extends \Tests\TestCase
         $status = (new Status(['status_id' => 1, 'status_label' => 'finished']))->save();
 
         $response = $this->actingAs($user)->post('/producing/process/create', [
-            'datum'        => Carbon::now()->format('d-m-Y'),
-            'omschrijving' => 'Some test activity!',
-            'aantaluren'   => '2',
-            'category_id'  => 'new',
-            'newcat'       => 'some new category',
-            'resource'     => 'persoon',
-            'personsource' => 'new',
-            'newswv'       => 'new test person',
-            'status'       => '1',
-            'moeilijkheid' => '1',
-            'chain_id'     => '-1',
+            'datum'         => Carbon::now()->format('d-m-Y'),
+            'omschrijving'  => 'Some test activity!',
+            'aantaluren'    => '2',
+            'category_id'   => 'new',
+            'newcat'        => 'some new category',
+            'resource'      => 'persoon',
+            'personsource'  => 'new',
+            'newswv'        => 'new test person',
+            'status'        => '1',
+            'moeilijkheid'  => '1',
+            'chain_id'      => '-1',
+            'extrafeedback' => '0',
         ]);
 
         // Controller redirects back to process creation page -- consider that success
