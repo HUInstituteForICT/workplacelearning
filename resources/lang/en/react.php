@@ -44,6 +44,7 @@ return [
     'cohort-desc' => 'Cohort description',
     'cohort-enable' => 'Enable cohort for new workplace learning periods',
     'cohort-disable' => 'Disable program for new workplace learning periods',
+    'cohort-feedback' => 'Chance that the feedback page appear',
     'cohort-delete' => 'Delete cohort',
     'cohort-delete-block' => 'Cohort has workplace learning periods and therefore cannot be deleted',
     'current-description' => 'Current description',

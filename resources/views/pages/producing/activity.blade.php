@@ -252,12 +252,18 @@ use App\ResourcePerson;
                                                        data-toggle="tooltip" data-placement="bottom"
                                                        title="{{ trans('tooltips.producing_status') }}"></i>
                     </h4>
-                    <label><input type="radio" name="status" value="1"
-                                  checked/><span>{{ __('activity.finished') }}</span></label>
-                    <label><input type="radio" name="status"
-                                  value="2"/><span>{{ __('activity.busy') }}</span></label>
-                    <label><input type="radio" name="status"
-                                  value="3"/><span>{{ __('activity.transfered') }}</span></label>
+                    <div id="finishedcontainer">
+                        <label><input type="radio" name="status" value="1"
+                                     checked/><span>{{ __('activity.finished') }}</span></label>
+                    </div>
+                    <div id="busycontainer">
+                        <label><input type="radio" name="status"
+                                    value="2"/><span>{{ __('activity.busy') }}</span></label>
+                    </div>
+                    <div id="transferedcontainer">
+                        <label><input type="radio" name="status"
+                                    value="3"/><span>{{ __('activity.transfered') }}</span></label>
+                    </div>
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -268,12 +274,30 @@ use App\ResourcePerson;
                                                            data-toggle="tooltip" data-placement="bottom"
                                                            title="{{ trans('tooltips.producing_difficulty') }}"></i>
                     </h4>
-                    <label><input type="radio" name="moeilijkheid" value="1"
+                    <div id="easycontainer"> 
+                        <label><input type="radio" name="moeilijkheid" value="1"
                                   checked/><span>{{ __('activity.easy') }}</span></label>
-                    <label><input type="radio" name="moeilijkheid"
-                                  value="2"/><span>{{ __('activity.average') }}</span></label>
-                    <label><input type="radio" name="moeilijkheid"
+                    </div>
+                    <div id="averageontainer">
+                        <label><input type="radio" name="moeilijkheid"
+                                    value="2"/><span>{{ __('activity.average') }}</span></label>
+                    </div>
+                    <div id="hardcontainer">
+                        <label><input type="radio" name="moeilijkheid"
                                   value="3"/><span>{{ __('activity.hard') }}</span></label>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="col-md-3 ">
+                <div class="buttons">
+                    <h4>{{ __('activity.feedback.feedback') }}<i class="fa fa-info-circle" aria-hidden="true"
+                                                           data-toggle="tooltip" data-placement="bottom"
+                                                           title="{{ trans('tooltips.producing_feedback') }}"></i>
+                    </h4>
+                    <input type="hidden" name="extrafeedback" value="0" />
+                    <label><input type="checkbox" name="extrafeedback" value="1"/>  {{ __('activity.feedback.extra-feedback')}}</label>
                     <div class="clearfix"></div>
                 </div>
             </div>
