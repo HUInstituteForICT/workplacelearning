@@ -31,6 +31,15 @@
                 });
                 $("[name='support_requested']:checked").trigger("click");
                 //$(".expand-click > input").trigger("click");
+
+                <?php
+                $notFinishedOther = $feedback->notfinished !== 'Geen/Weinig Ervaring' && $feedback->notfinished !== 'Geen Hulpbron beschikbaar' && $feedback->notfinished !== 'Tijdgebrek';
+                ?>
+
+                @if($notFinishedOther)
+                        $('.cond-hidden[name="newnotfinished"]').show();
+                @endif
+
             });
         </script>
         <div class="row">
@@ -98,18 +107,21 @@
                     <span>{{ __('activity.feedback.lack-of-time') }}</span>
                 </label>
 
+
+
                 <label class="expand-click">
                     <input type="radio" name="notfinished" value="Anders"
-                           @if($feedback->notfinished === 'Anders') checked @endif
+                           @if($notFinishedOther) checked @endif
                     />
                     <span class="new">{{ __('activity.other') }} ({{ __('activity.add') }})</span>
                 </label>
-                <input class="cond-hidden" type="text"
+                <input class="cond-hidden form-control" type="text"
                        name="newnotfinished"
                        placeholder="{{ __('activity.description') }}"
-                       maxlength="1000"
-                       value="{{ ($feedback->notfinished !== 'Geen/Weinig Ervaring' && $feedback->notfinished !== 'Geen Hulpbron beschikbaar' && $feedback->notfinished !== 'Tijdgebrek') ? $feedback->notfinished : '' }}"
+                       maxlength="80"
+                       value="{{ $notFinishedOther ? $feedback->notfinished : '' }}"
                 />
+
             </div>
             <div class="col-md-2 form-group buttons">
                 <h4>{{ __('activity.feedback.how-help') }}</h4>

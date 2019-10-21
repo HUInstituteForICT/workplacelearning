@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -8,8 +10,6 @@ class FeedbackIncreaseTextFieldsCharLimits extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -19,14 +19,11 @@ class FeedbackIncreaseTextFieldsCharLimits extends Migration
             $table->string('nextstep_self', 1000)->change();
             $table->string('support_needed_wp', 1000)->change();
             $table->string('support_needed_ed', 1000)->change();
-            $table->string('notfinished', 1000)->change();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
@@ -36,8 +33,6 @@ class FeedbackIncreaseTextFieldsCharLimits extends Migration
             $table->string('nextstep_self', 500)->change();
             $table->string('support_needed_wp', 500)->change();
             $table->string('support_needed_ed', 500)->change();
-            $table->string('notfinished', 100)->change();
         });
-
     }
 }

@@ -30,7 +30,7 @@ class FeedbackCreateRequest extends FormRequest
 
     public function withValidator(Validator $validator): void
     {
-        $validator->sometimes('newnotfinished', 'required|max:1000', function ($input) {
+        $validator->sometimes('newnotfinished', 'required|max:80', static function ($input) {
             return $input->notfinished === 'Anders';
         });
     }
