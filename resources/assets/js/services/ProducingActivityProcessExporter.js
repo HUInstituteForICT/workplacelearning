@@ -3,8 +3,9 @@ import * as axios from "axios";
 
 export default class ProducingActivityProcessExporter {
 
-    constructor(type, activities) {
+    constructor(type, includeReflections, activities) {
         this.type = type;
+        this.includeReflections = includeReflections;
         this.activities = activities;
 
         this.outputData = '';
@@ -36,7 +37,7 @@ export default class ProducingActivityProcessExporter {
                 if (activity[header] === null || activity[header] === 'null') {
                     return '';
                 }
-                if(header === 'feedback') {
+                if (header === 'feedback') {
                     return this.getFeedbackUrl(activity[header]);
                 }
                 return activity[header];
@@ -59,14 +60,26 @@ export default class ProducingActivityProcessExporter {
         this.activities.forEach((activity, index) => {
             let lines = headers.map(header => {
                 if (unwantedColumns.indexOf(header) !== -1) return;
-                if(header === 'description') {
+                if (header === 'description') {
                     return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" + activity[header] + " \n";
                 }
                 if (activity[header] === null || activity[header] === 'null') {
                     return _.capitalize(exportTranslatedFieldMapping[header]) + ": -";
                 }
-                if(header === 'feedback') {
-                    return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + this.getFeedbackUrl(activity[header]);
+                if (header === 'feedback') {
+                    if (this.includeReflections) {
+                        return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" +
+                            "Waarom is dit moeilijk?:" + (activity[header]['notfinished'] ? `${activity[header]['notfinished']}.` : "-") + "\n\t" +
+                            "Hulp gekregen?: " + (activity[header]['support_requested'] ? `${activity[header]['supported_provided_wp']}.` : "Nee.") + "\n\t" +
+                            "tevreden met de voortgang?: " + (activity[header]['progress_satisfied'] === 2 ? 'Ja.' : "Nee.") + "\n\t" +
+                            "Initiatief: " + (activity[header]['initiative'] ? `\n\t\t${activity[header]['initiative']}.` : "-") + "\n\t" +
+                            "Vervolgstap: " + (activity[header]['nextstep_self'] ? `\n\t\t${activity[header]['nextstep_self']}.` : "-") + "\n\t" +
+                            "Ondersteuning nodig van werkplek: " + (activity[header]['support_needed_wp'] ? `\n\t\t${activity[header]['support_needed_wp']}.` : "-") + "\n\t" +
+                            "Ondersteuning nodig vanuit opleiding: " + (activity[header]['support_needed_ed'] ? `\n\t\t${activity[header]['support_needed_ed']}.` : "-") + "\n\t" +
+                            "Url: " + this.getFeedbackUrl(activity[header]['fb_id']);
+                    } else {
+                        return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + this.getFeedbackUrl(activity[header]['fb_id']);
+                    }
                 }
                 return _.capitalize(exportTranslatedFieldMapping[header]) + ": " + activity[header];
             });

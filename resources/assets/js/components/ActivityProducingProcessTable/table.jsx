@@ -29,6 +29,7 @@ export default class ActivityProducingProcessTable extends React.Component {
             filters: this.buildFilter(window.activities),
             exports: ["csv", "txt", "email", "word"],
             selectedExport: "txt",
+            exportReflections: false,
             email: "",
             emailComment: "",
 
@@ -159,8 +160,9 @@ export default class ActivityProducingProcessTable extends React.Component {
     }
 
     exportHandler() {
-        const exporter = new ProducingActivityProcessExporter(this.state.selectedExport, this.filterActivities(this.state.activities));
-
+        const exporter = new ProducingActivityProcessExporter(this.state.selectedExport, this.state.exportReflections, this.filterActivities(this.state.activities));
+        const includeReflections = (this.state.exportReflections ? 1 : 0);
+        
         if(this.state.selectedExport === "email") {
             this.setState({emailAlert: undefined});
             exporter.mail(this.state.email, this.state.emailComment, response => {
@@ -332,6 +334,13 @@ export default class ActivityProducingProcessTable extends React.Component {
                     })}
                 </select>
             </label> &nbsp;
+            <br/>
+            <label style={{marginTop: '5px'}}>
+                <input type="checkbox" checked={this.state.exportReflections}
+                        onChange={() => this.setState({exportReflections: !this.state.exportReflections})}/>
+                &nbsp;{Lang.get('react.with-feedback')}
+            </label>
+            <br/>
             <button className="btn btn-info" onClick={this.exportHandler} disabled={this.state.activities.length === 0 || (this.state.selectedExport === 'email' && (!this.state.email.includes('@') || !this.state.email.includes('.')) )}>{Lang.get('react.export')}</button>
             <br/>
             {this.state.selectedExport === 'email' &&
