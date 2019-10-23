@@ -13,6 +13,9 @@
     {{ __('activity.feedback.feedback') }}
 @stop
 @section('content')
+    <?php
+    $notFinishedOther = $feedback->notfinished !== 'Geen/Weinig Ervaring' && $feedback->notfinished !== 'Geen Hulpbron beschikbaar' && $feedback->notfinished !== 'Tijdgebrek' && !empty($feedback->notfinished);
+    ?>
     <div class="container-fluid">
         <script>
             $(document).ready(function () {
@@ -31,10 +34,6 @@
                 });
                 $("[name='support_requested']:checked").trigger("click");
                 //$(".expand-click > input").trigger("click");
-
-                <?php
-                $notFinishedOther = $feedback->notfinished !== 'Geen/Weinig Ervaring' && $feedback->notfinished !== 'Geen Hulpbron beschikbaar' && $feedback->notfinished !== 'Tijdgebrek';
-                ?>
 
                 @if($notFinishedOther)
                         $('.cond-hidden[name="newnotfinished"]').show();
