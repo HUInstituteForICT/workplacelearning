@@ -2,7 +2,7 @@
 
 return [
     'header'       => [
-        'title' => 'Workplace Assisted Learning',
+        'title' => 'Workplace Learning',
     ],
     'sidebar'      => [
         'labels' => [
@@ -141,7 +141,7 @@ return [
         ],
     ],
     'general'      => [
-        'mayonlycontain' => 'Dit veld mag alleen de volgende tekens bevatten:',
+        'mayonlycontain' => 'This field may only contain the following characters:',
     ],
     'calendar'     => [
         'labels'        => [
@@ -175,6 +175,6 @@ return [
         'showall'              => 'Show all data',
     ],
     'competences'  => [
-        'competencedetails' => 'Competences en Indicators',
+        'competencedetails' => 'Competences and Indicators',
     ],
 ];

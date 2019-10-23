@@ -37,6 +37,7 @@ return [
     'cohort-details' => 'Cohortdetails',
     'cohort-name' => 'Cohort naam',
     'cohort-desc' => 'Cohort omschrijving',
+    'cohort-feedback' => 'Kans dat de feedbackpagina verschijnt',
     'cohort-enable' => 'Cohort aanzetten voor nieuwe stageperiodes',
     'cohort-disable' => 'Cohort uitzetten voor nieuwe stageperiodes',
     'cohort-delete' => 'Cohort verwijderen',

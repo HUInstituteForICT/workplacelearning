@@ -65,6 +65,7 @@ class EducationProgramsController extends Controller
     {
         $cohort->name = $request->get('name');
         $cohort->description = $request->get('description');
+        $cohort->feedback_chance = $request->get('feedback_chance');
         $cohort->save();
 
         return response()->json($cohort);
