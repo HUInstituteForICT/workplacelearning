@@ -37,7 +37,7 @@ export default class ProducingActivityProcessExporter {
                 if (activity[header] === null || activity[header] === 'null') {
                     return '';
                 }
-                if (header === 'feedback') {
+                if (header === 'feedback' && activity[header]) {
                     return this.getFeedbackUrl(activity[header]['fb_id']);
                 }
                 return activity[header];
@@ -66,7 +66,7 @@ export default class ProducingActivityProcessExporter {
                 if (activity[header] === null || activity[header] === 'null') {
                     return _.capitalize(exportTranslatedFieldMapping[header]) + ": -";
                 }
-                if (header === 'feedback') {
+                if (header === 'feedback' && activity[header]) {
                     if (this.includeFeedback) {
                         return _.capitalize(exportTranslatedFieldMapping[header]) + ": \n\t" +
                             `${Lang.get('activity.feedback.why-hard')}: ` + (activity[header]['notfinished'] ? `${activity[header]['notfinished']}.` : "-") + "\n\t" +

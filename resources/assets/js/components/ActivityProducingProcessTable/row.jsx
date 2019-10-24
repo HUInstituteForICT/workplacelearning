@@ -53,7 +53,7 @@ export default class Row extends React.Component {
             <td>{activity.status}</td>
             <td>{activity.chain}</td>
             <td>
-                {activity.feedback !== null && <a href={`/producing/feedback/${activity.feedback}`}>Feedback</a>}
+                {activity.feedback !== null && activity.feedback.fb_id !== null && <a href={`/producing/feedback/${activity.feedback.fb_id}`}>Feedback</a>}
             </td>
 
         </tr>
