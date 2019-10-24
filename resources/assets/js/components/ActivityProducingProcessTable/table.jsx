@@ -29,7 +29,7 @@ export default class ActivityProducingProcessTable extends React.Component {
             filters: this.buildFilter(window.activities),
             exports: ["csv", "txt", "email", "word"],
             selectedExport: "txt",
-            exportReflections: false,
+            exportFeedback: false,
             email: "",
             emailComment: "",
 
@@ -160,8 +160,8 @@ export default class ActivityProducingProcessTable extends React.Component {
     }
 
     exportHandler() {
-        const exporter = new ProducingActivityProcessExporter(this.state.selectedExport, this.state.exportReflections, this.filterActivities(this.state.activities));
-        const includeReflections = (this.state.exportReflections ? 1 : 0);
+        const exporter = new ProducingActivityProcessExporter(this.state.selectedExport, this.state.exportFeedback, this.filterActivities(this.state.activities));
+        const exportFeedback = (this.state.exportFeedback ? 1 : 0);
         
         if(this.state.selectedExport === "email") {
             this.setState({emailAlert: undefined});
@@ -336,8 +336,8 @@ export default class ActivityProducingProcessTable extends React.Component {
             </label> &nbsp;
             <br/>
             <label style={{marginTop: '5px'}}>
-                <input type="checkbox" checked={this.state.exportReflections}
-                        onChange={() => this.setState({exportReflections: !this.state.exportReflections})}/>
+                <input type="checkbox" checked={this.state.exportFeedback}
+                        onChange={() => this.setState({exportFeedback: !this.state.exportFeedback})}/>
                 &nbsp;{Lang.get('react.with-feedback')}
             </label>
             <br/>
