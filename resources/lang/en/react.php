@@ -90,6 +90,7 @@ return [
     'edit' => 'Edit',
     'clone' => 'Clone',
     'with-reflections' => 'include reflections',
+    'with-feedback' => 'With feedback as text',
     'cohorts-show-disabled' => 'Show disabled',
     'cohorts-hide-disabled' => 'Hide disabled',
     'progress-link-label' => 'To see all previous activities, click here',

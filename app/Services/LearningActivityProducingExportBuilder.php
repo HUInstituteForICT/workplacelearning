@@ -42,7 +42,23 @@ class LearningActivityProducingExportBuilder
                 'status'          => $this->translator->get('general.'.strtolower($activity->status->status_label)),
                 'url'             => route('process-producing-edit', ['id' => $activity->lap_id]),
                 'chain'           => $this->formatChain($activity),
-                'feedback'        => $activity->feedback->fb_id ?? null,
+                'feedback'              => (static function () use ($activity) {
+                    if ($activity->feedback === null) {
+                        return null;
+                    }
+
+                    return [
+                        'fb_id'                 => $activity->feedback['fb_id'] ?? null,
+                        'notfinished'           => $activity->feedback['notfinished'] ?? null,
+                        'initiative'            => $activity->feedback['initiative'] ?? null,
+                        'progress_satisfied'    => $activity->feedback['progress_satisfied'] ?? null,
+                        'support_requested'     => $activity->feedback['support_requested'] ?? null,
+                        'supported_provided_wp' => $activity->feedback['supported_provided_wp'] ?? null,
+                        'nextstep_self'         => $activity->feedback['nextstep_self'] ?? null,
+                        'support_needed_wp'     => $activity->feedback['support_needed_wp'] ?? null,
+                        'support_needed_ed'     => $activity->feedback['support_needed_ed'] ?? null,
+                    ];
+                })(),
             ];
         });
 
