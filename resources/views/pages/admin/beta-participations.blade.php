@@ -18,6 +18,7 @@
                 <tr>
                     <th>Student</th>
                     <th>Mail</th>
+                    <th>Opleiding</th>
                     <th>Acceptatie datum</th>
                 </tr>
                 </thead>
@@ -26,6 +27,7 @@
                     <tr>
                         <td>{{ $participation->student->getInitials() }} {{ $participation->student->lastname }}</td>
                         <td>{{ $participation->student->email }}</td>
+                        <td>{{ $participation->student->educationProgram->ep_name }}</td>
                         <td>{{ $participation->created_at->format('d-m-Y') }}</td>
                     </tr>
                 @endforeach
