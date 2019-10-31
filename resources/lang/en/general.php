@@ -84,4 +84,8 @@ return array(
     'hide' => 'Hide',
     'found-bug' => 'Found a bug?',
     'bug-tell-us' => 'Tell us!',
+    'no-student' => 'You don\'t have any student yet.',
+    'students' => 'Students',
+    'student-details' => 'Student details',
+    'view' => 'View',
 );
