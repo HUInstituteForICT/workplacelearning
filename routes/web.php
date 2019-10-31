@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         ->namespace('Teacher')
         ->group(static function (): void {
             Route::get('/', 'Dashboard')->name('teacher-dashboard');
+            Route::get('/student/{student}', 'StudentDetails')->name('teacher-student-details');
         });
 
     Route::middleware(RequiresAdminLevel::class)->group(static function (): void {
