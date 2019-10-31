@@ -23,7 +23,7 @@
                                     <p class="card-text">{{ $student->email }}</p>
                                 </div>
                                 <a href="{{ route('teacher-student-details', ['student' => $student]) }}"
-                                    class="btn btn-primary">{{ __('general.view') }}</a>
+                                    class="btn btn-info">{{ __('general.view') }}</a>
                             </div>
                         </div>
                     </div>
