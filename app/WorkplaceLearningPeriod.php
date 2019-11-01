@@ -84,6 +84,7 @@ class WorkplaceLearningPeriod extends Model
         'description',
         'cohort_id',
         'hours_per_day',
+        'teacher_id'
     ];
 
     public function cohort(): BelongsTo

@@ -18,6 +18,7 @@ return [
             'template'            => 'Template Beheer',
             'analytics_dashboard' => 'Analyse Dashboard',
             'beta-signups'        => 'Betainschrijvingen',
+            'koppelen'            => 'Koppelen',
         ],
     ],
     'alerts'       => [
