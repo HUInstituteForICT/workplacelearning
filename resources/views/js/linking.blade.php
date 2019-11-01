@@ -1,6 +1,8 @@
 <script>
 document.getElementById('teacher_id').style.display = "none";
 document.getElementById('wplp').style.display = "none";
+document.getElementById('step-3').style.display = "none";
+document.getElementById('error').style.display = "none";
 document.getElementById('selectWPLP').onchange = chooseWPLP;
 
 function showModel() {
@@ -49,11 +51,12 @@ function chooseStudent(id) {
         var select =  document.getElementById("selectWPLP");
         var chosenStudent = '';
         removeOptions(selectWPLP)
+        document.getElementById('error').style.display = "none";
+        document.getElementById('step-3').style.display = "none";
 
         for(let student of students){
             if(student.student_id == id){
                 chosenStudent = student.studentnr + ' - ' + student.firstname + " " + student.lastname;
-                + student.firstname + " " + student.lastname + '<br>' + student.email;
             } 
         }
 
@@ -61,10 +64,13 @@ function chooseStudent(id) {
                 el.textContent = 'Kies een stage';
                 select.appendChild(el);
 
+        
+
        //Get all WPLP of the student
         for(let wplp of workplacelearningperiods){
             if(wplp.student_id == id) {
-              
+              document.getElementById('step-3').style.display = "";
+              document.getElementById('error').style.display = "none";
               for(let workplace of workplaces) {
                 if(workplace.wp_id == wplp.wp_id) {
                   var el = document.createElement("option");
@@ -73,7 +79,14 @@ function chooseStudent(id) {
                   select.appendChild(el);
                 }
               }
-            }
+            } 
+        }
+
+        //Error if student has no WPLP
+        if (select.options.length === 1) {
+          console.log("geen stages")
+          document.getElementById('error').style.display = "";
+          document.getElementById('step-3').style.display = "none";
         }
 
         
@@ -95,6 +108,7 @@ function chooseStudent(id) {
         {
             selectbox.remove(i);
         }
+        
     }
 
 

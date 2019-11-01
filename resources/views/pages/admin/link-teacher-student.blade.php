@@ -96,15 +96,27 @@
                 </div>
             </div>
         </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ __('linking.stap-3') }}</h3>
+        <div id="step-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ __('linking.stap-3') }}</h3>
+                </div>
+                <div class="panel-body">
+                    <select id="selectWPLP" class="form-control" name="wplp">
+                        <option>{{ __('linking.kies-stage') }}</option> 
+                    </select>
+                </div>
             </div>
-            <div class="panel-body">
-                <select id="selectWPLP" class="form-control" name="wplp">
-                    <option>{{ __('linking.kies-stage') }}</option> 
-                </select>
+        </div>
+
+        <div id="error">
+        <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ __('linking.stap-3') }}</h3>
+                </div>
+                <div class="panel-body">
+                    Deze student heeft geen gekoppelde stage.
+                </div>
             </div>
         </div>
 
