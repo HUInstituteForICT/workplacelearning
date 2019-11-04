@@ -22,7 +22,7 @@ class Dashboard extends Controller
 
     public function __invoke(Request $request)
     {
-        $students = $this->studentRepository->search($request->get('filter', []));
+        $students = $this->studentRepository->search($request->get('filter', []), 25, ['educationProgram']);
 
         return view('pages.admin.dashboard', [
             'students' => $students,
