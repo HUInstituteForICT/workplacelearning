@@ -118,6 +118,9 @@
                             @else
                                 <div class="form-group">
                                     <label>Cohort</label>
+                                    <select class="form-control" disabled>
+                                        <option>{{ $wplp->cohort->name }}</option>
+                                    </select>
                                     <p class="form-control-static">
                                         Student has registered activities, you cannot update the cohort
                                     </p>

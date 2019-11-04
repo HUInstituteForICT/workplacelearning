@@ -43,6 +43,16 @@
                         <strong>Registration date</strong><br/>
                         {{ $student->registrationdate->toFormattedDateString() }}
                     </p>
+                    <p>
+                        <strong>Education programme:</strong><br/>
+
+                        @if($student->hasCurrentWorkplaceLearningPeriod())
+                            {{ $student->educationProgram->ep_name }}
+                            <small style="color: rgba(0,0,0,0.4)">{{ $student->getCurrentWorkplaceLearningPeriod()->cohort->name }}</small>
+                        @else
+                            {{ $student->educationProgram->ep_name }}
+                        @endif
+                    </p>
 
                     <p>
                         <strong>Canvas:</strong><br/>
@@ -122,37 +132,41 @@
                                 /** @var WorkplaceLearningPeriod $wplp */
                                 ?>
                                 @foreach($student->workplaceLearningPeriods as $wplp)
-                                    <tr>
-                                        <td>{{ $wplp->startdate->format('d-m-Y') }}
-                                            - {{ $wplp->enddate->format('d-m-Y') }}</td>
-                                        <td>{{ $wplp->nrofdays }}</td>
-                                        <td>{{ $wplp->workplace->wp_name }}</td>
-                                        <td>
-                                            @if($student->educationProgram->educationprogramType->isActing())
-                                                {{ $wplp->learningActivityActing->count() }}
-                                            @else
-                                                {{ $wplp->learningActivityProducing->count() }}
+                                    @if($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->is($wplp))
+                                        <tr class="success">
+                                    @else
+                                        <tr>
                                             @endif
-                                        </td>
-                                        <td>
-                                            @if($wplp->is_in_analytics)
-                                                <span class="label label-success">Yes</span>
-                                            @else
-                                                <span class="label label-danger">No</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('admin-student-edit-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
-                                                Edit
-                                            </a>
+                                            <td>{{ $wplp->startdate->format('d-m-Y') }}
+                                                - {{ $wplp->enddate->format('d-m-Y') }}</td>
+                                            <td>{{ $wplp->nrofdays }}</td>
+                                            <td>{{ $wplp->workplace->wp_name }}</td>
+                                            <td>
+                                                @if($student->educationProgram->educationprogramType->isActing())
+                                                    {{ $wplp->learningActivityActing->count() }}
+                                                @else
+                                                    {{ $wplp->learningActivityProducing->count() }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($wplp->is_in_analytics)
+                                                    <span class="label label-success">Yes</span>
+                                                @else
+                                                    <span class="label label-danger">No</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('admin-student-edit-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
+                                                    Edit
+                                                </a>
 
-                                            <a class="wplp-delete-link"
-                                               data-url="{{ route('admin-student-delete-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
-                                                Delete
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                                <a class="wplp-delete-link"
+                                                   data-url="{{ route('admin-student-delete-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
+                                                    Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
                                 </tbody>
                             </table>
                         </div>
