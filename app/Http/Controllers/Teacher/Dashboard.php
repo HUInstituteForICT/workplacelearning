@@ -12,13 +12,13 @@ class Dashboard extends Controller
 {
     public function __invoke()
     {
-        $user = Auth::user();
-        $students = student::join('workplacelearningperiod', 'student.student_id', '=', 'workplacelearningperiod.student_id')
-            ->where('workplacelearningperiod.teacher_id', $user->student_id)
-            ->select('student.*')
-            ->distinct()
-            ->get();
+        $wplps = Auth::user()->linkedWorkplaceLearningPeriods()->get();
+        $students = array();
 
-        return view('pages.teacher.dashboard')->with('students', $students);
+        foreach ($wplps as $wplp) {
+            array_push($students, $wplp->student);
+        }
+
+        return view('pages.teacher.dashboard')->with('students', array_unique($students));
     }
 }

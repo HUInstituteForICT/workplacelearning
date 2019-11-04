@@ -97,6 +97,11 @@ class WorkplaceLearningPeriod extends Model
         return $this->belongsTo(Student::class, 'student_id', 'student_id');
     }
 
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Student::class, 'teacher_id', 'student_id');
+    }
+
     public function workplace(): BelongsTo
     {
         return $this->belongsTo(Workplace::class, 'wp_id', 'wp_id');

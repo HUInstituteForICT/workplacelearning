@@ -187,6 +187,11 @@ class Student extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(WorkplaceLearningPeriod::class, 'student_id', 'student_id');
     }
 
+    public function linkedWorkplaceLearningPeriods(): HasMany
+    {
+        return $this->hasMany(WorkplaceLearningPeriod::class, 'teacher_id', 'student_id');
+    }
+
     public function getCurrentWorkplace(): Workplace
     {
         if ($this->hasCurrentWorkplaceLearningPeriod()) {
