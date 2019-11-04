@@ -53,6 +53,8 @@
                                     <th>@sortablelink('lastname', 'Last name')</th>
                                     <th>@sortablelink('email', 'E-mail')</th>
                                     <th>@sortablelink('userlevel', 'Role')</th>
+                                    <th>@sortablelink('registrationdate', 'Registration date')</th>
+                                    <th>Programme</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -73,6 +75,12 @@
                                             @elseif($student->userlevel === 2)
                                                 <span class="label label-danger">Admin</span>
                                             @endif
+                                        </td>
+                                        <td>
+                                            {{ $student->registrationdate->format('m/d/Y') }}
+                                        </td>
+                                        <td>
+                                            {{ $student->educationProgram->ep_name }}
                                         </td>
                                         <td>
                                             <a href="{{route('admin-student-details', ['$student' => $student])}}">

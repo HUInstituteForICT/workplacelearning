@@ -52,10 +52,10 @@ class StudentRepository implements Searchable
     /**
      * @return LengthAwarePaginator|Collection
      */
-    public function search(array $filters = [], ?int $pages = 25)
+    public function search(array $filters = [], ?int $pages = 25, array $relations = [])
     {
         /** @var Builder $builder */
-        $builder = Student::sortable('studentnr');
+        $builder = Student::sortable('studentnr')->with($relations);
         $allowedFilters = $this->getSearchFilters();
 
         /*
