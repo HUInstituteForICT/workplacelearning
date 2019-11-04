@@ -3,8 +3,7 @@ import React from "react";
 import {actions as entityActions} from "./redux/entities";
 import axios from "axios/index";
 import {Link} from "react-router-dom";
-import Joyride from "react-joyride";
-import {ACTIONS, EVENTS} from 'react-joyride';
+import Joyride, {ACTIONS, EVENTS} from "react-joyride";
 import CoupledStatistics from "./CoupledStatistics";
 import Moments from "./Moments";
 import EducationProgramService from "../../services/EducationProgramService";
@@ -31,7 +30,6 @@ class TipEditPage extends React.Component {
         this.addTranslation = this.addTranslation.bind(this);
         this.setTranslation = this.setTranslation.bind(this);
         this.removeTranslation = this.removeTranslation.bind(this);
-
 
 
     }
@@ -101,11 +99,11 @@ class TipEditPage extends React.Component {
         const {action, index, type} = tour;
 
         // Check if we need to open or close a modal, depending on which step we are
-        if(type === EVENTS.STEP_AFTER) {
+        if (type === EVENTS.STEP_AFTER) {
             this.setState({stepIndex: index + (action === ACTIONS.PREV ? -1 : 1)});
         }
 
-        if(type === EVENTS.TOUR_END) {
+        if (type === EVENTS.TOUR_END) {
             this.setState({runJoyride: false, stepIndex: 0});
         }
 
@@ -219,38 +217,73 @@ class TipEditPage extends React.Component {
     setStepIndex = stepIndex => this.setState({stepIndex});
 
 
-
-
-
     render = () => {
         const {
             match,
             tip, coupledStatistics,
             statistics, educationPrograms,
             cohorts, updateEntity, moments,
+            educationProgramTypes
         } = this.props;
 
         if (tip === undefined) return <div>Loading...</div>;
 
+        let hasActingCoupled, hasProducingCoupled = false;
+        coupledStatistics.forEach(coupled => {
+            const statistic = statistics[coupled.statistic];
+            if (statistic.education_program_type === 'acting') hasActingCoupled = true;
+            if (statistic.education_program_type === 'producing') hasProducingCoupled = true;
+        });
+
+        /** @var {string} */
+        const statisticEPType = (() => {
+                if ((hasActingCoupled && hasProducingCoupled) || (!hasActingCoupled && !hasProducingCoupled)) {
+                    return 'both';
+                }
+                if (hasActingCoupled) {
+                    return 'acting'
+                }
+                if (hasProducingCoupled) {
+                    return 'producing'
+                }
+            }
+        )();
+
+        const shouldShowEducationProgramme = educationProgramme => {
+            const type = educationProgramTypes[educationProgramme.eptype_id];
+            /** @var {string} */
+            const typeName = type.eptype_name.toLowerCase();
+
+            return statisticEPType === typeName || statisticEPType === 'both';
+        };
+
+        const shouldShowCohort = cohort => {
+            const educationProgram = educationPrograms[cohort.ep_id];
+            return shouldShowEducationProgramme(educationProgram);
+        };
+
+        const cohortsToDisplay = Object.values(cohorts)
+            .filter(cohort => this.state.selectedEducationProgramId === cohort.ep_id || this.state.selectedEducationProgramId === null)
+            .filter(shouldShowCohort);
 
         return <div>
 
 
             <div className="container">
-            <Link to="/">
-                <button type="button" className="btn">{Lang.get('tips.back')}</button>
-            </Link>
+                <Link to="/">
+                    <button type="button" className="btn">{Lang.get('tips.back')}</button>
+                </Link>
                 <button onClick={() => this.setState({runJoyride: true, stepIndex: 0})}
                         className="btn btn-danger pull-right">{Lang.get('tips.help-steps.guide')}</button>
-            <br/>
-            <h1>{Lang.get('tips.edit')}</h1>
+                <br/>
+                <h1>{Lang.get('tips.edit')}</h1>
                 <div className="row">
                     <div className="col-lg-6">
-                <input id="step-1" type="text" className="form-control" placeholder={Lang.get('tips.name')}
-                       value={tip.name}
-                       onChange={e => updateEntity('tips', tip.id, {...tip, name: e.target.value})}/>
+                        <input id="step-1" type="text" className="form-control" placeholder={Lang.get('tips.name')}
+                               value={tip.name}
+                               onChange={e => updateEntity('tips', tip.id, {...tip, name: e.target.value})}/>
                     </div>
-            </div>
+                </div>
 
 
                 <div>
@@ -345,17 +378,17 @@ class TipEditPage extends React.Component {
 
                     </div>
                 </div>
-            <hr/>
+                <hr/>
 
                 <div className="form-group" style={{background: 'white'}} id="step-19">
                     <input id='analysisvisible' type="checkbox" checked={tip.showInAnalysis}
-                       onChange={e => updateEntity('tips', tip.id, {...tip, showInAnalysis: e.target.checked})}/>
+                           onChange={e => updateEntity('tips', tip.id, {...tip, showInAnalysis: e.target.checked})}/>
                     <label htmlFor='analysisvisible'>&nbsp;{Lang.get('tips.form.showInAnalysis')}</label>
                 </div>
 
-            <hr/>
+                <hr/>
 
-            <h3>{Lang.get('tips.form.cohorts-enable')}</h3>
+                <h3>{Lang.get('tips.form.cohorts-enable')}</h3>
 
                 <div>
                     <div className="row" style={{background: 'white', marginBottom: '20px'}} id="step-20">
@@ -367,13 +400,14 @@ class TipEditPage extends React.Component {
                                 type='button'
                                 onClick={e => this.setState({selectedEducationProgramId: null})}
                             >{Lang.get('tips.education-programs-all')}</button>
-                            {Object.values(educationPrograms).map(educationProgram => <button
-                                key={educationProgram.ep_id}
-                                className={'btn ' + (this.state.selectedEducationProgramId === educationProgram.ep_id ? 'btn-primary' : 'btn-default')}
-                                style={{width: '100%', marginTop: '5px', marginBottom: '5px', whiteSpace: 'normal'}}
-                                type='button'
-                                onClick={e => this.setState({selectedEducationProgramId: educationProgram.ep_id})}
-                            >{educationProgram.ep_name}</button>)}
+                            {Object.values(educationPrograms).filter(shouldShowEducationProgramme).map(educationProgram =>
+                                <button
+                                    key={educationProgram.ep_id}
+                                    className={'btn ' + (this.state.selectedEducationProgramId === educationProgram.ep_id ? 'btn-primary' : 'btn-default')}
+                                    style={{width: '100%', marginTop: '5px', marginBottom: '5px', whiteSpace: 'normal'}}
+                                    type='button'
+                                    onClick={e => this.setState({selectedEducationProgramId: educationProgram.ep_id})}
+                                >{educationProgram.ep_name}</button>)}
                         </div>
 
                         <div className="col-lg-10">
@@ -396,31 +430,43 @@ class TipEditPage extends React.Component {
                             </div>
 
                             <div className="row">
-                                {Object.values(cohorts)
-                                    .filter(cohort => this.state.selectedEducationProgramId === cohort.ep_id || this.state.selectedEducationProgramId === null)
+                                {cohortsToDisplay
+                                    .filter(cohort => !cohort.disabled)
                                     .sort()
-                                    .map(cohort => {
-                                    return <div className="col-md-2" key={cohort.id}>
-                                        <div className="form-group"><p className="checkbox">
-                                            <label><input type="checkbox"
-                                                          checked={tip.enabled_cohorts.includes(cohort.id)}
-                                                          onChange={e => {
-                                                              const enabled = [...tip.enabled_cohorts];
-                                                              if (enabled.includes(cohort.id)) {
-                                                                  enabled.splice(enabled.indexOf(cohort.id), 1);
-                                                              } else {
-                                                                  enabled.push(cohort.id);
-                                                              }
-                                                              updateEntity('tips', tip.id, {
-                                                                  ...tip,
-                                                                  enabled_cohorts: enabled
-                                                              });
-                                                          }}
-                                            /> {cohort.name}
-                                            </label></p>
-                                        </div>
-                                    </div>;
-                                })}
+                                    .map(cohort => <CohortEntry cohort={cohort}
+                                                                checked={tip.enabled_cohorts.includes(cohort.id)}
+                                                                onChange={e => {
+                                                                    const enabled = [...tip.enabled_cohorts];
+                                                                    if (enabled.includes(cohort.id)) {
+                                                                        enabled.splice(enabled.indexOf(cohort.id), 1);
+                                                                    } else {
+                                                                        enabled.push(cohort.id);
+                                                                    }
+                                                                    updateEntity('tips', tip.id, {
+                                                                        ...tip,
+                                                                        enabled_cohorts: enabled
+                                                                    });
+                                                                }}
+                                    />)}
+
+                                {cohortsToDisplay
+                                    .filter(cohort => cohort.disabled)
+                                    .sort()
+                                    .map(cohort => <CohortEntry cohort={cohort}
+                                                                checked={tip.enabled_cohorts.includes(cohort.id)}
+                                                                onChange={e => {
+                                                                    const enabled = [...tip.enabled_cohorts];
+                                                                    if (enabled.includes(cohort.id)) {
+                                                                        enabled.splice(enabled.indexOf(cohort.id), 1);
+                                                                    } else {
+                                                                        enabled.push(cohort.id);
+                                                                    }
+                                                                    updateEntity('tips', tip.id, {
+                                                                        ...tip,
+                                                                        enabled_cohorts: enabled
+                                                                    });
+                                                                }}
+                                    />)}
                             </div>
                         </div>
                     </div>
@@ -437,7 +483,7 @@ class TipEditPage extends React.Component {
                     </div>
                 </div>
 
-        </div>
+            </div>
             <Joyride
                 ref={ref => {
                     this.joyrideRef = ref
@@ -454,7 +500,13 @@ class TipEditPage extends React.Component {
                 styles={{
                     options: {zIndex: 99999}
                 }}
-                locale={{ back: Lang.get('tips.help-steps.back'), close: Lang.get('tips.help-steps.close'), last: Lang.get('tips.help-steps.last'), next: Lang.get('tips.help-steps.next'), skip: Lang.get('tips.help-steps.skip') }}
+                locale={{
+                    back: Lang.get('tips.help-steps.back'),
+                    close: Lang.get('tips.help-steps.close'),
+                    last: Lang.get('tips.help-steps.last'),
+                    next: Lang.get('tips.help-steps.next'),
+                    skip: Lang.get('tips.help-steps.skip')
+                }}
             />
         </div>
     };
@@ -559,3 +611,16 @@ export default connect(mapping.state, mapping.dispatch)(TipEditPage);
 const coupleStatisticForms = () => {
 
 };
+
+function CohortEntry({cohort, checked, onChange}) {
+    return <div className="col-md-2" key={cohort.id}>
+        <div className="form-group"><p className="checkbox">
+            <label style={cohort.disabled ? {color: 'rgb(155,155,155)'} : {}}>
+                <input type="checkbox"
+                       checked={checked}
+                       onChange={onChange}
+                /> {cohort.name}
+            </label></p>
+        </div>
+    </div>;
+}
