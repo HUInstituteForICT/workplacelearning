@@ -84,7 +84,6 @@ function chooseStudent(id) {
 
         //Error if student has no WPLP
         if (select.options.length === 1) {
-          console.log("geen stages")
           document.getElementById('error').style.display = "";
           document.getElementById('step-3').style.display = "none";
         }

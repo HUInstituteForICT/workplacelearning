@@ -174,10 +174,10 @@ foreach($workplaces as $workplace) {
 
 @include('js.linking')
 <script>
-    workplacelearningperiods = <?php echo json_encode($wplpArray) ?>;
-    students = <?php echo json_encode($allStudents) ?>;
-    teachers = <?php echo json_encode($allTeachers) ?>;
-    workplaces = <?php echo json_encode($allWorkplaces) ?>;
+    workplacelearningperiods = {!! json_encode($wplpArray) !!};
+    students = {!! json_encode($allStudents) !!}
+    teachers = {!! json_encode($allTeachers) !!};
+    workplaces = {!! json_encode($allWorkplaces) !!};
 
 </script>
 
