@@ -31,6 +31,11 @@ class StudentRepository implements Searchable
     public function get(int $id): Student
     {
         return Student::findOrFail($id);
+    } 
+
+    public function all()
+    {
+        return Student::sortable()->get(); 
     }
 
     public function save(Student $student): bool

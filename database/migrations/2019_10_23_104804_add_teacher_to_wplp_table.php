@@ -33,7 +33,8 @@ class AddTeacherToWplpTable extends Migration
     public function down()
     {
         Schema::table('workplacelearningperiod', function (Blueprint $table) {
-            //
+            $table->dropColumn('teacher_id');
+            $table->dropForeign('optin_to_teacher_id');
         });
     }
 }

@@ -11,7 +11,7 @@ function showModel() {
 
 function filterFunction() {
   var input, filter, ul, li, a, i;
-  input = document.getElementById("myInput");
+  input = document.getElementById("dropdownInput");
   filter = input.value.toUpperCase();
   div = document.getElementById("myDropdown");
   a = div.getElementsByTagName("a");
@@ -96,7 +96,7 @@ function chooseStudent(id) {
       a = div.getElementsByTagName("a");
       for (i = 0; i < a.length; i++) {
         a[i].style.display = "none";
-         document.getElementById('myInput').value =  chosenStudent;
+         document.getElementById('dropdownInput').value =  chosenStudent;
       }
         
     }

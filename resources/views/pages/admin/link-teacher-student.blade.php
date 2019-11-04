@@ -30,26 +30,23 @@
 
                                 <tbody>
                                 <?php
-                                use App\Repository\SearchFilter;use App\Student;
+                                // use App\Repository\SearchFilter;use App\Student;
                                 /** @var Student $student */ ?>
-                                @foreach($students as $student)
-                                @if($student->userlevel === 1)
+                                @foreach($teachers as $teacher)
                                     <tr>
-                                        <td>{{ $student->firstname }}</td>
-                                        <td>{{ $student->lastname }}</td>
-                                        <td>{{ $student->email }}</td>
+                                        <td>{{ $teacher->firstname }}</td>
+                                        <td>{{ $teacher->lastname }}</td>
+                                        <td>{{ $teacher->email }}</td>
                                         <td>
-                                            <button data-target="#myModal" data-toggle="modal" class="btn btn-primary" onclick="chooseDocent({{ $student->student_id }})">
+                                            <button data-target="#myModal" data-toggle="modal" class="btn btn-primary" onclick="chooseDocent({{ $teacher->student_id }})">
                                             {{ __('linking.koppelen') }}
                                             </button>
 
                                         </td>
                                     </tr>
-                                @endif
                                 @endforeach
                                 </tbody>
                             </table>
-                            {{ $students->appends(request()->query())->links() }}
                         </div>
                     </div>
                 </div>
@@ -84,12 +81,10 @@
             <div class="panel-body">
             <div class="dropdown">
                     <div id="myDropdown" class="dropdown-content">
-                        <input type="text" placeholder="{{ __('linking.placeholder') }}" id="myInput" onkeyup="filterFunction()">
+                        <input type="text" placeholder="{{ __('linking.placeholder') }}" id="dropdownInput" onkeyup="filterFunction()">
                         <div class="dropdown-links">
                         @foreach($students as $student)
-                        @if($student->userlevel === 0)
                         <a onclick="chooseStudent({{ $student->student_id }})">{{ $student->studentnr }} - {{ $student->firstname }} {{ $student->lastname }}</a>
-                        @endif
                         @endforeach
                         </div>
                     </div>
@@ -145,20 +140,18 @@
 </div>
 
 <?php
+//This is still necessary because $ students is an object list and it is not iterable.
+
 
 $allStudents = array();
 /** @var Student $student */ 
 foreach($students as $student) {
-    if($student['userlevel'] === 0){
     array_push($allStudents, $student);
-    }
-}
+};
 
 $allTeachers = array();
-foreach($students as $teacher) {
-    if($teacher['userlevel'] === 1){
+foreach($teachers as $teacher) {
     array_push($allTeachers, $teacher);
-    }
 }
 
 use App\WorkPlaceLearningPeriod;
@@ -176,9 +169,8 @@ $allWorkplaces = array();
 foreach($workplaces as $workplace) {
     array_push($allWorkplaces, $workplace);
 }
-
-
 ?>
+
 
 @include('js.linking')
 <script>
@@ -186,7 +178,6 @@ foreach($workplaces as $workplace) {
     students = <?php echo json_encode($allStudents) ?>;
     teachers = <?php echo json_encode($allTeachers) ?>;
     workplaces = <?php echo json_encode($allWorkplaces) ?>;
-    console.log(workplaces);
 
 </script>
 

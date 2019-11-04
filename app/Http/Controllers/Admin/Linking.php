@@ -9,6 +9,8 @@ use App\Repository\Eloquent\StudentRepository;
 use App\Repository\Eloquent\WorkPlaceLearningPeriodRepository;
 use App\Repository\Eloquent\WorkplaceRepository;
 use Illuminate\Http\Request;
+use App\Student;
+use Illuminate\Support\Collection;
 
 class Linking extends Controller
 {
@@ -36,15 +38,26 @@ class Linking extends Controller
 
     public function __invoke(Request $request)
     {
-        $students = $this->studentRepository->search($request->get('filter', []));
-        $wplperiods = $this->wplpRepository->all();
-        $workplaces = $this->workplaceRepository->getAll();
+        $wplperiods = $this->wplpRepository->all()->all();
+        $workplaces = $this->workplaceRepository->getAll()->all();
+
+        /** @var Collection|Student[] $users */
+        $users = $this->studentRepository->all();
+
+        $students = $users->filter(static function (Student $user) {
+            return $user->isStudent();
+        })->all();
+
+        $teachers = $users->filter(static function (Student $user) {
+            return $user->isTeacher();
+        })->all();
+        
 
         return view('pages.admin.link-teacher-student', [
-            'students' => $students,
+            'students'   => $students,
+            'teachers'   => $teachers,
             'wplperiods' => $wplperiods,
             'workplaces' => $workplaces,
-            'filters'  => $this->studentRepository->getSearchFilters(),
         ]);
     }
 }

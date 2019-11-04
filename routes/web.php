@@ -174,12 +174,13 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                         'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
 
                     Route::get('/linking', 'Linking')->name('admin-linking');
+
                 });
 
-    });
+                Route::post('update-workplacelearningperiod', 'WorkplacelearningPeriodController@Update')
+                ->name('update-workplacelearningperiod');
 
-    Route::post('update-workplacelearningperiod', 'WorkplacelearningPeriodController@Update')
-    ->name('update-workplacelearningperiod');
+    });
 
 
     // Student routes

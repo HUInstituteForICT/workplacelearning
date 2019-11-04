@@ -13,6 +13,10 @@
     @endif
 
     @if(Auth::user()->isAdmin())
+        @include('includes._sidebar_student')
+        <div class="clearfix"></div>
+        @include('includes._sidebar_teacher')
+        <div class="clearfix"></div>
         @include('includes._sidebar_admin')
         <div class="clearfix"></div>
         <br/>

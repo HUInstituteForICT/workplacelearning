@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use InvalidArgumentException;
 use Validator;
 
-class WorkPlaceLearningPeriodController extends Controller
+class WorkplacelearningPeriodController extends Controller
 {
     /**
      * @var CohortRepository
