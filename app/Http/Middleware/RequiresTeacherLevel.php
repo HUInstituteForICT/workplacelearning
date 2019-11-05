@@ -41,7 +41,7 @@ class RequiresTeacherLevel
         try {
             $user = $this->currentUserResolver->getCurrentUser();
 
-            if (!$user->isTeacher()) {
+            if (!$user->isTeacher() && !$user->isAdmin()) {
                 return $this->redirector->route('home');
             }
         } catch (UnexpectedUser $exception) {

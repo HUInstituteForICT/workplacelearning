@@ -161,7 +161,8 @@ export default class ActivityProducingProcessTable extends React.Component {
 
     exportHandler() {
         const exporter = new ProducingActivityProcessExporter(this.state.selectedExport, this.state.exportFeedback, this.filterActivities(this.state.activities));
-
+        const exportFeedback = (this.state.exportFeedback ? 1 : 0);
+        
         if(this.state.selectedExport === "email") {
             this.setState({emailAlert: undefined});
             exporter.mail(this.state.email, this.state.emailComment, response => {
