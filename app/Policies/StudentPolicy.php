@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Student;
@@ -16,7 +18,7 @@ class StudentPolicy
     public function view(Student $teacher, Student $student): bool
     {
         foreach ($student->workplaceLearningPeriods as $wplp) {
-            if ($teacher->student_id == $wplp->teacher_id) {
+            if ($teacher->is($wplp->teacher)) {
                 return true;
             }
         }

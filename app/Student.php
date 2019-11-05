@@ -40,6 +40,7 @@ use Kyslik\ColumnSortable\Sortable;
  * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[]                                               $usersettings
  * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[]                                   $workplaceLearningPeriods
  * @property \Illuminate\Database\Eloquent\Collection|\App\Workplace[]                                                 $workplaces
+ * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[]                                   $linkedWorkplaceLearningPeriods
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereAnswer($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereBirthdate($value)
