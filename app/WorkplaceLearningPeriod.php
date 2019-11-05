@@ -263,9 +263,20 @@ class WorkplaceLearningPeriod extends Model
             return $carry;
         }, []);
 
-        $totalHours = array_sum(array_values($daysWithHours));
+        $daysWithHours = array_filter($daysWithHours, function (int $dayTimestamp, float $hours): bool {
+            return $hours > ($this->hours_per_day - 1);
+        }, ARRAY_FILTER_USE_BOTH);
 
-        return (int) floor($totalHours / $this->hours_per_day);
+        array_walk($daysWithHours, function (float &$hours, int $dayTimestamp) {
+            if ($hours > ($this->hours_per_day + 1)) {
+                $hours = $this->hours_per_day + 1;
+            }
+        });
+
+        $totalHours = array_sum(array_values($daysWithHours));
+        $daysRegistered = count(array_keys($daysWithHours));
+
+        return (int) min($daysRegistered, floor($totalHours / $this->hours_per_day));
     }
 
     public function hasActivities(): bool

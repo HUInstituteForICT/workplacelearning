@@ -61,7 +61,7 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
         ],
-        "analyse" : "./vendor/bin/phpstan analyse --level=7"
+        "analyse" : "@php artisan code:analyse"
     },
     "config": {
         "preferred-install": "dist",
