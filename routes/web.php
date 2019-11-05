@@ -172,6 +172,10 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/student/{student}/delete', 'DeleteStudent')->name('admin-student-delete');
                     Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete',
                         'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
+
+                    Route::get('/linking', 'Linking')->name('admin-linking');
+                    Route::post('/linking/update-workplacelearningperiod', 'UpdateTeacherForWorkplaceLearningPeriod')
+                        ->name('update-teacher-for-workplacelearningperiod');
                 });
     });
 
