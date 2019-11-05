@@ -174,14 +174,10 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                         'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
 
                     Route::get('/linking', 'Linking')->name('admin-linking');
-
+                    Route::post('/linking/update-workplacelearningperiod', 'UpdateTeacherForWorkplaceLearningPeriod')
+                        ->name('update-teacher-for-workplacelearningperiod');
                 });
-
-                Route::post('update-workplacelearningperiod', 'WorkplacelearningPeriodController@Update')
-                ->name('update-workplacelearningperiod');
-
     });
-
 
     // Student routes
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
@@ -322,8 +318,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
             Route::post('period/update/{workplaceLearningPeriod}', 'ProducingWorkplaceLearningController@update')
                 ->middleware(['can:update,workplaceLearningPeriod'])
                 ->name('period-producing-update');
-
-
 
             Route::middleware(RequireActiveInternship::class)->group(static function (): void {
                 Route::get('progress', 'ProducingActivityController@progress')->name('progress-producing');

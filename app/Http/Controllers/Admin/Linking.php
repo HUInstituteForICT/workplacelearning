@@ -8,8 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\StudentRepository;
 use App\Repository\Eloquent\WorkPlaceLearningPeriodRepository;
 use App\Repository\Eloquent\WorkplaceRepository;
-use Illuminate\Http\Request;
 use App\Student;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class Linking extends Controller
@@ -24,13 +24,16 @@ class Linking extends Controller
      */
     private $wplpRepository;
 
-     /**
+    /**
      * @var WorkPlaceRepository
      */
     private $workplaceRepository;
 
-    public function __construct(StudentRepository $studentRepository, WorkPlaceLearningPeriodRepository $wplpRepository, WorkPlaceRepository $workplaceRepository)
-    {
+    public function __construct(
+        StudentRepository $studentRepository,
+        WorkPlaceLearningPeriodRepository $wplpRepository,
+        WorkPlaceRepository $workplaceRepository
+    ) {
         $this->studentRepository = $studentRepository;
         $this->wplpRepository = $wplpRepository;
         $this->workplaceRepository = $workplaceRepository;
@@ -38,26 +41,23 @@ class Linking extends Controller
 
     public function __invoke(Request $request)
     {
-        $wplperiods = $this->wplpRepository->all()->all();
-        $workplaces = $this->workplaceRepository->getAll()->all();
+        $workplaceLearningPeriods = $this->wplpRepository->all()->all();
 
         /** @var Collection|Student[] $users */
         $users = $this->studentRepository->all();
 
         $students = $users->filter(static function (Student $user) {
             return $user->isStudent();
-        })->all();
+        })->values()->all();
 
         $teachers = $users->filter(static function (Student $user) {
             return $user->isTeacher();
-        })->all();
-        
+        })->values()->all();
 
         return view('pages.admin.link-teacher-student', [
-            'students'   => $students,
-            'teachers'   => $teachers,
-            'wplperiods' => $wplperiods,
-            'workplaces' => $workplaces,
+            'students'                 => $students,
+            'teachers'                 => $teachers,
+            'workplaceLearningPeriods' => $workplaceLearningPeriods,
         ]);
     }
 }

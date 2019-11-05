@@ -12,7 +12,7 @@ class WorkplaceRepository
     {
         return Workplace::findOrFail($id);
     }
-    
+
     public function getAll()
     {
         return Workplace::all();

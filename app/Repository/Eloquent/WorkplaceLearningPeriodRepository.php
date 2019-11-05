@@ -24,8 +24,9 @@ class WorkplaceLearningPeriodRepository
 
     public function all()
     {
-        return WorkplaceLearningPeriod::all();
+        return WorkplaceLearningPeriod::with('workplace')->get();
     }
+
     public function get(int $id): WorkplaceLearningPeriod
     {
         return WorkplaceLearningPeriod::findOrFail($id);

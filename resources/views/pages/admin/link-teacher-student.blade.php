@@ -30,8 +30,8 @@
 
                                 <tbody>
                                 <?php
-                                // use App\Repository\SearchFilter;use App\Student;
-                                /** @var Student $student */ ?>
+                                use App\Student;
+                                /** @var Student $teacher */ ?>
                                 @foreach($teachers as $teacher)
                                     <tr>
                                         <td>{{ $teacher->firstname }}</td>
@@ -117,19 +117,19 @@
 
         
          {!! Form::open(array(
-            'url' =>  route('update-workplacelearningperiod')))
+            'url' =>  route('update-teacher-for-workplacelearningperiod')))
             !!}
             <div class="form-group">
-                <input id='wplp' type='text', name='wplp_id' class="form-control">
+                <input id='wplp' type='text' name='wplp_id' class="form-control">
             </div>
                           
             <div class="form-group">
-                <input type='text', name='teacher_id' id="teacher_id" class="form-control">
+                <input type='text' name='teacher_id' id="teacher_id" class="form-control">
             </div>
             
 
         <div class="modal-footer">
-            {{ Form::submit('Koppelen', array('class' => 'btn btn-primary')) }}
+            {{ Form::submit('Koppelen', array('class' => 'btn btn-primary', 'id' => 'coupleButton')) }}
             {{ Form::close() }}
         </div>
       </div>
@@ -139,45 +139,17 @@
   
 </div>
 
-<?php
-//This is still necessary because $ students is an object list and it is not iterable.
-
-
-$allStudents = array();
-/** @var Student $student */ 
-foreach($students as $student) {
-    array_push($allStudents, $student);
-};
-
-$allTeachers = array();
-foreach($teachers as $teacher) {
-    array_push($allTeachers, $teacher);
-}
-
-use App\WorkPlaceLearningPeriod;
-/** @var WorkPlaceLearningPeriod $wplp */ 
-
-$wplpArray = array();
-foreach($wplperiods as $wplp) {
-    array_push($wplpArray, $wplp);
-}
-
-use App\WorkPlace;
-/** @var WorkPlace $workplace */ 
-
-$allWorkplaces = array();
-foreach($workplaces as $workplace) {
-    array_push($allWorkplaces, $workplace);
-}
-?>
-
 
 @include('js.linking')
 <script>
-    workplacelearningperiods = {!! json_encode($wplpArray) !!};
-    students = {!! json_encode($allStudents) !!}
-    teachers = {!! json_encode($allTeachers) !!};
-    workplaces = {!! json_encode($allWorkplaces) !!};
+
+
+    /** @var {array} */
+    const workplacelearningperiods = {!! json_encode($workplaceLearningPeriods) !!};
+    /** @var {array} */
+    const students = {!! json_encode($students) !!}
+    /** @var {array} */
+    const teachers = {!! json_encode($teachers) !!};
 
 </script>
 
