@@ -18,6 +18,7 @@ return [
             'template'            => 'Template Management',
             'analytics_dashboard' => 'Analytics Dashboard',
             'beta-signups'        => 'Beta sign-ups',
+            'koppelen'            => 'Link'
         ],
     ],
     'alerts'       => [

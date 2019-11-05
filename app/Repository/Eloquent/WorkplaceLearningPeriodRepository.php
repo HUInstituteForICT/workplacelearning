@@ -22,6 +22,11 @@ class WorkplaceLearningPeriodRepository
         $this->evidenceFileHandler = $evidenceFileHandler;
     }
 
+    public function all()
+    {
+        return WorkplaceLearningPeriod::with('workplace')->get();
+    }
+
     public function get(int $id): WorkplaceLearningPeriod
     {
         return WorkplaceLearningPeriod::findOrFail($id);

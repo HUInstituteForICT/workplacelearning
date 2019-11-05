@@ -33,6 +33,11 @@ class StudentRepository implements Searchable
         return Student::findOrFail($id);
     }
 
+    public function all()
+    {
+        return Student::sortable()->get();
+    }
+
     public function save(Student $student): bool
     {
         return $student->save();
@@ -52,10 +57,10 @@ class StudentRepository implements Searchable
     /**
      * @return LengthAwarePaginator|Collection
      */
-    public function search(array $filters = [], ?int $pages = 25)
+    public function search(array $filters = [], ?int $pages = 25, array $relations = [])
     {
         /** @var Builder $builder */
-        $builder = Student::sortable('studentnr');
+        $builder = Student::sortable('studentnr')->with($relations);
         $allowedFilters = $this->getSearchFilters();
 
         /*

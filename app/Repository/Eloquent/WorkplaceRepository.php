@@ -13,6 +13,11 @@ class WorkplaceRepository
         return Workplace::findOrFail($id);
     }
 
+    public function getAll()
+    {
+        return Workplace::all();
+    }
+
     public function save(Workplace $workplace): bool
     {
         return $workplace->save();

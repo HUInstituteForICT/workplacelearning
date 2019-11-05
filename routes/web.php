@@ -30,6 +30,9 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         ->namespace('Teacher')
         ->group(static function (): void {
             Route::get('/', 'Dashboard')->name('teacher-dashboard');
+            Route::get('/student/{student}', 'StudentDetails')
+                ->middleware('can:view,student')
+                ->name('teacher-student-details');
         });
 
     Route::middleware(RequiresAdminLevel::class)->group(static function (): void {
@@ -172,6 +175,10 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/student/{student}/delete', 'DeleteStudent')->name('admin-student-delete');
                     Route::get('/student/{student}/workplacelearningperiod/{workplaceLearningPeriod}/delete',
                         'DeleteWorkplaceLearningPeriod')->name('admin-student-delete-wplp');
+
+                    Route::get('/linking', 'Linking')->name('admin-linking');
+                    Route::post('/linking/update-workplacelearningperiod', 'UpdateTeacherForWorkplaceLearningPeriod')
+                        ->name('update-teacher-for-workplacelearningperiod');
                 });
     });
 
