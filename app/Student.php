@@ -40,6 +40,7 @@ use Kyslik\ColumnSortable\Sortable;
  * @property \Illuminate\Database\Eloquent\Collection|\App\UserSetting[]                                               $usersettings
  * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[]                                   $workplaceLearningPeriods
  * @property \Illuminate\Database\Eloquent\Collection|\App\Workplace[]                                                 $workplaces
+ * @property \Illuminate\Database\Eloquent\Collection|\App\WorkplaceLearningPeriod[]                                   $linkedWorkplaceLearningPeriods
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereAnswer($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereBirthdate($value)
@@ -110,7 +111,7 @@ class Student extends Authenticatable implements MustVerifyEmail
     ];
 
     public $sortable = [
-        'studentnr', 'firstname', 'lastname', 'email', 'userlevel',
+        'studentnr', 'firstname', 'lastname', 'email', 'userlevel', 'registrationdate',
     ];
 
     protected $hidden = [
@@ -150,12 +151,12 @@ class Student extends Authenticatable implements MustVerifyEmail
 
     public function isTeacher(): bool
     {
-        return $this->getUserLevel() === 1 || $this->isAdmin();
+        return $this->getUserLevel() === 1;
     }
 
     public function isStudent(): bool
     {
-        return $this->getUserLevel() === 0 || $this->isAdmin();
+        return $this->getUserLevel() === 0;
     }
 
     public function educationProgram(): BelongsTo
@@ -185,6 +186,11 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function workplaceLearningPeriods(): HasMany
     {
         return $this->hasMany(WorkplaceLearningPeriod::class, 'student_id', 'student_id');
+    }
+
+    public function linkedWorkplaceLearningPeriods(): HasMany
+    {
+        return $this->hasMany(WorkplaceLearningPeriod::class, 'teacher_id', 'student_id');
     }
 
     public function getCurrentWorkplace(): Workplace

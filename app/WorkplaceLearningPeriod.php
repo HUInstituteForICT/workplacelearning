@@ -84,6 +84,7 @@ class WorkplaceLearningPeriod extends Model
         'description',
         'cohort_id',
         'hours_per_day',
+        'teacher_id',
     ];
 
     public function cohort(): BelongsTo
@@ -94,6 +95,11 @@ class WorkplaceLearningPeriod extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class, 'student_id', 'student_id');
+    }
+
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Student::class, 'teacher_id', 'student_id');
     }
 
     public function workplace(): BelongsTo
