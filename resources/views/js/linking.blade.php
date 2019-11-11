@@ -70,7 +70,7 @@
         const wplpsOfStudent = workplacelearningperiods.filter(wplp => wplp.student_id === id);
         wplpsOfStudent.forEach(wplp => {
             const workplaceOption = document.createElement("option");
-            workplaceOption.textContent = wplp.workplace.wp_name;
+            workplaceOption.textContent = `${wplp.workplace.wp_name} (${new Date(wplp.startdate).toLocaleDateString("en-GB")} ${Lang.get('general.until-header')} ${new Date(wplp.enddate).toLocaleDateString("en-GB")})`;
             workplaceOption.value = wplp.wplp_id;
             select.appendChild(workplaceOption);
         });
