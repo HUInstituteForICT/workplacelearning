@@ -111,7 +111,7 @@ class Student extends Authenticatable implements MustVerifyEmail
     ];
 
     public $sortable = [
-        'studentnr', 'firstname', 'lastname', 'email', 'userlevel', 'registrationdate',
+        'studentnr', 'firstname', 'lastname', 'email', 'userlevel', 'registrationdate', 'ep_id',
     ];
 
     protected $hidden = [
