@@ -26,7 +26,7 @@ class Dashboard extends Controller
             ->linkedWorkplaceLearningPeriods
             ->map(static function (WorkplaceLearningPeriod $workplaceLearningPeriod) {
                 return $workplaceLearningPeriod->student;
-            })->unique->all();
+            })->unique('studentnr')->all();
 
         return view('pages.teacher.dashboard')->with('students', $students);
     }
