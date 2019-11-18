@@ -39,6 +39,6 @@ class StudentDetails extends Controller
         
         return view('pages.teacher.student_details')
             ->with('student', $student)
-            ->with('currentWorkplace', $workplace);
+            ->with('workplace', $workplace);
     }
 }
