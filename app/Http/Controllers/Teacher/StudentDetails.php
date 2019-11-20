@@ -35,7 +35,7 @@ class StudentDetails extends Controller
             })->all();
         
         $currentWorkplace = $student->getCurrentWorkplace();
-        $workplace = in_array($currentWorkplace, $workplaces) ? $currentWorkplace : reset($workplaces);; 
+        $workplace = in_array($currentWorkplace, $workplaces) ? $currentWorkplace : reset($workplaces);
         
         return view('pages.teacher.student_details')
             ->with('student', $student)
