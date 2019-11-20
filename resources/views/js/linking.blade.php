@@ -99,8 +99,6 @@
 
     }
 
-    
-
     function getCSTableData(){
        var TableData;
        TableData = storeTblValues()
@@ -111,7 +109,8 @@
            url: "/admin/linking/update-workplacelearningperiod-csv-save",
            data: {'tableData' : TableData},
            success:function(data) {
-                  window.location.href = "/admin/linking";
+               alert("De suggestie is opgeslagen.");
+                window.location.href = "/admin/linking";
                }
        })
     }
@@ -130,6 +129,27 @@
         return TableData;
 
     }
+
+    function downloadNotKnownStudents(notKnownStudents) {
+        var csv = 'Studenten die nog niet gekoppeld zijn:\n';
+        notKnownStudents.forEach(function(row) {
+            if (typeof row == 'string') {
+                csv += row;
+            } else {
+                csv += row.join(',');
+            }
+            
+            csv += "\n";
+        });
+        var today = new Date();
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_blank';
+        hiddenElement.download = today.getDate() + '-'+ today.getMonth() + '-' +today.getFullYear() + '-'+ today.getHours() + ':' + today.getMinutes() +  '-'+ 'Niet-gekoppelde-studenten.csv' ;
+        hiddenElement.click();
+        
+    }
+
 
 
 </script>

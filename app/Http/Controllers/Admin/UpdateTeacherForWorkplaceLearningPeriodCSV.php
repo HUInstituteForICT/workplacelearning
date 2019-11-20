@@ -86,11 +86,9 @@ class UpdateTeacherForWorkplaceLearningPeriodCSV extends Controller
             $wplp = $student->getCurrentWorkplaceLearningPeriod();
             
             $this->saveWPLP($wplp, $docent);
-            
-
 
         }
-        echo 'Succes';
+        echo 'succes';
     }
 
     public function saveWPLP($wplp, $docent) {
