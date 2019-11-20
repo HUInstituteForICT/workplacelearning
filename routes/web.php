@@ -179,6 +179,12 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/linking', 'Linking')->name('admin-linking');
                     Route::post('/linking/update-workplacelearningperiod', 'UpdateTeacherForWorkplaceLearningPeriod')
                         ->name('update-teacher-for-workplacelearningperiod');
+
+                    Route::post('/linking/update-workplacelearningperiod-csv', 'UpdateTeacherForWorkplaceLearningPeriodCSV')
+                        ->name('update-teacher-for-workplacelearningperiod-csv');
+
+                    Route::post('/linking/update-workplacelearningperiod-csv-save','UpdateTeacherForWorkplaceLearningPeriodCSV@save')
+                        ->name('update-teacher-for-workplacelearningperiod-csv-save');
                 });
     });
 

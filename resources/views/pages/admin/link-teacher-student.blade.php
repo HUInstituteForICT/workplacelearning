@@ -14,7 +14,8 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h3>{{ __('linking.docenten') }}</h3>
+                        <h3 id="teacher-overview">{{ __('linking.docenten') }}</h3>
+                        <button id="upload-btn" class="btn btn-primary" data-target="#CSV-Modal" data-toggle="modal" >Upload CSV</button>
                         <hr/>
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -38,7 +39,7 @@
                                         <td>{{ $teacher->lastname }}</td>
                                         <td>{{ $teacher->email }}</td>
                                         <td>
-                                            <button data-target="#myModal" data-toggle="modal" class="btn btn-primary" onclick="chooseDocent({{ $teacher->student_id }})">
+                                            <button data-target="#Linking-Modal" data-toggle="modal" class="btn btn-info" onclick="chooseDocent({{ $teacher->student_id }})">
                                             {{ __('linking.koppelen') }}
                                             </button>
 
@@ -54,8 +55,8 @@
         </div>
     </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <!-- Modal for linking-->
+  <div class="modal fade" id="Linking-Modal" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -117,7 +118,7 @@
 
         
          {!! Form::open(array(
-            'url' =>  route('update-teacher-for-workplacelearningperiod')))
+            'url' =>  route('update-teacher-for-workplacelearningperiod-csv')))
             !!}
             <div class="form-group">
                 <input id='wplp' type='text' name='wplp_id' class="form-control">
@@ -129,7 +130,7 @@
             
 
         <div class="modal-footer">
-            {{ Form::submit('Koppelen', array('class' => 'btn btn-primary', 'id' => 'coupleButton')) }}
+            {{ Form::submit('Koppelen', array('class' => 'btn btn-info', 'id' => 'coupleButton')) }}
             {{ Form::close() }}
         </div>
       </div>
@@ -139,6 +140,37 @@
   
 </div>
 
+<!-- Modal for CSV-->
+<div class="modal fade" id="CSV-Modal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">CSV uploaden</h4>
+
+         
+        <div class="modal-body">
+            {!! Form::open(array('url' =>  route('update-teacher-for-workplacelearningperiod-csv'),
+            'files' => true,'enctype'=>'multipart/form-data')) !!}
+
+            <div class="form-group">
+                <input type="file" name="file" id="file" class="form-control">
+            </div>
+
+            {{ Form::submit('Upload', array('class' => 'btn btn-info', 'id' => 'coupleButton')) }}
+            {{ Form::close() }}
+
+        </div>
+
+
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
 
 @include('js.linking')
 <script>

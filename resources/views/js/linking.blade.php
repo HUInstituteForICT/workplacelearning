@@ -99,5 +99,37 @@
 
     }
 
+    
+
+    function getCSTableData(){
+       var TableData;
+       TableData = storeTblValues()
+       TableData = JSON.stringify(TableData);
+
+       $.ajax({
+           type: 'POST',
+           url: "/admin/linking/update-workplacelearningperiod-csv-save",
+           data: {'tableData' : TableData},
+           success:function(data) {
+                  window.location.href = "/admin/linking";
+               }
+       })
+    }
+
+    function storeTblValues() {
+        var TableData = new Array();
+        $('#csvSuggestion tr').each(function(row,tr){
+            TableData[row] = {
+                "TeacherName" :  $(tr).find('td:eq(0)').text(),
+                "TeacherEmail" : $(tr).find('td:eq(1)').text(),
+                "StudentName" :  $(tr).find('td:eq(2)').text(),
+                "StudentEmail" :  $(tr).find('td:eq(3)').text()
+            }
+        });
+        TableData.shift();
+        return TableData;
+
+    }
+
 
 </script>
