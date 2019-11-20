@@ -39,7 +39,7 @@ class HomeController extends Controller
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, ReflectionMethodBetaParticipationRepository $betaParticipationRepository)
+    public function showProducingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
         $student = $this->currentUserResolver->getCurrentUser();
 
@@ -56,7 +56,7 @@ class HomeController extends Controller
         return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
-    public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, ReflectionMethodBetaParticipationRepository $betaParticipationRepository)
+    public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
         $student = $this->currentUserResolver->getCurrentUser();
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
