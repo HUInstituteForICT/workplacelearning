@@ -35,6 +35,7 @@
         }
         document.getElementById('chosenTeacher').innerHTML = teacher.firstname + " " + teacher.lastname + '<br>' + teacher.email;
 
+        // get all students that are linked to the selected teacher.
         var linkedStudents = [];
         workplacelearningperiods.forEach(wplp => {
             if (wplp.teacher_id === id) {
@@ -43,13 +44,19 @@
             }
         });
 
+        // remove Duplicates from the student list.
+        let cachedObject = {};
+        linkedStudents.map((student) => cachedObject[student.student_id] = student);
+        uniqueLinkedStudents = Object.values(cachedObject);
+
+        // display the list of all students, show a message if there is no student.
         listGroup = document.getElementById('linked-students');
-        if (linkedStudents.length == 0) {
+        if (uniqueLinkedStudents.length == 0) {
             msg = document.createElement('p');
             msg.innerText = `${Lang.get('linking.geen-student')}`;
             listGroup.appendChild(msg);
         } else {
-            linkedStudents.forEach(student => {
+            uniqueLinkedStudents.forEach(student => {
                 item = document.createElement('a');
                 item.setAttribute('class', 'list-group-item');
                 item.innerText = `${ student.studentnr } - ${ student.firstname } ${ student.lastname }`;
