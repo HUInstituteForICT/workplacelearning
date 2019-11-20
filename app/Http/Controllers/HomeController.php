@@ -53,8 +53,7 @@ class HomeController extends Controller
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
 
-        $hasStudentDecided = $betaParticipationRepository->hasStudentDecided($student);
-        return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null, 'hasStudentDecided' => $hasStudentDecided]);
+        return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
     public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, ReflectionMethodBetaParticipationRepository $betaParticipationRepository)
@@ -69,8 +68,7 @@ class HomeController extends Controller
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
-        $hasStudentDecided = $betaParticipationRepository->hasStudentDecided($student);
-        return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null, 'hasStudentDecided' => $hasStudentDecided]);
+        return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
     public function showDefault(): \Illuminate\Http\RedirectResponse
