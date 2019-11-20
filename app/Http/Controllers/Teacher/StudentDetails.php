@@ -26,7 +26,7 @@ class StudentDetails extends Controller
         $teacher = $this->currentUserResolver->getCurrentUser();
         
         // all wplps of the student where the logged-in teacher is the supervisor.
-        $workplaceLearningPeriods = $student->getWorkplaceLearningPeriods()
+        $workplaces = $student->getWorkplaceLearningPeriods()
             ->filter(function (WorkplaceLearningPeriod $workplaceLearningPeriod) use ($teacher) {
                 return $workplaceLearningPeriod->teacher_id == $teacher->student_id;
             })
@@ -35,7 +35,7 @@ class StudentDetails extends Controller
             })->all();
         
         $currentWorkplace = $student->getCurrentWorkplace();
-        $workplace = in_array($currentWorkplace, $workplaceLearningPeriods) ? $currentWorkplace : reset($workplaceLearningPeriods);; 
+        $workplace = in_array($currentWorkplace, $workplaces) ? $currentWorkplace : reset($workplaces);; 
         
         return view('pages.teacher.student_details')
             ->with('student', $student)
