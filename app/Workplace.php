@@ -77,6 +77,6 @@ class Workplace extends Model
 
     public function workplaceLearningPeriod(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(WorkplaceLearningPeriod::class);
+        return $this->hasOne(WorkplaceLearningPeriod::class, 'wp_id', 'wp_id');
     }
 }

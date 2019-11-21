@@ -24,6 +24,7 @@
                                     <th>@sortablelink('firstname', 'First name')</th>
                                     <th>@sortablelink('lastname', 'Last name')</th>
                                     <th>@sortablelink('email', 'E-mail')</th>
+                                    <th>@sortablelink('ep_id', 'Education program')</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -37,6 +38,7 @@
                                         <td>{{ $teacher->firstname }}</td>
                                         <td>{{ $teacher->lastname }}</td>
                                         <td>{{ $teacher->email }}</td>
+                                        <td>{{ $teacher->educationProgram->ep_name }}</td>
                                         <td>
                                             <button data-target="#myModal" data-toggle="modal" class="btn btn-primary" onclick="chooseDocent({{ $teacher->student_id }})">
                                             {{ __('linking.koppelen') }}
@@ -73,13 +75,24 @@
             <div class="panel-body">
                 <p id="chosenTeacher"></p>
            </div>
-        </div>  
+
+            <div class="panel panel-default students-panel">
+                <div class="panel-heading" data-toggle="collapse" data-target="#students">
+                    <span class="glyphicon glyphicon-chevron-down pull-right" aria-hidden="true"></span>
+                    <h3 class="panel-title clickable">{{ __('linking.studenten') }}</h3>
+                </div>
+                <div id="students" class="panel-body collapse">
+                    <div id="linked-students" class="list-group nomargin"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ __('linking.stap-2') }}</h3>
             </div>
             <div class="panel-body">
-            <div class="dropdown">
+                <div class="dropdown">
                     <div id="myDropdown" class="dropdown-content">
                         <input type="text" placeholder="{{ __('linking.placeholder') }}" id="dropdownInput" onkeyup="filterFunction()">
                         <div class="dropdown-links">
@@ -109,9 +122,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ __('linking.stap-3') }}</h3>
                 </div>
-                <div class="panel-body">
-                    Deze student heeft geen gekoppelde stage.
-                </div>
+                <div class="panel-body">{{ __('linking.geen-stage') }}</div>
             </div>
         </div>
 
