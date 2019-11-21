@@ -20,7 +20,8 @@
         "rap2hpoutre/laravel-log-viewer": "^0.22.0",
         "spatie/laravel-translation-loader": "^2.2",
         "kyslik/column-sortable": "5.7.*",
-        "laravel/telescope": "~1.0"
+        "laravel/telescope": "~1.0",
+        "ext-intl": "*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
