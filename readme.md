@@ -2,7 +2,7 @@
 
 # WorkplaceLearning
 
-Status: [![Build Status](https://travis-ci.org/HUInstituteForICT/workplacelearning.svg?branch=development)](https://github.com/HUInstituteForICT/workplacelearning/workflows/Verify/badge.svg)
+Status: [![Build Status](https://github.com/HUInstituteForICT/workplacelearning/workflows/Verify/badge.svg)](https://github.com/HUInstituteForICT/workplacelearning/actions?query=workflow%3AVerify)
 
 ## Getting Started
 
