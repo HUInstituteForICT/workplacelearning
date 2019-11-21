@@ -1,6 +1,6 @@
 name: Verify
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
     laravel-tests:
@@ -30,8 +30,6 @@ jobs:
 
             - name: Copy .env
               run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-            - name: Install Dependencies
-              run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
             - name: Generate key
               run: php artisan key:generate
             - name: Execute tests (Unit and Feature tests) via PHPUnit
