@@ -37,6 +37,11 @@ class LAAFactory
      */
     private $learningActivityActingRepository;
 
+    /**
+     * @var ActivityReflectionFactory
+     */
+    private $activityReflectionFactory;
+
     public function __construct(
         LearningActivityActingRepository $learningActivityActingRepository,
         TimeslotFactory $timeslotFactory,

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Illuminate\Contracts\Console\Kernel;
+use Closure;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\SQLiteBuilder;
+use Illuminate\Database\SQLiteConnection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Fluent;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -15,17 +18,35 @@ abstract class TestCase extends BaseTestCase
 
     use DatabaseMigrations;
 
-    /**
-     * Define hooks to migrate the database before and after each test.
-     */
-    public function runDatabaseMigrations(): void
+    public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
-        $this->artisan('migrate:fresh');
+        parent::__construct($name, $data, $dataName);
+        $this->hotfixSqlite();
+    }
 
-        $this->app[Kernel::class]->setArtisan(null);
+    public function hotfixSqlite()
+    {
+        \Illuminate\Database\Connection::resolverFor('sqlite', function ($connection, $database, $prefix, $config) {
+            return new class($connection, $database, $prefix, $config) extends SQLiteConnection {
+                public function getSchemaBuilder()
+                {
+                    if ($this->schemaGrammar === null) {
+                        $this->useDefaultSchemaGrammar();
+                    }
 
-        $this->beforeApplicationDestroyed(function () {
-            RefreshDatabaseState::$migrated = false;
+                    return new class($this) extends SQLiteBuilder {
+                        protected function createBlueprint($table, Closure $callback = null)
+                        {
+                            return new class($table, $callback) extends Blueprint {
+                                public function dropForeign($index)
+                                {
+                                    return new Fluent();
+                                }
+                            };
+                        }
+                    };
+                }
+            };
         });
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Analysis;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -24,8 +25,6 @@ class AnalyticsController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index()
     {
@@ -36,8 +35,6 @@ class AnalyticsController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
     public function create()
     {
@@ -46,9 +43,6 @@ class AnalyticsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return Response
      */
     public function store(Request $request)
     {
@@ -68,8 +62,6 @@ class AnalyticsController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     *
-     * @return Response
      */
     public function show($id)
     {
@@ -99,20 +91,22 @@ class AnalyticsController extends Controller
             return abort(404);
         }
 
-        $d = \Excel::create('Analyse data', function ($excel) use ($data): void {
-            $excel->sheet('New sheet', function ($sheet) use ($data): void {
-                $sheet->loadView('pages.analytics.export', compact('data'));
-            });
-        });
+        /*
+         * Looks like an unused route...?
+         */
+//        $d = Excel::create('Analyse data', function ($excel) use ($data): void {
+//            $excel->sheet('New sheet', function ($sheet) use ($data): void {
+//                $sheet->loadView('pages.analytics.export', compact('data'));
+//            });
+//        });
 
-        return $d->export('csv');
+//        return $d->export('csv');
+
+        return null;
     }
 
     /**
      * Expire a cached analys.
-     *
-     *
-     * @return Response
      */
     public function expire(Request $request)
     {
@@ -139,8 +133,6 @@ class AnalyticsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     *
-     * @return Response
      */
     public function edit($id)
     {
@@ -159,8 +151,6 @@ class AnalyticsController extends Controller
      * Update the specified resource in storage.
      *
      * @param int $id
-     *
-     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -202,10 +192,8 @@ class AnalyticsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     *
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $analysis = $this->analysis->findOrFail($id);
         if (!$analysis->delete()) {
