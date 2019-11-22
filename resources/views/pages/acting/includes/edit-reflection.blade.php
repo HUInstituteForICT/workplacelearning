@@ -39,8 +39,12 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __('general.hide')  }}</button>
-                    <button type="button" class="btn btn-danger" onclick="deleteReflection()">{{__('reflection.remove')}}</button>
+                    <div style="display: flex; justify-content: space-between">
+                        <button type="button" class="btn btn-danger"
+                                onclick="deleteReflection()">{{__('reflection.remove')}}</button>
+                        <button type="button" class="btn btn-primary"
+                                data-dismiss="modal">{{ __('general.hide')  }}</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -39,7 +39,7 @@ class HomeController extends Controller
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, ReflectionMethodBetaParticipationRepository $betaParticipationRepository)
+    public function showProducingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
         $student = $this->currentUserResolver->getCurrentUser();
 
@@ -53,11 +53,10 @@ class HomeController extends Controller
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
 
-        $hasStudentDecided = $betaParticipationRepository->hasStudentDecided($student);
-        return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null, 'hasStudentDecided' => $hasStudentDecided]);
+        return view('pages.producing.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
-    public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, ReflectionMethodBetaParticipationRepository $betaParticipationRepository)
+    public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository)
     {
         $student = $this->currentUserResolver->getCurrentUser();
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
@@ -69,8 +68,7 @@ class HomeController extends Controller
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
-        $hasStudentDecided = $betaParticipationRepository->hasStudentDecided($student);
-        return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null, 'hasStudentDecided' => $hasStudentDecided]);
+        return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
     public function showDefault(): \Illuminate\Http\RedirectResponse

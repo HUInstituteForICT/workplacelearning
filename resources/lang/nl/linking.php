@@ -16,4 +16,7 @@ return [
     'suggestion'        => 'Suggestie voor koppelen',
     'agree'             => 'Akkoord en koppelen',
 
+    'studenten'         => "Gekoppelde studenten",
+    'geen-stage'        => "Deze student heeft geen stage om te koppelen.",
+    'geen-student'      => "Deze Docent heeft nog geen student.",
 ];

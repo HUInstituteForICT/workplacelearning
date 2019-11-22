@@ -15,4 +15,7 @@ return [
     'suggestion'        => 'Suggestion for linking',
     'agree'             => 'Agree and link',
 
+    'studenten'         => "Linked students",
+    'geen-stage'        => "This student does not have an internship to link.",
+    'geen-student'      => "This teacher does not have a student.",
 ];

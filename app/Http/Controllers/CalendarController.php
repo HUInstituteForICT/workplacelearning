@@ -7,7 +7,7 @@ declare(strict_types=1);
  * This project was commissioned by HU University of Applied Sciences.
  */
 
-namespace app\Http\Controllers;
+namespace App\Http\Controllers;
 
 use App\Deadline;
 use Validator;
