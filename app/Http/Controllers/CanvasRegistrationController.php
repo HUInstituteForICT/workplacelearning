@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CanvasRegisterRequest;
 use App\Student;
+use Auth;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 
@@ -22,7 +24,7 @@ class CanvasRegistrationController extends Controller
     }
 
     /**
-     * @throws \HttpRequestMethodException
+     * @throws Exception
      */
     public function __invoke(CanvasRegisterRequest $request)
     {
@@ -37,7 +39,7 @@ class CanvasRegistrationController extends Controller
             return $this->handleRegisterForm($request);
         }
 
-        throw new \HttpRequestMethodException('This route only supports GET and POST requests');
+        throw new Exception('This route only supports GET and POST requests');
     }
 
     private function showRegisterForm()
@@ -49,11 +51,11 @@ class CanvasRegistrationController extends Controller
     {
         $canvasData = $request->session()->get('canvasRegistrationData');
         $student = Student::create([
-            'studentnr'        => $request->get('studentnr'),
-            'firstname'        => $canvasData['firstName'],
-            'lastname'         => $canvasData['lastName'],
-            'ep_id'            => $request->get('education'),
-            'pw_hash'          => bcrypt(random_bytes(128)),
+            'studentnr'                    => $request->get('studentnr'),
+            'firstname'                    => $canvasData['firstName'],
+            'lastname'                     => $canvasData['lastName'],
+            'ep_id'                        => $request->get('education'),
+            'pw_hash'                      => bcrypt(random_bytes(128)),
             // As user logs in through Canvas no password is necessary, but DB does not allow NULL (User can still set password from profile)
             'gender'                       => '-',
             'email'                        => $canvasData['email'],
@@ -65,7 +67,7 @@ class CanvasRegistrationController extends Controller
             'email_verified_at'            => date('Y-m-d H:i:s'),
         ]);
 
-        \Auth::login($student);
+        Auth::login($student);
 
         if ($student->educationProgram->educationprogramType->isActing()) {
             $route = 'home-acting';

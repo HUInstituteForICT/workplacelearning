@@ -9,6 +9,8 @@ return [
     'stap-2'            => "Step 2: Choose a student",
     'placeholder'       => "Enter the name or student number of the student",
     'stap-3'            => "Step 3: Choose an internship",
-    'kies-stage'        => "Choose an internship"
-
+    'kies-stage'        => "Choose an internship",
+    'studenten'         => "Linked students",
+    'geen-stage'        => "This student does not have an internship to link.",
+    'geen-student'      => "This teacher does not have a student.",
 ];
