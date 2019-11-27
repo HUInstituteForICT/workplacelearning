@@ -89,4 +89,7 @@ return array(
     'students' => 'Studenten',
     'student-details' => 'Student gegevens',
     'view' => 'Bekijk',
+    'student' => 'Student',
+    'teacher' => 'Docent',
+    'admin' => 'Admin',
 );

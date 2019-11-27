@@ -71,6 +71,16 @@ class HomeController extends Controller
         return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
     }
 
+    public function showAdminTemplate()
+    {
+        return view('pages.admin.home');
+    }
+
+    public function showTeacherTemplate()
+    {
+        return view('pages.teacher.home');
+    }
+
     public function showDefault(): \Illuminate\Http\RedirectResponse
     {
         return $this->redirector->route('home');

@@ -44,51 +44,58 @@ class TaskTypeRedirect
         if (!$route instanceof Route) {
             return $next($request);
         }
-        if ($student->educationProgram->educationprogramType->isActing()) {
-            switch ($route->getName()) {
-                case 'home':
-                case 'default':
-                    return $this->redirector->route('home-acting');
-                    break;
-                case 'process':
-                    return $this->redirector->route('process-acting');
-                    break;
-                case 'analysis':
-                    return $this->redirector->route('analysis-acting-choice');
-                    break;
-                case 'progress':
-                    return $this->redirector->route('progress-acting');
-                    break;
-                case 'period':
-                    return $this->redirector->route('period-acting');
-                    break;
-                case 'period-edit':
-                    return $this->redirector->route('period-acting-edit', ['id' => $route->parameter('id')]);
-                    break;
+        
+        if ($student->isStudent()) {
+            if ($student->educationProgram->educationprogramType->isActing()) {
+                switch ($route->getName()) {
+                    case 'home':
+                    case 'default':
+                        return $this->redirector->route('home-acting');
+                        break;
+                    case 'process':
+                        return $this->redirector->route('process-acting');
+                        break;
+                    case 'analysis':
+                        return $this->redirector->route('analysis-acting-choice');
+                        break;
+                    case 'progress':
+                        return $this->redirector->route('progress-acting');
+                        break;
+                    case 'period':
+                        return $this->redirector->route('period-acting');
+                        break;
+                    case 'period-edit':
+                        return $this->redirector->route('period-acting-edit', ['id' => $route->parameter('id')]);
+                        break;
+                }
+            } else {
+                // Assume the user follows an EP of type 'Producing'
+                switch ($route->getName()) {
+                    case 'home':
+                    case 'default':
+                        return $this->redirector->route('home-producing');
+                        break;
+                    case 'process':
+                        return $this->redirector->route('process-producing');
+                        break;
+                    case 'analysis':
+                        return $this->redirector->route('analysis-producing-choice');
+                        break;
+                    case 'progress':
+                        return $this->redirector->route('progress-producing');
+                        break;
+                    case 'period':
+                        return $this->redirector->route('period-producing');
+                        break;
+                    case 'period-edit':
+                        return $this->redirector->route('period-producing-edit', ['id' => $route->parameter('id')]);
+                        break;
+                }
             }
-        } else {
-            // Assume the user follows an EP of type 'Producing'
-            switch ($route->getName()) {
-                case 'home':
-                case 'default':
-                    return $this->redirector->route('home-producing');
-                    break;
-                case 'process':
-                    return $this->redirector->route('process-producing');
-                    break;
-                case 'analysis':
-                    return $this->redirector->route('analysis-producing-choice');
-                    break;
-                case 'progress':
-                    return $this->redirector->route('progress-producing');
-                    break;
-                case 'period':
-                    return $this->redirector->route('period-producing');
-                    break;
-                case 'period-edit':
-                    return $this->redirector->route('period-producing-edit', ['id' => $route->parameter('id')]);
-                    break;
-            }
+        } elseif ($student->isAdmin()) {
+            return $this->redirector->route('home-admin');
+        } elseif ($student->isTeacher()) {
+            return $this->redirector->route('home-teacher');
         }
 
         return $next($request);
