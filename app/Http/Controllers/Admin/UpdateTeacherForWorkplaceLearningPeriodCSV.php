@@ -28,40 +28,45 @@ class UpdateTeacherForWorkplaceLearningPeriodCSV extends Controller
 
 
 
-    public function __invoke(Request $request)
+    public function read(Request $request)
     {
-            $filename=$_FILES["file"]["tmp_name"];
 
-            if($_FILES["file"]["size"] > 0)
+            if($request->hasFile('file'))
             {
-                $file = fopen($filename, "r");
+                $filepath = $request->file('file')->getRealPath();
+                $file = fopen($filepath, "r");
                 $row = 1;
                 $pairs =  array();
                 $notKnownStudents = array();
                 while (($getData = fgetcsv($file, 1000, ";")) !== FALSE)
                 {
+                    $studentMail = $getData[3];
+                    $studentNumber = $getData[2];
+                    $teacherLastname = $getData[0];
+                    $teacherEmail = $getData[1];
+
                     //skip head of table
                     if($row == 1){ $row++; continue; }
 
             
-                    $student = $this->studentRepository->findByEmailOrCanvasId($getData[3], $getData[3]);
+                    $student = $this->studentRepository->findByEmailOrCanvasId($studentMail, $studentMail);
            
 
                     if(
                         $student == null ||
-                        $this->studentRepository->findByEmailOrCanvasId($getData[3], $getData[3]) != $this->studentRepository->findByStudentNumber($getData[2]) ||
-                        $this->studentRepository->findByEmailOrCanvasId($getData[1], $getData[1]) != $this->studentRepository->findByLastName($getData[0]) ||
+                        $this->studentRepository->findByEmailOrCanvasId($studentMail, $studentMail) != $this->studentRepository->findByStudentNumber($studentNumber) ||
+                        $this->studentRepository->findByEmailOrCanvasId($teacherEmail, $teacherEmail) != $this->studentRepository->findByLastName($teacherLastname) ||
                         !$student->hasCurrentWorkplaceLearningPeriod()
                         
                         ) {
-                        array_push($notKnownStudents, $getData[3]);
+                        $notKnownStudents[] = $studentMail;
                         continue;
                     } else {
-                        $docent = $this->studentRepository->findByEmailOrCanvasId($getData[1], $getData[1]);
+                        $teacher = $this->studentRepository->findByEmailOrCanvasId($teacherEmail, $teacherEmail);
                         $workplace = $student->getCurrentWorkplace()->wp_name;
                         $pair = new \stdClass();
                         $pair->student = $student;
-                        $pair->docent = $docent;
+                        $pair->teacher = $teacher;
                         $pair->workplace = $workplace;
                         array_push($pairs, $pair); 
                     }
@@ -81,18 +86,18 @@ class UpdateTeacherForWorkplaceLearningPeriodCSV extends Controller
         $tableData = json_decode($tableData, TRUE);
 
         foreach($tableData as $row){
-            $docent = $this->studentRepository->findByEmailOrCanvasId($row['TeacherEmail'], $row['TeacherEmail']);
+            $teacher = $this->studentRepository->findByEmailOrCanvasId($row['TeacherEmail'], $row['TeacherEmail']);
             $student = $this->studentRepository->findByEmailOrCanvasId($row['StudentEmail'], $row['StudentEmail']);
             $wplp = $student->getCurrentWorkplaceLearningPeriod();
             
-            $this->saveWPLP($wplp, $docent);
+            $this->saveWPLP($wplp, $teacher);
 
         }
         echo 'succes';
     }
 
-    public function saveWPLP($wplp, $docent) {
-        $wplp->teacher_id = $docent->student_id;
+    private function saveWPLP($wplp, $teacher) {
+        $wplp->teacher_id = $teacher->student_id;
         $this->workplaceLearningPeriodRepository->save($wplp);
 
     }

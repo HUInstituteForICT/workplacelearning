@@ -48,8 +48,8 @@
                                     <tbody>
                                     @foreach($pairs as $pair)
                                         <tr>
-                                            <td>{{ $pair->docent->firstname}} {{ $pair->docent->lastname}} </td>
-                                            <td>{{ $pair->docent->email}}</td>
+                                            <td>{{ $pair->teacher->firstname}} {{ $pair->teacher->lastname}} </td>
+                                            <td>{{ $pair->teacher->email}}</td>
                                             <td>{{ $pair->student->firstname}} {{ $pair->student->lastname}} </td>
                                             <td>{{ $pair->student->email}}</td>
                                             <td>{{ $pair->workplace}}</td>

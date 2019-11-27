@@ -178,7 +178,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::post('/linking/update-workplacelearningperiod', 'UpdateTeacherForWorkplaceLearningPeriod')
                         ->name('update-teacher-for-workplacelearningperiod');
 
-                    Route::post('/linking/update-workplacelearningperiod-csv', 'UpdateTeacherForWorkplaceLearningPeriodCSV')
+                    Route::post('/linking/update-workplacelearningperiod-csv', 'UpdateTeacherForWorkplaceLearningPeriodCSV@read')
                         ->name('update-teacher-for-workplacelearningperiod-csv');
 
                     Route::post('/linking/update-workplacelearningperiod-csv-save','UpdateTeacherForWorkplaceLearningPeriodCSV@save')
