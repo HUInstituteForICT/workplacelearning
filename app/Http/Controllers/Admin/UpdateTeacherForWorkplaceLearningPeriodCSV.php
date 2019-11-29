@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 
