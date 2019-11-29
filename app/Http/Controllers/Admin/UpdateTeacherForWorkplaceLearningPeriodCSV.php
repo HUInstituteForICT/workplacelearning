@@ -19,6 +19,7 @@ class UpdateTeacherForWorkplaceLearningPeriodCSV extends Controller
      * @var WorkplaceLearningPeriodRepository
      */
     private $workplaceLearningPeriodRepository;
+    private $studentRepository;
 
     public function __construct(WorkplaceLearningPeriodRepository $workplaceLearningPeriodRepository, StudentRepository $studentRepository)
     {
