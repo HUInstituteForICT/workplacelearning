@@ -189,7 +189,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     Route::post('/log', 'LogController@log'); // Logs info of the user's device
     Route::post('/reactlog', 'ReactLogController@store'); // Logs errors occurring in React
 
-    Route::get('/saved-items', 'SavedLearningItemController')->name('saved-items');
+    Route::get('/saved-learning-items', 'SavedLearningItemController@index')->name('saved-learning-items');
 
     Route::middleware('usernotifications')->group(static function (): void {
         // Actions on the profile of a student

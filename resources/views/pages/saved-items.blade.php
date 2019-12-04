@@ -7,12 +7,14 @@
 ?>
 @extends('layout.HUdefault')
 @section('title')
-    {{ __('home.profile') }}: {{ Auth::user()->firstname ." ". Auth::user()->lastname }}
+    Saved items
 @stop
 @section('content')
 <?php
 use App\Student;
-/** @var Student $student */?>
+use App\SavedLearningItems
+/** @var Student $student */
+/** @var SavedLearningItems $sli */?>
 
     <div class="container-fluid">
         <div class="row">
@@ -22,7 +24,7 @@ use App\Student;
 
                 @card
                     <h1>Bewaard</h1>
-                    <h4>{{ $student->firstname }}</h4>
+                    <h4>{{ $sli }}</h4>
                 @endcard
 
             </div>

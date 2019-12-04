@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Repository\Eloquent\StudentRepository;
-use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
-use App\Repository\Eloquent\WorkplaceRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -20,16 +18,27 @@ class SavedLearningItemController extends Controller
      */
     private $currentUserResolver;
 
+     /**
+     * @var SavedLearningItemRepository
+     */
+    private $savedLearningItemRepository;
 
-    public function __construct(CurrentUserResolver $currentUserResolver)
+
+    public function __construct(CurrentUserResolver $currentUserResolver, SavedLearningItemRepository $savedLearningItemRepository)
     {
         $this->currentUserResolver = $currentUserResolver;
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
+
     }
 
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
         $student = $this->currentUserResolver->getCurrentUser();
+        $sli = $this->savedLearningItemRepository->all();
 
-        return view('pages.saved-items')->with('student', $student);
+        return view('pages.saved-items', [
+            'student'   =>   $student,
+            'sli'       =>   $sli,
+        ]);
     }
 }
