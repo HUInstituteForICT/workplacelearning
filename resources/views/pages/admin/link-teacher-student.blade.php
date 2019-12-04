@@ -129,7 +129,7 @@
 
         
          {!! Form::open(array(
-            'url' =>  route('update-teacher-for-workplacelearningperiod-csv')))
+            'url' =>  route('update-teacher-for-workplacelearningperiod')))
             !!}
             <div class="form-group">
                 <input id='wplp' type='text' name='wplp_id' class="form-control">
