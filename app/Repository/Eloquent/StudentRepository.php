@@ -54,6 +54,16 @@ class StudentRepository implements Searchable
         return $student;
     }
 
+    public function findByStudentNumber(string $studentNumber) {
+        $student = Student::where('studentnr', '=', $studentNumber)->first();
+        return $student;
+    }
+
+    public function findByLastName(string $lastname) {
+        $student = Student::where('lastname', '=', $lastname)->first();
+        return $student;
+    }
+
     /**
      * @return LengthAwarePaginator|Collection
      */

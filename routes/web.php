@@ -27,7 +27,6 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth');
 Route::middleware(['auth', 'verified'])->group(static function (): void {
     // outside prefix because of namespace issues
     Route::get('teacher/home', 'HomeController@showTeacherTemplate')->name('home-teacher');
-    
     Route::middleware(RequiresTeacherLevel::class)
         ->prefix('teacher')
         ->namespace('Teacher')
@@ -182,6 +181,12 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/linking', 'Linking')->name('admin-linking');
                     Route::post('/linking/update-workplacelearningperiod', 'UpdateTeacherForWorkplaceLearningPeriod')
                         ->name('update-teacher-for-workplacelearningperiod');
+
+                    Route::post('/linking/update-workplacelearningperiod-csv', 'UpdateTeacherForWorkplaceLearningPeriodCSV@read')
+                        ->name('update-teacher-for-workplacelearningperiod-csv');
+
+                    Route::post('/linking/update-workplacelearningperiod-csv-save', 'UpdateTeacherForWorkplaceLearningPeriodCSV@save')
+                        ->name('update-teacher-for-workplacelearningperiod-csv-save');
                 });
     });
 
@@ -300,7 +305,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/delete/{learningActivityActing}', 'ActingActivityController@delete')
                         ->middleware('can:delete,learningActivityActing')
                         ->name('process-acting-delete');
-
                 }); // Actions relating to acting activities
             });
         });
