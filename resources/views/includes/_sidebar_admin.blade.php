@@ -37,7 +37,7 @@
 </a>
 <a class="nav-tile" href="{{ route('admin-linking') }}">
     <div class="tile white_tile">
-        <img class="icon" src="{{ URL::asset('assets/img/BewijsInschrijving_blauw.svg', true) }}"/>
+        <img class="icon" src="{{ URL::asset('assets/img/connect_blauw.svg', true) }}"/>
         <div class="nav-title">{{ __('elements.sidebar.labels.koppelen')  }}</div>
     </div>
 </a>

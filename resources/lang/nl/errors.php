@@ -16,6 +16,7 @@ return array(
     ),
   ),
   'returnhome' => 'Terug naar Dashboard',
+  'returnoverview' => 'Terug naar het overzicht',
     'occurred' => 'Er heeft een fout opgetreden',
     'activity-no-internship' => 'Je kan geen activiteiten registreren zonder (actieve) stage.',
     'no-activity-found' => 'Helaas, er is geen activiteit gevonden.',
