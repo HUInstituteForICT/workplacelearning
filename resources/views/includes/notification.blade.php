@@ -13,7 +13,7 @@
                             : </span>{{ (session()->has('success')) ? session('success') : $errors->first() }}
                     </div>
                 @endif
-                @if(session()->has('no-internship'))
+                @if (session()->has('no-internship'))
                     <div class="alert alert-error">
                         <span>{{ __('elements.alerts.warning') }}: </span>{!! session('no-internship') !!}
                     </div>
