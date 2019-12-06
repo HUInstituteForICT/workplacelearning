@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BugReportRequest;
 use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
-use App\Repository\Eloquent\ReflectionMethodBetaParticipationRepository;
 use App\Services\CurrentUserResolver;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;
@@ -68,7 +67,18 @@ class HomeController extends Controller
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
         }
+
         return view('pages.acting.home', ['evaluatedTip' => $evaluatedTip ?? null]);
+    }
+
+    public function showAdminTemplate()
+    {
+        return view('pages.admin.home');
+    }
+
+    public function showTeacherTemplate()
+    {
+        return view('pages.teacher.home');
     }
 
     public function showDefault(): \Illuminate\Http\RedirectResponse

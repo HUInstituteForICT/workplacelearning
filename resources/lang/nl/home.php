@@ -1,7 +1,9 @@
 <?php
 
 return array(
-  'welcome' => 'Welkom bij de Werkplekleren App van Hogeschool Utrecht. Met deze app krijg je inzicht in je leerproces tijdens het werken in de beroepspraktijk, bijvoorbeeld tijdens je stage. Met dit inzicht kun je nog meer uit je stage halen en jezelf optimaal ontwikkelen!',
+  'welcome-student' => 'Welkom bij de Werkplekleren App van Hogeschool Utrecht. Met deze app krijg je inzicht in je leerproces tijdens het werken in de beroepspraktijk, bijvoorbeeld tijdens je stage. Met dit inzicht kun je nog meer uit je stage halen en jezelf optimaal ontwikkelen!',
+  'welcome-admin' => 'Welkom bij de Werkplekleren App van Hogeschool Utrecht. Met deze app krijg je de mogelijkheid studenten en docenten te koppelen, beheren en te importeren.',
+  'welcome-teacher' => 'Welkom bij de Werkplekleren App van Hogeschool Utrecht. Met deze app krijg je de mogelijkheid om begeleidingsvragen van studenten te beantwoorden aan de hand van ingestuurde leerinformatie. In het dashboard is zichtbaar welke studenten recent iets hebben ingestuurd en waarop gereageerd kan worden. Met dit inzicht kunnen studenten tijdens hun stage nog beter begeleid worden door hun stagedocent.',
   'see-menu' => 'In het menu zie je een aantal tegels.',
   'with-tile' => 'Via de tegel',
   'learningprocess' => 'Leerproces',
