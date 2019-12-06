@@ -181,7 +181,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::post('/linking/update-workplacelearningperiod-csv', 'UpdateTeacherForWorkplaceLearningPeriodCSV@read')
                         ->name('update-teacher-for-workplacelearningperiod-csv');
 
-                    Route::post('/linking/update-workplacelearningperiod-csv-save','UpdateTeacherForWorkplaceLearningPeriodCSV@save')
+                    Route::post('/linking/update-workplacelearningperiod-csv-save', 'UpdateTeacherForWorkplaceLearningPeriodCSV@save')
                         ->name('update-teacher-for-workplacelearningperiod-csv-save');
                 });
     });
@@ -301,7 +301,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/delete/{learningActivityActing}', 'ActingActivityController@delete')
                         ->middleware('can:delete,learningActivityActing')
                         ->name('process-acting-delete');
-
                 }); // Actions relating to acting activities
             });
         });

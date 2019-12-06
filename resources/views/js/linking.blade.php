@@ -51,6 +51,7 @@
 
         // display the list of all students, show a message if there is no student.
         listGroup = document.getElementById('linked-students');
+        listGroup.innerHTML = '';
         if (uniqueLinkedStudents.length == 0) {
             msg = document.createElement('p');
             msg.innerText = `${Lang.get('linking.geen-student')}`;
@@ -167,7 +168,7 @@
             } else {
                 csv += row.join(',');
             }
-            
+
             csv += "\n";
         });
         var today = new Date();
@@ -176,7 +177,7 @@
         hiddenElement.target = '_blank';
         hiddenElement.download = today.getDate() + '-'+ today.getMonth() + '-' +today.getFullYear() + '-'+ today.getHours() + ':' + today.getMinutes() +  '-'+ 'Niet-gekoppelde-studenten.csv' ;
         hiddenElement.click();
-        
+
     }
 
 
