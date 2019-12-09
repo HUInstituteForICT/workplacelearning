@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
-use App\Student;
 use App\SavedLearningItem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
 
 class SavedLearningItemController extends Controller
@@ -49,7 +47,7 @@ class SavedLearningItemController extends Controller
             $url = route('home-producing');
         }
         
-        $itemExists = SavedLearningItem::itemExists($item_id);
+        $itemExists = $this->savedLearningItemRepository->itemExists($category, $item_id, $student->student_id);
         if (!$itemExists) {
             $savedLearningItem = new SavedLearningItem();
             $savedLearningItem->category = $category;

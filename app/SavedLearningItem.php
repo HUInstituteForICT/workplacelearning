@@ -24,9 +24,4 @@ class SavedLearningItem extends Model
         'item_id',
         'student_id',
     ];
-
-    public static function itemExists($id): bool
-    {
-        return SavedLearningItem::where('item_id', '=', $id)->count() > 0;
-    }
 }

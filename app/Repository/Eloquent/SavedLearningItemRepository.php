@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace App\Repository\Eloquent;
 use App\Services\EvidenceFileHandler;
-use App\UserSetting;
 use App\SavedLearningItem;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Services\CurrentUserResolver;
 
 class SavedLearningItemRepository
 {
+    /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
     /**
      * @var EvidenceFileHandler
      */
     private $evidenceFileHandler;
 
-    public function __construct(EvidenceFileHandler $evidenceFileHandler)
+    public function __construct(CurrentUserResolver $currentUserResolver, EvidenceFileHandler $evidenceFileHandler)
     {
+        $this->currentUserResolver = $currentUserResolver;
         $this->evidenceFileHandler = $evidenceFileHandler;
     }
 
@@ -29,5 +32,14 @@ class SavedLearningItemRepository
     public function save(SavedLearningItem $savedLearningItem): bool
     {
         return $savedLearningItem->save();
+    }
+
+    public static function itemExists($category, $item_id, $student_id): bool
+    {
+        return SavedLearningItem::where([
+            'category' => $category,
+            'item_id' => $item_id,
+            'student_id' => $student_id
+        ])->count() > 0;
     }
 }
