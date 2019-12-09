@@ -88,11 +88,6 @@ class TaskTypeRedirect
                 case 'period-edit':
                     return $this->redirector->route('period-producing-edit', ['id' => $route->parameter('id')]);
             }
-        } elseif ($student->isAdmin()) {
-            return $this->redirector->route('home-admin');
-        } elseif ($student->isTeacher()) {
-            return $this->redirector->route('home-teacher');
-        }
 
         return $next($request);
     }
