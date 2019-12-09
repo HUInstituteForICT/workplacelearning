@@ -11,8 +11,15 @@
                     @if($evaluatedTip !== null)
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px;"
                              role="alert">
-                            <a class="save_tip" href="#">
-                                <img class="save_tip_icon" src="{{ URL::asset('assets/img/opgeslagen_icon_wit.svg', true) }}"/></a>
+
+                            @if (App\SavedLearningItem::itemExists($evaluatedTip->getTip()->id))
+                                <span class="save_tip">
+                                    <img class="save_tip_icon" src="{{ URL::asset('assets/img/opgeslagen_icon_wit.svg', true) }}"/></span>
+                            @else
+                                <a class="save_tip" href="{{ route('saved-learning-item-create', ['category' => 'tip', 'item_id' => $evaluatedTip->getTip()->id]) }}">
+                                    <img class="save_tip_icon" src="{{ URL::asset('assets/img/opgeslagen-niet-ingevuld.svg', true) }}"/></a>
+                            @endif
+
                             <h4>{{ __('tips.personal-tip') }}</h4>
                             <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
                             <br/>
