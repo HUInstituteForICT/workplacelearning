@@ -17,4 +17,9 @@ class SavedLearningItemRepository
     {
         return SavedLearningItem::where('student_id', $id)->get();
     }
+
+    public function save(SavedLearningItem $savedLearningItem): bool
+    {
+        return $savedLearningItem->save();
+    }
 }

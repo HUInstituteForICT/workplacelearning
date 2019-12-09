@@ -192,6 +192,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     });
 
     // Student routes
+    Route::get('/saved-learning-items/{category}/{item_id}/create', 'SavedLearningItemController@createItem')->name('saved-learning-item-create');
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
     Route::post('/activity-export-doc', 'ActivityExportController@exportActivitiesToWord');
     Route::get('/download/activity-export-doc/{fileName}',

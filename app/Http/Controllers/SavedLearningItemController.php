@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
+use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -58,5 +59,29 @@ class SavedLearningItemController extends Controller
             'tips' => $tips,
             'evaluatedTips' => $evaluatedTips,
         ]);
+    }
+
+    public function createItem($category, $item_id)
+    {
+        $student = $this->currentUserResolver->getCurrentUser();
+
+        if ($student->educationProgram->educationprogramType->isActing()) {
+            $url = route('home-acting');
+        } else {
+            $url = route('home-producing');
+        }
+
+        $itemExists = SavedLearningItem::itemExists($item_id);
+        if (!$itemExists) {
+            $savedLearningItem = new SavedLearningItem();
+            $savedLearningItem->category = $category;
+            $savedLearningItem->item_id = $item_id;
+            $savedLearningItem->student_id = $student->student_id;
+            $this->savedLearningItemRepository->save($savedLearningItem);
+
+            session()->flash('success', __('saved_learning_items.saved-succesfully'));
+        }
+
+        return redirect($url);
     }
 }
