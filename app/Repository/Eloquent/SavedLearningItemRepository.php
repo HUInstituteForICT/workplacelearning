@@ -6,7 +6,7 @@ namespace App\Repository\Eloquent;
 
 use App\Services\EvidenceFileHandler;
 use App\UserSetting;
-use App\SavedLearningItems;
+use App\SavedLearningItem;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +24,11 @@ class SavedLearningItemRepository
 
     public function all()
     {
-        return SavedLearningItems::all();
+        return SavedLearningItem::all();
+    }
+
+    public function findByStudentnr(int $id)
+    {
+        return SavedLearningItem::where('student_id', $id)->get();;
     }
 }

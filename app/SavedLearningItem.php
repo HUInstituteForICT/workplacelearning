@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class SavedLearningItems extends Model
+class SavedLearningItem extends Model
 {
        // Override the table used for the User Model
        public $timestamps = false;
@@ -24,4 +25,4 @@ class SavedLearningItems extends Model
             'item_id',
             'student_id',
         ];
-}
+    }

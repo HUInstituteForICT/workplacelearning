@@ -10,9 +10,9 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.0.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
+    "@babel/preset-react": "^7.7.4",
     "axios": "^0.18.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "cross-env": "^3.2.4",
     "immutability-helper": "^2.2.3",
     "less": "^2.7.2",

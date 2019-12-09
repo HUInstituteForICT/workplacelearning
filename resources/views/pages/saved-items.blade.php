@@ -12,19 +12,34 @@
 @section('content')
 <?php
 use App\Student;
-use App\SavedLearningItems
-/** @var Student $student */
-/** @var SavedLearningItems $sli */?>
+use App\SavedLearningItem
+/** @var Student $student */;
+/** @var SavedLearningItem $sli */?>
 
     <div class="container-fluid">
         <div class="row">
             <!-- Profile Info -->
             <div class="col-md-3">
-
+            
 
                 @card
-                    <h1>Bewaard</h1>
-                    <h4>{{ $sli }}</h4>
+                    <h1>{{ __('saved_learning_items.saved') }}</h1>
+                    <h2>{{ __('saved_learning_items.timeline') }}</h2>
+                    
+                    @foreach($sli as $item)
+                    @if($item->category == 'tip')
+                        @foreach($tips as $tip)
+                        @if($tip->id == $item->item_id)
+                        <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
+                             role="alert">
+                            <h4>{{ __('tips.personal-tip') }}</h4>
+                            <p>{!! nl2br($tip->tipText) !!}</p>
+                        </div>
+                        @endif
+                        @endforeach
+                    @endif
+                    @endforeach
+
                 @endcard
 
             </div>

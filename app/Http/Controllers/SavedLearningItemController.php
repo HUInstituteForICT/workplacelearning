@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
+use App\Repository\Eloquent\TipRepository;
 use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -23,22 +24,30 @@ class SavedLearningItemController extends Controller
      */
     private $savedLearningItemRepository;
 
+         /**
+     * @var TipRepository
+     */
+    private $tipRepository;
 
-    public function __construct(CurrentUserResolver $currentUserResolver, SavedLearningItemRepository $savedLearningItemRepository)
+
+    public function __construct(CurrentUserResolver $currentUserResolver, SavedLearningItemRepository $savedLearningItemRepository, TipRepository $tipRepository)
     {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
+        $this->tipRepository = $tipRepository;
 
     }
 
     public function index(Request $request)
     {
         $student = $this->currentUserResolver->getCurrentUser();
-        $sli = $this->savedLearningItemRepository->all();
+        $tips = $this->tipRepository->all();
+        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
 
         return view('pages.saved-items', [
             'student'   =>   $student,
             'sli'       =>   $sli,
+            'tips'      =>   $tips,
         ]);
     }
 }
