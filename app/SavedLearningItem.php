@@ -20,7 +20,6 @@ class SavedLearningItem extends Model
 
         // Default
         protected $fillable = [
-            'sli_id',
             'category',
             'item_id',
             'student_id',
