@@ -88,6 +88,7 @@ class TaskTypeRedirect
                 case 'period-edit':
                     return $this->redirector->route('period-producing-edit', ['id' => $route->parameter('id')]);
             }
+        }
 
         return $next($request);
     }
