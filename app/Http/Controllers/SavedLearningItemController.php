@@ -10,7 +10,6 @@ use App\Repository\Eloquent\TipRepository;
 use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
 use App\Tips\Services\TipEvaluator;
 
@@ -71,7 +70,7 @@ class SavedLearningItemController extends Controller
             $url = route('home-producing');
         }
 
-        $itemExists = SavedLearningItem::itemExists($item_id);
+        $itemExists = $this->savedLearningItemRepository->itemExists($category, $item_id, $student->student_id);
         if (!$itemExists) {
             $savedLearningItem = new SavedLearningItem();
             $savedLearningItem->category = $category;

@@ -11,9 +11,9 @@
                     @if($evaluatedTip !== null)
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px;"
                              role="alert">
-
-                            @if (App\SavedLearningItem::itemExists($evaluatedTip->getTip()->id))
-                                <span class="save_tip">
+                            
+                            @if (App\Repository\Eloquent\SavedLearningItemRepository::itemExists('tip', $evaluatedTip->getTip()->id, Auth::user()->student_id))
+                                <span title="{{ __('saved_learning_items.saved') }}" class="save_tip">
                                     <img class="save_tip_icon" src="{{ URL::asset('assets/img/opgeslagen_icon_wit.svg', true) }}"/></span>
                             @else
                                 <a class="save_tip" href="{{ route('saved-learning-item-create', ['category' => 'tip', 'item_id' => $evaluatedTip->getTip()->id]) }}">
