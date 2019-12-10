@@ -34,7 +34,7 @@ class SavedLearningItemRepository
         return $savedLearningItem->save();
     }
 
-    public static function itemExists($category, $item_id, $student_id): bool
+    public function itemExists($category, $item_id, $student_id): bool
     {
         return SavedLearningItem::where([
             'category' => $category,
