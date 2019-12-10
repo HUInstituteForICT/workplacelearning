@@ -18,9 +18,8 @@ class SavedLearningItemRepository
      */
     private $evidenceFileHandler;
 
-    public function __construct(CurrentUserResolver $currentUserResolver, EvidenceFileHandler $evidenceFileHandler)
+    public function __construct(EvidenceFileHandler $evidenceFileHandler)
     {
-        $this->currentUserResolver = $currentUserResolver;
         $this->evidenceFileHandler = $evidenceFileHandler;
     }
 
