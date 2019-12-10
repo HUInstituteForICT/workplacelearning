@@ -10,8 +10,12 @@
 
                 @if($evaluatedTip !== null)
                     <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
-
-                        @if (App\Repository\Eloquent\SavedLearningItemRepository::itemExists('tip', $evaluatedTip->getTip()->id, Auth::user()->student_id))
+                        
+                        <?php
+                        /** @var bool $itemExists */
+                        ?>
+                        
+                        @if ($itemExists)
                             <span title="{{ __('saved_learning_items.saved') }}" class="save_tip">
                                 <img class="save_tip_icon" src="{{ URL::asset('assets/img/opgeslagen_icon_wit.svg', true) }}"/></span>
                         @else
