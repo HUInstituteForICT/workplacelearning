@@ -7,10 +7,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
-use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
+use App\Tips\Services\TipEvaluator;
 
 class SavedLearningItemController extends Controller
 {
@@ -24,11 +24,15 @@ class SavedLearningItemController extends Controller
      */
     private $savedLearningItemRepository;
 
-         /**
+    /**
      * @var TipRepository
      */
     private $tipRepository;
 
+    /** 
+     * @var array<EvaluatedTip> 
+     */
+    private $evaluatedTips;
 
     public function __construct(CurrentUserResolver $currentUserResolver, SavedLearningItemRepository $savedLearningItemRepository, TipRepository $tipRepository)
     {
@@ -38,16 +42,22 @@ class SavedLearningItemController extends Controller
 
     }
 
-    public function index(Request $request)
+    public function index(Request $request, TipEvaluator $evaluator)
     {
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
 
+        $evaluatedTips = [];
+        foreach($tips as $tip) {
+            $evaluatedTips[] = $evaluator->evaluate($tip);
+        }
+
         return view('pages.saved-items', [
             'student'   =>   $student,
             'sli'       =>   $sli,
             'tips'      =>   $tips,
+            'evaluatedTips' => $evaluatedTips
         ]);
     }
 }

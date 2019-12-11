@@ -28,12 +28,12 @@ use App\SavedLearningItem
                     
                     @foreach($sli as $item)
                     @if($item->category == 'tip')
-                        @foreach($tips as $tip)
-                        @if($tip->id == $item->item_id)
+                        @foreach($evaluatedTips as $evaluatedTip)
+                        @if($evaluatedTip->getTip()->id == $item->item_id)
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                              role="alert">
                             <h4>{{ __('tips.personal-tip') }}</h4>
-                            <p>{!! nl2br($tip->tipText) !!}</p>
+                            <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
                         </div>
                         @endif
                         @endforeach
