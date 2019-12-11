@@ -56,7 +56,7 @@ class HomeController extends Controller
 
         return view('pages.producing.home', [
             'evaluatedTip' => $evaluatedTip ?? null,
-            'itemExists' => $itemExists
+            'itemExists' => $itemExists ?? false
         ]);
     }
 
@@ -76,7 +76,7 @@ class HomeController extends Controller
 
         return view('pages.acting.home', [
             'evaluatedTip' => $evaluatedTip ?? null,
-            'itemExists' => $itemExists
+            'itemExists' => $itemExists ?? false
         ]);
     }
 
