@@ -17,11 +17,11 @@ class CreateFolderTable extends Migration
             $table->increments('folder_id');
             $table->timestamps();
             $table->string('title')->nullable(false);
-            $table->integer('description')->nullable(false);
+            $table->string('description')->nullable(false);
             $table->integer('student_id')->nullable(false);
         });
         Schema::table('folder', function(Blueprint $table) {
-            $table->foreign('student_id', 'optin_to_student_id')
+            $table->foreign('student_id', 'optin_folder_to_student_id')
                 ->references('student_id')->on('student')->onDelete('CASCADE');
         });
     }
