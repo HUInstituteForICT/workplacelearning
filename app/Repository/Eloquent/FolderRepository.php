@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace App\Repository\Eloquent;
 
 use App\Services\EvidenceFileHandler;
-use App\UserSetting;
-use App\SavedLearningItem;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Folder;
 
-class SavedLearningItemRepository
+class FolderRepository
 {
     /**
      * @var EvidenceFileHandler
@@ -24,16 +21,11 @@ class SavedLearningItemRepository
 
     public function all()
     {
-        return SavedLearningItem::all();
+        return Folder::all();
     }
 
-    public function findByStudentnr(int $id)
+    public function save(Folder $folder): bool
     {
-        return SavedLearningItem::where('student_id', $id)->get();;
-    }
-
-    public function save(SavedLearningItem $item): bool
-    {
-        return $item->save();
+        return $folder->save();
     }
 }

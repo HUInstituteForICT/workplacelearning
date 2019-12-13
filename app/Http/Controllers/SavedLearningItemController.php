@@ -7,10 +7,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
+use App\Repository\Eloquent\FolderRepository;
 use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
+use App\SavedLearningItem;
 
 class SavedLearningItemController extends Controller
 {
@@ -24,17 +26,28 @@ class SavedLearningItemController extends Controller
      */
     private $savedLearningItemRepository;
 
-         /**
+    /**
      * @var TipRepository
      */
     private $tipRepository;
 
+    /**
+     * @var FolderRepository
+     */
+    private $folderRepository;
 
-    public function __construct(CurrentUserResolver $currentUserResolver, SavedLearningItemRepository $savedLearningItemRepository, TipRepository $tipRepository)
+
+    public function __construct(
+        CurrentUserResolver $currentUserResolver, 
+        SavedLearningItemRepository $savedLearningItemRepository, 
+        TipRepository $tipRepository,
+        FolderRepository $folderRepository
+        )
     {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
+        $this->folderRepository = $folderRepository;
 
     }
 
@@ -43,11 +56,23 @@ class SavedLearningItemController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+        $folders = $this->folderRepository->all();
 
         return view('pages.saved-items', [
             'student'   =>   $student,
             'sli'       =>   $sli,
             'tips'      =>   $tips,
+            'folders'   =>   $folders,
         ]);
+    }
+
+    public function updateFolder(Request $request)
+    {
+        $savedLearningItem = SavedLearningItem::find($request['sli_id']);
+        $folderId = $request['chooseFolder'];
+        $savedLearningItem->folder = $folderId;
+        $savedLearningItem->save();
+
+        return redirect('saved-learning-items');
     }
 }
