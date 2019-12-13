@@ -27,7 +27,7 @@ class ActingUpdateRequest extends FormRequest
             'competence'       => 'required|min:1|max:3',
             'competence.*'     => 'required|exists:competence,competence_id',
             'evidence.*'       => 'file|max:20000',
-            'learned'          => 'required|max:1000',
+            'learned'          => 'max:1000',
             'support_wp'       => 'max:500',
             'support_ed'       => 'max:500',
         ];

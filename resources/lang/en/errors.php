@@ -16,6 +16,7 @@ return array(
     ),
   ),
   'returnhome' => 'Back to Dashboard',
+  'returnoverview' => 'Back to Overview',
     'activity-no-internship' => 'You cannot register activities without an active internship.',
     'no-activity-found' => 'Unable to find any activities',
   'internship-no-permission' => 'This internship does not exist, or you have no access to see it.',

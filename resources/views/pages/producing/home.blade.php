@@ -22,7 +22,7 @@
                         </div>
                     @endif
 
-                    <p>{{ __('home.welcome') }}
+                    <p>{{ __('home.welcome-student') }}
                         <br /><br />{{ __('home.see-menu') }}</p>
                     <ul>
                         <li>{{ __('home.with-tile') }} <b>{{ __('home.learningprocess') }}</b> {{ __('home.steps.1') }}</li>
