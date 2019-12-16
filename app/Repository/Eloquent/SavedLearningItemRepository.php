@@ -9,20 +9,6 @@ use App\Services\CurrentUserResolver;
 
 class SavedLearningItemRepository
 {
-    /**
-     * @var CurrentUserResolver
-     */
-    private $currentUserResolver;
-    /**
-     * @var EvidenceFileHandler
-     */
-    private $evidenceFileHandler;
-
-    public function __construct(EvidenceFileHandler $evidenceFileHandler)
-    {
-        $this->evidenceFileHandler = $evidenceFileHandler;
-    }
-
     public function all()
     {
         return SavedLearningItem::all();
