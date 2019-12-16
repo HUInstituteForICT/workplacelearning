@@ -26,9 +26,7 @@ use App\SavedLearningItem
                     <h2 class='maps'>{{ __('saved_learning_items.timeline') }}</h2>
                     <br>
                     @foreach($sli as $item)
-                    @if($item->category === 'tip' && $item->folder == null)
-                        @foreach($evaluatedTips as $evaluatedTip)
-                        @if($evaluatedTip->getTip()->id == $item->item_id)
+                    @if($item->category === 'tip' && $item->folder === null)
                         <h4>{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                         @card
                         <h5>{{ __('tips.personal-tip') }}</h5>
@@ -36,11 +34,9 @@ use App\SavedLearningItem
                              role="alert">
                              <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
                              <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                            <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
+                            <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
                         </div>
                         @endcard
-                        @endif
-                        @endforeach
                     @endif
                     @endforeach
 
@@ -62,16 +58,12 @@ use App\SavedLearningItem
                             {{ $folder->description }}
 
                             @foreach($sli as $item)
-                                @if($item->category == 'tip')
-                                    @foreach($tips as $tip)
-                                        @if($tip->id == $item->item_id && $item->folder == $folder->folder_id)
+                                @if($item->category === 'tip' &&  $item->folder === $folder->folder_id)
                                             <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                                                 role="alert">
                                                 <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                                                <p>{!! nl2br($tip->tipText) !!}</p>
+                                                <p> {{$evaluatedTips[$item->item_id]->getTipText()}}</p>
                                             </div>
-                                         @endif
-                                    @endforeach
                                 @endif
                             @endforeach
                         </div>
