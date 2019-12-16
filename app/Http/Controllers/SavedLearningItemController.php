@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
+use App\Tips\EvaluatedTip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
@@ -19,7 +20,7 @@ class SavedLearningItemController extends Controller
      */
     private $currentUserResolver;
 
-     /**
+    /**
      * @var SavedLearningItemRepository
      */
     private $savedLearningItemRepository;
@@ -29,35 +30,33 @@ class SavedLearningItemController extends Controller
      */
     private $tipRepository;
 
-    /** 
-     * @var array<EvaluatedTip> 
-     */
-    private $evaluatedTips;
-
-    public function __construct(CurrentUserResolver $currentUserResolver, SavedLearningItemRepository $savedLearningItemRepository, TipRepository $tipRepository)
-    {
+    public function __construct(
+        CurrentUserResolver $currentUserResolver,
+        SavedLearningItemRepository $savedLearningItemRepository,
+        TipRepository $tipRepository
+    ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
 
     }
 
-    public function index(Request $request, TipEvaluator $evaluator)
+    public function index(TipEvaluator $evaluator)
     {
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
 
         $evaluatedTips = [];
-        foreach($tips as $tip) {
+        foreach ($tips as $tip) {
             $evaluatedTips[] = $evaluator->evaluate($tip);
         }
 
         return view('pages.saved-items', [
-            'student'   =>   $student,
-            'sli'       =>   $sli,
-            'tips'      =>   $tips,
-            'evaluatedTips' => $evaluatedTips
+            'student' => $student,
+            'sli' => $sli,
+            'tips' => $tips,
+            'evaluatedTips' => $evaluatedTips,
         ]);
     }
 }

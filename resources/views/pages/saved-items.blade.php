@@ -20,14 +20,14 @@ use App\SavedLearningItem
         <div class="row">
             <!-- Profile Info -->
             <div class="col-md-3">
-            
+
 
                 @card
                     <h1>{{ __('saved_learning_items.saved') }}</h1>
                     <h2>{{ __('saved_learning_items.timeline') }}</h2>
-                    
+
                     @foreach($sli as $item)
-                    @if($item->category == 'tip')
+                    @if($item->category === 'tip')
                         @foreach($evaluatedTips as $evaluatedTip)
                         @if($evaluatedTip->getTip()->id == $item->item_id)
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
