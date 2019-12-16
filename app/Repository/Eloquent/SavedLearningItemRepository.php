@@ -10,6 +10,10 @@ use App\Services\CurrentUserResolver;
 class SavedLearningItemRepository
 {
     /**
+     * @var CurrentUserResolver
+     */
+    private $currentUserResolver;
+    /**
      * @var EvidenceFileHandler
      */
     private $evidenceFileHandler;

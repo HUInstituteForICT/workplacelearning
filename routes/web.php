@@ -27,7 +27,6 @@ Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth');
 Route::middleware(['auth', 'verified'])->group(static function (): void {
     // outside prefix because of namespace issues
     Route::get('teacher/home', 'HomeController@showTeacherTemplate')->name('home-teacher');
-
     Route::middleware(RequiresTeacherLevel::class)
         ->prefix('teacher')
         ->namespace('Teacher')
