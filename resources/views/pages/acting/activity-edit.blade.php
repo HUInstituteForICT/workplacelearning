@@ -196,7 +196,7 @@
                                     class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
                                     data-placement="bottom"
                                     title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                        <textarea class="form-control fit-bs" name="learned" required rows="5" id="learned"
+                        <textarea class="form-control fit-bs" name="learned" rows="5" id="learned"
                                   cols="19">{{ (count($errors) > 0) ? old('learned') : $activity->lessonslearned }}</textarea>
                         <a data-target-text="#learned" data-target-title="{{ __('activity.learned') }}"
                            class="canBeEnlarged">{{ trans('process.enlarge') }}</a>

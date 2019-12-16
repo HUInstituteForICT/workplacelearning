@@ -34,3 +34,9 @@
         <div class="nav-title">{{ __('elements.sidebar.labels.settings') }}</div>
     </div>
 </a>
+<a class="nav-tile" href="{{ route('saved-learning-items') }}">
+    <div class="tile blue_tile">
+        <img class="icon" src="{{ URL::asset('assets/img/opgeslagen_icon_wit.svg', true) }}"/>
+        <div class="nav-title">Opgeslagen</div>
+    </div>
+</a>
