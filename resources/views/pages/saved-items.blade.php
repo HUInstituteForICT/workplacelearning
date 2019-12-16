@@ -48,15 +48,22 @@ use App\SavedLearningItem
                 <h2 class="maps">{{ __('folder.folders') }}</h2> <a data-target="#addFolderModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-collapse" aria-hidden="true"></span></a>
 
                 @foreach($folders as $folder)
-                    <div class="card card-body">
-                        <button class="btn-collapse" data-toggle="collapse" href="#{{$folder->folder_id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        <strong>{{ $folder->title }}</strong>
-                        </a>
-                        <div class="collapse" id="{{$folder->folder_id}}">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
+                        </h4>
+                        </div>
+                        <div id="{{$folder->folder_id}}" class="panel-collapse collapse">
+                        
+                        <div class="panel-body">
                             <i>{{date('d-m-Y', strtotime($folder->created_at))}}</i>
                             <br>
-                            {{ $folder->description }}
 
+                            {{ $folder->description }}
+                            <hr>
+                            <strong>Voeg items toe aan deze leervraag</strong>
                             @foreach($sli as $item)
                                 @if($item->category === 'tip' &&  $item->folder === $folder->folder_id)
                                             <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
@@ -66,10 +73,35 @@ use App\SavedLearningItem
                                             </div>
                                 @endif
                             @endforeach
+                            
+                            <hr>
+                            {!! Form::open(array(
+                            'url' =>  route('folder.shareFolderWithTeacher')))
+                            !!}
+                            <div class="form-group">
+                                <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
+                            </div>
+                            <div class="form-group">
+                                <textarea placeholder="Licht hier je vraag toe.." name='folder_comment' class="form-control folder_comment"></textarea>
+                            </div>
                         </div>
-                    </div>   
-                 @endforeach
 
+                        <div class="panel-footer">
+                            <div class="form-group">
+                                <label>Kies je docent:</label><br>
+                                <select name="teacher">
+                                   @foreach($student->getWorkplaceLearningPeriods() as $wplp)
+                                    <option value="{{$wplp->teacher_id}}">{{$wplp->teacher_id}}</option>
+                                </select>
+                                   @endforeach
+                            </div>
+                            {{ Form::submit('Deel', array('class' => 'btn btn-primary shareFolder')) }}
+                            {{ Form::close() }}
+                        </div>
+                        </div>
+                    </div>
+                    </div>   
+                @endforeach
             @endcard
             </div>
 

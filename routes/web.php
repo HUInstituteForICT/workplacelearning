@@ -204,6 +204,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     Route::post('/saved-learning-items/updateFolder', 'SavedLearningItemController@updateFolder')->name('saved-learning-item.updateFolder');
 
     Route::post('/folders/create', 'FolderController@create')->name('folder.create');
+    Route::post('/folder/shareFolderWithTeacher', 'FolderController@shareFolderWithTeacher')->name('folder.shareFolderWithTeacher');
 
     Route::middleware('usernotifications')->group(static function (): void {
         // Actions on the profile of a student
