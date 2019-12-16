@@ -14,35 +14,33 @@
 use App\Student;
 use App\SavedLearningItem
 /** @var Student $student */;
-/** @var SavedLearningItem $sli */;
+/** @var SavedLearningItem $sli */
 /** @var Folder $folder */?>
 
     <div class="container-fluid">
-    @card
-    <h1>{{ __('saved_learning_items.saved') }}</h1>
+        @card
+        <h1>{{ __('saved_learning_items.saved') }}</h1>
         <div class="row">
-            <!-- Profile Info -->
             <div class="col-md-6">
                 @card
                     <h2 class='maps'>{{ __('saved_learning_items.timeline') }}</h2>
                     <br>
-                    
                     @foreach($sli as $item)
-                    @if($item->category == 'tip')
-                        @foreach($tips as $tip)
-                        @if($tip->id == $item->item_id && $item->folder == null)
+                    @if($item->category === 'tip' && $item->folder == null)
+                        @foreach($evaluatedTips as $evaluatedTip)
+                        @if($evaluatedTip->getTip()->id == $item->item_id)
                         <h4>{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                         @card
                         <h5>{{ __('tips.personal-tip') }}</h5>
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                              role="alert">
                              <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
-                            <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                            <p>{!! nl2br($tip->tipText) !!}</p>
+                             <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                            <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
                         </div>
                         @endcard
                         @endif
-                    @endforeach
+                        @endforeach
                     @endif
                     @endforeach
 

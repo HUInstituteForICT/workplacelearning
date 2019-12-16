@@ -13,12 +13,17 @@
     @endif
 
     @if(Auth::user()->isAdmin())
+        <h1 class="sidebar-title">{{ __('general.student') }}</h1>
         @include('includes._sidebar_student')
-        <div class="clearfix"></div>
+        <div class="clearfix custom-hr"></div>
+        
+        <h1 class="sidebar-title">{{ __('general.teacher') }}</h1>
         @include('includes._sidebar_teacher')
-        <div class="clearfix"></div>
+        <div class="clearfix custom-hr"></div>
+        
+        <h1 class="sidebar-title">{{ __('general.admin') }}</h1>
         @include('includes._sidebar_admin')
-        <div class="clearfix"></div>
+        <div class="clearfix custom-hr"></div>
         <br/>
     @endif
 

@@ -42,9 +42,9 @@ use App\Student;use App\Workplace;
                     ?>
                     <div class="card-body">
                         <h3 class="card-text">
-                            <strong>{{ $workplace->wp_name }}</strong>
+                            <strong>{{ $workplace->workplaceLearningPeriod->startdate->toFormattedDateString()}} - {{ $workplace->workplaceLearningPeriod->enddate->toFormattedDateString() }}</strong>
                         </h3>
-                        <p class="card-text">{{ $workplace->workplaceLearningPeriod->startdate->toFormattedDateString()}} - {{ $workplace->workplaceLearningPeriod->enddate->toFormattedDateString() }}</p>
+                        <p class="card-text">{{ $workplace->wp_name }}</p>
                         <p class="card-text">{{ $workplace->street }} {{ $workplace->housenr }}, {{ $workplace->postalcode }} {{ $workplace->town }}, {{ $workplace->country }}</p><br />
                         <p class="card-text"><strong>Contactperson </strong><br /></p>
                         <p class="card-text">{{ $workplace->contact_name }}</p>

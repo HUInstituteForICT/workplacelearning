@@ -88,4 +88,7 @@ return array(
     'students' => 'Students',
     'student-details' => 'Student details',
     'view' => 'View',
+    'student' => 'Student',
+    'teacher' => 'Teacher',
+    'admin' => 'Admin',
 );

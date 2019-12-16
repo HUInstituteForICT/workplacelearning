@@ -23,8 +23,10 @@ Route::get('evidence/{evidence}/{diskFileName}', 'EvidenceController@download')-
 // General user routes
 Route::get('/logout', 'Auth\LoginController@logout')->middleware('auth');
 
+// Routes for non-students
 Route::middleware(['auth', 'verified'])->group(static function (): void {
-    // Routes for non-students
+    // outside prefix because of namespace issues
+    Route::get('teacher/home', 'HomeController@showTeacherTemplate')->name('home-teacher');
     Route::middleware(RequiresTeacherLevel::class)
         ->prefix('teacher')
         ->namespace('Teacher')
@@ -158,6 +160,8 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
             return shell_exec('git -C /sites/werkplekleren.hu.nl/htdocs fetch && git -C /sites/werkplekleren.hu.nl/htdocs reset --hard origin/master && git -C /sites/werkplekleren.hu.nl/htdocs pull');
         }); // Pulls branch -- often doesn't work. Only necessary due to VPN situation on HU network
 
+        // outside prefix because of namespace issues
+        Route::get('admin/home', 'HomeController@showAdminTemplate')->name('home-admin');
         Route::prefix('admin')
             ->namespace('Admin')
             ->group(
@@ -177,10 +181,17 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/linking', 'Linking')->name('admin-linking');
                     Route::post('/linking/update-workplacelearningperiod', 'UpdateTeacherForWorkplaceLearningPeriod')
                         ->name('update-teacher-for-workplacelearningperiod');
+
+                    Route::post('/linking/update-workplacelearningperiod-csv', 'UpdateTeacherForWorkplaceLearningPeriodCSV@read')
+                        ->name('update-teacher-for-workplacelearningperiod-csv');
+
+                    Route::post('/linking/update-workplacelearningperiod-csv-save', 'UpdateTeacherForWorkplaceLearningPeriodCSV@save')
+                        ->name('update-teacher-for-workplacelearningperiod-csv-save');
                 });
     });
 
     // Student routes
+    Route::get('/saved-learning-items/{category}/{item_id}/create', 'SavedLearningItemController@createItem')->name('saved-learning-item-create');
     Route::post('/activity-export-mail', 'ActivityExportController@exportMail')->middleware('throttle:3,1');
     Route::post('/activity-export-doc', 'ActivityExportController@exportActivitiesToWord');
     Route::get('/download/activity-export-doc/{fileName}',
@@ -300,7 +311,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/delete/{learningActivityActing}', 'ActingActivityController@delete')
                         ->middleware('can:delete,learningActivityActing')
                         ->name('process-acting-delete');
-
                 }); // Actions relating to acting activities
             });
         });
