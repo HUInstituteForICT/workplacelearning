@@ -53,7 +53,8 @@ class FolderController extends Controller
 
         $this->folderRepository->save($folder);
 
-        session()->flash('success', __('folder.succes'));
+        // session()->flash('success', __('folder.succes'));
+        session()->flash('success', __('test'));
 
         return redirect('saved-learning-items');
     }
