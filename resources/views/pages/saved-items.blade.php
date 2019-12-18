@@ -65,16 +65,36 @@ use App\SavedLearningItem
                             <hr>
                             <strong>Voeg items toe aan deze leervraag</strong>
                             @foreach($sli as $item)
-                                @if($item->category === 'tip' &&  $item->folder === $folder->folder_id)
-                                            <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                                                role="alert">
-                                                <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                                                <p> {{$evaluatedTips[$item->item_id]->getTipText()}}</p>
-                                            </div>
+                                @if($item->category === 'tip' && $item->folder === $folder->folder_id)
+                                    <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
+                                        role="alert">
+                                        <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                                        <p> {{$evaluatedTips[$item->item_id]->getTipText()}}</p>
+                                    </div>
                                 @endif
                             @endforeach
                             
                             <hr>
+
+                            <!-- comments -->
+                            <h4>Comments</h4>
+                            @foreach ($allFolderComments as $comment)
+                                @if ($folder->folder_id === $comment->folder_id)
+                                    <div class="panel panel-default">
+                                        <div class="panel-body no-padding">
+                                            <div class="card-header">
+                                                <strong>{{ $comment->author->firstname }} {{ $comment->author->lastname }}</strong>
+                                                <small class="comment-date">{{date('d-m-Y H:i', strtotime($comment->created_at))}}</small>
+                                            </div>
+
+                                            <div class="card-body">
+                                                <p class="card-text">{{ $comment->text }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+
                             {!! Form::open(array(
                             'url' =>  route('folder.shareFolderWithTeacher')))
                             !!}
@@ -82,7 +102,7 @@ use App\SavedLearningItem
                                 <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
                             </div>
                             <div class="form-group">
-                                <textarea placeholder="Licht hier je vraag toe.." name='folder_comment' class="form-control folder_comment"></textarea>
+                                <textarea placeholder="Licht hier je vraag toe.." name='folder_comment' class="form-control folder_comment" required></textarea>
                             </div>
                         </div>
 
@@ -91,7 +111,7 @@ use App\SavedLearningItem
                                 <label>Kies je docent:</label><br>
                                 <select name="teacher">
                                    @foreach($student->getWorkplaceLearningPeriods() as $wplp)
-                                    <option value="{{$wplp->teacher_id}}">{{$wplp->teacher_id}}</option>
+                                    <option value="{{$wplp->teacher_id}}">{{$wplp->teacher->firstname}} {{$wplp->teacher->lastname}}</option>
                                 </select>
                                    @endforeach
                             </div>

@@ -53,8 +53,7 @@ class FolderController extends Controller
 
         $this->folderRepository->save($folder);
 
-        // session()->flash('success', __('folder.succes'));
-        session()->flash('success', __('test'));
+        session()->flash('success', __('folder.folder-created'));
 
         return redirect('saved-learning-items');
     }
@@ -72,6 +71,8 @@ class FolderController extends Controller
         $folder = Folder::find($request['folder_id']);
         $folder->teacher_id = $request['teacher'];
         $folder->save();
+
+        session()->flash('success', __('folder.folder-shared'));
 
         return redirect('saved-learning-items');
     }

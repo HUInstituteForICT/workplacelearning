@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FolderComment extends Model
 {
@@ -21,4 +21,9 @@ class FolderComment extends Model
             'text',
             'folder_id',
         ];
+
+        public function author(): BelongsTo
+        {
+            return $this->belongsTo(Student::class, 'author_id', 'student_id');
+        }
     }
