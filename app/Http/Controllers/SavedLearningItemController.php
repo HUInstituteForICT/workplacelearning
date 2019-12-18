@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Repository\Eloquent\FolderRepository;
+use App\Repository\Eloquent\FolderCommentRepository;
 use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -38,19 +39,23 @@ class SavedLearningItemController extends Controller
      */
     private $folderRepository;
 
+    /**
+     * @var FolderCommentRepository
+     */
+    private $folderCommentRepository;
 
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         SavedLearningItemRepository $savedLearningItemRepository,
         TipRepository $tipRepository,
-        FolderRepository $folderRepository
+        FolderRepository $folderRepository,
+        FolderCommentRepository $folderCommentRepository
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
         $this->folderRepository = $folderRepository;
-        
-
+        $this->folderCommentRepository = $folderCommentRepository;
     }
 
     public function index(TipEvaluator $evaluator)
@@ -59,12 +64,17 @@ class SavedLearningItemController extends Controller
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
         $folders = $this->folderRepository->all();
+        $allFolderComments = $this->folderCommentRepository->all();
 
         $evaluatedTips = [];
         foreach ($tips as $tip) {
             $evaluatedTips[$tip->id] = $evaluator->evaluate($tip);
         }
         
+        // $folderComments = [];
+        // foreach ($allFolderComments as $comment) {
+        //     $folderComments[$comment->folder_id] = $comment;
+        // }
 
         return view('pages.saved-items', [
             'student' => $student,
@@ -72,6 +82,7 @@ class SavedLearningItemController extends Controller
             'tips' => $tips,
             'folders'   =>   $folders,
             'evaluatedTips' => $evaluatedTips,
+            'allFolderComments' => $allFolderComments
         ]);
     }
 
