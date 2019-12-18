@@ -59,13 +59,31 @@ use App\Student;use App\Workplace;
                                                 </div>
                                     @endif
                                 @endforeach
+
+                                <hr>
+                                <h4>Comments</h4>
+                                @foreach ($allFolderComments as $comment)
+                                    @if ($folder->folder_id === $comment->folder_id)
+                                        <div class="panel panel-default">
+                                            <div class="panel-body no-padding">
+                                                <div class="card-header">
+                                                    <strong>{{ $comment->author->firstname }} {{ $comment->author->lastname }}</strong>
+                                                    <small class="comment-date">{{date('d-m-Y H:i', strtotime($comment->created_at))}}</small>
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <p class="card-text">{{ $comment->text }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
                             </div>
-                            <hr>
 
                         <div class="panel-footer">
 
                             {!! Form::open(array(
-                            'url' =>  route('folder.addComment')))
+                            'url' =>  route('folder.addCommentAsTeacher')))
                             !!}
                             <div class="form-group">
                                 <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">

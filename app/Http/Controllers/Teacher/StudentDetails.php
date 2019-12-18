@@ -84,12 +84,16 @@ class StudentDetails extends Controller
             $allTips[$tip->id] = $tip;
         }
 
+        $allFolderComments = $this->folderCommentRepository->all();
+
+
         return view('pages.teacher.student_details')
             ->with('student', $student)
             ->with('workplace', $workplace)
             ->with('folders', $folders)
             ->with('tips', $allTips)
-            ->with('sli', $sli);
+            ->with('sli', $sli)
+            ->with('allFolderComments', $allFolderComments);
 
     }
 }
