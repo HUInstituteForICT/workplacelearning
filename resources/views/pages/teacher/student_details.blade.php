@@ -60,9 +60,21 @@ use App\Student;use App\Workplace;
                                     @endif
                                 @endforeach
                             </div>
+                            <hr>
 
                         <div class="panel-footer">
-                            
+
+                            {!! Form::open(array(
+                            'url' =>  route('folder.addComment')))
+                            !!}
+                            <div class="form-group">
+                                <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
+                            </div>
+                            <div class="form-group">
+                                <textarea placeholder="Reageer hier op de student" name='folder_comment' class="form-control folder_comment"></textarea>
+                            </div>
+                            {{ Form::submit('Verstuur', array('class' => 'btn btn-primary sendComment')) }}
+                            {{ Form::close() }}
                         </div>
                     </div>
                 </div>

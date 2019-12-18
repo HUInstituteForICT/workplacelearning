@@ -205,6 +205,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
     Route::post('/folders/create', 'FolderController@create')->name('folder.create');
     Route::post('/folder/shareFolderWithTeacher', 'FolderController@shareFolderWithTeacher')->name('folder.shareFolderWithTeacher');
+    Route::post('/folder/addComment', 'FolderController@addComment')->name('folder.addComment');
 
     Route::middleware('usernotifications')->group(static function (): void {
         // Actions on the profile of a student
