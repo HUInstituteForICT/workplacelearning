@@ -99,30 +99,42 @@ use App\SavedLearningItem
                                     </div>
                                 @endif
                             @endforeach
-
-                            {!! Form::open(array(
-                            'url' =>  route('folder.shareFolderWithTeacher')))
-                            !!}
-                            <div class="form-group">
-                                <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
-                            </div>
-                            <div class="form-group">
-                                <textarea placeholder="Licht hier je vraag toe.." name='folder_comment' class="form-control folder_comment" required></textarea>
-                            </div>
                         </div>
 
-                        <div class="panel-footer">
-                            <div class="form-group">
-                                <label>Kies je docent:</label><br>
-                                <select name="teacher">
-                                   @foreach($student->getWorkplaceLearningPeriods() as $wplp)
-                                    <option value="{{$wplp->teacher_id}}">{{$wplp->teacher->firstname}} {{$wplp->teacher->lastname}}</option>
-                                </select>
-                                   @endforeach
+                        @if ($folder->isShared())
+                            <div class="panel-footer">
+                                {!! Form::open(array('url' =>  route('folder.addCommentAsTeacher'))) !!}
+                                <div class="form-group">
+                                    <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
+                                </div>
+                                <div class="form-group">
+                                    <textarea placeholder="Reageer hier op de student" name='folder_comment' class="form-control folder_comment"></textarea>
+                                </div>
+                                {{ Form::submit('Verstuur', array('class' => 'btn btn-primary sendComment')) }}
+                                {{ Form::close() }}
                             </div>
-                            {{ Form::submit('Deel', array('class' => 'btn btn-primary shareFolder')) }}
-                            {{ Form::close() }}
-                        </div>
+                        @else
+                            <div class="panel-footer">
+                                {!! Form::open(array('url' =>  route('folder.shareFolderWithTeacher'))) !!}
+                                <div class="form-group">
+                                    <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
+                                </div>
+                                <div class="form-group">
+                                    <textarea placeholder="Licht hier je vraag toe.." name='folder_comment' class="form-control folder_comment" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    
+                                    <label>Kies je docent:</label><br>
+                                    <select name="teacher">
+                                        @foreach($student->getWorkplaceLearningPeriods() as $wplp)
+                                            <option value="{{$wplp->teacher_id}}">{{$wplp->teacher->firstname}} {{$wplp->teacher->lastname}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                {{ Form::submit('Deel', array('class' => 'btn btn-primary shareFolder')) }}
+                                {{ Form::close() }}
+                            </div>
+                        @endif
                         </div>
                     </div>
                     </div>   
