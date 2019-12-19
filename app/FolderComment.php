@@ -4,26 +4,32 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class FolderComment extends Model
 {
+    // Override the table used for the User Model
+    protected $table = 'folder_comments';
 
-       // Disable using created_at and updated_at columns
-   
-       protected $table = 'folder_comments';
-   
-       // Override the primary key column
-   
-       protected $primaryKey = 'folder_comments_id';
+    // Override the primary key column
+    protected $primaryKey = 'folder_comments_id';
 
-        // Default
-        protected $fillable = [
-            'text',
-            'folder_id',
-        ];
+    // Default
+    protected $fillable = [
+        'text',
+        'folder_id',
+        'author_id',
+        'created_at',
+        'created_at',
+    ];
 
-        public function author(): BelongsTo
-        {
-            return $this->belongsTo(Student::class, 'author_id', 'student_id');
-        }
+    public function folder(): HasOne
+    {
+        return $this->hasOne(Folder::class, 'folder_id', 'folder_id');
     }
+
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(Student::class, 'author_id', 'student_id');
+    }
+}

@@ -65,26 +65,28 @@ use App\SavedLearningItem
                         <div class="panel-body">
                             <i>{{date('d-m-Y', strtotime($folder->created_at))}}</i>
                             <br>
-
                             {{ $folder->description }}
-                            <hr>
-                            <strong>Voeg items toe aan deze leervraag</strong>
-                            @foreach($sli as $item)
-                                @if($item->category === 'tip' && $item->folder === $folder->folder_id)
-                                    <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                                        role="alert">
-                                        <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                                        <p> {{$evaluatedTips[$item->item_id]->getTipText()}}</p>
-                                    </div>
-                                @endif
-                            @endforeach
-                            
-                            <hr>
 
-                            <!-- comments -->
-                            <h4>Comments</h4>
-                            @foreach ($allFolderComments as $comment)
-                                @if ($folder->folder_id === $comment->folder_id)
+                            {{-- saved learning items --}}
+                            @if (count($folder->savedLearningItems))
+                                <hr>
+                                <strong>Learning items</strong>
+                                @foreach($folder->savedLearningItems as $item)
+                                    @if($item->category === 'tip')
+                                        <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
+                                            role="alert">
+                                            <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                                            <p> {{$evaluatedTips[$item->item_id]->getTipText()}}</p>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+                            
+                            {{-- comments --}}
+                            @if (count($folder->folderComments))
+                                <hr>
+                                <strong>Comments</strong>
+                                @foreach ($folder->folderComments as $comment)
                                     <div class="panel panel-default">
                                         <div class="panel-body no-padding">
                                             <div class="card-header">
@@ -97,10 +99,11 @@ use App\SavedLearningItem
                                             </div>
                                         </div>
                                     </div>
-                                @endif
-                            @endforeach
+                                @endforeach
+                            @endif
                         </div>
 
+                        {{-- footer --}}
                         @if ($folder->isShared())
                             <div class="panel-footer">
                                 {!! Form::open(array('url' =>  route('folder.addCommentAsTeacher'))) !!}
@@ -125,7 +128,7 @@ use App\SavedLearningItem
                                 <div class="form-group">
                                     
                                     <label>Kies je docent:</label><br>
-                                    <select name="teacher">
+                                    <select name="teacher" class="form-control">
                                         @foreach($student->getWorkplaceLearningPeriods() as $wplp)
                                             <option value="{{$wplp->teacher_id}}">{{$wplp->teacher->firstname}} {{$wplp->teacher->lastname}}</option>
                                         @endforeach
@@ -163,10 +166,10 @@ use App\SavedLearningItem
         </div>
 
         <div class="form-group">
-            <select name="chooseFolder">
-            @foreach($folders as $folder)
-            <option value="{{$folder->folder_id}}">{{$folder->title}}</option>
-            @endforeach
+            <select name="chooseFolder" class="form-control">
+                @foreach($folders as $folder)
+                    <option value="{{$folder->folder_id}}">{{$folder->title}}</option>
+                @endforeach
             </select>
         </div>
 
@@ -197,12 +200,12 @@ use App\SavedLearningItem
             !!}
             <div class="form-group">
                 <label>{{ __('folder.title') }}</label>
-                <input id='folderTitle' type='text' name='folder_title' class="form-control">
+                <input id='folderTitle' type='text' name='folder_title' class="form-control" required>
             </div>
                           
             <div class="form-group">
                 <label>{{ __('folder.description') }}</label>
-                <textarea type='text' name='folder_description' id="folderDescription" class="form-control"></textarea>
+                <textarea type='text' name='folder_description' id="folderDescription" class="form-control" required></textarea>
             </div>
             
 
