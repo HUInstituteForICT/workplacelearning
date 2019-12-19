@@ -60,7 +60,7 @@ class StudentDetails extends Controller
        
     }
 
-    public function __invoke(Student $student)
+    public function __invoke(Student $student, TipEvaluator $evaluator)
     {
         $teacher = $this->currentUserResolver->getCurrentUser();
         
@@ -79,9 +79,9 @@ class StudentDetails extends Controller
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
 
-        $allTips = [];
+        $evaluatedTips = [];
         foreach ($tips as $tip) {
-            $allTips[$tip->id] = $tip;
+            $evaluatedTips[$tip->id] = $evaluator->evaluateForChosenStudent($tip, $student);
         }
 
         $allFolderComments = $this->folderCommentRepository->all();
@@ -91,7 +91,7 @@ class StudentDetails extends Controller
             ->with('student', $student)
             ->with('workplace', $workplace)
             ->with('folders', $folders)
-            ->with('tips', $allTips)
+            ->with('evaluatedTips', $evaluatedTips)
             ->with('sli', $sli)
             ->with('allFolderComments', $allFolderComments);
 

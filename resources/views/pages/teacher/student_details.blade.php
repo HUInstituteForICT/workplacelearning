@@ -55,7 +55,7 @@ use App\Student;use App\Workplace;
                                                 <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                                                     role="alert">
                                                     <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                                                    <p> {{$tips[$item->item_id]->tipText}}</p>
+                                                    <p> {{$evaluatedTips[$item->item_id]->getTipText()}}</p>
                                                 </div>
                                     @endif
                                 @endforeach
