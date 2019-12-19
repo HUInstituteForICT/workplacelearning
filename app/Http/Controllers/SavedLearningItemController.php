@@ -102,6 +102,8 @@ class SavedLearningItemController extends Controller
             $savedLearningItem->category = $category;
             $savedLearningItem->item_id = $item_id;
             $savedLearningItem->student_id = $student->student_id;
+            $savedLearningItem->created_at = date('Y-m-d H:i:s');
+            $savedLearningItem->updated_at = date('Y-m-d H:i:s');
             $this->savedLearningItemRepository->save($savedLearningItem);
 
             session()->flash('success', __('saved_learning_items.saved-succesfully'));
