@@ -22,4 +22,9 @@ class Folder extends Model
             'description',
             'student_id',
         ];
+
+        public function isShared(): bool
+        {
+            return $this->teacher_id !== null;
+        }
     }

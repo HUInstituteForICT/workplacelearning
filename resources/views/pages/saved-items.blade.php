@@ -53,6 +53,11 @@ use App\SavedLearningItem
                         <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
+                            @if ($folder->isShared())
+                                <span class="folder-status label label-info">Gedeeld</span>
+                            @else
+                                <span class="folder-status label label-default">Prive</span>
+                            @endif
                         </h4>
                         </div>
                         <div id="{{$folder->folder_id}}" class="panel-collapse collapse">
