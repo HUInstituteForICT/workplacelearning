@@ -17,10 +17,10 @@
                             ?>
 
                             @if ($itemExists)
-                                <span title="{{ __('saved_learning_items.saved') }}" class="save_tip">
+                                <span title="{{ __('saved_learning_items.saved') }}" class="right">
                                     <img class="save_tip_icon" src="{{ URL::asset('assets/img/opgeslagen_icon_wit.svg', true) }}"/></span>
                             @else
-                                <a title="{{ __('saved_learning_items.save') }}"  class="save_tip" href="{{ route('saved-learning-item-create', ['category' => 'tip', 'item_id' => $evaluatedTip->getTip()->id]) }}">
+                                <a title="{{ __('saved_learning_items.save') }}"  class="right" href="{{ route('saved-learning-item-create', ['category' => 'tip', 'item_id' => $evaluatedTip->getTip()->id]) }}">
                                     <img class="save_tip_icon" src="{{ URL::asset('assets/img/opgeslagen-niet-ingevuld.svg', true) }}"/></a>
                             @endif
 

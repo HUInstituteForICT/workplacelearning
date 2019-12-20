@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
-use App\Repository\Eloquent\FolderRepository;
 use Illuminate\Http\Request;
 use App\Services\CurrentUserResolver;
 use App\SavedLearningItem;
@@ -31,21 +30,14 @@ class SavedLearningItemController extends Controller
      */
     private $tipRepository;
 
-    /**
-     * @var FolderRepository
-     */
-    private $folderRepository;
-
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         SavedLearningItemRepository $savedLearningItemRepository,
-        TipRepository $tipRepository,
-        FolderRepository $folderRepository
+        TipRepository $tipRepository
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
-        $this->folderRepository = $folderRepository;
     }
 
     public function index(TipEvaluator $evaluator)
@@ -53,7 +45,6 @@ class SavedLearningItemController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
-        $folders = $this->folderRepository->all();
 
         $evaluatedTips = [];
         foreach ($tips as $tip) {
@@ -63,7 +54,6 @@ class SavedLearningItemController extends Controller
         return view('pages.saved-items')
             ->with('student', $student)
             ->with('sli', $sli)
-            ->with('folders', $folders)
             ->with('evaluatedTips', $evaluatedTips);
     }
 

@@ -878,11 +878,12 @@ div[class*=' styles_modalCenter'].panel {
   outline: none;
 }
 
-#alert {
+.custom-alert {
   background-color: rgb(215, 235, 255);
   margin-left: 0;
-  color: #004085;
-  border-radius: 5px;
+  color: rgb(0, 64, 133);
+  border-radius: 0 5px 5px 0;
+  border-left: 2px solid rgb(0, 161, 226);
 }
 
 .card-header {
@@ -899,6 +900,10 @@ div[class*=' styles_modalCenter'].panel {
 
 .card-body {
   padding: 1.25rem 1.75rem;
+}
+
+.section {
+  padding: 0 1.75rem;
 }
 
 .no-padding {
@@ -1021,7 +1026,7 @@ div[class*=' styles_modalCenter'].panel {
   border-bottom: 1px solid #ddd;
 }
 
-.save_tip {
+.right {
   float: right;
 }
 
@@ -1067,6 +1072,10 @@ div[class*=' styles_modalCenter'].panel {
   margin: 2px;
 }
 
+.folder-info {
+  margin: 10px 0;
+}
+
 .folder_comment {
   width: 100%; 
   margin: 2px;
@@ -1087,4 +1096,43 @@ div[class*=' styles_modalCenter'].panel {
 .folder-status {
   float: right;
   font-weight: normal;
+}
+
+.sub-title-light {
+  display: inline;
+  color: rgb(146, 146, 146);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.bullet {
+  display: inline;
+  color: rgb(146, 146, 146);
+  margin: 0 3px;
+}
+
+.comment-author {
+  color: rgba(41, 41, 41, 0.8);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.comment {
+  margin: 10px 0;
+  color: rgba(0, 0, 0, 0.54);
+  padding: 1.25rem 1.75rem;
+  border-radius: 5px;
+}
+
+.teacher-comment {
+  background-color: rgb(213, 230, 246);
+}
+
+.student-comment {
+  background-color: rgb(252, 252, 252);
+  border: 1px solid rgb(237, 237, 237);
+}
+
+.teacher {
+  color: #1976d2;
 }

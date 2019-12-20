@@ -47,7 +47,7 @@ use App\SavedLearningItem
             @card
                 <h2 class="maps">{{ __('folder.folders') }}</h2> <a data-target="#addFolderModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-collapse" aria-hidden="true"></span></a>
 
-                @foreach($folders as $folder)
+                @foreach($student->folders as $folder)
                 <div class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -58,19 +58,26 @@ use App\SavedLearningItem
                             @else
                                 <span class="folder-status label label-default">Prive</span>
                             @endif
+                            <div class="clearfix"></div>
+                            <p class="sub-title-light">{{ count($folder->savedLearningItems)}} items</p>
+                            <div class="bullet">&#8226;</div>
+                            <p class="sub-title-light">{{ count($folder->folderComments)}} comments</p>
                         </h4>
                         </div>
                         <div id="{{$folder->folder_id}}" class="panel-collapse collapse">
                         
-                        <div class="panel-body">
-                            <i>{{date('d-m-Y', strtotime($folder->created_at))}}</i>
+                        {{-- folder basic info --}}
+                        <section class="section folder-info">
+                            <p class="sub-title-light">Created on {{ $folder->created_at->toFormattedDateString() }}</p>
                             <br>
                             {{ $folder->description }}
+                        </section>
 
-                            {{-- saved learning items --}}
-                            @if (count($folder->savedLearningItems))
-                                <hr>
-                                <strong>Learning items</strong>
+                        {{-- saved learning items --}}
+                        @if (count($folder->savedLearningItems))
+                            <hr>
+                            <section class="section">
+                                <h5>Toegevoegde items <span class="badge">{{ count($folder->savedLearningItems)}}</span></h5>
                                 @foreach($folder->savedLearningItems as $item)
                                     @if($item->category === 'tip')
                                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
@@ -80,28 +87,33 @@ use App\SavedLearningItem
                                         </div>
                                     @endif
                                 @endforeach
-                            @endif
-                            
-                            {{-- comments --}}
-                            @if (count($folder->folderComments))
-                                <hr>
-                                <strong>Comments</strong>
+                            </section>
+                        @endif
+                        
+                        {{-- comments --}}
+                        @if (count($folder->folderComments))
+                            <hr>
+                            <section class="section">
+                                <h5>Comments <span class="badge">{{ count($folder->folderComments)}}</span></h5>
                                 @foreach ($folder->folderComments as $comment)
-                                    <div class="panel panel-default">
-                                        <div class="panel-body no-padding">
-                                            <div class="card-header">
-                                                <strong>{{ $comment->author->firstname }} {{ $comment->author->lastname }}</strong>
-                                                <small class="comment-date">{{date('d-m-Y H:i', strtotime($comment->created_at))}}</small>
-                                            </div>
-
-                                            <div class="card-body">
-                                                <p class="card-text">{{ $comment->text }}</p>
-                                            </div>
+                                    @if ($comment->author->isStudent())
+                                        <div class="comment student-comment">
+                                            <p class="sub-title-light"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{date('H:i', strtotime($comment->created_at))}}</p>
+                                            <p class="comment-date sub-title-light">{{ $comment->created_at->toFormattedDateString() }}</p>
+                                            <p class="comment-author">{{ $comment->author->firstname }} {{ $comment->author->lastname }}</p>
+                                            <p class="card-text">{{ $comment->text }}</p>
                                         </div>
-                                    </div>
+                                    @else
+                                        <div class="comment teacher-comment">
+                                            <p class="sub-title-light"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{date('H:i', strtotime($comment->created_at))}}</p>
+                                            <p class="comment-date sub-title-light">{{ $comment->created_at->toFormattedDateString() }}</p>
+                                            <p class="comment-author teacher">{{ $comment->author->firstname }} {{ $comment->author->lastname }}</p>
+                                            <p class="card-text">{{ $comment->text }}</p>
+                                        </div>
+                                    @endif
                                 @endforeach
-                            @endif
-                        </div>
+                            </section>
+                        @endif
 
                         {{-- footer --}}
                         @if ($folder->isShared())
@@ -113,10 +125,11 @@ use App\SavedLearningItem
                                 <div class="form-group">
                                     <textarea placeholder="Reageer hier op de student" name='folder_comment' class="form-control folder_comment"></textarea>
                                 </div>
-                                {{ Form::submit('Verstuur', array('class' => 'btn btn-primary sendComment')) }}
+                                {{ Form::submit('Versturen', array('class' => 'right btn btn-primary sendComment')) }}
                                 {{ Form::close() }}
+                                <div class="clearfix"></div>
                             </div>
-                        @else
+                        @elseif (!$folder->isShared() && $student->getCurrentWorkplaceLearningPeriod()->hasTeacher())
                             <div class="panel-footer">
                                 {!! Form::open(array('url' =>  route('folder.shareFolderWithTeacher'))) !!}
                                 <div class="form-group">
@@ -134,8 +147,14 @@ use App\SavedLearningItem
                                         @endforeach
                                     </select>
                                 </div>
-                                {{ Form::submit('Deel', array('class' => 'btn btn-primary shareFolder')) }}
+                                {{ Form::submit('Delen', array('class' => 'right btn btn-primary shareFolder')) }}
                                 {{ Form::close() }}
+                                <div class="clearfix"></div>
+                            </div>
+                        @else
+                            <div class="panel-footer">
+                                <div class="custom-alert alert alert-info" role="alert">Je kunt deze map alleen delen als je aan een docent bent toegewezen.</div>
+                                {{-- <div id="alert" class="alert alert-info" role="alert">{{ __('general.no-student') }}</div> --}}
                             </div>
                         @endif
                         </div>
@@ -167,7 +186,7 @@ use App\SavedLearningItem
 
         <div class="form-group">
             <select name="chooseFolder" class="form-control">
-                @foreach($folders as $folder)
+                @foreach($student->folders as $folder)
                     <option value="{{$folder->folder_id}}">{{$folder->title}}</option>
                 @endforeach
             </select>

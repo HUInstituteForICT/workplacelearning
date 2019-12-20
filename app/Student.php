@@ -216,6 +216,11 @@ class Student extends Authenticatable implements MustVerifyEmail
         return $this->userSettings[$label];
     }
 
+    public function folders(): HasMany
+    {
+        return $this->hasMany(Folder::class, 'student_id', 'student_id');
+    }
+
     public function usersettings(): HasMany
     {
         return $this->hasMany(UserSetting::class, 'student_id', 'student_id');
