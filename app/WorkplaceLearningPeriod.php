@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\WorkplaceLearningPeriod.
@@ -97,9 +98,18 @@ class WorkplaceLearningPeriod extends Model
         return $this->belongsTo(Student::class, 'student_id', 'student_id');
     }
 
-    public function teacher(): BelongsTo
+    public function hasTeacher(): bool
     {
-        return $this->belongsTo(Student::class, 'teacher_id', 'student_id');
+        return $this->teacher_id !== null;
+    }
+
+    public function teacher(): HasOne
+    {
+        if ($this->hasTeacher()) {
+            return $this->HasOne(Student::class, 'student_id', 'teacher_id');
+        }
+
+        throw new \RuntimeException('This internship is not yet linked to a teacher.');
     }
 
     public function workplace(): BelongsTo

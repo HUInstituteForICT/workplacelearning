@@ -78,17 +78,23 @@ class FolderController extends Controller
     }
 
     public function addCommentAsTeacher(Request $request) {
+        $currentUser = $this->currentUserResolver->getCurrentUser();
         
-        $author = $this->currentUserResolver->getCurrentUser();
         $folder = Folder::find($request['folder_id']);
         $student_id = $folder->student_id;
 
         $folderComment = new FolderComment();
         $folderComment->text = $request['folder_comment'];
         $folderComment->folder_id = $request['folder_id'];
-        $folderComment->author_id = $author->student_id;
+        $folderComment->author_id = $currentUser->student_id;
         $this->folderCommentRepository->save($folderComment);
 
-        return redirect(route('teacher-student-details', ['student' => $student_id]));
+        if ($currentUser->isTeacher()) {
+            $url = route('teacher-student-details', ['student' => $student_id]);
+        } elseif ($currentUser->isStudent()) {
+            $url = route('saved-learning-items');
+        }
+
+        return redirect($url);
     }
 }
