@@ -27,9 +27,8 @@ use App\SavedLearningItem
                     <br>
                     @foreach($sli as $item)
                     @if($item->category === 'tip' && $item->folder === null)
-                        <h4>{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                         @card
-                        <h5>{{ __('tips.personal-tip') }}</h5>
+                        <h4>{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                              role="alert">
                              <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>

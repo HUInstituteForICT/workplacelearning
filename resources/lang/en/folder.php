@@ -8,4 +8,9 @@ return array(
     'title' => 'Title',
     'description' => 'Description',
     'folder-shared' => 'Folder is shared.',
+    'nothing-shared'  => "This student hasn't shared anything with you yet.",
+    "items" => "items",
+    "comments" => "comments",
+    "created-on" => "Created on",
+    "added-items" => "Added items",
 );
