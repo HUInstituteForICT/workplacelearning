@@ -23,7 +23,7 @@ use App\SavedLearningItem
         <div class="row">
             <div class="col-md-6">
                 @card
-                    <h2 class='display-inline'>{{ __('saved_learning_items.timeline') }}</h2>
+                    <h2 class='maps'>{{ __('saved_learning_items.timeline') }}</h2>
                     <br>
                     @foreach($sli as $item)
                     @if($item->category === 'tip' && $item->folder === null)
@@ -45,7 +45,7 @@ use App\SavedLearningItem
             </div>
             <div class="col-md-6">
             @card
-                <h2 class="display-inline">{{ __('folder.folders') }}</h2> <a data-target="#addFolderModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-collapse" aria-hidden="true"></span></a>
+                <h2 class="maps">{{ __('folder.folders') }}</h2> <a data-target="#addFolderModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-collapse" aria-hidden="true"></span></a>
 
                 @foreach($student->folders as $folder)
                 <div class="panel-group">
@@ -93,7 +93,7 @@ use App\SavedLearningItem
                         {{-- comments --}}
                         @if (count($folder->folderComments))
                             <hr>
-                            <section class="section">
+                            <section class="section comment-section">
                                 <h5>Comments <span class="badge">{{ count($folder->folderComments)}}</span></h5>
                                 @foreach ($folder->folderComments as $comment)
                                     @if ($comment->author->isStudent())
@@ -118,7 +118,7 @@ use App\SavedLearningItem
                         {{-- footer --}}
                         @if ($folder->isShared())
                             <div class="panel-footer">
-                                {!! Form::open(array('url' =>  route('folder.addCommentAsTeacher'))) !!}
+                                {!! Form::open(array('url' =>  route('folder.addComment'))) !!}
                                 <div class="form-group">
                                     <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
                                 </div>

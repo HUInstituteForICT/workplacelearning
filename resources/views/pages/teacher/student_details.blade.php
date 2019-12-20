@@ -73,60 +73,79 @@ use App\Student;use App\Workplace;
         <!-- Saved Learning Items -->
         <div class="col-md-8">
             @card
-                @if(count($folders) === 0)
+                @if(count($student->folders) === 0)
                     <div class="alert alert-error">
                         Deze student heeft nog niets met u gedeeld
                     </div>
                 @endif
 
-                @foreach($folders as $folder)
+                @foreach($student->folders as $folder)
                 <div class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
                             <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
+                            <div class="clearfix"></div>
+                            <p class="sub-title-light">{{ count($folder->savedLearningItems)}} items</p>
+                            <div class="bullet">&#8226;</div>
+                            <p class="sub-title-light">{{ count($folder->folderComments)}} comments</p>    
                             </h4>
                         </div>
                         <div id="{{$folder->folder_id}}" class="panel-collapse collapse">
+
+                        {{-- folder basic info --}}
+                        <section class="section folder-info">
+                            <p class="sub-title-light">Created on {{ $folder->created_at->toFormattedDateString() }}</p>
+                            <br>
+                            {{ $folder->description }}
+                        </section>
                         
-                            <div class="panel-body">
-                                {{$folder->description}}
-                                <hr>
-                                <strong>Toegevoegde items:</strong>
-                                @foreach($sli as $item)
-                                    @if($item->category === 'tip' &&  $item->folder === $folder->folder_id)
-                                                <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                                                    role="alert">
-                                                    <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                                                    <p> {{$evaluatedTips[$item->item_id]->getTipText()}}</p>
-                                                </div>
-                                    @endif
-                                @endforeach
-
-                                <hr>
-                                <h4>Comments</h4>
-                                @foreach ($allFolderComments as $comment)
-                                    @if ($folder->folder_id === $comment->folder_id)
-                                        <div class="panel panel-default">
-                                            <div class="panel-body no-padding">
-                                                <div class="card-header">
-                                                    <strong>{{ $comment->author->firstname }} {{ $comment->author->lastname }}</strong>
-                                                    <small class="comment-date">{{date('d-m-Y H:i', strtotime($comment->created_at))}}</small>
-                                                </div>
-
-                                                <div class="card-body">
-                                                    <p class="card-text">{{ $comment->text }}</p>
-                                                </div>
-                                            </div>
+                        {{-- saved learning items --}}
+                        @if (count($folder->savedLearningItems))
+                            <hr>
+                            <section class="section">
+                                <h5>Toegevoegde items <span class="badge">{{ count($folder->savedLearningItems)}}</span></h5>
+                                @foreach($folder->savedLearningItems as $item)
+                                    @if($item->category === 'tip')
+                                        <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
+                                            role="alert">
+                                            <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                                            <p> {{$evaluatedTips[$item->item_id]->getTipText()}}</p>
                                         </div>
                                     @endif
                                 @endforeach
-                            </div>
+                            </section>
+                        @endif
+                        
+                        {{-- comments --}}
+                        @if (count($folder->folderComments))
+                            <hr>
+                            <section class="section comment-section">
+                                <h5>Comments <span class="badge">{{ count($folder->folderComments)}}</span></h5>
+                                @foreach ($folder->folderComments as $comment)
+                                    @if ($comment->author->isStudent())
+                                        <div class="comment student-comment">
+                                            <p class="sub-title-light"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{date('H:i', strtotime($comment->created_at))}}</p>
+                                            <p class="comment-date sub-title-light">{{ $comment->created_at->toFormattedDateString() }}</p>
+                                            <p class="comment-author">{{ $comment->author->firstname }} {{ $comment->author->lastname }}</p>
+                                            <p class="card-text">{{ $comment->text }}</p>
+                                        </div>
+                                    @else
+                                        <div class="comment teacher-comment">
+                                            <p class="sub-title-light"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{date('H:i', strtotime($comment->created_at))}}</p>
+                                            <p class="comment-date sub-title-light">{{ $comment->created_at->toFormattedDateString() }}</p>
+                                            <p class="comment-author teacher">{{ $comment->author->firstname }} {{ $comment->author->lastname }}</p>
+                                            <p class="card-text">{{ $comment->text }}</p>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </section>
+                        @endif
 
                         <div class="panel-footer">
 
                             {!! Form::open(array(
-                            'url' =>  route('folder.addCommentAsTeacher')))
+                            'url' =>  route('folder.addComment')))
                             !!}
                             <div class="form-group">
                                 <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">

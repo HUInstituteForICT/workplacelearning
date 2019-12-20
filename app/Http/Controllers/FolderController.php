@@ -77,7 +77,7 @@ class FolderController extends Controller
         return redirect('saved-learning-items');
     }
 
-    public function addCommentAsTeacher(Request $request) {
+    public function addComment(Request $request) {
         $currentUser = $this->currentUserResolver->getCurrentUser();
         
         $folder = Folder::find($request['folder_id']);
