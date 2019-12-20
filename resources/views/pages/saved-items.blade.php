@@ -23,7 +23,7 @@ use App\SavedLearningItem
         <div class="row">
             <div class="col-md-6">
                 @card
-                    <h2 class='maps'>{{ __('saved_learning_items.timeline') }}</h2>
+                    <h2 class='display-inline'>{{ __('saved_learning_items.timeline') }}</h2>
                     <br>
                     @foreach($sli as $item)
                     @if($item->category === 'tip' && $item->folder === null)
@@ -45,7 +45,7 @@ use App\SavedLearningItem
             </div>
             <div class="col-md-6">
             @card
-                <h2 class="maps">{{ __('folder.folders') }}</h2> <a data-target="#addFolderModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-collapse" aria-hidden="true"></span></a>
+                <h2 class="display-inline">{{ __('folder.folders') }}</h2> <a data-target="#addFolderModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-collapse" aria-hidden="true"></span></a>
 
                 @foreach($folders as $folder)
                 <div class="panel-group">

@@ -17,6 +17,7 @@ use App\Repository\Eloquent\FolderCommentRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Tips\Services\TipEvaluator;
+use App\Analysis\Producing\ProducingAnalysisCollector;
 
 class StudentDetails extends Controller
 {
@@ -60,7 +61,7 @@ class StudentDetails extends Controller
        
     }
 
-    public function __invoke(Student $student, TipEvaluator $evaluator)
+    public function __invoke(Student $student, TipEvaluator $evaluator, ProducingAnalysisCollector $producingAnalysisCollector)
     {
         $teacher = $this->currentUserResolver->getCurrentUser();
         
@@ -85,6 +86,7 @@ class StudentDetails extends Controller
         }
 
         $allFolderComments = $this->folderCommentRepository->all();
+        $period = $student->getCurrentWorkplaceLearningPeriod();
 
 
         return view('pages.teacher.student_details')
@@ -93,7 +95,11 @@ class StudentDetails extends Controller
             ->with('folders', $folders)
             ->with('evaluatedTips', $evaluatedTips)
             ->with('sli', $sli)
-            ->with('allFolderComments', $allFolderComments);
+            ->with('allFolderComments', $allFolderComments)
+            ->with('numdays', $producingAnalysisCollector->getFullWorkingDaysOfStudent($student))
+            ->with('period', $period);
+        
+
 
     }
 }

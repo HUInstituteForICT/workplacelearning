@@ -16,14 +16,57 @@ use App\Student;use App\Workplace;
         <!-- Profile Info -->
         <div class="col-md-4">
             @card
-                <h1>{{ $student->firstname }} {{ $student->lastname }} </p>
-                <h2>{{ $workplace->wp_name }}</h2>
-                <br>
-                <p>{{ $workplace->workplaceLearningPeriod->startdate->toFormattedDateString()}} - {{ $workplace->workplaceLearningPeriod->enddate->toFormattedDateString() }}</p>
-                <br>
-                <strong>Contact informatie</strong>
-                <p>{{ $student->email }}</p>
-                <p>{{ $student->phonenr }}</p>
+            <!-- Icon & name -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <span class="glyphicon glyphicon-user user-icon" aria-hidden="true"></span>
+                    </div>
+                    <div class="col-md-8">
+                        <h1>{{ $student->firstname }} {{ $student->lastname }} </p>
+                        <h3>{{ $workplace->wp_name }}</h3>
+                    </div>
+                </div>
+                <hr>
+
+            <!-- Period -->
+                <div class="row">
+                    <div class="col-md-2">
+                        <span class="glyphicon glyphicon-calendar calendar-icon" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="col-md-8">
+                        <p>{{date('d-m-Y', strtotime($workplace->workplaceLearningPeriod->startdate))}}   -   {{date('d-m-Y', strtotime($workplace->workplaceLearningPeriod->enddate))}}</p>
+                        <!-- Progress-bar -->
+                        <div class="progress">
+                                <!-- $numdays is number of valid full working days, aantaluren is the goal number of internship *days* -->
+                                <div class="progress-bar progress-bar-success" role="progressbar"
+                                    style="width:{{ min(round(($numdays/$period->nrofdays)*100,1),100) }}%">
+                                    @if($numdays >= ($period->nrofdays / 2))
+                                        {{ $numdays.' / '.($period->nrofdays) }} {{ __('elements.analysis.days') }}
+                                        ( {{ round(($numdays/$period->nrofdays)*100,1) }}%)
+                                    @endif
+                                </div>
+
+                                <div class="progress-bar" role="progressbar"
+                                    style="width:{{ min((100-round(($numdays/$period->nrofdays)*100,1)), 100) }}%">
+                                    @if($numdays < ($period->nrofdays / 2))
+                                        {{ $numdays.' / '.$period->nrofdays }} {{ __('elements.analysis.days') }}
+                                        ( {{ round(($numdays/$period->nrofdays)*100,1) }}
+                                        %)
+                                    @endif
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+            <!-- Contact information -->
+            <h4>Contact informatie</h4>
+            <h4 class="label-information">Email</h4>
+            <p>{{ $student->email }}</p>
+            <h4 class="label-information">Mobiel</h4>
+            <p>{{ $student->phonenr }}</p>
+                
             @endcard
         </div>
 

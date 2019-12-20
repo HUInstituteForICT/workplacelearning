@@ -815,7 +815,7 @@ div[class*=' styles_modalCenter'].panel {
   background-color: white;
   text-align: left;
 }
-.maps {
+.display-inline {
   display: inline;
 }
 .add-collapse {
@@ -850,4 +850,13 @@ div[class*=' styles_modalCenter'].panel {
 }
 .comment-date {
   float: right;
+}
+.user-icon {
+  font-size: 100px;
+}
+.calendar-icon {
+  font-size: 30px;
+}
+.label-information {
+  color: #CFCFCF;
 }
