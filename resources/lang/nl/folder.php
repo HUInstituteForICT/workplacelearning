@@ -8,4 +8,12 @@ return array(
     'title' => 'Titel',
     'description' => 'Omschrijving',
     'folder-shared' => 'Map is gedeeld.',
+    'items' => 'items',
+    'comments' => 'opmerkingen',
+    'created-on' => 'Aangemaakt op',
+    'added-items' => 'Toegevoegde items',
+    'choose-teacher' => 'Kies je docent',
+    'no-teacher' => 'Je kunt deze map alleen delen als je aan een docent bent toegewezen.',
+    'add-comment-teacher' => 'Laat hier je reactie achter..',
+    'question' => 'Licht hier je vraag toe..',
 );

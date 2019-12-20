@@ -8,4 +8,12 @@ return array(
     'title' => 'Title',
     'description' => 'Description',
     'folder-shared' => 'Folder is shared.',
+    'items' => 'items',
+    'comments' => 'comments',
+    'created-on' => 'Created on',
+    'added-items' => 'Added items',
+    'choose-teacher' => 'Choose teacher',
+    'no-teacher' => 'You can only share this folder if you are assigned to a teacher.',
+    'add-comment-teacher' => 'Leave your comment here..',
+    'question' => 'Explain your question here ..',
 );
