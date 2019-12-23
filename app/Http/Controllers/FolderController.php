@@ -61,6 +61,11 @@ class FolderController extends Controller
     public function shareFolderWithTeacher(Request $request)
     {
         $student = $this->currentUserResolver->getCurrentUser();
+        $folder = Folder::find($request['folder_id']);
+
+        if (!$student->is($folder->student)) {
+            return redirect('saved-learning-items')->with('error', __('folder.share-permission'));
+        }
 
         $folderComment = new FolderComment();
         $folderComment->text = $request['folder_comment'];
@@ -68,12 +73,11 @@ class FolderController extends Controller
         $folderComment->author_id = $student->student_id;
         $this->folderCommentRepository->save($folderComment);
 
-        $folder = Folder::find($request['folder_id']);
         $folder->teacher_id = $request['teacher'];
         $folder->save();
 
         session()->flash('success', __('folder.folder-shared'));
-
+        
         return redirect('saved-learning-items');
     }
 

@@ -124,7 +124,7 @@ use App\SavedLearningItem
                                 <div class="form-group">
                                     <textarea placeholder="{{ __('folder.add-comment-teacher') }}" name='folder_comment' class="form-control folder_comment"></textarea>
                                 </div>
-                                {{ Form::submit('Versturen', array('class' => 'right btn btn-primary sendComment')) }}
+                                {{ Form::submit(__('folder.send'), array('class' => 'right btn btn-primary sendComment')) }}
                                 {{ Form::close() }}
                                 <div class="clearfix"></div>
                             </div>
@@ -146,7 +146,7 @@ use App\SavedLearningItem
                                         @endforeach
                                     </select>
                                 </div>
-                                {{ Form::submit('Delen', array('class' => 'right btn btn-primary shareFolder')) }}
+                                {{ Form::submit(__('folder.share'), array('class' => 'right btn btn-primary shareFolder')) }}
                                 {{ Form::close() }}
                                 <div class="clearfix"></div>
                             </div>

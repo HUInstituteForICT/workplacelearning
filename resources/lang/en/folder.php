@@ -16,4 +16,7 @@ return array(
     'no-teacher' => 'You can only share this folder if you are assigned to a teacher.',
     'add-comment-teacher' => 'Leave your comment here..',
     'question' => 'Explain your question here ..',
+    'share-permission' => 'You do not have permission to share this folder.',
+    'share' => 'Share',
+    'send' => 'Send',
 );
