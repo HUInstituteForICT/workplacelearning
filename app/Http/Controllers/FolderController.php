@@ -68,7 +68,7 @@ class FolderController extends Controller
         $folderComment->author_id = $student->student_id;
         $this->folderCommentRepository->save($folderComment);
 
-        $folder = Folder::find($request['folder_id']);
+        $folder = $this->folderRepository->findById($request['folder_id']);
         $folder->teacher_id = $request['teacher'];
         $folder->save();
 
@@ -80,7 +80,7 @@ class FolderController extends Controller
     public function addComment(Request $request) {
         $currentUser = $this->currentUserResolver->getCurrentUser();
         
-        $folder = Folder::find($request['folder_id']);
+        $folder = $this->folderRepository->findById($request['folder_id']);
         $student_id = $folder->student_id;
 
         $folderComment = new FolderComment();
