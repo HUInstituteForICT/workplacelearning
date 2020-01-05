@@ -9,8 +9,6 @@ use App\Services\CurrentUserResolver;
 use App\Student;
 use App\WorkplaceLearningPeriod;
 use App\Folder;
-use App\FolderComment;
-use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
 use App\Repository\Eloquent\TipRepository;
 use App\Tips\Services\TipEvaluator;
@@ -54,14 +52,19 @@ class StudentDetails extends Controller
         $tips = $this->tipRepository->all();
         $learningperiod = $student->getCurrentWorkplaceLearningPeriod();
         
+        $sharedFolders = $student->folders->filter(function (Folder $folder) {
+            return $folder->isShared();
+        });
+        
         $evaluatedTips = [];
         foreach ($tips as $tip) {
             $evaluatedTips[$tip->id] = $evaluator->evaluateForChosenStudent($tip, $student);
         }
-        
+
         return view('pages.teacher.student_details')
             ->with('student', $student)
             ->with('workplace', $workplace)
+            ->with('sharedFolders', $sharedFolders)
             ->with('evaluatedTips', $evaluatedTips)
             ->with('numdays', $producingAnalysisCollector->getFullWorkingDaysOfStudent($student))
             ->with('learningperiod', $learningperiod);
