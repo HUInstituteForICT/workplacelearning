@@ -43,6 +43,7 @@ class TipEvaluator
 
     public function evaluateForChosenStudent(Tip $tip, Student $student): EvaluatedTipInterface
     {
+        $learningPeriod = $student->getCurrentWorkplaceLearningPeriod();
         $evaluatedTip = new EvaluatedTip($tip);
 
         if (!$tip->showInAnalysis) {
@@ -50,7 +51,7 @@ class TipEvaluator
         }
 
         // Visit all types of triggers so they can do their stuff
-        $this->statisticTipEvaluator->evaluate($evaluatedTip);
+        $this->statisticTipEvaluator->evaluateForWplp($evaluatedTip, $learningPeriod);
         $this->momentTipEvaluator->evaluateForChosenStudent($evaluatedTip, $student);
 
         return $evaluatedTip;
