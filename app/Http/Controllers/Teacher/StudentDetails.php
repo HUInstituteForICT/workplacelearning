@@ -12,9 +12,6 @@ use App\Folder;
 use App\FolderComment;
 use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
-use App\Repository\Eloquent\FolderRepository;
-use App\Repository\Eloquent\FolderCommentRepository;
-use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Tips\Services\TipEvaluator;
 use App\Analysis\Producing\ProducingAnalysisCollector;
@@ -26,21 +23,6 @@ class StudentDetails extends Controller
      */
     private $currentUserResolver;
 
-    /**
-     * @var FolderRepository
-     */
-    private $folderRepository;
-
-    /**
-     * @var FolderCommentRepository
-     */
-    private $folderCommentRepository;
-
-    /**
-     * @var SavedLearningItemRepository
-     */
-    private $savedLearningItemRepository;
-
      /**
      * @var TipEvaluator
      */
@@ -48,17 +30,10 @@ class StudentDetails extends Controller
 
     public function __construct(
         CurrentUserResolver $currentUserResolver,
-        SavedLearningItemRepository $savedLearningItemRepository,
-        TipRepository $tipRepository,
-        FolderRepository $folderRepository,
-        FolderCommentRepository $folderCommentRepository)
+        TipRepository $tipRepository)
     {
         $this->currentUserResolver = $currentUserResolver;
-        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
-        $this->folderRepository = $folderRepository;
-        $this->folderCommentRepository = $folderCommentRepository;
-       
     }
 
     public function __invoke(Student $student, TipEvaluator $evaluator, ProducingAnalysisCollector $producingAnalysisCollector)
@@ -76,30 +51,19 @@ class StudentDetails extends Controller
         
         $currentWorkplace = $student->getCurrentWorkplace();
         $workplace = in_array($currentWorkplace, $workplaces) ? $currentWorkplace : reset($workplaces);
-        $folders = $this->folderRepository->findByTeacherId($teacher);
         $tips = $this->tipRepository->all();
-        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
-
+        $learningperiod = $student->getCurrentWorkplaceLearningPeriod();
+        
         $evaluatedTips = [];
         foreach ($tips as $tip) {
             $evaluatedTips[$tip->id] = $evaluator->evaluateForChosenStudent($tip, $student);
         }
-
-        $allFolderComments = $this->folderCommentRepository->all();
-        $period = $student->getCurrentWorkplaceLearningPeriod();
-
-
+        
         return view('pages.teacher.student_details')
             ->with('student', $student)
             ->with('workplace', $workplace)
-            ->with('folders', $folders)
             ->with('evaluatedTips', $evaluatedTips)
-            ->with('sli', $sli)
-            ->with('allFolderComments', $allFolderComments)
             ->with('numdays', $producingAnalysisCollector->getFullWorkingDaysOfStudent($student))
-            ->with('period', $period);
-        
-
-
+            ->with('learningperiod', $learningperiod);
     }
 }

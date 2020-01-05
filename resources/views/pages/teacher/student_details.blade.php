@@ -40,18 +40,18 @@ use App\Student;use App\Workplace;
                         <div class="progress">
                                 <!-- $numdays is number of valid full working days, aantaluren is the goal number of internship *days* -->
                                 <div class="progress-bar progress-bar-success" role="progressbar"
-                                    style="width:{{ min(round(($numdays/$period->nrofdays)*100,1),100) }}%">
-                                    @if($numdays >= ($period->nrofdays / 2))
-                                        {{ $numdays.' / '.($period->nrofdays) }} {{ __('elements.analysis.days') }}
-                                        ( {{ round(($numdays/$period->nrofdays)*100,1) }}%)
+                                    style="width:{{ min(round(($numdays/$learningperiod->nrofdays)*100,1),100) }}%">
+                                    @if($numdays >= ($learningperiod->nrofdays / 2))
+                                        {{ $numdays.' / '.($learningperiod->nrofdays) }} {{ __('elements.analysis.days') }}
+                                        ( {{ round(($numdays/$learningperiod->nrofdays)*100,1) }}%)
                                     @endif
                                 </div>
 
                                 <div class="progress-bar" role="progressbar"
-                                    style="width:{{ min((100-round(($numdays/$period->nrofdays)*100,1)), 100) }}%">
-                                    @if($numdays < ($period->nrofdays / 2))
-                                        {{ $numdays.' / '.$period->nrofdays }} {{ __('elements.analysis.days') }}
-                                        ( {{ round(($numdays/$period->nrofdays)*100,1) }}
+                                    style="width:{{ min((100-round(($numdays/$learningperiod->nrofdays)*100,1)), 100) }}%">
+                                    @if($numdays < ($learningperiod->nrofdays / 2))
+                                        {{ $numdays.' / '.$learningperiod->nrofdays }} {{ __('elements.analysis.days') }}
+                                        ( {{ round(($numdays/$learningperiod->nrofdays)*100,1) }}
                                         %)
                                     @endif
                                 </div>
