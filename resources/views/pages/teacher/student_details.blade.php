@@ -61,7 +61,7 @@ use App\Student;use App\Workplace;
                 <hr>
 
             <!-- Contact information -->
-            <h4>Contact informatie</h4>
+            <h4>{{ __('dashboard.contact-informatie') }}</h4>
             <h4 class="label-information">{{ __('elements.registration.labels.email') }}</h4>
             <p>{{ $student->email }}</p>
             <h4 class="label-information">{{ __('elements.registration.labels.phone') }}</h4>
