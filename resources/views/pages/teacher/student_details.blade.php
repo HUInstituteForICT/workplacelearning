@@ -83,7 +83,7 @@ use App\Student;use App\Workplace;
                         <div class="panel-footer">
 
                             {!! Form::open(array(
-                            'url' =>  route('folder.addCommentAsTeacher')))
+                            'url' =>  route('folder.addComment')))
                             !!}
                             <div class="form-group">
                                 <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
