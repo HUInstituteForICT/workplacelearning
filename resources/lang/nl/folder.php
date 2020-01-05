@@ -17,6 +17,7 @@ return array(
     'add-comment-teacher' => 'Laat hier je reactie achter..',
     'question' => 'Licht hier je vraag toe..',
     'share-permission' => 'Je hebt geen rechten om deze map te delen.',
-    'share' => 'Delen',
-    'send' => 'Versturen',
+    'share' => 'Deel',
+    'shared' => 'Gedeeld',
+    'prive' => 'Privé',
 );

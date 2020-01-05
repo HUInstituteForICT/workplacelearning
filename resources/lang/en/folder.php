@@ -18,5 +18,6 @@ return array(
     'question' => 'Explain your question here ..',
     'share-permission' => 'You do not have permission to share this folder.',
     'share' => 'Share',
-    'send' => 'Send',
+    'shared' => 'Shared',
+    'prive' => 'Prive',
 );

@@ -53,9 +53,9 @@ use App\SavedLearningItem
                         <h4 class="panel-title">
                             <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
                             @if ($folder->isShared())
-                                <span class="folder-status label label-info">Gedeeld</span>
+                                <span class="folder-status label label-info">{{ __('folder.shared') }}</span>
                             @else
-                                <span class="folder-status label label-default">Prive</span>
+                                <span class="folder-status label label-default">{{ __('folder.prive') }}</span>
                             @endif
                             <div class="clearfix"></div>
                             <p class="sub-title-light">{{ count($folder->savedLearningItems)}} {{ __('folder.items') }}</p>
@@ -124,7 +124,7 @@ use App\SavedLearningItem
                                 <div class="form-group">
                                     <textarea placeholder="{{ __('folder.add-comment-teacher') }}" name='folder_comment' class="form-control folder_comment"></textarea>
                                 </div>
-                                {{ Form::submit(__('folder.send'), array('class' => 'right btn btn-primary sendComment')) }}
+                                {{ Form::submit(__('general.send'), array('class' => 'right btn btn-primary sendComment')) }}
                                 {{ Form::close() }}
                                 <div class="clearfix"></div>
                             </div>
@@ -191,7 +191,7 @@ use App\SavedLearningItem
 
             </div>
             <div class="modal-footer">
-                {{ Form::submit('Opslaan', array('class' => 'btn btn-primary', 'id' => 'addItemToFolder')) }}
+                {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'addItemToFolder')) }}
                 {{ Form::close() }}
             </div>
       </div>
@@ -209,9 +209,7 @@ use App\SavedLearningItem
         </div>
         <div class="modal-body">
 
-        {!! Form::open(array(
-            'url' =>  route('folder.create')))
-            !!}
+        {!! Form::open(array('url' =>  route('folder.create'))) !!}
             <div class="form-group">
                 <label>{{ __('folder.title') }}</label>
                 <input id='folderTitle' type='text' name='folder_title' class="form-control" required>
@@ -224,9 +222,8 @@ use App\SavedLearningItem
             
 
         <div class="modal-footer">
-            {{ Form::submit('Opslaan', array('class' => 'btn btn-primary', 'id' => 'saveButton')) }}
+            {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'saveButton')) }}
             {{ Form::close() }}
-           
         </div>
       </div>
       
