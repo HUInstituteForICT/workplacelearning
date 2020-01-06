@@ -86,6 +86,12 @@ class FolderController extends Controller
             return redirect('saved-learning-items')->with('error', __('Can\'t delete folder'));
         }
 
+        // remove all items from the folder
+        foreach ($folder->savedLearningItems as $sli) {
+            $sli->folder = null;
+            $sli->save();
+        }
+
         $this->folderRepository->delete($folder);
         session()->flash('success', __('Folder deleted'));
 
