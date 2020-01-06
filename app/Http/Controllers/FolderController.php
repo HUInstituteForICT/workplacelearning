@@ -12,6 +12,7 @@ use App\FolderComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
+use Illuminate\Http\RedirectResponse;
 
 class FolderController extends Controller
 {
@@ -73,6 +74,20 @@ class FolderController extends Controller
         $folder->save();
 
         session()->flash('success', __('folder.folder-shared'));
+
+        return redirect('saved-learning-items');
+    }
+
+    public function delete(Folder $folder): RedirectResponse
+    {
+        $student = $this->currentUserResolver->getCurrentUser();
+
+        if (!$student->is($folder->student)) {
+            return redirect('saved-learning-items')->with('error', __('Can\'t delete folder'));
+        }
+
+        $this->folderRepository->delete($folder);
+        session()->flash('success', __('Folder deleted'));
 
         return redirect('saved-learning-items');
     }

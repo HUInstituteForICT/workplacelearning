@@ -67,6 +67,7 @@ use App\SavedLearningItem
                         
                         {{-- folder basic info --}}
                         <section class="section folder-info">
+                            <a href="{{ route('folder.destroy', ['folder' => $folder]) }}"><span class="right glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                             <p class="sub-title-light">Created on {{ $folder->created_at->toFormattedDateString() }}</p>
                             <br>
                             {{ $folder->description }}
