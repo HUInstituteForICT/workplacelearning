@@ -13,4 +13,6 @@ return array(
     "comments" => "comments",
     "created-on" => "Created on",
     "added-items" => "Added items",
+    "folder-deleted" => "The folder has been deleted.",
+    "no-delete-permission" => "You do not have permission to delete this folder.",
 );

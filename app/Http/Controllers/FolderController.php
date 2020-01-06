@@ -83,7 +83,7 @@ class FolderController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
 
         if (!$student->is($folder->student)) {
-            return redirect('saved-learning-items')->with('error', __('Can\'t delete folder'));
+            return redirect('saved-learning-items')->with('error', __('folder.no-delete-permission'));
         }
 
         // remove all items from the folder
@@ -93,7 +93,7 @@ class FolderController extends Controller
         }
 
         $this->folderRepository->delete($folder);
-        session()->flash('success', __('Folder deleted'));
+        session()->flash('success', __('folder.folder-deleted'));
 
         return redirect('saved-learning-items');
     }
