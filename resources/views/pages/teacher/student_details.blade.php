@@ -148,7 +148,7 @@ use App\Student;use App\Workplace;
                                     <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
                                 </div>
                                 <div class="form-group">
-                                    <textarea placeholder="Reageer hier op de student" name='folder_comment' class="form-control folder_comment"></textarea>
+                                    <textarea placeholder="Reageer hier op de student" name='folder_comment' class="form-control folder_comment" maxlength="255"></textarea>
                                 </div>
                                 {{ Form::submit('Versturen', array('class' => 'right btn btn-primary sendComment')) }}
                                 {{ Form::close() }}
