@@ -103,7 +103,7 @@ use App\Student;use App\Workplace;
                                 <section class="section">
                                     <h5>{{ __('folder.added-items') }} <span class="badge">{{ count($folder->savedLearningItems)}}</span></h5>
                                     @foreach($folder->savedLearningItems as $item)
-                                        @if($item->category ==evaluatedTips= 'tip')
+                                        @if($item->category === 'tip')
                                             <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                                                 role="alert">
                                                 <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
