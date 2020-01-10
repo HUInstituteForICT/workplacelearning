@@ -15,4 +15,5 @@ return array(
     "added-items" => "Toegevoegde items",
     "folder-deleted" => "De map is verwijderd.",
     "no-delete-permission" => "U hebt geen toestemming om deze map te verwijderen.",
+    "delete-confirmation" => "Weet u zeker dat u deze map wilt verwijderen?",
 );
