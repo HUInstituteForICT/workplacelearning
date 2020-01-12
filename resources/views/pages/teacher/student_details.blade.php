@@ -14,46 +14,93 @@ use App\Student;use App\Workplace;
 
     <div class="row">
         <!-- Profile Info -->
-        <div class="col-md-8">
-
-            <div class="panel panel-default">
-                <div class="panel-body no-padding">
-                    <div class="card-header"> {{ __('general.student-details') }} </div>
-
-                    <div class="card-body">
-                        <p class="card-text">{{ $student->studentnr }}</p>
-                        <h3 class="card-text">
-                            <strong>{{ $student->firstname }} {{ $student->lastname }}</strong><br />
-                        </h3>
-                        <p class="card-text">{{ $student->email }}</p>
-                        <p class="card-text">{{ $student->phonenr }}</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Stage Info -->
         <div class="col-md-4">
-            <div id="alert" class="panel panel-default">
-                <div class="panel-body no-padding">
-                    <?php
-                    /** @var Workplace $workplace */
-                    ?>
-                    <div class="card-body">
-                        <h3 class="card-text">
-                            <strong>{{ $workplace->workplaceLearningPeriod->startdate->toFormattedDateString()}} - {{ $workplace->workplaceLearningPeriod->enddate->toFormattedDateString() }}</strong>
-                        </h3>
-                        <p class="card-text">{{ $workplace->wp_name }}</p>
-                        <p class="card-text">{{ $workplace->street }} {{ $workplace->housenr }}, {{ $workplace->postalcode }} {{ $workplace->town }}, {{ $workplace->country }}</p><br />
-                        <p class="card-text"><strong>Contactperson </strong><br /></p>
-                        <p class="card-text">{{ $workplace->contact_name }}</p>
-                        <p class="card-text">{{ $workplace->contact_email }}</p>
-                        <p class="card-text">{{ $workplace->contact_phone }}</p>
+            @card
+                <h1>{{ $student->firstname }} {{ $student->lastname }} </p>
+                <h2>{{ $workplace->wp_name }}</h2>
+                <br>
+                <p>{{ $workplace->workplaceLearningPeriod->startdate->toFormattedDateString()}} - {{ $workplace->workplaceLearningPeriod->enddate->toFormattedDateString() }}</p>
+                <br>
+                <strong>Contact informatie</strong>
+                <p>{{ $student->email }}</p>
+                <p>{{ $student->phonenr }}</p>
+            @endcard
+        </div>
+
+        <!-- Saved Learning Items -->
+        <div class="col-md-8">
+            @card
+                @if(count($folders) === 0)
+                    <div class="alert alert-error">
+                        Deze student heeft nog niets met u gedeeld
+                    </div>
+                @endif
+
+                @foreach($folders as $folder)
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
+                            </h4>
+                        </div>
+                        <div id="{{$folder->folder_id}}" class="panel-collapse collapse">
+                        
+                            <div class="panel-body">
+                                {{$folder->description}}
+                                <hr>
+                                <strong>Toegevoegde items:</strong>
+                                @foreach($sli as $item)
+                                    @if($item->category === 'tip' &&  $item->folder === $folder->folder_id)
+                                                <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
+                                                    role="alert">
+                                                    <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                                                    <p> {{$tips[$item->item_id]->tipText}}</p>
+                                                </div>
+                                    @endif
+                                @endforeach
+
+                                <hr>
+                                <h4>Comments</h4>
+                                @foreach ($allFolderComments as $comment)
+                                    @if ($folder->folder_id === $comment->folder_id)
+                                        <div class="panel panel-default">
+                                            <div class="panel-body no-padding">
+                                                <div class="card-header">
+                                                    <strong>{{ $comment->author->firstname }} {{ $comment->author->lastname }}</strong>
+                                                    <small class="comment-date">{{date('d-m-Y H:i', strtotime($comment->created_at))}}</small>
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <p class="card-text">{{ $comment->text }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+
+                        <div class="panel-footer">
+
+                            {!! Form::open(array(
+                            'url' =>  route('folder.addComment')))
+                            !!}
+                            <div class="form-group">
+                                <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
+                            </div>
+                            <div class="form-group">
+                                <textarea placeholder="Reageer hier op de student" name='folder_comment' class="form-control folder_comment"></textarea>
+                            </div>
+                            {{ Form::submit('Verstuur', array('class' => 'btn btn-primary sendComment')) }}
+                            {{ Form::close() }}
+                        </div>
                     </div>
                 </div>
-            </div>
+                @endforeach
+            @endcard
         </div>
+
+        
 
     </div>
 

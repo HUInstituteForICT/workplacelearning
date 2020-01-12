@@ -7,10 +7,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
-use App\SavedLearningItem;
-use App\Tips\EvaluatedTip;
 use Illuminate\Http\Request;
 use App\Services\CurrentUserResolver;
+use App\SavedLearningItem;
+use App\Tips\EvaluatedTip;
 use App\Tips\Services\TipEvaluator;
 
 class SavedLearningItemController extends Controller
@@ -38,7 +38,6 @@ class SavedLearningItemController extends Controller
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
-
     }
 
     public function index(TipEvaluator $evaluator)
@@ -49,15 +48,13 @@ class SavedLearningItemController extends Controller
 
         $evaluatedTips = [];
         foreach ($tips as $tip) {
-            $evaluatedTips[] = $evaluator->evaluate($tip);
+            $evaluatedTips[$tip->id] = $evaluator->evaluate($tip);
         }
 
-        return view('pages.saved-items', [
-            'student' => $student,
-            'sli' => $sli,
-            'tips' => $tips,
-            'evaluatedTips' => $evaluatedTips,
-        ]);
+        return view('pages.saved-items')
+            ->with('student', $student)
+            ->with('sli', $sli)
+            ->with('evaluatedTips', $evaluatedTips);
     }
 
     public function createItem($category, $item_id)
@@ -76,11 +73,23 @@ class SavedLearningItemController extends Controller
             $savedLearningItem->category = $category;
             $savedLearningItem->item_id = $item_id;
             $savedLearningItem->student_id = $student->student_id;
+            $savedLearningItem->created_at = date('Y-m-d H:i:s');
+            $savedLearningItem->updated_at = date('Y-m-d H:i:s');
             $this->savedLearningItemRepository->save($savedLearningItem);
 
             session()->flash('success', __('saved_learning_items.saved-succesfully'));
         }
 
         return redirect($url);
+    }
+
+    public function updateFolder(Request $request)
+    {
+        $savedLearningItem = SavedLearningItem::find($request['sli_id']);
+        $folderId = $request['chooseFolder'];
+        $savedLearningItem->folder = $folderId;
+        $savedLearningItem->save();
+
+        return redirect('saved-learning-items');
     }
 }

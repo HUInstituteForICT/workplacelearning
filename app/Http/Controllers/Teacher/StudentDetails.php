@@ -8,6 +8,15 @@ use App\Http\Controllers\Controller;
 use App\Services\CurrentUserResolver;
 use App\Student;
 use App\WorkplaceLearningPeriod;
+use App\Folder;
+use App\FolderComment;
+use App\SavedLearningItem;
+use App\Tips\EvaluatedTip;
+use App\Repository\Eloquent\FolderRepository;
+use App\Repository\Eloquent\FolderCommentRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
+use App\Repository\Eloquent\TipRepository;
+use App\Tips\Services\TipEvaluator;
 
 class StudentDetails extends Controller
 {
@@ -16,9 +25,39 @@ class StudentDetails extends Controller
      */
     private $currentUserResolver;
 
-    public function __construct(CurrentUserResolver $currentUserResolver)
+    /**
+     * @var FolderRepository
+     */
+    private $folderRepository;
+
+    /**
+     * @var FolderCommentRepository
+     */
+    private $folderCommentRepository;
+
+    /**
+     * @var SavedLearningItemRepository
+     */
+    private $savedLearningItemRepository;
+
+     /**
+     * @var TipEvaluator
+     */
+    private $tipEvaluator;
+
+    public function __construct(
+        CurrentUserResolver $currentUserResolver,
+        SavedLearningItemRepository $savedLearningItemRepository,
+        TipRepository $tipRepository,
+        FolderRepository $folderRepository,
+        FolderCommentRepository $folderCommentRepository)
     {
         $this->currentUserResolver = $currentUserResolver;
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
+        $this->tipRepository = $tipRepository;
+        $this->folderRepository = $folderRepository;
+        $this->folderCommentRepository = $folderCommentRepository;
+       
     }
 
     public function __invoke(Student $student)
@@ -36,9 +75,25 @@ class StudentDetails extends Controller
         
         $currentWorkplace = $student->getCurrentWorkplace();
         $workplace = in_array($currentWorkplace, $workplaces) ? $currentWorkplace : reset($workplaces);
-        
+        $folders = $this->folderRepository->findByTeacherId($teacher);
+        $tips = $this->tipRepository->all();
+        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+
+        $allTips = [];
+        foreach ($tips as $tip) {
+            $allTips[$tip->id] = $tip;
+        }
+
+        $allFolderComments = $this->folderCommentRepository->all();
+
+
         return view('pages.teacher.student_details')
             ->with('student', $student)
-            ->with('workplace', $workplace);
+            ->with('workplace', $workplace)
+            ->with('folders', $folders)
+            ->with('tips', $allTips)
+            ->with('sli', $sli)
+            ->with('allFolderComments', $allFolderComments);
+
     }
 }

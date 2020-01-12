@@ -201,6 +201,11 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     Route::post('/reactlog', 'ReactLogController@store'); // Logs errors occurring in React
 
     Route::get('/saved-learning-items', 'SavedLearningItemController@index')->name('saved-learning-items');
+    Route::post('/saved-learning-items/updateFolder', 'SavedLearningItemController@updateFolder')->name('saved-learning-item.updateFolder');
+
+    Route::post('/folders/create', 'FolderController@create')->name('folder.create');
+    Route::post('/folder/shareFolderWithTeacher', 'FolderController@shareFolderWithTeacher')->name('folder.shareFolderWithTeacher');
+    Route::post('/folder/addComment', 'FolderController@addComment')->name('folder.addComment');
 
     Route::middleware('usernotifications')->group(static function (): void {
         // Actions on the profile of a student

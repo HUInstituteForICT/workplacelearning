@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 @empty
-                    <div id="alert" class="alert alert-info" role="alert">
+                    <div class="custom-alert alert alert-info" role="alert">
                         {{ __('general.no-student') }}
                     </div>
                 @endforelse

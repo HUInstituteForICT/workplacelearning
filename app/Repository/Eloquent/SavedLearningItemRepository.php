@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace App\Repository\Eloquent;
-use App\Services\EvidenceFileHandler;
 use App\SavedLearningItem;
 use App\Services\CurrentUserResolver;
 
