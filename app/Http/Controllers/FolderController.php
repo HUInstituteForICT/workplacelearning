@@ -12,6 +12,7 @@ use App\FolderComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
+use Illuminate\Http\RedirectResponse;
 
 class FolderController extends Controller
 {
@@ -61,6 +62,11 @@ class FolderController extends Controller
     public function shareFolderWithTeacher(Request $request)
     {
         $student = $this->currentUserResolver->getCurrentUser();
+        $folder = Folder::find($request['folder_id']);
+
+        if (!$student->is($folder->student)) {
+            return redirect('saved-learning-items')->with('error', __('folder.share-permission'));
+        }
 
         $folderComment = new FolderComment();
         $folderComment->text = $request['folder_comment'];
@@ -68,11 +74,32 @@ class FolderController extends Controller
         $folderComment->author_id = $student->student_id;
         $this->folderCommentRepository->save($folderComment);
 
+
         $folder = $this->folderRepository->findById($request['folder_id']);
         $folder->teacher_id = $request['teacher'];
         $folder->save();
 
         session()->flash('success', __('folder.folder-shared'));
+        
+        return redirect('saved-learning-items');
+    }
+
+    public function delete(Folder $folder): RedirectResponse
+    {
+        $student = $this->currentUserResolver->getCurrentUser();
+
+        if (!$student->is($folder->student)) {
+            return redirect('saved-learning-items')->with('error', __('folder.no-delete-permission'));
+        }
+
+        // remove all items from the folder
+        foreach ($folder->savedLearningItems as $sli) {
+            $sli->folder = null;
+            $sli->save();
+        }
+
+        $this->folderRepository->delete($folder);
+        session()->flash('success', __('folder.folder-deleted'));
 
         return redirect('saved-learning-items');
     }

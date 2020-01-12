@@ -36,4 +36,9 @@ class SavedLearningItemRepository
     {
         return SavedLearningItem::where('sli_id', '=', $sli_id)->first();
     }
+
+    public function delete(SavedLearningItem $sli)
+    {
+        return $sli->delete();
+    }
 }
