@@ -123,7 +123,7 @@ use App\SavedLearningItem
                                     <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
                                 </div>
                                 <div class="form-group">
-                                    <textarea placeholder="{{ __('folder.add-comment-teacher') }}" name='folder_comment' class="form-control folder_comment"></textarea>
+                                    <textarea placeholder="{{ __('folder.add-comment-teacher') }}" name='folder_comment' class="form-control folder_comment" maxlength="255"></textarea>
                                 </div>
                                 {{ Form::submit(__('general.send'), array('class' => 'right btn btn-primary sendComment')) }}
                                 {{ Form::close() }}
@@ -136,7 +136,7 @@ use App\SavedLearningItem
                                     <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
                                 </div>
                                 <div class="form-group">
-                                    <textarea placeholder="{{ __('folder.question') }}" name='folder_comment' class="form-control folder_comment" required></textarea>
+                                    <textarea placeholder="{{ __('folder.question') }}" name='folder_comment' class="form-control folder_comment" maxlength="255" required></textarea>
                                 </div>
                                 <div class="form-group">
                                     
@@ -213,12 +213,12 @@ use App\SavedLearningItem
         {!! Form::open(array('url' =>  route('folder.create'))) !!}
             <div class="form-group">
                 <label>{{ __('folder.title') }}</label>
-                <input id='folderTitle' type='text' name='folder_title' class="form-control" required>
+                <input id='folderTitle' type='text' name='folder_title' class="form-control" maxlength="100" required>
             </div>
                           
             <div class="form-group">
                 <label>{{ __('folder.description') }}</label>
-                <textarea type='text' name='folder_description' id="folderDescription" class="form-control" required></textarea>
+                <textarea type='text' name='folder_description' id="folderDescription" class="form-control" maxlength="255" required></textarea>
             </div>
             
 
