@@ -201,6 +201,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     Route::post('/reactlog', 'ReactLogController@store'); // Logs errors occurring in React
 
     Route::get('/saved-learning-items', 'SavedLearningItemController@index')->name('saved-learning-items');
+    Route::get('/saved-learning-items/delete/{sli}', 'SavedLearningItemController@delete')->name('saved-learning-items-delete');
     Route::post('/saved-learning-items/updateFolder', 'SavedLearningItemController@updateFolder')->name('saved-learning-item.updateFolder');
 
     // actions on folders and comments

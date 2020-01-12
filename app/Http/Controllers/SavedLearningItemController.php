@@ -83,8 +83,14 @@ class SavedLearningItemController extends Controller
         return redirect($url);
     }
 
+    public function delete(SavedLearningItem $sli) {
+        $this->savedLearningItemRepository->delete($sli);
+        return redirect('saved-learning-items');
+    }
+
     public function updateFolder(Request $request)
     {
+
         $savedLearningItem =  $this->savedLearningItemRepository->findById($request['sli_id']);
         $folderId = $request['chooseFolder'];
         $savedLearningItem->folder = $folderId;

@@ -6,4 +6,5 @@ return [
     'timeline'            => 'Tijdlijn',
     'saved-succesfully'   => 'Het leeritem is opgeslagen',
     'tip-not-found'       => 'Deze tip bestaat niet meer.',
+    'saved-items'         => 'Saved items',
 ];
