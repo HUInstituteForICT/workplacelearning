@@ -140,7 +140,6 @@ use App\Student;use App\Workplace;
                             @endif
 
                             <div class="panel-footer">
-
                                 {!! Form::open(array(
                                 'url' =>  route('folder.addComment')))
                                 !!}

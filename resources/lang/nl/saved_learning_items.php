@@ -4,5 +4,6 @@ return [
     'save'                => 'Opslaan',
     'saved'               => 'Bewaard',
     'timeline'            => 'Tijdlijn',
-    'saved-succesfully'   => 'Het leeritem is opgeslagen',
+    'saved-succesfully'   => 'De leeritem is opgeslagen',
+    'saved-items'         => 'Saved items',
 ];
