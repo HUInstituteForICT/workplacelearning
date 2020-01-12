@@ -48,7 +48,7 @@ class SavedLearningItemController extends Controller
 
         $evaluatedTips = [];
         foreach ($tips as $tip) {
-            $evaluatedTips[$tip->id] = $evaluator->evaluate($tip);
+            $evaluatedTips[$tip->id] = $evaluator->evaluateForChosenStudent($tip, $student);
         }
 
         return view('pages.saved-items')

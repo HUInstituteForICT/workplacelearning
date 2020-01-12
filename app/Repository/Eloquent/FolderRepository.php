@@ -19,6 +19,15 @@ class FolderRepository
         return $folder->save();
     }
 
+    public function delete(Folder $folder): bool
+    {
+        try {
+            return $folder->delete();
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     public function findByTeacherId(Student $teacher)
     {
         return Folder::where('teacher_id', '=', $teacher->student_id)->get();

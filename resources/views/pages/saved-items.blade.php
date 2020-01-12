@@ -28,13 +28,16 @@ use App\SavedLearningItem
                     @foreach($sli as $item)
                     @if($item->category === 'tip' && $item->folder === null)
                         @card
-                        <h4 class="maps" >{{date('d-m-Y', strtotime($item->created_at))}}</h4>
-                        <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
-                        <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
-                        <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                             role="alert">
-                             <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                            <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
+                        <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
+                        <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                            <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
+                            <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
+                            <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                            @if (in_array($item->item_id, array_keys($evaluatedTips)))
+                                <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
+                            @else
+                                <p>{{ __('saved_learning_items.tip-not-found') }}</p>
+                            @endif
                         </div>
                         @endcard
                     @endif
@@ -68,6 +71,7 @@ use App\SavedLearningItem
                         
                         {{-- folder basic info --}}
                         <section class="section folder-info">
+                            <a href="{{ route('folder.destroy', ['folder' => $folder]) }}" onclick="return confirm('{{ __('folder.delete-confirmation') }}')"><span class="right glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                             <p class="sub-title-light">{{ __('folder.created-on') }} {{ $folder->created_at->toFormattedDateString() }}</p>
                             <br>
                             {{ $folder->description }}
@@ -83,7 +87,11 @@ use App\SavedLearningItem
                                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                                             role="alert">
                                             <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                                            <p> {{$evaluatedTips[$item->item_id]->getTipText()}}</p>
+                                            @if (in_array($item->item_id, array_keys($evaluatedTips)))
+                                                <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
+                                            @else
+                                                <p>{{ __('saved_learning_items.tip-not-found') }}</p>
+                                            @endif
                                         </div>
                                     @endif
                                 @endforeach
