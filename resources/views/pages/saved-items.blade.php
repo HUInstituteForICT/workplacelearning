@@ -86,6 +86,19 @@ use App\SavedLearningItem
                                     @if($item->category === 'tip')
                                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                                             role="alert">
+                                            <!-- Delete item from folder -->
+                                            {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder')))!!}
+
+                                            <div class="form-group">
+                                                <input type='text' name='sli_id'  id="sli_id" class="form-control" value="{{$item->sli_id}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="folder-null" name="chooseFolder" value="0">
+                                            </div>
+                                            <!-- {{ Form::submit('Opslaan', array('class' => 'glyphicon glyphicon-remove delete-tip-from-folder', 'id' => 'addItemToFolder')) }} -->
+                                            {{ Form::button('', ['type' => 'submit', 'class' => 'glyphicon glyphicon-remove delete-tip-from-folder'] )  }}
+                                            {{ Form::close() }}
+
                                             <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                                             @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                                 <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
