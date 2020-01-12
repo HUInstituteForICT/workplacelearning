@@ -99,7 +99,6 @@ class SavedLearningItemController extends Controller
 
     public function updateFolder(Request $request)
     {
-
         $savedLearningItem =  $this->savedLearningItemRepository->findById($request['sli_id']);
         if($request['chooseFolder'] == 0){
             $savedLearningItem->folder = null;

@@ -14,7 +14,7 @@ class AddFolderToSavedLearningItemsTable extends Migration
     public function up()
     {
         Schema::table('saved_learning_items', function (Blueprint $table) {
-            $table->integer('folder')->nullable(true);
+            $table->integer('folder')->unsigned()->nullable(true);
         });
     }
 

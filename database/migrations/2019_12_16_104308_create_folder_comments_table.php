@@ -17,7 +17,7 @@ class CreateFolderCommentsTable extends Migration
             $table->increments('folder_comments_id');
             $table->timestamps();
             $table->string('text')->nullable(false);
-            $table->integer('folder_id')->nullable(false);
+            $table->integer('folder_id')->unsigned()->nullable(false);
         });
         Schema::table('folder_comments', function(Blueprint $table) {
             $table->foreign('folder_id', 'optin_to_folder_id')

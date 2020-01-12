@@ -26,7 +26,7 @@ class AddTimestampAndDescriptionToSavedLearningItemsTable extends Migration
     public function down()
     {
         Schema::table('saved_learning_items', function (Blueprint $table) {
-    
+            $table->dropTimestamps();
         });
     }
 }

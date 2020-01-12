@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddForeignKeyToSavedLearningItemsTable extends Migration
 {
@@ -14,7 +14,8 @@ class AddForeignKeyToSavedLearningItemsTable extends Migration
     public function up()
     {
         Schema::table('saved_learning_items', function (Blueprint $table): void {
-            $table->foreign('folder', 'fk_saved_learning_items_folder')->references('folder_id')->on('folder')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+            $table->foreign('folder',
+                'fk_saved_learning_items_folder')->references('folder_id')->on('folder')->onUpdate('NO ACTION')->onDelete('NO ACTION');
         });
     }
 
@@ -27,7 +28,7 @@ class AddForeignKeyToSavedLearningItemsTable extends Migration
     {
         Schema::table('saved_learning_items', function (Blueprint $table) {
             if (DB::getDriverName() !== 'sqlite') {
-                $table->dropForeign('FK_SAVED_LEARNIING_ITEMS_FOLDER');
+                $table->dropForeign('fk_saved_learning_items_folder');
             }
         });
     }
