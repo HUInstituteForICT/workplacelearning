@@ -25,4 +25,9 @@ class FolderRepository
 
         
     }
+
+    public function findById($folder_id)
+    {
+        return Folder::where('folder_id', '=', $folder_id)->first();
+    }
 }

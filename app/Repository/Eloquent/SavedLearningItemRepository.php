@@ -31,4 +31,9 @@ class SavedLearningItemRepository
             'student_id' => $student_id
         ])->count() > 0;
     }
+
+    public function findById($sli_id)
+    {
+        return SavedLearningItem::where('sli_id', '=', $sli_id)->first();
+    }
 }
