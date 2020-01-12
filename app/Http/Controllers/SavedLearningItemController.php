@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Services\CurrentUserResolver;
 use App\SavedLearningItem;
@@ -83,7 +84,15 @@ class SavedLearningItemController extends Controller
         return redirect($url);
     }
 
-    public function delete(SavedLearningItem $sli) {
+    /**
+     * @throws AuthorizationException
+     */
+    public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver) {
+
+        if(!$sli->student->is($currentUserResolver->getCurrentUser())) {
+            throw new AuthorizationException('This is not your SLI');
+        }
+
         $this->savedLearningItemRepository->delete($sli);
         return redirect('saved-learning-items');
     }
