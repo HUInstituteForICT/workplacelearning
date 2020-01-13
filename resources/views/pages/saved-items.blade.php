@@ -53,25 +53,33 @@ use App\SavedLearningItem
                 @foreach($student->folders as $folder)
                 <div class="panel-group">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
-                            @if ($folder->isShared())
-                                <span class="folder-status label label-info">{{ __('folder.shared') }}</span>
-                            @else
-                                <span class="folder-status label label-default">{{ __('folder.prive') }}</span>
-                            @endif
-                            <div class="clearfix"></div>
-                            <p class="sub-title-light">{{ count($folder->savedLearningItems)}} {{ __('folder.items') }}</p>
-                            <div class="bullet">&#8226;</div>
-                            <p class="sub-title-light">{{ count($folder->folderComments)}} {{ __('folder.comments') }}</p>
-                        </h4>
+                        <div class="panel-heading" id="folder">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
+                                @if ($folder->isShared())
+                                    <span class="folder-status label label-info">{{ __('folder.shared') }}</span>
+                                @else
+                                    <span class="folder-status label label-default">{{ __('folder.prive') }}</span>
+                                @endif
+                                <div class="clearfix"></div>
+                                <p class="sub-title-light">{{ count($folder->savedLearningItems)}} {{ __('folder.items') }}</p>
+                                <div class="bullet">&#8226;</div>
+                                <p class="sub-title-light">{{ count($folder->folderComments)}} {{ __('folder.comments') }}</p>
+                            </h4>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" id="dropdownMenuFolder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right no-top" aria-labelledby="dropdownMenuFolder">
+                                    <li><a href="{{ route('folder.stop-sharing-folder', ['folder' => $folder]) }}">{{ __('folder.stop-sharing-folder') }}</a></li>
+                                    <li><a class="color-red" href="{{ route('folder.destroy', ['folder' => $folder]) }}" onclick="return confirm('{{ __('folder.delete-confirmation') }}')">{{ __('folder.delete-folder') }}</a></li>
+                                </ul>
+                            </div>
                         </div>
                         <div id="{{$folder->folder_id}}" class="panel-collapse collapse">
                         
                         {{-- folder basic info --}}
                         <section class="section folder-info">
-                            <a href="{{ route('folder.destroy', ['folder' => $folder]) }}" onclick="return confirm('{{ __('folder.delete-confirmation') }}')"><span class="right glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                             <p class="sub-title-light">{{ __('folder.created-on') }} {{ $folder->created_at->toFormattedDateString() }}</p>
                             <br>
                             {{ $folder->description }}

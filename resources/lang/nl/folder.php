@@ -24,4 +24,6 @@ return array(
     'share' => 'Deel',
     'shared' => 'Gedeeld',
     'prive' => 'Privé',
+    'stop-sharing-folder' => 'Stoppen met delen',
+    'delete-folder' => 'Verwijderen',
 );

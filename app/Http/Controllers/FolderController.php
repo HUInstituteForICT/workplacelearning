@@ -124,4 +124,17 @@ class FolderController extends Controller
 
         return redirect($url);
     }
+
+    public function stopSharingFolder(Folder $folder) {
+        $student = $this->currentUserResolver->getCurrentUser();
+
+        if (!$student->is($folder->student)) {
+            return redirect('saved-learning-items')->with('error', __('folder.share-permission'));
+        }
+        
+        $folder->teacher_id = null;
+        $this->folderRepository->save($folder);
+
+        return redirect('saved-learning-items');
+    }
 }

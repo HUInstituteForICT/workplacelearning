@@ -1089,6 +1089,16 @@ div[class*=' styles_modalCenter'].panel {
   margin: 2px;
 }
 
+#folder {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr auto;
+}
+
+.no-top {
+  top: auto;
+}
+
 .folder-info {
   margin: 10px 0;
 }
@@ -1117,10 +1127,6 @@ div[class*=' styles_modalCenter'].panel {
 
 .msg-no-folder {
   text-align: left;
-}
-
-.color-red {
-  color: red;
 }
 
 .sub-title-light {
@@ -1176,4 +1182,8 @@ div[class*=' styles_modalCenter'].panel {
 .comment-section {
   overflow-y: scroll; 
   max-height:300px;
+}
+
+.color-red {
+  color: red !important;
 }

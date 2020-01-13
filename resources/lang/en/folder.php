@@ -24,4 +24,6 @@ return array(
     'share' => 'Share',
     'shared' => 'Shared',
     'prive' => 'Prive',
+    'stop-sharing-folder' => 'Stop sharing this folder',
+    'delete-folder' => 'Delete',
 );
