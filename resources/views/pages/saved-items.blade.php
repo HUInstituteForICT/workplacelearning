@@ -195,9 +195,10 @@ use App\SavedLearningItem
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">{{ __('folder.add-to-folder') }}</h4>
         </div>
+        
+        @if (count($student->folders))
         <div class="modal-body">
-
-        {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder'))) !!}
+            {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder'))) !!}
 
             <div class="form-group">
                 <input type='text' name='sli_id' id="sli_id" class="form-control">
@@ -210,12 +211,16 @@ use App\SavedLearningItem
                     @endforeach
                 </select>
             </div>
-
-            </div>
-            <div class="modal-footer">
+        </div>
+        @endif
+        <div class="modal-footer">
+            @if (count($student->folders))
                 {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'addItemToFolder')) }}
                 {{ Form::close() }}
-            </div>
+            @else
+                <p>Op dit moment heb je nog geen mappen. Maak eerst een map aan om items toe te voegen.</p>
+            @endif
+        </div>
       </div>
       
     </div>
