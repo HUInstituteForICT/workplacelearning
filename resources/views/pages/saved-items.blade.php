@@ -30,7 +30,7 @@ use App\SavedLearningItem
                         @card
                         <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
-                            <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
+                            <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation') }}')"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
                             <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
                             <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                             @if (in_array($item->item_id, array_keys($evaluatedTips)))
@@ -218,7 +218,7 @@ use App\SavedLearningItem
                 {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'addItemToFolder')) }}
                 {{ Form::close() }}
             @else
-                <p>Op dit moment heb je nog geen mappen. Maak eerst een map aan om items toe te voegen.</p>
+                <p class="msg-no-folder color-red">{{ __('saved_learning_items.no-folders') }}</p>
             @endif
         </div>
       </div>

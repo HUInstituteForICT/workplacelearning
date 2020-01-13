@@ -15,7 +15,7 @@ return array(
     "added-items" => "Toegevoegde items",
     "folder-deleted" => "De map is verwijderd.",
     "no-delete-permission" => "U hebt geen toestemming om deze map te verwijderen.",
-    "delete-confirmation" => "Weet u zeker dat u deze map wilt verwijderen?",
+    "delete-confirmation" => "Weet je zeker dat je deze map wilt verwijderen? De docent kan deze map dan niet meer zien.",
     'choose-teacher' => 'Kies je docent',
     'no-teacher' => 'Je kunt deze map alleen delen als je aan een docent bent toegewezen.',
     'add-comment-teacher' => 'Laat hier je reactie achter..',
