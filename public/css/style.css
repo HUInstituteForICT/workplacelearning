@@ -811,6 +811,9 @@ div[class*=' styles_modalCenter'].panel {
 .save_tip_icon {
   width: 24px;
 }
+.save_activity_icon {
+  width: 18px;
+}
 .btn-collapse {
   color: black;
   text-decoration: none;
