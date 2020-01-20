@@ -161,7 +161,7 @@ use App\SavedLearningItem
                                 </div>
                                 <div class="form-group">
                                     
-                                    <label>{{ __('folder.comments') }}:</label><br>
+                                    <label>Docent:</label><br>
                                     <select name="teacher" class="form-control">
                                         @foreach($student->getWorkplaceLearningPeriods() as $wplp)
                                             <option value="{{$wplp->teacher_id}}">{{$wplp->teacher->firstname}} {{$wplp->teacher->lastname}}</option>
