@@ -22,6 +22,9 @@ export default class Row extends React.Component {
 
         return <tr className="activityExport">
             <td>
+                <a style={actionStyle} onClick={() => confirm(Lang.get("react.save-confirm")) ? window.location.href = "/producing/process/save/" + activity.id: null}>
+                <img className="save_tip_icon" src="../assets/img/opgeslagen-niet-ingevuld.svg"/>
+                </a>
                 <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
                 <a style={actionStyle} onClick={() => confirm(Lang.get("react.delete-confirm")) ? window.location.href = "/producing/process/delete/" + activity.id: null}><i className={"glyphicon glyphicon-trash"} aria-hidden={"true"}/></a>
             </td>

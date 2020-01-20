@@ -9,10 +9,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\SavedLearningItem;
 use App\Http\Requests\LearningActivity\ProducingCreateRequest;
 use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
 use App\LearningActivityProducing;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\AvailableProducingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
 use App\Services\CustomProducingEntityHandler;
@@ -24,6 +26,7 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+
 
 class ProducingActivityController
 {
@@ -39,14 +42,20 @@ class ProducingActivityController
      * @var Session
      */
     private $session;
+    /**
+     * @var SavedLearningItemRepository
+     */
+    private $savedLearningItemRepository;
 
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         LearningActivityProducingRepository $learningActivityProducingRepository,
+        SavedLearningItemRepository $savedLearningItemRepository,
         Session $session
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->session = $session;
     }
 
@@ -170,5 +179,23 @@ class ProducingActivityController
         $this->learningActivityProducingRepository->delete($learningActivityProducing);
 
         return redirect()->route('process-producing');
+    }
+
+    public function save(LearningActivityProducing $learningActivityProducing): RedirectResponse
+    {
+        $student = $this->currentUserResolver->getCurrentUser();
+        $url = route('process-producing');
+
+            $savedLearningItem = new SavedLearningItem();
+            $savedLearningItem->category = 'activity';
+            $savedLearningItem->item_id = $learningActivityProducing->lap_id;
+            $savedLearningItem->student_id = $student->student_id;
+            $savedLearningItem->created_at = date('Y-m-d H:i:s');
+            $savedLearningItem->updated_at = date('Y-m-d H:i:s');
+            $this->savedLearningItemRepository->save($savedLearningItem);
+
+            session()->flash('success', __('saved_learning_items.saved-succesfully'));
+
+        return redirect($url);
     }
 }

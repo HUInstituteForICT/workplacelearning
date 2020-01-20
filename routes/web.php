@@ -316,6 +316,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/delete/{learningActivityActing}', 'ActingActivityController@delete')
                         ->middleware('can:delete,learningActivityActing')
                         ->name('process-acting-delete');
+
                 }); // Actions relating to acting activities
             });
         });
@@ -379,6 +380,9 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/delete/{learningActivityProducing}', 'ProducingActivityController@delete')
                         ->middleware('can:delete,learningActivityProducing')
                         ->name('process-producing-delete');
+
+                    Route::get('/save/{learningActivityProducing}', 'ProducingActivityController@save')
+                        ->name('process-producing-save');
                 }); // Actions relating to producing activities
             });
         });
