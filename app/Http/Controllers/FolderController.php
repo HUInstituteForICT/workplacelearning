@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\FolderRepository;
+use App\Repository\Eloquent\TipRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\FolderCommentRepository;
 use App\Folder;
 use App\FolderComment;
@@ -13,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
 use Illuminate\Http\RedirectResponse;
+use App\Tips\Services\TipEvaluator;
 
 class FolderController extends Controller
 {
@@ -32,15 +35,45 @@ class FolderController extends Controller
      */
     private $folderCommentRepository;
 
+    /**
+     * @var SavedLearningItemRepository
+     */
+    private $savedLearningItemRepository;
+
+    /**
+     * @var TipRepository
+     */
+    private $tipRepository;
 
     public function __construct(
-    CurrentUserResolver $currentUserResolver, 
-    FolderRepository $folderRepository,
-    FolderCommentRepository $folderCommentRepository)
+        CurrentUserResolver $currentUserResolver, 
+        FolderRepository $folderRepository,
+        TipRepository $tipRepository,
+        SavedLearningItemRepository $savedLearningItemRepository,
+        FolderCommentRepository $folderCommentRepository)
     {
         $this->currentUserResolver = $currentUserResolver;
         $this->folderRepository = $folderRepository;
         $this->folderCommentRepository = $folderCommentRepository;
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
+        $this->tipRepository = $tipRepository;
+    }
+
+    public function index(TipEvaluator $evaluator)
+    {
+        $student = $this->currentUserResolver->getCurrentUser();
+        $tips = $this->tipRepository->all();
+        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+
+        $evaluatedTips = [];
+        foreach ($tips as $tip) {
+            $evaluatedTips[$tip->id] = $evaluator->evaluateForChosenStudent($tip, $student);
+        }
+
+        return view('pages.folders')
+            ->with('student', $student)
+            ->with('sli', $sli)
+            ->with('evaluatedTips', $evaluatedTips);
     }
 
     public function create(Request $request)
@@ -56,7 +89,7 @@ class FolderController extends Controller
 
         session()->flash('success', __('folder.folder-created'));
 
-        return redirect('saved-learning-items');
+        return redirect('folders');
     }
 
     public function shareFolderWithTeacher(Request $request)
@@ -81,7 +114,7 @@ class FolderController extends Controller
 
         session()->flash('success', __('folder.folder-shared'));
         
-        return redirect('saved-learning-items');
+        return redirect('folders');
     }
 
     public function delete(Folder $folder): RedirectResponse
@@ -101,7 +134,7 @@ class FolderController extends Controller
         $this->folderRepository->delete($folder);
         session()->flash('success', __('folder.folder-deleted'));
 
-        return redirect('saved-learning-items');
+        return redirect('folders');
     }
 
     public function addComment(Request $request) {
@@ -119,9 +152,22 @@ class FolderController extends Controller
         if ($currentUser->isTeacher()) {
             $url = route('teacher-student-details', ['student' => $student_id]);
         } elseif ($currentUser->isStudent()) {
-            $url = route('saved-learning-items');
+            $url = route('folders');
         }
 
         return redirect($url);
+    }
+
+    public function stopSharingFolder(Folder $folder) {
+        $student = $this->currentUserResolver->getCurrentUser();
+
+        if (!$student->is($folder->student)) {
+            return redirect('saved-learning-items')->with('error', __('folder.share-permission'));
+        }
+
+        $folder->teacher_id = null;
+        $this->folderRepository->save($folder);
+
+        return redirect('folders');
     }
 }
