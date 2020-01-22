@@ -26,6 +26,7 @@ use App\SavedLearningItem
                     <h2 class='maps'>{{ __('saved_learning_items.timeline') }}</h2>
                     <br>
                     @foreach($sli as $item)
+                    <!-- Tips -->
                     @if($item->category === 'tip' && $item->folder === null)
                         @card
                         <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
@@ -41,8 +42,17 @@ use App\SavedLearningItem
                         </div>
                         @endcard
                     @endif
+                    <!-- Activities -->
+                    @if($item->category === 'activity' && $item->folder === null)
+                        @card
+                        <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
+                        <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                            <h4>Activiteit</h4>
+                        
+                        </div>
+                        @endcard
+                    @endif
                     @endforeach
-
                 @endcard
 
             </div>
@@ -161,7 +171,7 @@ use App\SavedLearningItem
                                 </div>
                                 <div class="form-group">
                                     
-                                    <label>Docent:</label><br>
+                                    <label>{{ __('folder.comments') }}:</label><br>
                                     <select name="teacher" class="form-control">
                                         @foreach($student->getWorkplaceLearningPeriods() as $wplp)
                                             <option value="{{$wplp->teacher_id}}">{{$wplp->teacher->firstname}} {{$wplp->teacher->lastname}}</option>
