@@ -26,6 +26,7 @@ use App\SavedLearningItem
                     <h2 class='maps'>{{ __('saved_learning_items.timeline') }}</h2>
                     <br>
                     @foreach($sli as $item)
+                    <!-- Tips -->
                         @if($item->category === 'tip')
                             @card
                             <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
@@ -42,6 +43,20 @@ use App\SavedLearningItem
                             @endcard
                         @endif
                     @endforeach
+
+                     <!-- Activities -->
+                     @foreach($activities as $activity)
+                            @card
+                            <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
+                            <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                                <h4>Activiteit</h4>
+                                <p><strong>{{date('d-m-Y', strtotime($activity->date))}}</strong>: {{$activity->description}}</p>
+                                <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activity->duration}} uur
+                                <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$activity->duration}} uur
+                                <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$activity->duration}} uur
+                            </div>
+                            @endcard
+                        @endforeach
                 @endcard
 
             </div>
