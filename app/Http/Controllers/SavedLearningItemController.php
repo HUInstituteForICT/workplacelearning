@@ -87,8 +87,8 @@ class SavedLearningItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver) {
-
+    public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver) 
+    {
         if(!$sli->student->is($currentUserResolver->getCurrentUser())) {
             throw new AuthorizationException('This is not your SLI');
         }
@@ -97,14 +97,17 @@ class SavedLearningItemController extends Controller
         return redirect('saved-learning-items');
     }
 
-    public function updateFolder(Request $request)
+    public function removeItemFromFolder(SavedLearningItem $sli)
     {
-        $savedLearningItem =  $this->savedLearningItemRepository->findById($request['sli_id']);
-        if($request['chooseFolder'] == 0){
-            $savedLearningItem->folder = null;
-        }else{
-            $savedLearningItem->folder =  $request['chooseFolder'];
-        }
+        $sli->folder = null;
+        $sli->save();
+        return redirect('saved-learning-items');
+    }
+
+    public function addItemToFolder(Request $request)
+    {
+        $savedLearningItem =  $this->savedLearningItemRepository->findById($request->get('sli_id'));
+        $savedLearningItem->folder = $request->get('chooseFolder');
         $savedLearningItem->save();
         return redirect('saved-learning-items');
     }

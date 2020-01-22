@@ -84,21 +84,8 @@ use App\SavedLearningItem
                                 <h5>{{ __('folder.added-items') }} <span class="badge">{{ count($folder->savedLearningItems)}}</span></h5>
                                 @foreach($folder->savedLearningItems as $item)
                                     @if($item->category === 'tip')
-                                        <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                                            role="alert">
-                                            <!-- Delete item from folder -->
-                                            {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder')))!!}
-
-                                            <div class="form-group">
-                                                <input type='text' name='sli_id'  id="sli_id" class="form-control" value="{{$item->sli_id}}">
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="folder-null" name="chooseFolder" value="0">
-                                            </div>
-                                            <!-- {{ Form::submit('Opslaan', array('class' => 'glyphicon glyphicon-remove delete-tip-from-folder', 'id' => 'addItemToFolder')) }} -->
-                                            {{ Form::button('', ['type' => 'submit', 'class' => 'glyphicon glyphicon-remove delete-tip-from-folder'] )  }}
-                                            {{ Form::close() }}
-
+                                        <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                                            <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                             <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                                             @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                                 <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
@@ -197,7 +184,7 @@ use App\SavedLearningItem
         </div>
         <div class="modal-body">
 
-        {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder'))) !!}
+        {!! Form::open(array('url' =>  route('saved-learning-items-addItemToFolder'))) !!}
 
             <div class="form-group">
                 <input type='text' name='sli_id' id="sli_id" class="form-control">
