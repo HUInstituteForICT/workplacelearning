@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'folders' => 'Folders',
     'folder-created' => 'Folder has been created.',
     'folders' => 'Folders',
     'add-to-folder' => 'Add to folder',
@@ -15,7 +16,7 @@ return array(
     "added-items" => "Added items",
     "folder-deleted" => "The folder has been deleted.",
     "no-delete-permission" => "You do not have permission to delete this folder.",
-    "delete-confirmation" => "Are you sure you want to delete this folder?",
+    "delete-confirmation" => "Are you sure you want to delete this folder? The teacher can no longer be able to see this folder.",
     'choose-teacher' => 'Choose teacher',
     'no-teacher' => 'You can only share this folder if you are assigned to a teacher.',
     'add-comment-teacher' => 'Leave your comment here..',
@@ -24,4 +25,7 @@ return array(
     'share' => 'Share',
     'shared' => 'Shared',
     'prive' => 'Prive',
+    'stop-sharing-folder' => 'Stop sharing this folder',
+    'delete-folder' => 'Delete',
+    'create-folder' => 'Create folder'
 );

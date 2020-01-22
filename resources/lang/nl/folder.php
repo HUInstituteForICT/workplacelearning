@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'folders' => 'Mappen',
     'folder-created' => 'Map is aangemaakt.',
     'folders' => 'Mappen',
     'add-to-folder' => 'Toevoegen aan map',
@@ -15,7 +16,7 @@ return array(
     "added-items" => "Toegevoegde items",
     "folder-deleted" => "De map is verwijderd.",
     "no-delete-permission" => "U hebt geen toestemming om deze map te verwijderen.",
-    "delete-confirmation" => "Weet u zeker dat u deze map wilt verwijderen?",
+    "delete-confirmation" => "Weet je zeker dat je deze map wilt verwijderen? De docent kan deze map dan niet meer zien.",
     'choose-teacher' => 'Kies je docent',
     'no-teacher' => 'Je kunt deze map alleen delen als je aan een docent bent toegewezen.',
     'add-comment-teacher' => 'Laat hier je reactie achter..',
@@ -24,4 +25,9 @@ return array(
     'share' => 'Deel',
     'shared' => 'Gedeeld',
     'prive' => 'Privé',
+    'stop-sharing-folder' => 'Stop sharing this folder',
+    'delete-folder' => 'Delete',
+    'stop-sharing-folder' => 'Stoppen met delen',
+    'delete-folder' => 'Verwijderen',
+    'create-folder' => 'Map aanmaken'
 );

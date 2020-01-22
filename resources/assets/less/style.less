@@ -1093,6 +1093,16 @@ div[class*=' styles_modalCenter'].panel {
   margin: 2px;
 }
 
+#folder {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr auto;
+}
+
+.no-top {
+  top: auto;
+}
+
 .folder-info {
   margin: 10px 0;
 }
@@ -1117,6 +1127,10 @@ div[class*=' styles_modalCenter'].panel {
 .folder-status {
   float: right;
   font-weight: normal;
+}
+
+.msg-no-folder {
+  text-align: left;
 }
 
 .sub-title-light {
@@ -1172,4 +1186,12 @@ div[class*=' styles_modalCenter'].panel {
 .comment-section {
   overflow-y: scroll; 
   max-height:300px;
+}
+
+.alert-dismissible .close {
+  position: static;
+}
+
+.color-red {
+  color: red !important;
 }
