@@ -7,6 +7,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
+use App\Repository\Eloquent\ResourcePersonRepository;
+use App\Repository\Eloquent\CategoryRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Services\CurrentUserResolver;
@@ -38,16 +40,31 @@ class SavedLearningItemController extends Controller
      */
     private $learningActivityProducingRepository;
 
+    /**
+     * @var ResourcePersonRepository
+     */
+    private $resourcePersonRepository;
+
+     /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
+
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         SavedLearningItemRepository $savedLearningItemRepository,
         TipRepository $tipRepository,
-        LearningActivityProducingRepository $learningActivityProducingRepository
+        LearningActivityProducingRepository $learningActivityProducingRepository,
+        ResourcePersonRepository $resourcePersonRepository,
+        CategoryRepository $categoryRepository
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
         $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->resourcePersonRepository = $resourcePersonRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function index(TipEvaluator $evaluator)
@@ -55,31 +72,48 @@ class SavedLearningItemController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
-
+        $persons = $this->resourcePersonRepository->all();
+        $categories = $this->categoryRepository->all();
+        $associatedActivities = [];
         
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
             return $item->category == 'activity';
         })->pluck('item_id')->toArray();
 
         if ($student->educationProgram->educationprogramType->isActing()) {
-            $activities = array_filter($this->learningActivityProducingRepository->getActivitiesForStudent($student), function (LearningActivityActing $activity) use ($savedActivitiesIds) {
-                return in_array($activity->laa_id, $savedActivitiesIds);
-            });
+            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->laa_id] = $activity;
+            }
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
-            $activities = array_filter($this->learningActivityProducingRepository->getActivitiesForStudent($student), function (LearningActivityProducing $activity) use ($savedActivitiesIds) {
-                return in_array($activity->lap_id, $savedActivitiesIds);
-            });
+            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->lap_id] = $activity;
+            }
+        }
+
+        $resourcepersons = [];
+        foreach($persons as $person) {
+            $resourcepersons[$person->rp_id] = $person;
+        }
+
+        $associatedCategories = [];
+        foreach($categories as $category) {
+            $associatedCategories[$category->category_id] = $category;
         }
 
         $evaluatedTips = [];
         foreach ($tips as $tip) {
             $evaluatedTips[$tip->id] = $evaluator->evaluateForChosenStudent($tip, $student);
         }
+
         return view('pages.saved-items')
             ->with('student', $student)
             ->with('sli', $sli)
-            ->with('activities', $activities)
-            ->with('evaluatedTips', $evaluatedTips);
+            ->with('activities', $associatedActivities)
+            ->with('evaluatedTips', $evaluatedTips)
+            ->with('resourcePerson', $resourcepersons)
+            ->with('categories', $associatedCategories);
     }
 
     public function createItem($category, $item_id)

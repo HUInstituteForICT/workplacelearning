@@ -42,22 +42,25 @@ use App\SavedLearningItem
                             </div>
                             @endcard
                         @endif
-                    @endforeach
-
-                     <!-- Activities -->
-                     @foreach($activities as $activity)
+                        <!-- Activities -->
+                        @if ($item->category === 'activity' && in_array($item->item_id, array_keys($activities)))
                             @card
                             <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                             <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
                                 <h4>Activiteit</h4>
-                                <p><strong>{{date('d-m-Y', strtotime($activity->date))}}</strong>: {{$activity->description}}</p>
-                                <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activity->duration}} uur
-                                <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$activity->duration}} uur
-                                <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$activity->duration}} uur
+                                <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
+                                <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+                                @if($activities[$item->item_id]->res_person_id === null) 
+                                    <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>Alleen
+                                @else
+                                <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}} 
+                                @endif
+                                <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}} 
                             </div>
                             @endcard
+                        @endif
+                        
                         @endforeach
-                @endcard
 
             </div>
          </div>
