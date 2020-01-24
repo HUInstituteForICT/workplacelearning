@@ -29,4 +29,5 @@ return array(
     'stop-sharing-folder' => 'Stoppen met delen',
     'delete-folder' => 'Verwijderen',
     'create-folder' => 'Map aanmaken'
+    'items-limit-hint' => 'Probeer te ontdekken wat de kern is van jouw begeleidingsvraag. Kies vervolgens maximaal drie items die nodig zijn voor de docent om jouw vraag te beantwoorden. Op deze manier kan je vraag beter en doelgerichter beantwoord worden en kun jij weer sneller door!'
 );

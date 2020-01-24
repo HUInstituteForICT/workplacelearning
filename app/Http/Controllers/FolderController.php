@@ -9,9 +9,13 @@ use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\FolderCommentRepository;
+<<<<<<< HEAD
 use App\Repository\Eloquent\ResourcePersonRepository;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Repository\Eloquent\CategoryRepository;
+=======
+use App\Repository\Eloquent\SavedLearningItemRepository;
+>>>>>>> ahmed/feature/add-items-to-folder
 use App\Folder;
 use App\FolderComment;
 use App\SavedLearningItem;
@@ -216,7 +220,8 @@ class FolderController extends Controller
         return redirect($url);
     }
 
-    public function stopSharingFolder(Folder $folder) {
+    public function stopSharingFolder(Folder $folder) 
+    {
         $student = $this->currentUserResolver->getCurrentUser();
 
         if (!$student->is($folder->student)) {
@@ -227,5 +232,16 @@ class FolderController extends Controller
         $this->folderRepository->save($folder);
 
         return redirect('folders');
+    }
+
+    public function AddItemsToFolder(Request $request)
+    {
+        foreach ($request['check_list'] as $selectedItem) {
+            $savedLearningItem =  $this->savedLearningItemRepository->findById($selectedItem);
+            $savedLearningItem->folder =  $request['selected_folder_id'];
+            $savedLearningItem->save();
+        }
+
+        return redirect('saved-learning-items');
     }
 }

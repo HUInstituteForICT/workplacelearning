@@ -27,4 +27,6 @@ return array(
     'stop-sharing-folder' => 'Stop sharing this folder',
     'delete-folder' => 'Delete',
     'create-folder' => 'Create folder'
+    'items-limit-hint' => 'Todo...'
+
 );
