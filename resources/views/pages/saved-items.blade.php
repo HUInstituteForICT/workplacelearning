@@ -31,6 +31,7 @@ use App\SavedLearningItem
                             @card
                             <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                             <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                            <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                             <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
                             <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
                                 @if (in_array($item->item_id, array_keys($evaluatedTips)))
