@@ -25,8 +25,10 @@ function countSelectedItems() {
     var lenSelectedItems = getSelectedItems().length;
     document.getElementById('selected-items-count').innerHTML = `${lenSelectedItems}/${itemsLimit}`;
     document.getElementById('selected-items-count').style.color = '#333';
+    document.getElementById('addItemsButton').classList.remove('disabled');
 
-    if (lenSelectedItems >= itemsLimit) {
+    if (lenSelectedItems > itemsLimit) {
+        document.getElementById('addItemsButton').classList.add('disabled');
         document.getElementById('selected-items-count').style.color = 'red';
     }
 }
