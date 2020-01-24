@@ -1,8 +1,7 @@
 <script>
 
-function chooseItem(id) {
-    document.getElementById('sli_id').value = id;
+function chooseItem(sli_id) {
+    document.getElementById('sli_id').value = sli_id;
 }
-
 
 </script>

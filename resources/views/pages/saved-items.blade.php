@@ -31,9 +31,8 @@ use App\SavedLearningItem
                             @card
                             <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                             <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
-                                <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation') }}')"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
-                                <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
-                                <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                            <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
+                            <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
                                 @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                     <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
                                 @else
@@ -46,7 +45,9 @@ use App\SavedLearningItem
                         @if ($item->category === 'activity' && in_array($item->item_id, array_keys($activities)))
                             @card
                             <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
-                            <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                            <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
+                            <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
+                            <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
                                 <h4>Activiteit</h4>
                                 <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
                                 <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
@@ -76,7 +77,7 @@ use App\SavedLearningItem
         </div>
         <div class="modal-body">
 
-        {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder'))) !!}
+        {!! Form::open(array('url' =>  route('saved-learning-items-addItemToFolder'))) !!}
 
             <div class="form-group">
                 <input type='text' name='sli_id' id="sli_id" class="form-control">

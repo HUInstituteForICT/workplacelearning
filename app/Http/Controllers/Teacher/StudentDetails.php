@@ -9,8 +9,13 @@ use App\Services\CurrentUserResolver;
 use App\Student;
 use App\WorkplaceLearningPeriod;
 use App\Folder;
+use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
 use App\Repository\Eloquent\TipRepository;
+use App\Repository\Eloquent\ResourcePersonRepository;
+use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\CategoryRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Tips\Services\TipEvaluator;
 use App\Analysis\Producing\ProducingAnalysisCollector;
 
@@ -26,17 +31,47 @@ class StudentDetails extends Controller
      */
     private $tipEvaluator;
 
+     /**
+     * @var LearningActivityProducingRepository
+     */
+    private $learningActivityProducingRepository;
+
+     /**
+     * @var SavedLearningItemRepository
+     */
+    private $savedLearningItemRepository;
+
+    /**
+     * @var ResourcePersonRepository
+     */
+    private $resourcePersonRepository;
+
+     /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
     public function __construct(
         CurrentUserResolver $currentUserResolver,
-        TipRepository $tipRepository)
+        TipRepository $tipRepository,
+        SavedLearningItemRepository $savedLearningItemRepository,
+        LearningActivityProducingRepository $learningActivityProducingRepository,
+        ResourcePersonRepository $resourcePersonRepository,
+        CategoryRepository $categoryRepository)
+   
     {
         $this->currentUserResolver = $currentUserResolver;
         $this->tipRepository = $tipRepository;
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
+        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->resourcePersonRepository = $resourcePersonRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function __invoke(Student $student, TipEvaluator $evaluator, ProducingAnalysisCollector $producingAnalysisCollector)
     {
         $teacher = $this->currentUserResolver->getCurrentUser();
+        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
         
         // all wplps of the student where the logged-in teacher is the supervisor.
         $workplaces = $student->getWorkplaceLearningPeriods()
@@ -55,7 +90,36 @@ class StudentDetails extends Controller
         $sharedFolders = $student->folders->filter(function (Folder $folder) {
             return $folder->isShared();
         });
+
+        $persons = $this->resourcePersonRepository->all();
+        $categories = $this->categoryRepository->all();
+        $associatedActivities = [];
         
+        $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
+            return $item->category == 'activity';
+        })->pluck('item_id')->toArray();
+
+        if ($student->educationProgram->educationprogramType->isActing()) {
+            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->laa_id] = $activity;
+            }
+        } elseif ($student->educationProgram->educationprogramType->isProducing()) {
+            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->lap_id] = $activity;
+            }
+        }
+         $resourcepersons = [];
+        foreach($persons as $person) {
+            $resourcepersons[$person->rp_id] = $person;
+        }
+
+        $associatedCategories = [];
+        foreach($categories as $category) {
+            $associatedCategories[$category->category_id] = $category;
+        }
+
         $evaluatedTips = [];
         foreach ($tips as $tip) {
             $evaluatedTips[$tip->id] = $evaluator->evaluateForChosenStudent($tip, $student);
@@ -65,7 +129,10 @@ class StudentDetails extends Controller
             ->with('student', $student)
             ->with('workplace', $workplace)
             ->with('sharedFolders', $sharedFolders)
+            ->with('activities', $associatedActivities)
             ->with('evaluatedTips', $evaluatedTips)
+            ->with('resourcePerson', $resourcepersons)
+            ->with('categories', $associatedCategories)
             ->with('numdays', $producingAnalysisCollector->getFullWorkingDaysOfStudent($student))
             ->with('learningperiod', $learningperiod);
     }

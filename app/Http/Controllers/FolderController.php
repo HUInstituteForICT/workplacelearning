@@ -9,8 +9,12 @@ use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\FolderCommentRepository;
+use App\Repository\Eloquent\ResourcePersonRepository;
+use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\CategoryRepository;
 use App\Folder;
 use App\FolderComment;
+use App\SavedLearningItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
@@ -45,18 +49,40 @@ class FolderController extends Controller
      */
     private $tipRepository;
 
+     /**
+     * @var LearningActivityProducingRepository
+     */
+    private $learningActivityProducingRepository;
+
+    /**
+     * @var ResourcePersonRepository
+     */
+    private $resourcePersonRepository;
+
+     /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
+
     public function __construct(
         CurrentUserResolver $currentUserResolver, 
         FolderRepository $folderRepository,
         TipRepository $tipRepository,
         SavedLearningItemRepository $savedLearningItemRepository,
-        FolderCommentRepository $folderCommentRepository)
+        FolderCommentRepository $folderCommentRepository,
+        LearningActivityProducingRepository $learningActivityProducingRepository,
+        ResourcePersonRepository $resourcePersonRepository,
+        CategoryRepository $categoryRepository)
     {
         $this->currentUserResolver = $currentUserResolver;
         $this->folderRepository = $folderRepository;
         $this->folderCommentRepository = $folderCommentRepository;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
+        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->resourcePersonRepository = $resourcePersonRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function index(TipEvaluator $evaluator)
@@ -64,6 +90,35 @@ class FolderController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+        $persons = $this->resourcePersonRepository->all();
+        $categories = $this->categoryRepository->all();
+        $associatedActivities = [];
+        
+        $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
+            return $item->category == 'activity';
+        })->pluck('item_id')->toArray();
+
+        if ($student->educationProgram->educationprogramType->isActing()) {
+            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->laa_id] = $activity;
+            }
+        } elseif ($student->educationProgram->educationprogramType->isProducing()) {
+            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->lap_id] = $activity;
+            }
+        }
+
+        $resourcepersons = [];
+        foreach($persons as $person) {
+            $resourcepersons[$person->rp_id] = $person;
+        }
+
+        $associatedCategories = [];
+        foreach($categories as $category) {
+            $associatedCategories[$category->category_id] = $category;
+        }
 
         $evaluatedTips = [];
         foreach ($tips as $tip) {
@@ -73,7 +128,10 @@ class FolderController extends Controller
         return view('pages.folders')
             ->with('student', $student)
             ->with('sli', $sli)
-            ->with('evaluatedTips', $evaluatedTips);
+            ->with('activities', $associatedActivities)
+            ->with('evaluatedTips', $evaluatedTips)
+            ->with('resourcePerson', $resourcepersons)
+            ->with('categories', $associatedCategories);
     }
 
     public function create(Request $request)

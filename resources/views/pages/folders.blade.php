@@ -64,21 +64,8 @@ use App\SavedLearningItem
                                         <h5>{{ __('folder.added-items') }} <span class="badge">{{ count($folder->savedLearningItems)}}</span></h5>
                                         @foreach($folder->savedLearningItems as $item)
                                             @if($item->category === 'tip')
-                                                <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                                                    role="alert">
-                                                    <!-- Delete item from folder -->
-                                                    {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder')))!!}
-    
-                                                    <div class="form-group">
-                                                        <input type='text' name='sli_id'  id="sli_id" class="form-control" value="{{$item->sli_id}}">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" id="folder-null" name="chooseFolder" value="0">
-                                                    </div>
-                                                    <!-- {{ Form::submit('Opslaan', array('class' => 'glyphicon glyphicon-remove delete-tip-from-folder', 'id' => 'addItemToFolder')) }} -->
-                                                    {{ Form::button('', ['type' => 'submit', 'class' => 'glyphicon glyphicon-remove delete-tip-from-folder'] )  }}
-                                                    {{ Form::close() }}
-    
+                                            <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                                            <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                                     <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                                                     @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                                         <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
@@ -88,12 +75,19 @@ use App\SavedLearningItem
                                                 </div>
                                             @elseif ($item->category === 'activity')
                                                 @card
-                                                <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
-                                                    <h4 class="tip-title">Activiteit</h4>
-                                                    <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</p>
-                                                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-                                                    <small>2 uur</small>
-                                                    <p>Gemiddeld</p>
+                                                <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
+                                                <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
+                                                <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
+                                                <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
+                                                    <h4>Activiteit</h4>
+                                                    <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
+                                                    <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+                                                    @if($activities[$item->item_id]->res_person_id === null) 
+                                                        <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>Alleen
+                                                    @else
+                                                    <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}} 
+                                                    @endif
+                                                    <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}} 
                                                 </div>
                                                 @endcard
                                             @endif
@@ -216,21 +210,8 @@ use App\SavedLearningItem
                                             <h5>{{ __('folder.added-items') }} <span class="badge">{{ count($folder->savedLearningItems)}}</span></h5>
                                             @foreach($folder->savedLearningItems as $item)
                                                 @if($item->category === 'tip')
-                                                    <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                                                        role="alert">
-                                                        <!-- Delete item from folder -->
-                                                        {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder')))!!}
-    
-                                                        <div class="form-group">
-                                                            <input type='text' name='sli_id'  id="sli_id" class="form-control" value="{{$item->sli_id}}">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control" id="folder-null" name="chooseFolder" value="0">
-                                                        </div>
-                                                        <!-- {{ Form::submit('Opslaan', array('class' => 'glyphicon glyphicon-remove delete-tip-from-folder', 'id' => 'addItemToFolder')) }} -->
-                                                        {{ Form::button('', ['type' => 'submit', 'class' => 'glyphicon glyphicon-remove delete-tip-from-folder'] )  }}
-                                                        {{ Form::close() }}
-    
+                                                <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                                         <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                                                         @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                                             <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
@@ -240,12 +221,19 @@ use App\SavedLearningItem
                                                     </div>
                                                 @elseif ($item->category === 'activity')
                                                     @card
-                                                    <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
-                                                        <h4 class="tip-title">Activiteit</h4>
-                                                        <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</p>
-                                                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-                                                        <small>2 uur</small>
-                                                        <p>Gemiddeld</p>
+                                                    <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
+                                                    <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
+                                                    <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
+                                                    <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
+                                                        <h4>Activiteit</h4>
+                                                        <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
+                                                        <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+                                                        @if($activities[$item->item_id]->res_person_id === null) 
+                                                            <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>Alleen
+                                                        @else
+                                                        <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}} 
+                                                        @endif
+                                                        <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}} 
                                                     </div>
                                                     @endcard
                                                 @endif
