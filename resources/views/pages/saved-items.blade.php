@@ -305,23 +305,6 @@ use App\SavedLearningItem
                             @endcard
                         @endif
                     @endforeach
-                    @foreach ($sli as $item)
-                        @if ($item->category === 'tip')
-                            @card
-                            <div class="form-group item">
-                                <input type="checkbox" name="check_list[]" value="{{$item->sli_id}}" onclick="countSelectedItems()"/>
-                                <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
-                                    <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                                    @if (in_array($item->item_id, array_keys($evaluatedTips)))
-                                        <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
-                                    @else
-                                        <p>{{ __('saved_learning_items.tip-not-found') }}</p>
-                                    @endif
-                                </div>
-                            </div>
-                            @endcard
-                        @endif
-                    @endforeach
                 </div>
                     
                 <div class="modal-footer">
