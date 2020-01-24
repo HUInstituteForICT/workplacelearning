@@ -72,6 +72,7 @@ use App\SavedLearningItem
                         {{-- folder basic info --}}
                         <section class="section folder-info">
                             <a href="{{ route('folder.destroy', ['folder' => $folder]) }}" onclick="return confirm('{{ __('folder.delete-confirmation') }}')"><span class="right glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                            <a onclick="setSelectedFolder({{ $folder }})" data-target="#AddItemsToFolderModel" data-toggle="modal"><span class="right glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                             <p class="sub-title-light">{{ __('folder.created-on') }} {{ $folder->created_at->toFormattedDateString() }}</p>
                             <br>
                             {{ $folder->description }}
@@ -200,7 +201,7 @@ use App\SavedLearningItem
         {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder'))) !!}
 
             <div class="form-group">
-                <input type='text' name='sli_id' id="sli_id" class="form-control">
+                <input type='text' name='sli_id' id="sl-item_id" class="form-control hidden_element">
             </div>
 
             <div class="form-group">
@@ -244,7 +245,7 @@ use App\SavedLearningItem
             
 
         <div class="modal-footer">
-            {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'saveButton')) }}
+            {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'createFolderButton')) }}
             {{ Form::close() }}
         </div>
       </div>
@@ -252,6 +253,63 @@ use App\SavedLearningItem
     </div>
   </div>
   
+</div>
+
+{{-- Modal to add items to a folder from the 'guidance' page --}}
+<div class="modal fade" id="AddItemsToFolderModel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                {{-- <h4 class="modal-title">{{ __('folder.add-items') }}</h4> --}}
+                <h4 class="modal-title">Add Items to this folder.</h4>
+            </div>
+            <div class="modal-body">
+                <div class="selected-folder-info">
+                    <h4 id="folder-title"></h4>
+                    <p id="folder-created-at"></p>
+                </div>
+                <h4 id="selected-items-count" class="right no-margin"></h4>
+                {{-- <p>{{ __('folder.items-limit-msg') }}</p> --}}
+                <p>Select max. 3 items to add to this folder.
+                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ __('folder.items-limit-hint') }}"></i>
+                </p>
+
+                {!! Form::open(array('url' =>  route('folder.AddItemsToFolder'))) !!}
+                <div class="form-group">
+                    <input class="hidden_element" type='text' name="selected_folder_id" id="selected_folder_id" class="form-control">
+                </div>
+
+                <div class="ml-learning-items">
+                    <h5>Learning items</h5>
+                    @foreach ($sli as $item)
+                        @if ($item->category === 'tip')
+                            @card
+                            <div class="form-group item">
+                                <input type="checkbox" name="check_list[]" value="{{$item->sli_id}}" onclick="countSelectedItems()"/>
+                                <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
+                                    <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
+                                    <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
+                                    <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                                    @if (in_array($item->item_id, array_keys($evaluatedTips)))
+                                        <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
+                                    @else
+                                        <p>{{ __('saved_learning_items.tip-not-found') }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                            @endcard
+                        @endif
+                    @endforeach
+                </div>
+                    
+                <div class="modal-footer">
+                    {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'addItemsButton')) }}
+                    {{ Form::close() }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @include('js.learningitem_save')
 @stop

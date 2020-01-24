@@ -24,4 +24,6 @@ return array(
     'share' => 'Share',
     'shared' => 'Shared',
     'prive' => 'Prive',
+    'items-limit-hint' => 'Todo...'
+
 );

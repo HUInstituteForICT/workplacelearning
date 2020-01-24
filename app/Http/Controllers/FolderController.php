@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\FolderCommentRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Folder;
 use App\FolderComment;
 use Illuminate\Http\Request;
@@ -32,15 +33,22 @@ class FolderController extends Controller
      */
     private $folderCommentRepository;
 
+    /**
+     * @var SavedLearningItemRepository
+     */
+    private $savedLearningItemRepository;
+
 
     public function __construct(
     CurrentUserResolver $currentUserResolver, 
     FolderRepository $folderRepository,
-    FolderCommentRepository $folderCommentRepository)
+    FolderCommentRepository $folderCommentRepository,
+    SavedLearningItemRepository $savedLearningItemRepository)
     {
         $this->currentUserResolver = $currentUserResolver;
         $this->folderRepository = $folderRepository;
         $this->folderCommentRepository = $folderCommentRepository;
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
     }
 
     public function create(Request $request)
@@ -123,5 +131,16 @@ class FolderController extends Controller
         }
 
         return redirect($url);
+    }
+
+    public function AddItemsToFolder(Request $request)
+    {
+        foreach ($request['check_list'] as $selectedItem) {
+            $savedLearningItem =  $this->savedLearningItemRepository->findById($selectedItem);
+            $savedLearningItem->folder =  $request['selected_folder_id'];
+            $savedLearningItem->save();
+        }
+
+        return redirect('saved-learning-items');
     }
 }
