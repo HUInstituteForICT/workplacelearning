@@ -71,7 +71,7 @@ use App\SavedLearningItem
                                         @foreach($folder->savedLearningItems as $item)
                                             @if($item->category === 'tip')
                                             <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
-                                            <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                            <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                                     <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                                                     @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                                         <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
@@ -81,7 +81,7 @@ use App\SavedLearningItem
                                                 </div>
                                             @elseif ($item->category === 'activity')
                                                 <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
-                                                <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                                <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                                     <h4>Activiteit</h4>
                                                     <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
                                                      <!-- Acting -->
@@ -222,7 +222,7 @@ use App\SavedLearningItem
                                             @foreach($folder->savedLearningItems as $item)
                                                 @if($item->category === 'tip')
                                                 <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
-                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                                <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                                         <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                                                         @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                                             <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
@@ -232,7 +232,7 @@ use App\SavedLearningItem
                                                     </div>
                                                 @elseif ($item->category === 'activity')
                                                     <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
-                                                    <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                                    <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                                     <h4>Activiteit</h4>
                                                     <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
                                                    <!-- Acting -->
