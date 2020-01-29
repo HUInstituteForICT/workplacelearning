@@ -115,8 +115,6 @@ use App\Student;use App\Workplace;
                                             </div>
                                 
                                         @elseif ($item->category === 'activity')
-                                                    @card
-                                                    <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                                                     <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
                                                         <h4>Activiteit</h4>
                                                         <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
@@ -128,7 +126,6 @@ use App\Student;use App\Workplace;
                                                         @endif
                                                         <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}} 
                                                     </div>
-                                                    @endcard
                                                 @endif
                                     @endforeach
                                 </section>

@@ -948,3 +948,17 @@ div[class*=' styles_modalCenter'].panel {
 .color-red {
   color: red !important;
 }
+.item {
+  display: flex;
+  align-items: center;
+}
+.ml-learning-items {
+  overflow-y: auto;
+  max-height: 410px;
+}
+.hidden_element {
+  display: none;
+}
+.no-margin {
+  margin: 0 !important;
+}

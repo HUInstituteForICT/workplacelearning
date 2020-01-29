@@ -26,7 +26,7 @@ return array(
     'prive' => 'Prive',
     'stop-sharing-folder' => 'Stop sharing this folder',
     'delete-folder' => 'Delete',
-    'create-folder' => 'Create folder'
-    'items-limit-hint' => 'Todo...'
+    'create-folder' => 'Create folder',
+    'items-limit-hint' => 'Todo...',
 
 );

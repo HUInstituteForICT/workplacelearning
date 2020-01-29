@@ -18,12 +18,6 @@ use App\SavedLearningItem
 /** @var Folder $folder */?>
 
     <div class="container-fluid">
-        <script>
-            $(document).ready(function () {
-                // Tooltips
-                $('[data-toggle="tooltip"]').tooltip();
-            });
-        </script>
         @card
         <h1>{{ __('saved_learning_items.saved') }}</h1>
         <div class="row">
@@ -40,7 +34,6 @@ use App\SavedLearningItem
                             <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                             <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
                             <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
-                            <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                                 @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                     <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
                                 @else
@@ -142,59 +135,5 @@ use App\SavedLearningItem
   
 </div>
 
-{{-- Modal to add items to a folder from the 'guidance' page --}}
-<div class="modal fade" id="AddItemsToFolderModel" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                {{-- <h4 class="modal-title">{{ __('folder.add-items') }}</h4> --}}
-                <h4 class="modal-title">Add Items to this folder.</h4>
-            </div>
-            <div class="modal-body">
-                <div class="selected-folder-info">
-                    <h4 id="folder-title"></h4>
-                    <p id="folder-created-at"></p>
-                </div>
-                <h4 id="selected-items-count" class="right no-margin"></h4>
-                {{-- <p>{{ __('folder.items-limit-msg') }}</p> --}}
-                <p>Kies maximaal drie items om aan deze map toe te voegen.
-                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ __('folder.items-limit-hint') }}"></i>
-                </p>
-
-                {!! Form::open(array('url' =>  route('folder.AddItemsToFolder'))) !!}
-                <div class="form-group">
-                    <input class="hidden_element" type='text' name="selected_folder_id" id="selected_folder_id" class="form-control">
-                </div>
-
-                <div class="ml-learning-items">
-                    <h5>Learning items</h5>
-                    @foreach ($sli as $item)
-                        @if ($item->category === 'tip')
-                            @card
-                            <div class="form-group item">
-                                <input type="checkbox" name="check_list[]" value="{{$item->sli_id}}" onclick="countSelectedItems()"/>
-                                <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
-                                    <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                                    @if (in_array($item->item_id, array_keys($evaluatedTips)))
-                                        <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
-                                    @else
-                                        <p>{{ __('saved_learning_items.tip-not-found') }}</p>
-                                    @endif
-                                </div>
-                            </div>
-                            @endcard
-                        @endif
-                    @endforeach
-                </div>
-                    
-                <div class="modal-footer">
-                    {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'addItemsButton')) }}
-                    {{ Form::close() }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @include('js.learningitem_save')
 @stop

@@ -9,13 +9,9 @@ use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\FolderCommentRepository;
-<<<<<<< HEAD
 use App\Repository\Eloquent\ResourcePersonRepository;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Repository\Eloquent\CategoryRepository;
-=======
-use App\Repository\Eloquent\SavedLearningItemRepository;
->>>>>>> ahmed/feature/add-items-to-folder
 use App\Folder;
 use App\FolderComment;
 use App\SavedLearningItem;
@@ -242,6 +238,6 @@ class FolderController extends Controller
             $savedLearningItem->save();
         }
 
-        return redirect('saved-learning-items');
+        return redirect('folders');
     }
 }
