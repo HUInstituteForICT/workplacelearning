@@ -14,13 +14,6 @@ function getSelectedItems() {
     return selectedItems;
 }
 
-function setSelectedFolder(folder) {
-    document.getElementById('selected-items-count').innerHTML = `${getSelectedItems().length}/${itemsLimit}`;
-    document.getElementById('folder-title').innerHTML = folder.title;
-    document.getElementById('folder-created-at').innerHTML = folder.created_at;
-    document.getElementById('selected_folder_id').value = folder.folder_id;
-}
-
 function countSelectedItems() {
     var lenSelectedItems = getSelectedItems().length;
     document.getElementById('selected-items-count').innerHTML = `${lenSelectedItems}/${itemsLimit}`;

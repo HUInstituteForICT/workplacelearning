@@ -24,5 +24,8 @@ return array(
     'share' => 'Deel',
     'shared' => 'Gedeeld',
     'prive' => 'Privé',
-    'items-limit-hint' => 'Probeer te ontdekken wat de kern is van jouw begeleidingsvraag. Kies vervolgens maximaal drie items die nodig zijn voor de docent om jouw vraag te beantwoorden. Op deze manier kan je vraag beter en doelgerichter beantwoord worden en kun jij weer sneller door!'
+    'items' => 'Items',
+    'add-items' => 'Items toevoegen aan deze map.',
+    'items-limit' => 'Kies maximaal drie items om aan deze map toe te voegen.',
+    'items-limit-hint' => 'Probeer te ontdekken wat de kern is van jouw begeleidingsvraag. Kies vervolgens maximaal drie items die nodig zijn voor de docent om jouw vraag te beantwoorden. Op deze manier kan je vraag beter en doelgerichter beantwoord worden en kun jij weer sneller door!',
 );

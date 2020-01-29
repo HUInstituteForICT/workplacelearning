@@ -24,6 +24,8 @@ return array(
     'share' => 'Share',
     'shared' => 'Shared',
     'prive' => 'Prive',
-    'items-limit-hint' => 'Todo...'
-
+    'items' => 'Items',
+    'add-items' => 'Add Items to this folder.',
+    'items-limit' => 'Choose a maximum of three items to add to this folder.',
+    'items-limit-hint' => 'Try to find what the core of your question is. Then choose a maximum of three items that support your question. In this way your question can be answered better and in a more targeted manner.',
 );
