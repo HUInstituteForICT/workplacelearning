@@ -16,6 +16,7 @@ use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
 use App\Tips\Services\TipEvaluator;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\LearningActivityProducing;
 
 class SavedLearningItemController extends Controller
@@ -41,6 +42,11 @@ class SavedLearningItemController extends Controller
     private $learningActivityProducingRepository;
 
     /**
+     * @var LearningActivityActingRepository
+     */
+    private $learningActivityActingRepository;
+
+    /**
      * @var ResourcePersonRepository
      */
     private $resourcePersonRepository;
@@ -56,6 +62,7 @@ class SavedLearningItemController extends Controller
         SavedLearningItemRepository $savedLearningItemRepository,
         TipRepository $tipRepository,
         LearningActivityProducingRepository $learningActivityProducingRepository,
+        LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
         CategoryRepository $categoryRepository
     ) {
@@ -63,6 +70,7 @@ class SavedLearningItemController extends Controller
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
         $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->learningActivityActingRepository = $learningActivityActingRepository;
         $this->resourcePersonRepository = $resourcePersonRepository;
         $this->categoryRepository = $categoryRepository;
     }

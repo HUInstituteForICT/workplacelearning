@@ -118,8 +118,16 @@ use App\Student;use App\Workplace;
                                                     <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
                                                         <h4>Activiteit</h4>
                                                         <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
-                                                        <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
-                                                        @if($activities[$item->item_id]->res_person_id === null) 
+                                                        <!-- Acting -->
+                                                        @if($student->educationProgram->educationprogramType->isActing())
+                                                            <span class="glyphicon glyphicon-tasks activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+                                                        @endif
+                                                    <!-- Producing -->
+                                                        @if($student->educationProgram->educationprogramType->isProducing())
+                                                            <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+                                                        @endif
+                                                    <!-- Both -->
+                                                         @if($activities[$item->item_id]->res_person_id === null) 
                                                             <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>Alleen
                                                         @else
                                                         <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}} 

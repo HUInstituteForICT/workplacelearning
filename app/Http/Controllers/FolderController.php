@@ -11,6 +11,7 @@ use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\FolderCommentRepository;
 use App\Repository\Eloquent\ResourcePersonRepository;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Repository\Eloquent\CategoryRepository;
 use App\Folder;
 use App\FolderComment;
@@ -54,6 +55,12 @@ class FolderController extends Controller
      */
     private $learningActivityProducingRepository;
 
+     /**
+     * @var LearningActivityActingRepository
+     */
+    private $learningActivityActingRepository;
+
+
     /**
      * @var ResourcePersonRepository
      */
@@ -72,6 +79,7 @@ class FolderController extends Controller
         SavedLearningItemRepository $savedLearningItemRepository,
         FolderCommentRepository $folderCommentRepository,
         LearningActivityProducingRepository $learningActivityProducingRepository,
+        LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
         CategoryRepository $categoryRepository)
     {
@@ -81,6 +89,7 @@ class FolderController extends Controller
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
         $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->learningActivityActingRepository = $learningActivityActingRepository;
         $this->resourcePersonRepository = $resourcePersonRepository;
         $this->categoryRepository = $categoryRepository;
     }

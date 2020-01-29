@@ -202,7 +202,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
     Route::get('/saved-learning-items', 'SavedLearningItemController@index')->name('saved-learning-items');
     Route::get('/saved-learning-items/delete/{sli}', 'SavedLearningItemController@delete')->name('saved-learning-items-delete');
-    Route::post('/saved-learning-items/addItemToFolder', 'SavedLearningItemController@addItemToFolder')->name('saved-learning-items-addItemToFolder');
+    Route::post('/saved-learning-items/rToFolder', 'SavedLearningItemController@addItemToFolder')->name('saved-learning-items-addItemToFolder');
     Route::get('/saved-learning-items/removeItemFromFolder/{sli}', 'SavedLearningItemController@removeItemFromFolder')->name('saved-learning-item.removeItemFromFolder');
 
     // actions on folders and comments
@@ -320,6 +320,9 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/delete/{learningActivityActing}', 'ActingActivityController@delete')
                         ->middleware('can:delete,learningActivityActing')
                         ->name('process-acting-delete');
+
+                        Route::get('/save/{learningActivityActing}', 'ActingActivityController@save')
+                        ->name('process-acting-save');
 
                 }); // Actions relating to acting activities
             });
