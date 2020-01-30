@@ -24,4 +24,9 @@ return array(
     'share' => 'Deel',
     'shared' => 'Gedeeld',
     'prive' => 'Privé',
+    'not-responded' => 'Niet gereageerd',
+    'unanswered-question' => 'onbeantwoorde begeleidingsvraag',
+    'unanswered-questions' => 'onbeantwoorde begeleidingsvragen',
+    'nothing-shared' => 'student heeft niks gedeeld',
+    'no-new-folders' => 'geen nieuwe begeleidingsvragen',
 );

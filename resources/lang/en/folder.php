@@ -24,4 +24,9 @@ return array(
     'share' => 'Share',
     'shared' => 'Shared',
     'prive' => 'Prive',
+    'not-responded' => 'not responded',
+    'unanswered-question' => 'unanswered question',
+    'unanswered-questions' => 'unanswered questions',
+    'nothing-shared' => 'student has not shared anything',
+    'no-new-folders' => 'no new questions',
 );
