@@ -54,4 +54,13 @@ class Folder extends Model
     {
         return $this->hasMany(FolderComment::class, 'folder_id', 'folder_id');
     }
+
+    public function teacherInteracted(): bool
+    {
+        $teacherComments = $this->folderComments->filter(function (FolderComment $comment) {
+            return $comment->author->is($this->teacher);
+        });
+
+        return !$teacherComments->isEmpty();
+    }
 }
