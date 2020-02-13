@@ -1194,6 +1194,53 @@ div[class*=' styles_modalCenter'].panel {
   max-height:300px;
 }
 
+.student-table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
+
+.custom-tr > td {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle !important;
+}
+.green-td {
+  border-left: 10px solid green;
+  border-radius: 4px 0 0 4px;
+}
+.orange-td {
+  border-left: 10px solid orange;
+  border-radius: 4px 0 0 4px;
+}
+.red-td {
+  border-left: 10px solid @hu-red;
+  border-radius: 4px 0 0 4px;
+}
+.last-td {
+  border-right: 1px solid #ddd;
+  border-radius: 0 4px 4px 0;
+  text-align: center;
+}
+
+.danger-icon-red:before {
+  content:"\e209";
+  color: @hu-red;
+  display: block;
+  font-family:"Glyphicons Halflings";
+  left: -7px;
+  position: absolute;
+}
+
+.danger-icon-orange:before {
+  content:"\e209";
+  color: orange;
+  display: block;
+  font-family:"Glyphicons Halflings";
+  left: -7px;
+  position: absolute;
+}
+
+
 .alert-dismissible .close {
   position: static;
 }

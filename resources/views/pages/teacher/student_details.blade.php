@@ -82,6 +82,9 @@ use App\Student;use App\Workplace;
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                 <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
+                                @if (!$folder->teacherInteracted())
+                                    <span class="folder-status label label-info">{{ __('folder.not-responded') }}</span>
+                                @endif
                                 <div class="clearfix"></div>
                                 <p class="sub-title-light">{{ count($folder->savedLearningItems)}} {{ __('folder.items') }}</p>
                                 <div class="bullet">&#8226;</div>

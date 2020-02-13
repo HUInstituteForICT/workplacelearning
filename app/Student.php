@@ -221,6 +221,17 @@ class Student extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Folder::class, 'student_id', 'student_id');
     }
 
+    public function getSharedFolders()
+    {
+        $sharedFolders = $this->folders->filter(function (Folder $folder) {
+            return $folder->isShared();
+        })->sortBy(function($folder) {
+            return $folder->teacherInteracted();
+        });
+
+        return $sharedFolders;
+    }
+
     public function usersettings(): HasMany
     {
         return $this->hasMany(UserSetting::class, 'student_id', 'student_id');
@@ -329,6 +340,28 @@ class Student extends Authenticatable implements MustVerifyEmail
         return [
             'shortReflection' => $this->getUserSetting('shortReflection') ? (bool) $this->getUserSetting('shortReflection')->setting_value : true,
             'fullReflection'  => $this->getUserSetting('fullReflection') ? (bool) $this->getUserSetting('fullReflection')->setting_value : true,
+        ];
+    }
+
+    public function priority()
+    {
+        $now = Carbon::now();
+        $wplp = $this->getCurrentWorkplaceLearningPeriod();
+        $lastActivity = $wplp->getLastActivity(1);
+        $lastActivityDate = $lastActivity->isEmpty() ? $wplp->startdate : $lastActivity->first()->date;
+        
+        $countDaysFromLastActivity = $wplp->startdate->gt($now) ? 0 : $lastActivityDate->diffInDays($now);
+        $daysFromLastActivity = $wplp->startdate->gt($now) ? '-' : $now->subDays($countDaysFromLastActivity)->diffForHumans();
+
+        // folders that the student has shared but the teacher has not yet responded
+        $sharedFoldersWithoutResponse = $this->getSharedFolders()->filter(function (Folder $folder) {
+            return !$folder->teacherInteracted();
+        });
+
+        return [
+            'countDaysFromLastActivity' => $countDaysFromLastActivity,
+            'daysFromLastActivity' => $daysFromLastActivity,
+            'sharedFoldersWithoutResponse' => $sharedFoldersWithoutResponse
         ];
     }
 }
