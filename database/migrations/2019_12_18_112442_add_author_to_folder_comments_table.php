@@ -13,8 +13,13 @@ class AddAuthorToFolderCommentsTable extends Migration
      */
     public function up()
     {
+        // This weird way to make the column not nullable is necessary for SQLite
         Schema::table('folder_comments', function (Blueprint $table) {
-            $table->integer('author_id')->nullable(false);
+            $table->integer('author_id')->nullable();
+        });
+
+        Schema::table('folder_comments', function (Blueprint $table) {
+            $table->integer('author_id')->nullable(false)->change();
         });
 
         Schema::table('folder_comments', function (Blueprint $table) {

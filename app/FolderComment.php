@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property string text
+ * @property int folder_id
+ * @property int author_id
+ */
 class FolderComment extends Model
 {
     // Override the table used for the User Model

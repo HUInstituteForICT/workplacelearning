@@ -2,8 +2,8 @@
 
 const itemsLimit = 3;
 
-function chooseItem(id) {
-    document.getElementById('sl-item_id').value = id;
+function chooseItem(sli_id) {
+    document.getElementById('sl-item_id').value = sli_id;
 }
 
 function getSelectedItems() {
@@ -12,13 +12,6 @@ function getSelectedItems() {
         return item.checked;
     });
     return selectedItems;
-}
-
-function setSelectedFolder(folder) {
-    document.getElementById('selected-items-count').innerHTML = `${getSelectedItems().length}/${itemsLimit}`;
-    document.getElementById('folder-title').innerHTML = folder.title;
-    document.getElementById('folder-created-at').innerHTML = folder.created_at;
-    document.getElementById('selected_folder_id').value = folder.folder_id;
 }
 
 function countSelectedItems() {

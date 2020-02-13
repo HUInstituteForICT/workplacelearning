@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\LearningActivityActing;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Repository\Eloquent\ResourcePersonRepository;
@@ -35,7 +36,7 @@ class SavedLearningItemController extends Controller
      * @var TipRepository
      */
     private $tipRepository;
-    
+
     /**
      * @var LearningActivityProducingRepository
      */
@@ -83,9 +84,8 @@ class SavedLearningItemController extends Controller
         $persons = $this->resourcePersonRepository->all();
         $categories = $this->categoryRepository->all();
         $associatedActivities = [];
-        
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
-            return $item->category == 'activity';
+            return $item->category === 'activity';
         })->pluck('item_id')->toArray();
 
         if ($student->educationProgram->educationprogramType->isActing()) {
@@ -153,7 +153,7 @@ class SavedLearningItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver) 
+    public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver)
     {
         if(!$sli->student->is($currentUserResolver->getCurrentUser())) {
             throw new AuthorizationException('This is not your SLI');
