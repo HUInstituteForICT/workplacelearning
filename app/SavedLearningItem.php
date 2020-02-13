@@ -5,11 +5,14 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property string category
+ */
 class SavedLearningItem extends Model
 {
     // Disable using created_at and updated_at columns
     public $timestamps = false;
-    
+
     // Override the table used for the User Model
     protected $table = 'saved_learning_items';
 

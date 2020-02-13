@@ -205,6 +205,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     Route::post('/saved-learning-items/updateFolder', 'SavedLearningItemController@updateFolder')->name('saved-learning-item.updateFolder');
 
     // actions on folders and comments
+    Route::get('/folders', 'FolderController@index')->name('folders');
     Route::post('/folders/create', 'FolderController@create')->name('folder.create');
     Route::post('/folder/shareFolderWithTeacher', 'FolderController@shareFolderWithTeacher')->name('folder.shareFolderWithTeacher');
     Route::post('/folder/addComment', 'FolderController@addComment')->name('folder.addComment');

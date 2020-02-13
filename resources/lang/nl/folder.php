@@ -1,8 +1,8 @@
 <?php
 
 return array(
-    'folder-created' => 'Map is aangemaakt.',
     'folders' => 'Mappen',
+    'folder-created' => 'Map is aangemaakt.',
     'add-to-folder' => 'Toevoegen aan map',
     'new-folder' => 'Nieuwe map aanmaken',
     'title' => 'Titel',
@@ -26,4 +26,5 @@ return array(
     'prive' => 'Privé',
     'stop-sharing-folder' => 'Stoppen met delen',
     'delete-folder' => 'Verwijderen',
+    'create-folder' => 'Map aanmaken',
 );

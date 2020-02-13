@@ -6,7 +6,7 @@ return [
     'timeline'            => 'Timeline',
     'saved-succesfully'   => 'The learning activity item has been saved.',
     'tip-not-found'       => 'This tip no longer exists.',
-    'saved-items'         => 'Opgeslagen items',
-    'no-folders'          => 'Op dit moment heb je nog geen mappen. Maak eerst een map aan om items toe te voegen.',
-    'delete-confirmation' => 'Weet je zeker dat je dit item wilt verwijderen? Het item zal niet meer verschijnen in de lijst met alle opgeslagen items.',
+    'saved-items'         => 'Saved items',
+    'no-folders'          => 'You currently have no folders. First create a folder to add items to.',
+    'delete-confirmation' => 'Are you sure you want to delete this item? The item will no longer appear in the list of all saved items.',
 ];
