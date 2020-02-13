@@ -124,7 +124,7 @@ class SavedLearningItemController extends Controller
             ->with('categories', $associatedCategories);
     }
 
-    public function createItem($category, $item_id)
+    public function createItem(string $category, int $item_id, Request $request)
     {
         $student = $this->currentUserResolver->getCurrentUser();
 
@@ -132,6 +132,11 @@ class SavedLearningItemController extends Controller
             $url = route('home-acting');
         } else {
             $url = route('home-producing');
+        }
+
+
+        if ($previous = $request->session()->previousUrl()) {
+            $url = $previous;
         }
 
         $itemExists = $this->savedLearningItemRepository->itemExists($category, $item_id, $student->student_id);

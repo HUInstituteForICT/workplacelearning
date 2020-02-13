@@ -218,7 +218,7 @@ class FolderController extends Controller
 
         if ($currentUser->isTeacher()) {
             $url = route('teacher-student-details', ['student' => $student_id]);
-        } elseif ($currentUser->isStudent()) {
+        } else {
             $url = route('folders');
         }
 

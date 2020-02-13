@@ -9,6 +9,7 @@ use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\CurrentUserResolver;
+use App\Tips\EvaluatedTip;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;
 use Illuminate\Contracts\View\View;
@@ -71,8 +72,9 @@ class HomeController extends Controller
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 
+            /** @var EvaluatedTip|null $evaluatedTip */
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
-            if ($applicableEvaluatedTips->count() != 0) {
+            if ($evaluatedTip) {
                 $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id, $student->student_id);
             }
         }

@@ -40,36 +40,15 @@
                 <h1>{{ __('tips.personal-tip') }}s</h1>
 
 
-
                 @if(count($evaluatedTips) > 0)
                     <?php $tipCounter = 1; ?>
 
                     @foreach($evaluatedTips as $evaluatedTip)
-                        <?php $tip = $evaluatedTip->getTip(); ?>
-                            <strong>{{ trans('analysis.tip') }} {{ $tipCounter }}</strong>
-                            <div class="row">
-                                @if($tip->likes->count() === 0)
-                                    <div class="col-md-1"
-                                         style="display: inline-block; vertical-align: middle;   float: none;">
-
-                                        <h2 class="h2" style="cursor: pointer;color: #00A1E2;" id="likeTip-{{ $tip->id }}"
-                                            onclick="likeTip({{ $tip->id }}, 1)"
-                                            target="_blank"><span class="glyphicon glyphicon-thumbs-up"/></h2>
-                                        <h2 class="h2" style="cursor: pointer;color: #e2423b;" id="likeTip-{{ $tip->id }}"
-                                            onclick="likeTip({{ $tip->id }}, -1)"
-                                            target="_blank"><span class="glyphicon glyphicon-thumbs-down"/></h2>
-                                    </div>@endif<!-- {{-- this html comment is a hack, allows vertical aligment ¯\_(ツ)_/¯ --}}
-                                    --><div class="col-md-11"
-                                            style="display: inline-block; vertical-align: middle;   float: none;">
-                                    <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
-                                </div>
-                            </div>
-                            <br/><br/>
-                            <?php ++$tipCounter; ?>
-
+                        @include('components.tip_card', ['title' => trans('analysis.tip') .' '. $tipCounter, 'saved' => $savedTips[$evaluatedTip->getTip()->id], 'evaluatedTip' => $evaluatedTip])
+                        <?php ++$tipCounter; ?>
                     @endforeach
                 @else
-                            <p>{{ __('tips.none') }}</p>
+                    <p>{{ __('tips.none') }}</p>
                 @endif
 
             </div>
@@ -210,9 +189,6 @@
                 </script>
 
                 <br/><br/>
-
-
-
 
 
             </div>

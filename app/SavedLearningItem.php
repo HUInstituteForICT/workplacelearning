@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string category
+ * @property int item_id
+ * @property int student_id
+ * @property false|string created_at
+ * @property false|string updated_at
  */
 class SavedLearningItem extends Model
 {
