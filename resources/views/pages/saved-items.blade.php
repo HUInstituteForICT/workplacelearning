@@ -30,7 +30,7 @@ use App\SavedLearningItem
                         @card
                         <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
-                            <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
+                            <a href="{{ route('saved-learning-items-delete', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation') }}')"><span class="glyphicon glyphicon-trash delete-tip" aria-hidden="true"></span></a>
                             <a onclick="chooseItem({{ $item->sli_id }})" data-target="#addItemModel" data-toggle="modal"><span class="glyphicon glyphicon-plus add-tip" aria-hidden="true"></span></a>
                             <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                             @if (in_array($item->item_id, array_keys($evaluatedTips)))
@@ -53,25 +53,33 @@ use App\SavedLearningItem
                 @foreach($student->folders as $folder)
                 <div class="panel-group">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
-                            @if ($folder->isShared())
-                                <span class="folder-status label label-info">{{ __('folder.shared') }}</span>
-                            @else
-                                <span class="folder-status label label-default">{{ __('folder.prive') }}</span>
-                            @endif
-                            <div class="clearfix"></div>
-                            <p class="sub-title-light">{{ count($folder->savedLearningItems)}} {{ __('folder.items') }}</p>
-                            <div class="bullet">&#8226;</div>
-                            <p class="sub-title-light">{{ count($folder->folderComments)}} {{ __('folder.comments') }}</p>
-                        </h4>
+                        <div class="panel-heading" id="folder">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
+                                @if ($folder->isShared())
+                                    <span class="folder-status label label-info">{{ __('folder.shared') }}</span>
+                                @else
+                                    <span class="folder-status label label-default">{{ __('folder.prive') }}</span>
+                                @endif
+                                <div class="clearfix"></div>
+                                <p class="sub-title-light">{{ count($folder->savedLearningItems)}} {{ __('folder.items') }}</p>
+                                <div class="bullet">&#8226;</div>
+                                <p class="sub-title-light">{{ count($folder->folderComments)}} {{ __('folder.comments') }}</p>
+                            </h4>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" id="dropdownMenuFolder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right no-top" aria-labelledby="dropdownMenuFolder">
+                                    <li><a href="{{ route('folder.stop-sharing-folder', ['folder' => $folder]) }}">{{ __('folder.stop-sharing-folder') }}</a></li>
+                                    <li><a class="color-red" href="{{ route('folder.destroy', ['folder' => $folder]) }}" onclick="return confirm('{{ __('folder.delete-confirmation') }}')">{{ __('folder.delete-folder') }}</a></li>
+                                </ul>
+                            </div>
                         </div>
                         <div id="{{$folder->folder_id}}" class="panel-collapse collapse">
                         
                         {{-- folder basic info --}}
                         <section class="section folder-info">
-                            <a href="{{ route('folder.destroy', ['folder' => $folder]) }}" onclick="return confirm('{{ __('folder.delete-confirmation') }}')"><span class="right glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                             <p class="sub-title-light">{{ __('folder.created-on') }} {{ $folder->created_at->toFormattedDateString() }}</p>
                             <br>
                             {{ $folder->description }}
@@ -195,9 +203,10 @@ use App\SavedLearningItem
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">{{ __('folder.add-to-folder') }}</h4>
         </div>
+        
+        @if (count($student->folders))
         <div class="modal-body">
-
-        {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder'))) !!}
+            {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder'))) !!}
 
             <div class="form-group">
                 <input type='text' name='sli_id' id="sli_id" class="form-control">
@@ -210,12 +219,16 @@ use App\SavedLearningItem
                     @endforeach
                 </select>
             </div>
-
-            </div>
-            <div class="modal-footer">
+        </div>
+        @endif
+        <div class="modal-footer">
+            @if (count($student->folders))
                 {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'addItemToFolder')) }}
                 {{ Form::close() }}
-            </div>
+            @else
+                <p class="msg-no-folder color-red">{{ __('saved_learning_items.no-folders') }}</p>
+            @endif
+        </div>
       </div>
       
     </div>
