@@ -9,7 +9,6 @@ return array(
     'description' => 'Omschrijving',
     'folder-shared' => 'Map is gedeeld.',
     'nothing-shared'  => "Deze student heeft nog niets met u gedeeld.",
-    "items" => "items",
     "comments" => "opmerkingen",
     "created-on" => "Aangemaakt op",
     "added-items" => "Toegevoegde items",
@@ -27,4 +26,8 @@ return array(
     'stop-sharing-folder' => 'Stoppen met delen',
     'delete-folder' => 'Verwijderen',
     'create-folder' => 'Map aanmaken',
+    'items' => 'Items',
+    'add-items' => 'Items toevoegen aan deze map.',
+    'items-limit' => 'Kies maximaal drie items om aan deze map toe te voegen.',
+    'items-limit-hint' => 'Probeer te ontdekken wat de kern is van jouw begeleidingsvraag. Kies vervolgens maximaal drie items die nodig zijn voor de docent om jouw vraag te beantwoorden. Op deze manier kan je vraag beter en doelgerichter beantwoord worden en kun jij weer sneller door!',
 );

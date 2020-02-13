@@ -74,6 +74,7 @@ class FolderController extends Controller
             ->with('student', $student)
             ->with('sli', $sli)
             ->with('evaluatedTips', $evaluatedTips);
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
     }
 
     public function create(Request $request)
@@ -171,5 +172,16 @@ class FolderController extends Controller
         $this->folderRepository->save($folder);
 
         return redirect('folders');
+    }
+
+    public function AddItemsToFolder(Request $request)
+    {
+        foreach ($request['check_list'] as $selectedItem) {
+            $savedLearningItem =  $this->savedLearningItemRepository->findById($selectedItem);
+            $savedLearningItem->folder =  $request['selected_folder_id'];
+            $savedLearningItem->save();
+        }
+
+        return redirect('saved-learning-items');
     }
 }
