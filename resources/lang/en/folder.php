@@ -1,8 +1,8 @@
 <?php
 
 return array(
+    'folders' => 'Guidance',
     'folder-created' => 'Folder has been created.',
-    'folders' => 'Folders',
     'add-to-folder' => 'Add to folder',
     'new-folder' => 'Create folder',
     'title' => 'Title',
@@ -30,4 +30,5 @@ return array(
     'add-items' => 'Add Items to this folder.',
     'items-limit' => 'Choose a maximum of three items to add to this folder.',
     'items-limit-hint' => 'Try to find what the core of your question is. Then choose a maximum of three items that support your question. In this way your question can be answered better and in a more targeted manner.',
+    'create-folder' => 'Create folder',
 );

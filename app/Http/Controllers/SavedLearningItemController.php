@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\LearningActivityActing;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
+use App\Repository\Eloquent\ResourcePersonRepository;
+use App\Repository\Eloquent\CategoryRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Services\CurrentUserResolver;
@@ -15,6 +17,7 @@ use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
 use App\Tips\Services\TipEvaluator;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\LearningActivityProducing;
 
 class SavedLearningItemController extends Controller
@@ -39,16 +42,38 @@ class SavedLearningItemController extends Controller
      */
     private $learningActivityProducingRepository;
 
+    /**
+     * @var LearningActivityActingRepository
+     */
+    private $learningActivityActingRepository;
+
+    /**
+     * @var ResourcePersonRepository
+     */
+    private $resourcePersonRepository;
+
+     /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
+
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         SavedLearningItemRepository $savedLearningItemRepository,
         TipRepository $tipRepository,
-        LearningActivityProducingRepository $learningActivityProducingRepository
+        LearningActivityProducingRepository $learningActivityProducingRepository,
+        LearningActivityActingRepository $learningActivityActingRepository,
+        ResourcePersonRepository $resourcePersonRepository,
+        CategoryRepository $categoryRepository
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
         $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->learningActivityActingRepository = $learningActivityActingRepository;
+        $this->resourcePersonRepository = $resourcePersonRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function index(TipEvaluator $evaluator)
@@ -56,20 +81,33 @@ class SavedLearningItemController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
-
-
+        $persons = $this->resourcePersonRepository->all();
+        $categories = $this->categoryRepository->all();
+        $associatedActivities = [];
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
             return $item->category === 'activity';
         })->pluck('item_id')->toArray();
 
         if ($student->educationProgram->educationprogramType->isActing()) {
-            $activities = array_filter($this->learningActivityProducingRepository->getActivitiesForStudent($student), function (LearningActivityActing $activity) use ($savedActivitiesIds) {
-                return in_array($activity->laa_id, $savedActivitiesIds, true);
-            });
+            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->laa_id] = $activity;
+            }
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
-            $activities = array_filter($this->learningActivityProducingRepository->getActivitiesForStudent($student), function (LearningActivityProducing $activity) use ($savedActivitiesIds) {
-                return in_array($activity->lap_id, $savedActivitiesIds, true);
-            });
+            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->lap_id] = $activity;
+            }
+        }
+
+        $resourcepersons = [];
+        foreach($persons as $person) {
+            $resourcepersons[$person->rp_id] = $person;
+        }
+
+        $associatedCategories = [];
+        foreach($categories as $category) {
+            $associatedCategories[$category->category_id] = $category;
         }
 
         $evaluatedTips = [];
@@ -80,8 +118,10 @@ class SavedLearningItemController extends Controller
         return view('pages.saved-items')
             ->with('student', $student)
             ->with('sli', $sli)
-            ->with('activities', $activities)
-            ->with('evaluatedTips', $evaluatedTips);
+            ->with('activities', $associatedActivities)
+            ->with('evaluatedTips', $evaluatedTips)
+            ->with('resourcePerson', $resourcepersons)
+            ->with('categories', $associatedCategories);
     }
 
     public function createItem($category, $item_id)
@@ -113,7 +153,7 @@ class SavedLearningItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver) 
+    public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver)
     {
         if(!$sli->student->is($currentUserResolver->getCurrentUser())) {
             throw new AuthorizationException('This is not your SLI');
@@ -127,7 +167,7 @@ class SavedLearningItemController extends Controller
     {
         $sli->folder = null;
         $sli->save();
-        return redirect('saved-learning-items');
+        return redirect('folders');
     }
 
     public function addItemToFolder(Request $request)
@@ -135,6 +175,6 @@ class SavedLearningItemController extends Controller
         $savedLearningItem =  $this->savedLearningItemRepository->findById($request->get('sli_id'));
         $savedLearningItem->folder = $request->get('chooseFolder');
         $savedLearningItem->save();
-        return redirect('folders');
+        return redirect('saved-learning-items');
     }
 }

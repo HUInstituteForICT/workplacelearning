@@ -14,6 +14,11 @@ class CategoryRepository
         return Category::findOrFail($id);
     }
 
+    public function all(): array
+    {
+        return Category::all()->all();
+    }
+
     public function save(Category $category): bool
     {
         return $category->save();

@@ -18,6 +18,12 @@ use App\SavedLearningItem
 /** @var Folder $folder */?>
 
     <div class="container-fluid">
+    <script>
+            $(document).ready(function () {
+                // Tooltips
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+    </script>
         @card
             <h1>{{ __('folder.folders') }} <a class="btn btn-info right" data-target="#addFolderModel" data-toggle="modal">{{ __('folder.create-folder') }}</a></h1>
 
@@ -33,7 +39,7 @@ use App\SavedLearningItem
                             <div class="panel panel-default">
                                 <div class="panel-heading" id="folder">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
+                                    <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
                                         <div class="clearfix"></div>
                                         <p class="sub-title-light">{{ count($folder->savedLearningItems)}} {{ __('folder.items') }}</p>
                                         <div class="bullet">&#8226;</div>
@@ -64,21 +70,8 @@ use App\SavedLearningItem
                                         <h5>{{ __('folder.added-items') }} <span class="badge">{{ count($folder->savedLearningItems)}}</span></h5>
                                         @foreach($folder->savedLearningItems as $item)
                                             @if($item->category === 'tip')
-                                                <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                                                    role="alert">
-                                                    <!-- Delete item from folder -->
-                                                    {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder')))!!}
-    
-                                                    <div class="form-group">
-                                                        <input type='text' name='sli_id'  id="sli_id" class="form-control" value="{{$item->sli_id}}">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" id="folder-null" name="chooseFolder" value="0">
-                                                    </div>
-                                                    <!-- {{ Form::submit('Opslaan', array('class' => 'glyphicon glyphicon-remove delete-tip-from-folder', 'id' => 'addItemToFolder')) }} -->
-                                                    {{ Form::button('', ['type' => 'submit', 'class' => 'glyphicon glyphicon-remove delete-tip-from-folder'] )  }}
-                                                    {{ Form::close() }}
-    
+                                            <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                                            <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                                     <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                                                     @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                                         <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
@@ -87,15 +80,26 @@ use App\SavedLearningItem
                                                     @endif
                                                 </div>
                                             @elseif ($item->category === 'activity')
-                                                @card
-                                                <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
-                                                    <h4 class="tip-title">Activiteit</h4>
-                                                    <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</p>
-                                                    <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-                                                    <small>2 uur</small>
-                                                    <p>Gemiddeld</p>
-                                                </div>
-                                                @endcard
+                                                <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
+                                                <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                                    <h4>Activiteit</h4>
+                                                    <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
+                                                     <!-- Acting -->
+                                                        @if($student->educationProgram->educationprogramType->isActing())
+                                                            <span class="glyphicon glyphicon-tasks activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+                                                        @endif
+                                                    <!-- Producing -->
+                                                        @if($student->educationProgram->educationprogramType->isProducing())
+                                                            <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+                                                        @endif
+                                                    <!-- Both -->
+                                                         @if($activities[$item->item_id]->res_person_id === null) 
+                                                            <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>Alleen
+                                                        @else
+                                                        <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}} 
+                                                        @endif
+                                                        <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}} 
+                                                    </div>
                                             @endif
                                         @endforeach
                                     </section>
@@ -151,7 +155,7 @@ use App\SavedLearningItem
                                         </div>
                                         <div class="form-group">
                                             
-                                            <label>{{ __('folder.comments') }}:</label><br>
+                                            <label>{{ __('folder.choose-teacher') }}:</label><br>
                                             <select name="teacher" class="form-control">
                                                 @foreach($student->getWorkplaceLearningPeriods() as $wplp)
                                                     <option value="{{$wplp->teacher_id}}">{{$wplp->teacher->firstname}} {{$wplp->teacher->lastname}}</option>
@@ -196,6 +200,7 @@ use App\SavedLearningItem
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-right no-top" aria-labelledby="dropdownMenuFolder">
                                                 <li><a href="{{ route('folder.stop-sharing-folder', ['folder' => $folder]) }}">{{ __('folder.stop-sharing-folder') }}</a></li>
+                                                <li><a onclick="setSelectedFolder({{ $folder }})" data-target="#AddItemsToFolderModel" data-toggle="modal">Items toevoegen</a></li>
                                                 <li><a class="color-red" href="{{ route('folder.destroy', ['folder' => $folder]) }}" onclick="return confirm('{{ __('folder.delete-confirmation') }}')">{{ __('folder.delete-folder') }}</a></li>
                                             </ul>
                                         </div>
@@ -216,21 +221,8 @@ use App\SavedLearningItem
                                             <h5>{{ __('folder.added-items') }} <span class="badge">{{ count($folder->savedLearningItems)}}</span></h5>
                                             @foreach($folder->savedLearningItems as $item)
                                                 @if($item->category === 'tip')
-                                                    <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                                                        role="alert">
-                                                        <!-- Delete item from folder -->
-                                                        {!! Form::open(array('url' =>  route('saved-learning-item.updateFolder')))!!}
-    
-                                                        <div class="form-group">
-                                                            <input type='text' name='sli_id'  id="sli_id" class="form-control" value="{{$item->sli_id}}">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control" id="folder-null" name="chooseFolder" value="0">
-                                                        </div>
-                                                        <!-- {{ Form::submit('Opslaan', array('class' => 'glyphicon glyphicon-remove delete-tip-from-folder', 'id' => 'addItemToFolder')) }} -->
-                                                        {{ Form::button('', ['type' => 'submit', 'class' => 'glyphicon glyphicon-remove delete-tip-from-folder'] )  }}
-                                                        {{ Form::close() }}
-    
+                                                <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
+                                                <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                                         <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
                                                         @if (in_array($item->item_id, array_keys($evaluatedTips)))
                                                             <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
@@ -239,15 +231,26 @@ use App\SavedLearningItem
                                                         @endif
                                                     </div>
                                                 @elseif ($item->category === 'activity')
-                                                    @card
-                                                    <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px" role="alert">
-                                                        <h4 class="tip-title">Activiteit</h4>
-                                                        <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</p>
-                                                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-                                                        <small>2 uur</small>
-                                                        <p>Gemiddeld</p>
-                                                    </div>
-                                                    @endcard
+                                                    <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
+                                                    <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}" onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span class="right glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                                    <h4>Activiteit</h4>
+                                                    <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
+                                                   <!-- Acting -->
+                                                    @if($student->educationProgram->educationprogramType->isActing())
+                                                            <span class="glyphicon glyphicon-tasks activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+                                                        @endif
+                                                    <!-- Producing -->
+                                                        @if($student->educationProgram->educationprogramType->isProducing())
+                                                            <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+                                                        @endif
+                                                    <!-- Both -->
+                                                         @if($activities[$item->item_id]->res_person_id === null) 
+                                                            <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>Alleen
+                                                        @else
+                                                        <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}} 
+                                                        @endif
+                                                        <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}} 
+                                                </div>
                                                 @endif
                                             @endforeach
                                         </section>
@@ -348,7 +351,7 @@ use App\SavedLearningItem
                           
             <div class="form-group">
                 <label>{{ __('folder.description') }}</label>
-                <textarea type='text' name='folder_description' id="folderDescription" class="form-control" maxlength="255" required></textarea>
+                <textarea type='text' name='folder_description' id="folderDescription" class="form-control" maxlength="255"></textarea>
             </div>
             
 
@@ -361,6 +364,86 @@ use App\SavedLearningItem
     </div>
   </div>
   
+</div>
+
+{{-- Modal to add items to a folder from the 'guidance' page --}}
+<div class="modal fade" id="AddItemsToFolderModel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                {{-- <h4 class="modal-title">{{ __('folder.add-items') }}</h4> --}}
+                <h4 class="modal-title">Items toevoegen aan de map.</h4>
+            </div>
+            <div class="modal-body">
+                <div class="selected-folder-info">
+                    <h4 id="folder-title"></h4>
+                    <p id="folder-created-at"></p>
+                </div>
+                <h4 id="selected-items-count" class="right no-margin"></h4>
+                {{-- <p>{{ __('folder.items-limit-msg') }}</p> --}}
+                <p>Kies maximaal drie items om aan deze map toe te voegen.
+                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ __('folder.items-limit-hint') }}"></i>
+                </p>
+
+                {!! Form::open(array('url' =>  route('folder.AddItemsToFolder'))) !!}
+                <div class="form-group">
+                    <input class="hidden_element" type='text' name="selected_folder_id" id="selected_folder_id" class="form-control">
+                </div>
+
+                <div class="ml-learning-items">
+                    <h5>Learning items</h5>
+                    @foreach ($sli as $item)
+                        @if ($item->category === 'tip')
+                            @card
+                            <div class="form-group item">
+                                <input type="checkbox" name="check_list[]" value="{{$item->sli_id}}" onclick="countSelectedItems()"/>
+                                <div class="alert" style="background-color: #00A1E2; color: white;" role="alert">
+                                    <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                                    @if (in_array($item->item_id, array_keys($evaluatedTips)))
+                                        <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
+                                    @else
+                                        <p>{{ __('saved_learning_items.tip-not-found') }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                            @endcard
+                            @elseif ($item->category === 'activity')
+                                @card
+                                <div class="form-group">
+                                    <input type="checkbox" name="check_list[]" value="{{$item->sli_id}}" onclick="countSelectedItems()"/>
+                                    <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
+                                        <h4>Activiteit</h4>
+                                        <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
+                                         <!-- Acting -->
+                                            @if($student->educationProgram->educationprogramType->isActing())
+                                                <span class="glyphicon glyphicon-tasks activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+                                            @endif
+                                         <!-- Producing -->
+                                            @if($student->educationProgram->educationprogramType->isProducing())
+                                                <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+                                            @endif
+                                         <!-- Both -->
+                                            @if($activities[$item->item_id]->res_person_id === null) 
+                                                <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>Alleen
+                                            @else
+                                            <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}} 
+                                            @endif
+                                            <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}} 
+                                    </div>
+                                </div>
+                                @endcard
+                            @endif
+                    @endforeach
+                </div>
+                    
+                <div class="modal-footer">
+                    {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'addItemsButton')) }}
+                    {{ Form::close() }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @include('js.learningitem_save')
 @stop

@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'folders' => 'Mappen',
+    'folders' => 'Begeleiding',
     'folder-created' => 'Map is aangemaakt.',
     'add-to-folder' => 'Toevoegen aan map',
     'new-folder' => 'Nieuwe map aanmaken',

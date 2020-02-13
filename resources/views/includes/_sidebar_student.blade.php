@@ -42,7 +42,7 @@
 </a>
 <a class="nav-tile" href="/folders">
     <div class="tile white_tile">
-        <img class="icon" src="{{ URL::asset('assets/img/folder-blue.svg', true) }}"/>
+        <img class="icon" src="{{ URL::asset('assets/img/begeleiding_icon_blauw.svg', true) }}"/>
         <div class="nav-title">{{ __('folder.folders') }}</div>
     </div>
 </a>
