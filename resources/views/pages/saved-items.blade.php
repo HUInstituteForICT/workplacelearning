@@ -11,11 +11,18 @@
 @stop
 @section('content')
     <?php
-    use App\SavedLearningItem;use App\Student;
+    use App\Folder;use App\SavedLearningItem;use App\Student;
     /** @var SavedLearningItem $sli */
+    /** @var Student $student */;
     /** @var Folder $folder */?>
 
     <div class="container-fluid">
+        <script>
+            $(document).ready(function () {
+                // Tooltips
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
         @card
         <h1>{{ __('saved_learning_items.saved') }}</h1>
         <div class="row">
@@ -93,7 +100,8 @@
 
                                 {{-- folder basic info --}}
                                 <section class="section folder-info">
-                                    <p class="sub-title-light">{{ __('folder.created-on') }} {{ $folder->created_at->toFormattedDateString() }}</p>
+                                    <a data-target="#AddItemsToFolderModel-{{ $folder->folder_id }}" data-toggle="modal"><span class="right glyphicon glyphicon-plus disabled" aria-hidden="true"></span></a>
+                            <p class="sub-title-light">{{ __('folder.created-on') }} {{ $folder->created_at->toFormattedDateString() }}</p>
                                     <br>
                                     {{ $folder->description }}
                                 </section>
@@ -222,11 +230,63 @@
                                     <p>{{ __('saved_learning_items.tip-not-found') }}</p>
                                 @endif
                             </div>
+
+                    {{-- Modal to add items to folder --}}
+                    <div class="modal fade" id="AddItemsToFolderModel-{{ $folder->folder_id }}" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">{{ __('folder.add-items') }}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="selected-folder-info">
+                                        <h4 id="folder-title">{{ $folder->title }}</h4>
+                                        <p class="sub-title-light">{{ __('folder.created-on') }} {{ $folder->created_at->toFormattedDateString() }}</p>
+                                    </div>
+                                    <h4 id="selected-items-count" class="right no-margin"></h4>
+                                    <p>{{ __('folder.items-limit') }}
+                                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{ __('folder.items-limit-hint') }}"></i>
+                                    </p>
+
+                                    {!! Form::open(array('url' =>  route('folder.AddItemsToFolder'))) !!}
+                                    <div class="form-group">
+                                        <input class="hidden_element form-control" type='text' name="selected_folder_id" class="form-control" value="{{ $folder->folder_id }}">
+                                    </div>
+
+                                    <div class="ml-learning-items">
+                                        <h5>{{ __('folder.items') }}</h5>
+                                        @foreach ($sli as $item)
+                                            @if (!$folder->savedLearningItems->contains('sli_id', $item->sli_id))
+                                                @card
+                                                <div class="form-group item">
+                                                    <input type="checkbox" name="check_list[]" value="{{$item->sli_id}}" onclick="countSelectedItems()"/>
+                                                    <div class="alert item-content" style="background-color: #00A1E2; color: white;" role="alert">
+                                                        <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
+                                                        @if (in_array($item->item_id, array_keys($evaluatedTips)))
+                                                            <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
+                                                        @else
+                                                            <p>{{ __('saved_learning_items.tip-not-found') }}</p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                @endcard
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'addItemsButton')) }}
+                                        {{ Form::close() }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                             @endcard
                         @endif
                     @endforeach
                 @endcard
-
             </div>
          </div>
     </div>
@@ -245,7 +305,7 @@
                         {!! Form::open(array('url' =>  route('saved-learning-items-addItemToFolder'))) !!}
 
                         <div class="form-group">
-                            <input type='text' name='sli_id' id="sli_id" class="form-control">
+                            <input type='text' name='sli_id' id="sl-item_id" class="form-control hidden_element">
                         </div>
 
                         <div class="form-group">
@@ -295,7 +355,7 @@
 
 
                     <div class="modal-footer">
-                        {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'saveButton')) }}
+                        {{ Form::submit(__('general.save'), array('class' => 'btn btn-primary', 'id' => 'createFolderButton')) }}
                         {{ Form::close() }}
                     </div>
                 </div>
@@ -304,5 +364,6 @@
         </div>
 
     </div>
+
     @include('js.learningitem_save')
 @stop

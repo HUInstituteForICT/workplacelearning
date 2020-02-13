@@ -9,10 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property Student student
- * @property int|null teacher_id
- * @property string title
- * @property string description
- * @property int student_id
  */
 class Folder extends Model
 {

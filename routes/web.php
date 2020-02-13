@@ -211,6 +211,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     Route::post('/folder/shareFolderWithTeacher', 'FolderController@shareFolderWithTeacher')->name('folder.shareFolderWithTeacher');
     Route::post('/folder/addComment', 'FolderController@addComment')->name('folder.addComment');
     Route::get('folders/delete/{folder}', 'FolderController@delete')->name('folder.destroy');
+    Route::post('folders/AddItemsToFolder', 'FolderController@AddItemsToFolder')->name('folder.AddItemsToFolder');
     Route::get('folders/{folder}/edit', 'FolderController@stopSharingFolder')->name('folder.stop-sharing-folder');
 
     Route::middleware('usernotifications')->group(static function (): void {

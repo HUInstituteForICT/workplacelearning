@@ -9,7 +9,6 @@ return array(
     'description' => 'Description',
     'folder-shared' => 'Folder is shared.',
     'nothing-shared'  => "This student hasn't shared anything with you yet.",
-    "items" => "items",
     "comments" => "comments",
     "created-on" => "Created on",
     "added-items" => "Added items",
@@ -26,5 +25,9 @@ return array(
     'prive' => 'Prive',
     'stop-sharing-folder' => 'Stop sharing this folder',
     'delete-folder' => 'Delete',
-    'create-folder' => 'Create folder'
+    'create-folder' => 'Create folder',
+    'items' => 'Items',
+    'add-items' => 'Add Items to this folder.',
+    'items-limit' => 'Choose a maximum of three items to add to this folder.',
+    'items-limit-hint' => 'Try to find what the core of your question is. Then choose a maximum of three items that support your question. In this way your question can be answered better and in a more targeted manner.',
 );
