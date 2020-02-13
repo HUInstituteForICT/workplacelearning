@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\LearningActivityActing;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -32,7 +33,7 @@ class SavedLearningItemController extends Controller
      * @var TipRepository
      */
     private $tipRepository;
-    
+
     /**
      * @var LearningActivityProducingRepository
      */
@@ -56,18 +57,18 @@ class SavedLearningItemController extends Controller
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
 
-        
+
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
-            return $item->category == 'activity';
+            return $item->category === 'activity';
         })->pluck('item_id')->toArray();
 
         if ($student->educationProgram->educationprogramType->isActing()) {
             $activities = array_filter($this->learningActivityProducingRepository->getActivitiesForStudent($student), function (LearningActivityActing $activity) use ($savedActivitiesIds) {
-                return in_array($activity->laa_id, $savedActivitiesIds);
+                return in_array($activity->laa_id, $savedActivitiesIds, true);
             });
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
             $activities = array_filter($this->learningActivityProducingRepository->getActivitiesForStudent($student), function (LearningActivityProducing $activity) use ($savedActivitiesIds) {
-                return in_array($activity->lap_id, $savedActivitiesIds);
+                return in_array($activity->lap_id, $savedActivitiesIds, true);
             });
         }
 

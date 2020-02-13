@@ -46,7 +46,7 @@ class FolderController extends Controller
     private $tipRepository;
 
     public function __construct(
-        CurrentUserResolver $currentUserResolver, 
+        CurrentUserResolver $currentUserResolver,
         FolderRepository $folderRepository,
         TipRepository $tipRepository,
         SavedLearningItemRepository $savedLearningItemRepository,
@@ -113,7 +113,7 @@ class FolderController extends Controller
         $folder->save();
 
         session()->flash('success', __('folder.folder-shared'));
-        
+
         return redirect('folders');
     }
 
@@ -139,7 +139,7 @@ class FolderController extends Controller
 
     public function addComment(Request $request) {
         $currentUser = $this->currentUserResolver->getCurrentUser();
-        
+
         $folder = $this->folderRepository->findById($request['folder_id']);
         $student_id = $folder->student_id;
 
@@ -155,6 +155,8 @@ class FolderController extends Controller
             $url = route('folders');
         }
 
+
+        // fixme: what if user is admin? or shouldnt come here in that case
         return redirect($url);
     }
 
