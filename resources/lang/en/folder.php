@@ -34,4 +34,5 @@ return array(
     'unanswered-questions' => 'unanswered questions',
     'nothing-shared' => 'student has not shared anything',
     'no-new-folders' => 'no new questions',
+    'archived' => 'archived (hidden for others)'
 );

@@ -34,4 +34,5 @@ return [
     'unanswered-question'  => 'onbeantwoorde begeleidingsvraag',
     'unanswered-questions' => 'onbeantwoorde begeleidingsvragen',
     'no-new-folders'       => 'geen nieuwe begeleidingsvragen',
+    'archived'             => 'gearchiveerd (verborgen voor anderen)',
 ];

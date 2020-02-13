@@ -11,7 +11,7 @@
 @stop
 @section('content')
     <?php
-    use App\SavedLearningItem;
+    use App\Folder;use App\SavedLearningItem;
     /** @var SavedLearningItem $sli */
     /** @var Folder $folder */?>
 
@@ -223,18 +223,22 @@
                 @card
                 <h2 class="maps">{{ __('folder.shared') }}</h2>
 
-                @foreach($student->folders as $folder)
+                @foreach($student->folders()->withTrashed()->get() as $folder)
                     @if ($folder->isShared())
                         <div class="panel-group">
                             <div class="panel panel-default">
                                 <div class="panel-heading" id="folder">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse"
-                                           href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
+                                           href="#{{$folder->folder_id}}">{{ $folder->title }}
+                                        </a>
                                         <div class="clearfix"></div>
                                         <p class="sub-title-light">{{ count($folder->savedLearningItems)}} {{ __('folder.items') }}</p>
                                         <div class="bullet">&#8226;</div>
                                         <p class="sub-title-light">{{ count($folder->folderComments)}} {{ __('folder.comments') }}</p>
+                                        @if($folder->trashed())
+                                            <span class="label label-danger">archived</span>
+                                        @endif
                                     </h4>
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" id="dropdownMenuFolder" data-toggle="dropdown"
@@ -414,6 +418,10 @@
                 @endforeach
                 @endcard
             </div>
+        </div>
+
+        <div class="row">
+
         </div>
         @endcard
     </div>
