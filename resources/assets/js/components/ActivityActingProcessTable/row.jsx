@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 
 export default class Row extends React.Component {
 
@@ -39,12 +39,16 @@ export default class Row extends React.Component {
             <td>
                 {activity.situation.length > 30 &&
                 <span>
-                        {this.state.visible && <span>{activity.situation}</span>}
+                        {this.state.visible && <span>{activity.situation.split('\n').map((item, key) => {
+                            return <Fragment key={key}>{item}<br/></Fragment>
+                        })}</span>}
                     {!this.state.visible && <span>{activity.situation.substr(0, 30)}...</span>}
                     </span>
                 }
                 {activity.situation.length <= 30 &&
-                activity.situation
+                activity.situation.split('\n').map((item, key) => {
+                    return <Fragment key={key}>{item}<br/></Fragment>
+                })
                 }
             </td>
             <td>{activity.timeslot}</td>
