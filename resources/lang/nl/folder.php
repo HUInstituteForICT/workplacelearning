@@ -3,7 +3,6 @@
 return array(
     'folders' => 'Mappen',
     'folder-created' => 'Map is aangemaakt.',
-    'folders' => 'Mappen',
     'add-to-folder' => 'Toevoegen aan map',
     'new-folder' => 'Nieuwe map aanmaken',
     'title' => 'Titel',
@@ -25,9 +24,7 @@ return array(
     'share' => 'Deel',
     'shared' => 'Gedeeld',
     'prive' => 'Privé',
-    'stop-sharing-folder' => 'Stop sharing this folder',
-    'delete-folder' => 'Delete',
     'stop-sharing-folder' => 'Stoppen met delen',
     'delete-folder' => 'Verwijderen',
-    'create-folder' => 'Map aanmaken'
+    'create-folder' => 'Map aanmaken',
 );

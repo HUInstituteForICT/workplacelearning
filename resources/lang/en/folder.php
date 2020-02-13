@@ -1,7 +1,6 @@
 <?php
 
 return array(
-    'folders' => 'Folders',
     'folder-created' => 'Folder has been created.',
     'folders' => 'Folders',
     'add-to-folder' => 'Add to folder',
