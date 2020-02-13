@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 
 export default class Row extends React.Component {
 
@@ -21,7 +21,10 @@ export default class Row extends React.Component {
         };
 
         return <tr className="activityExport">
-            <td>
+            <td width="15%">
+                <a style={actionStyle} onClick={() => confirm(Lang.get("Weet u zeker dat u dit wilt opslaan?")) ? window.location.href = "/acting/process/save/" + activity.id: null}>
+                <img className="save_activity_icon" src="../assets/img/bookmark-blauw.svg"/>
+                </a>
                 <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil"
                                                               aria-hidden="true"/></a>
                 <a style={actionStyle}
@@ -39,12 +42,16 @@ export default class Row extends React.Component {
             <td>
                 {activity.situation.length > 30 &&
                 <span>
-                        {this.state.visible && <span>{activity.situation}</span>}
+                        {this.state.visible && <span>{activity.situation.split('\n').map((item, key) => {
+                            return <Fragment key={key}>{item}<br/></Fragment>
+                        })}</span>}
                     {!this.state.visible && <span>{activity.situation.substr(0, 30)}...</span>}
                     </span>
                 }
                 {activity.situation.length <= 30 &&
-                activity.situation
+                activity.situation.split('\n').map((item, key) => {
+                    return <Fragment key={key}>{item}<br/></Fragment>
+                })
                 }
             </td>
             <td>{activity.timeslot}</td>

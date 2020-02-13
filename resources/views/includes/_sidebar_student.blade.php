@@ -37,6 +37,12 @@
 <a class="nav-tile" href="{{ route('saved-learning-items') }}">
     <div class="tile blue_tile">
         <img class="icon" src="{{ URL::asset('assets/img/opgeslagen_icon_wit.svg', true) }}"/>
-        <div class="nav-title">Opgeslagen</div>
+        <div class="nav-title">{{ __('saved_learning_items.saved') }}</div>
+    </div>
+</a>
+<a class="nav-tile" href="/folders">
+    <div class="tile white_tile">
+        <img class="icon" src="{{ URL::asset('assets/img/begeleiding_icon_blauw.svg', true) }}"/>
+        <div class="nav-title">{{ __('folder.folders') }}</div>
     </div>
 </a>

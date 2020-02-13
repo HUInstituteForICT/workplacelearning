@@ -5,14 +5,20 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\LearningActivityActing;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
+use App\Repository\Eloquent\ResourcePersonRepository;
+use App\Repository\Eloquent\CategoryRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Services\CurrentUserResolver;
 use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
 use App\Tips\Services\TipEvaluator;
+use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\LearningActivityActingRepository;
+use App\LearningActivityProducing;
 
 class SavedLearningItemController extends Controller
 {
@@ -31,14 +37,43 @@ class SavedLearningItemController extends Controller
      */
     private $tipRepository;
 
+    /**
+     * @var LearningActivityProducingRepository
+     */
+    private $learningActivityProducingRepository;
+
+    /**
+     * @var LearningActivityActingRepository
+     */
+    private $learningActivityActingRepository;
+
+    /**
+     * @var ResourcePersonRepository
+     */
+    private $resourcePersonRepository;
+
+     /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
+
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         SavedLearningItemRepository $savedLearningItemRepository,
-        TipRepository $tipRepository
+        TipRepository $tipRepository,
+        LearningActivityProducingRepository $learningActivityProducingRepository,
+        LearningActivityActingRepository $learningActivityActingRepository,
+        ResourcePersonRepository $resourcePersonRepository,
+        CategoryRepository $categoryRepository
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
+        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->learningActivityActingRepository = $learningActivityActingRepository;
+        $this->resourcePersonRepository = $resourcePersonRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function index(TipEvaluator $evaluator)
@@ -46,6 +81,34 @@ class SavedLearningItemController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+        $persons = $this->resourcePersonRepository->all();
+        $categories = $this->categoryRepository->all();
+        $associatedActivities = [];
+        $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
+            return $item->category === 'activity';
+        })->pluck('item_id')->toArray();
+
+        if ($student->educationProgram->educationprogramType->isActing()) {
+            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->laa_id] = $activity;
+            }
+        } elseif ($student->educationProgram->educationprogramType->isProducing()) {
+            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+            foreach($allActivities as $activity) {
+                $associatedActivities[$activity->lap_id] = $activity;
+            }
+        }
+
+        $resourcepersons = [];
+        foreach($persons as $person) {
+            $resourcepersons[$person->rp_id] = $person;
+        }
+
+        $associatedCategories = [];
+        foreach($categories as $category) {
+            $associatedCategories[$category->category_id] = $category;
+        }
 
         $evaluatedTips = [];
         foreach ($tips as $tip) {
@@ -55,7 +118,10 @@ class SavedLearningItemController extends Controller
         return view('pages.saved-items')
             ->with('student', $student)
             ->with('sli', $sli)
-            ->with('evaluatedTips', $evaluatedTips);
+            ->with('activities', $associatedActivities)
+            ->with('evaluatedTips', $evaluatedTips)
+            ->with('resourcePerson', $resourcepersons)
+            ->with('categories', $associatedCategories);
     }
 
     public function createItem($category, $item_id)
@@ -87,8 +153,8 @@ class SavedLearningItemController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver) {
-
+    public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver)
+    {
         if(!$sli->student->is($currentUserResolver->getCurrentUser())) {
             throw new AuthorizationException('This is not your SLI');
         }
@@ -97,14 +163,17 @@ class SavedLearningItemController extends Controller
         return redirect('saved-learning-items');
     }
 
-    public function updateFolder(Request $request)
+    public function removeItemFromFolder(SavedLearningItem $sli)
     {
-        $savedLearningItem =  $this->savedLearningItemRepository->findById($request['sli_id']);
-        if($request['chooseFolder'] == 0){
-            $savedLearningItem->folder = null;
-        }else{
-            $savedLearningItem->folder =  $request['chooseFolder'];
-        }
+        $sli->folder = null;
+        $sli->save();
+        return redirect('folders');
+    }
+
+    public function addItemToFolder(Request $request)
+    {
+        $savedLearningItem =  $this->savedLearningItemRepository->findById($request->get('sli_id'));
+        $savedLearningItem->folder = $request->get('chooseFolder');
         $savedLearningItem->save();
         return redirect('saved-learning-items');
     }

@@ -7,8 +7,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\LearningActivityActing;
+use App\SavedLearningItem;
 use App\Reflection\Models\ActivityReflection;
 use App\Repository\Eloquent\LearningActivityActingRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\AvailableActingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
 use App\Services\EvidenceUploadHandler;
@@ -39,16 +41,22 @@ class ActingActivityController
      * @var Session
      */
     private $session;
+     /**
+     * @var SavedLearningItemRepository
+     */
+    private $savedLearningItemRepository;
 
     public function __construct(
         Redirector $redirector,
         CurrentUserResolver $currentUserResolver,
         LearningActivityActingRepository $learningActivityActingRepository,
+        SavedLearningItemRepository $savedLearningItemRepository,
         Session $session
     ) {
         $this->redirector = $redirector;
         $this->currentUserResolver = $currentUserResolver;
         $this->learningActivityActingRepository = $learningActivityActingRepository;
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->session = $session;
     }
 
@@ -174,5 +182,23 @@ class ActingActivityController
         $this->learningActivityActingRepository->delete($learningActivityActing);
 
         return $this->redirector->route('process-acting');
+    }
+
+    public function save(LearningActivityActing $learningActivityActing): RedirectResponse
+    {
+        $student = $this->currentUserResolver->getCurrentUser();
+        $url = route('process-producing');
+
+            $savedLearningItem = new SavedLearningItem();
+            $savedLearningItem->category = 'activity';
+            $savedLearningItem->item_id = $learningActivityActing->laa_id;
+            $savedLearningItem->student_id = $student->student_id;
+            $savedLearningItem->created_at = date('Y-m-d H:i:s');
+            $savedLearningItem->updated_at = date('Y-m-d H:i:s');
+            $this->savedLearningItemRepository->save($savedLearningItem);
+
+            session()->flash('success', __('saved_learning_items.saved-succesfully'));
+
+        return redirect($url);
     }
 }
