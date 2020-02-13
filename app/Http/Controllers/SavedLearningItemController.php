@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\LearningActivityActing;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -13,6 +14,8 @@ use App\Services\CurrentUserResolver;
 use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
 use App\Tips\Services\TipEvaluator;
+use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\LearningActivityProducing;
 
 class SavedLearningItemController extends Controller
 {
@@ -31,14 +34,21 @@ class SavedLearningItemController extends Controller
      */
     private $tipRepository;
 
+    /**
+     * @var LearningActivityProducingRepository
+     */
+    private $learningActivityProducingRepository;
+
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         SavedLearningItemRepository $savedLearningItemRepository,
-        TipRepository $tipRepository
+        TipRepository $tipRepository,
+        LearningActivityProducingRepository $learningActivityProducingRepository
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
+        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
     }
 
     public function index(TipEvaluator $evaluator)
@@ -46,6 +56,21 @@ class SavedLearningItemController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+
+
+        $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
+            return $item->category === 'activity';
+        })->pluck('item_id')->toArray();
+
+        if ($student->educationProgram->educationprogramType->isActing()) {
+            $activities = array_filter($this->learningActivityProducingRepository->getActivitiesForStudent($student), function (LearningActivityActing $activity) use ($savedActivitiesIds) {
+                return in_array($activity->laa_id, $savedActivitiesIds, true);
+            });
+        } elseif ($student->educationProgram->educationprogramType->isProducing()) {
+            $activities = array_filter($this->learningActivityProducingRepository->getActivitiesForStudent($student), function (LearningActivityProducing $activity) use ($savedActivitiesIds) {
+                return in_array($activity->lap_id, $savedActivitiesIds, true);
+            });
+        }
 
         $evaluatedTips = [];
         foreach ($tips as $tip) {
@@ -55,6 +80,7 @@ class SavedLearningItemController extends Controller
         return view('pages.saved-items')
             ->with('student', $student)
             ->with('sli', $sli)
+            ->with('activities', $activities)
             ->with('evaluatedTips', $evaluatedTips);
     }
 
@@ -109,6 +135,6 @@ class SavedLearningItemController extends Controller
         $savedLearningItem =  $this->savedLearningItemRepository->findById($request->get('sli_id'));
         $savedLearningItem->folder = $request->get('chooseFolder');
         $savedLearningItem->save();
-        return redirect('saved-learning-items');
+        return redirect('folders');
     }
 }

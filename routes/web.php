@@ -206,10 +206,12 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     Route::get('/saved-learning-items/removeItemFromFolder/{sli}', 'SavedLearningItemController@removeItemFromFolder')->name('saved-learning-item.removeItemFromFolder');
 
     // actions on folders and comments
+    Route::get('/folders', 'FolderController@index')->name('folders');
     Route::post('/folders/create', 'FolderController@create')->name('folder.create');
     Route::post('/folder/shareFolderWithTeacher', 'FolderController@shareFolderWithTeacher')->name('folder.shareFolderWithTeacher');
     Route::post('/folder/addComment', 'FolderController@addComment')->name('folder.addComment');
     Route::get('folders/delete/{folder}', 'FolderController@delete')->name('folder.destroy');
+    Route::get('folders/{folder}/edit', 'FolderController@stopSharingFolder')->name('folder.stop-sharing-folder');
 
     Route::middleware('usernotifications')->group(static function (): void {
         // Actions on the profile of a student

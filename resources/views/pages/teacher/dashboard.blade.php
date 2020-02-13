@@ -7,10 +7,14 @@
 @section('content')
 <div class="container-fluid">
     <h1>Dashboard</h1>
+
     <div class="row">
         <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close welcome-alert" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p>{{ __('home.welcome-teacher') }}</p>
+            </div>
             <h3> {{ __('general.students') }} <span class="badge">{{ count($students) }}</span></h3>
-
                 <?php
                 use App\Student;
                 /** @var Student $student */ ?>
