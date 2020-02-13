@@ -185,8 +185,12 @@ class ActingActivityExporter
             /** @var ActivityReflectionField $field */
             foreach ($reflection->fields as $field) {
                 $section->addText(ucfirst(__('reflection.fields.'.strtolower($reflection->reflection_type).'.'.$field->name)), ['bold' => true]);
-                $section->addTextBreak();
-                $section->addText($field->value);
+
+                foreach(explode("\n", $field->value) as $line) {
+                    $section->addTextBreak();
+                    $section->addText($line);
+                }
+
                 $section->addTextBreak(2);
             }
         }
