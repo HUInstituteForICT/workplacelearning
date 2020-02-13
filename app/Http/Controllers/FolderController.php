@@ -184,8 +184,12 @@ class FolderController extends Controller
         return redirect('folders');
     }
 
-    public function delete(Folder $folder): RedirectResponse
+    public function delete(int $id, FolderRepository $folderRepository): RedirectResponse
     {
+        $folder = $folderRepository->findById($id, true);
+        if(!$folder) {
+            throw new \InvalidArgumentException('Unknown folder');
+        }
         $student = $this->currentUserResolver->getCurrentUser();
 
         if (!$student->is($folder->student)) {
@@ -198,8 +202,15 @@ class FolderController extends Controller
             $sli->save();
         }
 
-        $this->folderRepository->delete($folder);
-        session()->flash('success', __('folder.folder-deleted'));
+        if($folder->trashed()) {
+            $this->folderRepository->restore($folder);
+            session()->flash('success', __('folder.folder-deleted'));
+        } else {
+            $this->folderRepository->delete($folder);
+            session()->flash('success', __('folder.folder-deleted'));
+        }
+
+
 
         return redirect('folders');
     }

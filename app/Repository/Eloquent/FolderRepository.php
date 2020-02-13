@@ -28,15 +28,27 @@ class FolderRepository
         }
     }
 
+    public function restore(Folder $folder): bool
+    {
+        try {
+            return $folder->restore();
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     public function findByTeacherId(Student $teacher)
     {
         return Folder::where('teacher_id', '=', $teacher->student_id)->get();
 
-        
+
     }
 
-    public function findById($folder_id)
+    public function findById($folder_id, bool $includeDeleted = false): ?Folder
     {
+        if($includeDeleted) {
+            return Folder::withTrashed()->where('folder_id', '=', $folder_id)->first();
+        }
         return Folder::where('folder_id', '=', $folder_id)->first();
     }
 }

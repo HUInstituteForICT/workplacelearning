@@ -237,7 +237,7 @@
                                         <div class="bullet">&#8226;</div>
                                         <p class="sub-title-light">{{ count($folder->folderComments)}} {{ __('folder.comments') }}</p>
                                         @if($folder->trashed())
-                                            <span class="label label-danger">archived</span>
+                                            <span class="label label-danger">{{ __('folder.archived') }}</span>
                                         @endif
                                     </h4>
                                     <div class="dropdown">
@@ -254,8 +254,13 @@
                                                    data-target="#AddItemsToFolderModel" data-toggle="modal">Items
                                                     toevoegen</a></li>
                                             <li><a class="color-red"
-                                                   href="{{ route('folder.destroy', ['folder' => $folder]) }}"
-                                                   onclick="return confirm('{{ __('folder.delete-confirmation') }}')">{{ __('folder.delete-folder') }}</a>
+                                                   href="{{ route('folder.destroy', ['folder' => $folder]) }}">
+                                                    @if($folder->trashed())
+                                                        {{ __('folder.archived.restore') }}
+                                                    @else
+                                                        {{ __('folder.delete-folder') }}
+                                                    @endif
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>

@@ -24,7 +24,7 @@ return [
     'shared'               => 'Gedeeld',
     'prive'                => 'Privé',
     'stop-sharing-folder'  => 'Stoppen met delen',
-    'delete-folder'        => 'Verwijderen',
+    'delete-folder'        => 'Archiveren',
     'create-folder'        => 'Map aanmaken',
     'items'                => 'Items',
     'add-items'            => 'Items toevoegen aan deze map.',
@@ -35,4 +35,6 @@ return [
     'unanswered-questions' => 'onbeantwoorde begeleidingsvragen',
     'no-new-folders'       => 'geen nieuwe begeleidingsvragen',
     'archived'             => 'gearchiveerd (verborgen voor anderen)',
+    'archived.restore'     => 'Terugzetten',
+    'archived.restored'    => 'De map is hersteld',
 ];
