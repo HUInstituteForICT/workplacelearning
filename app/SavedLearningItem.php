@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property string category
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int student_id
  * @property false|string created_at
  * @property false|string updated_at
+ * @property Folder[] folders
  */
 class SavedLearningItem extends Model
 {
@@ -28,7 +30,6 @@ class SavedLearningItem extends Model
         'category',
         'item_id',
         'student_id',
-        'folder',
         'created_at',
         'updated_at',
     ];
@@ -36,5 +37,9 @@ class SavedLearningItem extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class, 'student_id', 'student_id');
+    }
+
+    public function folders(): BelongsToMany {
+        return $this->belongsToMany(Folder::class, 'sli_to_folder', 'sli_id', 'folder_id');
     }
 }

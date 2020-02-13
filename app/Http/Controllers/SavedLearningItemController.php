@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Folder;
 use App\Http\Controllers\Controller;
 use App\LearningActivityActing;
+use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Repository\Eloquent\ResourcePersonRepository;
@@ -168,18 +170,34 @@ class SavedLearningItemController extends Controller
         return redirect('saved-learning-items');
     }
 
-    public function removeItemFromFolder(SavedLearningItem $sli)
+    public function removeItemFromFolder(SavedLearningItem $sli, Folder $folder)
     {
-        $sli->folder = null;
+        $sli->folders()->detach($folder);
         $sli->save();
         return redirect('folders');
     }
 
-    public function addItemToFolder(Request $request)
+    public function addItemToFolder(Request $request, FolderRepository $folderRepository)
     {
-        $savedLearningItem =  $this->savedLearningItemRepository->findById($request->get('sli_id'));
-        $savedLearningItem->folder = $request->get('chooseFolder');
-        $savedLearningItem->save();
+
+        if(($folderId = $request->get('chooseFolder')) === null) {
+            throw new \InvalidArgumentException('No folder id');
+        }
+
+        /** @var Folder $folder */
+        $folder = $folderRepository->findById($folderId);
+
+        if(($sliId = $request->get('sli_id')) === null) {
+            throw new \InvalidArgumentException('No sli id');
+        }
+
+
+        /** @var SavedLearningItem $savedLearningItem */
+        $savedLearningItem =  $this->savedLearningItemRepository->findById($sliId);
+
+        $folder->savedLearningItems()->attach($savedLearningItem);
+        $folder->save();
+
         return redirect('saved-learning-items');
     }
 }

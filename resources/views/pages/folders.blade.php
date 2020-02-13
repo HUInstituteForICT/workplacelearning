@@ -80,7 +80,7 @@
                                                     <div class="alert"
                                                          style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                                                          role="alert">
-                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"
+                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item, 'folder' => $folder])}}"
                                                            onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span
                                                                     class="right glyphicon glyphicon-remove"
                                                                     aria-hidden="true"></span></a>
@@ -95,7 +95,7 @@
                                                     <div class="alert"
                                                          style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2"
                                                          role="alert">
-                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"
+                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item, 'folder' => $folder])}}"
                                                            onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span
                                                                     class="right glyphicon glyphicon-remove"
                                                                     aria-hidden="true"></span></a>
@@ -277,7 +277,7 @@
                                                     <div class="alert"
                                                          style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
                                                          role="alert">
-                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"
+                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item, 'folder' => $folder])}}"
                                                            onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span
                                                                     class="right glyphicon glyphicon-remove"
                                                                     aria-hidden="true"></span></a>
@@ -292,7 +292,7 @@
                                                     <div class="alert"
                                                          style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2"
                                                          role="alert">
-                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item])}}"
+                                                        <a href="{{ route('saved-learning-item.removeItemFromFolder', ['sli' => $item, 'folder' => $folder])}}"
                                                            onclick="return confirm('{{ __('saved_learning_items.delete-confirmation-folder') }}')"><span
                                                                     class="right glyphicon glyphicon-remove"
                                                                     aria-hidden="true"></span></a>

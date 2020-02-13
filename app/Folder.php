@@ -4,11 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property Student student
+ * @property string title
+ * @property string description
+ * @property int student_id
+ * @property SavedLearningItem[] savedLearningItems
  */
 class Folder extends Model
 {
@@ -48,9 +53,9 @@ class Folder extends Model
         throw new \RuntimeException('This folder has no teacher or is not yet shared with the teacher.');
     }
 
-    public function savedLearningItems(): HasMany
+    public function savedLearningItems(): BelongsToMany
     {
-        return $this->hasMany(SavedLearningItem::class, 'folder', 'folder_id');
+        return $this->belongsToMany(SavedLearningItem::class, 'sli_to_folder', 'folder_id', 'sli_id');
     }
 
     public function folderComments(): HasMany

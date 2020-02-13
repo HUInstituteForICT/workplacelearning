@@ -149,7 +149,7 @@ class FolderController extends Controller
 
         $folder = new Folder();
         $folder->title = $request['folder_title'];
-        $folder->description = $request['folder_description'];
+        $folder->description = $request['folder_description'] ?? '';
         $folder->student_id = $student->student_id;
 
         $this->folderRepository->save($folder);
@@ -194,7 +194,7 @@ class FolderController extends Controller
 
         // remove all items from the folder
         foreach ($folder->savedLearningItems as $sli) {
-            $sli->folder = null;
+            $sli->folders()->detach($folder);
             $sli->save();
         }
 
@@ -241,11 +241,12 @@ class FolderController extends Controller
         return redirect('folders');
     }
 
-    public function AddItemsToFolder(Request $request)
+    public function AddItemsToFolder(Request $request, FolderRepository $folderRepository)
     {
         foreach ($request['check_list'] as $selectedItem) {
+            /** @var SavedLearningItem $savedLearningItem */
             $savedLearningItem =  $this->savedLearningItemRepository->findById($selectedItem);
-            $savedLearningItem->folder =  $request['selected_folder_id'];
+            $savedLearningItem->folders()->attach($folderRepository->findById($request['selected_folder_id']));
             $savedLearningItem->save();
         }
 
