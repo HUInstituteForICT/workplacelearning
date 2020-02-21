@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string text
  * @property int folder_id
  * @property int author_id
+ * @property int folder_comments_id
+ * @property Folder folder
+ * @property Student author
  */
 class FolderComment extends Model
 {

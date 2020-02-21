@@ -169,4 +169,9 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
         return $this->date->greaterThanOrEqualTo($this->workplaceLearningPeriod->startdate)
             && $this->date->lessThanOrEqualTo($this->workplaceLearningPeriod->enddate);
     }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
 }

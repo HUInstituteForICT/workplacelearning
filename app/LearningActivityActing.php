@@ -139,4 +139,9 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     {
         return $this->hasOne(ActivityReflection::class, 'learning_activity_id', 'laa_id');
     }
+
+    public function getDescription(): string
+    {
+        return $this->situation;
+    }
 }

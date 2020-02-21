@@ -76,7 +76,10 @@ class Student extends Authenticatable implements MustVerifyEmail
     use CanResetPassword;
     use Sortable;
 
-    // Override the table used for the User Model
+    public const DAILY = 'daily';
+    public const WEEKLY = 'weekly';
+    public const INSTANTLY = 'instantly';
+
     public static $locales = [
         'nl' => 'Nederlands',
         'en' => 'English',
@@ -349,7 +352,7 @@ class Student extends Authenticatable implements MustVerifyEmail
         $wplp = $this->getCurrentWorkplaceLearningPeriod();
         $lastActivity = $wplp->getLastActivity(1);
         $lastActivityDate = $lastActivity->isEmpty() ? $wplp->startdate : $lastActivity->first()->date;
-        
+
         $countDaysFromLastActivity = $wplp->startdate->gt($now) ? 0 : $lastActivityDate->diffInDays($now);
         $daysFromLastActivity = $wplp->startdate->gt($now) ? '-' : $now->subDays($countDaysFromLastActivity)->diffForHumans();
 
@@ -363,5 +366,10 @@ class Student extends Authenticatable implements MustVerifyEmail
             'daysFromLastActivity' => $daysFromLastActivity,
             'sharedFoldersWithoutResponse' => $sharedFoldersWithoutResponse
         ];
+    }
+
+    public function getName(): string
+    {
+        return $this->firstname  . ' ' . $this->lastname;
     }
 }

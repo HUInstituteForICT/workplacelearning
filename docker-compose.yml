@@ -24,7 +24,7 @@ services:
           XDEBUG_CONFIG: "remote_host=${host_lan_ip}"
           PHP_IDE_CONFIG: "serverName=wpl"
     links:
-      - mailcatcher
+      - mailhog
 
   database:
     container_name: wpl_db
@@ -39,12 +39,13 @@ services:
       MYSQL_USER: "${DB_USERNAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
 
-  mailcatcher:
-    container_name: wpl_mailcatcher
-    image: helder/mailcatcher
+  mailhog:
+    image: mailhog/mailhog
     ports:
       - "1025:1025"
-      - "1080:80"
+      - "8025:8025"
+
+
 
   phpmyadmin:
     container_name: wpl_phpmyadmin
