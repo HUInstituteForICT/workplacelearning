@@ -3,8 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Notifications\NotificationRouter;
-use App\Notifications\TeacherDigestSender;
-use App\Repository\Eloquent\StudentRepository;
 use App\Student;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
@@ -44,11 +42,10 @@ class InstantlyDigest extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         /** @var Collection<Student> $users */
         $users = Student::where('digest_period', Student::INSTANTLY)->get();
-
         $this->notificationRouter->routeForUsers($users);
     }
 }

@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command(InstantlyDigest::class)->everyTenMinutes();
+        $schedule->command(InstantlyDigest::class)->everyMinute();//->appendOutputTo('/proc/1/fd/1');
         $schedule->command(DailyDigest::class)->dailyAt('08:00');
         $schedule->command(WeeklyDigest::class)->weeklyOn(1, '08:00');
     }

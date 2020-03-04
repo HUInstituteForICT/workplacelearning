@@ -44,7 +44,7 @@ class WeeklyDigest extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         /** @var Collection<Student> $users */
         $users = Student::where('digest_period', Student::WEEKLY)->get();

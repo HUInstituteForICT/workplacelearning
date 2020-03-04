@@ -67,6 +67,7 @@ use Kyslik\ColumnSortable\Sortable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereIsRegisteredThroughCanvas($value)
  *
  * @property string|null $email_verified_at
+ * @property string digest_period
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereEmailVerifiedAt($value)
  */
@@ -79,6 +80,8 @@ class Student extends Authenticatable implements MustVerifyEmail
     public const DAILY = 'daily';
     public const WEEKLY = 'weekly';
     public const INSTANTLY = 'instantly';
+
+    public const DIGEST_PERIODS = [self::DAILY, self::WEEKLY, self::INSTANTLY];
 
     public static $locales = [
         'nl' => 'Nederlands',
