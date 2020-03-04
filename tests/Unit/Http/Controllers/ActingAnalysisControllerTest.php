@@ -35,7 +35,7 @@ class ActingAnalysisControllerTest extends TestCase
         $redirector = $this->createMock(Redirector::class);
         $redirector->expects(self::once())->method('route')->with('home-acting')->willReturn($redirectResponse);
 
-        $actingAnalysisController = new ActingAnalysisController($periodResolver, $redirector, $this->createMock(SavedLearningItemRepository::class),);
+        $actingAnalysisController = new ActingAnalysisController($periodResolver, $redirector, $this->createMock(SavedLearningItemRepository::class));
 
         $actingAnalysisController->showChoiceScreen();
         $actingAnalysisController->showChoiceScreen();
