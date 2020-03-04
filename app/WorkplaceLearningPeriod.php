@@ -42,7 +42,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[] $resourceMaterial
  * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[] $resourcePerson
  * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[] $timeslot
- * @property int teacher_id
+ * @property int $teacher_id
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereDescription($value)
