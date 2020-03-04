@@ -98,7 +98,7 @@
                     <p>
                         @if($student->student_id !== Auth::user()->student_id)
                             <a class="student-delete-link"
-                               data-url="{{ route('admin-student-delete', ['student' => $student]) }}">
+                               data-url="{{ route('admin-student-delete', [$student]) }}">
                                 Delete student
                             </a>
                         @endif
@@ -156,12 +156,12 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin-student-edit-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
+                                                <a href="{{ route('admin-student-edit-wplp', [$student, $wplp]) }}">
                                                     Edit
                                                 </a>
 
                                                 <a class="wplp-delete-link"
-                                                   data-url="{{ route('admin-student-delete-wplp', ['student' => $student, 'workPlaceLearningPeriod' => $wplp]) }}">
+                                                   data-url="{{ route('admin-student-delete-wplp', [$student, $wplp]) }}">
                                                     Delete
                                                 </a>
                                             </td>

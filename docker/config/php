@@ -1,41 +1,37 @@
-FROM php:7.1.3-fpm
+FROM php:7.4-fpm
 
-# Install PHP extensions
-
-RUN apt-get update && apt-get install -y libmcrypt-dev mysql-client libicu-dev nano libpng-dev git unzip && docker-php-ext-install mcrypt pdo_mysql intl gd zip bcmath
-RUN pecl install xdebug
-
-# COPY ./xdebug.ini /usr/local/etc/php/conf.d/
-
+# Install PHP extensions, and xdebug for debugging purposes
+RUN apt-get update && apt-get install -y --no-install-recommends mariadb-client libicu-dev libzip-dev libpng-dev libonig-dev unzip && \
+    docker-php-ext-install pdo_mysql intl gd zip bcmath && \
+    pecl install xdebug
 
 # Config xDebug
 ENV XDEBUGINI_PATH=/usr/local/etc/php/conf.d/xdebug.ini
 RUN echo "zend_extension="`find /usr/local/lib/php/extensions/ -iname 'xdebug.so'` > $XDEBUGINI_PATH
-COPY ./xdebug.ini /tmp/xdebug.ini
+COPY ./docker/config/xdebug.ini /tmp/xdebug.ini
 RUN cat /tmp/xdebug.ini >> $XDEBUGINI_PATH
 
 # Config mailcatcher
-RUN apt-get install -y ssmtp && \
-    echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/sendmail.ini && \
-    echo "mailhub=mailcatcher:25\nUseTLS=NO\nFromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
+RUN apt-get install -y msmtp && \
+    echo "sendmail_path = /usr/bin/msmtp -C /etc/msmtprc -t" > /usr/local/etc/php/conf.d/sendmail.ini && \
+    echo "port 1025\ntls off\nhost mailcatcher\nauth off" > /etc/msmtprc && \
+    chown www-data:www-data /etc/msmtprc && \
+    chmod 600 /etc/msmtprc
+    
+# Enable PHP error log to docker log, increase upload and post size to 64MB
+RUN echo "php_admin_value[error_log] = /dev/stderr" >> /usr/local/etc/php-fpm.conf && \
+    echo "upload_max_filesize = 64M\npost_max_size = 64M" > /usr/local/etc/php/conf.d/uploads.ini
 
-# Enable PHP error log to docker log
-RUN echo "php_admin_value[error_log] = /dev/stderr" >> /usr/local/etc/php-fpm.conf
-
-# install composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php
-RUN php -r "unlink('composer-setup.php');"
-RUN mv composer.phar /usr/local/bin/composer
+# retrieve latest composer from docker hub, and place it in our container
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # install nodejs & npm
-RUN cd ~ && curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh && bash nodesource_setup.sh && apt-get install -y nodejs build-essential
+RUN cd ~ && curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh && bash nodesource_setup.sh && apt-get install -y nodejs build-essential
 
+# install yarn package manager
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add - && \
     echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
     apt-get install --no-install-recommends yarn
 
-COPY ./uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 WORKDIR /var/www
-

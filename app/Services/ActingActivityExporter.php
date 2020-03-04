@@ -165,7 +165,7 @@ class ActingActivityExporter
         }
         array_walk($evidence, static function (Evidence $evidence) use ($section): void {
             $listItemRun = $section->addListItemRun();
-            $url = route('evidence-download', ['learningActivity' => $evidence->id, 'diskFileName' => $evidence->disk_filename]);
+            $url = route('evidence-download', [$evidence->id, $evidence->disk_filename]);
             $listItemRun->addLink($url, $evidence->filename, ['color' => '0000FF', 'underline' => Font::UNDERLINE_SINGLE]);
         });
 

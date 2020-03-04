@@ -46,7 +46,7 @@ class LearningActivityActingExportBuilder
                 'lessonsLearned'          => $activity->lessonslearned,
                 'supportWp'               => $activity->support_wp ?? '',
                 'supportEd'               => $activity->support_ed ?? '',
-                'url'                     => route('process-acting-edit', ['id' => $activity->laa_id]),
+                'url'                     => route('process-acting-edit', [$activity->laa_id]),
                 'evidence'                => $activity->evidence->map(function (Evidence $evidence) {
                     return [
                         'name'          => $evidence->filename,

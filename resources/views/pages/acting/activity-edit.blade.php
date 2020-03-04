@@ -34,7 +34,7 @@
             });
         </script>
 
-        {{ Form::open(array('id' => 'taskForm', 'url' => route('process-acting-update', ['id' => $activity->laa_id]), 'files' => true)) }}
+        {{ Form::open(array('id' => 'taskForm', 'url' => route('process-acting-update', [$activity->laa_id]), 'files' => true)) }}
         <div id="taskFormError" class="alert alert-error" style="display: none">
 
         </div>
@@ -66,7 +66,7 @@
                         </h4>
                         @foreach ($timeslots as $key => $value)
                             <label><input type="radio" name="timeslot"
-                                          value="{{ $value->timeslot_id }}" {{ (old('timeslot') == $value->timeslot_id) ? 'checked' : ($activity->timeslot_id == $value->timeslot_id) ? 'checked' : null }} /><span>{{ $value->localizedLabel() }}</span></label>
+                                          value="{{ $value->timeslot_id }}" {{ ((old('timeslot') == $value->timeslot_id) ? 'checked' : ($activity->timeslot_id == $value->timeslot_id)) ? 'checked' : null }} /><span>{{ $value->localizedLabel() }}</span></label>
                         @endforeach
                         <div class="clearfix"></div>
                     </div>
@@ -76,7 +76,7 @@
                                                                 title="{{ trans('tooltips.acting_with') }}"></i></h4>
                         @foreach ($resourcePersons as $key => $value)
                             <label><input type="radio" name="res_person"
-                                          value="{{ $value->rp_id }}" {{ (old('res_person') == $value->rp_id) ? 'checked' : ($activity->res_person_id == $value->rp_id) ? 'checked' : null }} /><span>{{ $value->localizedLabel() }}</span></label>
+                                          value="{{ $value->rp_id }}" {{ ((old('res_person') == $value->rp_id) ? 'checked' : ($activity->res_person_id == $value->rp_id)) ? 'checked' : null }} /><span>{{ $value->localizedLabel() }}</span></label>
                         @endforeach
                         <div class="clearfix"></div>
                     </div>
@@ -87,10 +87,10 @@
                                                                   title="{{ trans('tooltips.acting_theory') }}"></i>
                         </h4>
                         <label><input type="radio" name="res_material" id="rm_none"
-                                      value="none" {{ (old('res_material') === 'none' || !$activity->res_material_id) ? 'checked' : null }}/><span>{{ __('activity.none') }}</span></label>
+                                      value="none" {{ ((old('res_material') === 'none' || !$activity->res_material_id)) ? 'checked' : null }}/><span>{{ __('activity.none') }}</span></label>
                         @foreach ($resourceMaterials as $key => $value)
                             <label><input type="radio" name="res_material"
-                                          value="{{ $value->rm_id }}" {{ (old('res_material') == $value->rm_id) ? 'checked' : ($activity->res_material_id == $value->rm_id) ? 'checked' : null }} /><span>{{ $value->rm_label }}</span></label>
+                                          value="{{ $value->rm_id }}" {{ ((old('res_material') == $value->rm_id) ? 'checked' : ($activity->res_material_id == $value->rm_id)) ? 'checked' : null }} /><span>{{ $value->rm_label }}</span></label>
                         @endforeach
                         <div style="text-align: center">
                             <input type="text" name="res_material_detail" id="res_material_detail" class="form-control"
@@ -118,7 +118,7 @@
                             </h4>
                             <select name="learning_goal" class="form-control fit-bs">
                                 @foreach ($learningGoals as $key => $value)
-                                    <option value="{{ $value->learninggoal_id }}" {{ (old('learning_goal') == $value->learninggoal_id) ? 'selected' : ($activity->learninggoal_id == $value->learninggoal_id) ? 'selected' : null }}>{{ $value->learninggoal_label }}</option>
+                                    <option value="{{ $value->learninggoal_id }}" {{ ((old('learning_goal') == $value->learninggoal_id) ? 'selected' : ($activity->learninggoal_id == $value->learninggoal_id)) ? 'selected' : null }}>{{ $value->learninggoal_label }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -160,9 +160,9 @@
                                     @foreach($activity->evidence as $evidence)
                                         <li>
                                             <?php /** App\Evidence $evidence */ ?>
-                                            <a href="{{ route('evidence-download', ['learningActivity' => $evidence->id, 'diskFileName' => $evidence->disk_filename]) }}">{{ $evidence->filename }}</a>
+                                            <a href="{{ route('evidence-download', [$evidence->id, $evidence->disk_filename]) }}">{{ $evidence->filename }}</a>
                                             -
-                                            <a href={{ route('evidence-remove', ['learningActivity' => $evidence->id]) }}>{{__('process.remove')}}</a>
+                                            <a href={{ route('evidence-remove', [$evidence->id]) }}>{{__('process.remove')}}</a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -196,7 +196,7 @@
                                     class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip"
                                     data-placement="bottom"
                                     title="{{ trans('tooltips.acting_learned') }}"></i></h4>
-                        <textarea class="form-control fit-bs" name="learned" rows="5" id="learned"
+                        <textarea class="form-control fit-bs" name="learned" required rows="5" id="learned"
                                   cols="19">{{ (count($errors) > 0) ? old('learned') : $activity->lessonslearned }}</textarea>
                         <a data-target-text="#learned" data-target-title="{{ __('activity.learned') }}"
                            class="canBeEnlarged">{{ trans('process.enlarge') }}</a>
