@@ -48,7 +48,7 @@ class LearningActivityTest extends \Tests\TestCase
         ]);
 
         // Controller redirects back to process creation page -- consider that success
-        $response->assertJson(['status' => 'success', 'url' => 'https://localhost/acting/process']);
+        $response->assertJsonFragment(['status' => 'success']);
         $this->assertDatabaseHas('learningactivityacting', ['situation' => 'Some test activity!']);
     }
 
@@ -75,7 +75,7 @@ class LearningActivityTest extends \Tests\TestCase
         ]);
 
         // Controller redirects back to process creation page -- consider that success
-        $response->assertJson(['status' => 'success', 'url' => 'https://localhost/producing/process']);
+        $response->assertJsonFragment(['status' => 'success']);
         $this->assertDatabaseHas('learningactivityproducing', ['description' => 'Some test activity!']);
     }
 
@@ -111,8 +111,9 @@ class LearningActivityTest extends \Tests\TestCase
             'support_ed'          => 'Nothing',
             'learning_goal'       => $learningActivityActing->learninggoal_id,
             'competence'          => $learningActivityActing->competence()->first()->competence_id,
-        ])
-            ->assertJson(['status' => 'success', 'url' => 'https://localhost/acting/process']);
+        ]);
+
+        $response->assertJsonFragment(['status' => 'success']);
 
         $this->assertDatabaseHas('learningactivityacting', ['situation' => 'new text']);
     }

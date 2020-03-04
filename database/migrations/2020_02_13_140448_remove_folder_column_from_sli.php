@@ -27,6 +27,8 @@ class RemoveFolderColumnFromSli extends Migration
      */
     public function down()
     {
-        // No down because we already lost data when we went here
+        Schema::table('saved_learning_items', function (Blueprint $table) {
+            $table->integer('folder')->unsigned()->nullable(true);
+        });
     }
 }
