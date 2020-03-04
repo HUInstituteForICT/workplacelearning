@@ -7,6 +7,7 @@ namespace App;
 use App\Events\LearningActivityProducingCreated;
 use App\Interfaces\LearningActivityInterface;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -173,5 +174,10 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getDate(): DateTime
+    {
+        return $this->date->toDateTime();
     }
 }

@@ -7,6 +7,7 @@ namespace App;
 use App\Interfaces\LearningActivityInterface;
 use App\Reflection\Models\ActivityReflection;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,28 +19,28 @@ use RuntimeException;
 /**
  * App\LearningActivityActing.
  *
- * @property int                                                      $laa_id
- * @property int                                                      $wplp_id
- * @property Carbon                                                   $date
- * @property int                                                      $timeslot_id
- * @property string                                                   $situation
- * @property string                                                   $lessonslearned
- * @property string                                                   $support_wp
- * @property string                                                   $support_ed
- * @property int                                                      $res_person_id
- * @property int                                                      $res_material_id
- * @property string                                                   $res_material_detail
- * @property int                                                      $learninggoal_id
- * @property string                                                   $evidence_filename
- * @property string                                                   $evidence_disk_filename
- * @property string                                                   $evidence_mime
- * @property Timeslot                                                 $timeslot
- * @property ResourcePerson                                           $resourcePerson
- * @property ResourceMaterial                                         $resourceMaterial
- * @property LearningGoal                                             $learningGoal
- * @property Collection|Competence[]                                  $competence
+ * @property int $laa_id
+ * @property int $wplp_id
+ * @property Carbon $date
+ * @property int $timeslot_id
+ * @property string $situation
+ * @property string $lessonslearned
+ * @property string $support_wp
+ * @property string $support_ed
+ * @property int $res_person_id
+ * @property int $res_material_id
+ * @property string $res_material_detail
+ * @property int $learninggoal_id
+ * @property string $evidence_filename
+ * @property string $evidence_disk_filename
+ * @property string $evidence_mime
+ * @property Timeslot $timeslot
+ * @property ResourcePerson $resourcePerson
+ * @property ResourceMaterial $resourceMaterial
+ * @property LearningGoal $learningGoal
+ * @property Collection|Competence[] $competence
  * @property \Illuminate\Database\Eloquent\Collection|\App\Evidence[] $evidence
- * @property \App\WorkplaceLearningPeriod                             $workplaceLearningPeriod
+ * @property \App\WorkplaceLearningPeriod $workplaceLearningPeriod
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing whereLaaId($value)
@@ -68,8 +69,10 @@ class LearningActivityActing extends Model implements LearningActivityInterface
 {
     // Disable using created_at and updated_at columns
     public $timestamps = false;
+
     // Override the table used for the User Model
     protected $table = 'learningactivityacting';
+
     // Override the primary key column
     protected $primaryKey = 'laa_id';
 
@@ -143,5 +146,10 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     public function getDescription(): string
     {
         return $this->situation;
+    }
+
+    public function getDate(): DateTime
+    {
+        return $this->date->toDateTime();
     }
 }

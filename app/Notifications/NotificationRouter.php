@@ -12,10 +12,13 @@ class NotificationRouter
 
     private $studentDigestSender;
 
-    public function __construct(TeacherDigestSender $teacherDigestSender, StudentDigestSender $studentDigestSender)
+    private $inactiveStudentSender;
+
+    public function __construct(TeacherDigestSender $teacherDigestSender, StudentDigestSender $studentDigestSender, TeacherInactiveStudentSender $inactiveStudentSender)
     {
         $this->teacherDigestSender = $teacherDigestSender;
         $this->studentDigestSender = $studentDigestSender;
+        $this->inactiveStudentSender = $inactiveStudentSender;
     }
 
     public function routeForUsers(Collection $users): void
@@ -30,6 +33,7 @@ class NotificationRouter
             if ($user->isTeacher()) {
                 // filtered within call
                 $this->teacherDigestSender->sendNotifications($notifications, $user);
+                $this->inactiveStudentSender->sendNotifications($notifications, $user);
             }
 
             if ($user->isStudent()) {

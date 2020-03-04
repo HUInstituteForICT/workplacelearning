@@ -83,6 +83,10 @@ class Student extends Authenticatable implements MustVerifyEmail
 
     public const DIGEST_PERIODS = [self::DAILY, self::WEEKLY, self::INSTANTLY];
 
+    public const STUDENT = 0;
+    public const TEACHER = 1;
+    public const ADMIN = 2;
+
     public static $locales = [
         'nl' => 'Nederlands',
         'en' => 'English',
