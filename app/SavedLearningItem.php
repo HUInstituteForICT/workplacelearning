@@ -13,9 +13,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property false|string created_at
  * @property false|string updated_at
  * @property Folder[] folders
+ * @property Student student
  */
 class SavedLearningItem extends Model
 {
+    public const CATEGORY_TIP = 'tip';
+    public const CATEGORY_LAA = 'laa';
+    public const CATEGORY_LAP = 'lap';
+
+
     // Disable using created_at and updated_at columns
     public $timestamps = false;
 

@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\FolderFeedbackGiven;
+use App\Notifications\FolderSharedWithTeacher;
 use App\Repository\Eloquent\FolderRepository;
+use App\Repository\Eloquent\StudentRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\FolderCommentRepository;
@@ -175,11 +178,14 @@ class FolderController extends Controller
         $this->folderCommentRepository->save($folderComment);
 
 
+        /** @var Folder $folder */
         $folder = $this->folderRepository->findById($request['folder_id']);
-        $folder->teacher_id = $request['teacher'];
+        $folder->teacher_id = (int) $request['teacher'];
         $folder->save();
 
         session()->flash('success', __('folder.folder-shared'));
+
+        $folder->teacher->notify(new FolderSharedWithTeacher($folderComment));
 
         return redirect('folders');
     }
@@ -229,6 +235,8 @@ class FolderController extends Controller
 
         if ($currentUser->isTeacher()) {
             $url = route('teacher-student-details', ['student' => $student_id]);
+
+            $folder->student->notify(new FolderFeedbackGiven($folderComment));
         } else {
             $url = route('folders');
         }

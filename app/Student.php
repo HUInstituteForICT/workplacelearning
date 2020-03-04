@@ -67,6 +67,7 @@ use Kyslik\ColumnSortable\Sortable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereIsRegisteredThroughCanvas($value)
  *
  * @property string|null $email_verified_at
+ * @property string digest_period
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereEmailVerifiedAt($value)
  */
@@ -76,7 +77,16 @@ class Student extends Authenticatable implements MustVerifyEmail
     use CanResetPassword;
     use Sortable;
 
-    // Override the table used for the User Model
+    public const DAILY = 'daily';
+    public const WEEKLY = 'weekly';
+    public const INSTANTLY = 'instantly';
+
+    public const DIGEST_PERIODS = [self::DAILY, self::WEEKLY, self::INSTANTLY];
+
+    public const STUDENT = 0;
+    public const TEACHER = 1;
+    public const ADMIN = 2;
+
     public static $locales = [
         'nl' => 'Nederlands',
         'en' => 'English',
@@ -349,7 +359,7 @@ class Student extends Authenticatable implements MustVerifyEmail
         $wplp = $this->getCurrentWorkplaceLearningPeriod();
         $lastActivity = $wplp->getLastActivity(1);
         $lastActivityDate = $lastActivity->isEmpty() ? $wplp->startdate : $lastActivity->first()->date;
-        
+
         $countDaysFromLastActivity = $wplp->startdate->gt($now) ? 0 : $lastActivityDate->diffInDays($now);
         $daysFromLastActivity = $wplp->startdate->gt($now) ? '-' : $now->subDays($countDaysFromLastActivity)->diffForHumans();
 
@@ -363,5 +373,10 @@ class Student extends Authenticatable implements MustVerifyEmail
             'daysFromLastActivity' => $daysFromLastActivity,
             'sharedFoldersWithoutResponse' => $sharedFoldersWithoutResponse
         ];
+    }
+
+    public function getName(): string
+    {
+        return $this->firstname  . ' ' . $this->lastname;
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RemoveFolderColumnFromSli extends Migration
+class AddDigestPeriodToStudent extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class RemoveFolderColumnFromSli extends Migration
      */
     public function up()
     {
-
-        Schema::table('saved_learning_items', function (Blueprint $table) {
-            $table->dropForeign('fk_saved_learning_items_folder');
-            $table->dropColumn('folder');
+        Schema::table('student', function (Blueprint $table) {
+            $table->string('digest_period')->default('daily');
         });
     }
 
@@ -27,8 +25,8 @@ class RemoveFolderColumnFromSli extends Migration
      */
     public function down()
     {
-        Schema::table('saved_learning_items', function (Blueprint $table) {
-            $table->integer('folder')->unsigned()->nullable(true);
+        Schema::table('student', function (Blueprint $table) {
+            $table->dropColumn('digest_period');
         });
     }
 }

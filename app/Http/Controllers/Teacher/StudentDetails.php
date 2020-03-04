@@ -57,6 +57,9 @@ class StudentDetails extends Controller
      */
     private $categoryRepository;
 
+    /** @var TipRepository */
+    private $tipRepository;
+
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         TipRepository $tipRepository,
@@ -65,7 +68,7 @@ class StudentDetails extends Controller
         LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
         CategoryRepository $categoryRepository)
-   
+
     {
         $this->currentUserResolver = $currentUserResolver;
         $this->tipRepository = $tipRepository;
@@ -80,7 +83,7 @@ class StudentDetails extends Controller
     {
         $teacher = $this->currentUserResolver->getCurrentUser();
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
-        
+
         // all wplps of the student where the logged-in teacher is the supervisor.
         $workplaces = $student->getWorkplaceLearningPeriods()
             ->filter(function (WorkplaceLearningPeriod $workplaceLearningPeriod) use ($teacher) {
@@ -89,12 +92,12 @@ class StudentDetails extends Controller
             ->map(static function (WorkplaceLearningPeriod $workplaceLearningPeriod) {
                 return $workplaceLearningPeriod->workplace;
             })->all();
-        
+
         $currentWorkplace = $student->getCurrentWorkplace();
         $workplace = in_array($currentWorkplace, $workplaces) ? $currentWorkplace : reset($workplaces);
         $tips = $this->tipRepository->all();
         $learningperiod = $student->getCurrentWorkplaceLearningPeriod();
-        
+
         $sharedFolders = $student->folders->filter(function (Folder $folder) {
             return $folder->isShared();
         });
@@ -102,7 +105,7 @@ class StudentDetails extends Controller
         $persons = $this->resourcePersonRepository->all();
         $categories = $this->categoryRepository->all();
         $associatedActivities = [];
-        
+
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
             return $item->category == 'activity';
         })->pluck('item_id')->toArray();

@@ -8,13 +8,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property Student student
  * @property string title
  * @property string description
  * @property int student_id
- * @property SavedLearningItem[] savedLearningItems
+ * @property Collection|SavedLearningItem[] savedLearningItems
+ * @property Student teacher
+ * @property int folder_id
+ * @property int teacher_id
+ * @property Collection|FolderComment[] folderComments
  */
 class Folder extends Model
 {

@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Validator;
 
 class ProfileController extends Controller
@@ -38,7 +39,13 @@ class ProfileController extends Controller
         return view('pages.profile')
             ->with('student', $currentUserResolver->getCurrentUser())
             ->with('locales', Student::$locales)
-            ;
+            ->with('digestPeriods',
+                array_reduce(Student::DIGEST_PERIODS, static function (array $carry, string $period): array {
+                    $carry[$period] = __('elements.profile.labels.'.$period);
+
+                    return $carry;
+                }, [])
+            );
     }
 
     public function update(Request $request, CurrentUserResolver $currentUserResolver)
@@ -46,8 +53,9 @@ class ProfileController extends Controller
         $user = $currentUserResolver->getCurrentUser();
 
         $rules = [
-            'firstname' => 'required|max:255|min:3',
-            'lastname'  => 'required|max:255|min:3',
+            'firstname'     => 'required|max:255|min:3',
+            'lastname'      => 'required|max:255|min:3',
+            'digest_period' => [Rule::in(Student::DIGEST_PERIODS)],
         ];
 
         if (!$user->isRegisteredThroughCanvas()) {
@@ -70,6 +78,7 @@ class ProfileController extends Controller
             $user->email = $request->get('email');
         }
         $user->locale = $request->get('locale');
+        $user->digest_period = $request->get('digest_period');
         $user->save();
 
         return redirect()->route('profile')->with('success', __('general.edit-saved'));

@@ -22,6 +22,7 @@ class HomeController extends Controller
      * @var Redirector
      */
     private $redirector;
+
     /**
      * @var CurrentUserResolver
      */
@@ -40,48 +41,63 @@ class HomeController extends Controller
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, SavedLearningItemRepository $savedLearningItemRepository)
-    {
+    public function showProducingTemplate(
+        ApplicableTipFetcher $applicableTipFetcher,
+        LikeRepository $likeRepository,
+        SavedLearningItemRepository $savedLearningItemRepository
+    ) {
         $student = $this->currentUserResolver->getCurrentUser();
 
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
             $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
-            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use (
+                $student,
+                $likeRepository
+            ): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
             if ($applicableEvaluatedTips->count() != 0) {
-                $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id, $student->student_id);
+                $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id,
+                    $student->student_id);
             }
         }
+
         return view('pages.producing.home', [
             'evaluatedTip' => $evaluatedTip ?? null,
-            'itemExists' => $itemExists ?? false
+            'itemExists'   => $itemExists ?? false,
         ]);
     }
 
-    public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, SavedLearningItemRepository $savedLearningItemRepository)
-    {
+    public function showActingTemplate(
+        ApplicableTipFetcher $applicableTipFetcher,
+        LikeRepository $likeRepository,
+        SavedLearningItemRepository $savedLearningItemRepository
+    ) {
         $student = $this->currentUserResolver->getCurrentUser();
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
             $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
-            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use (
+                $student,
+                $likeRepository
+            ): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 
             /** @var EvaluatedTip|null $evaluatedTip */
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
             if ($evaluatedTip) {
-                $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id, $student->student_id);
+                $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id,
+                    $student->student_id);
             }
         }
 
         return view('pages.acting.home', [
             'evaluatedTip' => $evaluatedTip ?? null,
-            'itemExists' => $itemExists ?? false
+            'itemExists'   => $itemExists ?? false,
         ]);
     }
 
