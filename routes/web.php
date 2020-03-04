@@ -147,18 +147,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         Route::get('/reactlogs/{reactLog}/fix',
             'ReactLogController@fix')->name('fix-reactlog'); // Remove React error from log
         Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index'); // Normal logs (exceptions etc)
-        Route::get('switch-user/{id}', static function (int $id, CurrentUserResolver $userResolver): RedirectResponse {
-            if (!in_array($userResolver->getCurrentUser()->email,
-                ['rogier@inesta.com', 'rogier+producing@inesta.com'])) {
-                redirect('/');
-            }
-            Auth::loginUsingId($id);
-
-            return redirect('/');
-        }); // Ability to switch to user by ID
-        Route::get('/pull-update', static function (): string {
-            return shell_exec('git -C /sites/werkplekleren.hu.nl/htdocs fetch && git -C /sites/werkplekleren.hu.nl/htdocs reset --hard origin/master && git -C /sites/werkplekleren.hu.nl/htdocs pull');
-        }); // Pulls branch -- often doesn't work. Only necessary due to VPN situation on HU network
 
         // outside prefix because of namespace issues
         Route::get('admin/home', 'HomeController@showAdminTemplate')->name('home-admin');
@@ -201,6 +189,18 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
     Route::post('/reactlog', 'ReactLogController@store'); // Logs errors occurring in React
 
     Route::get('/saved-learning-items', 'SavedLearningItemController@index')->name('saved-learning-items');
+    Route::get('/saved-learning-items/delete/{sli}', 'SavedLearningItemController@delete')->name('saved-learning-items-delete');
+    Route::post('/saved-learning-items/rToFolder', 'SavedLearningItemController@addItemToFolder')->name('saved-learning-items-addItemToFolder');
+    Route::get('/saved-learning-items/removeItemFromFolder/{sli}/{folder}', 'SavedLearningItemController@removeItemFromFolder')->name('saved-learning-item.removeItemFromFolder');
+
+    // actions on folders and comments
+    Route::get('/folders', 'FolderController@index')->name('folders');
+    Route::post('/folders/create', 'FolderController@create')->name('folder.create');
+    Route::post('/folder/shareFolderWithTeacher', 'FolderController@shareFolderWithTeacher')->name('folder.shareFolderWithTeacher');
+    Route::post('/folder/addComment', 'FolderController@addComment')->name('folder.addComment');
+    Route::get('folders/delete/{folder}', 'FolderController@delete')->name('folder.destroy');
+    Route::get('folders/{folder}/edit', 'FolderController@stopSharingFolder')->name('folder.stop-sharing-folder');
+    Route::post('folders/AddItemsToFolder', 'FolderController@AddItemsToFolder')->name('folder.AddItemsToFolder');
 
     Route::middleware('usernotifications')->group(static function (): void {
         // Actions on the profile of a student
@@ -308,6 +308,10 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/delete/{learningActivityActing}', 'ActingActivityController@delete')
                         ->middleware('can:delete,learningActivityActing')
                         ->name('process-acting-delete');
+
+                        Route::get('/save/{learningActivityActing}', 'ActingActivityController@save')
+                        ->name('process-acting-save');
+
                 }); // Actions relating to acting activities
             });
         });
@@ -371,6 +375,9 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                     Route::get('/delete/{learningActivityProducing}', 'ProducingActivityController@delete')
                         ->middleware('can:delete,learningActivityProducing')
                         ->name('process-producing-delete');
+
+                    Route::get('/save/{learningActivityProducing}', 'ProducingActivityController@save')
+                        ->name('process-producing-save');
                 }); // Actions relating to producing activities
             });
         });
