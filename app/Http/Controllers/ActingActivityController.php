@@ -7,10 +7,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\LearningActivityActing;
-use App\SavedLearningItem;
 use App\Reflection\Models\ActivityReflection;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
+use App\SavedLearningItem;
 use App\Services\AvailableActingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
 use App\Services\EvidenceUploadHandler;
@@ -33,15 +33,18 @@ class ActingActivityController
      * @var CurrentUserResolver
      */
     private $currentUserResolver;
+
     /**
      * @var LearningActivityActingRepository
      */
     private $learningActivityActingRepository;
+
     /**
      * @var Session
      */
     private $session;
-     /**
+
+    /**
      * @var SavedLearningItemRepository
      */
     private $savedLearningItemRepository;
@@ -184,21 +187,13 @@ class ActingActivityController
         return $this->redirector->route('process-acting');
     }
 
-    public function save(LearningActivityActing $learningActivityActing): RedirectResponse
+    public function save(LearningActivityActing $learningActivityActing, Request $request): RedirectResponse
     {
-        $student = $this->currentUserResolver->getCurrentUser();
-        $url = route('process-producing');
+        $savedLearningItem = $learningActivityActing->bookmark();
+        $this->savedLearningItemRepository->save($savedLearningItem);
 
-            $savedLearningItem = new SavedLearningItem();
-            $savedLearningItem->category = 'activity';
-            $savedLearningItem->item_id = $learningActivityActing->laa_id;
-            $savedLearningItem->student_id = $student->student_id;
-            $savedLearningItem->created_at = date('Y-m-d H:i:s');
-            $savedLearningItem->updated_at = date('Y-m-d H:i:s');
-            $this->savedLearningItemRepository->save($savedLearningItem);
+        $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
 
-            session()->flash('success', __('saved_learning_items.saved-succesfully'));
-
-        return redirect($url);
+        return $this->redirector->route('process-acting');
     }
 }

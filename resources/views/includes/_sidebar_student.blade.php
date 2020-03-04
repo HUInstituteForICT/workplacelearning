@@ -40,7 +40,7 @@
         <div class="nav-title">{{ __('saved_learning_items.saved') }}</div>
     </div>
 </a>
-<a class="nav-tile" href="/folders">
+<a class="nav-tile" href="{{ route('folders') }}">
     <div class="tile white_tile">
         <img class="icon" src="{{ URL::asset('assets/img/begeleiding_icon_blauw.svg', true) }}"/>
         <div class="nav-title">{{ __('folder.folders') }}</div>

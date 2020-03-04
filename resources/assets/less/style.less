@@ -1021,6 +1021,7 @@ div[class*=' styles_modalCenter'].panel {
   color: grey;
   text-transform: uppercase;
 }
+
 .custom-hr {
   border-bottom: 1px solid #ddd;
 }
@@ -1045,7 +1046,7 @@ div[class*=' styles_modalCenter'].panel {
 }
 
 .btn-collapse {
-  color:black;
+  color: black;
   text-decoration: none;
   border: 1px solid black;
   width: 100%;
@@ -1057,12 +1058,12 @@ div[class*=' styles_modalCenter'].panel {
   display: inline;
 }
 
-.add-collapse{
+.add-collapse {
   font-size: 28px;
   float: right;
 }
 
-.add-tip{
+.add-tip {
   font-size: 16px;
   float: right;
 }
@@ -1074,28 +1075,29 @@ div[class*=' styles_modalCenter'].panel {
   background-color: transparent;
   border: none;
 }
+
 .delete-tip {
   font-size: 16px;
   float: right;
   margin-left: 10px;
 }
 
-.tip-title{
+.tip-title {
   display: inline;
 }
 
 #sli_id {
-  display:none;
+  display: none;
 }
 
-#folder-null{
+#folder-null {
   display: none;
 }
 
 #shareFolder {
-  float:right;
+  float: right;
   width: 15%;
-  font-size:12px;
+  font-size: 12px;
   margin: 2px;
 }
 
@@ -1119,7 +1121,7 @@ div[class*=' styles_modalCenter'].panel {
 }
 
 .folder_id {
-  display:none;
+  display: none;
 }
 
 .panel-group {
@@ -1182,16 +1184,18 @@ div[class*=' styles_modalCenter'].panel {
 .user-icon {
   font-size: 100px;
 }
+
 .calendar-icon {
   font-size: 30px;
 }
+
 .label-information {
   color: #CFCFCF;
 }
 
 .comment-section {
   overflow-y: scroll;
-  max-height:300px;
+  max-height: 300px;
 }
 
 .student-table {
@@ -1204,18 +1208,22 @@ div[class*=' styles_modalCenter'].panel {
   border-bottom: 1px solid #ddd;
   vertical-align: middle !important;
 }
+
 .green-td {
   border-left: 10px solid green;
   border-radius: 4px 0 0 4px;
 }
+
 .orange-td {
   border-left: 10px solid orange;
   border-radius: 4px 0 0 4px;
 }
+
 .red-td {
   border-left: 10px solid @hu-red;
   border-radius: 4px 0 0 4px;
 }
+
 .last-td {
   border-right: 1px solid #ddd;
   border-radius: 0 4px 4px 0;
@@ -1223,19 +1231,19 @@ div[class*=' styles_modalCenter'].panel {
 }
 
 .danger-icon-red:before {
-  content:"\e209";
+  content: "\e209";
   color: @hu-red;
   display: block;
-  font-family:"Glyphicons Halflings";
+  font-family: "Glyphicons Halflings";
   left: -7px;
   position: absolute;
 }
 
 .danger-icon-orange:before {
-  content:"\e209";
+  content: "\e209";
   color: orange;
   display: block;
-  font-family:"Glyphicons Halflings";
+  font-family: "Glyphicons Halflings";
   left: -7px;
   position: absolute;
 }
@@ -1248,11 +1256,13 @@ div[class*=' styles_modalCenter'].panel {
 .color-red {
   color: red !important;
 }
+
 .item {
   display: flex;
   align-items: center;
 }
-.item-content  {
+
+.item-content {
   flex: auto;
 }
 
@@ -1284,4 +1294,68 @@ div[class*=' styles_modalCenter'].panel {
 
 .color-red {
   color: red !important;
+}
+
+.likeTip {
+  cursor: pointer;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow: 0 0 9px -5px #333;
+
+  &:hover {
+    -webkit-animation: likeTiphover 300ms ease-out forwards;
+    -o-animation: likeTiphover 300ms ease-out forwards;
+    animation: likeTiphover 300ms ease-out forwards;
+
+    background: linear-gradient(rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.2));
+  }
+}
+
+@keyframes likeTiphover {
+  0% {
+    transform: scale(1);
+  }
+  33% {
+    transform: scale(1.1);
+  }
+
+  66% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bookmarkTip {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 9px -5px #333;
+
+  &.bookmarkAnim:hover {
+    -webkit-animation: likeTiphover 300ms ease-out forwards;
+    -o-animation: likeTiphover 300ms ease-out forwards;
+    animation: likeTiphover 300ms ease-out forwards;
+
+    transition: all 0.3s;
+    background: linear-gradient(rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.2));
+  }
+
+  &.bookmarkAnim:active {
+    background-color: rgba(0, 226, 131, 0.4) !important;
+  }
 }

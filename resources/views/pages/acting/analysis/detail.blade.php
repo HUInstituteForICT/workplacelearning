@@ -43,10 +43,14 @@
                 @if(count($evaluatedTips) > 0)
                     <?php $tipCounter = 1; ?>
 
-                    @foreach($evaluatedTips as $evaluatedTip)
-                        @include('components.tip_card', ['title' => trans('analysis.tip') .' '. $tipCounter, 'saved' => $savedTips[$evaluatedTip->getTip()->id], 'evaluatedTip' => $evaluatedTip])
-                        <?php ++$tipCounter; ?>
-                    @endforeach
+                    <div style="display: flex; flex-wrap: wrap;">
+
+
+                        @foreach($evaluatedTips as $evaluatedTip)
+                            @include('components.tip_card', ['title' => trans('analysis.tip') .' '. $tipCounter, 'saved' => $savedTips[$evaluatedTip->getTip()->id], 'evaluatedTip' => $evaluatedTip])
+                            <?php ++$tipCounter; ?>
+                        @endforeach
+                    </div>
                 @else
                     <p>{{ __('tips.none') }}</p>
                 @endif

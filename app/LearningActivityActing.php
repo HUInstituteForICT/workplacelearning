@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Interfaces\Bookmarkable;
 use App\Interfaces\LearningActivityInterface;
 use App\Reflection\Models\ActivityReflection;
 use Carbon\Carbon;
@@ -65,7 +66,7 @@ use RuntimeException;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityActing query()
  */
-class LearningActivityActing extends Model implements LearningActivityInterface
+class LearningActivityActing extends Model implements LearningActivityInterface, Bookmarkable
 {
     // Disable using created_at and updated_at columns
     public $timestamps = false;
@@ -151,5 +152,17 @@ class LearningActivityActing extends Model implements LearningActivityInterface
     public function getDate(): DateTime
     {
         return $this->date->toDateTime();
+    }
+
+    public function bookmark(): SavedLearningItem
+    {
+        $savedLearningItem = new SavedLearningItem();
+        $savedLearningItem->category = SavedLearningItem::CATEGORY_LAA;
+        $savedLearningItem->item()->associate($this->laa_id);
+        $savedLearningItem->student()->associate($this->workplaceLearningPeriod->student);
+        $savedLearningItem->created_at = new \DateTimeImmutable();
+        $savedLearningItem->updated_at = new \DateTimeImmutable();
+
+        return $savedLearningItem;
     }
 }

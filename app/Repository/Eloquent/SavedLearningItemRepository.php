@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Eloquent;
 use App\SavedLearningItem;
 use App\Services\CurrentUserResolver;
+use Illuminate\Support\Collection;
 
 class SavedLearningItemRepository
 {
@@ -13,7 +14,7 @@ class SavedLearningItemRepository
         return SavedLearningItem::all();
     }
 
-    public function findByStudentnr(int $id)
+    public function findByStudentnr(int $id): Collection
     {
         return SavedLearningItem::where('student_id', $id)->get();
     }

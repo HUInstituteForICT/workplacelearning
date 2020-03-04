@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Notifications\FolderFeedbackGiven;
-use App\Notifications\FolderSharedWithTeacher;
-use App\Repository\Eloquent\FolderRepository;
-use App\Repository\Eloquent\StudentRepository;
-use App\Repository\Eloquent\TipRepository;
-use App\Repository\Eloquent\SavedLearningItemRepository;
-use App\Repository\Eloquent\FolderCommentRepository;
-use App\Repository\Eloquent\ResourcePersonRepository;
-use App\Repository\Eloquent\LearningActivityProducingRepository;
-use App\Repository\Eloquent\LearningActivityActingRepository;
-use App\Repository\Eloquent\CategoryRepository;
 use App\Folder;
 use App\FolderComment;
+use App\Notifications\FolderFeedbackGiven;
+use App\Notifications\FolderSharedWithTeacher;
+use App\Repository\Eloquent\CategoryRepository;
+use App\Repository\Eloquent\FolderCommentRepository;
+use App\Repository\Eloquent\FolderRepository;
+use App\Repository\Eloquent\LearningActivityActingRepository;
+use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\ResourcePersonRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
+use App\Repository\Eloquent\TipRepository;
 use App\SavedLearningItem;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use App\Services\CurrentUserResolver;
-use Illuminate\Http\RedirectResponse;
 use App\Tips\Services\TipEvaluator;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class FolderController extends Controller
 {
@@ -53,12 +50,12 @@ class FolderController extends Controller
      */
     private $tipRepository;
 
-     /**
+    /**
      * @var LearningActivityProducingRepository
      */
     private $learningActivityProducingRepository;
 
-     /**
+    /**
      * @var LearningActivityActingRepository
      */
     private $learningActivityActingRepository;
@@ -69,7 +66,7 @@ class FolderController extends Controller
      */
     private $resourcePersonRepository;
 
-     /**
+    /**
      * @var CategoryRepository
      */
     private $categoryRepository;
@@ -84,8 +81,8 @@ class FolderController extends Controller
         LearningActivityProducingRepository $learningActivityProducingRepository,
         LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
-        CategoryRepository $categoryRepository)
-    {
+        CategoryRepository $categoryRepository
+    ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->folderRepository = $folderRepository;
         $this->folderCommentRepository = $folderCommentRepository;
@@ -107,28 +104,28 @@ class FolderController extends Controller
         $associatedActivities = [];
 
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
-            return $item->category == 'activity';
+            return $item->isActivity();
         })->pluck('item_id')->toArray();
 
         if ($student->educationProgram->educationprogramType->isActing()) {
             $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
-            foreach($allActivities as $activity) {
+            foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->laa_id] = $activity;
             }
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
             $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
-            foreach($allActivities as $activity) {
+            foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->lap_id] = $activity;
             }
         }
 
         $resourcepersons = [];
-        foreach($persons as $person) {
+        foreach ($persons as $person) {
             $resourcepersons[$person->rp_id] = $person;
         }
 
         $associatedCategories = [];
-        foreach($categories as $category) {
+        foreach ($categories as $category) {
             $associatedCategories[$category->category_id] = $category;
         }
 
@@ -193,7 +190,7 @@ class FolderController extends Controller
     public function delete(int $id, FolderRepository $folderRepository): RedirectResponse
     {
         $folder = $folderRepository->findById($id, true);
-        if(!$folder) {
+        if (!$folder) {
             throw new \InvalidArgumentException('Unknown folder');
         }
         $student = $this->currentUserResolver->getCurrentUser();
@@ -208,7 +205,7 @@ class FolderController extends Controller
             $sli->save();
         }
 
-        if($folder->trashed()) {
+        if ($folder->trashed()) {
             $this->folderRepository->restore($folder);
             session()->flash('success', __('folder.folder-deleted'));
         } else {
@@ -217,11 +214,11 @@ class FolderController extends Controller
         }
 
 
-
         return redirect('folders');
     }
 
-    public function addComment(Request $request) {
+    public function addComment(Request $request)
+    {
         $currentUser = $this->currentUserResolver->getCurrentUser();
 
         $folder = $this->folderRepository->findById($request['folder_id']);
@@ -264,7 +261,7 @@ class FolderController extends Controller
     {
         foreach ($request['check_list'] as $selectedItem) {
             /** @var SavedLearningItem $savedLearningItem */
-            $savedLearningItem =  $this->savedLearningItemRepository->findById($selectedItem);
+            $savedLearningItem = $this->savedLearningItemRepository->findById($selectedItem);
             $savedLearningItem->folders()->attach($folderRepository->findById($request['selected_folder_id']));
             $savedLearningItem->save();
         }

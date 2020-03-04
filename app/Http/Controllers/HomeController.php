@@ -78,14 +78,16 @@ class HomeController extends Controller
     ) {
         $student = $this->currentUserResolver->getCurrentUser();
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
-            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
-
-            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use (
-                $student,
-                $likeRepository
-            ): void {
-                $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
-            });
+            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort))
+                ->filter(static function (EvaluatedTip $evaluatedTip) use ($student): bool {
+                    return !$evaluatedTip->getTip()->dislikedByStudent($student);
+                })
+                ->each(function (EvaluatedTipInterface $evaluatedTip) use (
+                    $student,
+                    $likeRepository
+                ): void {
+                    $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
+                });
 
             /** @var EvaluatedTip|null $evaluatedTip */
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;

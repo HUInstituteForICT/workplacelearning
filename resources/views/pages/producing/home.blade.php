@@ -76,4 +76,13 @@
                                                height="16px"/> {{ __('home.tips') }}</a>
 
     </div>
+
+    <script>
+        function likeTip(tipId, type) {
+            const url = "{{ route('tips.like', ['id' => ':id']) }}";
+            $.get(url.replace(':id', tipId) + '?type=' + type).then(function () {
+                $('#likeTip-' + tipId).parent().remove();
+            });
+        }
+    </script>
 @stop

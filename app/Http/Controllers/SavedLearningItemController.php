@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Folder;
-use App\Http\Controllers\Controller;
-use App\LearningActivityActing;
+use App\Repository\Eloquent\CategoryRepository;
 use App\Repository\Eloquent\FolderRepository;
+use App\Repository\Eloquent\LearningActivityActingRepository;
+use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\ResourcePersonRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
-use App\Repository\Eloquent\ResourcePersonRepository;
-use App\Repository\Eloquent\CategoryRepository;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\Request;
-use App\Services\CurrentUserResolver;
 use App\SavedLearningItem;
-use App\Tips\EvaluatedTip;
+use App\Services\CurrentUserResolver;
 use App\Tips\Services\TipEvaluator;
-use App\Repository\Eloquent\LearningActivityProducingRepository;
-use App\Repository\Eloquent\LearningActivityActingRepository;
-use App\LearningActivityProducing;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use InvalidArgumentException;
 
 class SavedLearningItemController extends Controller
 {
@@ -54,7 +52,7 @@ class SavedLearningItemController extends Controller
      */
     private $resourcePersonRepository;
 
-     /**
+    /**
      * @var CategoryRepository
      */
     private $categoryRepository;
@@ -92,23 +90,23 @@ class SavedLearningItemController extends Controller
 
         if ($student->educationProgram->educationprogramType->isActing()) {
             $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
-            foreach($allActivities as $activity) {
+            foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->laa_id] = $activity;
             }
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
             $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
-            foreach($allActivities as $activity) {
+            foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->lap_id] = $activity;
             }
         }
 
         $resourcepersons = [];
-        foreach($persons as $person) {
+        foreach ($persons as $person) {
             $resourcepersons[$person->rp_id] = $person;
         }
 
         $associatedCategories = [];
-        foreach($categories as $category) {
+        foreach ($categories as $category) {
             $associatedCategories[$category->category_id] = $category;
         }
 
@@ -151,10 +149,10 @@ class SavedLearningItemController extends Controller
             $savedLearningItem->updated_at = date('Y-m-d H:i:s');
             $this->savedLearningItemRepository->save($savedLearningItem);
 
-            session()->flash('success', __('saved_learning_items.saved-succesfully'));
+            $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
         }
 
-        return redirect($url);
+        return new RedirectResponse($url);
     }
 
     /**
@@ -162,11 +160,12 @@ class SavedLearningItemController extends Controller
      */
     public function delete(SavedLearningItem $sli, CurrentUserResolver $currentUserResolver)
     {
-        if(!$sli->student->is($currentUserResolver->getCurrentUser())) {
+        if (!$sli->student->is($currentUserResolver->getCurrentUser())) {
             throw new AuthorizationException('This is not your SLI');
         }
 
         $this->savedLearningItemRepository->delete($sli);
+
         return redirect('saved-learning-items');
     }
 
@@ -174,26 +173,27 @@ class SavedLearningItemController extends Controller
     {
         $sli->folders()->detach($folder);
         $sli->save();
+
         return redirect('folders');
     }
 
     public function addItemToFolder(Request $request, FolderRepository $folderRepository)
     {
 
-        if(($folderId = $request->get('chooseFolder')) === null) {
-            throw new \InvalidArgumentException('No folder id');
+        if (($folderId = $request->get('chooseFolder')) === null) {
+            throw new InvalidArgumentException('No folder id');
         }
 
         /** @var Folder $folder */
         $folder = $folderRepository->findById($folderId);
 
-        if(($sliId = $request->get('sli_id')) === null) {
-            throw new \InvalidArgumentException('No sli id');
+        if (($sliId = $request->get('sli_id')) === null) {
+            throw new InvalidArgumentException('No sli id');
         }
 
 
         /** @var SavedLearningItem $savedLearningItem */
-        $savedLearningItem =  $this->savedLearningItemRepository->findById($sliId);
+        $savedLearningItem = $this->savedLearningItemRepository->findById($sliId);
 
         $folder->savedLearningItems()->attach($savedLearningItem);
         $folder->save();
