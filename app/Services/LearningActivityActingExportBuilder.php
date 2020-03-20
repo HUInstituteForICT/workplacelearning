@@ -60,7 +60,7 @@ class LearningActivityActingExportBuilder
                     }
 
                     return [
-                        'url' => route('reflection-download', ['reflection' => $activity->reflection]),
+                        'url' => route('reflection-download', [$activity->reflection]),
                         'id'  => $activity->reflection->id,
                     ];
                 })(),
