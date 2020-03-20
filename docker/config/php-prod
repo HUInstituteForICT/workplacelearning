@@ -1,0 +1,28 @@
+FROM php:7.4-fpm
+
+# Install PHP extensions
+RUN apt-get update && apt-get install -y --no-install-recommends mariadb-client libicu-dev libzip-dev libpng-dev libonig-dev unzip && \
+    docker-php-ext-install pdo_mysql intl gd zip bcmath
+
+# use php.ini production file
+# Enable PHP error log to docker log, increase upload and post size to 64MB
+RUN mv /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini && \
+    echo "php_admin_value[error_log] = /dev/stderr" >> /usr/local/etc/php-fpm.conf && \
+    echo "upload_max_filesize = 64M\npost_max_size = 64M" > /usr/local/etc/php/conf.d/uploads.ini
+
+# Set www-data as owner, copy PHP WPL files
+RUN chown www-data:www-data /var/www
+COPY --chown=www-data:www-data . /var/www
+
+# Copy PHP composer
+COPY --from=composer:latest --chown=www-data:www-data /usr/bin/composer /var/www/composer
+
+# Change working directory to /var/www
+WORKDIR /var/www
+
+# Change current user to www
+USER www-data
+
+# run composer, and delete it after use
+RUN /var/www/composer install --no-dev --no-suggest --no-interaction --prefer-dist --optimize-autoloader && \
+    rm -f /var/www/composer
