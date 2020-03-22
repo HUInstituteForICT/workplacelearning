@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Factories\LAPFactory;
 use Illuminate\Http\Request;
 use function Sodium\add;
-use App\Student;
 
 class StudentCsvImportController extends Controller
 {
@@ -17,7 +17,7 @@ class StudentCsvImportController extends Controller
             $dumpArray = [];
             $count = 0;
 
-            $student = new Student();
+            $lapFactory = new LAPFactory();
 
             while (($getData = fgetcsv($file, ",")) !== FALSE)
             {
@@ -36,15 +36,47 @@ class StudentCsvImportController extends Controller
                         $werkenLerenMet = $getData[4];
                         $status = $getData[5];
                         $moeilijkheidsgraad = $getData[6];
+//
+//                        dd($timestamp,
+//                            $omschrijving,
+//                            $duur,
+//                            $categorie,
+//                            $werkenLerenMet,
+//                            $status,
+//                            $moeilijkheidsgraad
+//                        );
 
-                        dd($timestamp,
-                            $omschrijving,
-                            $duur,
-                            $categorie,
-                            $werkenLerenMet,
-                            $status,
-                            $moeilijkheidsgraad
-                        );
+
+
+                        switch ($categorie) {
+                            case 'Onderzoek':
+                                // TODO: Implement a check to see which cohort_id it is.
+                                // For example:
+                                // if(cohort_id = 40){ $category = 834}
+                                // if(cohort_id = 41) {$category = 849};
+                                $categorie = 834;
+                                break;
+                            case 'ICT-Documentatie':
+                                $categorie = 835;
+                                break;
+                            case 'Schooldocumentatie':
+                                $categorie = 836;
+                                break;
+                            case 'Overleg':
+                                $categorie = 837;
+                                break;
+                            case 'Programmeren':
+                                $categorie = 846;
+                                break;
+                            case 'Analyseren & Ontwerpen':
+                                $categorie = 847;
+                                break;
+                            case 'Testen':
+                                $categorie = 848;
+                                break;
+                        }
+
+
 
 //                        $student->save($timestamp);
 
