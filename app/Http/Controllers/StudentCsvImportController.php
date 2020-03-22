@@ -21,15 +21,30 @@ class StudentCsvImportController extends Controller
 
             while (($getData = fgetcsv($file, ",")) !== FALSE)
             {
-                if(count >= 4) {
+                if($count >= 5) {
                     if (!$getData[0] == "" && !$getData[1] == "") {
 
 
                         // Difficulty, Category, Status, Duration zijn verplichte Foreign Keys
                         // Bovenstaande moeten eerst ingeschoten worden voordat date kan.
 
-                        $date = $getData[0];
-                        $timestamp = strtotime($date);
+
+                        $timestamp = strtotime($getData[0]);
+                        $omschrijving = $getData[1];
+                        $duur = $getData[2];
+                        $categorie = $getData[3];
+                        $werkenLerenMet = $getData[4];
+                        $status = $getData[5];
+                        $moeilijkheidsgraad = $getData[6];
+
+                        dd($timestamp,
+                            $omschrijving,
+                            $duur,
+                            $categorie,
+                            $werkenLerenMet,
+                            $status,
+                            $moeilijkheidsgraad
+                        );
 
 //                        $student->save($timestamp);
 
@@ -42,7 +57,7 @@ class StudentCsvImportController extends Controller
                         //                    $getData[6] =
 
 
-                        array_push($dumpArray, $getData);
+//                        array_push($dumpArray, $getData);
                     }
                 }
                 $count++;
