@@ -28,14 +28,12 @@
                             </div>
                             <div class="modal-body">
                                 <p class="text-center">{{ __('activity.import-error-message') }}</p>
-                            </div>
-                            <div class="alert alert-danger">
 
-                                <ul>
+                            <div class="alert alert-error">
                                     @foreach($errors->all() as $error)
-                                        <li>{{$error}}</li>
+                                        <p>{{$error}}</p>
                                     @endforeach
-                                </ul>
+                            </div>
                             </div>
                         @elseif(!empty($successMsg))
                             <div>
@@ -64,7 +62,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">{{ __('activity.upload-csv') }}</h4>
-
+<hr>
                         <div class="modal-body">
                             {!! Form::open(array('url' =>  route('activity-import-save'),
                             'files' => true,'enctype'=>'multipart/form-data')) !!}
@@ -72,6 +70,7 @@
                             <div class="form-group">
                                 {!! Form::file('csv_file', $attributes = array()) !!}
                             </div>
+                            <hr>
                             <button type="button" data-dismiss="modal">{{ __('activity.cancel-upload') }}</button>
                             {{ Form::submit('Upload', array('class' => 'btn btn-info', 'style' => 'float: right;', 'id' => 'coupleButton')) }}
                             {{ Form::close() }}
