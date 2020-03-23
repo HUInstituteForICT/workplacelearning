@@ -4,12 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Services\Factories\LAPFactory;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use function Sodium\add;
 
 class StudentCsvImportController extends Controller
 {
+    public function show(Request $request) {
+
+        return view('pages.producing.activity-import');
+    }
+
     public function save(Request $request)
     {
+
+        $request->validate([
+            "csv_file" => 'required',
+        ]);
+
+        return view('pages.producing.activity-import')->with('successMsg', 'works');
+
         if($request->hasFile('file'))
         {
             $filepath = $request->file('file')->getRealPath();
