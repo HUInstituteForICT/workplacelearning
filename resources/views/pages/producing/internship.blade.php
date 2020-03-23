@@ -20,7 +20,7 @@
 
 
             {!! Form::open(array(
-                'url' => (($period->wplp_id === null) ? route('period-producing-create') : route('period-producing-update', ['id' => $period->wplp_id])),
+                'url' => (($period->wplp_id === null) ? route('period-producing-create') : route('period-producing-update', [$period->wplp_id])),
                 'data-toggle' => 'validator'))
              !!}
             <div class="col-lg-5">
