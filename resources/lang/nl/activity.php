@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'activity-import-overzicht' => 'Activiteiten importeren',
+    'upload-csv' => 'CSV uploaden',
+    'upload-activities' => 'Activiteiten uploaden',
+    'cancel-upload' => 'Annuleren',
+    'import-succes-message' => 'De import van uw activiteiten is geslaagd! Bekijk uw activiteiten op de voortgang pagina.',
+    'import-succes-header-message' => 'Het is gelukt!',
+    'import-error-message' => 'Er ging iets mis, bekijk of uw upload-bestand correct is ingevuld en probeer het opnieuw. Zie hieronder wat er mis is gegaan.',
     'date'                    => 'Datum',
     'activities'              => 'Activiteiten',
     'activity'                => 'Activiteit',
