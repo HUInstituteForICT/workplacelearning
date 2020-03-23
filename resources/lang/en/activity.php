@@ -19,7 +19,7 @@ return [
     'cancel-upload' => 'Cancel',
     'import-succes-message' => 'Your import of activities has been succesfull. Check your activities on the process page.',
     'import-succes-header-message' => 'Awesome',
-    'import-error-message' => 'Something went wrong, pls check if the submission is fill in correctly and try again. See on top of the page what went wrong.',
+    'import-error-message' => 'Something went wrong, pls check if the submission is fill in correctly and try again. See below what went wrong.',
     'activity'                => 'Activity',
     'add'                     => 'Add',
     'alone'                   => 'Individually',
