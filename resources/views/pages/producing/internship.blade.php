@@ -68,7 +68,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-4 control-label"
-                               for="companyPostalcode">{{ __('elements.profile.internships.companylocation') }}</label>
+                               for="companyPostalcode">{{ __('elements.profile.internships.companypostalcode') }}</label>
                         <div class="col-lg-8">
                             <input name="companyPostalcode" type="text" class="form-control"
                                    placeholder="{{ __('elements.profile.internships.companypostalcode') }}"
