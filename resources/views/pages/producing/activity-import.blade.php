@@ -5,8 +5,6 @@
 @stop
 @section('content')
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-7">
                 <div class="panel-body">
                     <hr/>
                         @if ($errors->any())
