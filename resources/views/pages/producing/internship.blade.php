@@ -20,7 +20,7 @@
 
 
             {!! Form::open(array(
-                'url' => (($period->wplp_id === null) ? route('period-producing-create') : route('period-producing-update', ['id' => $period->wplp_id])),
+                'url' => (($period->wplp_id === null) ? route('period-producing-create') : route('period-producing-update', [$period->wplp_id])),
                 'data-toggle' => 'validator'))
              !!}
             <div class="col-lg-5">
@@ -68,7 +68,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-4 control-label"
-                               for="companyPostalcode">{{ __('elements.profile.internships.companylocation') }}</label>
+                               for="companyPostalcode">{{ __('elements.profile.internships.companypostalcode') }}</label>
                         <div class="col-lg-8">
                             <input name="companyPostalcode" type="text" class="form-control"
                                    placeholder="{{ __('elements.profile.internships.companypostalcode') }}"

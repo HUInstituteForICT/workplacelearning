@@ -9,6 +9,10 @@ use App\Tips\Models\Tip;
 
 class TipRepository implements TipRepositoryInterface
 {
+    public function all() {
+        return Tip::all();
+    }
+
     public function get(int $id): Tip
     {
         /** @var Tip $tip */

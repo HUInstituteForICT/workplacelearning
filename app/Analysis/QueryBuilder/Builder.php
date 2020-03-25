@@ -146,6 +146,7 @@ class Builder
 
     public function getSelectFields($selectData)
     {
+        $select = [];
         foreach ($selectData as $data) {
             $tableString = 'App\\'.$data['table'];
             $tableModel = (new $tableString())->getTable();

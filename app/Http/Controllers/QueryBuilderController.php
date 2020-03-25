@@ -223,11 +223,12 @@ class QueryBuilderController extends Controller
 
         $chartTypes = (new ChartType())->whereNotNull('slug')->get();
 
-        return view('pages.analytics.builder.step4-chart', compact('data', 'result', 'labels', 'chartTypes'));
+        return view('pages.analytics.builder.step4-chart', compact('data', 'labels', 'chartTypes'));
     }
 
     private function step5($data): bool
     {
+        $query = null;
         switch ($data['analysis_type']) {
             case 'build':
                 $table = $data['analysis_entity'];
@@ -269,6 +270,10 @@ class QueryBuilderController extends Controller
             case 'custom':
                 $query = $data['customQuery'];
                 break;
+        }
+
+        if (!$query) {
+            throw new \RuntimeException('No query created');
         }
 
         $analysis = new Analysis();

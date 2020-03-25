@@ -32,7 +32,7 @@ class EvidenceController
 
         $this->evidenceRepository->delete($evidence);
 
-        return redirect()->route('process-acting-edit', ['id' => $learningActivity->laa_id]);
+        return redirect()->route('process-acting-edit', [$learningActivity->laa_id]);
     }
 
     public function download(Evidence $evidence, string $diskFilename): BinaryFileResponse

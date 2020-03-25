@@ -83,7 +83,7 @@
                                             {{ $student->educationProgram->ep_name }}
                                         </td>
                                         <td>
-                                            <a href="{{route('admin-student-details', ['$student' => $student])}}">
+                                            <a href="{{route('admin-student-details', [$student])}}">
                                                 details
                                             </a>
 

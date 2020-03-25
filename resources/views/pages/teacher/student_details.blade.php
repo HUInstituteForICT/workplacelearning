@@ -38,14 +38,18 @@ use App\Student;use App\Workplace;
             <div id="alert" class="panel panel-default">
                 <div class="panel-body no-padding">
                     <?php
-                    /** @var Workplace $currentWorkplace */
+                    /** @var Workplace $workplace */
                     ?>
                     <div class="card-body">
                         <h3 class="card-text">
-                            <strong>{{ $currentWorkplace->wp_name }}</strong>
+                            <strong>{{ $workplace->workplaceLearningPeriod->startdate->toFormattedDateString()}} - {{ $workplace->workplaceLearningPeriod->enddate->toFormattedDateString() }}</strong>
                         </h3>
-                        <p class="card-text">{{ $currentWorkplace->street }} {{ $currentWorkplace->housenr }}, {{ $currentWorkplace->postalcode }} {{ $currentWorkplace->town }}, {{ $currentWorkplace->country }}</p><br />
-                        <p class="card-text"><strong>Contact: </strong><br /> {{ $currentWorkplace->contact_name }} ({{ $currentWorkplace->contact_email }})</p>
+                        <p class="card-text">{{ $workplace->wp_name }}</p>
+                        <p class="card-text">{{ $workplace->street }} {{ $workplace->housenr }}, {{ $workplace->postalcode }} {{ $workplace->town }}, {{ $workplace->country }}</p><br />
+                        <p class="card-text"><strong>Contactperson </strong><br /></p>
+                        <p class="card-text">{{ $workplace->contact_name }}</p>
+                        <p class="card-text">{{ $workplace->contact_email }}</p>
+                        <p class="card-text">{{ $workplace->contact_phone }}</p>
                     </div>
                 </div>
             </div>

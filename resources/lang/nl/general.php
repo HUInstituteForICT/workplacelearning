@@ -85,8 +85,11 @@ return array(
     'hide' => 'Sluiten',
     'found-bug' => 'Heb je een bug gevonden?',
     'bug-tell-us' => 'Vertel het ons!',
-    'no-student' => 'U hebt nog geen student.',
+    'no-student' => 'U heeft nog geen student.',
     'students' => 'Studenten',
     'student-details' => 'Student gegevens',
     'view' => 'Bekijk',
+    'student' => 'Student',
+    'teacher' => 'Docent',
+    'admin' => 'Admin',
 );

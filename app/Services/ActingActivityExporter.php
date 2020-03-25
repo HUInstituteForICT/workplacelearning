@@ -165,7 +165,7 @@ class ActingActivityExporter
         }
         array_walk($evidence, static function (Evidence $evidence) use ($section): void {
             $listItemRun = $section->addListItemRun();
-            $url = route('evidence-download', ['learningActivity' => $evidence->id, 'diskFileName' => $evidence->disk_filename]);
+            $url = route('evidence-download', [$evidence->id, $evidence->disk_filename]);
             $listItemRun->addLink($url, $evidence->filename, ['color' => '0000FF', 'underline' => Font::UNDERLINE_SINGLE]);
         });
 
@@ -185,8 +185,12 @@ class ActingActivityExporter
             /** @var ActivityReflectionField $field */
             foreach ($reflection->fields as $field) {
                 $section->addText(ucfirst(__('reflection.fields.'.strtolower($reflection->reflection_type).'.'.$field->name)), ['bold' => true]);
-                $section->addTextBreak();
-                $section->addText($field->value);
+
+                foreach(explode("\n", $field->value) as $line) {
+                    $section->addTextBreak();
+                    $section->addText($line);
+                }
+
                 $section->addTextBreak(2);
             }
         }

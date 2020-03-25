@@ -873,6 +873,7 @@ div[class*=' styles_modalCenter'].panel {
   margin-right: -20px;
   width: auto;
 }
+
 #competence-select:focus {
   outline: none;
 }
@@ -909,15 +910,16 @@ div[class*=' styles_modalCenter'].panel {
   justify-content: space-between;
   align-items: center;
 }
+
 /* Dropdown Button */
- .dropbtn {
-   background-color: #337AB7;
-   color: white;
-   padding: 16px;
-   font-size: 16px;
-   border: none;
-   cursor: pointer;
- }
+.dropbtn {
+  background-color: #337AB7;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
 
 /* Dropdown button on hover & focus */
 .dropbtn:hover, .dropbtn:focus {
@@ -930,14 +932,16 @@ div[class*=' styles_modalCenter'].panel {
   background-position: 14px 12px;
   background-repeat: no-repeat;
   font-size: 16px;
-  padding: 14px 20px 12px 45px;
+  padding: 14px 20px 12px 16px;
   border: none;
   border-bottom: 1px solid #ddd;
   width: 100%;
 }
 
 /* The search field when it gets focus/clicked on */
-#dropdownInput:focus {outline: 3px solid #ddd;}
+#dropdownInput:focus {
+  outline: 3px solid #ddd;
+}
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
@@ -956,7 +960,7 @@ div[class*=' styles_modalCenter'].panel {
 
 /* Links inside the dropdown */
 .dropdown-content a {
-  display:none;
+  display: none;
   color: black;
   padding: 12px 16px;
   text-decoration: none;
@@ -964,11 +968,63 @@ div[class*=' styles_modalCenter'].panel {
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {
+  background-color: #f1f1f1
+}
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {display:block;}
+.show {
+  display: block;
+}
 
 #selectWPLP {
   font-size: 16px;
+}
+
+#upload-btn {
+  float: right;
+}
+
+#teacher-overview {
+  display: inline;
+
+  .students-panel {
+    width: 96%;
+    margin: 0 auto 10px;
+    float: none;
+  }
+
+  .nomargin {
+    margin: 0 !important;
+  }
+
+  .sidebar-title {
+    margin: 15px 0 0 5px;
+    font-size: 14px;
+    color: grey;
+    text-transform: uppercase;
+  }
+
+  .custom-hr {
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+.sidebar-title {
+  margin: 15px 0 0 5px;
+  font-size: 14px;
+  color: grey;
+  text-transform: uppercase;
+}
+
+.custom-hr {
+  border-bottom: 1px solid #ddd;
+}
+
+.save_tip {
+  float: right;
+}
+
+.save_tip_icon {
+  width: 24px;
 }

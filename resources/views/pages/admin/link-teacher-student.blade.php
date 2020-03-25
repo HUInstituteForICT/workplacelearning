@@ -14,7 +14,8 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h3>{{ __('linking.docenten') }}</h3>
+                        <h3 id="teacher-overview">{{ __('linking.docenten') }}</h3>
+                        <button id="upload-btn" class="btn btn-primary" data-target="#CSV-Modal" data-toggle="modal" >Upload CSV</button>
                         <hr/>
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -24,6 +25,7 @@
                                     <th>@sortablelink('firstname', 'First name')</th>
                                     <th>@sortablelink('lastname', 'Last name')</th>
                                     <th>@sortablelink('email', 'E-mail')</th>
+                                    <th>@sortablelink('ep_id', 'Education program')</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -37,8 +39,9 @@
                                         <td>{{ $teacher->firstname }}</td>
                                         <td>{{ $teacher->lastname }}</td>
                                         <td>{{ $teacher->email }}</td>
+                                        <td>{{ $teacher->educationProgram->ep_name }}</td>
                                         <td>
-                                            <button data-target="#myModal" data-toggle="modal" class="btn btn-primary" onclick="chooseDocent({{ $teacher->student_id }})">
+                                            <button data-target="#Linking-Modal" data-toggle="modal" class="btn btn-info" onclick="chooseDocent({{ $teacher->student_id }})">
                                             {{ __('linking.koppelen') }}
                                             </button>
 
@@ -54,8 +57,8 @@
         </div>
     </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <!-- Modal for linking-->
+  <div class="modal fade" id="Linking-Modal" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -73,13 +76,24 @@
             <div class="panel-body">
                 <p id="chosenTeacher"></p>
            </div>
-        </div>  
+
+            <div class="panel panel-default students-panel">
+                <div class="panel-heading" data-toggle="collapse" data-target="#students">
+                    <span class="glyphicon glyphicon-chevron-down pull-right" aria-hidden="true"></span>
+                    <h3 class="panel-title clickable">{{ __('linking.studenten') }}</h3>
+                </div>
+                <div id="students" class="panel-body collapse">
+                    <div id="linked-students" class="list-group nomargin"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ __('linking.stap-2') }}</h3>
             </div>
             <div class="panel-body">
-            <div class="dropdown">
+                <div class="dropdown">
                     <div id="myDropdown" class="dropdown-content">
                         <input type="text" placeholder="{{ __('linking.placeholder') }}" id="dropdownInput" onkeyup="filterFunction()">
                         <div class="dropdown-links">
@@ -109,9 +123,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ __('linking.stap-3') }}</h3>
                 </div>
-                <div class="panel-body">
-                    Deze student heeft geen gekoppelde stage.
-                </div>
+                <div class="panel-body">{{ __('linking.geen-stage') }}</div>
             </div>
         </div>
 
@@ -129,7 +141,7 @@
             
 
         <div class="modal-footer">
-            {{ Form::submit('Koppelen', array('class' => 'btn btn-primary', 'id' => 'coupleButton')) }}
+            {{ Form::submit('Koppelen', array('class' => 'btn btn-info', 'id' => 'coupleButton')) }}
             {{ Form::close() }}
         </div>
       </div>
@@ -139,6 +151,37 @@
   
 </div>
 
+<!-- Modal for CSV-->
+<div class="modal fade" id="CSV-Modal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">CSV uploaden</h4>
+
+         
+        <div class="modal-body">
+            {!! Form::open(array('url' =>  route('update-teacher-for-workplacelearningperiod-csv'),
+            'files' => true,'enctype'=>'multipart/form-data')) !!}
+
+            <div class="form-group">
+                <input type="file" name="file" id="file" class="form-control">
+            </div>
+
+            {{ Form::submit('Upload', array('class' => 'btn btn-info', 'id' => 'coupleButton')) }}
+            {{ Form::close() }}
+
+        </div>
+
+
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
 
 @include('js.linking')
 <script>

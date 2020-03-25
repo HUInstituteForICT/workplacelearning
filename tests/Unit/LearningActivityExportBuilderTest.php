@@ -88,7 +88,7 @@ class LearningActivityExportBuilderTest extends TestCase
             'supportWp'               => 'support from wp',
             'supportEd'               => 'support from ed',
             'competence'              => ['Interpersoonlijk'],
-            'url'                     => route('process-acting-edit', ['id' => 1]),
+            'url'                     => route('process-acting-edit', [1]),
         ];
 
         foreach ($mapping as $field => $value) {

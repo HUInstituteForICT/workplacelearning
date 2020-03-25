@@ -11,6 +11,19 @@
                     @if($evaluatedTip !== null)
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px;"
                              role="alert">
+                            
+                            <?php
+                            /** @var bool $itemExists */
+                            ?>
+
+                            @if ($itemExists)
+                                <span title="{{ __('saved_learning_items.saved') }}" class="save_tip">
+                                    <img class="save_tip_icon" src="{{ URL::asset('assets/img/opgeslagen_icon_wit.svg', true) }}"/></span>
+                            @else
+                                <a title="{{ __('saved_learning_items.save') }}"  class="save_tip" href="{{ route('saved-learning-item-create', ['category' => 'tip', 'item_id' => $evaluatedTip->getTip()->id]) }}">
+                                    <img class="save_tip_icon" src="{{ URL::asset('assets/img/opgeslagen-niet-ingevuld.svg', true) }}"/></a>
+                            @endif
+
                             <h4>{{ __('tips.personal-tip') }}</h4>
                             <p>{!! nl2br($evaluatedTip->getTipText()) !!}</p>
                             <br/>
@@ -21,18 +34,8 @@
                             </p>
                         </div>
                     @endif
-                    @if(!$hasStudentDecided)
-                        <div class="alert alert-info">
-                            {{ __('misc.reflection-beta-text') }}
-                            <br/><br/>
-                            <a class='btn btn-primary'
-                            href='{{ route('reflection-interview-participation', ['participate' => 1]) }}'>{{ __('misc.participate-accept') }}</a>
-                            &nbsp;
-                            <a href='{{ route('reflection-interview-participation', ['participate' => 0]) }}'>{{ __('misc.participate-decline') }}</a>
-                        </div>
-                    @endif
 
-                    <p>{{ __('home.welcome') }}
+                    <p>{{ __('home.welcome-student') }}
                         <br /><br />{{ __('home.see-menu') }}</p>
                     <ul>
                         <li>{{ __('home.with-tile') }} <b>{{ __('home.learningprocess') }}</b> {{ __('home.steps.1') }}</li>

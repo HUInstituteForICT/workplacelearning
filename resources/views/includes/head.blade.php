@@ -8,7 +8,7 @@
         <meta charset="utf-8">
         <meta name="author" content="HU University of Applied Sciences">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" type="image/x-icon" href="//mijn.sharepoint.hu.nl/_layouts/15/images/hu/favicon.ico">
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
         <!-- Jquery -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

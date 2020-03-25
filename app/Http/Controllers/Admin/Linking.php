@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\StudentRepository;
-use App\Repository\Eloquent\WorkPlaceLearningPeriodRepository;
+use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
 use App\Repository\Eloquent\WorkplaceRepository;
 use App\Student;
 use Illuminate\Http\Request;
@@ -20,19 +20,19 @@ class Linking extends Controller
     private $studentRepository;
 
     /**
-     * @var WorkPlaceLearningPeriodRepository
+     * @var WorkplaceLearningPeriodRepository
      */
     private $wplpRepository;
 
     /**
-     * @var WorkPlaceRepository
+     * @var WorkplaceRepository
      */
     private $workplaceRepository;
 
     public function __construct(
         StudentRepository $studentRepository,
-        WorkPlaceLearningPeriodRepository $wplpRepository,
-        WorkPlaceRepository $workplaceRepository
+        WorkplaceLearningPeriodRepository $wplpRepository,
+        WorkplaceRepository $workplaceRepository
     ) {
         $this->studentRepository = $studentRepository;
         $this->wplpRepository = $wplpRepository;
