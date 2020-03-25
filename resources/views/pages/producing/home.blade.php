@@ -47,6 +47,7 @@
                     <p>{{ __('home.goodluck') }}</p>
                     <br>
                     {{--import button--}}
+                    <hr/>
                     <div class="panel-body">
                         <h1 id="teacher-overview"
                         >{{ __('activity.upload-activities') }}</h1>
