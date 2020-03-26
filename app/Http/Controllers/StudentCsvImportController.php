@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CustomProducingEntityHandler;
 use App\Services\Factories\LAPFactory;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use function Sodium\add;
 
 class StudentCsvImportController extends Controller
 {
@@ -19,7 +16,7 @@ class StudentCsvImportController extends Controller
                          LAPFactory $LAPFactory
                         )
     {
-//        $request->validate(["csv_file" => 'required']);
+        $request->validate(["csv_file" => 'required']);
 
         if($request->hasFile('file'))
         {
@@ -35,10 +32,22 @@ class StudentCsvImportController extends Controller
                         $data['category_id'] = $getData[3];
                         $data['omschrijving'] = $getData[1];
                         $data['aantaluren'] = $getData[2];
-                        $data['aantaluren_custom'] = '';
+                        $data['aantaluren_custom'] = $getData[2] * 60;
                         $data['datum'] = $getData[0];
                         $data['extrafeedback'] = '';
-                        $data['moeilijkheid'] = $getData[6];
+
+                        switch($getData[6]) {
+                            case 'Makkelijk':
+                                $data['moeilijkheid'] = 1;
+                                break;
+                            case 'Gemiddeld':
+                                $data['moeilijkheid'] = 2;
+                                break;
+                            case 'Moeilijk':
+                                $data['moeilijkheid'] = 3;
+                                break;
+                        }
+
                         $data['status'] = $getData[5];
 
                         if(strtolower(substr($getData[4], 0, 7)) === 'persoon') {
@@ -60,37 +69,6 @@ class StudentCsvImportController extends Controller
             }
         }
 
-        return view('pages.admin.dd-import');
-        }
-
-        private function checkCategory($categorie)
-        {
-            switch ($categorie) {
-                case 'Onderzoek':
-                    // TODO: Implement a check to see which cohort_id it is.
-                    // For example:
-                    // if(cohort_id = 40){ $category = 834}
-                    // if(cohort_id = 41) {$category = 849};
-                    $categorie = 834;
-                    break;
-                case 'ICT-Documentatie':
-                    $categorie = 835;
-                    break;
-                case 'Schooldocumentatie':
-                    $categorie = 836;
-                    break;
-                case 'Overleg':
-                    $categorie = 837;
-                    break;
-                case 'Programmeren':
-                    $categorie = 846;
-                    break;
-                case 'Analyseren & Ontwerpen':
-                    $categorie = 847;
-                    break;
-                case 'Testen':
-                    $categorie = 848;
-                    break;
-            }
+        return view('pages.producing.activity-import')->with('successMsg', 'works');
         }
 }
