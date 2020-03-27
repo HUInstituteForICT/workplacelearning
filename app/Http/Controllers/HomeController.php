@@ -51,7 +51,10 @@ class HomeController extends Controller
             });
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
-            $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id, $student->student_id);
+            if ($applicableEvaluatedTips->count() != 0) {
+                $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id,
+                    $student->student_id);
+            }
         }
 
         return view('pages.producing.home', [
@@ -71,7 +74,10 @@ class HomeController extends Controller
             });
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
-            $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id, $student->student_id);
+            if ($evaluatedTip) {
+                $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id,
+                    $student->student_id);
+            }
         }
 
         return view('pages.acting.home', [
