@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-
+use PhpParser\Node\Expr\Array_;
 
 
 class StudentCsvImportController extends Controller
@@ -91,46 +91,51 @@ class StudentCsvImportController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             } else {
-                return $getData;
+                $this->save();
             }
         }
     }
 
 
-    public function save(Request $request,
-                         LAPFactory $LAPFactory,
-                         CategoryRepository $categoryRepository)
+    public function save(Request $request, LAPFactory $LAPFactory, CategoryRepository $categoryRepository)
     {
+        $filepath = $request->file('csv_file')->getRealPath();
+        $file = fopen($filepath, "r");
+        $count = 0;
+        $getData = fgetcsv($file, ",");
 
-        $category = $this->findCategory($getData[3], $categoryRepository);
+        $count = 0;
+        while ($getData !== FALSE) {
+            if ($count >= 5 && !$getData[0] == "" && !$getData[1] == "") {
 
+                $category = $this->findCategory($getData[3], $categoryRepository);
 
-        if(strtolower(substr($getData[4], 0, 7)) === 'persoon') {
-            $resourceExplode = explode('- ', $getData[4]);
-            $data['resource'] = $resourceExplode[0];
-            $data['resource_person_id'] = strtolower($resourceExplode[1]);
+                if (strtolower(substr($getData[4], 0, 7)) === 'persoon') {
+                    $resourceExplode = explode('- ', $getData[4]);
+                    $data['resource'] = $resourceExplode[0];
+                    $data['resource_person_id'] = strtolower($resourceExplode[1]);
+                } else {
+                    $data['resource'] = $getData[4];
+                }
+                $data['category_id'] = $category['category_id'];
+                $data['newcat'] = $category['newcat'];
+
+                $data['omschrijving'] = $getData[1];
+                $data['aantaluren'] = $getData[2];
+                $data['aantaluren_custom'] = $getData[2] * 60;
+
+                $data['datum'] = strval(DateTime::createFromFormat('d/m/Y', $getData[0])->format('d-m-Y'));
+
+                $data['extrafeedback'] = null;
+
+                $data['internetsource'] = null;
+                $data['booksource'] = null;
+                $data['chain_id'] = -1;
+
+                $LAPFactory->createLAP($data);
+            }
+            $count++;
         }
-        else {
-            $data['resource'] = $getData[4];
-        }
-        $data['category_id'] = $category['category_id'];
-        $data['newcat'] = $category['newcat'];
-
-        $data['omschrijving'] = $getData[1];
-        $data['aantaluren'] = $getData[2];
-        $data['aantaluren_custom'] = $getData[2] * 60;
-
-        $data['datum'] = strval(DateTime::createFromFormat('d/m/Y', $getData[0])->format('d-m-Y'));
-
-        $data['extrafeedback'] = null;
-
-        $data['internetsource'] = null;
-        $data['booksource'] = null;
-        $data['chain_id'] = -1;
-
-        $LAPFactory->createLAP($data);
-
-
         return view('pages.producing.activity-import')->with('successMsg', 'works');
     }
 

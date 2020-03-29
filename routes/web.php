@@ -176,7 +176,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
                 });
     });
 
-    Route::post('/linking/update-workplacelearningperiod-csv', 'StudentCsvImportController@save')
+    Route::post('/linking/update-workplacelearningperiod-csv', 'StudentCsvImportController@csvValidator')
         ->name('update-teacher-for-workplacelearningperiod-csv');
 
     // Student routes
@@ -306,6 +306,7 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
 
             Route::get('activity-import', 'StudentCsvImportController@show')->name('activity-import');
             Route::post('activity-import-save', 'StudentCsvImportController@save')->name('activity-import-save');
+//            Route::post('activity-import-save', 'StudentCsvImportController@csvValidator')->name('activity-import-save');
 
             Route::get('period/create', 'ProducingWorkplaceLearningController@show')
                 ->middleware(['can:create,App\Workplace', 'can:create,App\WorkplaceLearningPeriod'])
