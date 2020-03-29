@@ -7,31 +7,51 @@ namespace App\Http\Controllers;
 use App\Repository\Eloquent\CategoryRepository;
 use App\Services\Factories\LAPFactory;
 use App\Student;
-use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+
 
 class StudentCsvImportController extends Controller
 {
     //Verplichte velden: duration, description, date, category, difficulty, status
     //CustomHandler schrijven die CSV entries checkt!
 
-    public function save(Request $request,
-                         LAPFactory $LAPFactory,
-                         CategoryRepository $categoryRepository)
-    {
+
+    public function csvValidator(Request $request) {
+
         $request->validate(["csv_file" => 'required|mimes:csv,txt']);
 
         if($request->hasFile('csv_file')) {
             $filepath = $request->file('csv_file')->getRealPath();
             $file = fopen($filepath, "r");
             $count = 0;
+            $getData = fgetcsv($file, ",");
 
-            while (($getData = fgetcsv($file, ",")) !== FALSE) {
+            $validate_array = [];
+
+            while ($getData !== FALSE) {
                 if ($count >= 5 && !$getData[0] == "" && !$getData[1] == "") {
+
+                    $validator = Validator::make($request->all(), [
+                        //Verplichte velden: duration, description, date, category, difficulty, status
+                        $getData[2] => 'required|min:0|max:24',
+                        $getData[1] => 'required|max:1000',
+                        $getData[0] => 'required|after:tomorrow',
+                        $getData[3] => 'required|',
+                        strtolower($getData[6]) => ['required',
+                            Rule::in([1, 'makkelijk', 'gemiddeld', 'moeilijk']),],
+
+                        strtolower($getData[5]) => ['required|',
+                            Rule::in([1, 'afgerond', 'mee bezig', 'overgedragen']),]
+
+                    ]);
+                    array_push($validate_array , [$count => $validator]);
+
                     $data = [];
-                    $category = $this->findCategory($getData[3], $categoryRepository);
 
                     switch($getData[6]) {
                         case 'Makkelijk':
@@ -56,35 +76,59 @@ class StudentCsvImportController extends Controller
                             $data['status'] = 3;
                             break;
                     }
-
-                    if(strtolower(substr($getData[4], 0, 7)) === 'persoon') {
-                        $resourceExplode = explode('- ', $getData[4]);
-                        $data['resource'] = $resourceExplode[0];
-                        $data['resource_person_id'] = strtolower($resourceExplode[1]);
-                    }
-                    else {
-                        $data['resource'] = $getData[4];
-                    }
-                    $data['category_id'] = $category['category_id'];
-                    $data['newcat'] = $category['newcat'];
-
-                    $data['omschrijving'] = $getData[1];
-                    $data['aantaluren'] = $getData[2];
-                    $data['aantaluren_custom'] = $getData[2] * 60;
-
-                    $data['datum'] = strval(DateTime::createFromFormat('d/m/Y', $getData[0])->format('d-m-Y'));
-
-                    $data['extrafeedback'] = null;
-
-                    $data['internetsource'] = null;
-                    $data['booksource'] = null;
-                    $data['chain_id'] = -1;
-
-                    $LAPFactory->createLAP($data);
-                    }
+                }
                 $count++;
+            }
+            $errors = [];
+            foreach($validate_array as $key => $value){
+                if ($value->fails()) {
+                    array_push($errors, [$key, $value]);
                 }
             }
+
+            if(isset($errors)) {
+                return view('pages.producing.activity-import')
+                    ->withErrors($validator)
+                    ->withInput();
+            } else {
+                return $getData;
+            }
+        }
+    }
+
+
+    public function save(Request $request,
+                         LAPFactory $LAPFactory,
+                         CategoryRepository $categoryRepository)
+    {
+
+        $category = $this->findCategory($getData[3], $categoryRepository);
+
+
+        if(strtolower(substr($getData[4], 0, 7)) === 'persoon') {
+            $resourceExplode = explode('- ', $getData[4]);
+            $data['resource'] = $resourceExplode[0];
+            $data['resource_person_id'] = strtolower($resourceExplode[1]);
+        }
+        else {
+            $data['resource'] = $getData[4];
+        }
+        $data['category_id'] = $category['category_id'];
+        $data['newcat'] = $category['newcat'];
+
+        $data['omschrijving'] = $getData[1];
+        $data['aantaluren'] = $getData[2];
+        $data['aantaluren_custom'] = $getData[2] * 60;
+
+        $data['datum'] = strval(DateTime::createFromFormat('d/m/Y', $getData[0])->format('d-m-Y'));
+
+        $data['extrafeedback'] = null;
+
+        $data['internetsource'] = null;
+        $data['booksource'] = null;
+        $data['chain_id'] = -1;
+
+        $LAPFactory->createLAP($data);
 
 
         return view('pages.producing.activity-import')->with('successMsg', 'works');

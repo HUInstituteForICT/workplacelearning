@@ -1,6 +1,6 @@
 # WorkplaceLearning
 
-Status: [![Build Status](https://github.com/HUInstituteForICT/workplacelearning/workflows/Verify/badge.svg)](https://github.com/HUInstituteForICT/workplacelearning/actions?query=workflow%3AVerify)
+Status: [![Verify](https://github.com/HUInstituteForICT/workplacelearning/workflows/Verify/badge.svg?branch=master)](https://github.com/HUInstituteForICT/workplacelearning/actions?query=workflow%3AVerify)
 
 ## Getting Started
 
