@@ -11,7 +11,7 @@
                     @if($evaluatedTip !== null)
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px;"
                              role="alert">
-                            
+
                             <?php
                             /** @var bool $itemExists */
                             ?>
@@ -58,6 +58,9 @@
                         <hr/>
 
                         @if ($errors->any())
+                            @foreach($errors->all() as $error)
+                                <p class="text-center">{{ $error }}</p>
+                            @endforeach
                             <div class="modal-header">
                                 <h4 class="modal-title text-center">Oeps!</h4>
                             </div>

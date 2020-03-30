@@ -36,14 +36,14 @@ class StudentCsvImportController extends Controller
                 if ($count >= 5 && !$getData[0] == "" && !$getData[1] == "") {
 
                     $validator = Validator::make($request->all(), [
-                        $getData[2] => 'required|min:0|max:24',
-                        $getData[1] => 'required|max:1000',
-                        $getData[0] => 'required|after:tomorrow',
-                        $getData[3] => 'required',
-                        strtolower($getData[6]) => ['required',
+                        $getData[2] => 'filled|min:0|max:24',
+                        $getData[1] => 'filled|max:1000',
+                        $getData[0] => 'filled|after:tomorrow',
+                        $getData[3] => 'filled',
+                        strtolower($getData[6]) => ['filled',
                             Rule::in([1, 'makkelijk', 'gemiddeld', 'moeilijk']),],
 
-                        strtolower($getData[5]) => ['required|',
+                        strtolower($getData[5]) => ['filled',
                             Rule::in([1, 'afgerond', 'mee bezig', 'overgedragen']),]
 
                     ]);
@@ -56,20 +56,13 @@ class StudentCsvImportController extends Controller
             $errors = [];
             foreach($validate_array as $key => $value){
                 if ($value->fails()) {
-                    array_push($errors, [$key, $value]);
+                    array_push($errors, $value->messages());
                 }
             }
 
-
-            foreach ($validate_array as $error) {
-                if (isset($error)) {
-                    dd($error);
-                }
-            }
-
-            if($validate_array) {
+            if(! empty($errors)) {
                 return view('pages.producing.activity-import')
-                    ->withErrors($validate_array);
+                    ->withErrors($errors);
             }
         }
     }
@@ -81,10 +74,9 @@ class StudentCsvImportController extends Controller
 
         $filepath = $request->file('csv_file')->getRealPath();
         $file = fopen($filepath, "r");
-        $getData = fgetcsv($file, ",");
 
         $count = 0;
-        while ($getData !== FALSE) {
+        while (($getData = fgetcsv($file, ",")) !== FALSE) {
             if ($count >= 5 && !$getData[0] == "" && !$getData[1] == "") {
                 $category = $this->findCategory($getData[3], $categoryRepository);
                 $data = [];
