@@ -87,11 +87,9 @@ class StudentCsvImportController extends Controller
             }
 
             if(isset($errors)) {
+                dd($validate_array);
                 return view('pages.producing.activity-import')
-                    ->withErrors($validator)
-                    ->withInput();
-            } else {
-                $this->save();
+                    ->withErrors($validate_array);
             }
         }
     }
@@ -99,6 +97,8 @@ class StudentCsvImportController extends Controller
 
     public function save(Request $request, LAPFactory $LAPFactory, CategoryRepository $categoryRepository)
     {
+        $this->csvValidator($request);
+
         $filepath = $request->file('csv_file')->getRealPath();
         $file = fopen($filepath, "r");
         $count = 0;
@@ -122,6 +122,7 @@ class StudentCsvImportController extends Controller
 
                 $data['omschrijving'] = $getData[1];
                 $data['aantaluren'] = $getData[2];
+                dd($data);
                 $data['aantaluren_custom'] = $getData[2] * 60;
 
                 $data['datum'] = strval(DateTime::createFromFormat('d/m/Y', $getData[0])->format('d-m-Y'));
