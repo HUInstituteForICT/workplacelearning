@@ -29,19 +29,17 @@ class StudentCsvImportController extends Controller
             $filepath = $request->file('csv_file')->getRealPath();
             $file = fopen($filepath, "r");
             $count = 0;
-            $getData = fgetcsv($file, ",");
 
             $validate_array = [];
 
-            while ($getData !== FALSE) {
+            while (($getData = fgetcsv($file, ",")) !== FALSE) {
                 if ($count >= 5 && !$getData[0] == "" && !$getData[1] == "") {
 
                     $validator = Validator::make($request->all(), [
-                        //Verplichte velden: duration, description, date, category, difficulty, status
                         $getData[2] => 'required|min:0|max:24',
                         $getData[1] => 'required|max:1000',
                         $getData[0] => 'required|after:tomorrow',
-                        $getData[3] => 'required|',
+                        $getData[3] => 'required',
                         strtolower($getData[6]) => ['required',
                             Rule::in([1, 'makkelijk', 'gemiddeld', 'moeilijk']),],
 
@@ -49,36 +47,12 @@ class StudentCsvImportController extends Controller
                             Rule::in([1, 'afgerond', 'mee bezig', 'overgedragen']),]
 
                     ]);
-                    array_push($validate_array , [$count => $validator]);
+                    array_push($validate_array , $validator);
 
-                    $data = [];
-
-                    switch($getData[6]) {
-                        case 'Makkelijk':
-                            $data['moeilijkheid'] = 1;
-                            break;
-                        case 'Gemiddeld':
-                            $data['moeilijkheid'] = 2;
-                            break;
-                        case 'Moeilijk':
-                            $data['moeilijkheid'] = 3;
-                            break;
-                    }
-
-                    switch($getData[5]) {
-                        case 'Afgerond':
-                            $data['status'] = 1;
-                            break;
-                        case 'Mee bezig':
-                            $data['status'] = 2;
-                            break;
-                        case 'Overgedragen':
-                            $data['status'] = 3;
-                            break;
-                    }
                 }
                 $count++;
             }
+
             $errors = [];
             foreach($validate_array as $key => $value){
                 if ($value->fails()) {
@@ -86,8 +60,14 @@ class StudentCsvImportController extends Controller
                 }
             }
 
-            if(isset($errors)) {
-                dd($validate_array);
+
+            foreach ($validate_array as $error) {
+                if (isset($error)) {
+                    dd($error);
+                }
+            }
+
+            if($validate_array) {
                 return view('pages.producing.activity-import')
                     ->withErrors($validate_array);
             }
@@ -101,14 +81,37 @@ class StudentCsvImportController extends Controller
 
         $filepath = $request->file('csv_file')->getRealPath();
         $file = fopen($filepath, "r");
-        $count = 0;
         $getData = fgetcsv($file, ",");
 
         $count = 0;
         while ($getData !== FALSE) {
             if ($count >= 5 && !$getData[0] == "" && !$getData[1] == "") {
-
                 $category = $this->findCategory($getData[3], $categoryRepository);
+                $data = [];
+
+                switch($getData[6]) {
+                    case 'Makkelijk':
+                        $data['moeilijkheid'] = 1;
+                        break;
+                    case 'Gemiddeld':
+                        $data['moeilijkheid'] = 2;
+                        break;
+                    case 'Moeilijk':
+                        $data['moeilijkheid'] = 3;
+                        break;
+                }
+
+                switch($getData[5]) {
+                    case 'Afgerond':
+                        $data['status'] = 1;
+                        break;
+                    case 'Mee bezig':
+                        $data['status'] = 2;
+                        break;
+                    case 'Overgedragen':
+                        $data['status'] = 3;
+                        break;
+                }
 
                 if (strtolower(substr($getData[4], 0, 7)) === 'persoon') {
                     $resourceExplode = explode('- ', $getData[4]);
@@ -117,12 +120,12 @@ class StudentCsvImportController extends Controller
                 } else {
                     $data['resource'] = $getData[4];
                 }
+
                 $data['category_id'] = $category['category_id'];
                 $data['newcat'] = $category['newcat'];
 
                 $data['omschrijving'] = $getData[1];
                 $data['aantaluren'] = $getData[2];
-                dd($data);
                 $data['aantaluren_custom'] = $getData[2] * 60;
 
                 $data['datum'] = strval(DateTime::createFromFormat('d/m/Y', $getData[0])->format('d-m-Y'));
