@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
-
 use App\Repository\Eloquent\CategoryRepository;
+use App\Rules\CsvDateTimeFormat;
 use App\Services\Factories\LAPFactory;
 use App\Student;
 use DateTime;
@@ -12,127 +11,124 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use PhpParser\Node\Expr\Array_;
-
 
 class StudentCsvImportController extends Controller
 {
-    //Verplichte velden: duration, description, date, category, difficulty, status
-    //CustomHandler schrijven die CSV entries checkt!
-
-
-    public function csvValidator(Request $request) {
-
-        $request->validate(["csv_file" => 'required|mimes:csv,txt']);
-
-        if($request->hasFile('csv_file')) {
-            $filepath = $request->file('csv_file')->getRealPath();
-            $file = fopen($filepath, "r");
-            $count = 0;
-
-            $validate_array = [];
-
-            while (($getData = fgetcsv($file, ",")) !== FALSE) {
-                if ($count >= 5 && !$getData[0] == "" && !$getData[1] == "") {
-
-                    $validator = Validator::make($request->all(), [
-                        $getData[2] => 'filled|min:0|max:24',
-                        $getData[1] => 'filled|max:1000',
-                        $getData[0] => 'filled|after:tomorrow',
-                        $getData[3] => 'filled',
-                        strtolower($getData[6]) => ['filled',
-                            Rule::in([1, 'makkelijk', 'gemiddeld', 'moeilijk']),],
-
-                        strtolower($getData[5]) => ['filled',
-                            Rule::in([1, 'afgerond', 'mee bezig', 'overgedragen']),]
-
-                    ]);
-                    array_push($validate_array , $validator);
-
-                }
-                $count++;
-            }
-
-            $errors = [];
-            foreach($validate_array as $key => $value){
-                if ($value->fails()) {
-                    array_push($errors, $value->messages());
-                }
-            }
-
-            if(! empty($errors)) {
-                return view('pages.producing.activity-import')
-                    ->withErrors($errors);
-            }
-        }
-    }
-
 
     public function save(Request $request, LAPFactory $LAPFactory, CategoryRepository $categoryRepository)
     {
-        $this->csvValidator($request);
+        $activities = $this->transferCsvToArray($request);
+        $errors = $this->validateCsvEntries($activities);
+
+        if(empty($errors)) {
+            foreach($activities as $activity) {
+                $activity = $this->prepareActivityForPersistance($activity, $categoryRepository);
+
+                $LAPFactory->createLAP($activity);
+            }
+        }
+        else {
+            return view('pages.producing.activity-import')->with('errors', $errors);
+        }
+
+        return view('pages.producing.activity-import')->with('successMsg', 'works');
+    }
+
+    private function transferCsvToArray(Request $request) : array {
+        $request->validate(["csv_file" => 'required|mimes:csv,txt']);
 
         $filepath = $request->file('csv_file')->getRealPath();
-        $file = fopen($filepath, "r");
+        $csv = fopen($filepath, "r");
 
-        $count = 0;
-        while (($getData = fgetcsv($file, ",")) !== FALSE) {
-            if ($count >= 5 && !$getData[0] == "" && !$getData[1] == "") {
-                $category = $this->findCategory($getData[3], $categoryRepository);
-                $data = [];
+        $csvEntries = [];
+        $currentLine = 0;
 
-                switch($getData[6]) {
-                    case 'Makkelijk':
-                        $data['moeilijkheid'] = 1;
-                        break;
-                    case 'Gemiddeld':
-                        $data['moeilijkheid'] = 2;
-                        break;
-                    case 'Moeilijk':
-                        $data['moeilijkheid'] = 3;
-                        break;
-                }
+        while (($csvEntry = fgetcsv($csv, ",")) !== FALSE) {
 
-                switch($getData[5]) {
-                    case 'Afgerond':
-                        $data['status'] = 1;
-                        break;
-                    case 'Mee bezig':
-                        $data['status'] = 2;
-                        break;
-                    case 'Overgedragen':
-                        $data['status'] = 3;
-                        break;
-                }
+            if ($currentLine >= 5 && !$csvEntry[0] == "" && !$csvEntry[1] == "") {
+                $csvEntry = array_slice($csvEntry,0, 7);
+                $csvEntry = array_combine(['datum', 'omschrijving', 'aantaluren', 'category_id', 'resource', 'status', 'moeilijkheid'], $csvEntry);
 
-                if (strtolower(substr($getData[4], 0, 7)) === 'persoon') {
-                    $resourceExplode = explode('- ', $getData[4]);
-                    $data['resource'] = $resourceExplode[0];
-                    $data['resource_person_id'] = strtolower($resourceExplode[1]);
-                } else {
-                    $data['resource'] = $getData[4];
-                }
-
-                $data['category_id'] = $category['category_id'];
-                $data['newcat'] = $category['newcat'];
-
-                $data['omschrijving'] = $getData[1];
-                $data['aantaluren'] = $getData[2];
-                $data['aantaluren_custom'] = $getData[2] * 60;
-
-                $data['datum'] = strval(DateTime::createFromFormat('d/m/Y', $getData[0])->format('d-m-Y'));
-
-                $data['extrafeedback'] = null;
-
-                $data['internetsource'] = null;
-                $data['booksource'] = null;
-                $data['chain_id'] = -1;
-
-                $LAPFactory->createLAP($data);
+                $csvEntries[$currentLine] = $csvEntry;
             }
-            $count++;
+            $currentLine++;
         }
-        return view('pages.producing.activity-import')->with('successMsg', 'works');
+
+        return $csvEntries;
+    }
+
+    private function validateCsvEntries(array $csvEntries) : array {
+        $validations = $this->getCsvEntriesValidations();
+        $errors = [];
+
+        foreach ($csvEntries as $key => $csvEntry) {
+            $validator = Validator::make($csvEntry, $validations);
+
+            if($validator->fails()) {
+                $errors[$key] = $validator->errors()->messages();
+            }
+        }
+
+        return $errors;
+    }
+
+    private function prepareActivityForPersistance(array $activity, CategoryRepository $categoryRepository) : array {
+        $category = $this->findCategory($activity['category_id'], $categoryRepository);
+
+        if (strtolower(substr($activity['resource'], 0, 7)) === 'persoon') {
+            $resourceExplode = explode('- ', $activity['resource']);
+            $activity['resource'] = $resourceExplode[0];
+            $activity['resource_person_id'] = strtolower($resourceExplode[1]);
+        }
+
+        switch($activity['moeilijkheid']) {
+            case 'Makkelijk':
+                $activity['moeilijkheid'] = 1;
+                break;
+            case 'Gemiddeld':
+                $activity['moeilijkheid'] = 2;
+                break;
+            case 'Moeilijk':
+                $activity['moeilijkheid'] = 3;
+                break;
+        }
+
+        switch($activity['status']) {
+            case 'Afgerond':
+                $activity['status'] = 1;
+                break;
+            case 'Mee bezig':
+                $activity['status'] = 2;
+                break;
+            case 'Overgedragen':
+                $activity['status'] = 3;
+                break;
+        }
+
+        $activity['datum'] = strval(DateTime::createFromFormat('d/m/Y', $activity['datum'])->format('d-m-Y'));
+
+        $activity['aantaluren_custom'] = $activity['aantaluren'] * 60;
+        $activity['category_id'] = $category['category_id'];
+        $activity['newcat'] = $category['newcat'];
+
+        $activity['extrafeedback'] = null;
+        $activity['internetsource'] = null;
+        $activity['booksource'] = null;
+        $activity['chain_id'] = -1;
+
+        return $activity;
+    }
+
+    private function getCsvEntriesValidations() : array {
+        return
+            [
+            'datum'         => 'required', new CsvDateTimeFormat, 'after:tomorrow|date_format:d-m-Y',
+            'omschrijving'  => 'required|string|max:1000',
+            'category_id'   => 'required|string',
+            'resource'      => 'required|string',
+            'aantaluren'    => 'required|numeric|min:0|max:24',
+            'moeilijkheid'  => 'required|string', Rule::in(['Makkelijk', 'Gemiddeld', 'Moeilijk']),
+            'status'        => 'required|string', Rule::in(['Afgerond', 'Mee bezig', 'Overgedragen'])];
     }
 
     private function findCategory($category, CategoryRepository $categoryRepository) : array {
