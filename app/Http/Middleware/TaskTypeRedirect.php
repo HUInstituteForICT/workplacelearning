@@ -67,7 +67,7 @@ class TaskTypeRedirect
                 case 'period':
                     return $this->redirector->route('period-acting');
                 case 'period-edit':
-                    return $this->redirector->route('period-acting-edit', ['id' => $route->parameter('id')]);
+                    return $this->redirector->route('period-acting-edit', [$route->parameter('id')]);
             }
         }
 
@@ -86,7 +86,7 @@ class TaskTypeRedirect
                 case 'period':
                     return $this->redirector->route('period-producing');
                 case 'period-edit':
-                    return $this->redirector->route('period-producing-edit', ['id' => $route->parameter('id')]);
+                    return $this->redirector->route('period-producing-edit', [$route->parameter('id')]);
             }
         }
 

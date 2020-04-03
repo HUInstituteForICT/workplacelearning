@@ -15,7 +15,7 @@
             <!-- Current Internship -->
 
             {!! Form::open(array(
-                'url' => (($period->wplp_id === null) ? route('period-acting-create') : route('period-acting-update', ['id' => $period->wplp_id])),
+                'url' => (($period->wplp_id === null) ? route('period-acting-create') : route('period-acting-update', [$period->wplp_id])),
                 'data-toggle' => 'validator'))
              !!}
             <div class="col-lg-6">

@@ -35,5 +35,5 @@ jobs:
             - name: Execute tests (Unit and Feature tests) via PHPUnit
               run: composer test
 
-            - name: Execute PHPStan
-              run: composer analyse
+#            - name: Execute PHPStan
+#              run: composer analyse

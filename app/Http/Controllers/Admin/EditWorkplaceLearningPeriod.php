@@ -42,7 +42,7 @@ class EditWorkplaceLearningPeriod extends Controller
             $request->session()->flash('success', 'The workplace learning period of the student has been updated.');
 
             return redirect()->route('admin-student-edit-wplp',
-                ['student' => $student, 'workplacelearningperiod' => $workplaceLearningPeriod]);
+                [$student, $workplaceLearningPeriod]);
         }
 
         return view('pages.admin.workplace_learning_period_details')
