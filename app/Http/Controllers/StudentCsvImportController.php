@@ -37,19 +37,20 @@ class StudentCsvImportController extends Controller
     private function transferCsvToArray(Request $request) : array {
         $request->validate(["csv_file" => 'required|mimes:csv,txt']);
 
+        ini_set("auto_detect_line_endings", true);
         $filepath = $request->file('csv_file')->getRealPath();
         $csv = fopen($filepath, "r");
 
+        $delimiter = $this->findDelimiter(fgets($csv));
         $csvEntries = [];
         $currentLine = 0;
 
-        while (($csvEntry = fgetcsv($csv, ",")) !== FALSE) {
-
+        while (($csvEntry = fgetcsv($csv, '1000', $delimiter)) !== FALSE) {
             if ($currentLine >= 5 && !$csvEntry[0] == "" && !$csvEntry[1] == "") {
                 $csvEntry = array_slice($csvEntry,0, 7);
                 $csvEntry = array_combine(['datum', 'omschrijving', 'aantaluren', 'category_id', 'resource', 'status', 'moeilijkheid'], $csvEntry);
 
-                $csvEntries[$currentLine] = $csvEntry;
+                $csvEntries[($currentLine + 1)] = $csvEntry;
             }
             $currentLine++;
         }
@@ -122,13 +123,13 @@ class StudentCsvImportController extends Controller
     private function getCsvEntriesValidations() : array {
         return
             [
-            'datum'         => 'required', new CsvDateTimeFormat, 'after:tomorrow|date_format:d-m-Y',
-            'omschrijving'  => 'required|string|max:1000',
-            'category_id'   => 'required|string',
-            'resource'      => 'required|string',
-            'aantaluren'    => 'required|numeric|min:0|max:24',
-            'moeilijkheid'  => 'required|string', Rule::in(['Makkelijk', 'Gemiddeld', 'Moeilijk']),
-            'status'        => 'required|string', Rule::in(['Afgerond', 'Mee bezig', 'Overgedragen'])];
+                'datum'         => 'required', new CsvDateTimeFormat, 'after:tomorrow|date_format:d-m-Y',
+                'omschrijving'  => 'required|string|max:1000',
+                'category_id'   => 'required|string',
+                'resource'      => 'required|string',
+                'aantaluren'    => 'required|numeric|min:0|max:24',
+                'moeilijkheid'  => ['required', 'string', Rule::in(['Makkelijk', 'Gemiddeld', 'Moeilijk']),],
+                'status'        => ['required', 'string', Rule::in(['Afgerond', 'Mee bezig', 'Overgedragen']),]];
     }
 
     private function findCategory($category, CategoryRepository $categoryRepository) : array {
@@ -146,4 +147,17 @@ class StudentCsvImportController extends Controller
                     'newcat' => $category];
         }
     }
+
+    private function findDelimiter( string $csvString) : string {
+        $delimiters = array(';' => 0, ',' => 0, "\t" => 0, "|" => 0);
+
+        foreach ($delimiters as $delimiter => &$count)
+        {
+            $count = count(str_getcsv($csvString, $delimiter));
+        }
+
+        return array_search(max($delimiters), $delimiters);
+    }
+
+
 }
