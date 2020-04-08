@@ -303,6 +303,9 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         Route::prefix('producing')->group(static function (): void {
             Route::get('home', 'HomeController@showProducingTemplate')->name('home-producing');
 
+            Route::get('activity-import', 'StudentCsvImportController@show')->name('activity-import');
+            Route::post('activity-import-save', 'StudentCsvImportController@save')->name('activity-import-save');
+
             Route::get('period/create', 'ProducingWorkplaceLearningController@show')
                 ->middleware(['can:create,App\Workplace', 'can:create,App\WorkplaceLearningPeriod'])
                 ->name('period-producing');

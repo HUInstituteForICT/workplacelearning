@@ -11,7 +11,7 @@
                     @if($evaluatedTip !== null)
                         <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px;"
                              role="alert">
-                            
+
                             <?php
                             /** @var bool $itemExists */
                             ?>
@@ -45,9 +45,41 @@
                         <li>{{ __('home.with-tile') }} <b>{{ __('home.profile') }}</b> {{ __('home.steps.5') }}</li>
                     </ul>
                     <p>{{ __('home.goodluck') }}</p>
+                    <br>
+                    {{--import button--}}
+                    <hr/>
+                    <div class="panel-body">
+                        <h1 id="teacher-overview"
+                        >{{ __('activity.upload-activities') }}</h1>
+                        <button id="import-btn" class="btn btn-primary" style="float: right;"
+                                data-target="#CSV-Import-Modal"
+                                data-toggle="modal">Upload CSV
+                        </button>
+                        <hr/>
+
+                        @if ($errors->any())
+                            @foreach($errors->all() as $error)
+                                <p class="text-center">{{ $error }}</p>
+                            @endforeach
+                            <div class="modal-header">
+                                <h4 class="modal-title text-center">Oeps!</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p class="text-center">{{ __('activity.import-error-message') }}</p>
+                            </div>
+                        @elseif(!empty($successMsg))
+                            <div>
+                                <div class="modal-header">
+                                    <h4 class="modal-title text-center">{{ __('activity.import-succes-header-message') }}</h4>
+                                </div>
+                                <div class="modal-body alert-success">
+                                    <p class="text-center">{{ __('activity.import-succes-message') }}</p>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
-
 
             <div class="row">
                 <div class="col-lg-12">
@@ -90,5 +122,32 @@
 
             <br /><a href="{{ '/bugreport' }}"><img src="{{ secure_asset('assets/img/bug_add.png') }}" width="16px" height="16px" /> {{ __('home.tips') }}</a>
 
+        </div>
+
+        <!-- Modal for CSV Import Func-->
+        <div class="modal fade" id="CSV-Import-Modal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">{{ __('activity.upload-csv') }}</h4>
+                        <hr>
+                        <div class="modal-body">
+                            {!! Form::open(array('url' =>  route('activity-import-save'),
+                            'files' => true,'enctype'=>'multipart/form-data')) !!}
+
+                            <div class="form-group">
+                                {!! Form::file('csv_file', $attributes = array()) !!}
+                            </div>
+                            <hr>
+                            <button type="button" data-dismiss="modal">{{ __('activity.cancel-upload') }}</button>
+                            {{ Form::submit('Upload', array('class' => 'btn btn-info', 'style' => 'float: right;', 'id' => 'coupleButton')) }}
+                            {{ Form::close() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 @stop
