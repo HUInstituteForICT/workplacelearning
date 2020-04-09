@@ -125,6 +125,9 @@ class StudentCsvImportController extends Controller
 
         if(!array_key_exists($category, $availableCategories)) {
             resolve(CategoryFactory::class)->createCategory($category);
+            $persistedCategories = $categoryRepository->categoriesAvailableForStudent($student);
+
+            foreach ($persistedCategories as $filteredCategory) { $availableCategories[strtolower($filteredCategory->category_label)] = $filteredCategory->category_id; }
         }
 
         return ['category_id' => $availableCategories[$category],
