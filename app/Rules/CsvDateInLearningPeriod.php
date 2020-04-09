@@ -7,7 +7,7 @@ use DateTime;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
-class csvDateTimeFormat implements Rule
+class csvDateInLearningPeriod implements Rule
 {
     /**
      * Create a new rule instance.
@@ -28,12 +28,22 @@ class csvDateTimeFormat implements Rule
      */
     public function passes($attribute, $value)
     {
-        if(DateTime::createFromFormat('m/d/Y', $value)) {
+        $validator = Validator::make(['datum' => $value], ['datum' => ['required', new CsvDateTimeFormat]]);
+
+        if($validator->fails()) {
             return true;
         }
         else {
-            return false;
+            $learningPeriodValidator = Validator::make(['datum' => $value], ['datum' => 'date_in_wplp']);
+
+            if($learningPeriodValidator->fails()) {
+                return false;
+            }
+            else {
+                return true;
+            }
         }
+
     }
 
     /**
@@ -43,6 +53,6 @@ class csvDateTimeFormat implements Rule
      */
     public function message()
     {
-        return 'Datum incorrect geformatteerd, moet zijn: dag/maand/jaar';
+        return 'Datum moet binnen werkplek periode vallen';
     }
 }

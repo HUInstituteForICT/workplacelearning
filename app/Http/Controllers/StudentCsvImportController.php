@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Repository\Eloquent\CategoryRepository;
+use App\Repository\Eloquent\ResourcePersonRepository;
+use App\Rules\CsvDateInLearningPeriod;
 use App\Rules\CsvDateTimeFormat;
+use App\Rules\ResourcePersonExists;
 use App\Services\Factories\LAPFactory;
 use App\Student;
 use DateTime;
@@ -15,38 +20,42 @@ use Illuminate\Validation\Rule;
 class StudentCsvImportController extends Controller
 {
 
-    public function save(Request $request, LAPFactory $LAPFactory, CategoryRepository $categoryRepository)
-    {
+    public function save(Request $request,
+                         LAPFactory $LAPFactory,
+                         CategoryRepository $categoryRepository,
+                         ResourcePersonRepository $resourcePersonRepository) {
         $activities = $this->transferCsvToArray($request);
         $errors = $this->validateCsvEntries($activities);
 
         if(empty($errors)) {
-            foreach($activities as $activity) {
-                $activity = $this->prepareActivityForPersistance($activity, $categoryRepository);
+            $student = Student::findOrFail(Auth::user()->getAuthIdentifier());
+            $persistedCategories = $categoryRepository->categoriesAvailableForStudent($student);
+            $persistedResourcePersons = $resourcePersonRepository->resourcePersonsAvailableForStudent($student);
 
+            foreach($activities as $activity) {
+                $activity = $this->prepareActivityForPersistance($activity, $persistedCategories, $persistedResourcePersons);
                 $LAPFactory->createLAP($activity);
             }
         }
         else {
             return view('pages.producing.activity-import')->with('errors', $errors);
         }
-
         return view('pages.producing.activity-import')->with('successMsg', 'works');
     }
 
     private function transferCsvToArray(Request $request) : array {
         $request->validate(["csv_file" => 'required|mimes:csv,txt']);
 
-        ini_set("auto_detect_line_endings", true);
+        ini_set('auto_detect_line_endings', 'true');
         $filepath = $request->file('csv_file')->getRealPath();
         $csv = fopen($filepath, "r");
 
-        $delimiter = $this->findDelimiter(fgets($csv));
+        $delimiter = $this->getDelimiter(fgets($csv));
         $csvEntries = [];
-        $currentLine = 0;
+        $currentLine = 1;
 
         while (($csvEntry = fgetcsv($csv, '1000', $delimiter)) !== FALSE) {
-            if ($currentLine >= 5 && !$csvEntry[0] == "" && !$csvEntry[1] == "") {
+            if ($currentLine >= 5 && !(strlen(implode($csvEntry)) == 0)) {
                 $csvEntry = array_slice($csvEntry,0, 7);
                 $csvEntry = array_combine(['datum', 'omschrijving', 'aantaluren', 'category_id', 'resource', 'status', 'moeilijkheid'], $csvEntry);
 
@@ -54,7 +63,6 @@ class StudentCsvImportController extends Controller
             }
             $currentLine++;
         }
-
         return $csvEntries;
     }
 
@@ -69,49 +77,24 @@ class StudentCsvImportController extends Controller
                 $errors[$key] = $validator->errors()->messages();
             }
         }
-
         return $errors;
     }
 
-    private function prepareActivityForPersistance(array $activity, CategoryRepository $categoryRepository) : array {
-        $category = $this->findCategory($activity['category_id'], $categoryRepository);
+    private function prepareActivityForPersistance(array $activity,
+                                                   array $persistedCategories,
+                                                   array $persistedResourcePersons) : array
+    {
+        $category = $this->getCategory($activity['category_id'], $persistedCategories);
+        $resource = $this->getResource(strtolower($activity['resource']), $persistedResourcePersons);
 
-        if (strtolower(substr($activity['resource'], 0, 7)) === 'persoon') {
-            $resourceExplode = explode('- ', $activity['resource']);
-            $activity['resource'] = $resourceExplode[0];
-            $activity['resource_person_id'] = strtolower($resourceExplode[1]);
-        }
-
-        switch($activity['moeilijkheid']) {
-            case 'Makkelijk':
-                $activity['moeilijkheid'] = 1;
-                break;
-            case 'Gemiddeld':
-                $activity['moeilijkheid'] = 2;
-                break;
-            case 'Moeilijk':
-                $activity['moeilijkheid'] = 3;
-                break;
-        }
-
-        switch($activity['status']) {
-            case 'Afgerond':
-                $activity['status'] = 1;
-                break;
-            case 'Mee bezig':
-                $activity['status'] = 2;
-                break;
-            case 'Overgedragen':
-                $activity['status'] = 3;
-                break;
-        }
-
-        $activity['datum'] = strval(DateTime::createFromFormat('d/m/Y', $activity['datum'])->format('d-m-Y'));
-
+        $activity['resource'] = $resource['resource'];
+        $activity['resource_person_id'] = $resource['resource_person_id'];
+        $activity['moeilijkheid'] = $this->getMoeilijkheid($activity['moeilijkheid']);
+        $activity['status'] = $this->getStatus($activity['status']);
+        $activity['datum'] = strval(DateTime::createFromFormat('m/d/Y', $activity['datum'])->format('d-m-Y'));
         $activity['aantaluren_custom'] = $activity['aantaluren'] * 60;
         $activity['category_id'] = $category['category_id'];
         $activity['newcat'] = $category['newcat'];
-
         $activity['extrafeedback'] = null;
         $activity['internetsource'] = null;
         $activity['booksource'] = null;
@@ -123,20 +106,20 @@ class StudentCsvImportController extends Controller
     private function getCsvEntriesValidations() : array {
         return
             [
-                'datum'         => 'required', new CsvDateTimeFormat, 'after:tomorrow|date_format:d-m-Y',
+                'datum'         => ['required', new CsvDateTimeFormat, 'before:tomorrow', new csvDateInLearningPeriod],
                 'omschrijving'  => 'required|string|max:1000',
                 'category_id'   => 'required|string',
-                'resource'      => 'required|string',
+                'resource'      => ['required', 'string', resolve(ResourcePersonExists::class)],
                 'aantaluren'    => 'required|numeric|min:0|max:24',
                 'moeilijkheid'  => ['required', 'string', Rule::in(['Makkelijk', 'Gemiddeld', 'Moeilijk']),],
                 'status'        => ['required', 'string', Rule::in(['Afgerond', 'Mee bezig', 'Overgedragen']),]];
     }
 
-    private function findCategory($category, CategoryRepository $categoryRepository) : array {
-        $persistedCategories = $categoryRepository->categoriesAvailableForStudent(Student::findOrFail(Auth::user()->getAuthIdentifier()));
+    private function getCategory(string $category, array $persistedCategories) : array {
+        $category = strtolower($category);
         $availableCategories = [];
 
-        foreach ($persistedCategories as $filteredCategory) { $availableCategories[$filteredCategory->category_label] = $filteredCategory->category_id; }
+        foreach ($persistedCategories as $filteredCategory) { $availableCategories[strtolower($filteredCategory->category_label)] = $filteredCategory->category_id; }
 
         if(array_key_exists($category, $availableCategories)) {
             return ['category_id' => $availableCategories[$category],
@@ -148,16 +131,61 @@ class StudentCsvImportController extends Controller
         }
     }
 
-    private function findDelimiter( string $csvString) : string {
+    private function getResource(string $resource, array $persistedResourcePersons) : array {
+        $completeResource = [];
+        $availableResourcePersons = [];
+
+        if (substr($resource, 0, 7) === 'persoon' || $resource === 'alleen') {
+            if($resource === 'alleen') {
+                $resourcePerson = 'alleen';
+            }
+            else {
+                $resourcePerson = explode('- ', $resource)[1];
+            }
+
+            foreach ($persistedResourcePersons as $persistedResourcePerson) {
+                $availableResourcePersons[strtolower($persistedResourcePerson->person_label)] = $persistedResourcePerson->rp_id;
+            }
+
+            $completeResource['resource'] = 'persoon';
+            $completeResource['resource_person_id'] = $availableResourcePersons[$resourcePerson];
+        }
+        else {
+            $completeResource['resource'] = $resource;
+            $completeResource['resource_person_id'] = null;
+        }
+        return $completeResource;
+    }
+
+    private function getMoeilijkheid(string $moeilijkheid) : int {
+        switch(strtolower($moeilijkheid)) {
+            case 'makkelijk':
+                return 1;
+            case 'gemiddeld':
+                return 2;
+            case 'moeilijk':
+                return 3;
+        }
+    }
+
+    private function getStatus(string $status) : int {
+        switch(strtolower($status)) {
+            case 'afgerond':
+                return 1;
+            case 'mee bezig':
+                return 2;
+            case 'overgedragen':
+                return 3;
+        }
+    }
+
+    private function getDelimiter(string $csvString) : string {
         $delimiters = array(';' => 0, ',' => 0, "\t" => 0, "|" => 0);
 
-        foreach ($delimiters as $delimiter => &$count)
-        {
+        foreach ($delimiters as $delimiter => &$count) {
             $count = count(str_getcsv($csvString, $delimiter));
         }
 
         return array_search(max($delimiters), $delimiters);
     }
-
-
 }
