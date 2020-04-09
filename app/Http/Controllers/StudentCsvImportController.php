@@ -9,6 +9,7 @@ use App\Repository\Eloquent\ResourcePersonRepository;
 use App\Rules\CsvDateInLearningPeriod;
 use App\Rules\CsvDateTimeFormat;
 use App\Rules\ResourcePersonExists;
+use App\Services\Factories\CategoryFactory;
 use App\Services\Factories\LAPFactory;
 use App\Student;
 use DateTime;
@@ -29,11 +30,10 @@ class StudentCsvImportController extends Controller
 
         if(empty($errors)) {
             $student = Student::findOrFail(Auth::user()->getAuthIdentifier());
-            $persistedCategories = $categoryRepository->categoriesAvailableForStudent($student);
             $persistedResourcePersons = $resourcePersonRepository->resourcePersonsAvailableForStudent($student);
 
             foreach($activities as $activity) {
-                $activity = $this->prepareActivityForPersistance($activity, $persistedCategories, $persistedResourcePersons);
+                $activity = $this->prepareActivityForPersistance($activity, $categoryRepository, $student, $persistedResourcePersons);
                 $LAPFactory->createLAP($activity);
             }
         }
@@ -81,10 +81,11 @@ class StudentCsvImportController extends Controller
     }
 
     private function prepareActivityForPersistance(array $activity,
-                                                   array $persistedCategories,
+                                                   CategoryRepository $categoryRepositories,
+                                                   Student $student,
                                                    array $persistedResourcePersons) : array
     {
-        $category = $this->getCategory($activity['category_id'], $persistedCategories);
+        $category = $this->getCategory($activity['category_id'], $student, $categoryRepositories);
         $resource = $this->getResource(strtolower($activity['resource']), $persistedResourcePersons);
 
         $activity['resource'] = $resource['resource'];
@@ -115,20 +116,19 @@ class StudentCsvImportController extends Controller
                 'status'        => ['required', 'string', Rule::in(['Afgerond', 'Mee bezig', 'Overgedragen']),]];
     }
 
-    private function getCategory(string $category, array $persistedCategories) : array {
+    private function getCategory(string $category, Student $student, CategoryRepository $categoryRepository) : array {
+        $persistedCategories = $categoryRepository->categoriesAvailableForStudent($student);
         $category = strtolower($category);
         $availableCategories = [];
 
         foreach ($persistedCategories as $filteredCategory) { $availableCategories[strtolower($filteredCategory->category_label)] = $filteredCategory->category_id; }
 
-        if(array_key_exists($category, $availableCategories)) {
-            return ['category_id' => $availableCategories[$category],
-                    'newcat' => null];
+        if(!array_key_exists($category, $availableCategories)) {
+            resolve(CategoryFactory::class)->createCategory($category);
         }
-        else {
-            return ['category_id' => 'new',
-                    'newcat' => $category];
-        }
+
+        return ['category_id' => $availableCategories[$category],
+                'newcat' => null];
     }
 
     private function getResource(string $resource, array $persistedResourcePersons) : array {
