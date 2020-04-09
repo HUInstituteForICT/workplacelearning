@@ -127,6 +127,7 @@ class StudentCsvImportController extends Controller
             resolve(CategoryFactory::class)->createCategory($category);
             $persistedCategories = $categoryRepository->categoriesAvailableForStudent($student);
 
+            reset($availableCategories);
             foreach ($persistedCategories as $filteredCategory) { $availableCategories[strtolower($filteredCategory->category_label)] = $filteredCategory->category_id; }
         }
 
