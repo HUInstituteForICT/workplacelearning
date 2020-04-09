@@ -127,7 +127,7 @@ class StudentCsvImportController extends Controller
             resolve(CategoryFactory::class)->createCategory($category);
         }
 
-        return ['category_id' => $category,
+        return ['category_id' => $availableCategories[$category],
                 'newcat' => null];
     }
 
