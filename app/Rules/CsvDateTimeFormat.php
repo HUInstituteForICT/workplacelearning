@@ -28,12 +28,14 @@ class csvDateTimeFormat implements Rule
      */
     public function passes($attribute, $value)
     {
-        if(DateTime::createFromFormat('m/d/Y', $value)) {
-            return true;
-        }
-        else {
+        $dateTime = DateTime::createFromFormat('m/d/Y', $value);
+        $errors = DateTime::getLastErrors();
+
+        if (!empty($errors['warning_count'])) {
             return false;
         }
+
+        return $dateTime !== false;
     }
 
     /**
