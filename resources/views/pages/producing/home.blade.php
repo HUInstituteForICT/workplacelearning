@@ -55,28 +55,28 @@
                                 data-target="#CSV-Import-Modal"
                                 data-toggle="modal">Upload CSV
                         </button>
-                        <hr/>
 
-                        @if ($errors->any())
-                            @foreach($errors->all() as $error)
-                                <p class="text-center">{{ $error }}</p>
-                            @endforeach
-                            <div class="modal-header">
-                                <h4 class="modal-title text-center">Oeps!</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p class="text-center">{{ __('activity.import-error-message') }}</p>
-                            </div>
-                        @elseif(!empty($successMsg))
-                            <div>
+                        <hr/>
+                            @if ($errors->any())
+                                @foreach($errors->all() as $error)
+                                    <p class="text-center">{{ $error }}</p>
+                                @endforeach
                                 <div class="modal-header">
-                                    <h4 class="modal-title text-center">{{ __('activity.import-succes-header-message') }}</h4>
+                                    <h4 class="modal-title text-center">Oeps!</h4>
                                 </div>
-                                <div class="modal-body alert-success">
-                                    <p class="text-center">{{ __('activity.import-succes-message') }}</p>
+                                <div class="modal-body">
+                                    <p class="text-center">{{ __('activity.import-error-message') }}</p>
                                 </div>
-                            </div>
-                        @endif
+                            @elseif(!empty($successMsg))
+                                <div>
+                                    <div class="modal-header">
+                                        <h4 class="modal-title text-center">{{ __('activity.import-succes-header-message') }}</h4>
+                                    </div>
+                                    <div class="modal-body alert-success">
+                                        <p class="text-center">{{ __('activity.import-succes-message') }}</p>
+                                    </div>
+                                </div>
+                            @endif
                     </div>
                 </div>
             </div>
