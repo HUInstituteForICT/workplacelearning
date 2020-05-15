@@ -8,7 +8,8 @@ use App\Repository\Eloquent\CategoryRepository;
 use App\Repository\Eloquent\ResourcePersonRepository;
 use App\Rules\CsvDateInLearningPeriod;
 use App\Rules\CsvDateTimeFormat;
-use App\Rules\ResourcePersonExists;
+use App\Rules\ResourcePersonNotNull;
+use App\Services\CustomProducingEntityHandler;
 use App\Services\Factories\CategoryFactory;
 use App\Services\Factories\LAPFactory;
 use App\Student;
@@ -24,7 +25,8 @@ class StudentCsvImportController extends Controller
     public function save(Request $request,
                          LAPFactory $LAPFactory,
                          CategoryRepository $categoryRepository,
-                         ResourcePersonRepository $resourcePersonRepository) {
+                         ResourcePersonRepository $resourcePersonRepository,
+                         CustomProducingEntityHandler $customProducingEntityHandler) {
         $activities = $this->transferCsvToArray($request);
         $errors = $this->validateCsvEntries($activities);
 
@@ -33,7 +35,7 @@ class StudentCsvImportController extends Controller
             $persistedResourcePersons = $resourcePersonRepository->resourcePersonsAvailableForStudent($student);
 
             foreach($activities as $activity) {
-                $activity = $this->prepareActivityForPersistance($activity, $categoryRepository, $student, $persistedResourcePersons);
+                $activity = $this->prepareActivityForPersistance($activity, $categoryRepository, $student, $persistedResourcePersons, $customProducingEntityHandler);
                 $LAPFactory->createLAP($activity);
             }
         }
@@ -57,6 +59,11 @@ class StudentCsvImportController extends Controller
         while (($csvEntry = fgetcsv($csv, '1000', $delimiter)) !== FALSE) {
             if ($currentLine >= 5 && !(strlen(implode($csvEntry)) == 0)) {
                 $csvEntry = array_slice($csvEntry,0, 7);
+
+                if (strpos($csvEntry[2], ',')) {
+                    $csvEntry[2] = str_replace(',', '.', $csvEntry[2]);
+                }
+
                 $csvEntry = array_combine(['datum', 'omschrijving', 'aantaluren', 'category_id', 'resource', 'status', 'moeilijkheid'], $csvEntry);
 
                 $csvEntries[($currentLine + 1)] = $csvEntry;
@@ -83,13 +90,17 @@ class StudentCsvImportController extends Controller
     private function prepareActivityForPersistance(array $activity,
                                                    CategoryRepository $categoryRepositories,
                                                    Student $student,
-                                                   array $persistedResourcePersons) : array
+                                                   array $persistedResourcePersons,
+                                                   CustomProducingEntityHandler $customProducingEntityHandler
+                                                   ) : array
     {
         $category = $this->getCategory($activity['category_id'], $student, $categoryRepositories);
         $resource = $this->getResource(strtolower($activity['resource']), $persistedResourcePersons);
 
         $activity['resource'] = $resource['resource'];
-        $activity['resource_person_id'] = $resource['resource_person_id'];
+        $activity['personsource'] = $resource['personsource'];
+        $activity['newswv'] = $resource['newswv'];
+
         $activity['moeilijkheid'] = $this->getMoeilijkheid($activity['moeilijkheid']);
         $activity['status'] = $this->getStatus($activity['status']);
         $activity['datum'] = strval(DateTime::createFromFormat('m/d/Y', $activity['datum'])->format('d-m-Y'));
@@ -101,7 +112,7 @@ class StudentCsvImportController extends Controller
         $activity['booksource'] = null;
         $activity['chain_id'] = -1;
 
-        return $activity;
+        return $customProducingEntityHandler->process($activity);
     }
 
     private function getCsvEntriesValidations() : array {
@@ -110,7 +121,7 @@ class StudentCsvImportController extends Controller
                 'datum'         => ['required', new CsvDateTimeFormat, 'before:tomorrow', new csvDateInLearningPeriod],
                 'omschrijving'  => 'required|string|max:1000',
                 'category_id'   => 'required|string',
-                'resource'      => ['required', 'string', resolve(ResourcePersonExists::class)],
+                'resource'      => ['required', 'string', resolve(ResourcePersonNotNull::class)],
                 'aantaluren'    => 'required|numeric|min:0|max:24',
                 'moeilijkheid'  => ['required', 'string', Rule::in(['Makkelijk', 'Gemiddeld', 'Moeilijk']),],
                 'status'        => ['required', 'string', Rule::in(['Afgerond', 'Mee bezig', 'Overgedragen']),]];
@@ -124,11 +135,8 @@ class StudentCsvImportController extends Controller
         foreach ($persistedCategories as $filteredCategory) { $availableCategories[strtolower($filteredCategory->category_label)] = $filteredCategory->category_id; }
 
         if(!array_key_exists($category, $availableCategories)) {
-            resolve(CategoryFactory::class)->createCategory($category);
-            $persistedCategories = $categoryRepository->categoriesAvailableForStudent($student);
-
-            $availableCategories = [];
-            foreach ($persistedCategories as $filteredCategory) { $availableCategories[strtolower($filteredCategory->category_label)] = $filteredCategory->category_id; }
+            return ['category_id' => 'new',
+                'newcat' => $category];
         }
 
         return ['category_id' => $availableCategories[$category],
@@ -136,27 +144,41 @@ class StudentCsvImportController extends Controller
     }
 
     private function getResource(string $resource, array $persistedResourcePersons) : array {
-        $completeResource = [];
         $availableResourcePersons = [];
 
-        if (substr($resource, 0, 7) === 'persoon' || $resource === 'alleen') {
-            if($resource === 'alleen') {
-                $resourcePerson = 'alleen';
-            }
-            else {
-                $resourcePerson = explode('- ', $resource)[1];
-            }
+        $completeResource = [];
+        $completeResource['personsource'] = null;
+        $completeResource['newswv'] = null;
+        $completeResource['resource'] = null;
+
+        if (substr($resource, 0, 7) === 'persoon') {
+            $resourcePerson = trim(explode('- ', $resource)[1]);
 
             foreach ($persistedResourcePersons as $persistedResourcePerson) {
                 $availableResourcePersons[strtolower($persistedResourcePerson->person_label)] = $persistedResourcePerson->rp_id;
             }
 
+            if(array_key_exists($resourcePerson, $availableResourcePersons)) {
+                $completeResource['personsource']= $availableResourcePersons[$resourcePerson];
+            }
+            else if($resourcePerson != '') {
+                $completeResource['personsource'] = 'new';
+                $completeResource['newswv'] = $resourcePerson;
+            }
             $completeResource['resource'] = 'persoon';
-            $completeResource['resource_person_id'] = $availableResourcePersons[$resourcePerson];
         }
-        else {
-            $completeResource['resource'] = $resource;
-            $completeResource['resource_person_id'] = null;
+        elseif (substr($resource, 0, 7) !== 'alleen' || substr($resource, 0, 7) !== 'persoon') {
+            switch ($resource) {
+                case 'boek/artikel':
+                    $completeResource['resource'] = 'boek';
+                    break;
+                case 'internetbron':
+                    $completeResource['resource'] = 'internet';
+                    break;
+                default:
+                    $completeResource['resource'] = $resource;
+                    break;
+            }
         }
         return $completeResource;
     }
