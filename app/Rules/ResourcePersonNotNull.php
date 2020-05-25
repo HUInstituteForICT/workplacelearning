@@ -10,7 +10,7 @@ use App\Student;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
-class ResourcePersonExists implements Rule
+class ResourcePersonNotNull implements Rule
 {
     /**
      * @var array
@@ -50,31 +50,13 @@ class ResourcePersonExists implements Rule
     {
         $value = strtolower($value);
 
-        if (substr($value, 0, 7) === 'persoon' || $value === 'alleen') {
-            if($value === 'alleen') {
-                $resourcePerson = 'alleen';
-            }
-            else {
-                $resourcePerson = explode('- ', $value)[1];
-            }
-
-            if(!empty($this->persistedResourcePersons)) {
-                foreach($this->persistedResourcePersons as $persistedResourcePerson) {
-                    if($resourcePerson === strtolower($persistedResourcePerson->person_label)) {
-                        return true;
-                    }
-                }
-            }
-            else {
-                return false;
-            }
-        }
-        elseif($value === 'internetbron' || $value === 'boek/artikel') {
+        if (substr($value, 0, 7) === 'persoon' && trim((explode('-', $value)[1])) !== '') {
             return true;
         }
-        else {
-            return false;
+        elseif($value === 'internetbron' || $value === 'boek/artikel' || $value === 'alleen') {
+            return true;
         }
+        return false;
     }
 
     /**
@@ -84,6 +66,6 @@ class ResourcePersonExists implements Rule
      */
     public function message()
     {
-        return 'Ingevoerde "Werken/leren met" bestaat niet';
+        return '"Werken/leren met" is niet ingevuld';
     }
 }
