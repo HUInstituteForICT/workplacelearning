@@ -147,18 +147,6 @@ Route::middleware(['auth', 'verified'])->group(static function (): void {
         Route::get('/reactlogs/{reactLog}/fix',
             'ReactLogController@fix')->name('fix-reactlog'); // Remove React error from log
         Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index'); // Normal logs (exceptions etc)
-        Route::get('switch-user/{id}', static function (int $id, CurrentUserResolver $userResolver): RedirectResponse {
-            if (!in_array($userResolver->getCurrentUser()->email,
-                ['rogier@inesta.com', 'rogier+producing@inesta.com'])) {
-                redirect('/');
-            }
-            Auth::loginUsingId($id);
-
-            return redirect('/');
-        }); // Ability to switch to user by ID
-        Route::get('/pull-update', static function (): string {
-            return shell_exec('git -C /sites/werkplekleren.hu.nl/htdocs fetch && git -C /sites/werkplekleren.hu.nl/htdocs reset --hard origin/master && git -C /sites/werkplekleren.hu.nl/htdocs pull');
-        }); // Pulls branch -- often doesn't work. Only necessary due to VPN situation on HU network
 
         // outside prefix because of namespace issues
         Route::get('admin/home', 'HomeController@showAdminTemplate')->name('home-admin');

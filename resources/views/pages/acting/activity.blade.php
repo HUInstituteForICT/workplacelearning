@@ -123,7 +123,7 @@
                                                                   title="{{ trans('tooltips.acting_when') }}"></i></h4>
                         @foreach ($timeslots as $key => $value)
                             <label><input type="radio" name="timeslot"
-                                          value="{{ $value->timeslot_id }}" {{ (old('timeslot') != null && old('timeslot') == $value->timeslot_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->localizedLabel() }}</span></label>
+                                          value="{{ $value->timeslot_id }}" {{ (old('timeslot') != null && old('timeslot') == $value->timeslot_id) ? "checked" : (($key == 0) ? "checked" : null) }} /><span>{{ $value->localizedLabel() }}</span></label>
                         @endforeach
                         <label><input type="radio" name="timeslot" id="new_timeslot"
                                       value="new" {{ (old('timeslot') == 'new') ? 'checked' : null }}>
@@ -144,7 +144,7 @@
                         </h4>
                         @foreach ($resourcePersons as $key => $value)
                             <label><input type="radio" name="res_person"
-                                          value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : ($key == 0) ? "checked" : null }} /><span>{{ $value->localizedLabel() }}</span></label>
+                                          value="{{ $value->rp_id }}" {{ (old('res_person') != null && old('res_person') == $value->rp_id) ? "checked" : (($key == 0) ? "checked" : null) }} /><span>{{ $value->localizedLabel() }}</span></label>
                         @endforeach
                         <div>
                             <label><input type="radio" name="res_person" id="new_rp"

@@ -79,7 +79,7 @@
 
     <script>
         function likeTip(tipId, type) {
-            const url = "{{ route('tips.like', ['id' => ':id']) }}";
+            const url = "{{ route('tips.like', [':id']) }}";
             $.get(url.replace(':id', tipId) + '?type=' + type).then(function () {
                 $('#likeTip-' + tipId).parent().remove();
             });

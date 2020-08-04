@@ -65,7 +65,7 @@
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <select class="form-control" id="y_axis" name="y_axis"
-                               required="required" value="{{ isset($data['y_axis']) ? $data['y_axis'] : (isset($labels[1])) ? $labels[1] : (isset($labels[0]) ? $labels[0] : '') }}">
+                               required="required" value="{{ (isset($data['y_axis']) ? $data['y_axis'] : (isset($labels[1]))) ? $labels[1] : (isset($labels[0]) ? $labels[0] : '') }}">
                             @if(isset($labels[0]))
                             @foreach($labels as $label)
                                 <option value="{{ $label }}" {{ (preg_match("/(sum|count|avg)/i", $label) === 1) ? 'selected': '' }}>{{ $label }}</option>

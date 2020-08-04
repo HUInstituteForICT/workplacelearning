@@ -77,7 +77,7 @@
             </div>
         </div>
 
-        {!! Form::open(array('id' => 'feedbackForm', 'url' => route('feedback-producing-update', ['id' => $feedback->fb_id]))) !!}
+        {!! Form::open(array('id' => 'feedbackForm', 'url' => route('feedback-producing-update', [$feedback->fb_id]))) !!}
         <div class="row well">
             <h2>{{ __('activity.feedback.lookback') }}</h2>
 

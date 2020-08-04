@@ -11,9 +11,9 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@master
               with:
-                php-version: '7.1'
-                extension-csv: intl, gd, zip, bcmath, mcrypt
-
+                php-version: '7.4'
+                extension-csv: intl, gd, zip, bcmath
+                
             - name: Get Composer Cache Directory
               id: composer-cache
               run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -35,5 +35,5 @@ jobs:
             - name: Execute tests (Unit and Feature tests) via PHPUnit
               run: composer test
 
-            - name: Execute PHPStan
-              run: composer analyse
+#            - name: Execute PHPStan
+#              run: composer analyse

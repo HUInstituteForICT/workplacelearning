@@ -223,7 +223,7 @@ class QueryBuilderController extends Controller
 
         $chartTypes = (new ChartType())->whereNotNull('slug')->get();
 
-        return view('pages.analytics.builder.step4-chart', compact('data', 'result', 'labels', 'chartTypes'));
+        return view('pages.analytics.builder.step4-chart', compact('data', 'labels', 'chartTypes'));
     }
 
     private function step5($data): bool

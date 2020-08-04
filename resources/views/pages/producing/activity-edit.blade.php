@@ -78,7 +78,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
 
         </div>
 
-        {!! Form::open(array('id' => 'taskForm', 'url' => route('process-producing-update', ['id' => $activity->lap_id]), 'class' => 'form-horizontal')) !!}
+        {!! Form::open(array('id' => 'taskForm', 'url' => route('process-producing-update', [$activity->lap_id]), 'class' => 'form-horizontal')) !!}
         <div class="row">
 
             <div class="col-md-3">
@@ -186,7 +186,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                                                          title="{{ trans('tooltips.producing_category') }}"></i></h4>
                     @foreach($categories as $key => $value)
                         <label><input type="radio" name="category_id"
-                                      value="{{ $value->category_id }}" {{ (old('category_id') == $value->category_id) ? 'checked' : ($activity->category_id == $value->category_id) ? 'checked' : null }}/><span>{{ $value->localizedLabel() }}</span></label>
+                                      value="{{ $value->category_id }}" {{ ((old('category_id') == $value->category_id) ? 'checked' : ($activity->category_id == $value->category_id)) ? 'checked' : null }}/><span>{{ $value->localizedLabel() }}</span></label>
                     @endforeach
                     <div class="clearfix"></div>
                 </div>
@@ -218,7 +218,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                     </div>
                     <div id="internetcontainer">
                         <label class="expand-click"><input type="radio" name="resource"
-                                                           value="internet" {{ (old('resource') === 'internet') ? 'checked' : (!old('resource') && $activity->res_material_id == 1) ? 'checked' : null }} /><span>{{ __('activity.internetsource') }}</span></label>
+                                                           value="internet" {{ ((old('resource') === 'internet') ? 'checked' : (!old('resource') && $activity->res_material_id == 1)) ? 'checked' : null }} /><span>{{ __('activity.internetsource') }}</span></label>
                         <input class="cond-hidden form-control" type="text" name="internetsource"
                                value="{{ old('internetsource', $activity->res_material_detail) }}"
                                style="width: 150px; margin: 5px;"
@@ -226,7 +226,7 @@ $isCustomActivityDuration = !in_array($activity->duration, [0.25, 0.50, 0.75, 1.
                     </div>
                     <div id="boekcontainer">
                         <label class="expand-click"><input type="radio" name="resource"
-                                                           value="boek" {{ (old('resource') == 'boek') ? 'checked' : (!old('resource') && $activity->res_material_id == 2) ? 'checked' : null }} /><span>{{ __('activity.book') }}
+                                                           value="boek" {{ ((old('resource') == 'boek') ? 'checked' : (!old('resource') && $activity->res_material_id == 2)) ? 'checked' : null }} /><span>{{ __('activity.book') }}
                             /{{ __('activity.article') }}</span></label>
                         <input class="cond-hidden form-control" type="text" name="booksource" maxlength="150"
                                style="width: 150px; margin: 5px;"

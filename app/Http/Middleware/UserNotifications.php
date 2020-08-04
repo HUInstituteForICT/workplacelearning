@@ -31,7 +31,7 @@ class UserNotifications
         if ($student->isStudent() && !$student->hasCurrentWorkplaceLearningPeriod() && !str_contains($request->url(),
                 ['period/', 'profile', 'profiel'])) {
             $request->session()->flash('no-internship',
-                __('notifications.generic.nointernshipactive', ['profile-url' => route('profile')]));
+                __('notifications.generic.nointernshipactive', [route('profile')]));
             if ($student->educationProgram->educationprogramType->isActing()) {
                 return redirect()->action('ActingWorkplaceLearningController@create');
             }
