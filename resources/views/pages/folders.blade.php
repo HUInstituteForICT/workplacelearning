@@ -510,7 +510,7 @@
                                     </div>
                                 </div>
                                 @endcard
-                            @elseif ($item->category === 'activity')
+                            @elseif ($item->category === 'laa' or $item->category === 'lap')
                                 @card
                                 <div class="form-group">
                                     <input type="checkbox" name="check_list[]" value="{{$item->sli_id}}"
