@@ -91,7 +91,7 @@
                                                             <p>{{ __('saved_learning_items.tip-not-found') }}</p>
                                                         @endif
                                                     </div>
-                                                @elseif ($item->category === 'activity')
+                                                @elseif ($item->category === 'laa' or $item->category === 'lap')
                                                     <div class="alert"
                                                          style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2"
                                                          role="alert">
@@ -297,7 +297,7 @@
                                                             <p>{{ __('saved_learning_items.tip-not-found') }}</p>
                                                         @endif
                                                     </div>
-                                                @elseif ($item->category === 'activity')
+                                                @elseif ($item->category === 'laa' or $item->category === 'lap')
                                                     <div class="alert"
                                                          style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2"
                                                          role="alert">
@@ -488,7 +488,7 @@
 
                     {!! Form::open(array('url' =>  route('folder.AddItemsToFolder'))) !!}
                     <div class="form-group">
-                        <input class="hidden_element" type='text' name="selected_folder_id" id="selected_folder_id"
+                        <input class="hidden_element" type='text' name="selected_folder_id" id="selected_folder_id" value="{{$folder->folder_id}}"
                                class="form-control">
                     </div>
 
