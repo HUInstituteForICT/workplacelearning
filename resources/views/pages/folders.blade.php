@@ -250,7 +250,7 @@
                                             <li>
                                                 <a href="{{ route('folder.stop-sharing-folder', ['folder' => $folder]) }}">{{ __('folder.stop-sharing-folder') }}</a>
                                             </li>
-                                            <li><a onclick="setSelectedFolder({{ $folder }})"
+                                            <li><a onclick="$('#selected_folder_id').attr('value', {{ $folder->folder_id }});"
                                                    data-target="#AddItemsToFolderModel" data-toggle="modal">Items
                                                     toevoegen</a></li>
                                             <li><a class="color-red"
@@ -488,7 +488,7 @@
 
                     {!! Form::open(array('url' =>  route('folder.AddItemsToFolder'))) !!}
                     <div class="form-group">
-                        <input class="hidden_element" type='text' name="selected_folder_id" id="selected_folder_id" value="{{$folder->folder_id}}"
+                        <input class="hidden_element" type='text' name="selected_folder_id" id="selected_folder_id"
                                class="form-control">
                     </div>
 
