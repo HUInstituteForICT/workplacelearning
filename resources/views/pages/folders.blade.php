@@ -120,10 +120,10 @@
                                                                       aria-hidden="true"></span>Alleen
                                                         @else
                                                             <br><span class="glyphicon glyphicon-user activity_icons"
-                                                                      aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}}
+                                                                      aria-hidden="true"></span>{{$resourcePerson[$activities[$item->item_id]->res_person_id]->person_label}}
                                                         @endif
                                                         <br><span class="glyphicon glyphicon-tag activity_icons"
-                                                                  aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}}
+                                                                  aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                                                     </div>
                                                 @endif
                                             @endforeach
