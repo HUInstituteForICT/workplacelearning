@@ -117,7 +117,7 @@ use App\Student;use App\Workplace;
                                                 @endif
                                             </div>
                                 
-                                        @elseif ($item->category === 'activity')
+                                        @elseif ($item->category === 'lap' or $item->category === 'laa')
                                                     <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
                                                         <h4>Activiteit</h4>
                                                         <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
