@@ -47,7 +47,7 @@
                         @endcard
                     @endif
                 <!-- Activities -->
-                    @if ($item->category === 'activity' && in_array($item->item_id, array_keys($activities)))
+                    @if (($student->educationProgram->educationprogramType->isActing() and $item->category === 'laa') || ($student->educationProgram->educationprogramType->isProducing() and $item->category === 'lap') || in_array($item->item_id, array_keys($activities)))
                         @card
                         <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                         <div class="alert"
