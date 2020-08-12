@@ -66,11 +66,17 @@
                             @if($student->educationProgram->educationprogramType->isActing())
                                 <span class="glyphicon glyphicon-tasks activity_icons"
                                       aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+                                                                            
+                                <br><span class="glyphicon glyphicon-tag activity_icons"
+                                      aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                             @endif
                         <!-- Producing -->
                             @if($student->educationProgram->educationprogramType->isProducing())
                                 <span class="glyphicon glyphicon-time activity_icons"
                                       aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+
+                                <br><span class="glyphicon glyphicon-tag activity_icons"
+                                      aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                             @endif
                         <!-- Both -->
                             @if($activities[$item->item_id]->res_person_id === null)
@@ -80,8 +86,6 @@
                                 <br><span class="glyphicon glyphicon-user activity_icons"
                                           aria-hidden="true"></span>{{$resourcePerson[$activities[$item->item_id]->res_person_id]->person_label}}
                             @endif
-                            <br><span class="glyphicon glyphicon-tag activity_icons"
-                                      aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                         </div>
                         @endcard
                     @endif
