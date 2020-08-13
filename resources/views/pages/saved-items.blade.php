@@ -47,7 +47,7 @@
                         @endcard
                     @endif
                 <!-- Activities -->
-                    @if (($student->educationProgram->educationprogramType->isActing() and $item->category === 'laa') || ($student->educationProgram->educationprogramType->isProducing() and $item->category === 'lap') || in_array($item->item_id, array_keys($activities)))
+                    @if ((($student->educationProgram->educationprogramType->isActing() and $item->category === 'laa') || ($student->educationProgram->educationprogramType->isProducing() and $item->category === 'lap')) && in_array($item->item_id, array_keys($activities)))
                         @card
                         <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                         <div class="alert"
@@ -66,7 +66,7 @@
                             @if($student->educationProgram->educationprogramType->isActing())
                                 <span class="glyphicon glyphicon-tasks activity_icons"
                                       aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
-                                                                            
+
                                 <br><span class="glyphicon glyphicon-tag activity_icons"
                                       aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                             @endif
