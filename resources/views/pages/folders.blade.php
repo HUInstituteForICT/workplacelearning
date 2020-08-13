@@ -52,6 +52,9 @@
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-right no-top"
                                             aria-labelledby="dropdownMenuFolder">
+                                            <li><a onclick="$('#selected_folder_id').attr('value', {{ $folder->folder_id }});"
+                                                   data-target="#AddItemsToFolderModel" data-toggle="modal">Items
+                                                    toevoegen</a></li>
                                             <li><a class="color-red"
                                                    href="{{ route('folder.destroy', ['folder' => $folder]) }}"
                                                    onclick="return confirm('{{ __('folder.delete-confirmation') }}')">{{ __('folder.delete-folder') }}</a>
@@ -107,7 +110,7 @@
                                                         @if($student->educationProgram->educationprogramType->isActing())
                                                             <span class="glyphicon glyphicon-tasks activity_icons"
                                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
-																  
+
                                                             <br><span class="glyphicon glyphicon-tag activity_icons"
                                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                                                         @endif
@@ -115,7 +118,7 @@
                                                         @if($student->educationProgram->educationprogramType->isProducing())
                                                             <span class="glyphicon glyphicon-time activity_icons"
                                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
-															
+
                                                             <br><span class="glyphicon glyphicon-tag activity_icons"
                                                                   aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                                                         @endif
@@ -316,7 +319,7 @@
                                                         @if($student->educationProgram->educationprogramType->isActing())
                                                             <span class="glyphicon glyphicon-tasks activity_icons"
                                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
-																  
+
                                                             <br><span class="glyphicon glyphicon-tag activity_icons"
                                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                                                         @endif
@@ -324,7 +327,7 @@
                                                         @if($student->educationProgram->educationprogramType->isProducing())
                                                             <span class="glyphicon glyphicon-time activity_icons"
                                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
-															
+
                                                             <br><span class="glyphicon glyphicon-tag activity_icons"
                                                                   aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                                                         @endif
@@ -532,7 +535,7 @@
                                         @if($student->educationProgram->educationprogramType->isActing())
                                             <span class="glyphicon glyphicon-tasks activity_icons"
                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
-												  
+
                                             <br><span class="glyphicon glyphicon-tag activity_icons"
                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                                         @endif
@@ -540,7 +543,7 @@
                                         @if($student->educationProgram->educationprogramType->isProducing())
                                             <span class="glyphicon glyphicon-time activity_icons"
                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
-											
+
 											<br><span class="glyphicon glyphicon-tag activity_icons"
                                                   aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                                         @endif
