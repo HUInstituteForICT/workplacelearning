@@ -14,7 +14,7 @@ class OAuth1SignatureBuilder
 
         $key = rawurlencode(config('canvas.secret')).'&';
 
-        return base64_encode(hash_hmac('SHA1', $signatureData, $key, 1));
+        return base64_encode(hash_hmac('SHA1', $signatureData, $key, False));
     }
 
     private function prepareData($data): string
