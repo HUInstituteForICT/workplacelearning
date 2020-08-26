@@ -15,7 +15,7 @@
                 <textarea class="form-control" style="max-width: 100%;" name="feedback_description" cols="80" rows="10"
                           placeholder="{{ __('general.tips-example') }}">{{ old('feedback_description') }}</textarea>
                 <br/>
-                <input class="btn btn-info" type="submit" value="{{ __('general.send') }}"/>
+                <input type="submit" value="{{ __('general.send') }}"/>
                 {!! Form::close() !!}
             </div>
         </div>

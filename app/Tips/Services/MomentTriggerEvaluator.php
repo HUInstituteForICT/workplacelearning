@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tips\Services;
 
-use App\Student;
 use App\Tips\EvaluatedTip;
 use App\Tips\Models\Moment;
 use App\Tips\PeriodMomentCalculator;
@@ -32,25 +31,6 @@ class MomentTriggerEvaluator
         }
 
         $percentage = $this->periodMomentCalculator->getMomentAsPercentage();
-
-        $textParameter = new TextParameter(':days-percentage', $percentage.'%');
-
-        $passes = $this->hasFittingMoment($tip->moments->all(), (float) $percentage);
-
-        $evaluatedTip->addTextParameter($textParameter);
-        $evaluatedTip->addEvaluationResult($passes);
-    }
-
-    public function evaluateForChosenStudent(EvaluatedTip $evaluatedTip, Student $student): void
-    {
-        $tip = $evaluatedTip->getTip();
-
-        // Do nothing if there are no moments
-        if ($tip->moments->count() === 0) {
-            return;
-        }
-
-        $percentage = $this->periodMomentCalculator->getMomentAsPercentageFromStudent($student);
 
         $textParameter = new TextParameter(':days-percentage', $percentage.'%');
 

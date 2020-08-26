@@ -46,7 +46,7 @@ class TaskTypeRedirect
         }
 
         if ($student->isTeacher()) {
-            return $this->redirector->route('teacher-dashboard');
+            return $this->redirector->route('home-teacher');
         }
 
         if ($student->isAdmin() && $route->getName() === 'default') {

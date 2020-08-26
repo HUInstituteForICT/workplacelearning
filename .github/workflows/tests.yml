@@ -13,7 +13,7 @@ jobs:
               with:
                 php-version: '7.4'
                 extension-csv: intl, gd, zip, bcmath
-                
+
             - name: Get Composer Cache Directory
               id: composer-cache
               run: echo "::set-output name=dir::$(composer config cache-files-dir)"

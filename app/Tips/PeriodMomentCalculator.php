@@ -6,7 +6,6 @@ namespace App\Tips;
 
 use App\Services\CurrentPeriodResolver;
 use App\WorkplaceLearningPeriod;
-use App\Student;
 use Carbon\Carbon;
 
 class PeriodMomentCalculator
@@ -30,33 +29,6 @@ class PeriodMomentCalculator
     {
         if ($this->workplaceLearningPeriod === null) {
             $this->workplaceLearningPeriod = $this->currentPeriodResolver->getPeriod();
-        }
-
-        $startDate = new Carbon($this->workplaceLearningPeriod->startdate);
-        $endDate = new Carbon($this->workplaceLearningPeriod->enddate);
-        $currentDate = new Carbon();
-
-        $daysInPeriod = $currentDate->diffInDays($startDate);
-        $totalDays = $startDate->diffInDays($endDate);
-
-        if ($totalDays > 0) {
-            $percentage = $daysInPeriod / $totalDays;
-        } else {
-            $percentage = 0;
-        }
-
-        if ($percentage > 1) { // Use 100% whenever the WPLP is completed
-            $percentage = 1;
-        }
-
-        return number_format($percentage * 100);
-    }
-
-    public function getMomentAsPercentageFromStudent(Student $student): string
-    {
-
-        if ($this->workplaceLearningPeriod === null) {
-            $this->workplaceLearningPeriod = $student->getCurrentWorkplaceLearningPeriod();
         }
 
         $startDate = new Carbon($this->workplaceLearningPeriod->startdate);

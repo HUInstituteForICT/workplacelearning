@@ -71,7 +71,6 @@ return [
     'delete' => 'Delete',
     'cancel' => 'Cancel',
     'delete-confirm' => 'Are you sure you want to delete this activity?',
-    'save-confirm' => 'Are you sure you want to save this activity?',
     'statistic' => [
             'create' => 'Create',
             'create-statistic' => 'Create new statistic',

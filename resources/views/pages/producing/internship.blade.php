@@ -228,7 +228,7 @@
                                 <td>{{ $workplace->wp_name
                             .' ('. date('d-m-Y', strtotime($period->startdate))
                             . ' - ' . date('d-m-Y', strtotime($period->enddate)). ')' }}</td>
-                                <td><input class="form-control" name="cat[{{ $cat->category_id }}][cg_label]"
+                                <td><input name="cat[{{ $cat->category_id }}][cg_label]"
                                            value="{{
                                         old('category['. $cat->category_id .'][cg_label]')
                                         ?: $cat->category_label
@@ -238,7 +238,7 @@
                         @endforeach
                         <tr>
                             <input type="hidden" name="newcat[0][wplp_id]" value="{{ $period->wplp_id }}"/>
-                            <input type="hidden" name="newcat[0][cg_id]" value="0"/>
+                            <input type="hidden" name="newcat[0][cg_id]" value="-1"/>
                             <td>{{ $workplace->wp_name }}
                                 <br/>{{ '('. date('d-m-Y', strtotime($period->startdate)). ' - ' . date('d-m-Y', strtotime($period->enddate)). ')' }}
                             </td>

@@ -35,14 +35,3 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | APT_KEY_DONT_WARN_ON_DAN
     apt-get install --no-install-recommends yarn
 
 WORKDIR /var/www
-
-RUN apt-get update && apt-get -y install cron
-
-COPY ./docker/config/tasks_cron /etc/cron.d/tasks_cron
-RUN chmod 0644 /etc/cron.d/tasks_cron && chmod 0644 /etc/cron.d/tasks_cron
-
-RUN /usr/bin/crontab /etc/cron.d/tasks_cron
-
-COPY ./docker/config/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

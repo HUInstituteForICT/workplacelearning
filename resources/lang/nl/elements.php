@@ -83,10 +83,6 @@ return [
             ],
             'internship-assignment-error' => 'Dit veld moet minimaal 15 characters hebben en kan maximaal 500 characters bevatten.',
             'language'                    => 'Taal',
-            'digest_period'               => 'Stuur notificaties',
-            'instantly'                   => 'Meteen',
-            'daily'                       => 'Dagelijks',
-            'weekly'                      => 'Wekelijks',
         ],
         'placeholders'  => [
             'firstname'               => 'Bijv: Jan',

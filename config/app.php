@@ -135,7 +135,7 @@ $config = [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 //        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
-
+        
         Collective\Html\HtmlServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
 

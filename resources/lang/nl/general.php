@@ -92,5 +92,4 @@ return array(
     'student' => 'Student',
     'teacher' => 'Docent',
     'admin' => 'Admin',
-    'today' => 'vandaag',
 );
