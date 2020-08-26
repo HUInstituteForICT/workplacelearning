@@ -167,7 +167,7 @@ class ProducingWorkplaceLearningController extends Controller
 
         if ($validator->fails()) {
             return redirect()
-                ->route('period-producing-edit', ['workplaceLearningPeriod' => $workplaceLearningPeriod])
+                ->route('period-producing-edit', [$workplaceLearningPeriod])
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -258,6 +258,6 @@ class ProducingWorkplaceLearningController extends Controller
         }
 
         // Done, redirect back to profile page
-        return redirect()->route('period-producing-edit', ['id' => $id])->with('succes', __('general.edit-saved'));
+        return redirect()->route('period-producing-edit', [$id])->with('succes', __('general.edit-saved'));
     }
 }

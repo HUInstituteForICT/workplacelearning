@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Analysis\Producing;
 
 use App\LearningActivityProducing;
+use App\Student;
 use App\Services\CurrentPeriodResolver;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -337,6 +338,15 @@ class ProducingAnalysisCollector
     {
         try {
             return $this->currentPeriodResolver->getPeriod()->getEffectiveDays();
+        } catch (\RuntimeException $e) {
+            return 0;
+        }
+    }
+
+    public function getFullWorkingDaysOfStudent(Student $student)
+    {
+        try {
+            return $student->getCurrentWorkplaceLearningPeriod()->getEffectiveDays();
         } catch (\RuntimeException $e) {
             return 0;
         }

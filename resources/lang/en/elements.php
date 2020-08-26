@@ -83,6 +83,10 @@ return [
             ],
             'internship-assignment-error' => 'This field should at least contain 15 characters and can have a maximum of 500.',
             'language'                    => 'Language',
+            'digest_period'               => 'Send me notifications',
+            'instantly'                   => 'Instantly',
+            'daily'                       => 'Daily',
+            'weekly'                      => 'Weekly',
         ],
         'placeholders'  => [
             'firstname'               => 'Ex: Jan',

@@ -21,7 +21,10 @@ export default class Row extends React.Component {
         };
 
         return <tr className="activityExport">
-            <td>
+            <td width="15%">
+                <a style={actionStyle} onClick={() => confirm(Lang.get("Weet u zeker dat u dit wilt opslaan?")) ? window.location.href = "/acting/process/save/" + activity.id: null}>
+                <img className="save_activity_icon" src="../assets/img/bookmark-blauw.svg"/>
+                </a>
                 <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil"
                                                               aria-hidden="true"/></a>
                 <a style={actionStyle}

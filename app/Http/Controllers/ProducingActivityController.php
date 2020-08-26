@@ -13,6 +13,7 @@ use App\Http\Requests\LearningActivity\ProducingCreateRequest;
 use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
 use App\LearningActivityProducing;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\AvailableProducingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
 use App\Services\CustomProducingEntityHandler;
@@ -23,7 +24,8 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
+
 
 class ProducingActivityController
 {
@@ -31,22 +33,31 @@ class ProducingActivityController
      * @var CurrentUserResolver
      */
     private $currentUserResolver;
+
     /**
      * @var LearningActivityProducingRepository
      */
     private $learningActivityProducingRepository;
+
     /**
      * @var Session
      */
     private $session;
 
+    /**
+     * @var SavedLearningItemRepository
+     */
+    private $savedLearningItemRepository;
+
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         LearningActivityProducingRepository $learningActivityProducingRepository,
+        SavedLearningItemRepository $savedLearningItemRepository,
         Session $session
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->session = $session;
     }
 
@@ -94,9 +105,9 @@ class ProducingActivityController
         $latest = $this->learningActivityProducingRepository->latestActivityForStudent($student)->date ?? Carbon::now();
 
         return view('pages.producing.progress', [
-                'activitiesJson'               => $activitiesJson,
+                'activitiesJson' => $activitiesJson,
                 'exportTranslatedFieldMapping' => json_encode($exportTranslatedFieldMapping),
-                'weekStatesDates'              => [
+                'weekStatesDates' => [
                     'earliest' => $earliest->format('Y-m-d'),
                     'latest'   => $latest->format('Y-m-d'),
                 ],
@@ -121,9 +132,9 @@ class ProducingActivityController
 
             if ($request->acceptsJson()) {
                 return response()->json([
-                        'status' => 'success',
-                        'url'    => $url,
-                    ]);
+                    'status' => 'success',
+                    'url'    => $url,
+                ]);
             }
 
             return redirect($url);
@@ -170,5 +181,18 @@ class ProducingActivityController
         $this->learningActivityProducingRepository->delete($learningActivityProducing);
 
         return redirect()->route('process-producing');
+    }
+
+    public function save(
+        LearningActivityProducing $learningActivityProducing,
+        Request $request,
+        Redirector $redirector
+    ): RedirectResponse {
+        $savedLearningItem = $learningActivityProducing->bookmark();
+        $this->savedLearningItemRepository->save($savedLearningItem);
+
+        $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
+
+        return $redirector->route('process-producing');
     }
 }
