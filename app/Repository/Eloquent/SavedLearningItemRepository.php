@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 namespace App\Repository\Eloquent;
+use App\Services\EvidenceFileHandler;
 use App\SavedLearningItem;
 use App\Services\CurrentUserResolver;
-use Illuminate\Support\Collection;
 
 class SavedLearningItemRepository
 {
@@ -14,7 +14,7 @@ class SavedLearningItemRepository
         return SavedLearningItem::all();
     }
 
-    public function findByStudentnr(int $id): Collection
+    public function findByStudentnr(int $id)
     {
         return SavedLearningItem::where('student_id', $id)->get();
     }
@@ -31,15 +31,5 @@ class SavedLearningItemRepository
             'item_id' => $item_id,
             'student_id' => $student_id
         ])->count() > 0;
-    }
-
-    public function findById($sli_id)
-    {
-        return SavedLearningItem::where('sli_id', '=', $sli_id)->first();
-    }
-
-    public function delete(SavedLearningItem $sli)
-    {
-        return $sli->delete();
     }
 }

@@ -14,7 +14,6 @@ use App\Tips\Statistics\Resultable;
 use App\Tips\Statistics\StatisticCalculationResult;
 use DivisionByZeroError;
 use Psr\Log\LoggerInterface;
-use App\WorkplaceLearningPeriod;
 
 class StatisticCalculator
 {
@@ -31,11 +30,6 @@ class StatisticCalculator
     {
         $this->collector = $collector;
         $this->logger = $logger;
-    }
-
-    public function setWplp(WorkplaceLearningPeriod $learningPeriod)
-    {
-        $this->collector->setWplp($learningPeriod);
     }
 
     /**

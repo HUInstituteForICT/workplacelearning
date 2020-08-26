@@ -8,7 +8,6 @@ use App\Analysis\Producing\ProducingAnalysis;
 use App\Analysis\Producing\ProducingAnalysisCollector;
 use App\Cohort;
 use App\Http\Controllers\ProducingAnalysisController;
-use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\CurrentPeriodResolver;
 use App\Tips\Services\ApplicableTipFetcher;
 use App\Tips\Services\TipPicker;
@@ -39,7 +38,7 @@ class ProducingAnalysisControllerTest extends TestCase
         $analysisCollector = $this->createMock(ProducingAnalysisCollector::class);
         $analysisCollector->expects(self::once())->method('getFullWorkingDays')->with('all', 'all')->willReturn(1);
 
-        $actingAnalysisController = new ProducingAnalysisController($periodResolver, $redirector, $this->createMock(SavedLearningItemRepository::class));
+        $actingAnalysisController = new ProducingAnalysisController($periodResolver, $redirector);
 
         $actingAnalysisController->showChoiceScreen($analysisCollector);
         $actingAnalysisController->showChoiceScreen($analysisCollector);
@@ -68,7 +67,7 @@ class ProducingAnalysisControllerTest extends TestCase
         $producingAnalysis = $this->createMock(ProducingAnalysis::class);
         $producingAnalysis->expects(self::once())->method('buildData')->with('all', 'all');
 
-        $actingAnalysisController = new ProducingAnalysisController($periodResolver, $redirector, $this->createMock(SavedLearningItemRepository::class));
+        $actingAnalysisController = new ProducingAnalysisController($periodResolver, $redirector);
 
         $actingAnalysisController->showDetail('all', 'all', $applicableTipFetcher, $tipPicker, $producingAnalysis);
     }

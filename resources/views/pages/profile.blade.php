@@ -45,12 +45,6 @@
                     {!! Form::label('language', __('elements.profile.labels.language'), ['class' => 'control-label']) !!}
                     {!! Form::select('locale', $locales, Auth::user()->locale, ['class' => 'form-control'] )!!}
                 </div>
-
-                <div class="form-group">
-                    {!! Form::label('digest_period', __('elements.profile.labels.digest_period'), ['class'=> 'control-label']) !!}
-                    {!! Form::select('digest_period', $digestPeriods, Auth::user()->digest_period, ['class' => 'form-control']) !!}
-                </div>
-
                 <input type="submit" class="btn btn-info btn-block"
                        value="{{ __('elements.profile.btnsave') }}"/>
 

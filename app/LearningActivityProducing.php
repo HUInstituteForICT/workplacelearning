@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App;
 
 use App\Events\LearningActivityProducingCreated;
-use App\Interfaces\Bookmarkable;
 use App\Interfaces\LearningActivityInterface;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -60,7 +58,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningActivityProducing query()
  */
-class LearningActivityProducing extends Model implements LearningActivityInterface, Bookmarkable
+class LearningActivityProducing extends Model implements LearningActivityInterface
 {
     // Override the table used for the User Model
     public $timestamps = false;
@@ -170,27 +168,5 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
     {
         return $this->date->greaterThanOrEqualTo($this->workplaceLearningPeriod->startdate)
             && $this->date->lessThanOrEqualTo($this->workplaceLearningPeriod->enddate);
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function getDate(): DateTime
-    {
-        return $this->date->toDateTime();
-    }
-
-    public function bookmark(): SavedLearningItem
-    {
-        $savedLearningItem = new SavedLearningItem();
-        $savedLearningItem->category = SavedLearningItem::CATEGORY_LAP;
-        $savedLearningItem->item()->associate($this);
-        $savedLearningItem->student()->associate($this->workplaceLearningPeriod->student);
-        $savedLearningItem->created_at = date('Y-m-d H:i:s');
-        $savedLearningItem->updated_at = date('Y-m-d H:i:s');
-
-        return $savedLearningItem;
     }
 }

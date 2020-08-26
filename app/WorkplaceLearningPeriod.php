@@ -9,40 +9,35 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Exceptions\UnlinkedInternshipException;
-use App\Interfaces\LearningActivityInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\WorkplaceLearningPeriod.
  *
- * @property int $wplp_id
- * @property Cohort $cohort
- * @property int $student_id
- * @property Student $student
- * @property int $wp_id
- * @property \DateTime $startdate
- * @property \DateTime $enddate
- * @property int $nrofdays
- * @property string $description
- * @property int $cohort_id
- * @property float $hours_per_day
- * @property Collection $chains
- * @property Workplace $workplace
- * @property int $is_in_analytics
- * @property Student|null $teacher
- * @property \Illuminate\Database\Eloquent\Collection|\App\Category[] $categories
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[] $learningActivityActing
+ * @property int                                                                       $wplp_id
+ * @property Cohort                                                                    $cohort
+ * @property int                                                                       $student_id
+ * @property Student                                                                   $student
+ * @property int                                                                       $wp_id
+ * @property \DateTime                                                                 $startdate
+ * @property \DateTime                                                                 $enddate
+ * @property int                                                                       $nrofdays
+ * @property string                                                                    $description
+ * @property int                                                                       $cohort_id
+ * @property float                                                                     $hours_per_day
+ * @property Collection                                                                $chains
+ * @property Workplace                                                                 $workplace
+ * @property int                                                                       $is_in_analytics
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Category[]                  $categories
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[]    $learningActivityActing
  * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningGoal[] $learningGoals
- * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[] $resourceMaterial
- * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[] $resourcePerson
- * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[] $timeslot
- * @property int $teacher_id
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningGoal[]              $learningGoals
+ * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[]          $resourceMaterial
+ * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[]            $resourcePerson
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Timeslot[]                  $timeslot
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\WorkplaceLearningPeriod whereDescription($value)
@@ -102,21 +97,9 @@ class WorkplaceLearningPeriod extends Model
         return $this->belongsTo(Student::class, 'student_id', 'student_id');
     }
 
-    /**
-     * @throws UnlinkedInternshipException
-     */
-    public function teacher(): HasOne
+    public function teacher(): BelongsTo
     {
-        if ($this->hasTeacher()) {
-            return $this->HasOne(Student::class, 'student_id', 'teacher_id');
-        }
-
-        throw new UnlinkedInternshipException();
-    }
-
-    public function hasTeacher(): bool
-    {
-        return $this->teacher_id !== null;
+        return $this->belongsTo(Student::class, 'teacher_id', 'student_id');
     }
 
     public function workplace(): BelongsTo
@@ -177,8 +160,10 @@ class WorkplaceLearningPeriod extends Model
         switch ($this->student->educationProgram->eptype_id) {
             case 2:
                 return $this->getLastActivityProducing($count, $offset);
+                break;
             case 1:
                 return $this->getLastActivityActing($count, $offset);
+                break;
             default:
                 return collect([]);
         }
@@ -302,26 +287,5 @@ class WorkplaceLearningPeriod extends Model
     public function hasActivities(): bool
     {
         return $this->learningActivityActing()->count() > 0 || $this->learningActivityProducing()->count() > 0;
-    }
-
-    public function daysSinceLastActivity(): int
-    {
-        /** @var Collection<LearningActivityInterface> $lastActivity */
-        $lastActivities = $this->getLastActivity(1);
-
-        // we treat no activities as 0, as we only act upon high numbers
-        if($lastActivities->isEmpty()) {
-            return 0;
-        }
-
-        /** @var LearningActivityInterface $lastActivity */
-        $lastActivity = $lastActivities->first();
-
-        $diff = (new \DateTime())->diff($lastActivity->getDate());
-        if(!$diff->invert) {
-            return 0;
-        }
-
-        return $diff->days;
     }
 }

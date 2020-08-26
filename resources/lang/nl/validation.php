@@ -12,7 +12,7 @@ return array(
     'alpha_dash'      => ':attribute mag alleen letters, nummers, and strepen bevatten.',
     'alpha_num'       => ':attribute mag alleen letters en nummers bevatten.',
     'array'           => ':attribute moet een array zijn.',
-    'before'          => ':attribute moet een datum zijn eerder dan morgen',
+    'before'          => ':attribute moet een datum zijn eerder dan :date.',
     'before_or_equal' => ':attribute moet een datum zijn voor of gelijk aan :date.',
     'between'         => array(
     'numeric' => ':attribute moet tussen :min en :max liggen.',

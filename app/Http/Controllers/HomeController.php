@@ -9,7 +9,6 @@ use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\CurrentUserResolver;
-use App\Tips\EvaluatedTip;
 use App\Tips\EvaluatedTipInterface;
 use App\Tips\Services\ApplicableTipFetcher;
 use Illuminate\Contracts\View\View;
@@ -22,7 +21,6 @@ class HomeController extends Controller
      * @var Redirector
      */
     private $redirector;
-
     /**
      * @var CurrentUserResolver
      */
@@ -41,20 +39,14 @@ class HomeController extends Controller
     }
 
     /* Placeholder Templates */
-    public function showProducingTemplate(
-        ApplicableTipFetcher $applicableTipFetcher,
-        LikeRepository $likeRepository,
-        SavedLearningItemRepository $savedLearningItemRepository
-    ) {
+    public function showProducingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, SavedLearningItemRepository $savedLearningItemRepository)
+    {
         $student = $this->currentUserResolver->getCurrentUser();
 
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
             $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
-            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use (
-                $student,
-                $likeRepository
-            ): void {
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
                 $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
             });
 
@@ -67,29 +59,20 @@ class HomeController extends Controller
 
         return view('pages.producing.home', [
             'evaluatedTip' => $evaluatedTip ?? null,
-            'itemExists'   => $itemExists ?? false,
+            'itemExists' => $itemExists ?? false
         ]);
     }
 
-    public function showActingTemplate(
-        ApplicableTipFetcher $applicableTipFetcher,
-        LikeRepository $likeRepository,
-        SavedLearningItemRepository $savedLearningItemRepository
-    ) {
+    public function showActingTemplate(ApplicableTipFetcher $applicableTipFetcher, LikeRepository $likeRepository, SavedLearningItemRepository $savedLearningItemRepository)
+    {
         $student = $this->currentUserResolver->getCurrentUser();
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
-            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort))
-                ->filter(static function (EvaluatedTip $evaluatedTip) use ($student): bool {
-                    return !$evaluatedTip->getTip()->dislikedByStudent($student);
-                })
-                ->each(function (EvaluatedTipInterface $evaluatedTip) use (
-                    $student,
-                    $likeRepository
-                ): void {
-                    $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
-                });
+            $applicableEvaluatedTips = collect($applicableTipFetcher->fetchForCohort($student->getCurrentWorkplaceLearningPeriod()->cohort));
 
-            /** @var EvaluatedTip|null $evaluatedTip */
+            $applicableEvaluatedTips->each(function (EvaluatedTipInterface $evaluatedTip) use ($student, $likeRepository): void {
+                $likeRepository->loadForTipByStudent($evaluatedTip->getTip(), $student);
+            });
+
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
             if ($evaluatedTip) {
                 $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id,
@@ -99,7 +82,7 @@ class HomeController extends Controller
 
         return view('pages.acting.home', [
             'evaluatedTip' => $evaluatedTip ?? null,
-            'itemExists'   => $itemExists ?? false,
+            'itemExists' => $itemExists ?? false
         ]);
     }
 

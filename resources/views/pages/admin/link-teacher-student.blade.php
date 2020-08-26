@@ -34,7 +34,7 @@
                                 <?php
                                 use App\Student;
                                 /** @var Student $teacher */ ?>
-                                @foreach(array_merge($teachers,$admins) as $teacher)
+                                @foreach($teachers as $teacher)
                                     <tr>
                                         <td>{{ $teacher->firstname }}</td>
                                         <td>{{ $teacher->lastname }}</td>
@@ -60,7 +60,7 @@
   <!-- Modal for linking-->
   <div class="modal fade" id="Linking-Modal" role="dialog">
     <div class="modal-dialog">
-
+    
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -112,7 +112,7 @@
                 </div>
                 <div class="panel-body">
                     <select id="selectWPLP" class="form-control" name="wplp">
-                        <option>{{ __('linking.kies-stage') }}</option>
+                        <option>{{ __('linking.kies-stage') }}</option> 
                     </select>
                 </div>
             </div>
@@ -127,41 +127,41 @@
             </div>
         </div>
 
-
+        
          {!! Form::open(array(
             'url' =>  route('update-teacher-for-workplacelearningperiod')))
             !!}
             <div class="form-group">
                 <input id='wplp' type='text' name='wplp_id' class="form-control">
             </div>
-
+                          
             <div class="form-group">
                 <input type='text' name='teacher_id' id="teacher_id" class="form-control">
             </div>
-
+            
 
         <div class="modal-footer">
             {{ Form::submit('Koppelen', array('class' => 'btn btn-info', 'id' => 'coupleButton')) }}
             {{ Form::close() }}
         </div>
       </div>
-
+      
     </div>
   </div>
-
+  
 </div>
 
 <!-- Modal for CSV-->
 <div class="modal fade" id="CSV-Modal" role="dialog">
     <div class="modal-dialog">
-
+    
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">CSV uploaden</h4>
 
-
+         
         <div class="modal-body">
             {!! Form::open(array('url' =>  route('update-teacher-for-workplacelearningperiod-csv'),
             'files' => true,'enctype'=>'multipart/form-data')) !!}
@@ -177,10 +177,10 @@
 
 
       </div>
-
+      
     </div>
   </div>
-
+  
 </div>
 
 @include('js.linking')

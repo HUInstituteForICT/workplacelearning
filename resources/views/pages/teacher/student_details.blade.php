@@ -14,181 +14,50 @@ use App\Student;use App\Workplace;
 
     <div class="row">
         <!-- Profile Info -->
-        <div class="col-md-4">
-            @card
-            <!-- Icon & name -->
-                <div class="row">
-                    <div class="col-md-4">
-                        <span class="glyphicon glyphicon-user user-icon" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-md-8">
-                        <h1>{{ $student->firstname }} {{ $student->lastname }} </p>
-                        <h3>{{ $workplace->wp_name }}</h3>
-                    </div>
-                </div>
-                <hr>
-
-            <!-- Period -->
-                <div class="row">
-                    <div class="col-md-2">
-                        <span class="glyphicon glyphicon-calendar calendar-icon" aria-hidden="true"></span>
-                    </div>
-
-                    <div class="col-md-8">
-                        <p>{{date('d-m-Y', strtotime($workplace->workplaceLearningPeriod->startdate))}}   -   {{date('d-m-Y', strtotime($workplace->workplaceLearningPeriod->enddate))}}</p>
-                        <!-- Progress-bar -->
-                        <div class="progress">
-                                <!-- $numdays is number of valid full working days, aantaluren is the goal number of internship *days* -->
-                                <div class="progress-bar progress-bar-success" role="progressbar"
-                                    style="width:{{ min(round(($numdays/$learningperiod->nrofdays)*100,1),100) }}%">
-                                    @if($numdays >= ($learningperiod->nrofdays / 2))
-                                        {{ $numdays.' / '.($learningperiod->nrofdays) }} {{ __('elements.analysis.days') }}
-                                        ( {{ round(($numdays/$learningperiod->nrofdays)*100,1) }}%)
-                                    @endif
-                                </div>
-
-                                <div class="progress-bar" role="progressbar"
-                                    style="width:{{ min((100-round(($numdays/$learningperiod->nrofdays)*100,1)), 100) }}%">
-                                    @if($numdays < ($learningperiod->nrofdays / 2))
-                                        {{ $numdays.' / '.$learningperiod->nrofdays }} {{ __('elements.analysis.days') }}
-                                        ( {{ round(($numdays/$learningperiod->nrofdays)*100,1) }}
-                                        %)
-                                    @endif
-                                </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-
-            <!-- Contact information -->
-            <h4>{{ __('dashboard.contact-informatie') }}</h4>
-            <h4 class="label-information">{{ __('elements.registration.labels.email') }}</h4>
-            <p>{{ $student->email }}</p>
-            <h4 class="label-information">{{ __('elements.registration.labels.phone') }}</h4>
-            <p>{{ $student->phonenr }}</p>
-                
-            @endcard
-        </div>
-
-        <!-- folders -->
         <div class="col-md-8">
-            @if(count($sharedFolders) === 0)
-                <div class="custom-alert alert alert-info" role="alert">{{ __('folder.nothing-shared') }}</div>
-            @else
-            @card
-                @foreach($sharedFolders as $folder)
-                    <div class="panel-group">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                <a data-toggle="collapse" href="#{{$folder->folder_id}}">{{ $folder->title }}</a>
-                                @if (!$folder->teacherInteracted())
-                                    <span class="folder-status label label-info">{{ __('folder.not-responded') }}</span>
-                                @endif
-                                <div class="clearfix"></div>
-                                <p class="sub-title-light">{{ count($folder->savedLearningItems)}} {{ __('folder.items') }}</p>
-                                <div class="bullet">&#8226;</div>
-                                <p class="sub-title-light">{{ count($folder->folderComments)}} {{ __('folder.comments') }}</p>    
-                                </h4>
-                            </div>
-                            <div id="{{$folder->folder_id}}" class="panel-collapse collapse">
 
-                            {{-- folder basic info --}}
-                            <section class="section folder-info">
-                                <p class="sub-title-light">{{ __('folder.created-on') }} {{ $folder->created_at->toFormattedDateString() }}</p>
-                                <br>
-                                {{ $folder->description }}
-                            </section>
-                            
-                            {{-- saved learning items --}}
-                            @if (count($folder->savedLearningItems))
-                                <hr>
-                                <section class="section">
-                                    <h5>{{ __('folder.added-items') }} <span class="badge">{{ count($folder->savedLearningItems)}}</span></h5>
-                                    @foreach($folder->savedLearningItems as $item)
-                                        @if($item->category === 'tip')
-                                            <div class="alert" style="background-color: #00A1E2; color: white; margin-left:2px; margin-bottom: 10px"
-                                                role="alert">
-                                                <h4 class="tip-title">{{ __('tips.personal-tip') }}</h4>
-                                                @if (in_array($item->item_id, array_keys($evaluatedTips)))
-                                                    <p>{{$evaluatedTips[$item->item_id]->getTipText()}}</p>
-                                                @else
-                                                    <p>{{ __('saved_learning_items.tip-not-found') }}</p>
-                                                @endif
-                                            </div>
-                                
-                                        @elseif ($item->category === 'lap' or $item->category === 'laa')
-                                                    <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
-                                                        <h4>Activiteit</h4>
-                                                        <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
-                                                        <!-- Acting -->
-                                                        @if($student->educationProgram->educationprogramType->isActing())
-                                                            <span class="glyphicon glyphicon-tasks activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
-                                                            <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
-                                                        @endif
-                                                    <!-- Producing -->
-                                                        @if($student->educationProgram->educationprogramType->isProducing())
-                                                            <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
-                                                            <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
-                                                        @endif
-                                                    <!-- Both -->
-                                                         @if($activities[$item->item_id]->res_person_id === null) 
-                                                            <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>Alleen
-                                                        @else
-                                                        <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$activities[$item->item_id]->res_person_id]->person_label}}
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                    @endforeach
-                                </section>
-                            @endif
-                            
-                            {{-- comments --}}
-                            @if (count($folder->folderComments))
-                                <hr>
-                                <section class="section comment-section">
-                                    <h5>{{ __('folder.comments') }} <span class="badge">{{ count($folder->folderComments)}}</span></h5>
-                                    @foreach ($folder->folderComments as $comment)
-                                        @if ($comment->author->isStudent())
-                                            <div class="comment student-comment">
-                                                <p class="sub-title-light"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{date('H:i', strtotime($comment->created_at))}}</p>
-                                                <p class="comment-date sub-title-light">{{ $comment->created_at->toFormattedDateString() }}</p>
-                                                <p class="comment-author">{{ $comment->author->firstname }} {{ $comment->author->lastname }}</p>
-                                                <p class="card-text">{{ $comment->text }}</p>
-                                            </div>
-                                        @else
-                                            <div class="comment teacher-comment">
-                                                <p class="sub-title-light"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{date('H:i', strtotime($comment->created_at))}}</p>
-                                                <p class="comment-date sub-title-light">{{ $comment->created_at->toFormattedDateString() }}</p>
-                                                <p class="comment-author teacher">{{ $comment->author->firstname }} {{ $comment->author->lastname }}</p>
-                                                <p class="card-text">{{ $comment->text }}</p>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                </section>
-                            @endif
+            <div class="panel panel-default">
+                <div class="panel-body no-padding">
+                    <div class="card-header"> {{ __('general.student-details') }} </div>
 
-                            <div class="panel-footer">
-                                {!! Form::open(array(
-                                'url' =>  route('folder.addComment')))
-                                !!}
-                                <div class="form-group">
-                                    <input type='text' value="{{$folder->folder_id}}" name='folder_id' class="form-control folder_id">
-                                </div>
-                                <div class="form-group">
-                                    <textarea placeholder="Reageer hier op de student" name='folder_comment' class="form-control folder_comment" maxlength="255"></textarea>
-                                </div>
-                                {{ Form::submit('Versturen', array('class' => 'right btn btn-primary sendComment')) }}
-                                {{ Form::close() }}
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ $student->studentnr }}</p>
+                        <h3 class="card-text">
+                            <strong>{{ $student->firstname }} {{ $student->lastname }}</strong><br />
+                        </h3>
+                        <p class="card-text">{{ $student->email }}</p>
+                        <p class="card-text">{{ $student->phonenr }}</p>
                     </div>
-                @endforeach
-            @endcard
-            @endif
+                </div>
+            </div>
+
         </div>
+
+        <!-- Stage Info -->
+        <div class="col-md-4">
+            <div id="alert" class="panel panel-default">
+                <div class="panel-body no-padding">
+                    <?php
+                    /** @var Workplace $workplace */
+                    ?>
+                    <div class="card-body">
+                        <h3 class="card-text">
+                            <strong>{{ $workplace->workplaceLearningPeriod->startdate->toFormattedDateString()}} - {{ $workplace->workplaceLearningPeriod->enddate->toFormattedDateString() }}</strong>
+                        </h3>
+                        <p class="card-text">{{ $workplace->wp_name }}</p>
+                        <p class="card-text">{{ $workplace->street }} {{ $workplace->housenr }}, {{ $workplace->postalcode }} {{ $workplace->town }}, {{ $workplace->country }}</p><br />
+                        <p class="card-text"><strong>Contactperson </strong><br /></p>
+                        <p class="card-text">{{ $workplace->contact_name }}</p>
+                        <p class="card-text">{{ $workplace->contact_email }}</p>
+                        <p class="card-text">{{ $workplace->contact_phone }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <hr>
 
 </div>
 @stop
