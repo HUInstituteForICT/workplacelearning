@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
+use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\CurrentPeriodResolver;
 use App\Tips\Services\ApplicableTipFetcher;
 use App\Tips\Services\TipPicker;
@@ -24,17 +25,22 @@ class ActingAnalysisController
      * @var CurrentPeriodResolver
      */
     private $currentPeriodResolver;
+
     /**
      * @var Redirector
      */
     private $redirector;
 
+    private $savedLearningItemRepository;
+
     public function __construct(
         CurrentPeriodResolver $currentPeriodResolver,
-        Redirector $redirector
+        Redirector $redirector,
+        SavedLearningItemRepository $savedLearningItemRepository
     ) {
         $this->currentPeriodResolver = $currentPeriodResolver;
         $this->redirector = $redirector;
+        $this->savedLearningItemRepository = $savedLearningItemRepository;
     }
 
     public function showChoiceScreen()
@@ -84,9 +90,17 @@ class ActingAnalysisController
         $evaluatedTips = $tipPicker->pick($applicableEvaluatedTips, 3);
         $tipPicker->markTipsViewed($evaluatedTips);
 
+
+        $savedTips = [];
+        foreach ($evaluatedTips as $tip) {
+            $savedTips[$tip->getTip()->id] = $this->savedLearningItemRepository->itemExists('tip', $tip->getTip()->id,
+                $period->student->student_id);
+        }
+
         return view('pages.acting.analysis.detail', [
             'evaluatedTips'  => $evaluatedTips,
             'actingAnalysis' => $analysis,
+            'savedTips'      => $savedTips,
         ]);
     }
 }
