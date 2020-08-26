@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Exceptions\UnlinkedInternshipException;
 use App\Student;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -19,15 +18,9 @@ class StudentPolicy
     public function view(Student $teacher, Student $student): bool
     {
         foreach ($student->workplaceLearningPeriods as $wplp) {
-            try {
-                /** @throws UnlinkedInternshipException */
-                if ($teacher->is($wplp->teacher)) {
-                    return true;
-                }
-            } catch (UnlinkedInternshipException $exception) {
-                continue;
+            if ($teacher->is($wplp->teacher)) {
+                return true;
             }
-
         }
 
         return false;

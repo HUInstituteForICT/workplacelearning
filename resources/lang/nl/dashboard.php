@@ -59,6 +59,5 @@ return array(
     'copy-descriptions'=> 'Kopieer omschrijvingen',
     'copy-descriptions-success'=> 'De omschrijvingen zijn gekopieerd!',
     'copy-descriptions-error'=> 'Het is niet gelukt de omschrijvingen te kopiëren, probeer het met een andere browser.',
-    'copy-descriptions-title' => 'Kopieer de omschrijvingen van deze grafiek met tabs als scheidingsteken.',
-    'contact-informatie' => 'Contactgegevens'
+    'copy-descriptions-title' => 'Kopieer de omschrijvingen van deze grafiek met tabs als scheidingsteken.'
 );

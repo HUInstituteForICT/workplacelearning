@@ -20,5 +20,4 @@ return array(
   ),
   'goodluck' => 'Veel succes en plezier tijdens jouw leren op de werkplek!',
   'tips' => 'Heb je tips of vragen? Geef ze aan ons door!',
-
 );

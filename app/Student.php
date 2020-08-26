@@ -67,7 +67,6 @@ use Kyslik\ColumnSortable\Sortable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereIsRegisteredThroughCanvas($value)
  *
  * @property string|null $email_verified_at
- * @property string digest_period
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Student whereEmailVerifiedAt($value)
  */
@@ -77,16 +76,7 @@ class Student extends Authenticatable implements MustVerifyEmail
     use CanResetPassword;
     use Sortable;
 
-    public const DAILY = 'daily';
-    public const WEEKLY = 'weekly';
-    public const INSTANTLY = 'instantly';
-
-    public const DIGEST_PERIODS = [self::DAILY, self::WEEKLY, self::INSTANTLY];
-
-    public const STUDENT = 0;
-    public const TEACHER = 1;
-    public const ADMIN = 2;
-
+    // Override the table used for the User Model
     public static $locales = [
         'nl' => 'Nederlands',
         'en' => 'English',
@@ -226,22 +216,6 @@ class Student extends Authenticatable implements MustVerifyEmail
         return $this->userSettings[$label];
     }
 
-    public function folders(): HasMany
-    {
-        return $this->hasMany(Folder::class, 'student_id', 'student_id');
-    }
-
-    public function getSharedFolders()
-    {
-        $sharedFolders = $this->folders->filter(function (Folder $folder) {
-            return $folder->isShared();
-        })->sortBy(function($folder) {
-            return $folder->teacherInteracted();
-        });
-
-        return $sharedFolders;
-    }
-
     public function usersettings(): HasMany
     {
         return $this->hasMany(UserSetting::class, 'student_id', 'student_id');
@@ -351,32 +325,5 @@ class Student extends Authenticatable implements MustVerifyEmail
             'shortReflection' => $this->getUserSetting('shortReflection') ? (bool) $this->getUserSetting('shortReflection')->setting_value : true,
             'fullReflection'  => $this->getUserSetting('fullReflection') ? (bool) $this->getUserSetting('fullReflection')->setting_value : true,
         ];
-    }
-
-    public function priority()
-    {
-        $now = Carbon::now();
-        $wplp = $this->getCurrentWorkplaceLearningPeriod();
-        $lastActivity = $wplp->getLastActivity(1);
-        $lastActivityDate = $lastActivity->isEmpty() ? $wplp->startdate : $lastActivity->first()->date;
-
-        $countDaysFromLastActivity = $wplp->startdate->gt($now) ? 0 : $lastActivityDate->diffInDays($now);
-        $daysFromLastActivity = $wplp->startdate->gt($now) ? '-' : $now->subDays($countDaysFromLastActivity)->diffForHumans();
-
-        // folders that the student has shared but the teacher has not yet responded
-        $sharedFoldersWithoutResponse = $this->getSharedFolders()->filter(function (Folder $folder) {
-            return !$folder->teacherInteracted();
-        });
-
-        return [
-            'countDaysFromLastActivity' => $countDaysFromLastActivity,
-            'daysFromLastActivity' => $daysFromLastActivity,
-            'sharedFoldersWithoutResponse' => $sharedFoldersWithoutResponse
-        ];
-    }
-
-    public function getName(): string
-    {
-        return $this->firstname  . ' ' . $this->lastname;
     }
 }

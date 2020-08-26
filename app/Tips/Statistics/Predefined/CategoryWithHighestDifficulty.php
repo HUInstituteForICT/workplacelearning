@@ -26,7 +26,7 @@ class CategoryWithHighestDifficulty extends BasePredefinedStatistic
         $result = $this->wherePeriod($this->learningPeriod->learningActivityProducing()
             ->selectRaw('category_id, AVG(difficulty_id) as category_difficulty')
             ->groupBy('category_id')
-            ->orderBy('category_difficulty','desc')->limit(1)->getBaseQuery())->first();
+            ->orderBy('category_difficulty')->limit(1)->getBaseQuery())->first();
 
         if ($result !== null && !empty($result->category_id) && !empty($result->category_difficulty)) {
             $category = Category::find($result->category_id);

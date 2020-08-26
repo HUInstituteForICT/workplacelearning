@@ -91,5 +91,4 @@ return array(
     'student' => 'Student',
     'teacher' => 'Teacher',
     'admin' => 'Admin',
-    'today' => 'today',
 );

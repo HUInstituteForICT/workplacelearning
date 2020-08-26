@@ -9,8 +9,6 @@ use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\LearningActivityActing;
 use App\Reflection\Models\ActivityReflection;
 use App\Repository\Eloquent\LearningActivityActingRepository;
-use App\Repository\Eloquent\SavedLearningItemRepository;
-use App\SavedLearningItem;
 use App\Services\AvailableActingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
 use App\Services\EvidenceUploadHandler;
@@ -33,33 +31,24 @@ class ActingActivityController
      * @var CurrentUserResolver
      */
     private $currentUserResolver;
-
     /**
      * @var LearningActivityActingRepository
      */
     private $learningActivityActingRepository;
-
     /**
      * @var Session
      */
     private $session;
 
-    /**
-     * @var SavedLearningItemRepository
-     */
-    private $savedLearningItemRepository;
-
     public function __construct(
         Redirector $redirector,
         CurrentUserResolver $currentUserResolver,
         LearningActivityActingRepository $learningActivityActingRepository,
-        SavedLearningItemRepository $savedLearningItemRepository,
         Session $session
     ) {
         $this->redirector = $redirector;
         $this->currentUserResolver = $currentUserResolver;
         $this->learningActivityActingRepository = $learningActivityActingRepository;
-        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->session = $session;
     }
 
@@ -183,16 +172,6 @@ class ActingActivityController
     public function delete(LearningActivityActing $learningActivityActing): RedirectResponse
     {
         $this->learningActivityActingRepository->delete($learningActivityActing);
-
-        return $this->redirector->route('process-acting');
-    }
-
-    public function save(LearningActivityActing $learningActivityActing, Request $request): RedirectResponse
-    {
-        $savedLearningItem = $learningActivityActing->bookmark();
-        $this->savedLearningItemRepository->save($savedLearningItem);
-
-        $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
 
         return $this->redirector->route('process-acting');
     }

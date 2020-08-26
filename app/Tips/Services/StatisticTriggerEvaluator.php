@@ -10,7 +10,6 @@ use App\Tips\Models\TipCoupledStatistic;
 use App\Tips\StatisticCalculator;
 use App\Tips\Statistics\Resultable;
 use App\Tips\TextParameter;
-use App\WorkplaceLearningPeriod;
 
 class StatisticTriggerEvaluator
 {
@@ -26,26 +25,6 @@ class StatisticTriggerEvaluator
 
     public function evaluate(EvaluatedTip $evaluatedTip): void
     {
-        $tip = $evaluatedTip->getTip();
-        /** @var Resultable[] $tipCoupledStatisticResults */
-        $tipCoupledStatisticResults = [];
-
-        $passes = $tip->coupledStatistics->every(
-            function (TipCoupledStatistic $tipCoupledStatistic) use (&$tipCoupledStatisticResults) {
-                $result = $this->statisticCalculator->calculate($tipCoupledStatistic->statistic);
-                $tipCoupledStatisticResults[$tipCoupledStatistic->id] = $result;
-
-                return $this->doesCoupledStatisticPass($tipCoupledStatistic, $result);
-            }
-        );
-        $this->addParameters($evaluatedTip, $tipCoupledStatisticResults);
-        $evaluatedTip->addEvaluationResult($passes);
-    }
-
-    public function evaluateForWplp(EvaluatedTip $evaluatedTip, WorkplaceLearningPeriod $learningPeriod): void
-    {
-        $this->statisticCalculator->setWplp($learningPeriod);
-
         $tip = $evaluatedTip->getTip();
         /** @var Resultable[] $tipCoupledStatisticResults */
         $tipCoupledStatisticResults = [];
