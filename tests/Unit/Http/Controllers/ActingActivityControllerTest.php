@@ -9,6 +9,7 @@ use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\LearningActivityActing;
 use App\Repository\Eloquent\LearningActivityActingRepository;
+use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\AvailableActingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
 use App\Services\EvidenceUploadHandler;
@@ -46,8 +47,10 @@ class ActingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
+        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
+
         $actingActivityController = new ActingActivityController($redirector, $currentUserResolver,
-            $learningActivityActingRepository, $session);
+            $learningActivityActingRepository, $savedLearningItemRepository,$session);
         $actingActivityController->show($availableActingEntitiesFetcher, $exportBuilder);
     }
 
@@ -58,10 +61,13 @@ class ActingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
+        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
+
         $actingActivityController = new ActingActivityController(
             $this->createMock(Redirector::class),
             $this->createMock(CurrentUserResolver::class),
             $this->createMock(LearningActivityActingRepository::class),
+            $savedLearningItemRepository,
             $session
         );
 
@@ -83,6 +89,7 @@ class ActingActivityControllerTest extends TestCase
             $this->createMock(Redirector::class),
             $this->createMock(CurrentUserResolver::class),
             $this->createMock(LearningActivityActingRepository::class),
+            $this->createMock(SavedLearningItemRepository::class),
             $session
         );
 
@@ -115,6 +122,7 @@ class ActingActivityControllerTest extends TestCase
             $redirector,
             $this->createMock(CurrentUserResolver::class),
             $this->createMock(LearningActivityActingRepository::class),
+            $this->createMock(SavedLearningItemRepository::class),
             $session
         );
 
@@ -147,6 +155,7 @@ class ActingActivityControllerTest extends TestCase
             $redirector,
             $this->createMock(CurrentUserResolver::class),
             $this->createMock(LearningActivityActingRepository::class),
+            $this->createMock(SavedLearningItemRepository::class),
             $session
         );
 
@@ -169,6 +178,7 @@ class ActingActivityControllerTest extends TestCase
             $redirector,
             $this->createMock(CurrentUserResolver::class),
             $learningActivityRepository,
+            $this->createMock(SavedLearningItemRepository::class),
             $session
         );
 

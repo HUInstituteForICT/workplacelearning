@@ -26,6 +26,11 @@ class StatisticValueFetcher
         $this->learningPeriod = $learningPeriod;
     }
 
+    public function setWplp(WorkplaceLearningPeriod $learningPeriod)
+    {
+        $this->learningPeriod = $learningPeriod;
+    }
+
     protected function applyPeriod(Builder $queryBuilder)
     {
         if ($this->year === null || $this->month === null) {

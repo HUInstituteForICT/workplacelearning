@@ -9,6 +9,11 @@ use App\Student;
 
 class ResourcePersonRepository
 {
+    public function all(): array
+    {
+        return ResourcePerson::all()->all();
+    }
+
     public function get(int $id): ResourcePerson
     {
         return (new ResourcePerson())::findOrFail($id);
