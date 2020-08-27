@@ -135,7 +135,7 @@ $config = [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 //        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class,
+
         Collective\Html\HtmlServiceProvider::class,
         Illuminate\Notifications\NotificationServiceProvider::class,
 
@@ -145,12 +145,9 @@ $config = [
         App\Providers\AuthServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-
         App\Providers\EventServiceProvider::class,
-        App\Providers\TelescopeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ValidationServiceProvider::class,
-
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         Spatie\TranslationLoader\TranslationServiceProvider::class,
     ],
@@ -191,7 +188,7 @@ $config = [
         'Mail'         => Illuminate\Support\Facades\Mail::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password'     => Illuminate\Support\Facades\Password::class,
-        'PDF'          => Barryvdh\DomPDF\Facade::class,
+//        'PDF'          => Barryvdh\DomPDF\Facade::class,
         'Queue'        => Illuminate\Support\Facades\Queue::class,
         'Redirect'     => Illuminate\Support\Facades\Redirect::class,
         'Redis'        => Illuminate\Support\Facades\Redis::class,
@@ -208,6 +205,8 @@ $config = [
 ];
 
 if (env('APP_ENV') === 'local' || env('APP_ENV') === 'dev') {
+    $config['providers'][] = Barryvdh\DomPDF\ServiceProvider::class;
+    $config['providers'][] = App\Providers\TelescopeServiceProvider::class;
     $config['providers'][] = Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class;
 //    $config['providers'][] = Barryvdh\TranslationManager\ManagerServiceProvider::class;
 //    $config['providers'][] = Barryvdh\TranslationManager\TranslationServiceProvider::class;

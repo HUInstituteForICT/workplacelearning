@@ -262,7 +262,7 @@ class ProducingAnalysisCollector
             ->select(DB::raw('category_label as name, (AVG(learningactivityproducing.difficulty_id)*3.33) as difficulty'))
             ->join('category', 'learningactivityproducing.category_id', '=', 'category.category_id')
             ->where('learningactivityproducing.wplp_id', '=',
-                Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id);
+                Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)->groupBy('category_label');
         $result = $this->limitCollectionByDate($result, $year, $month);
         $result = $result->groupBy('learningactivityproducing.category_id')->orderBy('difficulty', 'desc')->get();
 
@@ -284,7 +284,7 @@ class ProducingAnalysisCollector
             ->join('resourceperson', 'learningactivityproducing.res_person_id', '=', 'resourceperson.rp_id')
             ->where('learningactivityproducing.wplp_id', '=',
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id)
-            ->where('difficulty_id', '=', 3);
+            ->where('difficulty_id', '=', 3)->groupBy('person_label');
         $result = $this->limitCollectionByDate($result, $year, $month);
 
         $result = $result->groupBy('learningactivityproducing.res_person_id')->orderBy('difficult_activities', 'asc')
@@ -310,7 +310,7 @@ class ProducingAnalysisCollector
                 'learningactivityproducing.wplp_id',
                 '=',
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id
-            );
+            )->groupBy('category_label');
         $result = $this->limitCollectionByDate($result, $year, $month);
         $result = $result->groupBy('learningactivityproducing.category_id')->orderBy('count', 'desc')->first();
 
@@ -383,7 +383,7 @@ class ProducingAnalysisCollector
                 'learningactivityproducing.wplp_id',
                 '=',
                 Auth::user()->getCurrentWorkplaceLearningPeriod()->wplp_id
-            );
+            )->groupBy('category_label');
         $result = $this->limitCollectionByDate($result, $year, $month);
 
         return $result->groupBy('learningactivityproducing.category_id')->get();

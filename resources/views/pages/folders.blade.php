@@ -52,6 +52,9 @@
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-right no-top"
                                             aria-labelledby="dropdownMenuFolder">
+                                            <li><a onclick="$('#selected_folder_id').attr('value', {{ $folder->folder_id }});"
+                                                   data-target="#AddItemsToFolderModel" data-toggle="modal">Items
+                                                    toevoegen</a></li>
                                             <li><a class="color-red"
                                                    href="{{ route('folder.destroy', ['folder' => $folder]) }}"
                                                    onclick="return confirm('{{ __('folder.delete-confirmation') }}')">{{ __('folder.delete-folder') }}</a>
@@ -91,7 +94,7 @@
                                                             <p>{{ __('saved_learning_items.tip-not-found') }}</p>
                                                         @endif
                                                     </div>
-                                                @elseif ($item->category === 'activity')
+                                                @elseif ($item->category === 'laa' or $item->category === 'lap')
                                                     <div class="alert"
                                                          style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2"
                                                          role="alert">
@@ -107,12 +110,17 @@
                                                         @if($student->educationProgram->educationprogramType->isActing())
                                                             <span class="glyphicon glyphicon-tasks activity_icons"
                                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+
+                                                            <br><span class="glyphicon glyphicon-tag activity_icons"
+                                                                  aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                                                         @endif
                                                     <!-- Producing -->
                                                         @if($student->educationProgram->educationprogramType->isProducing())
                                                             <span class="glyphicon glyphicon-time activity_icons"
-                                                                  aria-hidden="true"></span>{{$activities[$item->item_id]->duration}}
-                                                            uur
+                                                                  aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+
+                                                            <br><span class="glyphicon glyphicon-tag activity_icons"
+                                                                  aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                                                         @endif
                                                     <!-- Both -->
                                                         @if($activities[$item->item_id]->res_person_id === null)
@@ -120,10 +128,8 @@
                                                                       aria-hidden="true"></span>Alleen
                                                         @else
                                                             <br><span class="glyphicon glyphicon-user activity_icons"
-                                                                      aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}}
+                                                                      aria-hidden="true"></span>{{$resourcePerson[$activities[$item->item_id]->res_person_id]->person_label}}
                                                         @endif
-                                                        <br><span class="glyphicon glyphicon-tag activity_icons"
-                                                                  aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}}
                                                     </div>
                                                 @endif
                                             @endforeach
@@ -250,7 +256,7 @@
                                             <li>
                                                 <a href="{{ route('folder.stop-sharing-folder', ['folder' => $folder]) }}">{{ __('folder.stop-sharing-folder') }}</a>
                                             </li>
-                                            <li><a onclick="setSelectedFolder({{ $folder }})"
+                                            <li><a onclick="$('#selected_folder_id').attr('value', {{ $folder->folder_id }});"
                                                    data-target="#AddItemsToFolderModel" data-toggle="modal">Items
                                                     toevoegen</a></li>
                                             <li><a class="color-red"
@@ -297,7 +303,7 @@
                                                             <p>{{ __('saved_learning_items.tip-not-found') }}</p>
                                                         @endif
                                                     </div>
-                                                @elseif ($item->category === 'activity')
+                                                @elseif ($item->category === 'laa' or $item->category === 'lap')
                                                     <div class="alert"
                                                          style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2"
                                                          role="alert">
@@ -313,12 +319,17 @@
                                                         @if($student->educationProgram->educationprogramType->isActing())
                                                             <span class="glyphicon glyphicon-tasks activity_icons"
                                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+
+                                                            <br><span class="glyphicon glyphicon-tag activity_icons"
+                                                                  aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                                                         @endif
                                                     <!-- Producing -->
                                                         @if($student->educationProgram->educationprogramType->isProducing())
                                                             <span class="glyphicon glyphicon-time activity_icons"
-                                                                  aria-hidden="true"></span>{{$activities[$item->item_id]->duration}}
-                                                            uur
+                                                                  aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+
+                                                            <br><span class="glyphicon glyphicon-tag activity_icons"
+                                                                  aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                                                         @endif
                                                     <!-- Both -->
                                                         @if($activities[$item->item_id]->res_person_id === null)
@@ -326,10 +337,8 @@
                                                                       aria-hidden="true"></span>Alleen
                                                         @else
                                                             <br><span class="glyphicon glyphicon-user activity_icons"
-                                                                      aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}}
+                                                                      aria-hidden="true"></span>{{$resourcePerson[$activities[$item->item_id]->res_person_id]->person_label}}
                                                         @endif
-                                                        <br><span class="glyphicon glyphicon-tag activity_icons"
-                                                                  aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}}
                                                     </div>
                                                 @endif
                                             @endforeach
@@ -510,7 +519,7 @@
                                     </div>
                                 </div>
                                 @endcard
-                            @elseif ($item->category === 'activity')
+                            @elseif ($item->category === 'laa' or $item->category === 'lap')
                                 @card
                                 <div class="form-group">
                                     <input type="checkbox" name="check_list[]" value="{{$item->sli_id}}"
@@ -526,12 +535,17 @@
                                         @if($student->educationProgram->educationprogramType->isActing())
                                             <span class="glyphicon glyphicon-tasks activity_icons"
                                                   aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+
+                                            <br><span class="glyphicon glyphicon-tag activity_icons"
+                                                  aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                                         @endif
                                     <!-- Producing -->
                                         @if($student->educationProgram->educationprogramType->isProducing())
                                             <span class="glyphicon glyphicon-time activity_icons"
-                                                  aria-hidden="true"></span>{{$activities[$item->item_id]->duration}}
-                                            uur
+                                                  aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+
+											<br><span class="glyphicon glyphicon-tag activity_icons"
+                                                  aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                                         @endif
                                     <!-- Both -->
                                         @if($activities[$item->item_id]->res_person_id === null)
@@ -539,10 +553,8 @@
                                                       aria-hidden="true"></span>Alleen
                                         @else
                                             <br><span class="glyphicon glyphicon-user activity_icons"
-                                                      aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}}
+                                                      aria-hidden="true"></span>{{$resourcePerson[$activities[$item->item_id]->res_person_id]->person_label}}
                                         @endif
-                                        <br><span class="glyphicon glyphicon-tag activity_icons"
-                                                  aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}}
                                     </div>
                                 </div>
                                 @endcard

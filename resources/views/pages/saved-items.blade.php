@@ -47,7 +47,7 @@
                         @endcard
                     @endif
                 <!-- Activities -->
-                    @if ($item->category === 'activity' && in_array($item->item_id, array_keys($activities)))
+                    @if ((($student->educationProgram->educationprogramType->isActing() and $item->category === 'laa') || ($student->educationProgram->educationprogramType->isProducing() and $item->category === 'lap')) && in_array($item->item_id, array_keys($activities)))
                         @card
                         <h4 class="maps">{{date('d-m-Y', strtotime($item->created_at))}}</h4>
                         <div class="alert"
@@ -66,11 +66,17 @@
                             @if($student->educationProgram->educationprogramType->isActing())
                                 <span class="glyphicon glyphicon-tasks activity_icons"
                                       aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+
+                                <br><span class="glyphicon glyphicon-tag activity_icons"
+                                      aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                             @endif
                         <!-- Producing -->
                             @if($student->educationProgram->educationprogramType->isProducing())
                                 <span class="glyphicon glyphicon-time activity_icons"
                                       aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+
+                                <br><span class="glyphicon glyphicon-tag activity_icons"
+                                      aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                             @endif
                         <!-- Both -->
                             @if($activities[$item->item_id]->res_person_id === null)
@@ -78,10 +84,8 @@
                                 Alleen
                             @else
                                 <br><span class="glyphicon glyphicon-user activity_icons"
-                                          aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}}
+                                          aria-hidden="true"></span>{{$resourcePerson[$activities[$item->item_id]->res_person_id]->person_label}}
                             @endif
-                            <br><span class="glyphicon glyphicon-tag activity_icons"
-                                      aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}}
                         </div>
                         @endcard
                     @endif

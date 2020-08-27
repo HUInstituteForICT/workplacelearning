@@ -117,25 +117,26 @@ use App\Student;use App\Workplace;
                                                 @endif
                                             </div>
                                 
-                                        @elseif ($item->category === 'activity')
+                                        @elseif ($item->category === 'lap' or $item->category === 'laa')
                                                     <div class="alert" style="background-color: #FFFFFF; color: 00A1E2; margin-left:2px; margin-bottom: 10px; border: 1px solid #00A1E2" role="alert">
                                                         <h4>Activiteit</h4>
                                                         <p><strong>{{date('d-m-Y', strtotime($activities[$item->item_id]->date))}}</strong>: {{$activities[$item->item_id]->description}}</p>
                                                         <!-- Acting -->
                                                         @if($student->educationProgram->educationprogramType->isActing())
                                                             <span class="glyphicon glyphicon-tasks activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->situation}}
+                                                            <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->timeslot->timeslot_text}}
                                                         @endif
                                                     <!-- Producing -->
                                                         @if($student->educationProgram->educationprogramType->isProducing())
                                                             <span class="glyphicon glyphicon-time activity_icons" aria-hidden="true"></span>{{$activities[$item->item_id]->duration}} uur
+                                                            <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$activities[$item->item_id]->category_id]->category_label}}
                                                         @endif
                                                     <!-- Both -->
                                                          @if($activities[$item->item_id]->res_person_id === null) 
                                                             <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>Alleen
                                                         @else
-                                                        <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$item->item_id]->person_label}} 
+                                                        <br><span class="glyphicon glyphicon-user activity_icons" aria-hidden="true"></span>{{$resourcePerson[$activities[$item->item_id]->res_person_id]->person_label}}
                                                         @endif
-                                                        <br><span class="glyphicon glyphicon-tag activity_icons" aria-hidden="true"></span>{{$categories[$item->item_id]->category_label}} 
                                                     </div>
                                                 @endif
                                     @endforeach

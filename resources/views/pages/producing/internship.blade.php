@@ -20,7 +20,7 @@
 
 
             {!! Form::open(array(
-                'url' => (($period->wplp_id === null) ? route('period-producing-create') : route('period-producing-update', ['id' => $period->wplp_id])),
+                'url' => (($period->wplp_id === null) ? route('period-producing-create') : route('period-producing-update', [$period->wplp_id])),
                 'data-toggle' => 'validator'))
              !!}
             <div class="col-lg-5">
@@ -68,7 +68,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-4 control-label"
-                               for="companyPostalcode">{{ __('elements.profile.internships.companylocation') }}</label>
+                               for="companyPostalcode">{{ __('elements.profile.internships.companypostalcode') }}</label>
                         <div class="col-lg-8">
                             <input name="companyPostalcode" type="text" class="form-control"
                                    placeholder="{{ __('elements.profile.internships.companypostalcode') }}"
@@ -228,7 +228,7 @@
                                 <td>{{ $workplace->wp_name
                             .' ('. date('d-m-Y', strtotime($period->startdate))
                             . ' - ' . date('d-m-Y', strtotime($period->enddate)). ')' }}</td>
-                                <td><input name="cat[{{ $cat->category_id }}][cg_label]"
+                                <td><input class="form-control" name="cat[{{ $cat->category_id }}][cg_label]"
                                            value="{{
                                         old('category['. $cat->category_id .'][cg_label]')
                                         ?: $cat->category_label
@@ -238,7 +238,7 @@
                         @endforeach
                         <tr>
                             <input type="hidden" name="newcat[0][wplp_id]" value="{{ $period->wplp_id }}"/>
-                            <input type="hidden" name="newcat[0][cg_id]" value="-1"/>
+                            <input type="hidden" name="newcat[0][cg_id]" value="0"/>
                             <td>{{ $workplace->wp_name }}
                                 <br/>{{ '('. date('d-m-Y', strtotime($period->startdate)). ' - ' . date('d-m-Y', strtotime($period->enddate)). ')' }}
                             </td>

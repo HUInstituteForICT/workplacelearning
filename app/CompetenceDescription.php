@@ -57,7 +57,7 @@ class CompetenceDescription extends Model
      */
     public function getDownloadUrlAttribute()
     {
-        return route('competence-description', ['id' => $this->id]);
+        return route('competence-description', [$this->id]);
     }
 
     /**

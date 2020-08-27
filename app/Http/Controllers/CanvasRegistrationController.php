@@ -59,7 +59,7 @@ class CanvasRegistrationController extends Controller
             // As user logs in through Canvas no password is necessary, but DB does not allow NULL (User can still set password from profile)
             'gender'                       => '-',
             'email'                        => $canvasData['email'],
-            'userlevel'                    => 0,
+            'userlevel'                    => $canvasData['userlevel'],
             'registrationdate'             => date('Y-m-d H:i:s'),
             'locale'                       => $request->session()->get('locale', 'nl'),
             'canvas_user_id'               => $canvasData['canvasUserId'],

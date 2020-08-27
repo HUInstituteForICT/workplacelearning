@@ -3,11 +3,12 @@ services:
   nginx:
     container_name: wpl_web
     build:
-      context: ./docker/config/
-      dockerfile: nginx
+      context: .
+      dockerfile: ./docker/config/nginx
+    restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:8080"
+      - "443:8443"
     volumes:
       - .:/var/www:cached
     links:
@@ -16,19 +17,21 @@ services:
   php:
     container_name: wpl_php
     build:
-      context: ./docker/config/
-      dockerfile: php
+      context: .
+      dockerfile: ./docker/config/php
+    restart: unless-stopped
     volumes:
       - .:/var/www:cached
     environment:
           XDEBUG_CONFIG: "remote_host=${host_lan_ip}"
           PHP_IDE_CONFIG: "serverName=wpl"
     links:
-      - mailhog
+      - mailcatcher
 
   database:
     container_name: wpl_db
-    image: mysql:5.7
+    image: mariadb:10.4
+    restart: unless-stopped
     volumes:
       - ./docker/database:/var/lib/mysql
     ports:
@@ -39,18 +42,19 @@ services:
       MYSQL_USER: "${DB_USERNAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
 
-  mailhog:
-    image: mailhog/mailhog
+  mailcatcher:
+    container_name: wpl_mailcatcher
+    image: instructure/mailcatcher
+    restart: unless-stopped
     ports:
       - "1025:1025"
-      - "8025:8025"
+      - "1080:8080"
 
   phpmyadmin:
     container_name: wpl_phpmyadmin
     image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
     ports:
       - "8080:80"
     links:
       - database:db
-
-

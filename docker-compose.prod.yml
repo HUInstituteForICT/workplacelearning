@@ -1,0 +1,42 @@
+version: '3'
+services:
+  nginx:
+    container_name: wpl_web
+    build:
+      context: .
+      dockerfile: ./docker/config/nginx-prod
+    restart: unless-stopped
+    ports:
+      - "80:8080"
+      - "443:8443"
+    links:
+        - php
+
+  php:
+    container_name: wpl_php
+    build:
+      context: .
+      dockerfile: ./docker/config/php-prod
+    restart: unless-stopped
+    volumes:
+      - wpldata:/var/www/storage/app
+    links:
+      - database
+
+  database:
+    container_name: wpl_db
+    image: mariadb:10.4
+    restart: unless-stopped
+    volumes:
+      - wpldb:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+
+volumes:
+  wpldata:
+    driver: local
+  wpldb:
+    driver: local
