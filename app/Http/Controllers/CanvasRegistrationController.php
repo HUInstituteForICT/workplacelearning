@@ -67,6 +67,9 @@ class CanvasRegistrationController extends Controller
             'email_verified_at'            => date('Y-m-d H:i:s'),
         ]);
 
+        // Auto verify this account.
+        $student->markEmailAsVerified();
+        
         Auth::login($student);
 
         if ($student->educationProgram->educationprogramType->isActing()) {
