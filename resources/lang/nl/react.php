@@ -66,6 +66,7 @@ return [
     'delete' => 'Verwijderen',
     'cancel' => 'Annuleren',
     'delete-confirm' => 'Weet je zeker dat je deze activiteit wilt verwijderen?',
+    'save-confirm' => 'Weet je zeker dat je deze activiteit wilt opslaan?',
     'statistic' => [
             'create-statistic' => 'Maak nieuwe statistiek aan',
             'select-variable-one' => 'Variabele 1',

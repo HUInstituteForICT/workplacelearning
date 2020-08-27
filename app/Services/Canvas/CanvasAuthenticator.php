@@ -30,7 +30,8 @@ class CanvasAuthenticator
         string $email,
         string $canvasUserId,
         string $firstName,
-        string $lastName
+        string $lastName,
+        int $userlevel
     ): RedirectResponse {
         $student = $this->studentRepository->findByEmailOrCanvasId($email, $canvasUserId);
 
@@ -40,6 +41,7 @@ class CanvasAuthenticator
                 'canvasUserId' => $canvasUserId,
                 'firstName'    => $firstName,
                 'lastName'     => $lastName,
+                'userlevel'     => $userlevel,
             ]);
 
             return $this->redirector->route('canvas-registration');

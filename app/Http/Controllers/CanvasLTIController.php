@@ -36,8 +36,12 @@ class CanvasLTIController
 
         // Roles is a string with commas separating each role
         $roles = $request->get('ext_roles');
-        if (!str_contains($roles, 'urn:lti:instrole:ims/lis/Student')) {
-            return view('auth.canvas.students-only');
+        // If the instructor role is assigned this user account, make it a teacher account (level 1).
+        if (str_contains($roles, 'urn:lti:instrole:ims/lis/Instructor')) {
+            $userlevel = 1;
+        } else {
+        // Assign the student role (level 0).
+        $userlevel = 0;
         }
 
         $email = $request->get('lis_person_contact_email_primary');
@@ -45,6 +49,6 @@ class CanvasLTIController
         $firstName = $request->get('lis_person_name_given');
         $lastName = $request->get('lis_person_name_family');
 
-        return $this->authenticator->authenticate($email, $canvasUserId, $firstName, $lastName);
+        return $this->authenticator->authenticate($email, $canvasUserId, $firstName, $lastName, $userlevel);
     }
 }

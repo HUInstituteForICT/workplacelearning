@@ -24,6 +24,7 @@ class ProfileTest extends TestCase
                     'lastname'   => 'Doe',
                     'email'      => 'john@doe.com',
                     'locale'     => 'nl',
+                    'digest_period' => 'daily'
                 ])
             ->assertRedirect('/profiel')
             ->assertSessionMissing('errors');
