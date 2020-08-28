@@ -19,7 +19,6 @@ class VerifyEmail extends VerifyEmailBase
         return (new MailMessage)
             ->subject('Bevestig uw accountregistratie')
             ->greeting('Beste gebruiker,')
-            -
             ->line(new HtmlString('Er is een account gecre&euml;erd op dit e-mailadres voor de applicatie HU Werkplekleren (&quot;de Stage-App&quot;).'))
             ->line('Klik op de onderstaande knop om het account te activeren en gebruik te maken van HU Werkplekleren.')
             ->action(
