@@ -83,6 +83,8 @@ return array(
     'nl' => 'Dutch',
     'hide' => 'Hide',
     'found-bug' => 'Found a bug?',
+    'privacy' => 'Use of this application is subject to the HU general terms and conditions. More information can be found at ',
+    'privacy-login' => 'By logging in you agree to the HU terms and conditions. More information can be found at ',
     'bug-tell-us' => 'Tell us!',
     'no-student' => 'You don\'t have any student yet.',
     'students' => 'Students',

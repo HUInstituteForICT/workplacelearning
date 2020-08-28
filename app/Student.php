@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kyslik\ColumnSortable\Sortable;
+use App\Notifications\VerifyEmail;
 
 /**
  * App\Student.
@@ -378,5 +379,10 @@ class Student extends Authenticatable implements MustVerifyEmail
     public function getName(): string
     {
         return $this->firstname  . ' ' . $this->lastname;
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail());
     }
 }

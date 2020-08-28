@@ -84,6 +84,8 @@ return array(
     'nl' => 'Nederlands',
     'hide' => 'Sluiten',
     'found-bug' => 'Heb je een bug gevonden?',
+    'privacy' => 'Gebruik van deze applicatie valt onder de algemene voorwaarden van de HU. Meer informatie is te vinden op ',
+    'privacy-login' => 'Door in te loggen ga je akkoord met de algemene voorwaarden van de HU. Meer informatie is te vinden op ',
     'bug-tell-us' => 'Vertel het ons!',
     'no-student' => 'U heeft nog geen student.',
     'students' => 'Studenten',

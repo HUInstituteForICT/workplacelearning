@@ -61,7 +61,13 @@ return [
             'register' => 'Register',
             'reset'    => 'Reset',
         ],
-        'privacyagreement' => 'By registering you agree with our <a href="%s">privacy policy</a>.',
+        'privacyagreement'          => [
+            'word'       => 'consent statement',
+            'header'     => 'I voluntarily consent to the processing of my personal data as described in this ',
+            'bullet1'    => 'For using the application to support the learning and guidance process',
+            'bullet2'    => 'For improving the application based on anonymous usage analysis',
+            'bullet3'    => 'For conducting practice-oriented research into the didactics and technological support of online internship guidance',
+        ],
     ],
     'profile'      => [
         'title'         => 'Profile',

@@ -54,10 +54,10 @@ class RegisterController extends Controller
             'studentnr' => 'required|digits:7|unique:student',
             'firstname' => 'required|max:255|min:3',
             'lastname'  => 'required|max:255|min:3',
-            'gender'    => 'required|in:male,female',
             'email'     => 'required|email|max:255|unique:student',
             'password'  => 'required|min:8|confirmed',
-            'secret'    => 'required|in:ICTstage2016,Stage2017,Stage2018,Stage2019,Stage2020',
+            'secret'    => 'required|in:ICTstage2016,Stage2017,Stage2018,Stage2019,Stage2020,Stage2021',
+            'privacy'   => 'accepted',
         ]);
     }
 
@@ -78,16 +78,15 @@ class RegisterController extends Controller
             'lastname'         => $data['lastname'],
             'ep_id'            => $data['education'],
             'pw_hash'          => bcrypt($data['password']),
-            'gender'           => strtoupper(substr($data['gender'], 0, 1)),
+            'gender'           => '-',
             'email'            => $data['email'],
             'userlevel'        => 0,
             'registrationdate' => date('Y-m-d H:i:s'),
             'locale'           => Session::get('locale', 'nl'),
         ]);
 
-        // todo re-enable once we're on a proper hosting
-        // $student->sendEmailVerificationNotification();
-        $student->markEmailAsVerified();
+
+        $student->sendEmailVerificationNotification();
 
         return $student;
     }

@@ -26,6 +26,9 @@ class OAuth1SignatureBuilder
         ksort($data);
 
         $encodedData = array_map(function ($key, $value) {
+            if ($value == null) {
+                $value = "";
+            };
             return rawurlencode($key).'='.rawurlencode($value);
         }, array_keys($data), $data);
 

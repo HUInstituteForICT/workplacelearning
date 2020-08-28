@@ -38,7 +38,7 @@
         $("#wrapper").toggleClass("toggled");
     });
 </script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
 <script src="/messages.js"></script>
 <script>
     Lang.setLocale('{{ App::getLocale() }}')

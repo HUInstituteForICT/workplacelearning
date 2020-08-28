@@ -55,19 +55,6 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-                                    <label class="col-md-4 control-label">{{ __('elements.registration.labels.gender.text') }}</label>
-
-                                    <div class="col-md-6">
-                                        <label class="radio-inline">
-                                            {{ Form::radio('gender', 'male', ((old('gender') == "male") || empty(old('gender')))) }} {{ __('elements.registration.labels.gender.male') }}
-                                        </label>
-                                        <label class="radio-inline">
-                                            {{ Form::radio('gender', 'female', (old('gender') == "female")) }} {{ __('elements.registration.labels.gender.female') }}
-                                        </label>
-                                    </div>
-                                </div>
-
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label class="col-md-4 control-label">{{ __('elements.registration.labels.email') }}<span class="required"></span></label>
 
@@ -143,7 +130,19 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">
-                                        <p style="font-size: 10px;">{!! str_replace('%s', "/assets/pdf/privacyverklaring.pdf", __('elements.registration.privacyagreement')) !!}</p>
+                                        <p style="font-size: 10px;"><input class="required" name="privacy" type="checkbox" value="1"></input>
+                                        {{ __('elements.registration.privacyagreement.header') }} <a href="/assets/pdf/privacyverklaring.pdf" target="_blank">{{ __('elements.registration.privacyagreement.word') }}</a>:
+                                        <ul>
+                                        <li style="font-size: 10px;">{{ __('elements.registration.privacyagreement.bullet1') }};</li>
+                                        <li style="font-size: 10px;">{{ __('elements.registration.privacyagreement.bullet2') }};</li>
+                                        <li style="font-size: 10px;">{{ __('elements.registration.privacyagreement.bullet3') }}.</li>
+                                        </ul>
+                                        </p>
+                                        @if ($errors->has('privacy'))
+                                            <span class="help-block">
+                                        <strong>{{ $errors->first('privacy') }}</strong>
+                                    </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form-group">

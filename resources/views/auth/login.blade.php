@@ -43,6 +43,7 @@
                     </div>
 
                 </form>
+
                 <div class="row">
                     <div class="col-md-2 col-lg-offset-3">
                     {{ Form::open(["url"=>route('localeswitcher'), "id" => "localeSwitcherForm"]) }}
@@ -55,6 +56,13 @@
                     </script>
                     {{ Form::close() }}
                     </div>
+                </div>
+
+<br />
+                <div class="row">
+                <div class="col-lg-12">
+                <p style="font-size: 10px;">{{ __('general.privacy-login') }} <a href="https://www.hu.nl/privacy">https://www.hu.nl/privacy</a>.</p>
+                </div>
                 </div>
                 @if(count($errors) > 0 || session()->has('success'))
                     <div class="row">

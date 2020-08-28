@@ -35,9 +35,9 @@
 
         &copy; {{ date('Y') }} - HU University of Applied Sciences
         <br/> Icons courtesy of <a href="http://famfamfam.com">FamFamFam.com</a>
+
+        <br/><br/>{{ __('general.privacy') }} <a href="https://www.hu.nl/privacy">https://www.hu.nl/privacy</a>.
     </div>
 </div>
-
-
 
 

@@ -28,7 +28,7 @@ return [
         'success' => 'Succes',
     ],
     'registration' => [
-        'title'            => 'Account Registratie',
+        'title'            => 'Accountregistratie',
         'labels'           => [
             'studentnr'        => 'Studentnummer',
             'firstname'        => 'Voornaam',
@@ -61,7 +61,13 @@ return [
             'register' => 'Registreer',
             'reset'    => 'Reset',
         ],
-        'privacyagreement' => 'Door te registreren voor deze applicatie ga je akkoord met de <a href="%s">privacyverklaring</a>.',
+        'privacyagreement'          => [
+            'word'       => 'toestemmingsverklaring',
+            'header'     => 'Ik stem geheel vrijwillig in met de verwerking van mijn persoonsgegevens zoals beschreven in deze ',
+            'bullet1'    => 'Voor het gebruik van de applicatie ter ondersteuning van het leer- en begeleidingsproces',
+            'bullet2'    => 'Voor het verbeteren van de applicatie op basis van anonieme gebruiksanalyse',
+            'bullet3'    => 'Voor het uitvoeren van praktijkgericht onderzoek naar de didactiek en technologische ondersteuning van online stagebegeleiding',            
+        ],
     ],
     'profile'      => [
         'title'         => 'Profiel',

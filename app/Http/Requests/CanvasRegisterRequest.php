@@ -23,6 +23,7 @@ class CanvasRegisterRequest extends FormRequest
                     $query->where('disabled', '=', 0);
                 }),
             ],
+            'privacy' => 'accepted',
         ];
     }
 }

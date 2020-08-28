@@ -17,6 +17,7 @@
                                     {{ csrf_field() }}
 
                                     <div>{{ __('Je Werkplekleren account is bijna aangemaakt, het is enkel nog nodig om je studentennummer en opleiding door te geven.') }}</div>
+                                    <br/>
 
                                     <div class="form-group{{ $errors->has('studentnummer') ? ' has-error' : '' }}">
                                         <label class="control-label">{{ __('elements.registration.labels.studentnr') }}
@@ -54,6 +55,22 @@
 
 
                                     </div>
+
+                                    <div class="form-group">
+                                        <p style="font-size: 10px;"><input class="required" name="privacy" type="checkbox" value="1"></input>
+                                        {{ __('elements.registration.privacyagreement.header') }} <a href="/assets/pdf/privacyverklaring.pdf" target="_blank">{{ __('elements.registration.privacyagreement.word') }}</a>:
+                                        <ul>
+                                        <li style="font-size: 10px;">{{ __('elements.registration.privacyagreement.bullet1') }};</li>
+                                        <li style="font-size: 10px;">{{ __('elements.registration.privacyagreement.bullet2') }};</li>
+                                        <li style="font-size: 10px;">{{ __('elements.registration.privacyagreement.bullet3') }}.</li>
+                                        </ul>
+                                        </p>
+                                        @if ($errors->has('privacy'))
+                                            <span class="help-block">
+                                        <strong>{{ $errors->first('privacy') }}</strong>
+                                    </span>
+                                        @endif
+                                </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary" id="registerButton">
