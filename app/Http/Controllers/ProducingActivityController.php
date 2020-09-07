@@ -83,7 +83,7 @@ class ProducingActivityController
         Request $request
     ) {
         $referrer = $request->header('referer');
-        $redirect = route('process-producing');
+        $redirect = route('progress-producing');
         if ($referrer && $referrer === route('progress-producing')) {
             $redirect = route('progress-producing');
         }
@@ -141,7 +141,7 @@ class ProducingActivityController
         }
 
         session()->flash('success', __('activity.saved-successfully'));
-        $url = route('process-producing');
+        $url = route('progress-producing');
 
         if ($request->acceptsJson()) {
             return response()->json([
@@ -161,7 +161,7 @@ class ProducingActivityController
         $LAPUpdater->update($learningActivityProducing, $request->all());
 
         session()->flash('success', __('activity.saved-successfully'));
-        $url = route('process-producing');
+        $url = route('progress-producing');
         if ($this->session->has('producing.activity.edit.referrer')) {
             $url = $this->session->remove('producing.activity.edit.referrer');
         }
@@ -180,7 +180,7 @@ class ProducingActivityController
     {
         $this->learningActivityProducingRepository->delete($learningActivityProducing);
 
-        return redirect()->route('process-producing');
+        return redirect()->route('progress-producing');
     }
 
     public function save(
@@ -193,6 +193,6 @@ class ProducingActivityController
 
         $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
 
-        return $redirector->route('process-producing');
+        return $redirector->route('progress-producing');
     }
 }
