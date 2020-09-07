@@ -164,9 +164,10 @@ a {
   position: fixed;
   left: @nav-width;
   width: 0;
-  height: 100%;
+  height: calc(100% - @menu-height);
   margin-left: -@nav-width;
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
