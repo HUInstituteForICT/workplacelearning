@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 /**
@@ -165,4 +166,19 @@ class LearningActivityActing extends Model implements LearningActivityInterface,
 
         return $savedLearningItem;
     }
+
+    public function bookmarkCheck($lap_id)
+    {
+        $bookmarkCheck = 0;
+        $student_nr = $this->bookmark()->student_id;
+        $bookmarked = DB::table('saved_learning_items')->where([
+            ['item_id', '=', $lap_id],
+            ['student_id', '=', $student_nr], 
+        ])->get();
+        if(count($bookmarked) > 0) {
+            $bookmarkCheck = 1;
+        }
+        return $bookmarkCheck;
+    }
+
 }

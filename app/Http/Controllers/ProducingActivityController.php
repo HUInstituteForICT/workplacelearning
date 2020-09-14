@@ -83,7 +83,8 @@ class ProducingActivityController
         Request $request
     ) {
         $referrer = $request->header('referer');
-        $redirect = route('progress-producing');
+        $redirect = route('process-producing');
+        
         if ($referrer && $referrer === route('progress-producing')) {
             $redirect = route('progress-producing');
         }
@@ -141,7 +142,7 @@ class ProducingActivityController
         }
 
         session()->flash('success', __('activity.saved-successfully'));
-        $url = route('progress-producing');
+        $url = route('process-producing');
 
         if ($request->acceptsJson()) {
             return response()->json([
@@ -161,7 +162,7 @@ class ProducingActivityController
         $LAPUpdater->update($learningActivityProducing, $request->all());
 
         session()->flash('success', __('activity.saved-successfully'));
-        $url = route('progress-producing');
+        $url = route('process-producing');
         if ($this->session->has('producing.activity.edit.referrer')) {
             $url = $this->session->remove('producing.activity.edit.referrer');
         }
@@ -180,7 +181,7 @@ class ProducingActivityController
     {
         $this->learningActivityProducingRepository->delete($learningActivityProducing);
 
-        return redirect()->route('progress-producing');
+        return redirect()->route('process-producing');
     }
 
     public function save(
@@ -188,11 +189,18 @@ class ProducingActivityController
         Request $request,
         Redirector $redirector
     ): RedirectResponse {
+
+        $referrer = $request->header('referer');
+
         $savedLearningItem = $learningActivityProducing->bookmark();
         $this->savedLearningItemRepository->save($savedLearningItem);
-
+        
         $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
-
-        return $redirector->route('progress-producing');
+        
+        if ($referrer && $referrer === route('progress-producing')) {
+            return $redirector->route('progress-producing');
+        } else {
+            return $redirector->route('process-producing');
+        }
     }
 }

@@ -12,6 +12,8 @@ use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
+
 
 /**
  * App\LearningActivityProducing.
@@ -193,4 +195,19 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
 
         return $savedLearningItem;
     }
+
+    public function bookmarkCheck($lap_id)
+    {
+        $bookmarkCheck = 0;
+        $student_nr = $this->bookmark()->student_id;
+        $bookmarked = DB::table('saved_learning_items')->where([
+            ['item_id', '=', $lap_id],
+            ['student_id', '=', $student_nr], 
+        ])->get();
+        if(count($bookmarked) > 0) {
+            $bookmarkCheck = 1;
+        }
+        return $bookmarkCheck;
+    }
+
 }
