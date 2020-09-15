@@ -197,10 +197,12 @@ class ProducingActivityController
         
         $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
         
+        $redirect = $redirector->route('process-producing');
+
         if ($referrer && $referrer === route('progress-producing')) {
-            return $redirector->route('progress-producing');
-        } else {
-            return $redirector->route('process-producing');
-        }
+            $redirect = $redirector->route('progress-producing');
+        } 
+
+        return $redirect;
     }
 }
