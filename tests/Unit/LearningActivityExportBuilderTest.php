@@ -24,7 +24,7 @@ class LearningActivityExportBuilderTest extends TestCase
         $mock->shouldReceive('offsetExists')->andReturn(true);
 
         $mock->shouldReceive('getAttribute')->with('id')->andReturn('1');
-        $mock->shouldReceive('getAttribute')->with('isSaved')->andReturn('0');
+        $mock->shouldReceive('getAttribute')->with('bookmarkCheck')->andReturn('0');
         $mock->shouldReceive('getAttribute')->with('date')->andReturn(Carbon::createFromDate(2017, 10, 10));
         $mock->shouldReceive('getAttribute')->with('situation')->andReturn('pressure');
 
