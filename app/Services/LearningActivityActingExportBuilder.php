@@ -33,7 +33,6 @@ class LearningActivityActingExportBuilder
         $collection->each(function (LearningActivityActing $activity) use (&$jsonArray): void {
             $jsonArray[] = [
                 'id'                      => $activity->laa_id,
-                'isSaved'                 => $activity->bookmarkCheck($activity->laa_id),
                 'date'                    => $activity->date->format('d-m-Y'),
                 'situation'               => $activity->situation,
                 'timeslot'                => $activity->timeslot->localizedLabel(),
