@@ -22,15 +22,15 @@ export default class Row extends React.Component {
 
         return <tr className="activityExport">
             <td width="15%">
-            {(activity.isSaved < 1) &&
-                    <a style={actionStyle} onClick={() => confirm(Lang.get("Weet u zeker dat u dit wilt opslaan?")) ? window.location.href = "/acting/process/save/" + activity.id: null}>
-                    <img className="save_activity_icon" src="../assets/img/bookmark-blauw.svg"/>
-                    </a>
+                <a style={actionStyle} onClick={() => confirm(Lang.get("Weet u zeker dat u dit wilt opslaan?")) ? window.location.href = "/acting/process/save/" + activity.id: null}>
+                <img className="save_activity_icon" src="../assets/img/bookmark-blauw.svg"/>
+                </a>
+            {/* {(activity.isSaved < 1) &&
                 ||
                     <span style={actionStyle}>
                     <img className="save_activity_icon" src="../assets/img/bookmark-blauw-ingevuld.svg"/>
                     </span>
-                }
+                } */}
                 <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil"
                                                               aria-hidden="true"/></a>
                 <a style={actionStyle}
