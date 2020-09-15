@@ -167,18 +167,18 @@ class LearningActivityActing extends Model implements LearningActivityInterface,
         return $savedLearningItem;
     }
 
-    public function bookmarkCheck($laa_id = 0): int
-    {
-        $bookmarkCheck = 0;
-        $student_nr = $this->bookmark()->student_id;
-        $bookmarked = DB::table('saved_learning_items')->where([
-            ['item_id', '=', $laa_id],
-            ['student_id', '=', $student_nr], 
-        ])->get();
-        if(count($bookmarked) > 0) {
-            $bookmarkCheck = 1;
-        }
-        return $bookmarkCheck;
-    }
+    // public function bookmarkCheck($laa_id = 0): array
+    // {
+    //     $bookmarkCheck = array();
+    //     $student_nr = $this->bookmark()->student_id;
+    //     $bookmarked = DB::table('saved_learning_items')->where([
+    //         ['item_id', '=', $laa_id],
+    //         ['student_id', '=', $student_nr], 
+    //     ])->get();
+    //     if(count($bookmarked) > 0) {
+    //         $bookmarkCheck[] = 1;
+    //     }
+    //     return $bookmarkCheck;
+    // }
 
 }
