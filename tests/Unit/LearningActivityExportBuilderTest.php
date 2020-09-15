@@ -77,6 +77,7 @@ class LearningActivityExportBuilderTest extends TestCase
 
         $mapping = [
             'id'                      => 1,
+            'isSaved'                 => 0,
             'date'                    => '10-10-2017',
             'situation'               => 'pressure',
             'timeslot'                => '1e lesuur',
