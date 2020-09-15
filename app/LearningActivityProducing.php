@@ -196,7 +196,7 @@ class LearningActivityProducing extends Model implements LearningActivityInterfa
         return $savedLearningItem;
     }
 
-    public function bookmarkCheck($lap_id):int
+    public function bookmarkCheck($lap_id): int
     {
         $bookmarkCheck = 0;
         $student_nr = $this->bookmark()->student_id;
