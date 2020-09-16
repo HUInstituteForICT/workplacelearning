@@ -184,16 +184,15 @@ class ProducingActivityController
     }
 
     public function save(
-            LearningActivityProducing $learningActivityProducing,
-            Request $request,
-            Redirector $redirector
-        ): RedirectResponse 
-    {
+        LearningActivityProducing $learningActivityProducing,
+        Request $request,
+        Redirector $redirector
+    ): RedirectResponse {
         $savedLearningItem = $learningActivityProducing->bookmark();
         $this->savedLearningItemRepository->save($savedLearningItem);
 
         $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
-        // Change redirect here. Check first if pull-request gives error.
+
         return $redirector->route('process-producing');
     }
 }
