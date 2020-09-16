@@ -192,7 +192,7 @@ class ProducingActivityController
         $this->savedLearningItemRepository->save($savedLearningItem);
 
         $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
-
+        // added comment
         return $redirector->route('process-producing');
     }
 }
