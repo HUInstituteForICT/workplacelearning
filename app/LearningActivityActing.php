@@ -167,7 +167,7 @@ class LearningActivityActing extends Model implements LearningActivityInterface,
         return $savedLearningItem;
     }
 
-    public function bookmarkCheck($laa_id): int
+    public function bookmarkCheck($laa_id = 0): int
     {
         $bookmarkCheck = 0;
         $student_nr = $this->bookmark()->student_id;
