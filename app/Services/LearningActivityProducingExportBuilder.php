@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\LearningActivityProducing;
+use App\SavedLearningItem;
 use Illuminate\Translation\Translator;
-
 class LearningActivityProducingExportBuilder
 {
     /**
@@ -31,6 +31,7 @@ class LearningActivityProducingExportBuilder
         $collection->each(function (LearningActivityProducing $activity) use (&$jsonArray): void {
             $jsonArray[] = [
                 'id'              => $activity->lap_id,
+                'isSaved'         => $activity->bookmarkCheck($activity->lap_id),
                 'date'            => $activity->date->format('d-m-Y'),
                 'duration'        => $this->formatDuration($activity->duration),
                 'hours'           => $activity->duration,
