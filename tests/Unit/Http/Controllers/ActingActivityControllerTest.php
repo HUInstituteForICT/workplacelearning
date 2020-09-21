@@ -165,7 +165,7 @@ class ActingActivityControllerTest extends TestCase
     public function testDelete()
     {
         $redirector = $this->createMock(Redirector::class);
-        $redirector->expects(self::once())->method('route')->with('process-acting')->willReturn($this->createMock(RedirectResponse::class));
+        $redirector->expects(self::once())->method('route')->with('progress-acting')->willReturn($this->createMock(RedirectResponse::class));
 
         $laa = new LearningActivityActing();
 
