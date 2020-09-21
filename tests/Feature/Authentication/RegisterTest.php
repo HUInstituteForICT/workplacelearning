@@ -29,11 +29,6 @@ class RegisterTest extends \Tests\TestCase
             'secret'                => 'Stage2017',
             'privacy'               => 1
         ]);
-        
-        if ($response->exception) {
-            throw $response->exception;
-            var_dump($ep);
-        }
 
         $response->assertRedirect('/home');
     }
