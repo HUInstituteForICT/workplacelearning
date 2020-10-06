@@ -90,7 +90,7 @@ class ActingActivityController
         Request $request
     ) {
         $referrer = $request->header('referer');
-        $redirect = route('process-acting');
+        $redirect = route('progress-acting');
         if ($referrer && $referrer === route('progress-acting')) {
             $redirect = route('progress-acting');
         }
@@ -137,7 +137,7 @@ class ActingActivityController
         }
 
         session()->flash('success', __('activity.saved-successfully'));
-        $url = route('process-acting');
+        $url = route('progress-acting');
 
         if ($request->acceptsJson()) {
             return response()->json([
@@ -165,7 +165,7 @@ class ActingActivityController
         $LAAUpdater->update($learningActivityActing, $request->all());
 
         session()->flash('success', __('activity.saved-successfully'));
-        $url = route('process-acting');
+        $url = route('progress-acting');
         if ($this->session->has('acting.activity.edit.referrer')) {
             $url = $this->session->remove('acting.activity.edit.referrer');
         }
@@ -184,7 +184,7 @@ class ActingActivityController
     {
         $this->learningActivityActingRepository->delete($learningActivityActing);
 
-        return $this->redirector->route('process-acting');
+        return $this->redirector->route('progress-acting');
     }
 
     public function save(LearningActivityActing $learningActivityActing, Request $request): RedirectResponse
@@ -194,6 +194,6 @@ class ActingActivityController
 
         $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
 
-        return $this->redirector->route('process-acting');
+        return $this->redirector->route('progress-acting');
     }
 }

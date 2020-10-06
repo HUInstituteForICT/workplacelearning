@@ -64,7 +64,6 @@ export default class Row extends React.Component {
             <td>{activity.resourcePerson}</td>
             <td>{activity.resourceMaterial}</td>
             <td>
-
                 {activity.lessonsLearned !== null && <div>
 
                     {activity.lessonsLearned.length > 30 &&
@@ -92,8 +91,6 @@ export default class Row extends React.Component {
             <td>
                 {activity.reflection && activity.reflection.url && <a href={activity.reflection.url}>Download</a>}
             </td>
-
         </tr>
     }
-
 }

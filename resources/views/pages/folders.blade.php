@@ -179,7 +179,7 @@
                                             <div class="form-group">
                                                 <textarea placeholder="{{ __('folder.add-comment-teacher') }}"
                                                           name='folder_comment' class="form-control folder_comment"
-                                                          maxlength="255"></textarea>
+                                                          maxlength="1000"></textarea>
                                             </div>
                                             {{ Form::submit(__('general.send'), array('class' => 'right btn btn-primary sendComment')) }}
                                             {{ Form::close() }}
@@ -195,7 +195,7 @@
                                             <div class="form-group">
                                                 <textarea placeholder="{{ __('folder.question') }}"
                                                           name='folder_comment' class="form-control folder_comment"
-                                                          maxlength="255" required></textarea>
+                                                          maxlength="1000" required></textarea>
                                             </div>
                                             <div class="form-group">
 
@@ -388,7 +388,7 @@
                                             <div class="form-group">
                                                 <textarea placeholder="{{ __('folder.add-comment-teacher') }}"
                                                           name='folder_comment' class="form-control folder_comment"
-                                                          maxlength="255"></textarea>
+                                                          maxlength="1000"></textarea>
                                             </div>
                                             {{ Form::submit(__('general.send'), array('class' => 'right btn btn-primary sendComment')) }}
                                             {{ Form::close() }}
@@ -404,7 +404,7 @@
                                             <div class="form-group">
                                                 <textarea placeholder="{{ __('folder.question') }}"
                                                           name='folder_comment' class="form-control folder_comment"
-                                                          maxlength="255" required></textarea>
+                                                          maxlength="1000" required></textarea>
                                             </div>
                                             <div class="form-group">
 
@@ -460,7 +460,7 @@
                     <div class="form-group">
                         <label>{{ __('folder.description') }}</label>
                         <textarea type='text' name='folder_description' id="folderDescription" class="form-control"
-                                  maxlength="255"></textarea>
+                                  maxlength="1000"></textarea>
                     </div>
 
 
