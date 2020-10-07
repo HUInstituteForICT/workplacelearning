@@ -28,7 +28,7 @@ export default class Row extends React.Component {
                     </a>
                 ||
                     <span style={actionStyle}>
-                        <img className="save_activity_icogit check on" src="../assets/img/bookmark-blauw-ingevuld.svg"/>
+                        <img className="save_activity_icon" src="../assets/img/bookmark-blauw-ingevuld.svg"/>
                     </span>
                 }
                 <a style={actionStyle} href={activity.url}><i className="glyphicon glyphicon-pencil"
