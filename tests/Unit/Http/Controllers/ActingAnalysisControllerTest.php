@@ -67,7 +67,7 @@ class ActingAnalysisControllerTest extends TestCase
         $applicableTipFetcher->expects(self::once())->method('fetchForCohort')->with($cohort);
 
         $tipPicker = $this->createMock(TipPicker::class);
-        $tipPicker->expects(self::once())->method('markTipsViewed')->willReturn([]);
+        $tipPicker->expects(self::once())->method('markTipsViewed');
 
         $actingAnalysisController = new ActingAnalysisController($periodResolver, $redirector, $this->createMock(SavedLearningItemRepository::class));
 
