@@ -14,6 +14,7 @@ use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\SavedLearningItem;
 use App\Services\CurrentUserResolver;
+use App\Services\ProgressRegistrySystemServiceImpl;
 use App\Tips\Services\TipEvaluator;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
@@ -57,6 +58,8 @@ class SavedLearningItemController extends Controller
      */
     private $categoryRepository;
 
+    private $progressRegistryService;
+
 
     public function __construct(
         CurrentUserResolver $currentUserResolver,
@@ -65,7 +68,8 @@ class SavedLearningItemController extends Controller
         LearningActivityProducingRepository $learningActivityProducingRepository,
         LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        ProgressRegistrySystemServiceImpl $progressRegistryService
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
@@ -74,26 +78,36 @@ class SavedLearningItemController extends Controller
         $this->learningActivityActingRepository = $learningActivityActingRepository;
         $this->resourcePersonRepository = $resourcePersonRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->progressRegistryService = $progressRegistryService;
     }
 
     public function index(TipEvaluator $evaluator)
     {
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
+        //TODO ProgressRegistryService getByStudentId()
         $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+
+        //TODO StudentSystemService impl
         $persons = $this->resourcePersonRepository->all();
+        //TODO LearningSystemService impl
         $categories = $this->categoryRepository->all();
+
         $associatedActivities = [];
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
             return $item->category === 'activity';
         })->pluck('item_id')->toArray();
 
+        //TODO StudentSystemService -> LearningsystemService getEducationProgramById()
         if ($student->educationProgram->educationprogramType->isActing()) {
+            //TODO ProgressRegistrySystemService ->
             $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
             foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->laa_id] = $activity;
             }
+        //TODO StudentSystemService -> LearningsystemService getEducationProgramById()
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
+            //TODO StudentSystemService(studentId) -> ProgressRegistrySystemService getSavedLearningItemsByStudentId()
             $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
             foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->lap_id] = $activity;
@@ -185,6 +199,7 @@ class SavedLearningItemController extends Controller
         }
 
         /** @var Folder $folder */
+        //TODO ProgressRegistrySystemService -> FolderSystemService
         $folder = $folderRepository->findById($folderId);
 
         if (($sliId = $request->get('sli_id')) === null) {
@@ -193,6 +208,7 @@ class SavedLearningItemController extends Controller
 
 
         /** @var SavedLearningItem $savedLearningItem */
+        //TODO ProgressRegistrySystemService findById
         $savedLearningItem = $this->savedLearningItemRepository->findById($sliId);
 
         $folder->savedLearningItems()->attach($savedLearningItem);
