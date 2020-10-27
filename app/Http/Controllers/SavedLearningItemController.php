@@ -202,6 +202,9 @@ class SavedLearningItemController extends Controller
         //TODO ProgressRegistrySystemService -> FolderSystemService
         $folder = $folderRepository->findById($folderId);
 
+        // TODO needs further implementation
+//        $folder = $this->progressRegistryService->findFolderById($folderId);
+
         if (($sliId = $request->get('sli_id')) === null) {
             throw new InvalidArgumentException('No sli id');
         }

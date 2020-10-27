@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Folder;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Repository\Eloquent\CategoryRepository;
+use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Repository\Eloquent\ResourcePersonRepository;
@@ -111,6 +113,10 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function getSavedLearningItemById(int $sliId) : SavedLearningItem{
         return $this->savedLearningItemRepository->findById($sliId);
+    }
+
+    public function findFolderById(int $folderId): ?Folder{
+        //TODO implement. needs reference to folderService which does not yet exist.
     }
 
 
