@@ -13,6 +13,7 @@ use App\Repository\Eloquent\TimeslotRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
 use App\Repository\Eloquent\WorkplaceRepository;
+use App\SavedLearningItem;
 use App\Student;
 use phpDocumentor\Reflection\Types\Collection;
 
@@ -106,6 +107,10 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     public function getByStudentId(int $studentId): Student
     {
         StudentRepository::get($studentId);
+    }
+
+    public function getSavedLearningItemById(int $sliId) : SavedLearningItem{
+        return $this->savedLearningItemRepository->findById($sliId);
     }
 
 

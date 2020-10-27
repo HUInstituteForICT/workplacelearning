@@ -208,8 +208,9 @@ class SavedLearningItemController extends Controller
 
 
         /** @var SavedLearningItem $savedLearningItem */
-        //TODO ProgressRegistrySystemService findById
-        $savedLearningItem = $this->savedLearningItemRepository->findById($sliId);
+        $savedLearningItem = $this->progressRegistryService->getSavedLearningItemById($sliId);
+
+        //TODO should this be moved to the service aswell?
 
         $folder->savedLearningItems()->attach($savedLearningItem);
         $folder->save();
