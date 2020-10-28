@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\ChainManager;
+use App\Interfaces\FolderSystemServiceInterface;
 use App\Interfaces\LearningSystemServiceInterface;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Interfaces\StudentSystemServiceInterface;
@@ -14,6 +15,7 @@ use App\Repository\LikeRepositoryInterface;
 use App\Repository\StudentTipViewRepositoryInterface;
 use App\Services\CurrentPeriodResolver;
 use App\Services\CurrentUserResolver;
+use App\Services\FolderSystemServiceImpl;
 use App\Services\LearningSystemServiceImpl;
 use App\Services\ProgressRegistrySystemServiceImpl;
 use App\Services\StudentSystemServiceImpl;
@@ -62,6 +64,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProgressRegistrySystemServiceInterface::class, ProgressRegistrySystemServiceImpl::class);
         $this->app->bind(LearningSystemServiceInterface::class, LearningSystemServiceImpl::class);
         $this->app->bind(StudentSystemServiceInterface::class, StudentSystemServiceImpl::class);
+        $this->app->bind(FolderSystemServiceInterface::class, FolderSystemServiceImpl::class);
+
 
 
 
