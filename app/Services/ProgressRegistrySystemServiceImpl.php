@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Folder;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
+use App\LearningActivityActing;
 use App\Repository\Eloquent\CategoryRepository;
 use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\LearningActivityActingRepository;
@@ -17,6 +18,7 @@ use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
 use App\Repository\Eloquent\WorkplaceRepository;
 use App\SavedLearningItem;
 use App\Student;
+use App\WorkplaceLearningPeriod;
 use phpDocumentor\Reflection\Types\Collection;
 
 class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemServiceInterface
@@ -29,6 +31,10 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
      * @var StudentSystemServiceImpl
      */
     private $studentSystemService;
+    /**
+     * @var FolderSystemServiceImpl
+     */
+    private $folderSystemService;
     /**
      * @var CurrentUserResolver
      */
@@ -67,6 +73,7 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     public function __construct(
         LearningSystemServiceImpl $learningSystemService,
         StudentSystemServiceImpl $studentSystemService,
+        FolderSystemServiceImpl $folderSystemService,
         CurrentUserResolver $currentUserResolver,
         SavedLearningItemRepository $savedLearningItemRepository,
         TipRepository $tipRepository,
@@ -77,6 +84,7 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     ){
         $this->learningSystemService = $learningSystemService;
         $this->studentSystemService = $studentSystemService;
+        $this->folderSystemService = $folderSystemService;
         $this->currentUserResolver = $currentUserResolver;
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
@@ -86,38 +94,111 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getAllLearningActivityActing(): Collection
-    {
-        LearningActivityActingRepository::all();
-    }
-    public function getAllSavedLearningItems(): Collection
-    {
-        SavedLearningItemRepository::all();
-    }
-    public function getAllTimeslots(): Collection
-    {
-        TimeslotRepository::all();
-    }
     public function getAllWorkPlaceLearningPeriods(): Collection
     {
-        WorkplaceLearningPeriodRepository::all();
-    }
-    public function getAllWorkPlaces(): Collection
-    {
-        WorkplaceRepository::all();
-    }
-    public function getByStudentId(int $studentId): Student
-    {
-        StudentRepository::get($studentId);
+        // TODO: Implement getAllWorkPlaceLearningPeriods() method.
     }
 
-    public function getSavedLearningItemById(int $sliId) : SavedLearningItem{
-        return $this->savedLearningItemRepository->findById($sliId);
+    public function getAllLearningActivityActing(): Collection
+    {
+        // TODO: Implement getAllLearningActivityActing() method.
+    }
+
+    public function getAllWorkPlaces(): Collection
+    {
+        // TODO: Implement getAllWorkPlaces() method.
+    }
+
+    public function getAllTimeslots(): Collection
+    {
+        // TODO: Implement getAllTimeslots() method.
+    }
+
+    public function getAllSavedLearningItems(): Collection
+    {
+        // TODO: Implement getAllSavedLearningItems() method.
     }
 
     public function findFolderById(int $folderId): ?Folder{
         //TODO implement. needs reference to folderService which does not yet exist.
     }
 
+    public function getWorkPlaceLearningPeriodsByStudentId(int $studentId): Collection
+    {
+        // TODO: Implement getWorkPlaceLearningPeriodsByStudentId() method.
+    }
 
+    public function getWorkPlaceLearningPeriodsByCohortId(int $cohortId): Collection
+    {
+        // TODO: Implement getWorkPlaceLearningPeriodsByCohortId() method.
+    }
+
+    public function getWorkPlaceLearningPeriodsByWorkplaceId(int $workplaceId): Collection
+    {
+        // TODO: Implement getWorkPlaceLearningPeriodsByWorkplaceId() method.
+    }
+
+    public function getWorkPlaceLearningPeriodByCategoryId(int $categoryId): WorkplaceLearningPeriod
+    {
+        // TODO: Implement getWorkPlaceLearningPeriodByCategoryId() method.
+    }
+
+    public function getWorkPlaceLearningPeriodByLearningGoalId(int $learningGoalId): WorkplaceLearningPeriod
+    {
+        // TODO: Implement getWorkPlaceLearningPeriodByLearningGoalId() method.
+    }
+
+    public function getWorkPlaceLearningPeriodByResourcePersonId(int $resourcePersonId): WorkplaceLearningPeriod
+    {
+        // TODO: Implement getWorkPlaceLearningPeriodByResourcePersonId() method.
+    }
+
+    public function getLearningActivityActingsBySLIId(int $sliId): Collection
+    {
+        // TODO: Implement getLearningActivityActingsBySLIId() method.
+    }
+
+    public function getLearningActivityActingsByCompetenceId(int $compId): Collection
+    {
+        // TODO: Implement getLearningActivityActingsByCompetenceId() method.
+    }
+
+    public function getLearningActivityActingsByLearningGoalId(int $sliId): Collection
+    {
+        // TODO: Implement getLearningActivityActingsByLearningGoalId() method.
+    }
+
+    public function getLearningActivityActingByResourcePersonId(int $resourcePersonId): LearningActivityActing
+    {
+        // TODO: Implement getLearningActivityActingByResourcePersonId() method.
+    }
+
+    public function getWorkPlacesByStudentId(int $studentId): Collection
+    {
+        // TODO: Implement getWorkPlacesByStudentId() method.
+    }
+
+    public function getTimeslotsByEPId(int $epId): Collection
+    {
+        // TODO: Implement getTimeslotsByEPId() method.
+    }
+
+    public function getTimeslotsByCohortId(int $cohortId): Collection
+    {
+        // TODO: Implement getTimeslotsByCohortId() method.
+    }
+
+    public function getSavedLearningItemByFolderId(int $folderId): SavedLearningItem
+    {
+        // TODO: Implement getSavedLearningItemByFolderId() method.
+    }
+
+    public function getSavedLearningItemByStudentId(int $studentId): SavedLearningItem
+    {
+        // TODO: Implement getSavedLearningItemByStudentId() method.
+    }
+
+    public function getSavedLearningItemById(int $sliId) : SavedLearningItem{
+        return $this->savedLearningItemRepository->findById($sliId);
+    }
 }
