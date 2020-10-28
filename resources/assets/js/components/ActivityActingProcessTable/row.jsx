@@ -22,6 +22,7 @@ export default class Row extends React.Component {
 
         return <tr className="activityExport">
             <td width="15%">
+                <span>Acting</span>
                 {(activity.isSaved < 1) &&
                     <a style={actionStyle} onClick={() => confirm(Lang.get("Weet u zeker dat u dit wilt opslaan?")) ? window.location.href = "/acting/process/save/" + activity.id: null}>
                         <img className="save_activity_icon" src="../assets/img/bookmark-blauw.svg"/>
