@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Folder;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\LearningActivityActing;
+use App\LearningActivityProducing;
 use App\Repository\Eloquent\CategoryRepository;
 use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\LearningActivityActingRepository;
@@ -153,10 +154,7 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         // TODO: Implement getWorkPlaceLearningPeriodByResourcePersonId() method.
     }
 
-    public function getLearningActivityActingsBySLIId(int $sliId): Collection
-    {
-        // TODO: Implement getLearningActivityActingsBySLIId() method.
-    }
+
 
     public function getLearningActivityActingsByCompetenceId(int $compId): Collection
     {
@@ -200,5 +198,20 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function getSavedLearningItemById(int $sliId) : SavedLearningItem{
         return $this->savedLearningItemRepository->findById($sliId);
+    }
+
+    public function getAllLearningActivityProducing(): Collection
+    {
+        // TODO: Implement getAllLearningActivityProducing() method.
+    }
+
+    public function getLearningActivityActingBySLIId(int $sliId): LearningActivityActing
+    {
+        // TODO: Implement getLearningActivityActingBySLIId() method.
+    }
+
+    public function getLearningActivityProducingByLAPId(int $lapId): LearningActivityProducing
+    {
+        // TODO: Implement getLearningActivityProducingByLAPId() method.
     }
 }
