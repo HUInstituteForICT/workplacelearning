@@ -154,8 +154,6 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         // TODO: Implement getWorkPlaceLearningPeriodByResourcePersonId() method.
     }
 
-
-
     public function getLearningActivityActingsByCompetenceId(int $compId): Collection
     {
         // TODO: Implement getLearningActivityActingsByCompetenceId() method.
@@ -213,5 +211,15 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     public function getLearningActivityProducingByLAPId(int $lapId): LearningActivityProducing
     {
         // TODO: Implement getLearningActivityProducingByLAPId() method.
+    }
+
+    public function getLearningActivityProducingByResourcePersonId(int $resourcePersonId): LearningActivityProducing
+    {
+        // TODO: Implement getLearningActivityProducingByResourcePersonId() method.
+    }
+
+    public function getLearningActivityProducingByCategoryId(int $categoryId): LearningActivityProducing
+    {
+        // TODO: Implement getLearningActivityProducingByCategoryId() method.
     }
 }

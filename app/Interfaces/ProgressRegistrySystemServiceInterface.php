@@ -19,7 +19,7 @@ interface ProgressRegistrySystemServiceInterface
     public function getAllTimeslots(): Collection;
     public function getAllSavedLearningItems(): Collection;
 
-    //WorkplaceLearningPeriod domain
+    //TODO WorkplaceLearningPeriod domain
     public function getWorkPlaceLearningPeriodsByStudentId(int $studentId):Collection;
     public function getWorkPlaceLearningPeriodsByCohortId(int $cohortId):Collection;
     public function getWorkPlaceLearningPeriodsByWorkplaceId(int $workplaceId):Collection;
@@ -27,25 +27,27 @@ interface ProgressRegistrySystemServiceInterface
     public function getWorkPlaceLearningPeriodByLearningGoalId(int $learningGoalId):WorkplaceLearningPeriod;
     public function getWorkPlaceLearningPeriodByResourcePersonId(int $resourcePersonId):WorkplaceLearningPeriod;
 
-    //LearningActivityActing domain
+    //TODO LearningActivityActing domain
     public function getLearningActivityActingsByCompetenceId(int $compId):Collection;
     public function getLearningActivityActingsByLearningGoalId(int $sliId):Collection;
     public function getLearningActivityActingBySLIId(int $sliId):LearningActivityActing;
     public function getLearningActivityActingByResourcePersonId(int $resourcePersonId):LearningActivityActing;
 
-    //LearningActivityProducing domain
+    //TODO LearningActivityProducing domain
     public function getLearningActivityProducingByLAPId(int $lapId):LearningActivityProducing;
+
+    //TODO Yasin
     public function getLearningActivityProducingByResourcePersonId(int $resourcePersonId):LearningActivityProducing;
     public function getLearningActivityProducingByCategoryId(int $categoryId):LearningActivityProducing;
 
-    //Workplace domain
+    //TODO Workplace domain
     public function getWorkPlacesByStudentId(int $studentId):Collection;
 
-    //Timeslot domain
+    //TODO Timeslot domain
     public function getTimeslotsByEPId(int $epId):Collection;
     public function getTimeslotsByCohortId(int $cohortId):Collection;
 
-    //SavedLearningItem domain
+    //TODO SavedLearningItem domain
     public function getSavedLearningItemByFolderId(int $folderId): SavedLearningItem;
     public function getSavedLearningItemByStudentId(int $studentId): SavedLearningItem;
 }
