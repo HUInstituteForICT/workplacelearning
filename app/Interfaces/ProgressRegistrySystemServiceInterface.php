@@ -28,12 +28,15 @@ interface ProgressRegistrySystemServiceInterface
     public function getWorkPlaceLearningPeriodByResourcePersonId(int $resourcePersonId):WorkplaceLearningPeriod;
 
     //TODO LearningActivityActing domain
+    //TODO
     public function getLearningActivityActingsByCompetenceId(int $compId):Collection;
     public function getLearningActivityActingsByLearningGoalId(int $sliId):Collection;
+    //TODO
     public function getLearningActivityActingBySLIId(int $sliId):LearningActivityActing;
     public function getLearningActivityActingByResourcePersonId(int $resourcePersonId):LearningActivityActing;
 
     //TODO LearningActivityProducing domain
+    //TODO
     public function getLearningActivityProducingByLAPId(int $lapId):LearningActivityProducing;
 
     //TODO Yasin

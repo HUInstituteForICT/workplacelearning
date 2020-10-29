@@ -156,17 +156,21 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function getLearningActivityActingsByCompetenceId(int $compId): Collection
     {
+//        return $this->learningActivityActingRepository->
         // TODO: Implement getLearningActivityActingsByCompetenceId() method.
+        // requires extra repository functionality on join table. Discuss with Remco before further implementation.
     }
 
+    // TODO: Test methods.
     public function getLearningActivityActingsByLearningGoalId(int $sliId): Collection
     {
-        // TODO: Implement getLearningActivityActingsByLearningGoalId() method.
+        return $this->learningActivityActingRepository->getByLearningGoalId($sliId);
     }
 
+    // TODO: Test methods.
     public function getLearningActivityActingByResourcePersonId(int $resourcePersonId): LearningActivityActing
     {
-        // TODO: Implement getLearningActivityActingByResourcePersonId() method.
+        return $this->learningActivityActingRepository->getByResourcePersonId($resourcePersonId);
     }
 
     public function getWorkPlacesByStudentId(int $studentId): Collection

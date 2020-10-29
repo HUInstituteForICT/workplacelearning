@@ -7,6 +7,7 @@ namespace App\Repository\Eloquent;
 use App\Evidence;
 use App\LearningActivityActing;
 use App\Student;
+use phpDocumentor\Reflection\Types\Collection;
 
 class LearningActivityActingRepository
 {
@@ -33,6 +34,30 @@ class LearningActivityActingRepository
     public function getMultiple(array $ids): array
     {
         return LearningActivityActing::findMany($ids)->all();
+    }
+
+
+    /**
+     * @param int $sliId
+     *
+     * @return LearningActivityActing[]
+     */
+
+    public function getByLearningGoalId(int $sliId)  : Collection
+    {
+        return LearningActivityActing::where('learninggoal_id',$sliId)->get()->all();
+    }
+
+
+    /**
+     * @param int $resourcePersonId
+     *
+     * @return LearningActivityActing
+     */
+
+    public function getByResourcePersonId(int $resourcePersonId) : LearningActivityActing
+    {
+        return LearningActivityActing::where('res_person_id',$resourcePersonId)->first();
     }
 
     /**
