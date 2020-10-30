@@ -1,10 +1,17 @@
 <?php
 
 return array(
-  'welcome-student' => 'Welkom bij de Werkplekleren App van Hogeschool Utrecht. Met deze app krijg je inzicht in je leerproces tijdens het werken in de beroepspraktijk, bijvoorbeeld tijdens je stage. Met dit inzicht kun je nog meer uit je stage halen en jezelf optimaal ontwikkelen!',
+  'welcome-student' => 'Welkom bij de Stage-App van Hogeschool Utrecht.',
+  'welcome-sub-text-1' => 'Met deze app krijg je inzicht in je leerproces tijdens je stage. Ook kun je informatie delen met de HU-docent die jou begeleidt. Zo kun je nog meer uit je stage halen en jezelf optimaal ontwikkelen!',
+  'welcome-sub-text-2' => 'NIEUW',
+  'welcome-sub-text-3' => ': bewaar ingevoerde activiteiten of tips die je krijgt via de bookmark-icoontjes! De items die je opslaat, worden bewaard in een tijdlijn op de tegel ',
+  'welcome-sub-text-4' => 'Opgeslagen',
+  'welcome-sub-text-5' => '. Op de tegel ',  
+  'welcome-sub-text-6' => 'Begeleiding',
+  'welcome-sub-text-7' => ' kun je deze items groeperen in mappen die je daarna - met begeleidende vraag – kunt delen met je stagedocent. Dit kan alleen als je al gekoppeld bent aan jouw stagedocent. Mocht dit nog niet zo zijn, neem dan contact op met jouw stagecoördinator.',
   'welcome-admin' => 'Welkom bij de Werkplekleren App van Hogeschool Utrecht. Met deze app krijg je de mogelijkheid studenten en docenten te koppelen, beheren en te importeren.',
   'welcome-teacher' => 'Welkom bij de Werkplekleren App van Hogeschool Utrecht. Met deze app krijg je de mogelijkheid om begeleidingsvragen van studenten te beantwoorden aan de hand van ingestuurde leerinformatie. In het dashboard is zichtbaar welke studenten recent iets hebben ingestuurd en waarop gereageerd kan worden. Met dit inzicht kunnen studenten tijdens hun stage nog beter begeleid worden door hun stagedocent.',
-  'see-menu' => 'In het menu zie je een aantal tegels.',
+  'see-menu' => 'In het menu aan de linkerkant zie je een aantal tegels:',
   'with-tile' => 'Via de tegel',
   'learningprocess' => 'Leerproces',
   'progress' => 'Voortgang',
@@ -13,10 +20,10 @@ return array(
   'profile' => 'Profile',
   'steps' => array(
     1 => 'kun je je werkzaamheden invoeren.',
-    2 => 'kun je alle ingevoerde leermomenten terugvinden.',
-    3 => 'kun je door verschillende analyses inzichten krijgen over de leermomenten die je hebt doorgemaakt, over hoe en met wie je geleerd hebt. Ook krijg je persoonlijke tips over acties die je kunt ondernemen om moeilijkheden te overwinnen en nog meer uit je stage te halen.',
+    2 => 'kun je alle ingevoerde leermomenten terugvinden. Ook kun je hier leermomenten bewaren voor later.',
+    3 => 'kun je door verschillende analyses inzichten krijgen over de leermomenten die je hebt doorgemaakt, over hoe en met wie je geleerd hebt. Ook krijg je persoonlijke tips over acties die je kunt ondernemen om moeilijkheden te overwinnen en nog meer uit je stage te halen. Ook deze tips kun je bewaren voor later.',
     4 => 'kun je in een handig overzicht belangrijke deadlines of afspraken bijhouden.',
-    5 => 'kun je je stages beheren.',
+    5 => 'kun je jouw gevevens en je stages beheren.',
   ),
   'goodluck' => 'Veel succes en plezier tijdens jouw leren op de werkplek!',
   'tips' => 'Heb je tips of vragen? Geef ze aan ons door!',

@@ -18,20 +18,24 @@
                     </p>
                 @endif
 
-
+                <!-- <strong style="color:#ff0000;"> -->
                 <p>{{ __('home.welcome-student') }}
+                    <br />
+                    {{ __('home.welcome-sub-text-1') }}</p>
+                <p>
+                <strong style="color:#ff0000;">{{ __('home.welcome-sub-text-2') }}</strong>{{ __('home.welcome-sub-text-3') }}<a href="saved-learning-items"><strong>{{ __('home.welcome-sub-text-4') }}</strong></a>{{ __('home.welcome-sub-text-5') }}<strong><a href="/folders">{{ __('home.welcome-sub-text-6') }}</strong></a>{{ __('home.welcome-sub-text-7') }}
                     <br/><br/>{{ __('home.see-menu') }}</p>
                 <ul>
                     <li>{{ __('home.with-tile') }}
-                        <b>{{ __('home.learningprocess') }}</b> {{ __('home.steps.1') }}</li>
+                        <a href="/process"><strong>{{ __('home.learningprocess') }}</strong></a> {{ __('home.steps.1') }}</li>
                     <li>{{ __('home.with-tile') }}
-                        <b>{{ __('home.progress') }}</b> {{ __('home.steps.2') }}</li>
+                        <a href="/progress"><strong>{{ __('home.progress') }}</strong></a> {{ __('home.steps.2') }}</li>
                     <li>{{ __('home.with-tile') }}
-                        <b>{{ __('home.analysis') }}</b> {{ __('home.steps.3') }}</li>
+                        <a href="/analysis"><strong>{{ __('home.analysis') }}</strong></a> {{ __('home.steps.3') }}</li>
                     <li>{{ __('home.with-tile') }}
-                        <b>{{ __('home.deadlines') }}</b> {{ __('home.steps.4') }}</li>
+                        <a href="/deadline"><strong>{{ __('home.deadlines') }}</strong></a> {{ __('home.steps.4') }}</li>
                     <li>{{ __('home.with-tile') }}
-                        <b>{{ __('home.profile') }}</b> {{ __('home.steps.5') }}</li>
+                        <a href="/profiel"><strong>{{ __('home.profile') }}</strong></a> {{ __('home.steps.5') }}</li>
                 </ul>
                 <p>{{ __('home.goodluck') }}</p>
             </div>
