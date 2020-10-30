@@ -34,6 +34,8 @@ interface ProgressRegistrySystemServiceInterface
     public function getLearningActivityActingsByLearningGoalId(int $sliId):Collection;
     public function getLearningActivityActingBySLIId(int $sliId):LearningActivityActing;
     public function getLearningActivityActingByResourcePersonId(int $resourcePersonId):LearningActivityActing;
+    public function getLearningActivityActingForStudent(Student $student): array;
+    public function deleteLearningActivityActing(LearningActivityActing $learningActivityActing): bool;
 
     //TODO LearningActivityProducing domain
     public function getLearningActivityProducingByLAPId(int $lapId):LearningActivityProducing;

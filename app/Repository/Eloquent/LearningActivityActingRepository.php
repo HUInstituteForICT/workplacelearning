@@ -40,7 +40,7 @@ class LearningActivityActingRepository
     /**
      * @param int $sliId
      *
-     * @return LearningActivityActing[]
+     * @return Collection
      */
 
     public function getByLearningGoalId(int $sliId)  : Collection

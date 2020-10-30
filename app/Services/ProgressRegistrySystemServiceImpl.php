@@ -178,9 +178,8 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function getLearningActivityActingsByCompetenceId(int $compId): Collection
     {
-//        return $this->learningActivityActingRepository->
-        // TODO: Implement getLearningActivityActingsByCompetenceId() method.
-        // requires extra repository functionality on join table. Discuss with Remco before further implementation.
+        // Placeholder
+        return $this->learningActivityActingRepository->get();
     }
 
     // TODO: Test methods.
@@ -193,6 +192,15 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     public function getLearningActivityActingByResourcePersonId(int $resourcePersonId): LearningActivityActing
     {
         return $this->learningActivityActingRepository->getByResourcePersonId($resourcePersonId);
+    }
+
+    public function getLearningActivityActingForStudent(Student $student): array{
+        return $this->learningActivityActingRepository->getActivitiesForStudent($student);
+    }
+
+    public function deleteLearningActivityActing(LearningActivityActing $learningActivityActing) : bool
+    {
+        return $this->learningActivityActingRepository->delete($learningActivityActing);
     }
 
     public function getWorkPlacesByStudentId(int $studentId): Collection
@@ -230,12 +238,13 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function getLearningActivityActingBySLIId(int $sliId): LearningActivityActing
     {
-        // TODO: Implement getLearningActivityActingBySLIId() method.
+        // Placeholder
+        return $this->savedLearningItemRepository->get();
     }
 
     public function getLearningActivityProducingByLAPId(int $lapId): LearningActivityProducing
     {
-        // TODO: Implement getLearningActivityProducingByLAPId() method.
+        return $this->learningActivityProducingRepository->get($lapId);
     }
 
     public function getLearningActivityProducingByResourcePersonId(int $resourcePersonId): LearningActivityProducing

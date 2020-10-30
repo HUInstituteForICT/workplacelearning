@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\LearningActivityActing;
 use App\Reflection\Models\ActivityReflection;
 use App\Repository\Eloquent\LearningActivityActingRepository;
@@ -34,32 +35,35 @@ class ActingActivityController
      */
     private $currentUserResolver;
 
+
+    //removed LearningActivityActingRepository
+
     /**
-     * @var LearningActivityActingRepository
+     * @var ProgressRegistrySystemServiceInterface
      */
-    private $learningActivityActingRepository;
+    private $ProgressRegistrySystemService;
 
     /**
      * @var Session
      */
     private $session;
 
-    /**
-     * @var SavedLearningItemRepository
-     */
-    private $savedLearningItemRepository;
+//    /**
+//     * @var SavedLearningItemRepository
+//     */
+//    private $savedLearningItemRepository;
 
     public function __construct(
         Redirector $redirector,
         CurrentUserResolver $currentUserResolver,
-        LearningActivityActingRepository $learningActivityActingRepository,
-        SavedLearningItemRepository $savedLearningItemRepository,
+        ProgressRegistrySystemServiceInterface $ProgressRegistrySystemServiceInterface,
+//        SavedLearningItemRepository $savedLearningItemRepository,
         Session $session
     ) {
         $this->redirector = $redirector;
         $this->currentUserResolver = $currentUserResolver;
-        $this->learningActivityActingRepository = $learningActivityActingRepository;
-        $this->savedLearningItemRepository = $savedLearningItemRepository;
+        $this->ProgressRegistrySystemService = $ProgressRegistrySystemServiceInterface;
+//        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->session = $session;
     }
 
@@ -69,7 +73,7 @@ class ActingActivityController
     ) {
         $student = $this->currentUserResolver->getCurrentUser();
 
-        $activitiesJson = $exportBuilder->getJson($this->learningActivityActingRepository->getActivitiesForStudent($student),
+        $activitiesJson = $exportBuilder->getJson($this->ProgressRegistrySystemService->getLearningActivityActingForStudent($student),
             1);
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
@@ -111,7 +115,7 @@ class ActingActivityController
         $student = $this->currentUserResolver->getCurrentUser();
 
         $activitiesJson = $exportBuilder->getJson(
-            $this->learningActivityActingRepository->getActivitiesForStudent($student),
+            $this->ProgressRegistrySystemService->getLearningActivityActingForStudent($student),
             null
         );
 
@@ -182,7 +186,7 @@ class ActingActivityController
 
     public function delete(LearningActivityActing $learningActivityActing): RedirectResponse
     {
-        $this->learningActivityActingRepository->delete($learningActivityActing);
+        $this->ProgressRegistrySystemService->deleteLearningActivityActing($learningActivityActing);
 
         return $this->redirector->route('progress-acting');
     }
@@ -190,7 +194,7 @@ class ActingActivityController
     public function save(LearningActivityActing $learningActivityActing, Request $request): RedirectResponse
     {
         $savedLearningItem = $learningActivityActing->bookmark();
-        $this->savedLearningItemRepository->save($savedLearningItem);
+        $this->ProgressRegistrySystemService->saveSavedLearningItem($savedLearningItem);
 
         $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
 
