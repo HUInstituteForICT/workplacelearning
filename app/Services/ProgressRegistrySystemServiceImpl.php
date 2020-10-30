@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Folder;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
+use App\Interfaces\Workplace;
 use App\LearningActivityActing;
 use App\LearningActivityProducing;
 use App\Repository\Eloquent\CategoryRepository;
@@ -225,5 +226,15 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     public function getLearningActivityProducingByCategoryId(int $categoryId): LearningActivityProducing
     {
         // TODO: Implement getLearningActivityProducingByCategoryId() method.
+    }
+
+    public function updateWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod, array $data):bool
+    {
+        // TODO: Implement updateWorkplaceLearningPeriod() method.
+    }
+
+    public function updateWorkplace(Workplace $workplace, array $data): bool
+    {
+        // TODO: Implement updateWorkplace() method.
     }
 }

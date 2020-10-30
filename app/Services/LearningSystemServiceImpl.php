@@ -97,4 +97,9 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
     {
         // TODO: Implement getLearningGoalByLAAId() method.
     }
+
+    public function updateLearningGoals(array $learningGoals): bool
+    {
+        // TODO: Implement updateLearningGoals() method.
+    }
 }

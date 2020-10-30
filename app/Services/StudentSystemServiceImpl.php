@@ -109,4 +109,8 @@ class StudentSystemServiceImpl implements StudentSystemServiceInterface
     {
         // TODO: Implement getCohortByTimeslotId() method.
     }
+    public function cohortsAvailableForStudent(Student $student): Collection
+    {
+        // TODO: Implement cohortsAvailableForStudent() method.
+    }
 }

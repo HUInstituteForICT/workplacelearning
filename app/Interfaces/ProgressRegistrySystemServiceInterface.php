@@ -26,6 +26,7 @@ interface ProgressRegistrySystemServiceInterface
     public function getWorkPlaceLearningPeriodByCategoryId(int $categoryId):WorkplaceLearningPeriod;
     public function getWorkPlaceLearningPeriodByLearningGoalId(int $learningGoalId):WorkplaceLearningPeriod;
     public function getWorkPlaceLearningPeriodByResourcePersonId(int $resourcePersonId):WorkplaceLearningPeriod;
+    public function updateWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod, array $data):bool;
 
     //TODO LearningActivityActing domain
     //TODO
@@ -45,6 +46,7 @@ interface ProgressRegistrySystemServiceInterface
 
     //TODO Workplace domain
     public function getWorkPlacesByStudentId(int $studentId):Collection;
+    public function updateWorkplace(Workplace $workplace, array $data):bool;
 
     //TODO Timeslot domain
     public function getTimeslotsByEPId(int $epId):Collection;

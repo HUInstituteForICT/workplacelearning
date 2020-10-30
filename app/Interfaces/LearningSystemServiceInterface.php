@@ -37,6 +37,7 @@ interface LearningSystemServiceInterface
     //LearningGoal domain
     public function getLearningGoalsByWPLId(int $wplId): Collection;
     public function getLearningGoalByLAAId(int $laaId): LearningGoal;
+    public function updateLearningGoals(array $learningGoals): bool;
 
 
 

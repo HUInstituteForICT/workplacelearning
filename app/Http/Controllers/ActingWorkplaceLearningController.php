@@ -14,14 +14,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Workplace\ActingLearningGoalsUpdateRequest;
 use App\Http\Requests\Workplace\ActingWorkplaceCreateRequest;
 use App\Http\Requests\Workplace\ActingWorkplaceUpdateRequest;
+use App\Interfaces\LearningSystemServiceInterface;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
+use App\Interfaces\StudentSystemServiceInterface;
 use App\Repository\Eloquent\CohortRepository;
-use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
-use App\Repository\Eloquent\WorkplaceRepository;
 use App\Services\CurrentPeriodResolver;
 use App\Services\CurrentUserResolver;
 use App\Services\Factories\ActingWorkplaceFactory;
 use App\Services\Factories\LearningGoalFactory;
-use App\Services\LearningGoalUpdater;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Contracts\View\View;
@@ -35,9 +35,27 @@ class ActingWorkplaceLearningController
      */
     private $currentUserResolver;
 
-    public function __construct(CurrentUserResolver $currentUserResolver)
+    /**
+     * @var StudentSystemServiceInterface
+     */
+    private $studentSystemService;
+
+    /**
+     * @var ProgressRegistrySystemServiceInterface
+     */
+    private $progressRegistrySystemService;
+
+    /**
+     * @var LearningSystemServiceInterface
+     */
+    private $learningSystemService;
+
+    public function __construct(CurrentUserResolver $currentUserResolver, StudentSystemServiceInterface $studentSystemService, ProgressRegistrySystemServiceInterface $progressRegistrySystemService, LearningSystemServiceInterface $learningSystemService)
     {
         $this->currentUserResolver = $currentUserResolver;
+        $this->studentSystemService = $studentSystemService;
+        $this->progressRegistrySystemService = $progressRegistrySystemService;
+        $this->learningSystemService = $learningSystemService;
     }
 
     public function show(CohortRepository $cohortRepository): View
@@ -46,7 +64,7 @@ class ActingWorkplaceLearningController
         $workplace->country = trans('general.netherlands');
 
         $student = $this->currentUserResolver->getCurrentUser();
-        $cohorts = $cohortRepository->cohortsAvailableForStudent($student);
+        $cohorts = $this->studentSystemService->cohortsAvailableForStudent($student);                                                              //TODO Old way: $cohortRepository->cohortsAvailableForStudent($student);
 
         return view('pages.acting.internship')
             ->with('period', new WorkplaceLearningPeriod())
@@ -78,17 +96,14 @@ class ActingWorkplaceLearningController
     public function update(
         ActingWorkplaceUpdateRequest $request,
         WorkplaceLearningPeriod $workplaceLearningPeriod,
-        Redirector $redirector,
-        WorkplaceRepository $workplaceRepository,
-        WorkplaceLearningPeriodRepository $workplaceLearningPeriodRepository
+        Redirector $redirector                                                                                           //TODO removed: WorkplaceRepository $workplaceRepository, WorkplaceLearningPeriodRepository $workplaceLearningPeriodRepository
     ): RedirectResponse {
-        $workplaceRepository->update($workplaceLearningPeriod->workplace, $request->all());
-
-        $workplaceLearningPeriodRepository->update($workplaceLearningPeriod, $request->all());
+        $this->progressRegistrySystemService->updateWorkplace($workplaceLearningPeriod->workplace, $request->all());     //TODO old way: $workplaceRepository->update($workplaceLearningPeriod->workplace, $request->all());
+        $this->progressRegistrySystemService->updateWorkplaceLearningPeriod($workplaceLearningPeriod, $request->all());  //TODO old way: $workplaceLearningPeriodRepository->update($workplaceLearningPeriod, $request->all());
 
         if ((int) $request->get('isActive') === 1) {
             $student = $this->currentUserResolver->getCurrentUser();
-            $student->setActiveWorkplaceLearningPeriod($workplaceLearningPeriod);
+            $student->setActiveWorkplaceLearningPeriod($workplaceLearningPeriod);                                       //TODO decouple domain student & WorkplaceLearningPeriod
         }
 
         return $redirector->route('profile')->with('success', __('general.edit-saved'));
@@ -96,15 +111,13 @@ class ActingWorkplaceLearningController
 
     public function updateLearningGoals(
         ActingLearningGoalsUpdateRequest $request,
-        LearningGoalUpdater $learningGoalUpdater,
         LearningGoalFactory $learningGoalFactory,
         CurrentPeriodResolver $currentPeriodResolver,
-        Redirector $redirector
+        Redirector $redirector                                                                           //TODO removed: LearningGoalUpdater $learningGoalUpdater
     ): RedirectResponse {
         if ($request->has('learningGoal')) {
-            $learningGoalUpdater->updateLearningGoals($request->get('learningGoal'));
+            $this->learningSystemService->updateLearningGoals($request->get('learningGoal'));       //TODO old way: $learningGoalUpdater->updateLearningGoals($request->get('learningGoal'));
         }
-
         if ($request->has('new_learninggoal_name') && !empty($request->get('new_learninggoal_name'))) {
             $learningGoalFactory->createLearningGoal([
                 'label'       => $request->get('new_learninggoal_name'),
