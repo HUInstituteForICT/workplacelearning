@@ -7,6 +7,7 @@ namespace App\Interfaces;
 use App\LearningActivityActing;
 use App\LearningActivityProducing;
 use App\SavedLearningItem;
+use App\Student;
 use App\WorkplaceLearningPeriod;
 use phpDocumentor\Reflection\Types\Collection;
 
@@ -29,20 +30,20 @@ interface ProgressRegistrySystemServiceInterface
     public function updateWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod, array $data):bool;
 
     //TODO LearningActivityActing domain
-    //TODO
     public function getLearningActivityActingsByCompetenceId(int $compId):Collection;
     public function getLearningActivityActingsByLearningGoalId(int $sliId):Collection;
-    //TODO
     public function getLearningActivityActingBySLIId(int $sliId):LearningActivityActing;
     public function getLearningActivityActingByResourcePersonId(int $resourcePersonId):LearningActivityActing;
 
     //TODO LearningActivityProducing domain
-    //TODO
     public function getLearningActivityProducingByLAPId(int $lapId):LearningActivityProducing;
-
-    //TODO Yasin
     public function getLearningActivityProducingByResourcePersonId(int $resourcePersonId):LearningActivityProducing;
     public function getLearningActivityProducingByCategoryId(int $categoryId):LearningActivityProducing;
+    public function getActivitiesProducingOfLastActiveDayForStudent(Student $student): array;
+    public function getActivitiesProducingForStudent(Student $student): array;
+    public function getEarliestActivityProducingForStudent(Student $student): LearningActivityProducing;
+    public function getLatestActivityProducingForStudent(Student $student): LearningActivityProducing;
+    public function deleteLearningActivityProducing(LearningActivityProducing $learningActivityProducing): bool;
 
     //TODO Workplace domain
     public function getWorkPlacesByStudentId(int $studentId):Collection;
@@ -55,4 +56,7 @@ interface ProgressRegistrySystemServiceInterface
     //TODO SavedLearningItem domain
     public function getSavedLearningItemByFolderId(int $folderId): SavedLearningItem;
     public function getSavedLearningItemByStudentId(int $studentId): SavedLearningItem;
+    public function saveSavedLearningItem(SavedLearningItem $savedLearningItem): bool;
+    public function savedLearningItemExists($category, $item_id, $student_id): bool;
+    public function deleteSavedLearningItem(SavedLearningItem $sli);
 }

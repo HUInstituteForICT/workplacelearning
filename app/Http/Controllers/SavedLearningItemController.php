@@ -28,20 +28,20 @@ class SavedLearningItemController extends Controller
      */
     private $currentUserResolver;
 
-    /**
-     * @var SavedLearningItemRepository
-     */
-    private $savedLearningItemRepository;
+//    /**
+//     * @var SavedLearningItemRepository
+//     */
+//    private $savedLearningItemRepository;
 
     /**
      * @var TipRepository
      */
     private $tipRepository;
 
-    /**
-     * @var LearningActivityProducingRepository
-     */
-    private $learningActivityProducingRepository;
+//    /**
+//     * @var LearningActivityProducingRepository
+//     */
+//    private $learningActivityProducingRepository;
 
     /**
      * @var LearningActivityActingRepository
@@ -63,18 +63,18 @@ class SavedLearningItemController extends Controller
 
     public function __construct(
         CurrentUserResolver $currentUserResolver,
-        SavedLearningItemRepository $savedLearningItemRepository,
+//        SavedLearningItemRepository $savedLearningItemRepository,
         TipRepository $tipRepository,
-        LearningActivityProducingRepository $learningActivityProducingRepository,
+//        LearningActivityProducingRepository $learningActivityProducingRepository,
         LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
         CategoryRepository $categoryRepository,
         ProgressRegistrySystemServiceImpl $progressRegistryService
     ) {
         $this->currentUserResolver = $currentUserResolver;
-        $this->savedLearningItemRepository = $savedLearningItemRepository;
+//        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
-        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+//        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
         $this->learningActivityActingRepository = $learningActivityActingRepository;
         $this->resourcePersonRepository = $resourcePersonRepository;
         $this->categoryRepository = $categoryRepository;
@@ -86,7 +86,8 @@ class SavedLearningItemController extends Controller
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
         //TODO ProgressRegistryService getByStudentId()
-        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+//        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+        $sli = $this->progressRegistryService->getSavedLearningItemByStudentId($student->student_id);
 
         //TODO StudentSystemService impl
         $persons = $this->resourcePersonRepository->all();
@@ -108,7 +109,8 @@ class SavedLearningItemController extends Controller
         //TODO StudentSystemService -> LearningsystemService getEducationProgramById()
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
             //TODO StudentSystemService(studentId) -> ProgressRegistrySystemService getSavedLearningItemsByStudentId()
-            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+//            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+            $allActivities = $this->progressRegistryService->getActivitiesProducingForStudent($student);
             foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->lap_id] = $activity;
             }
@@ -153,7 +155,9 @@ class SavedLearningItemController extends Controller
             $url = $previous;
         }
 
-        $itemExists = $this->savedLearningItemRepository->itemExists($category, $item_id, $student->student_id);
+
+//        $itemExists = $this->savedLearningItemRepository->itemExists($category, $item_id, $student->student_id);
+        $itemExists = $this->progressRegistryService->savedLearningItemExists($category, $item_id, $student->student_id);
         if (!$itemExists) {
             $savedLearningItem = new SavedLearningItem();
             $savedLearningItem->category = $category;
@@ -161,7 +165,8 @@ class SavedLearningItemController extends Controller
             $savedLearningItem->student_id = $student->student_id;
             $savedLearningItem->created_at = date('Y-m-d H:i:s');
             $savedLearningItem->updated_at = date('Y-m-d H:i:s');
-            $this->savedLearningItemRepository->save($savedLearningItem);
+//            $this->savedLearningItemRepository->save($savedLearningItem);
+            $this->progressRegistryService->saveSavedLearningItem($savedLearningItem);
 
             $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
         }
@@ -178,7 +183,8 @@ class SavedLearningItemController extends Controller
             throw new AuthorizationException('This is not your SLI');
         }
 
-        $this->savedLearningItemRepository->delete($sli);
+//        $this->savedLearningItemRepository->delete($sli);
+        $this->progressRegistryService->deleteSavedLearningItem($sli);
 
         return redirect('saved-learning-items');
     }

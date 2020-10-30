@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LearningActivity\ProducingCreateRequest;
 use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\LearningActivityProducing;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
@@ -20,6 +21,7 @@ use App\Services\CustomProducingEntityHandler;
 use App\Services\Factories\LAPFactory;
 use App\Services\LAPUpdater;
 use App\Services\LearningActivityProducingExportBuilder;
+use App\Services\ProgressRegistrySystemServiceImpl;
 use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\RedirectResponse;
@@ -34,31 +36,38 @@ class ProducingActivityController
      */
     private $currentUserResolver;
 
-    /**
-     * @var LearningActivityProducingRepository
-     */
-    private $learningActivityProducingRepository;
+//    /**
+//     * @var LearningActivityProducingRepository
+//     */
+//    private $learningActivityProducingRepository;
 
     /**
      * @var Session
      */
     private $session;
 
+//    /**
+//     * @var SavedLearningItemRepository
+//     */
+//    private $savedLearningItemRepository;
+
     /**
-     * @var SavedLearningItemRepository
+     * @var ProgressRegistrySystemServiceImpl
      */
-    private $savedLearningItemRepository;
+    private $progressRegistrySystemService;
 
     public function __construct(
         CurrentUserResolver $currentUserResolver,
-        LearningActivityProducingRepository $learningActivityProducingRepository,
-        SavedLearningItemRepository $savedLearningItemRepository,
-        Session $session
+//        LearningActivityProducingRepository $learningActivityProducingRepository,
+//        SavedLearningItemRepository $savedLearningItemRepository,
+        Session $session,
+        ProgressRegistrySystemServiceImpl $progressRegistrySystemService
     ) {
         $this->currentUserResolver = $currentUserResolver;
-        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
-        $this->savedLearningItemRepository = $savedLearningItemRepository;
+//        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+//        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->session = $session;
+        $this->progressRegistrySystemService = $progressRegistrySystemService;
     }
 
     public function show(
@@ -67,7 +76,8 @@ class ProducingActivityController
     ) {
         $student = $this->currentUserResolver->getCurrentUser();
 
-        $activitiesJson = $exportBuilder->getJson($this->learningActivityProducingRepository->getActivitiesOfLastActiveDayForStudent($student));
+//        $activitiesJson = $exportBuilder->getJson($this->learningActivityProducingRepository->getActivitiesOfLastActiveDayForStudent($student));
+        $activitiesJson = $exportBuilder->getJson($this->progressRegistrySystemService->getActivitiesProducingOfLastActiveDayForStudent($student));
 
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
 
@@ -97,13 +107,17 @@ class ProducingActivityController
     public function progress(LearningActivityProducingExportBuilder $exportBuilder)
     {
         $student = $this->currentUserResolver->getCurrentUser();
-        $activities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+//        $activities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+        $activities = $this->progressRegistrySystemService->getActivitiesProducingForStudent($student);
 
         $activitiesJson = $exportBuilder->getJson($activities, null);
         $exportTranslatedFieldMapping = $exportBuilder->getFieldLanguageMapping();
 
-        $earliest = $this->learningActivityProducingRepository->earliestActivityForStudent($student)->date ?? Carbon::now();
-        $latest = $this->learningActivityProducingRepository->latestActivityForStudent($student)->date ?? Carbon::now();
+//        $earliest = $this->learningActivityProducingRepository->earliestActivityForStudent($student)->date ?? Carbon::now();
+        $earliest = $this->progressRegistrySystemService->getEarliestActivityProducingForStudent($student)->date ?? Carbon::now();
+
+//        $latest = $this->learningActivityProducingRepository->latestActivityForStudent($student)->date ?? Carbon::now();
+        $latest = $this->progressRegistrySystemService->getLatestActivityProducingForStudent($student)->date ?? Carbon::now();
 
         return view('pages.producing.progress', [
                 'activitiesJson' => $activitiesJson,
@@ -179,7 +193,9 @@ class ProducingActivityController
 
     public function delete(LearningActivityProducing $learningActivityProducing): RedirectResponse
     {
-        $this->learningActivityProducingRepository->delete($learningActivityProducing);
+//        $this->learningActivityProducingRepository->delete($learningActivityProducing);
+        $this->progressRegistrySystemService->deleteLearningActivityProducing($learningActivityProducing);
+
 
         return redirect()->route('process-producing');
     }
@@ -193,7 +209,8 @@ class ProducingActivityController
         $referrer = $request->header('referer');
 
         $savedLearningItem = $learningActivityProducing->bookmark();
-        $this->savedLearningItemRepository->save($savedLearningItem);
+//        $this->savedLearningItemRepository->save($savedLearningItem);
+        $this->progressRegistrySystemService->saveSavedLearningItem($savedLearningItem);
         
         $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
         

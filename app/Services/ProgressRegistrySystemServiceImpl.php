@@ -72,6 +72,16 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
      */
     private $categoryRepository;
 
+    /**
+     * @var WorkplaceRepository
+     */
+    private $workplaceRepository;
+
+    /**
+     * @var TimeslotRepository
+     */
+    private $timeslotRepository;
+
     public function __construct(
         LearningSystemServiceImpl $learningSystemService,
         StudentSystemServiceImpl $studentSystemService,
@@ -82,7 +92,9 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         LearningActivityProducingRepository $learningActivityProducingRepository,
         LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        WorkplaceRepository $workplaceRepository,
+        TimeslotRepository $timeslotRepository
     ){
         $this->learningSystemService = $learningSystemService;
         $this->studentSystemService = $studentSystemService;
@@ -94,6 +106,8 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         $this->learningActivityActingRepository = $learningActivityActingRepository;
         $this->resourcePersonRepository = $resourcePersonRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->workplaceRepository = $workplaceRepository;
+        $this->timeslotRepository = $timeslotRepository;
     }
 
     public function getAllWorkPlaceLearningPeriods(): Collection
@@ -106,14 +120,21 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         // TODO: Implement getAllLearningActivityActing() method.
     }
 
+    public function getAllLearningActivityProducing(): Collection
+    {
+        // Placeholder
+        return $this->learningActivityProducingRepository->get();
+    }
+
     public function getAllWorkPlaces(): Collection
     {
-        // TODO: Implement getAllWorkPlaces() method.
+        return $this->workplaceRepository->getAll();
     }
 
     public function getAllTimeslots(): Collection
     {
-        // TODO: Implement getAllTimeslots() method.
+        // Placeholder
+        return $this->timeslotRepository->get();
     }
 
     public function getAllSavedLearningItems(): Collection
@@ -176,36 +197,35 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function getWorkPlacesByStudentId(int $studentId): Collection
     {
-        // TODO: Implement getWorkPlacesByStudentId() method.
+        // Placeholder
+        return $this->workplaceRepository->get();
     }
 
     public function getTimeslotsByEPId(int $epId): Collection
     {
-        // TODO: Implement getTimeslotsByEPId() method.
+        // Placeholder
+        return $this->timeslotRepository->get();
     }
 
     public function getTimeslotsByCohortId(int $cohortId): Collection
     {
-        // TODO: Implement getTimeslotsByCohortId() method.
+        // Placeholder
+        return $this->timeslotRepository->get();
     }
 
     public function getSavedLearningItemByFolderId(int $folderId): SavedLearningItem
     {
-        // TODO: Implement getSavedLearningItemByFolderId() method.
+        // Placeholder
+        return $this->savedLearningItemRepository->findById();
     }
 
     public function getSavedLearningItemByStudentId(int $studentId): SavedLearningItem
     {
-        // TODO: Implement getSavedLearningItemByStudentId() method.
+        return $this->savedLearningItemRepository->findByStudentnr($studentId);
     }
 
     public function getSavedLearningItemById(int $sliId) : SavedLearningItem{
         return $this->savedLearningItemRepository->findById($sliId);
-    }
-
-    public function getAllLearningActivityProducing(): Collection
-    {
-        // TODO: Implement getAllLearningActivityProducing() method.
     }
 
     public function getLearningActivityActingBySLIId(int $sliId): LearningActivityActing
@@ -220,12 +240,14 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function getLearningActivityProducingByResourcePersonId(int $resourcePersonId): LearningActivityProducing
     {
-        // TODO: Implement getLearningActivityProducingByResourcePersonId() method.
+        // Placeholder
+        return $this->learningActivityProducingRepository->get();
     }
 
     public function getLearningActivityProducingByCategoryId(int $categoryId): LearningActivityProducing
     {
-        // TODO: Implement getLearningActivityProducingByCategoryId() method.
+        // Placeholder
+        return $this->learningActivityProducingRepository->get();
     }
 
     public function updateWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod, array $data):bool
@@ -235,6 +257,39 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function updateWorkplace(Workplace $workplace, array $data): bool
     {
-        // TODO: Implement updateWorkplace() method.
+        return $this->workplaceRepository->update($workplace, $data);
+    }
+
+    public function saveSavedLearningItem(SavedLearningItem $savedLearningItem): bool
+    {
+        return $this->savedLearningItemRepository->save($savedLearningItem);
+    }
+
+    public function getActivitiesProducingOfLastActiveDayForStudent(Student $student): array {
+        return $this->learningActivityProducingRepository->getActivitiesOfLastActiveDayForStudent($student);
+    }
+
+    public function getActivitiesProducingForStudent(Student $student): array {
+        return $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+    }
+
+    public function getEarliestActivityProducingForStudent(Student $student): LearningActivityProducing {
+        return $this->learningActivityProducingRepository->earliestActivityForStudent($student);
+    }
+
+    public function getLatestActivityProducingForStudent(Student $student): LearningActivityProducing {
+        return $this->learningActivityProducingRepository->latestActivityForStudent($student);
+    }
+
+    public function deleteLearningActivityProducing(LearningActivityProducing $learningActivityProducing): bool {
+        return $this->learningActivityProducingRepository->delete($learningActivityProducing);
+    }
+
+    public function savedLearningItemExists($category, $item_id, $student_id): bool {
+        return $this->savedLearningItemRepository->itemExists($category, $item_id, $student_id);
+    }
+
+    public function deleteSavedLearningItem(SavedLearningItem $sli) {
+        return $this->savedLearningItemRepository->delete($sli);
     }
 }
