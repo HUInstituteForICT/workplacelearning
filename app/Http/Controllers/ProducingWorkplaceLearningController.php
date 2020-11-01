@@ -13,6 +13,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Cohort;
+use App\Interfaces\StudentSystemServiceInterface;
 use App\Repository\Eloquent\CohortRepository;
 use App\Services\CurrentUserResolver;
 use App\Workplace;
@@ -37,11 +38,16 @@ class ProducingWorkplaceLearningController extends Controller
      */
     private $currentUserResolver;
 
-    public function __construct(CohortRepository $cohortRepository, CurrentUserResolver $currentUserResolver)
+    /**
+     * @var StudentSystemServiceInterface
+     */
+    private $studentSystemService;
+
+    public function __construct(CurrentUserResolver $currentUserResolver, StudentSystemServiceInterface $studentSystemService)
     {
         $this->middleware('auth');
-        $this->cohortRepository = $cohortRepository;
         $this->currentUserResolver = $currentUserResolver;
+        $this->studentSystemService = $studentSystemService;
     }
 
     public function show()
@@ -54,7 +60,7 @@ class ProducingWorkplaceLearningController extends Controller
         return view('pages.producing.internship')
             ->with('period', $period)
             ->with('workplace', $workplace)
-            ->with('cohorts', $this->cohortRepository->cohortsAvailableForStudent($this->currentUserResolver->getCurrentUser()));
+            ->with('cohorts', $this->studentSystemService->cohortsAvailableForStudent($this->currentUserResolver->getCurrentUser()));                            //TODO old way: $this->cohortRepository->cohortsAvailableForStudent($this->currentUserResolver->getCurrentUser())
     }
 
     public function edit(WorkplaceLearningPeriod $workplaceLearningPeriod)
