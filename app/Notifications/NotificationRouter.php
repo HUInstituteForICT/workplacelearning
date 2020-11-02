@@ -24,7 +24,9 @@ class NotificationRouter
     public function routeForUsers(Collection $users): void
     {
         foreach ($users as $user) {
-            $notifications = $user->unreadNotifications->all();
+            // Removed ->all() from unreadNotifications. According to the documentation unreadNotifications allready gives all unread Notifications.
+            // $notifications = $user->unreadNotifications->all();
+            $notifications = $user->unreadNotifications;
 
             if (count($notifications) === 0) {
                 continue;

@@ -309,9 +309,11 @@ class WorkplaceLearningPeriod extends Model
         /** @var Collection<LearningActivityInterface> $lastActivity */
         $lastActivities = $this->getLastActivity(1);
 
-        // we treat no activities as 0, as we only act upon high numbers
+        // OLD: we treat no activities as 0, as we only act upon high numbers
+        // We treat no activities as -1
         if($lastActivities->isEmpty()) {
-            return 0;
+            // return 0;
+            return -1;
         }
 
         /** @var LearningActivityInterface $lastActivity */
