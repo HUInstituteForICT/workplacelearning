@@ -282,11 +282,11 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         return $this->learningActivityProducingRepository->getActivitiesForStudent($student);
     }
 
-    public function getEarliestActivityProducingForStudent(Student $student): LearningActivityProducing {
+    public function getEarliestActivityProducingForStudent(Student $student): ?LearningActivityProducing {
         return $this->learningActivityProducingRepository->earliestActivityForStudent($student);
     }
 
-    public function getLatestActivityProducingForStudent(Student $student): LearningActivityProducing {
+    public function getLatestActivityProducingForStudent(Student $student): ?LearningActivityProducing {
         return $this->learningActivityProducingRepository->latestActivityForStudent($student);
     }
 

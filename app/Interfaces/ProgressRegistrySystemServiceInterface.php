@@ -43,8 +43,8 @@ interface ProgressRegistrySystemServiceInterface
     public function getLearningActivityProducingByCategoryId(int $categoryId):LearningActivityProducing;
     public function getActivitiesProducingOfLastActiveDayForStudent(Student $student): array;
     public function getActivitiesProducingForStudent(Student $student): array;
-    public function getEarliestActivityProducingForStudent(Student $student): LearningActivityProducing;
-    public function getLatestActivityProducingForStudent(Student $student): LearningActivityProducing;
+    public function getEarliestActivityProducingForStudent(Student $student): ?LearningActivityProducing;
+    public function getLatestActivityProducingForStudent(Student $student): ?LearningActivityProducing;
     public function deleteLearningActivityProducing(LearningActivityProducing $learningActivityProducing): bool;
 
     //TODO Workplace domain
