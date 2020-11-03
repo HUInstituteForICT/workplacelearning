@@ -5,14 +5,21 @@ namespace App\Services;
 
 use App\Cohort;
 use App\Interfaces\StudentSystemServiceInterface;
+use App\Repository\Eloquent\CohortRepository;
 use App\ResourcePerson;
 use App\Student;
 use phpDocumentor\Reflection\Types\Collection;
 
 class StudentSystemServiceImpl implements StudentSystemServiceInterface
 {
-    public function __construct()
+    /**
+     * @var CohortRepository
+     */
+    private $cohortRepository;
+
+    public function __construct(CohortRepository $cohortRepository)
     {
+        $this->cohortRepository = $cohortRepository;
     }
 
     public function getAllStudents(): Collection
@@ -111,6 +118,6 @@ class StudentSystemServiceImpl implements StudentSystemServiceInterface
     }
     public function cohortsAvailableForStudent(Student $student): Collection
     {
-        // TODO: Implement cohortsAvailableForStudent() method.
+        $this->cohortRepository->cohortsAvailableForStudent($student);
     }
 }

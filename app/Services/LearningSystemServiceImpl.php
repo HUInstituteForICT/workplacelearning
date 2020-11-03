@@ -11,7 +11,14 @@ use phpDocumentor\Reflection\Types\Collection;
 
 class LearningSystemServiceImpl implements LearningSystemServiceInterface
 {
-    public function __construct(){}
+    /**
+     * @var LearningGoalUpdater
+     */
+    private $learningGoalUpdater;
+
+    public function __construct(LearningGoalUpdater $learningGoalUpdater){
+        $this->learningGoalUpdater = $learningGoalUpdater;
+    }
 
     public function getLearningGoalsByWPLId(int $wplId): Collection
     {
@@ -100,6 +107,6 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
 
     public function updateLearningGoals(array $learningGoals): bool
     {
-        // TODO: Implement updateLearningGoals() method.
+        $this->learningGoalUpdater->updateLearningGoals($learningGoals);
     }
 }
