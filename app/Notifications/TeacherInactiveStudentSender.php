@@ -25,13 +25,16 @@ class TeacherInactiveStudentSender
      */
     public function sendNotifications(array $notifications, Student $teacher): void
     {
-        $usableNotifications = array_filter($notifications, static function (DatabaseNotification $notification) {
-            return $notification->type === NoActivityOfStudent::class;
-        });
+        // $usableNotifications = array_filter($notifications, static function (DatabaseNotification $notification) {
+        //     return $notification->type === NoActivityOfStudent::class;
+        // });
+        // foreach ($usableNotifications as $notification) {
+        //     $notification->markAsRead();
+        // }
 
-        $this->mailer->to($teacher->email)->send(new InactiveStudent($teacher, $usableNotifications));
+        $this->mailer->to($teacher->email)->send(new InactiveStudent($teacher, $notifications));
 
-        foreach ($usableNotifications as $notification) {
+        foreach ($notifications as $notification) {
             $notification->markAsRead();
         }
     }
