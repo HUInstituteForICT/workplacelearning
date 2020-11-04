@@ -35,7 +35,7 @@ class StudentDigestSender
         // }
         
         // Instead of checking if the notification is usable, use the original notification.
-        $this->mailer->to($user->email)->send(new StudentDigest($user, $usableNotifications));
+        $this->mailer->to($user->email)->send(new StudentDigest($user, $notifications));
         foreach ($notifications as $notification) {
             $notification->markAsRead();
         }
