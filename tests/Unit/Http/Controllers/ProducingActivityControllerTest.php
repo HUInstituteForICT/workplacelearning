@@ -20,6 +20,7 @@ use App\Services\ProgressRegistrySystemServiceImpl;
 use App\Student;
 use Illuminate\Http\Request;
 use Tests\TestCase;
+use Illuminate\Contracts\Session\Session;
 
 class ProducingActivityControllerTest extends TestCase
 {
