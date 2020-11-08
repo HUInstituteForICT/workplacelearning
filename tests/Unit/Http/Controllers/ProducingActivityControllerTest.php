@@ -16,6 +16,7 @@ use App\Services\CustomProducingEntityHandler;
 use App\Services\Factories\LAPFactory;
 use App\Services\LAPUpdater;
 use App\Services\LearningActivityProducingExportBuilder;
+use App\Services\ProgressRegistrySystemServiceImpl;
 use App\Student;
 use Illuminate\Http\Request;
 use Tests\TestCase;
@@ -30,8 +31,11 @@ class ProducingActivityControllerTest extends TestCase
         $currentUserResolver = $this->createMock(CurrentUserResolver::class);
         $currentUserResolver->expects(self::once())->method('getCurrentUser')->willReturn($student);
 
-        $repository = $this->createMock(LearningActivityProducingRepository::class);
-        $repository->expects(self::once())->method('getActivitiesOfLastActiveDayForStudent')->willReturn([]);
+//        $repository = $this->createMock(LearningActivityProducingRepository::class);
+//        $repository->expects(self::once())->method('getActivitiesOfLastActiveDayForStudent')->willReturn([]);
+
+        $service = $this->createMock(ProgressRegistrySystemServiceImpl::class);
+        $service->expects(self::once())->method('getActivitiesProducingOfLastActiveDayForStudent')->willReturn([]);
 
         $exportBuilder = $this->createMock(LearningActivityProducingExportBuilder::class);
         $exportBuilder->expects(self::once())->method('getJson')->with([], null)->willReturn('some json string');
@@ -42,10 +46,9 @@ class ProducingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
+//        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository,
-            $savedLearningItemRepository, $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
         $producingActivityController->show($availableEntitiesFetcher, $exportBuilder);
     }
 
@@ -53,7 +56,9 @@ class ProducingActivityControllerTest extends TestCase
     {
         $currentUserResolver = $this->createMock(CurrentUserResolver::class);
 
-        $repository = $this->createMock(LearningActivityProducingRepository::class);
+//        $repository = $this->createMock(LearningActivityProducingRepository::class);
+
+        $service = $this->createMock(ProgressRegistrySystemServiceImpl::class);
 
         $availableEntitiesFetcher = $this->createMock(AvailableProducingEntitiesFetcher::class);
         $availableEntitiesFetcher->expects(self::once())->method('getEntities')->willReturn([]);
@@ -62,8 +67,7 @@ class ProducingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository,
-            $this->createMock(SavedLearningItemRepository::class), $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
         $request = $this->createMock(Request::class);
         $producingActivityController->edit($activity, $availableEntitiesFetcher, $request);
     }
@@ -75,10 +79,15 @@ class ProducingActivityControllerTest extends TestCase
         $currentUserResolver = $this->createMock(CurrentUserResolver::class);
         $currentUserResolver->expects(self::once())->method('getCurrentUser')->willReturn($student);
 
-        $repository = $this->createMock(LearningActivityProducingRepository::class);
-        $repository->expects(self::once())->method('getActivitiesForStudent')->with($student)->willReturn([]);
-        $repository->expects(self::once())->method('earliestActivityForStudent')->with($student)->willReturn(null);
-        $repository->expects(self::once())->method('latestActivityForStudent')->with($student)->willReturn(null);
+//        $repository = $this->createMock(LearningActivityProducingRepository::class);
+//        $repository->expects(self::once())->method('getActivitiesForStudent')->with($student)->willReturn([]);
+//        $repository->expects(self::once())->method('earliestActivityForStudent')->with($student)->willReturn(null);
+//        $repository->expects(self::once())->method('latestActivityForStudent')->with($student)->willReturn(null);
+
+        $service = $this->createMock(ProgressRegistrySystemServiceImpl::class);
+        $service->expects(self::once())->method('getActivitiesProducingForStudent')->with($student)->willReturn([]);
+        $service->expects(self::once())->method('getEarliestActivityProducingForStudent')->with($student)->willReturn(null);
+        $service->expects(self::once())->method('getLatestActivityProducingForStudent')->with($student)->willReturn(null);
 
         $exportBuilder = $this->createMock(LearningActivityProducingExportBuilder::class);
         $exportBuilder->expects(self::once())->method('getJson')->with([], null)->willReturn('some json string');
@@ -86,8 +95,7 @@ class ProducingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository,
-            $this->createMock(SavedLearningItemRepository::class), $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
         $producingActivityController->progress($exportBuilder);
     }
 
@@ -107,12 +115,13 @@ class ProducingActivityControllerTest extends TestCase
 
         $currentUserResolver = $this->createMock(CurrentUserResolver::class);
 
-        $repository = $this->createMock(LearningActivityProducingRepository::class);
+//        $repository = $this->createMock(LearningActivityProducingRepository::class);
+
+        $service = $this->createMock(ProgressRegistrySystemServiceImpl::class);
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository,
-            $this->createMock(SavedLearningItemRepository::class), $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
         $producingActivityController->create($request, $lapFactory, $customProducingEntityHandler);
     }
 
@@ -127,12 +136,13 @@ class ProducingActivityControllerTest extends TestCase
         $lapUpdater->expects(self::once())->method('update')->with($activity);
 
         $currentUserResolver = $this->createMock(CurrentUserResolver::class);
-        $repository = $this->createMock(LearningActivityProducingRepository::class);
+//        $repository = $this->createMock(LearningActivityProducingRepository::class);
+
+        $service = $this->createMock(ProgressRegistrySystemServiceImpl::class);
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository,
-            $this->createMock(SavedLearningItemRepository::class), $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
         $producingActivityController->update($request, $activity, $lapUpdater);
     }
 
@@ -141,13 +151,16 @@ class ProducingActivityControllerTest extends TestCase
         $activity = $this->createMock(LearningActivityProducing::class);
 
         $currentUserResolver = $this->createMock(CurrentUserResolver::class);
-        $repository = $this->createMock(LearningActivityProducingRepository::class);
-        $repository->expects(self::once())->method('delete')->with($activity);
+
+//        $repository = $this->createMock(LearningActivityProducingRepository::class);
+//        $repository->expects(self::once())->method('delete')->with($activity);
+
+        $service = $this->createMock(ProgressRegistrySystemServiceImpl::class);
+        $service->expects(self::once())->method('deleteLearningActivityProducing')->with($activity);
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $repository,
-            $this->createMock(SavedLearningItemRepository::class), $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
         $producingActivityController->delete($activity);
     }
 }
