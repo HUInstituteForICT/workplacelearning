@@ -58,7 +58,7 @@ class ActingWorkplaceLearningController
         $this->learningSystemService = $learningSystemService;
     }
 
-    public function show(CohortRepository $cohortRepository): View
+    public function show(): View
     {
         $workplace = new Workplace();
         $workplace->country = trans('general.netherlands');
