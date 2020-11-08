@@ -3,8 +3,10 @@
 
 namespace App\Services;
 
+use App\Cohort;
 use App\CompetenceDescription;
 use App\EducationProgram;
+use App\EducationProgramsService;
 use App\Interfaces\LearningSystemServiceInterface;
 use App\LearningGoal;
 use phpDocumentor\Reflection\Types\Collection;
@@ -16,8 +18,14 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
      */
     private $learningGoalUpdater;
 
-    public function __construct(LearningGoalUpdater $learningGoalUpdater){
+    /**
+     * @var EducationProgramsService
+     */
+    private $educationProgramsService;
+
+    public function __construct(LearningGoalUpdater $learningGoalUpdater, EducationProgramsService $educationProgramsService){
         $this->learningGoalUpdater = $learningGoalUpdater;
+        $this->educationProgramsService = $educationProgramsService;
     }
 
     public function getLearningGoalsByWPLId(int $wplId): Collection
@@ -50,6 +58,7 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
         // TODO: Implement getAllLearningGoals() method.
     }
 
+    //Competence
     public function getCompetencesByCohortId(int $cohortId): Collection
     {
         // TODO: Implement getCompetencesByCohortId() method.
@@ -60,11 +69,13 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
         // TODO: Implement getCompetencesByLAAId() method.
     }
 
+    //CompetenceDescription
     public function getCompetenceDescriptionByCohortId(int $cohortId): CompetenceDescription
     {
         // TODO: Implement getCompetenceDescriptionByCohortId() method.
     }
 
+    //EducationProgram
     public function getEducationProgramByCohortId(int $cohortId): EducationProgram
     {
         // TODO: Implement getEducationProgramByCohortId() method.
@@ -85,6 +96,35 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
         // TODO: Implement getEducationProgramByTimeslotId() method.
     }
 
+    public function createEducationProgram(array $data): EducationProgram
+    {
+        try {
+            return $this->educationProgramsService->createEducationProgram($data);
+        } catch (\Exception $e) {
+        }
+    }
+
+    public function createEducationProgramEntity($type, $value, Cohort $cohort): EducationProgram {
+        return $this->educationProgramsService->createEntity($type, $value, $cohort);
+    }
+
+    public function deleteEducationProgramEntity($entityId, $type): bool {
+        return $this->educationProgramsService->deleteEntity($entityId, $type);
+    }
+
+    public function updateEducationProgramEntity($entityId, array $data): EducationProgram {
+        return $this->educationProgramsService->updateEntity($entityId, $data);
+    }
+
+    public function updateEducationProgram(EducationProgram $program, array $data): bool {
+        return $this->educationProgramsService->updateProgram($program, $data);
+    }
+
+    public function handleUploadedCompetenceDescription(Cohort $cohort, $fileData): CompetenceDescription {
+        return $this->educationProgramsService->handleUploadedCompetenceDescription($cohort, $fileData);
+    }
+
+    //Category
     public function getCategoriesByWPLId(int $wplId): Collection
     {
         // TODO: Implement getCategoriesByWPLId() method.

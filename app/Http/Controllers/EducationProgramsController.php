@@ -14,9 +14,11 @@ use App\Http\Requests\EducationProgram\CreateEntityRequest;
 use App\Http\Requests\EducationProgram\DeleteEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateEntityRequest;
 use App\Http\Requests\EducationProgram\UpdateRequest;
+use App\Interfaces\LearningSystemServiceInterface;
 use App\Services\CohortCloner;
 use App\Services\CohortManager;
 use App\Services\EntityTranslationManager;
+use App\Services\LearningSystemServiceImpl;
 use App\Traits\TranslatableEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
@@ -26,11 +28,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class EducationProgramsController extends Controller
 {
-    private $programsService;
+//    private $programsService;
+    private $learningSystemService;
 
-    public function __construct(EducationProgramsService $programsService)
+    public function __construct(EducationProgramsService $programsService, LearningSystemServiceImpl $learningSystemService)
     {
-        $this->programsService = $programsService;
+//        $this->programsService = $programsService;
+        $this->learningSystemService = $learningSystemService;
     }
 
     public function index()
@@ -45,7 +49,8 @@ class EducationProgramsController extends Controller
 
     public function createEducationProgram(CreateEducationProgramRequest $request)
     {
-        $program = $this->programsService->createEducationProgram($request->all());
+//        $program = $this->programsService->createEducationProgram($request->all());
+        $program = $this->learningSystemService->createEducationProgram($request->all());
 
         return response()->json(['status' => 'success', 'program' => $program]);
     }
@@ -149,7 +154,10 @@ class EducationProgramsController extends Controller
      */
     public function createEntity(Cohort $cohort, CreateEntityRequest $request)
     {
-        $result = $this->programsService->createEntity($request->get('type'), (string) $request->get('value'),
+//        $result = $this->programsService->createEntity($request->get('type'), (string) $request->get('value'),
+//            $cohort);
+
+        $result = $this->learningSystemService->createEducationProgramEntity($request->get('type'), (string) $request->get('value'),
             $cohort);
 
         if ($result instanceof Model) {
@@ -170,7 +178,8 @@ class EducationProgramsController extends Controller
     public function deleteEntity(DeleteEntityRequest $request, $entityId)
     {
         try {
-            $this->programsService->deleteEntity($entityId, $request->get('type'));
+//            $this->programsService->deleteEntity($entityId, $request->get('type'));
+            $this->learningSystemService->deleteEducationProgramEntity($entityId, $request->get('type'));
         } catch (QueryException $exception) {
             if (Str::contains($exception->getMessage(), 'foreign key constraint fails')) {
                 return response()->json([
@@ -188,7 +197,8 @@ class EducationProgramsController extends Controller
     public function updateEntity(UpdateEntityRequest $request, $entityId, EntityTranslationManager $entityTranslationManager)
     {
         /** @var TranslatableEntity $entity */
-        $entity = $this->programsService->updateEntity((int) $entityId, $request->all());
+//        $entity = $this->programsService->updateEntity((int) $entityId, $request->all());
+        $entity = $this->learningSystemService->updateEducationProgramEntity((int) $entityId, $request->all());
 
         $mappedNameField = EducationProgramsService::nameToEntityNameMapping[$request->get('type')];
 
@@ -201,7 +211,11 @@ class EducationProgramsController extends Controller
 
     public function updateProgram(EducationProgram $program, UpdateRequest $request)
     {
-        if (!$this->programsService->updateProgram($program, $request->all())) {
+//        if (!$this->programsService->updateProgram($program, $request->all())) {
+//            throw new \Exception("Unable to update program {$program->ep_name}");
+//        }
+
+        if (!$this->learningSystemService->updateEducationProgram($program, $request->all())) {
             throw new \Exception("Unable to update program {$program->ep_name}");
         }
 
@@ -210,7 +224,10 @@ class EducationProgramsController extends Controller
 
     public function createCompetenceDescription(Cohort $cohort, CreateCompetenceDescriptionRequest $request)
     {
-        $competenceDescription = $this->programsService->handleUploadedCompetenceDescription($cohort,
+//        $competenceDescription = $this->programsService->handleUploadedCompetenceDescription($cohort,
+//            $request->get('file'));
+
+        $competenceDescription = $this->learningSystemService->handleUploadedCompetenceDescription($cohort,
             $request->get('file'));
 
         return response()->json(['status' => 'success', 'competence_description' => $competenceDescription]);
