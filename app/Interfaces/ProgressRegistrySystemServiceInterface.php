@@ -13,7 +13,7 @@ use phpDocumentor\Reflection\Types\Collection;
 
 interface ProgressRegistrySystemServiceInterface
 {
-    public function getAllWorkPlaceLearningPeriods(): Collection;
+    public function getAllWorkPlaceLearningPeriods();
     public function getAllLearningActivityActing(): Collection;
     public function getAllLearningActivityProducing(): Collection;
     public function getAllWorkPlaces(): Collection;
@@ -27,7 +27,10 @@ interface ProgressRegistrySystemServiceInterface
     public function getWorkPlaceLearningPeriodByCategoryId(int $categoryId):WorkplaceLearningPeriod;
     public function getWorkPlaceLearningPeriodByLearningGoalId(int $learningGoalId):WorkplaceLearningPeriod;
     public function getWorkPlaceLearningPeriodByResourcePersonId(int $resourcePersonId):WorkplaceLearningPeriod;
+    public function getWorkplaceLearningPeriodById(int $wplpId):WorkplaceLearningPeriod;
     public function updateWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod, array $data):bool;
+    public function deleteWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod):void;
+    public function saveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod):bool;
 
     //TODO LearningActivityActing domain
     public function getLearningActivityActingsByCompetenceId(int $compId):Collection;
