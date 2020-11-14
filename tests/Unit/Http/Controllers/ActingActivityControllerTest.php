@@ -19,6 +19,7 @@ use App\Services\LAAUpdater;
 use App\Services\LearningActivityActingExportBuilder;
 use App\Student;
 use App\WorkplaceLearningPeriod;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
@@ -36,8 +37,11 @@ class ActingActivityControllerTest extends TestCase
 
         $redirector = $this->createMock(Redirector::class);
 
-        $learningActivityActingRepository = $this->createMock(LearningActivityActingRepository::class);
-        $learningActivityActingRepository->expects(self::once())->method('getActivitiesForStudent')->willReturn([]);
+//        $learningActivityActingRepository = $this->createMock(LearningActivityActingRepository::class);
+//        $learningActivityActingRepository->expects(self::once())->method('getActivitiesForStudent')->willReturn([]);
+
+        $ProgressRegistrySystemService = $this->createMock(ProgressRegistrySystemServiceInterface::class);
+        $ProgressRegistrySystemService->expects(self::once())->method("getLearningActivityActingForStudent")->willReturn([]);
 
         $availableActingEntitiesFetcher = $this->createMock(AvailableActingEntitiesFetcher::class);
         $availableActingEntitiesFetcher->expects(self::once())->method('getEntities')->willReturn([]);
@@ -46,11 +50,11 @@ class ActingActivityControllerTest extends TestCase
         $exportBuilder->expects(self::once())->method('getJson')->with([], 1)->willReturn(json_encode([]));
         $exportBuilder->expects(self::once())->method('getFieldLanguageMapping')->willReturn([]);
 
-        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+        $session = $this->createMock(Session::class);
 
 //        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
 
-        $ProgressRegistrySystemService = $this->createMock(ProgressRegistrySystemServiceInterface::class);
+
 
         $actingActivityController = new ActingActivityController($redirector, $currentUserResolver, $ProgressRegistrySystemService,$session);
         $actingActivityController->show($availableActingEntitiesFetcher, $exportBuilder);
@@ -61,7 +65,7 @@ class ActingActivityControllerTest extends TestCase
         $availableActingEntitiesFetcher = $this->createMock(AvailableActingEntitiesFetcher::class);
         $availableActingEntitiesFetcher->expects(self::once())->method('getEntities')->willReturn([]);
 
-        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+        $session = $this->createMock(Session::class);
 
         $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
 
@@ -84,7 +88,7 @@ class ActingActivityControllerTest extends TestCase
         $exportBuilder->expects(self::once())->method('getJson')->with([], null)->willReturn(json_encode([]));
         $exportBuilder->expects(self::once())->method('getFieldLanguageMapping')->willReturn([]);
 
-        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+        $session = $this->createMock(Session::class);
 
         $actingActivityController = new ActingActivityController(
             $this->createMock(Redirector::class),
@@ -116,7 +120,7 @@ class ActingActivityControllerTest extends TestCase
         $evidenceUploadHandler = $this->createMock(EvidenceUploadHandler::class);
         $evidenceUploadHandler->expects(self::once())->method('process')->with($request, $laa);
 
-        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+        $session = $this->createMock(Session::class);
 
         $actingActivityController = new ActingActivityController(
             $this->createMock(Redirector::class),
@@ -148,7 +152,7 @@ class ActingActivityControllerTest extends TestCase
         $evidenceUploadHandler = $this->createMock(EvidenceUploadHandler::class);
         $evidenceUploadHandler->expects(self::once())->method('process')->with($request, $laa);
 
-        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+        $session = $this->createMock(Session::class);
 
         $actingActivityController = new ActingActivityController(
             $this->createMock(Redirector::class),
@@ -167,10 +171,13 @@ class ActingActivityControllerTest extends TestCase
 
         $laa = new LearningActivityActing();
 
-        $learningActivityRepository = $this->createMock(LearningActivityActingRepository::class);
-        $learningActivityRepository->expects(self::once())->method('delete')->with($laa);
+//        $learningActivityRepository = $this->createMock(LearningActivityActingRepository::class);
+//        $learningActivityRepository->expects(self::once())->method('delete')->with($laa);
 
-        $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
+        $ProgressRegistrySystemService = $this->createMock(ProgressRegistrySystemServiceInterface::class);
+        $ProgressRegistrySystemService->expects(self::once())->method("deleteLearningActivityActing")->with($laa);
+
+        $session = $this->createMock(Session::class);
 
         $actingActivityController = new ActingActivityController(
             $this->createMock(Redirector::class),
