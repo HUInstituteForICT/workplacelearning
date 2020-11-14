@@ -7,6 +7,7 @@ namespace Test\Unit\Http\Controllers;
 use App\Http\Controllers\ActingActivityController;
 use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\LearningActivityActing;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
@@ -47,10 +48,11 @@ class ActingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
+//        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
 
-        $actingActivityController = new ActingActivityController($redirector, $currentUserResolver,
-            $learningActivityActingRepository, $savedLearningItemRepository,$session);
+        $ProgressRegistrySystemService = $this->createMock(ProgressRegistrySystemServiceInterface::class);
+
+        $actingActivityController = new ActingActivityController($redirector, $currentUserResolver, $ProgressRegistrySystemService,$session);
         $actingActivityController->show($availableActingEntitiesFetcher, $exportBuilder);
     }
 
@@ -66,8 +68,7 @@ class ActingActivityControllerTest extends TestCase
         $actingActivityController = new ActingActivityController(
             $this->createMock(Redirector::class),
             $this->createMock(CurrentUserResolver::class),
-            $this->createMock(LearningActivityActingRepository::class),
-            $savedLearningItemRepository,
+            $this->createMock(ProgressRegistrySystemServiceInterface::class),
             $session
         );
 
@@ -88,8 +89,7 @@ class ActingActivityControllerTest extends TestCase
         $actingActivityController = new ActingActivityController(
             $this->createMock(Redirector::class),
             $this->createMock(CurrentUserResolver::class),
-            $this->createMock(LearningActivityActingRepository::class),
-            $this->createMock(SavedLearningItemRepository::class),
+            $this->createMock(ProgressRegistrySystemServiceInterface::class),
             $session
         );
 
@@ -119,10 +119,9 @@ class ActingActivityControllerTest extends TestCase
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
         $actingActivityController = new ActingActivityController(
-            $redirector,
+            $this->createMock(Redirector::class),
             $this->createMock(CurrentUserResolver::class),
-            $this->createMock(LearningActivityActingRepository::class),
-            $this->createMock(SavedLearningItemRepository::class),
+            $this->createMock(ProgressRegistrySystemServiceInterface::class),
             $session
         );
 
@@ -152,10 +151,9 @@ class ActingActivityControllerTest extends TestCase
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
         $actingActivityController = new ActingActivityController(
-            $redirector,
+            $this->createMock(Redirector::class),
             $this->createMock(CurrentUserResolver::class),
-            $this->createMock(LearningActivityActingRepository::class),
-            $this->createMock(SavedLearningItemRepository::class),
+            $this->createMock(ProgressRegistrySystemServiceInterface::class),
             $session
         );
 
@@ -175,10 +173,9 @@ class ActingActivityControllerTest extends TestCase
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
         $actingActivityController = new ActingActivityController(
-            $redirector,
+            $this->createMock(Redirector::class),
             $this->createMock(CurrentUserResolver::class),
-            $learningActivityRepository,
-            $this->createMock(SavedLearningItemRepository::class),
+            $this->createMock(ProgressRegistrySystemServiceInterface::class),
             $session
         );
 
