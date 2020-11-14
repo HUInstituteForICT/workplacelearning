@@ -30,7 +30,7 @@ interface StudentSystemServiceInterface
     
     //Cohort domain
     public function getCohortsByEPId(int $epId): Collection;
-    public function cohortsAvailableForStudent(Student $student): Collection;
+    public function cohortsAvailableForStudent(Student $student): array;
     public function getCohortByWPLId(int $wplId): Cohort;
     public function getCohortByCategoryId(int $catId): Cohort;
     public function getCohortByCompetenceId(int $compId): Cohort;

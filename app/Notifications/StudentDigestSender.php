@@ -25,13 +25,13 @@ class StudentDigestSender
     public function sendNotifications(array $notifications, Student $user): void
     {
 
-        $usableNotifications = array_filter($notifications, function (DatabaseNotification $notification) {
-            return $notification->type === FolderFeedbackGiven::class;
-        });
+        // $usableNotifications = array_filter($notifications, function (DatabaseNotification $notification) {
+        //     return $notification->type === FolderFeedbackGiven::class;
+        // });
 
-        $this->mailer->to($user->email)->send(new StudentDigest($user, $usableNotifications));
+        $this->mailer->to($user->email)->send(new StudentDigest($user, $notifications));
 
-        foreach ($usableNotifications as $notification) {
+        foreach ($notifications as $notification) {
             $notification->markAsRead();
         }
     }

@@ -78,6 +78,11 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     private $workplaceRepository;
 
     /**
+     * @var WorkplaceLearningPeriodRepository
+     */
+    private $workplaceLearningPeriodRepository;
+
+    /**
      * @var TimeslotRepository
      */
     private $timeslotRepository;
@@ -94,6 +99,7 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         ResourcePersonRepository $resourcePersonRepository,
         CategoryRepository $categoryRepository,
         WorkplaceRepository $workplaceRepository,
+        WorkplaceLearningPeriodRepository $workplaceLearningPeriodRepository,
         TimeslotRepository $timeslotRepository
     ){
         $this->learningSystemService = $learningSystemService;
@@ -107,12 +113,13 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         $this->resourcePersonRepository = $resourcePersonRepository;
         $this->categoryRepository = $categoryRepository;
         $this->workplaceRepository = $workplaceRepository;
+        $this->workplaceLearningPeriodRepository = $workplaceLearningPeriodRepository;
         $this->timeslotRepository = $timeslotRepository;
     }
 
-    public function getAllWorkPlaceLearningPeriods(): Collection
+    public function getAllWorkPlaceLearningPeriods()
     {
-        // TODO: Implement getAllWorkPlaceLearningPeriods() method.
+        return $this->workplaceLearningPeriodRepository->all()->all();
     }
 
     public function getAllLearningActivityActing(): Collection
@@ -146,6 +153,11 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         //TODO implement. needs reference to folderService which does not yet exist.
     }
 
+    public function getWorkplaceLearningPeriodById(int $wplpId): WorkplaceLearningPeriod
+    {
+        return $this->workplaceLearningPeriodRepository->get($wplpId);
+    }
+
     public function getWorkPlaceLearningPeriodsByStudentId(int $studentId): Collection
     {
         // TODO: Implement getWorkPlaceLearningPeriodsByStudentId() method.
@@ -174,6 +186,21 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     public function getWorkPlaceLearningPeriodByResourcePersonId(int $resourcePersonId): WorkplaceLearningPeriod
     {
         // TODO: Implement getWorkPlaceLearningPeriodByResourcePersonId() method.
+    }
+
+    public function updateWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod, array $data):bool
+    {
+        // TODO: Implement updateWorkplaceLearningPeriod() method.
+    }
+
+    public function deleteWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod): void
+    {
+        $this->workplaceLearningPeriodRepository->delete($workplaceLearningPeriod);
+    }
+
+    public function saveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod): bool
+    {
+        $this->workplaceLearningPeriodRepository->save($workplaceLearningPeriod);
     }
 
     public function getLearningActivityActingsByCompetenceId(int $compId): Collection
@@ -257,11 +284,6 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     {
         // Placeholder
         return $this->learningActivityProducingRepository->get();
-    }
-
-    public function updateWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod, array $data):bool
-    {
-        // TODO: Implement updateWorkplaceLearningPeriod() method.
     }
 
     public function updateWorkplace(Workplace $workplace, array $data): bool

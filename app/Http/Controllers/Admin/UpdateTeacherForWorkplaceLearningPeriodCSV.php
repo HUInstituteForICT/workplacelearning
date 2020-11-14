@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
 
-use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Repository\Eloquent\StudentRepository;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -16,18 +16,20 @@ use App\WorkplaceLearningPeriod;
 class UpdateTeacherForWorkplaceLearningPeriodCSV extends Controller
 {
     /**
-     * @var WorkplaceLearningPeriodRepository
+     * @var ProgressRegistrySystemServiceInterface
      */
-    private $workplaceLearningPeriodRepository;
+    private $progressRegistrySystemService;
+
+    /**
+     * @var StudentRepository
+     */
     private $studentRepository;
 
-    public function __construct(WorkplaceLearningPeriodRepository $workplaceLearningPeriodRepository, StudentRepository $studentRepository)
+    public function __construct(ProgressRegistrySystemServiceInterface $progressRegistrySystemService, StudentRepository $studentRepository)
     {
-        $this->workplaceLearningPeriodRepository = $workplaceLearningPeriodRepository;
+        $this->progressRegistrySystemService = $progressRegistrySystemService;
         $this->studentRepository = $studentRepository;
     }
-
-
 
     public function read(Request $request)
     {
@@ -99,8 +101,8 @@ class UpdateTeacherForWorkplaceLearningPeriodCSV extends Controller
 
     private function saveWPLP($wplp, $teacher) {
         $wplp->teacher_id = $teacher->student_id;
-        $this->workplaceLearningPeriodRepository->save($wplp);
-
+        //$this->workplaceLearningPeriodRepository->save($wplp);
+        $this->progressRegistrySystemService->saveWorkplaceLearningPeriod($wplp);
     }
  
 

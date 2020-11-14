@@ -116,7 +116,7 @@ class StudentSystemServiceImpl implements StudentSystemServiceInterface
     {
         // TODO: Implement getCohortByTimeslotId() method.
     }
-    public function cohortsAvailableForStudent(Student $student): Collection
+    public function cohortsAvailableForStudent(Student $student): array
     {
         $this->cohortRepository->cohortsAvailableForStudent($student);
     }
