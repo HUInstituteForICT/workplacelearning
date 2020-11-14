@@ -11,10 +11,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LearningActivity\ProducingCreateRequest;
 use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
-use App\Interfaces\ProgressRegistrySystemServiceInterface;
+//use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\LearningActivityProducing;
-use App\Repository\Eloquent\LearningActivityProducingRepository;
-use App\Repository\Eloquent\SavedLearningItemRepository;
+//use App\Repository\Eloquent\LearningActivityProducingRepository;
+//use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\AvailableProducingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
 use App\Services\CustomProducingEntityHandler;
