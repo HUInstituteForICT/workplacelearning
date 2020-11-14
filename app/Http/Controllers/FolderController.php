@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Folder;
 use App\FolderComment;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Notifications\FolderFeedbackGiven;
 use App\Notifications\FolderSharedWithTeacher;
 use App\Repository\Eloquent\CategoryRepository;
@@ -40,25 +41,31 @@ class FolderController extends Controller
      */
     private $folderCommentRepository;
 
-    /**
-     * @var SavedLearningItemRepository
-     */
-    private $savedLearningItemRepository;
+//    /**
+//     * @var SavedLearningItemRepository
+//     */
+//    private $savedLearningItemRepository;
 
     /**
      * @var TipRepository
      */
     private $tipRepository;
 
-    /**
-     * @var LearningActivityProducingRepository
-     */
-    private $learningActivityProducingRepository;
+//
+//    /**
+//     * @var LearningActivityProducingRepository
+//     */
+//    private $learningActivityProducingRepository;
+//
+//    /**
+//     * @var LearningActivityActingRepository
+//     */
+//    private $learningActivityActingRepository;
 
     /**
-     * @var LearningActivityActingRepository
+     * @var ProgressRegistrySystemServiceInterface
      */
-    private $learningActivityActingRepository;
+    private $ProgressRegistrySystemService;
 
 
     /**
@@ -76,29 +83,34 @@ class FolderController extends Controller
         CurrentUserResolver $currentUserResolver,
         FolderRepository $folderRepository,
         TipRepository $tipRepository,
-        SavedLearningItemRepository $savedLearningItemRepository,
+//        SavedLearningItemRepository $savedLearningItemRepository,
         FolderCommentRepository $folderCommentRepository,
-        LearningActivityProducingRepository $learningActivityProducingRepository,
-        LearningActivityActingRepository $learningActivityActingRepository,
+//        LearningActivityProducingRepository $learningActivityProducingRepository,
+//        LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        ProgressRegistrySystemServiceInterface $ProgressRegistrySystemService
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->folderRepository = $folderRepository;
         $this->folderCommentRepository = $folderCommentRepository;
-        $this->savedLearningItemRepository = $savedLearningItemRepository;
+//        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
-        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
-        $this->learningActivityActingRepository = $learningActivityActingRepository;
+//        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+//        $this->learningActivityActingRepository = $learningActivityActingRepository;
         $this->resourcePersonRepository = $resourcePersonRepository;
         $this->categoryRepository = $categoryRepository;
+        $this-> ProgressRegistrySystemService = $ProgressRegistrySystemService;
     }
 
     public function index(TipEvaluator $evaluator)
     {
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
-        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+//        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+
+        $sli = $this->ProgressRegistrySystemService->getSavedLearningItemByStudentId($student->student_id);
+
         $persons = $this->resourcePersonRepository->all();
         $categories = $this->categoryRepository->all();
         $associatedActivities = [];
@@ -108,12 +120,14 @@ class FolderController extends Controller
         })->pluck('item_id')->toArray();
 
         if ($student->educationProgram->educationprogramType->isActing()) {
-            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
+//            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
+            $allActivities = $this->ProgressRegistrySystemService->getLearningActivityActingForStudent($student);
             foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->laa_id] = $activity;
             }
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
-            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+//            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+            $allActivities = $this->ProgressRegistrySystemService->getActivitiesProducingForStudent($student);
             foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->lap_id] = $activity;
             }
@@ -261,7 +275,8 @@ class FolderController extends Controller
     {
         foreach ($request['check_list'] as $selectedItem) {
             /** @var SavedLearningItem $savedLearningItem */
-            $savedLearningItem = $this->savedLearningItemRepository->findById($selectedItem);
+//            $savedLearningItem = $this->savedLearningItemRepository->findById($selectedItem);
+            $savedLearningItem = $this->ProgressRegistrySystemService->getSavedLearningItemById($selectedItem);
             $savedLearningItem->folders()->attach($folderRepository->findById($request['selected_folder_id']));
             $savedLearningItem->save();
         }

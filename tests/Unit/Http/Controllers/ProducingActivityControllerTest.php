@@ -48,7 +48,7 @@ class ProducingActivityControllerTest extends TestCase
 
 //        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $session, $service );
         $producingActivityController->show($availableEntitiesFetcher, $exportBuilder);
     }
 
@@ -67,7 +67,7 @@ class ProducingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $session, $service );
         $request = $this->createMock(Request::class);
         $producingActivityController->edit($activity, $availableEntitiesFetcher, $request);
     }
@@ -95,7 +95,7 @@ class ProducingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $session, $service );
         $producingActivityController->progress($exportBuilder);
     }
 
@@ -121,7 +121,7 @@ class ProducingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $session, $service);
         $producingActivityController->create($request, $lapFactory, $customProducingEntityHandler);
     }
 
@@ -142,7 +142,7 @@ class ProducingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $session, $service);
         $producingActivityController->update($request, $activity, $lapUpdater);
     }
 
@@ -160,7 +160,7 @@ class ProducingActivityControllerTest extends TestCase
 
         $session = $this->createMock(\Illuminate\Contracts\Session\Session::class);
 
-        $producingActivityController = new ProducingActivityController($currentUserResolver, $service, $session);
+        $producingActivityController = new ProducingActivityController($currentUserResolver, $session, $service);
         $producingActivityController->delete($activity);
     }
 }
