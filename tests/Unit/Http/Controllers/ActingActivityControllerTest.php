@@ -9,7 +9,6 @@ use App\Http\Requests\LearningActivity\ActingCreateRequest;
 use App\Http\Requests\LearningActivity\ActingUpdateRequest;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\LearningActivityActing;
-use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\AvailableActingEntitiesFetcher;
 use App\Services\CurrentUserResolver;
