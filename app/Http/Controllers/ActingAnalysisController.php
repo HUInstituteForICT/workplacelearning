@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Analysis\Acting\ActingAnalysis;
 use App\Analysis\Acting\ActingAnalysisCollector;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\CurrentPeriodResolver;
 use App\Tips\Services\ApplicableTipFetcher;
@@ -31,16 +32,23 @@ class ActingAnalysisController
      */
     private $redirector;
 
-    private $savedLearningItemRepository;
+//    private $savedLearningItemRepository;
+
+    /**
+     * @var ProgressRegistrySystemServiceInterface
+     */
+    private $progressRegistrySystemService;
 
     public function __construct(
         CurrentPeriodResolver $currentPeriodResolver,
         Redirector $redirector,
-        SavedLearningItemRepository $savedLearningItemRepository
+        ProgressRegistrySystemServiceInterface $progressRegistrySystemService
+//        SavedLearningItemRepository $savedLearningItemRepository
     ) {
         $this->currentPeriodResolver = $currentPeriodResolver;
         $this->redirector = $redirector;
-        $this->savedLearningItemRepository = $savedLearningItemRepository;
+        $this->progressRegistrySystemService = $progressRegistrySystemService;
+//        $this->savedLearningItemRepository = $savedLearningItemRepository;
     }
 
     public function showChoiceScreen()
@@ -93,7 +101,7 @@ class ActingAnalysisController
 
         $savedTips = [];
         foreach ($evaluatedTips as $tip) {
-            $savedTips[$tip->getTip()->id] = $this->savedLearningItemRepository->itemExists('tip', $tip->getTip()->id,
+            $savedTips[$tip->getTip()->id] = $this->progressRegistrySystemService->savedLearningItemExists('tip', $tip->getTip()->id,
                 $period->student->student_id);
         }
 

@@ -49,14 +49,17 @@ interface ProgressRegistrySystemServiceInterface
     public function getEarliestActivityProducingForStudent(Student $student): ?LearningActivityProducing;
     public function getLatestActivityProducingForStudent(Student $student): ?LearningActivityProducing;
     public function deleteLearningActivityProducing(LearningActivityProducing $learningActivityProducing): bool;
+    public function saveLearningActivityProducing(LearningActivityProducing $learningActivityProducing): bool;
 
     //TODO Workplace domain
     public function getWorkPlacesByStudentId(int $studentId):Collection;
     public function updateWorkplace(Workplace $workplace, array $data):bool;
+    public function saveWorkplace(Workplace $workplace):bool;
 
     //TODO Timeslot domain
     public function getTimeslotsByEPId(int $epId):Collection;
     public function getTimeslotsByCohortId(int $cohortId):Collection;
+    public function getTimeslotsAvailableForStudent(Student $student):array;
 
     //TODO SavedLearningItem domain
     public function getSavedLearningItemByFolderId(int $folderId): SavedLearningItem;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Events\LearningActivityProducingCreated;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Services\Factories\ChainFactory;
 
@@ -14,17 +15,24 @@ class AttachBusyActivityToNewChain
      * @var ChainFactory
      */
     private $chainFactory;
+//    /**
+//     * @var LearningActivityProducingRepository
+//     */
+//    private $learningActivityProducingRepository;
+
     /**
-     * @var LearningActivityProducingRepository
+     * @var ProgressRegistrySystemServiceInterface
      */
-    private $learningActivityProducingRepository;
+    private $progressRegistrySystemService;
 
     public function __construct(
         ChainFactory $chainFactory,
-        LearningActivityProducingRepository $learningActivityProducingRepository
+        ProgressRegistrySystemServiceInterface $progressRegistrySystemService
+//        LearningActivityProducingRepository $learningActivityProducingRepository
     ) {
         $this->chainFactory = $chainFactory;
-        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+        $this->progressRegistrySystemService = $progressRegistrySystemService;
+//        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
     }
 
     public function handle(LearningActivityProducingCreated $event): void
@@ -37,7 +45,8 @@ class AttachBusyActivityToNewChain
             ]);
 
             $activity->chain()->associate($chain);
-            $this->learningActivityProducingRepository->save($activity);
+//            $this->learningActivityProducingRepository->save($activity);
+            $this->progressRegistrySystemService->saveLearningActivityProducing($activity);
         }
     }
 

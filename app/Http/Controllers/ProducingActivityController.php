@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LearningActivity\ProducingCreateRequest;
 use App\Http\Requests\LearningActivity\ProducingUpdateRequest;
 //use App\Interfaces\ProgressRegistrySystemServiceInterface;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\LearningActivityProducing;
 //use App\Repository\Eloquent\LearningActivityProducingRepository;
 //use App\Repository\Eloquent\SavedLearningItemRepository;
@@ -52,7 +53,7 @@ class ProducingActivityController
 //    private $savedLearningItemRepository;
 
     /**
-     * @var ProgressRegistrySystemServiceImpl
+     * @var ProgressRegistrySystemServiceInterface
      */
     private $progressRegistrySystemService;
 
@@ -61,7 +62,7 @@ class ProducingActivityController
 //        LearningActivityProducingRepository $learningActivityProducingRepository,
 //        SavedLearningItemRepository $savedLearningItemRepository,
         Session $session,
-        ProgressRegistrySystemServiceImpl $progressRegistrySystemService
+        ProgressRegistrySystemServiceInterface $progressRegistrySystemService
     ) {
         $this->currentUserResolver = $currentUserResolver;
 //        $this->learningActivityProducingRepository = $learningActivityProducingRepository;

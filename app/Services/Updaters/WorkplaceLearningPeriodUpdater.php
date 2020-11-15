@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Updaters;
 
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
 use App\Repository\Eloquent\WorkplaceRepository;
 use App\WorkplaceLearningPeriod;
@@ -15,17 +16,24 @@ class WorkplaceLearningPeriodUpdater
      */
     private $workplaceLearningPeriodRepository;
 
+//    /**
+//     * @var WorkplaceRepository
+//     */
+//    private $workplaceRepository;
+
     /**
-     * @var WorkplaceRepository
+     * @var ProgressRegistrySystemServiceInterface
      */
-    private $workplaceRepository;
+    private $progressRegistrySystemService;
 
     public function __construct(
         WorkplaceLearningPeriodRepository $workplaceLearningPeriodRepository,
-        WorkplaceRepository $workplaceRepository
+//        WorkplaceRepository $workplaceRepository,
+        ProgressRegistrySystemServiceInterface $progressRegistrySystemService
     ) {
         $this->workplaceLearningPeriodRepository = $workplaceLearningPeriodRepository;
-        $this->workplaceRepository = $workplaceRepository;
+//        $this->workplaceRepository = $workplaceRepository;
+        $this->progressRegistrySystemService = $progressRegistrySystemService;
     }
 
     public function update(WorkplaceLearningPeriod $workplaceLearningPeriod, array $data): void
@@ -43,7 +51,8 @@ class WorkplaceLearningPeriodUpdater
         $workplace->contact_phone = $data['workplace']['phone'];
         $workplace->contact_email = $data['workplace']['email'];
 
-        $this->workplaceRepository->save($workplace);
+//        $this->workplaceRepository->save($workplace);
+        $this->progressRegistrySystemService->saveWorkplace($workplace);
 
         if (isset($data['workplaceLearningPeriod']['cohort_id'])) {
             $workplaceLearningPeriod->cohort()->associate($data['workplaceLearningPeriod']['cohort_id']);

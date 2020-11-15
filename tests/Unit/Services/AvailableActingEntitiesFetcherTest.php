@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test\Unit\Services;
 
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Repository\Eloquent\CompetenceDescriptionRepository;
 use App\Repository\Eloquent\CompetenceRepository;
 use App\Repository\Eloquent\LearningGoalRepository;
@@ -27,8 +28,11 @@ class AvailableActingEntitiesFetcherTest extends TestCase
         $resourcePersonRepository = $this->createMock(ResourcePersonRepository::class);
         $resourcePersonRepository->expects(self::once())->method('resourcePersonsAvailableForStudent')->with($student);
 
-        $timeslotRepository = $this->createMock(TimeslotRepository::class);
-        $timeslotRepository->expects(self::once())->method('timeslotsAvailableForStudent')->with($student);
+//        $timeslotRepository = $this->createMock(TimeslotRepository::class);
+//        $timeslotRepository->expects(self::once())->method('timeslotsAvailableForStudent')->with($student);
+
+        $progressRegistrySystemService = $this->createMock(ProgressRegistrySystemServiceInterface::class);
+        $progressRegistrySystemService->expects(self::once())->method('getTimeslotsAvailableForStudent')->with($student);
 
         $resourceMaterialRepository = $this->createMock(ResourceMaterialRepository::class);
         $resourceMaterialRepository->expects(self::once())->method('resourceMaterialsAvailableForStudent')->with($student);
@@ -43,7 +47,7 @@ class AvailableActingEntitiesFetcherTest extends TestCase
         $competenceDescriptionRepository->expects(self::once())->method('applicableCompetenceDescriptionForStudent')->with($student);
 
         $availableActingEntitiesFetcher = new AvailableActingEntitiesFetcher($currentUserResolver,
-            $resourcePersonRepository, $timeslotRepository,
+            $resourcePersonRepository, $progressRegistrySystemService,
             $resourceMaterialRepository, $learningGoalRepository,
             $competenceRepository, $competenceDescriptionRepository);
 

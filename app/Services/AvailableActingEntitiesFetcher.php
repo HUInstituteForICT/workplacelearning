@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Repository\Eloquent\CompetenceDescriptionRepository;
 use App\Repository\Eloquent\CompetenceRepository;
 use App\Repository\Eloquent\LearningGoalRepository;
@@ -21,10 +22,10 @@ class AvailableActingEntitiesFetcher
      * @var ResourcePersonRepository
      */
     private $resourcePersonRepository;
-    /**
-     * @var TimeslotRepository
-     */
-    private $timeslotRepository;
+//    /**
+//     * @var TimeslotRepository
+//     */
+//    private $timeslotRepository;
     /**
      * @var ResourceMaterialRepository
      */
@@ -42,10 +43,16 @@ class AvailableActingEntitiesFetcher
      */
     private $competenceDescriptionRepository;
 
+    /**
+     * @var ProgressRegistrySystemServiceInterface
+     */
+    private $progressRegistrySystemService;
+
     public function __construct(
         CurrentUserResolver $currentUserResolver,
         ResourcePersonRepository $resourcePersonRepository,
-        TimeslotRepository $timeslotRepository,
+        ProgressRegistrySystemServiceInterface $progressRegistrySystemService,
+//        TimeslotRepository $timeslotRepository,
         ResourceMaterialRepository $resourceMaterialRepository,
         LearningGoalRepository $learningGoalRepository,
         CompetenceRepository $competenceRepository,
@@ -53,7 +60,8 @@ class AvailableActingEntitiesFetcher
     ) {
         $this->currentUserResolver = $currentUserResolver;
         $this->resourcePersonRepository = $resourcePersonRepository;
-        $this->timeslotRepository = $timeslotRepository;
+        $this->progressRegistrySystemService = $progressRegistrySystemService;
+//        $this->timeslotRepository = $timeslotRepository;
         $this->resourceMaterialRepository = $resourceMaterialRepository;
         $this->learningGoalRepository = $learningGoalRepository;
         $this->competenceRepository = $competenceRepository;
@@ -65,7 +73,8 @@ class AvailableActingEntitiesFetcher
         $student = $this->currentUserResolver->getCurrentUser();
 
         $resourcePersons = $this->resourcePersonRepository->resourcePersonsAvailableForStudent($student);
-        $timeslots = $this->timeslotRepository->timeslotsAvailableForStudent($student);
+//        $timeslots = $this->timeslotRepository->timeslotsAvailableForStudent($student);
+        $timeslots = $this->progressRegistrySystemService->getTimeslotsAvailableForStudent($student);
         $resourceMaterials = $this->resourceMaterialRepository->resourceMaterialsAvailableForStudent($student);
         $learningGoals = $this->learningGoalRepository->learningGoalsAvailableForStudent($student);
         $competencies = $this->competenceRepository->competenciesAvailableToStudent($student);

@@ -16,6 +16,7 @@ use App\Services\EvidenceUploadHandler;
 use App\Services\Factories\LAAFactory;
 use App\Services\LAAUpdater;
 use App\Services\LearningActivityActingExportBuilder;
+use App\Services\ProgressRegistrySystemServiceImpl;
 use App\Student;
 use App\WorkplaceLearningPeriod;
 use Illuminate\Contracts\Session\Session;
@@ -66,7 +67,7 @@ class ActingActivityControllerTest extends TestCase
 
         $session = $this->createMock(Session::class);
 
-        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
+//        $savedLearningItemRepository = $this->createMock(SavedLearningItemRepository::class);
 
         $actingActivityController = new ActingActivityController(
             $this->createMock(Redirector::class),

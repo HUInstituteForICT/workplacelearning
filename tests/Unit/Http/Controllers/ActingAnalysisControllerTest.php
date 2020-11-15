@@ -6,6 +6,7 @@ namespace Test\Unit\Http\Controllers;
 
 use App\Cohort;
 use App\Http\Controllers\ActingAnalysisController;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Services\CurrentPeriodResolver;
 use App\Tips\Services\ApplicableTipFetcher;
@@ -35,7 +36,7 @@ class ActingAnalysisControllerTest extends TestCase
         $redirector = $this->createMock(Redirector::class);
         $redirector->expects(self::once())->method('route')->with('home-acting')->willReturn($redirectResponse);
 
-        $actingAnalysisController = new ActingAnalysisController($periodResolver, $redirector, $this->createMock(SavedLearningItemRepository::class));
+        $actingAnalysisController = new ActingAnalysisController($periodResolver, $redirector, $this->createMock(ProgressRegistrySystemServiceInterface::class));
 
         $actingAnalysisController->showChoiceScreen();
         $actingAnalysisController->showChoiceScreen();
@@ -69,7 +70,7 @@ class ActingAnalysisControllerTest extends TestCase
         $tipPicker = $this->createMock(TipPicker::class);
         $tipPicker->expects(self::once())->method('markTipsViewed');
 
-        $actingAnalysisController = new ActingAnalysisController($periodResolver, $redirector, $this->createMock(SavedLearningItemRepository::class));
+        $actingAnalysisController = new ActingAnalysisController($periodResolver, $redirector, $this->createMock(ProgressRegistrySystemServiceInterface::class));
 
         $actingAnalysisController->showDetail('all', 'all', $applicableTipFetcher, $tipPicker);
 

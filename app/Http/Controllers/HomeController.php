@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BugReportRequest;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Mail\FeedbackGiven;
 use App\Repository\Eloquent\LikeRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
@@ -44,7 +45,8 @@ class HomeController extends Controller
     public function showProducingTemplate(
         ApplicableTipFetcher $applicableTipFetcher,
         LikeRepository $likeRepository,
-        SavedLearningItemRepository $savedLearningItemRepository
+        ProgressRegistrySystemServiceInterface $progressRegistrySystemService
+//        SavedLearningItemRepository $savedLearningItemRepository
     ) {
         $student = $this->currentUserResolver->getCurrentUser();
 
@@ -60,7 +62,7 @@ class HomeController extends Controller
 
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
             if ($applicableEvaluatedTips->count() != 0) {
-                $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id,
+                $itemExists = $progressRegistrySystemService->savedLearningItemExists('tip', $evaluatedTip->getTip()->id,
                     $student->student_id);
             }
         }
@@ -74,7 +76,8 @@ class HomeController extends Controller
     public function showActingTemplate(
         ApplicableTipFetcher $applicableTipFetcher,
         LikeRepository $likeRepository,
-        SavedLearningItemRepository $savedLearningItemRepository
+        ProgressRegistrySystemServiceInterface $progressRegistrySystemService
+//        SavedLearningItemRepository $savedLearningItemRepository
     ) {
         $student = $this->currentUserResolver->getCurrentUser();
         if ($student->hasCurrentWorkplaceLearningPeriod() && $student->getCurrentWorkplaceLearningPeriod()->hasLoggedHours()) {
@@ -92,7 +95,7 @@ class HomeController extends Controller
             /** @var EvaluatedTip|null $evaluatedTip */
             $evaluatedTip = $applicableEvaluatedTips->count() > 0 ? $applicableEvaluatedTips->random(null) : null;
             if ($evaluatedTip) {
-                $itemExists = $savedLearningItemRepository->itemExists('tip', $evaluatedTip->getTip()->id,
+                $itemExists = $progressRegistrySystemService->savedLearningItemExists('tip', $evaluatedTip->getTip()->id,
                     $student->student_id);
             }
         }

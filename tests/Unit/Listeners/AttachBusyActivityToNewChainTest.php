@@ -6,6 +6,7 @@ namespace App\Listeners;
 
 use App\Chain;
 use App\Events\LearningActivityProducingCreated;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\LearningActivityProducing;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Services\Factories\ChainFactory;
@@ -30,14 +31,17 @@ class AttachBusyActivityToNewChainTest extends TestCase
             ->willReturnOnConsecutiveCalls(null, $status, 'joejoe', 1);
         $activity->expects(self::once())->method('chain');
 
-        $learningActivityProducingRepository = $this->createMock(LearningActivityProducingRepository::class);
-        $learningActivityProducingRepository->expects(self::once())->method('save')->with($activity);
+//        $learningActivityProducingRepository = $this->createMock(LearningActivityProducingRepository::class);
+//        $learningActivityProducingRepository->expects(self::once())->method('save')->with($activity);
+
+        $progressRegistrySystemService = $this->createMock(ProgressRegistrySystemServiceInterface::class);
+        $progressRegistrySystemService->expects(self::once())->method('saveLearningActivityProducing')->with($activity);
 
         $event = $this->createMock(LearningActivityProducingCreated::class);
         $event->expects(self::once())->method('getActivity')->willReturn($activity);
 
         $attachBusyActivityToNewChain = new AttachBusyActivityToNewChain($chainFactory,
-            $learningActivityProducingRepository);
+            $progressRegistrySystemService);
 
         $attachBusyActivityToNewChain->handle($event);
     }

@@ -248,6 +248,10 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         return $this->timeslotRepository->get();
     }
 
+    public function getTimeslotsAvailableForStudent(Student $student): array {
+        return $this->timeslotRepository->timeslotsAvailableForStudent($student);
+    }
+
     public function getSavedLearningItemByFolderId(int $folderId): SavedLearningItem
     {
         // Placeholder
@@ -291,6 +295,10 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         return $this->workplaceRepository->update($workplace, $data);
     }
 
+    public function saveWorkplace(Workplace $workplace): bool {
+        return $this->workplaceRepository->save($workplace);
+    }
+
     public function saveSavedLearningItem(SavedLearningItem $savedLearningItem): bool
     {
         return $this->savedLearningItemRepository->save($savedLearningItem);
@@ -314,6 +322,11 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function deleteLearningActivityProducing(LearningActivityProducing $learningActivityProducing): bool {
         return $this->learningActivityProducingRepository->delete($learningActivityProducing);
+    }
+
+    public function saveLearningActivityProducing(LearningActivityProducing $learningActivityProducing): bool
+    {
+        return $this->learningActivityProducingRepository->save($learningActivityProducing);
     }
 
     public function savedLearningItemExists($category, $item_id, $student_id): bool {
