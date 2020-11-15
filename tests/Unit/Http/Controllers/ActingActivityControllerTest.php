@@ -163,26 +163,24 @@ class ActingActivityControllerTest extends TestCase
         $actingActivityController->update($request, $laa, $evidenceUploadHandler, $LAAUpdater);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $redirector = $this->createMock(Redirector::class);
         $redirector->expects(self::once())->method('route')->with('progress-acting')->willReturn($this->createMock(RedirectResponse::class));
 
-        $laa = new LearningActivityActing();
+        $laa = $this->createMock(LearningActivityActing::class);
 
 //        $learningActivityRepository = $this->createMock(LearningActivityActingRepository::class);
 //        $learningActivityRepository->expects(self::once())->method('delete')->with($laa);
 
-        $ProgressRegistrySystemService = $this->createMock(ProgressRegistrySystemServiceInterface::class);
-        $ProgressRegistrySystemService->expects(self::once())->method("deleteLearningActivityActing")->with($laa);
-
-        $session = $this->createMock(Session::class);
+        $progressRegistrySystemService = $this->createMock(ProgressRegistrySystemServiceInterface::class);
+        $progressRegistrySystemService->expects(self::once())->method("deleteLearningActivityActing")->with($laa);
 
         $actingActivityController = new ActingActivityController(
-            $this->createMock(Redirector::class),
+            $redirector,
             $this->createMock(CurrentUserResolver::class),
-            $this->createMock(ProgressRegistrySystemServiceInterface::class),
-            $session
+            $progressRegistrySystemService,
+            $this->createMock(Session::class)
         );
 
         $actingActivityController->delete($laa);
