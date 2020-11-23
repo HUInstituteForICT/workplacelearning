@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Folder;
 use App\FolderComment;
+use App\Interfaces\FolderSystemServiceInterface;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Notifications\FolderFeedbackGiven;
 use App\Notifications\FolderSharedWithTeacher;
@@ -31,10 +32,16 @@ class FolderController extends Controller
      */
     private $currentUserResolver;
 
+//    /**
+//     * @var FolderRepository
+//     */
+//    private $folderRepository;
+
     /**
-     * @var FolderRepository
+     * @var FolderSystemServiceInterface
      */
-    private $folderRepository;
+    private $folderSystemService;
+
 
     /**
      * @var FolderCommentRepository
@@ -81,7 +88,8 @@ class FolderController extends Controller
 
     public function __construct(
         CurrentUserResolver $currentUserResolver,
-        FolderRepository $folderRepository,
+//        FolderRepository $folderRepository,
+        FolderSystemServiceInterface $folderSystemService,
         TipRepository $tipRepository,
 //        SavedLearningItemRepository $savedLearningItemRepository,
         FolderCommentRepository $folderCommentRepository,
@@ -92,7 +100,8 @@ class FolderController extends Controller
         ProgressRegistrySystemServiceInterface $ProgressRegistrySystemService
     ) {
         $this->currentUserResolver = $currentUserResolver;
-        $this->folderRepository = $folderRepository;
+//        $this->folderRepository = $folderRepository;
+        $this->folderSystemService = $folderSystemService;
         $this->folderCommentRepository = $folderCommentRepository;
 //        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
@@ -166,7 +175,7 @@ class FolderController extends Controller
         $folder->description = $request['folder_description'] ?? '';
         $folder->student_id = $student->student_id;
 
-        $this->folderRepository->save($folder);
+        $this->folderSystemService->saveFolder($folder);
 
         session()->flash('success', __('folder.folder-created'));
 
@@ -190,7 +199,7 @@ class FolderController extends Controller
 
 
         /** @var Folder $folder */
-        $folder = $this->folderRepository->findById($request['folder_id']);
+        $folder = $this->folderSystemService->findFolderById($request['folder_id']);
         $folder->teacher_id = (int) $request['teacher'];
         $folder->save();
 
@@ -201,9 +210,9 @@ class FolderController extends Controller
         return redirect('folders');
     }
 
-    public function delete(int $id, FolderRepository $folderRepository): RedirectResponse
+    public function delete(int $id): RedirectResponse
     {
-        $folder = $folderRepository->findById($id, true);
+        $folder = $this->folderSystemService->findFolderById($id, true);
         if (!$folder) {
             throw new \InvalidArgumentException('Unknown folder');
         }
@@ -220,10 +229,10 @@ class FolderController extends Controller
         }
 
         if ($folder->trashed()) {
-            $this->folderRepository->restore($folder);
+            $this->folderSystemService->restoreFolder($folder);
             session()->flash('success', __('folder.folder-deleted'));
         } else {
-            $this->folderRepository->delete($folder);
+            $this->folderSystemService->deleteFolder($folder);
             session()->flash('success', __('folder.folder-deleted'));
         }
 
@@ -235,7 +244,7 @@ class FolderController extends Controller
     {
         $currentUser = $this->currentUserResolver->getCurrentUser();
 
-        $folder = $this->folderRepository->findById($request['folder_id']);
+        $folder = $this->folderSystemService->findFolderById($request['folder_id']);
         $student_id = $folder->student_id;
 
         $folderComment = new FolderComment();
@@ -266,18 +275,18 @@ class FolderController extends Controller
         }
 
         $folder->teacher_id = null;
-        $this->folderRepository->save($folder);
+        $this->folderSystemService->saveFolder($folder);
 
         return redirect('folders');
     }
 
-    public function AddItemsToFolder(Request $request, FolderRepository $folderRepository)
+    public function AddItemsToFolder(Request $request)
     {
         foreach ($request['check_list'] as $selectedItem) {
             /** @var SavedLearningItem $savedLearningItem */
 //            $savedLearningItem = $this->savedLearningItemRepository->findById($selectedItem);
             $savedLearningItem = $this->ProgressRegistrySystemService->getSavedLearningItemById($selectedItem);
-            $savedLearningItem->folders()->attach($folderRepository->findById($request['selected_folder_id']));
+            $savedLearningItem->folders()->attach($this->folderSystemService->findFolderById($request['selected_folder_id']));
             $savedLearningItem->save();
         }
 
