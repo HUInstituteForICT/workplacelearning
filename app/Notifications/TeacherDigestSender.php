@@ -25,18 +25,18 @@ class TeacherDigestSender
     public function sendNotifications(array $notifications, Student $user): void
     {
 
-        // $usableNotifications = array_filter($notifications, function (DatabaseNotification $notification) {
-        //     return $notification->type === FolderSharedWithTeacher::class;
-        // });
+        $usableNotifications = array_filter($notifications, function (DatabaseNotification $notification) {
+            return $notification->type === FolderSharedWithTeacher::class;
+        });
 
-        // foreach ($usableNotifications as $notification) {
-        //     $notification->markAsRead();
-        // }
+        if( count($usableNotifications) > 0 ) {
 
-        $this->mailer->to($user->email)->send(new TeacherDigest($user, $notifications));
+            $this->mailer->to($user->email)->send(new TeacherDigest($user, $usableNotifications));
 
-        foreach ($notifications as $notification) {
-            $notification->markAsRead();
+            foreach ($usableNotifications as $notification) {
+                $notification->markAsRead();
+            }
+
         }
     }
 }
