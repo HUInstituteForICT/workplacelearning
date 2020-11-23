@@ -1,10 +1,13 @@
 {
-    "/js/app.js": "/js/app.js?id=a380be618f514df1c23d",
-    "/css/style.css": "/css/style.css?id=26f96fc4b0d47498e871",
-    "/css/animations.css": "/css/animations.css?id=493b7127f3fb8b5f6357",
-    "/css/fonts.css": "/css/fonts.css?id=a266b6b96fa88cb0a413",
-    "/css/weekstaten.css": "/css/weekstaten.css?id=121d90941a55d706c308",
-    "/css/PDFstyle.css": "/css/PDFstyle.css?id=b633507551c57003b01e",
-    "/js/manifest.js": "/js/manifest.js?id=41f053ba9a94d81b39f8",
-    "/js/vendor.js": "/js/vendor.js?id=faca0c7eb0321edd2daa"
+    "/js/app.js": "/js/app.js?id=962da35e88911d18141f",
+    "/css/style.css": "/css/style.css?id=7d08c777701ad5b8af4a",
+    "/css/animations.css": "/css/animations.css?id=f202b953976c157d1c1d",
+    "/css/fonts.css": "/css/fonts.css?id=b7c5149c31caaab16bc2",
+    "/css/weekstaten.css": "/css/weekstaten.css?id=c149d858394cc74aece5",
+    "/css/PDFstyle.css": "/css/PDFstyle.css?id=0299ab259a14231c8019",
+    "/js/app.js.map": "/js/app.js.map?id=bf66f46c09e70c37ee14",
+    "/js/manifest.js": "/js/manifest.js?id=89712bc6d8c588400cae",
+    "/js/manifest.js.map": "/js/manifest.js.map?id=2d58fed8b8c4a064950d",
+    "/js/vendor.js": "/js/vendor.js?id=5908fe6470ecf487964b",
+    "/js/vendor.js.map": "/js/vendor.js.map?id=3de21957ac6ade5a9a12"
 }
