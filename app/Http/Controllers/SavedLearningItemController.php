@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Folder;
+use App\Interfaces\LearningSystemServiceInterface;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
-use App\Repository\Eloquent\CategoryRepository;
+//use App\Repository\Eloquent\CategoryRepository;
 use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 //use App\Repository\Eloquent\LearningActivityProducingRepository;
@@ -59,10 +60,15 @@ class SavedLearningItemController extends Controller
      */
     private $resourcePersonRepository;
 
+//    /**
+//     * @var CategoryRepository
+//     */
+//    private $categoryRepository;
+
     /**
-     * @var CategoryRepository
+     * @var LearningSystemServiceInterface
      */
-    private $categoryRepository;
+    private $learningSystemService;
 
 
     public function __construct(
@@ -72,7 +78,8 @@ class SavedLearningItemController extends Controller
 //        LearningActivityProducingRepository $learningActivityProducingRepository,
 //        LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
-        CategoryRepository $categoryRepository,
+        LearningSystemServiceInterface $learningSystemService,
+//        CategoryRepository $categoryRepository,
         ProgressRegistrySystemServiceInterface $ProgressRegistrySystemService
     ) {
         $this->currentUserResolver = $currentUserResolver;
@@ -81,7 +88,8 @@ class SavedLearningItemController extends Controller
 //        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
 //        $this->learningActivityActingRepository = $learningActivityActingRepository;
         $this->resourcePersonRepository = $resourcePersonRepository;
-        $this->categoryRepository = $categoryRepository;
+        $this->learningSystemService = $learningSystemService;
+//        $this->categoryRepository = $categoryRepository;
         $this->progressRegistryService = $ProgressRegistrySystemService;
     }
 
@@ -95,8 +103,8 @@ class SavedLearningItemController extends Controller
 
         //TODO StudentSystemService impl
         $persons = $this->resourcePersonRepository->all();
-        //TODO LearningSystemService impl
-        $categories = $this->categoryRepository->all();
+        //$categories = $this->categoryRepository->all();
+        $categories = $this->learningSystemService->getAllCategories();
 
         $associatedActivities = [];
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {

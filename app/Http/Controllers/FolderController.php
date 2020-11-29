@@ -7,10 +7,11 @@ namespace App\Http\Controllers;
 use App\Folder;
 use App\FolderComment;
 use App\Interfaces\FolderSystemServiceInterface;
+use App\Interfaces\LearningSystemServiceInterface;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Notifications\FolderFeedbackGiven;
 use App\Notifications\FolderSharedWithTeacher;
-use App\Repository\Eloquent\CategoryRepository;
+//use App\Repository\Eloquent\CategoryRepository;
 use App\Repository\Eloquent\FolderCommentRepository;
 use App\Repository\Eloquent\FolderRepository;
 //use App\Repository\Eloquent\LearningActivityActingRepository;
@@ -80,10 +81,15 @@ class FolderController extends Controller
      */
     private $resourcePersonRepository;
 
+//    /**
+//     * @var CategoryRepository
+//     */
+//    private $categoryRepository;
+
     /**
-     * @var CategoryRepository
+     * @var LearningSystemServiceInterface
      */
-    private $categoryRepository;
+    private $learningSystemService;
 
 
     public function __construct(
@@ -96,7 +102,8 @@ class FolderController extends Controller
 //        LearningActivityProducingRepository $learningActivityProducingRepository,
 //        LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
-        CategoryRepository $categoryRepository,
+        LearningSystemServiceInterface $learningSystemService,
+//        CategoryRepository $categoryRepository,
         ProgressRegistrySystemServiceInterface $ProgressRegistrySystemService
     ) {
         $this->currentUserResolver = $currentUserResolver;
@@ -108,7 +115,8 @@ class FolderController extends Controller
 //        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
 //        $this->learningActivityActingRepository = $learningActivityActingRepository;
         $this->resourcePersonRepository = $resourcePersonRepository;
-        $this->categoryRepository = $categoryRepository;
+//        $this->categoryRepository = $categoryRepository;
+        $this->learningSystemService = $learningSystemService;
         $this-> ProgressRegistrySystemService = $ProgressRegistrySystemService;
     }
 
@@ -121,7 +129,9 @@ class FolderController extends Controller
         $sli = $this->ProgressRegistrySystemService->getSavedLearningItemByStudentId($student->student_id);
 
         $persons = $this->resourcePersonRepository->all();
-        $categories = $this->categoryRepository->all();
+
+//        $categories = $this->categoryRepository->all();
+        $categories = $this->learningSystemService->getAllCategories();
         $associatedActivities = [];
 
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {

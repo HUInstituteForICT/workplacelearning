@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\LearningSystemServiceInterface;
+use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Services\CurrentUserResolver;
 use App\Student;
 use App\WorkplaceLearningPeriod;
@@ -15,7 +17,7 @@ use App\Repository\Eloquent\TipRepository;
 use App\Repository\Eloquent\ResourcePersonRepository;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Repository\Eloquent\LearningActivityActingRepository;
-use App\Repository\Eloquent\CategoryRepository;
+//use App\Repository\Eloquent\CategoryRepository;
 use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Tips\Services\TipEvaluator;
 use App\Analysis\Producing\ProducingAnalysisCollector;
@@ -52,10 +54,17 @@ class StudentDetails extends Controller
      */
     private $resourcePersonRepository;
 
-     /**
-     * @var CategoryRepository
+//    private $categoryRepository;
+
+    /**
+     * @var LearningSystemServiceInterface
      */
-    private $categoryRepository;
+    private $learningSystemService;
+
+    /**
+     * @var ProgressRegistrySystemServiceInterface
+     */
+    private $progressRegistrySystemService;
 
     /** @var TipRepository */
     private $tipRepository;
@@ -67,7 +76,9 @@ class StudentDetails extends Controller
         LearningActivityProducingRepository $learningActivityProducingRepository,
         LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
-        CategoryRepository $categoryRepository)
+//        CategoryRepository $categoryRepository
+        LearningSystemServiceInterface $learningSystemService,
+        ProgressRegistrySystemServiceInterface $progressRegistrySystemService)
 
     {
         $this->currentUserResolver = $currentUserResolver;
@@ -76,13 +87,16 @@ class StudentDetails extends Controller
         $this->learningActivityProducingRepository = $learningActivityProducingRepository;
         $this->learningActivityActingRepository = $learningActivityActingRepository;
         $this->resourcePersonRepository = $resourcePersonRepository;
-        $this->categoryRepository = $categoryRepository;
+        $this->learningSystemService = $learningSystemService;
+        $this->progressRegistrySystemService = $progressRegistrySystemService;
+//        $this->categoryRepository = $categoryRepository;
     }
 
     public function __invoke(Student $student, TipEvaluator $evaluator, ProducingAnalysisCollector $producingAnalysisCollector)
     {
         $teacher = $this->currentUserResolver->getCurrentUser();
-        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+//        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
+        $sli = $this->progressRegistrySystemService->getSavedLearningItemByStudentId($student->student_id);
 
         // all wplps of the student where the logged-in teacher is the supervisor.
         $workplaces = $student->getWorkplaceLearningPeriods()
@@ -103,7 +117,8 @@ class StudentDetails extends Controller
         });
 
         $persons = $this->resourcePersonRepository->all();
-        $categories = $this->categoryRepository->all();
+//        $categories = $this->categoryRepository->all();
+        $categories = $this->learningSystemService->getAllCategories();
         $associatedActivities = [];
 
         $savedActivitiesIds = $sli->filter(function (SavedLearningItem $item) {
