@@ -14,7 +14,7 @@ interface LearningSystemServiceInterface
     public function getAllCompetences(): Collection;
     public function getAllCompetenceDescriptions(): Collection;
     public function getAllEducationPrograms(): Collection;
-    public function getAllCategories(): Collection;
+    public function getAllCategories(): array;
     public function getAllLearningGoals(): Collection;
 
     //Competence domain

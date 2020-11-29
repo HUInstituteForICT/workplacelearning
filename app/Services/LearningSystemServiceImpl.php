@@ -9,6 +9,7 @@ use App\EducationProgram;
 use App\EducationProgramsService;
 use App\Interfaces\LearningSystemServiceInterface;
 use App\LearningGoal;
+use App\Repository\Eloquent\CategoryRepository;
 use phpDocumentor\Reflection\Types\Collection;
 
 class LearningSystemServiceImpl implements LearningSystemServiceInterface
@@ -23,9 +24,15 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
      */
     private $educationProgramsService;
 
-    public function __construct(LearningGoalUpdater $learningGoalUpdater, EducationProgramsService $educationProgramsService){
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
+    public function __construct(LearningGoalUpdater $learningGoalUpdater, EducationProgramsService $educationProgramsService, CategoryRepository $categoryRepository){
         $this->learningGoalUpdater = $learningGoalUpdater;
         $this->educationProgramsService = $educationProgramsService;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function getLearningGoalsByWPLId(int $wplId): Collection
@@ -48,9 +55,9 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
         // TODO: Implement getAllEducationPrograms() method.
     }
 
-    public function getAllCategories(): Collection
+    public function getAllCategories(): array
     {
-        // TODO: Implement getAllCategories() method.
+        $this->categoryRepository->all();
     }
 
     public function getAllLearningGoals(): Collection
