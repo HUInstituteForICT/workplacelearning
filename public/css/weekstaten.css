@@ -1,1 +1,44 @@
-h1,h2,h3,h4{font-family:husansnormal;color:#e72e2a}div{position:relative}table td{padding:5px!important;border:1px solid #000;height:5%;text-align:left;vertical-align:top}tr{margin:0;padding:0}table{font-size:16px}thead{text-align:center;font-weight:700;background:#ccc;padding:3px}.full-width{width:100%}.last-row{page-break-after:always}.page-container{width:620px;height:900px;margin:75px 0 0 40px}.page-break{page-break-after:always}
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'husansnormal';
+  color: #e72e2a;
+}
+div {
+  position: relative;
+}
+table td {
+  padding: 5px !important;
+  border: 1px solid black;
+  height: 5%;
+  text-align: left;
+  vertical-align: top;
+}
+tr {
+  margin: 0;
+  padding: 0;
+}
+table {
+  font-size: 16px;
+}
+thead {
+  text-align: center;
+  font-weight: bold;
+  background: #CCCCCC;
+  padding: 3px;
+}
+.full-width {
+  width: 100%;
+}
+.last-row {
+  page-break-after: always;
+}
+.page-container {
+  width: 620px;
+  height: 900px;
+  margin: 75px 0 0 40px;
+}
+.page-break {
+  page-break-after: always;
+}
