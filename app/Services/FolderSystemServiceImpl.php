@@ -4,7 +4,9 @@
 namespace App\Services;
 
 use App\Folder;
+use App\FolderComment;
 use App\Interfaces\FolderSystemServiceInterface;
+use App\Repository\Eloquent\FolderCommentRepository;
 use App\Repository\Eloquent\FolderRepository;
 use phpDocumentor\Reflection\Types\Collection;
 
@@ -16,19 +18,32 @@ class FolderSystemServiceImpl implements FolderSystemServiceInterface
      */
     private $folderRepository;
 
+    /**
+     * @var FolderCommentRepository
+     */
+    private $folderCommentRepository;
+
     public function __construct(
-        FolderRepository $folderRepository
+        FolderRepository $folderRepository,
+        FolderCommentRepository $folderCommentRepository
     ){
         $this->folderRepository = $folderRepository;
+        $this->folderCommentRepository = $folderCommentRepository;
     }
 
     public function getAllFolderComments(): Collection
     {
-        // TODO: Implement getAllFolderComments() method.
+        return $this->folderCommentRepository->all();
     }
+
+    public function saveFolderComment(FolderComment $folderComment): bool
+    {
+        return $this->$this->folderCommentRepository->save($folderComment);
+    }
+
     public function getAllFolders(): Collection
     {
-        // TODO: Implement getAllFolders() method.
+        return $this->folderRepository->all();
     }
     public function getFolderCommentsByStudentId(int $studentId): Collection
     {

@@ -5,6 +5,7 @@ namespace App\Interfaces;
 
 
 use App\Folder;
+use App\FolderComment;
 use phpDocumentor\Reflection\Types\Collection;
 
 interface FolderSystemServiceInterface
@@ -14,6 +15,7 @@ interface FolderSystemServiceInterface
 
     //FolderComment domain
     public function getFolderCommentsByStudentId(int $studentId): Collection;
+    public function saveFolderComment(FolderComment  $folderComment) : bool;
 
     //Folder domain
     public function getFoldersByStudentId(int $studentId): Collection;
