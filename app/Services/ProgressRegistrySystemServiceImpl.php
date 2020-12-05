@@ -20,7 +20,7 @@ use App\Repository\Eloquent\WorkplaceRepository;
 use App\SavedLearningItem;
 use App\Student;
 use App\WorkplaceLearningPeriod;
-use phpDocumentor\Reflection\Types\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemServiceInterface
 {
@@ -199,7 +199,7 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
 
     public function saveWorkplaceLearningPeriod(WorkplaceLearningPeriod $workplaceLearningPeriod): bool
     {
-        $this->workplaceLearningPeriodRepository->save($workplaceLearningPeriod);
+        return $this->workplaceLearningPeriodRepository->save($workplaceLearningPeriod);
     }
 
     public function getLearningActivityActingsByCompetenceId(int $compId): Collection
@@ -257,7 +257,7 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
         return $this->savedLearningItemRepository->findById();
     }
 
-    public function getSavedLearningItemByStudentId(int $studentId): SavedLearningItem
+    public function getSavedLearningItemByStudentId(int $studentId): Collection
     {
         return $this->savedLearningItemRepository->findByStudentnr($studentId);
     }

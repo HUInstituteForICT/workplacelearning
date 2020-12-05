@@ -6,7 +6,7 @@ namespace App\Interfaces;
 
 use App\Folder;
 use App\FolderComment;
-use phpDocumentor\Reflection\Types\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 interface FolderSystemServiceInterface
 {

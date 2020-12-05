@@ -8,7 +8,7 @@ use App\FolderComment;
 use App\Interfaces\FolderSystemServiceInterface;
 use App\Repository\Eloquent\FolderCommentRepository;
 use App\Repository\Eloquent\FolderRepository;
-use phpDocumentor\Reflection\Types\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class FolderSystemServiceImpl implements FolderSystemServiceInterface
 {
@@ -38,7 +38,7 @@ class FolderSystemServiceImpl implements FolderSystemServiceInterface
 
     public function saveFolderComment(FolderComment $folderComment): bool
     {
-        return $this->$this->folderCommentRepository->save($folderComment);
+        return $this->folderCommentRepository->save($folderComment);
     }
 
     public function getAllFolders(): Collection

@@ -10,7 +10,7 @@ use App\EducationProgramsService;
 use App\Interfaces\LearningSystemServiceInterface;
 use App\LearningGoal;
 use App\Repository\Eloquent\CategoryRepository;
-use phpDocumentor\Reflection\Types\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class LearningSystemServiceImpl implements LearningSystemServiceInterface
 {
@@ -57,7 +57,7 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
 
     public function getAllCategories(): array
     {
-        $this->categoryRepository->all();
+        return $this->categoryRepository->all();
     }
 
     public function getAllLearningGoals(): Collection
@@ -154,6 +154,6 @@ class LearningSystemServiceImpl implements LearningSystemServiceInterface
 
     public function updateLearningGoals(array $learningGoals): bool
     {
-        $this->learningGoalUpdater->updateLearningGoals($learningGoals);
+        return $this->learningGoalUpdater->updateLearningGoals($learningGoals);
     }
 }

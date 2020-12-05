@@ -7,7 +7,7 @@ use App\Cohort;
 use App\CompetenceDescription;
 use App\EducationProgram;
 use App\LearningGoal;
-use phpDocumentor\Reflection\Types\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 interface LearningSystemServiceInterface
 {

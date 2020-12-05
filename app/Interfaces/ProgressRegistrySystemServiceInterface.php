@@ -9,11 +9,12 @@ use App\LearningActivityProducing;
 use App\SavedLearningItem;
 use App\Student;
 use App\WorkplaceLearningPeriod;
-use phpDocumentor\Reflection\Types\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 interface ProgressRegistrySystemServiceInterface
 {
     public function getAllWorkPlaceLearningPeriods();
+
     public function getAllLearningActivityActing(): Collection;
     public function getAllLearningActivityProducing(): Collection;
     public function getAllWorkPlaces(): Collection;
@@ -63,7 +64,7 @@ interface ProgressRegistrySystemServiceInterface
 
     //TODO SavedLearningItem domain
     public function getSavedLearningItemByFolderId(int $folderId): SavedLearningItem;
-    public function getSavedLearningItemByStudentId(int $studentId): SavedLearningItem;
+    public function getSavedLearningItemByStudentId(int $studentId): Collection;
     public function saveSavedLearningItem(SavedLearningItem $savedLearningItem): bool;
     public function savedLearningItemExists($category, $item_id, $student_id): bool;
     public function deleteSavedLearningItem(SavedLearningItem $sli);
