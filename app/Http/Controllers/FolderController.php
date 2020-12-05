@@ -12,8 +12,8 @@ use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Notifications\FolderFeedbackGiven;
 use App\Notifications\FolderSharedWithTeacher;
 //use App\Repository\Eloquent\CategoryRepository;
-use App\Repository\Eloquent\FolderCommentRepository;
-use App\Repository\Eloquent\FolderRepository;
+//use App\Repository\Eloquent\FolderCommentRepository;
+//use App\Repository\Eloquent\FolderRepository;
 //use App\Repository\Eloquent\LearningActivityActingRepository;
 //use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Repository\Eloquent\ResourcePersonRepository;
@@ -44,10 +44,10 @@ class FolderController extends Controller
     private $folderSystemService;
 
 
-    /**
-     * @var FolderCommentRepository
-     */
-    private $folderCommentRepository;
+//    /**
+//     * @var FolderCommentRepository
+//     */
+//    private $folderCommentRepository;
 
 //    /**
 //     * @var SavedLearningItemRepository
@@ -98,7 +98,7 @@ class FolderController extends Controller
         FolderSystemServiceInterface $folderSystemService,
         TipRepository $tipRepository,
 //        SavedLearningItemRepository $savedLearningItemRepository,
-        FolderCommentRepository $folderCommentRepository,
+//        FolderCommentRepository $folderCommentRepository,
 //        LearningActivityProducingRepository $learningActivityProducingRepository,
 //        LearningActivityActingRepository $learningActivityActingRepository,
         ResourcePersonRepository $resourcePersonRepository,
@@ -109,7 +109,7 @@ class FolderController extends Controller
         $this->currentUserResolver = $currentUserResolver;
 //        $this->folderRepository = $folderRepository;
         $this->folderSystemService = $folderSystemService;
-        $this->folderCommentRepository = $folderCommentRepository;
+//        $this->folderCommentRepository = $folderCommentRepository;
 //        $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->tipRepository = $tipRepository;
 //        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
@@ -205,7 +205,7 @@ class FolderController extends Controller
         $folderComment->text = $request['folder_comment'];
         $folderComment->folder_id = $request['folder_id'];
         $folderComment->author_id = $student->student_id;
-        $this->folderCommentRepository->save($folderComment);
+        $this->folderSystemService->saveFolderComment($folderComment);
 
 
         /** @var Folder $folder */
@@ -261,7 +261,7 @@ class FolderController extends Controller
         $folderComment->text = $request['folder_comment'];
         $folderComment->folder_id = $request['folder_id'];
         $folderComment->author_id = $currentUser->student_id;
-        $this->folderCommentRepository->save($folderComment);
+        $this->folderSystemService->saveFolderComment($folderComment);
 
         if ($currentUser->isTeacher()) {
             $url = route('teacher-student-details', ['student' => $student_id]);

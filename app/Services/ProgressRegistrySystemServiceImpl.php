@@ -8,7 +8,6 @@ use App\Interfaces\Workplace;
 use App\LearningActivityActing;
 use App\LearningActivityProducing;
 use App\Repository\Eloquent\CategoryRepository;
-use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Repository\Eloquent\ResourcePersonRepository;
