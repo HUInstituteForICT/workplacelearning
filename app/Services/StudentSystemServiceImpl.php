@@ -6,9 +6,11 @@ namespace App\Services;
 use App\Cohort;
 use App\Interfaces\StudentSystemServiceInterface;
 use App\Repository\Eloquent\CohortRepository;
+use App\Repository\Eloquent\ResourcePersonRepository;
+use App\Repository\Eloquent\StudentRepository;
 use App\ResourcePerson;
 use App\Student;
-use phpDocumentor\Reflection\Types\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class StudentSystemServiceImpl implements StudentSystemServiceInterface
 {
@@ -17,19 +19,31 @@ class StudentSystemServiceImpl implements StudentSystemServiceInterface
      */
     private $cohortRepository;
 
-    public function __construct(CohortRepository $cohortRepository)
+    /**
+     * @var ResourcePersonRepository
+     */
+    private $resourcePersonRepository;
+
+    /**
+     * @var StudentRepository
+     */
+    private $studentRepository;
+
+    public function __construct(CohortRepository $cohortRepository, ResourcePersonRepository $resourcePersonRepository, StudentRepository $studentRepository)
     {
         $this->cohortRepository = $cohortRepository;
+        $this->resourcePersonRepository = $resourcePersonRepository;
+        $this->studentRepository = $studentRepository;
     }
 
     public function getAllStudents(): Collection
     {
-        // TODO: Implement getAllStudents() method.
+        return $this->studentRepository->all();
     }
 
-    public function getAllResourcePersons(): Collection
+    public function getAllResourcePersons(): array
     {
-        // TODO: Implement getAllResourcePersons() method.
+        return $this->resourcePersonRepository->all();
     }
 
     public function getAllCohorts(): Collection
@@ -60,6 +74,41 @@ class StudentSystemServiceImpl implements StudentSystemServiceInterface
     public function getStudentBySLIId(int $sliId): Student
     {
         // TODO: Implement getStudentBySLIId() method.
+    }
+
+    public function saveStudent(Student $student): bool
+    {
+        return $this->studentRepository->save($student);
+    }
+
+    public function deleteStudent(Student $student): void
+    {
+         $this->studentRepository->delete($student);
+    }
+
+    public function searchStudents(array $filters, ?int $pages, array $relations)
+    {
+        return $this->studentRepository->search($filters = [], $pages = 25, $relations = []);
+    }
+
+    public function findByEmailOrCanvasId(string $email, string $canvasUserId): ?Student
+    {
+        return $this->studentRepository->findByEmailOrCanvasId($email, $canvasUserId);
+    }
+
+    public function findByStudentNumber(string $studentNumber)
+    {
+        return $this->studentRepository->findByStudentNumber($studentNumber);
+    }
+
+    public function findByLastName(string $teacherLastname)
+    {
+        return $this->studentRepository->findByLastName($teacherLastname);
+    }
+
+    public function getSearchFilters(): array
+    {
+        return $this->studentRepository->getSearchFilters();
     }
 
     public function getStudentByWorkplaceId(int $workplaceId): Student
@@ -118,6 +167,6 @@ class StudentSystemServiceImpl implements StudentSystemServiceInterface
     }
     public function cohortsAvailableForStudent(Student $student): array
     {
-        $this->cohortRepository->cohortsAvailableForStudent($student);
+        return $this->cohortRepository->cohortsAvailableForStudent($student);
     }
 }
