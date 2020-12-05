@@ -9,6 +9,7 @@ use App\FolderComment;
 use App\Interfaces\FolderSystemServiceInterface;
 use App\Interfaces\LearningSystemServiceInterface;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
+use App\Interfaces\StudentSystemServiceInterface;
 use App\Notifications\FolderFeedbackGiven;
 use App\Notifications\FolderSharedWithTeacher;
 //use App\Repository\Eloquent\CategoryRepository;
@@ -16,7 +17,7 @@ use App\Notifications\FolderSharedWithTeacher;
 //use App\Repository\Eloquent\FolderRepository;
 //use App\Repository\Eloquent\LearningActivityActingRepository;
 //use App\Repository\Eloquent\LearningActivityProducingRepository;
-use App\Repository\Eloquent\ResourcePersonRepository;
+//use App\Repository\Eloquent\ResourcePersonRepository;
 //use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\SavedLearningItem;
@@ -76,10 +77,15 @@ class FolderController extends Controller
     private $ProgressRegistrySystemService;
 
 
+//    /**
+//     * @var ResourcePersonRepository
+//     */
+//    private $resourcePersonRepository;
+
     /**
-     * @var ResourcePersonRepository
+     * @var StudentSystemServiceInterface
      */
-    private $resourcePersonRepository;
+    private $studentSystemService;
 
 //    /**
 //     * @var CategoryRepository
@@ -101,7 +107,8 @@ class FolderController extends Controller
 //        FolderCommentRepository $folderCommentRepository,
 //        LearningActivityProducingRepository $learningActivityProducingRepository,
 //        LearningActivityActingRepository $learningActivityActingRepository,
-        ResourcePersonRepository $resourcePersonRepository,
+//        ResourcePersonRepository $resourcePersonRepository,
+        StudentSystemServiceInterface $studentSystemService,
         LearningSystemServiceInterface $learningSystemService,
 //        CategoryRepository $categoryRepository,
         ProgressRegistrySystemServiceInterface $ProgressRegistrySystemService
@@ -114,7 +121,8 @@ class FolderController extends Controller
         $this->tipRepository = $tipRepository;
 //        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
 //        $this->learningActivityActingRepository = $learningActivityActingRepository;
-        $this->resourcePersonRepository = $resourcePersonRepository;
+//        $this->resourcePersonRepository = $resourcePersonRepository;
+        $this->studentSystemService = $studentSystemService;
 //        $this->categoryRepository = $categoryRepository;
         $this->learningSystemService = $learningSystemService;
         $this-> ProgressRegistrySystemService = $ProgressRegistrySystemService;
@@ -128,7 +136,8 @@ class FolderController extends Controller
 
         $sli = $this->ProgressRegistrySystemService->getSavedLearningItemByStudentId($student->student_id);
 
-        $persons = $this->resourcePersonRepository->all();
+//        $persons = $this->resourcePersonRepository->all();
+        $persons = $this->studentSystemService->getAllResourcePersons();
 
 //        $categories = $this->categoryRepository->all();
         $categories = $this->learningSystemService->getAllCategories();

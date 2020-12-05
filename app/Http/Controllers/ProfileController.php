@@ -10,7 +10,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 // Use the PHP native IntlDateFormatter (note: enable .dll in php.ini)
-use App\Repository\Eloquent\StudentRepository;
+use App\Interfaces\StudentSystemServiceInterface;
+//use App\Repository\Eloquent\StudentRepository;
 use App\Services\CurrentUserResolver;
 use App\Student;
 use Illuminate\Http\RedirectResponse;
@@ -28,10 +29,16 @@ class ProfileController extends Controller
      */
     private $redirector;
 
-    public function __construct(Redirector $redirector)
+    /**
+     * @var StudentSystemServiceInterface
+     */
+    private $studentSystemService;
+
+    public function __construct(Redirector $redirector, StudentSystemServiceInterface $studentSystemService)
     {
         $this->middleware('auth');
         $this->redirector = $redirector;
+        $this->studentSystemService = $studentSystemService;
     }
 
     public function show(CurrentUserResolver $currentUserResolver)
@@ -113,14 +120,15 @@ class ProfileController extends Controller
     }
 
     public function removeCanvasCoupling(
-        StudentRepository $studentRepository,
+//        StudentRepository $studentRepository,
         CurrentUserResolver $currentUserResolver
     ): RedirectResponse {
         $student = $currentUserResolver->getCurrentUser();
 
         $student->canvas_user_id = null;
 
-        $studentRepository->save($student);
+//        $studentRepository->save($student);
+        $this->studentSystemService->saveStudent($student);
 
         session()->flash('success', __('De koppeling tussen je Canvas en Werkplekleren accounts is verwijderd.'));
 

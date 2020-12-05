@@ -14,7 +14,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Cohort;
 use App\Interfaces\StudentSystemServiceInterface;
-use App\Repository\Eloquent\CohortRepository;
+//use App\Repository\Eloquent\CohortRepository;
 use App\Services\CurrentUserResolver;
 use App\Workplace;
 use App\WorkplaceLearningPeriod;
@@ -28,10 +28,10 @@ use Validator;
 
 class ProducingWorkplaceLearningController extends Controller
 {
-    /**
-     * @var CohortRepository
-     */
-    private $cohortRepository;
+//    /**
+//     * @var CohortRepository
+//     */
+//    private $cohortRepository;
 
     /**
      * @var CurrentUserResolver

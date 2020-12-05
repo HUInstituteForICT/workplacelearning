@@ -17,7 +17,7 @@ use App\Http\Requests\Workplace\ActingWorkplaceUpdateRequest;
 use App\Interfaces\LearningSystemServiceInterface;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
 use App\Interfaces\StudentSystemServiceInterface;
-use App\Repository\Eloquent\CohortRepository;
+//use App\Repository\Eloquent\CohortRepository;
 use App\Services\CurrentPeriodResolver;
 use App\Services\CurrentUserResolver;
 use App\Services\Factories\ActingWorkplaceFactory;

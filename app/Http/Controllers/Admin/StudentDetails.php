@@ -5,20 +5,27 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repository\Eloquent\StudentRepository;
+use App\Interfaces\StudentSystemServiceInterface;
+//use App\Repository\Eloquent\StudentRepository;
 use App\Student;
 use Illuminate\Http\Request;
 
 class StudentDetails extends Controller
 {
-    /**
-     * @var StudentRepository
-     */
-    private $studentRepository;
+//    /**
+//     * @var StudentRepository
+//     */
+//    private $studentRepository;
 
-    public function __construct(StudentRepository $studentRepository)
+    /**
+     * @var StudentSystemServiceInterface
+     */
+    private $studentSystemService;
+
+    public function __construct(StudentSystemServiceInterface $studentSystemService) //StudentRepository $studentRepository
     {
-        $this->studentRepository = $studentRepository;
+//        $this->studentRepository = $studentRepository;
+        $this->studentSystemService = $studentSystemService;
     }
 
     public function __invoke(Student $student, Request $request)
@@ -44,7 +51,8 @@ class StudentDetails extends Controller
 
         $student->userlevel = $newLevel;
 
-        $this->studentRepository->save($student);
+//        $this->studentRepository->save($student);
+        $this->studentSystemService->saveStudent($student);
 
         session()->flash('notification', 'Applied new user level to user');
     }

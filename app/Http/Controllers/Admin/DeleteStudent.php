@@ -5,25 +5,32 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repository\Eloquent\StudentRepository;
+use App\Interfaces\StudentSystemServiceInterface;
+//use App\Repository\Eloquent\StudentRepository;
 use App\Services\CurrentUserResolver;
 use App\Student;
 
 class DeleteStudent extends Controller
 {
+//    /**
+//     * @var StudentRepository
+//     */
+//    private $studentRepository;
+
     /**
-     * @var StudentRepository
+     * @var StudentSystemServiceInterface
      */
-    private $studentRepository;
+    private $studentSystemService;
 
     /**
      * @var CurrentUserResolver
      */
     private $currentUserResolver;
 
-    public function __construct(StudentRepository $studentRepository, CurrentUserResolver $currentUserResolver)
+    public function __construct(StudentSystemServiceInterface $studentSystemService, CurrentUserResolver $currentUserResolver) //StudentRepository $studentRepository
     {
-        $this->studentRepository = $studentRepository;
+//        $this->studentRepository = $studentRepository;
+        $this->studentSystemService = $studentSystemService;
         $this->currentUserResolver = $currentUserResolver;
     }
 
@@ -35,7 +42,8 @@ class DeleteStudent extends Controller
             return redirect(route('admin-student-details', ['student' => $student]));
         }
 
-        $this->studentRepository->delete($student);
+//        $this->studentRepository->delete($student);
+        $this->studentSystemService->deleteStudent($student);
 
         session()->flash('notification', 'Successfully deleted the student');
 

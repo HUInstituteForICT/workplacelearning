@@ -6,17 +6,23 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\EditWorkplaceLearningPeriodRequest;
-use App\Repository\Eloquent\CohortRepository;
+//use App\Repository\Eloquent\CohortRepository;
+use App\Interfaces\StudentSystemServiceInterface;
 use App\Services\Updaters\WorkplaceLearningPeriodUpdater;
 use App\Student;
 use App\WorkplaceLearningPeriod;
 
 class EditWorkplaceLearningPeriod extends Controller
 {
+//    /**
+//     * @var CohortRepository
+//     */
+//    private $cohortRepository;
+
     /**
-     * @var CohortRepository
+     * @var StudentSystemServiceInterface
      */
-    private $cohortRepository;
+    private $studentSystemService;
 
     /**
      * @var WorkplaceLearningPeriodUpdater
@@ -24,10 +30,12 @@ class EditWorkplaceLearningPeriod extends Controller
     private $workplaceLearningPeriodUpdater;
 
     public function __construct(
-        CohortRepository $cohortRepository,
+//        CohortRepository $cohortRepository,
+        StudentSystemServiceInterface $studentSystemService,
         WorkplaceLearningPeriodUpdater $workplaceLearningPeriodUpdater
     ) {
-        $this->cohortRepository = $cohortRepository;
+//        $this->cohortRepository = $cohortRepository;
+        $this->studentSystemService = $studentSystemService;
         $this->workplaceLearningPeriodUpdater = $workplaceLearningPeriodUpdater;
     }
 
@@ -47,7 +55,8 @@ class EditWorkplaceLearningPeriod extends Controller
 
         return view('pages.admin.workplace_learning_period_details')
             ->with('wplp', $workplaceLearningPeriod)
-            ->with('cohorts', $this->cohortRepository->cohortsAvailableForStudent($workplaceLearningPeriod->student))
+            ->with('cohorts', $this->studentSystemService->cohortsAvailableForStudent($workplaceLearningPeriod->student))
+//            ->with('cohorts', $this->cohortRepository->cohortsAvailableForStudent($workplaceLearningPeriod->student))
             ->with('canUpdateCohort', !$workplaceLearningPeriod->hasActivities());
     }
 

@@ -6,7 +6,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
-use App\Repository\Eloquent\StudentRepository;
+use App\Interfaces\StudentSystemServiceInterface;
+//use App\Repository\Eloquent\StudentRepository;
 use App\Repository\Eloquent\WorkplaceLearningPeriodRepository;
 use App\Student;
 use Illuminate\Http\Request;
@@ -14,10 +15,14 @@ use Illuminate\Support\Collection;
 
 class Linking extends Controller
 {
+//    /**
+//     * @var StudentRepository
+//     */
+//    private $studentRepository;
     /**
-     * @var StudentRepository
+     * @var StudentSystemServiceInterface
      */
-    private $studentRepository;
+    private $studentSystemService;
 
     /**
      * @var WorkplaceLearningPeriodRepository
@@ -30,10 +35,12 @@ class Linking extends Controller
     private $progressRegistrySystemService;
 
     public function __construct(
-        StudentRepository $studentRepository,
+//        StudentRepository $studentRepository,
+        StudentSystemServiceInterface $studentSystemService,
         ProgressRegistrySystemServiceInterface $progressRegistrySystemService
     ) {
-        $this->studentRepository = $studentRepository;
+//        $this->studentRepository = $studentRepository;
+        $this->studentSystemService = $studentSystemService;
         $this->progressRegistrySystemService = $progressRegistrySystemService;
     }
 
@@ -43,7 +50,8 @@ class Linking extends Controller
         $workplaceLearningPeriods = $this->progressRegistrySystemService->getAllWorkPlaceLearningPeriods();
 
         /** @var Collection|Student[] $users */
-        $users = $this->studentRepository->all();
+//        $users = $this->studentRepository->all();
+        $users = $this->studentSystemService->getAllStudents();
 
         $students = $users->filter(static function (Student $user) {
             return $user->isStudent();

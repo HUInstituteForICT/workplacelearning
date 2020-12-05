@@ -8,10 +8,11 @@ use App\Folder;
 use App\Interfaces\LearningSystemServiceInterface;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
 //use App\Repository\Eloquent\CategoryRepository;
+use App\Interfaces\StudentSystemServiceInterface;
 use App\Repository\Eloquent\FolderRepository;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 //use App\Repository\Eloquent\LearningActivityProducingRepository;
-use App\Repository\Eloquent\ResourcePersonRepository;
+//use App\Repository\Eloquent\ResourcePersonRepository;
 //use App\Repository\Eloquent\SavedLearningItemRepository;
 use App\Repository\Eloquent\TipRepository;
 use App\SavedLearningItem;
@@ -55,10 +56,15 @@ class SavedLearningItemController extends Controller
      */
     private $ProgressRegistrySystemService;
 
+//    /**
+////     * @var ResourcePersonRepository
+////     */
+////    private $resourcePersonRepository;
+
     /**
-     * @var ResourcePersonRepository
+     * @var StudentSystemServiceInterface
      */
-    private $resourcePersonRepository;
+    private $studentSystemService;
 
 //    /**
 //     * @var CategoryRepository
@@ -77,8 +83,9 @@ class SavedLearningItemController extends Controller
         TipRepository $tipRepository,
 //        LearningActivityProducingRepository $learningActivityProducingRepository,
 //        LearningActivityActingRepository $learningActivityActingRepository,
-        ResourcePersonRepository $resourcePersonRepository,
+//        ResourcePersonRepository $resourcePersonRepository,
         LearningSystemServiceInterface $learningSystemService,
+        StudentSystemServiceInterface $studentSystemService,
 //        CategoryRepository $categoryRepository,
         ProgressRegistrySystemServiceInterface $ProgressRegistrySystemService
     ) {
@@ -87,7 +94,8 @@ class SavedLearningItemController extends Controller
         $this->tipRepository = $tipRepository;
 //        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
 //        $this->learningActivityActingRepository = $learningActivityActingRepository;
-        $this->resourcePersonRepository = $resourcePersonRepository;
+//        $this->resourcePersonRepository = $resourcePersonRepository;
+        $this->studentSystemService = $studentSystemService;
         $this->learningSystemService = $learningSystemService;
 //        $this->categoryRepository = $categoryRepository;
         $this->progressRegistryService = $ProgressRegistrySystemService;
@@ -97,12 +105,11 @@ class SavedLearningItemController extends Controller
     {
         $student = $this->currentUserResolver->getCurrentUser();
         $tips = $this->tipRepository->all();
-        //TODO ProgressRegistryService getByStudentId()
 //        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
         $sli = $this->ProgressRegistrySystemService->getSavedLearningItemByStudentId($student->student_id);
 
-        //TODO StudentSystemService impl
-        $persons = $this->resourcePersonRepository->all();
+//        $persons = $this->resourcePersonRepository->all();
+        $persons = $this->studentSystemService->getAllResourcePersons();
         //$categories = $this->categoryRepository->all();
         $categories = $this->learningSystemService->getAllCategories();
 

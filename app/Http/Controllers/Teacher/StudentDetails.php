@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Interfaces\LearningSystemServiceInterface;
 use App\Interfaces\ProgressRegistrySystemServiceInterface;
+use App\Interfaces\StudentSystemServiceInterface;
 use App\Services\CurrentUserResolver;
 use App\Student;
 use App\WorkplaceLearningPeriod;
@@ -14,7 +15,7 @@ use App\Folder;
 use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
 use App\Repository\Eloquent\TipRepository;
-use App\Repository\Eloquent\ResourcePersonRepository;
+//use App\Repository\Eloquent\ResourcePersonRepository;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Repository\Eloquent\LearningActivityActingRepository;
 //use App\Repository\Eloquent\CategoryRepository;
@@ -49,10 +50,15 @@ class StudentDetails extends Controller
      */
     private $savedLearningItemRepository;
 
+//    /**
+//     * @var ResourcePersonRepository
+//     */
+//    private $resourcePersonRepository;
+
     /**
-     * @var ResourcePersonRepository
+     * @var StudentSystemServiceInterface
      */
-    private $resourcePersonRepository;
+    private $studentSystemService;
 
 //    private $categoryRepository;
 
@@ -75,7 +81,8 @@ class StudentDetails extends Controller
         SavedLearningItemRepository $savedLearningItemRepository,
         LearningActivityProducingRepository $learningActivityProducingRepository,
         LearningActivityActingRepository $learningActivityActingRepository,
-        ResourcePersonRepository $resourcePersonRepository,
+//        ResourcePersonRepository $resourcePersonRepository,
+        StudentSystemServiceInterface $studentSystemService,
 //        CategoryRepository $categoryRepository
         LearningSystemServiceInterface $learningSystemService,
         ProgressRegistrySystemServiceInterface $progressRegistrySystemService)
@@ -86,7 +93,8 @@ class StudentDetails extends Controller
         $this->savedLearningItemRepository = $savedLearningItemRepository;
         $this->learningActivityProducingRepository = $learningActivityProducingRepository;
         $this->learningActivityActingRepository = $learningActivityActingRepository;
-        $this->resourcePersonRepository = $resourcePersonRepository;
+//        $this->resourcePersonRepository = $resourcePersonRepository;
+        $this->studentSystemService = $studentSystemService;
         $this->learningSystemService = $learningSystemService;
         $this->progressRegistrySystemService = $progressRegistrySystemService;
 //        $this->categoryRepository = $categoryRepository;
@@ -116,7 +124,8 @@ class StudentDetails extends Controller
             return $folder->isShared();
         });
 
-        $persons = $this->resourcePersonRepository->all();
+//        $persons = $this->resourcePersonRepository->all();
+        $persons = $this->studentSystemService->getAllResourcePersons();
 //        $categories = $this->categoryRepository->all();
         $categories = $this->learningSystemService->getAllCategories();
         $associatedActivities = [];
