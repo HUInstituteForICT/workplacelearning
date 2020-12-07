@@ -32,7 +32,7 @@ class NotificationRouter
                 continue;
             }
 
-            if ($user->isTeacher()) {
+            if ($user->isTeacher() || $user->isAdmin()) {
                 // filtered within call
                 $this->teacherDigestSender->sendNotifications($notifications, $user);
                 $this->inactiveStudentSender->sendNotifications($notifications, $user);

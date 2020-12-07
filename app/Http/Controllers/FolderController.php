@@ -230,7 +230,7 @@ class FolderController extends Controller
         $folderComment->author_id = $currentUser->student_id;
         $this->folderCommentRepository->save($folderComment);
 
-        if ($currentUser->isTeacher()) {
+        if ($currentUser->isTeacher() || $currentUser->isAdmin()) {
             $url = route('teacher-student-details', ['student' => $student_id]);
 
             $folder->student->notify(new FolderFeedbackGiven($folderComment));
