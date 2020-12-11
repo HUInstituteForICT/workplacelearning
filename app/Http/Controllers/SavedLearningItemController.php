@@ -14,7 +14,7 @@ use App\Repository\Eloquent\LearningActivityActingRepository;
 //use App\Repository\Eloquent\LearningActivityProducingRepository;
 //use App\Repository\Eloquent\ResourcePersonRepository;
 //use App\Repository\Eloquent\SavedLearningItemRepository;
-use App\Repository\Eloquent\TipRepository;
+//use App\Repository\Eloquent\TipRepository;
 use App\SavedLearningItem;
 use App\Services\CurrentUserResolver;
 use App\Services\ProgressRegistrySystemServiceImpl;
@@ -35,11 +35,11 @@ class SavedLearningItemController extends Controller
 //     * @var SavedLearningItemRepository
 //     */
 //    private $savedLearningItemRepository;
-
-    /**
-     * @var TipRepository
-     */
-    private $tipRepository;
+//
+//    /**
+//     * @var TipRepository
+//     */
+//    private $tipRepository;
 
 //    /**
 //     * @var LearningActivityProducingRepository
@@ -80,7 +80,7 @@ class SavedLearningItemController extends Controller
     public function __construct(
         CurrentUserResolver $currentUserResolver,
 //        SavedLearningItemRepository $savedLearningItemRepository,
-        TipRepository $tipRepository,
+//        TipRepository $tipRepository,
 //        LearningActivityProducingRepository $learningActivityProducingRepository,
 //        LearningActivityActingRepository $learningActivityActingRepository,
 //        ResourcePersonRepository $resourcePersonRepository,
@@ -91,7 +91,7 @@ class SavedLearningItemController extends Controller
     ) {
         $this->currentUserResolver = $currentUserResolver;
 //        $this->savedLearningItemRepository = $savedLearningItemRepository;
-        $this->tipRepository = $tipRepository;
+//        $this->tipRepository = $tipRepository;
 //        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
 //        $this->learningActivityActingRepository = $learningActivityActingRepository;
 //        $this->resourcePersonRepository = $resourcePersonRepository;
@@ -104,7 +104,7 @@ class SavedLearningItemController extends Controller
     public function index(TipEvaluator $evaluator)
     {
         $student = $this->currentUserResolver->getCurrentUser();
-        $tips = $this->tipRepository->all();
+        $tips = $this->progressRegistryService->getAllTips();
 //        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
         $sli = $this->ProgressRegistrySystemService->getSavedLearningItemByStudentId($student->student_id);
 

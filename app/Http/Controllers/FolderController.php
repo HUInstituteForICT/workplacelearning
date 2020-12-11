@@ -54,11 +54,11 @@ class FolderController extends Controller
 //     * @var SavedLearningItemRepository
 //     */
 //    private $savedLearningItemRepository;
-
-    /**
-     * @var TipRepository
-     */
-    private $tipRepository;
+//
+//    /**
+//     * @var TipRepository
+//     */
+//    private $tipRepository;
 
 //
 //    /**
@@ -102,7 +102,7 @@ class FolderController extends Controller
         CurrentUserResolver $currentUserResolver,
 //        FolderRepository $folderRepository,
         FolderSystemServiceInterface $folderSystemService,
-        TipRepository $tipRepository,
+//        TipRepository $tipRepository,
 //        SavedLearningItemRepository $savedLearningItemRepository,
 //        FolderCommentRepository $folderCommentRepository,
 //        LearningActivityProducingRepository $learningActivityProducingRepository,
@@ -118,7 +118,7 @@ class FolderController extends Controller
         $this->folderSystemService = $folderSystemService;
 //        $this->folderCommentRepository = $folderCommentRepository;
 //        $this->savedLearningItemRepository = $savedLearningItemRepository;
-        $this->tipRepository = $tipRepository;
+//        $this->tipRepository = $tipRepository;
 //        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
 //        $this->learningActivityActingRepository = $learningActivityActingRepository;
 //        $this->resourcePersonRepository = $resourcePersonRepository;
@@ -131,7 +131,7 @@ class FolderController extends Controller
     public function index(TipEvaluator $evaluator)
     {
         $student = $this->currentUserResolver->getCurrentUser();
-        $tips = $this->tipRepository->all();
+        $tips = $this->ProgressRegistrySystemService->getAllTips();
 //        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
 
         $sli = $this->ProgressRegistrySystemService->getSavedLearningItemByStudentId($student->student_id);

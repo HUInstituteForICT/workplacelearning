@@ -69,4 +69,7 @@ interface ProgressRegistrySystemServiceInterface
     public function savedLearningItemExists($category, $item_id, $student_id): bool;
     public function deleteSavedLearningItem(SavedLearningItem $sli);
     public function getSavedLearningItemById(int $sliId) : SavedLearningItem;
+
+    //Tip domain.
+    public function getAllTips(): Collection;
 }

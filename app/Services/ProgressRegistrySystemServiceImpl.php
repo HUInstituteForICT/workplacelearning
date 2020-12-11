@@ -335,4 +335,9 @@ class ProgressRegistrySystemServiceImpl implements ProgressRegistrySystemService
     public function deleteSavedLearningItem(SavedLearningItem $sli) {
         return $this->savedLearningItemRepository->delete($sli);
     }
+
+    public function getAllTips(): Collection
+    {
+        return $this->tipRepository->all();
+    }
 }

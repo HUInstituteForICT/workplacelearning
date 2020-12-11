@@ -14,7 +14,7 @@ use App\WorkplaceLearningPeriod;
 use App\Folder;
 use App\SavedLearningItem;
 use App\Tips\EvaluatedTip;
-use App\Repository\Eloquent\TipRepository;
+//use App\Repository\Eloquent\TipRepository;
 //use App\Repository\Eloquent\ResourcePersonRepository;
 use App\Repository\Eloquent\LearningActivityProducingRepository;
 use App\Repository\Eloquent\LearningActivityActingRepository;
@@ -35,20 +35,20 @@ class StudentDetails extends Controller
      */
     private $tipEvaluator;
 
-     /**
-     * @var LearningActivityProducingRepository
-     */
-    private $learningActivityProducingRepository;
-
-    /**
-     * @var LearningActivityActingRepository
-     */
-    private $learningActivityActingRepository;
-
-     /**
-     * @var SavedLearningItemRepository
-     */
-    private $savedLearningItemRepository;
+//     /**
+//     * @var LearningActivityProducingRepository
+//     */
+//    private $learningActivityProducingRepository;
+//
+//    /**
+//     * @var LearningActivityActingRepository
+//     */
+//    private $learningActivityActingRepository;
+//
+//     /**
+//     * @var SavedLearningItemRepository
+//     */
+//    private $savedLearningItemRepository;
 
 //    /**
 //     * @var ResourcePersonRepository
@@ -72,15 +72,15 @@ class StudentDetails extends Controller
      */
     private $progressRegistrySystemService;
 
-    /** @var TipRepository */
-    private $tipRepository;
+//    /** @var TipRepository */
+//    private $tipRepository;
 
     public function __construct(
         CurrentUserResolver $currentUserResolver,
-        TipRepository $tipRepository,
-        SavedLearningItemRepository $savedLearningItemRepository,
-        LearningActivityProducingRepository $learningActivityProducingRepository,
-        LearningActivityActingRepository $learningActivityActingRepository,
+//        TipRepository $tipRepository,
+//        SavedLearningItemRepository $savedLearningItemRepository,
+//        LearningActivityProducingRepository $learningActivityProducingRepository,
+//        LearningActivityActingRepository $learningActivityActingRepository,
 //        ResourcePersonRepository $resourcePersonRepository,
         StudentSystemServiceInterface $studentSystemService,
 //        CategoryRepository $categoryRepository
@@ -89,10 +89,10 @@ class StudentDetails extends Controller
 
     {
         $this->currentUserResolver = $currentUserResolver;
-        $this->tipRepository = $tipRepository;
-        $this->savedLearningItemRepository = $savedLearningItemRepository;
-        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
-        $this->learningActivityActingRepository = $learningActivityActingRepository;
+//        $this->tipRepository = $tipRepository;
+//        $this->savedLearningItemRepository = $savedLearningItemRepository;
+//        $this->learningActivityProducingRepository = $learningActivityProducingRepository;
+//        $this->learningActivityActingRepository = $learningActivityActingRepository;
 //        $this->resourcePersonRepository = $resourcePersonRepository;
         $this->studentSystemService = $studentSystemService;
         $this->learningSystemService = $learningSystemService;
@@ -117,7 +117,7 @@ class StudentDetails extends Controller
 
         $currentWorkplace = $student->getCurrentWorkplace();
         $workplace = in_array($currentWorkplace, $workplaces) ? $currentWorkplace : reset($workplaces);
-        $tips = $this->tipRepository->all();
+        $tips = $this->progressRegistrySystemService->getAllTips();
         $learningperiod = $student->getCurrentWorkplaceLearningPeriod();
 
         $sharedFolders = $student->folders->filter(function (Folder $folder) {
@@ -135,12 +135,14 @@ class StudentDetails extends Controller
         })->pluck('item_id')->toArray();
 
         if ($student->educationProgram->educationprogramType->isActing()) {
-            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
+//            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
+            $allActivities = $this->progressRegistrySystemService->getLearningActivityActingForStudent($student);
             foreach($allActivities as $activity) {
                 $associatedActivities[$activity->laa_id] = $activity;
             }
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
-            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+//            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
+            $allActivities = $this->progressRegistrySystemService->getActivitiesProducingForStudent($student);
             foreach($allActivities as $activity) {
                 $associatedActivities[$activity->lap_id] = $activity;
             }
