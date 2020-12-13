@@ -12,7 +12,7 @@ use Tests\TestCase;
 class FolderControllerTest extends TestCase
 {
     public function testIndex() : void{
-
+        $this->markTestIncomplete("Test not implemented yet");
     }
 
 }
