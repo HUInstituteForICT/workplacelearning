@@ -54,7 +54,7 @@ class SavedLearningItemController extends Controller
     /**
      * @var ProgressRegistrySystemServiceInterface
      */
-    private $ProgressRegistrySystemService;
+    private $progressRegistrySystemService;
 
 //    /**
 ////     * @var ResourcePersonRepository
@@ -87,7 +87,7 @@ class SavedLearningItemController extends Controller
         LearningSystemServiceInterface $learningSystemService,
         StudentSystemServiceInterface $studentSystemService,
 //        CategoryRepository $categoryRepository,
-        ProgressRegistrySystemServiceInterface $ProgressRegistrySystemService
+        ProgressRegistrySystemServiceInterface $progressRegistrySystemService
     ) {
         $this->currentUserResolver = $currentUserResolver;
 //        $this->savedLearningItemRepository = $savedLearningItemRepository;
@@ -98,15 +98,15 @@ class SavedLearningItemController extends Controller
         $this->studentSystemService = $studentSystemService;
         $this->learningSystemService = $learningSystemService;
 //        $this->categoryRepository = $categoryRepository;
-        $this->progressRegistryService = $ProgressRegistrySystemService;
+        $this->progressRegistrySystemService = $progressRegistrySystemService;
     }
 
     public function index(TipEvaluator $evaluator)
     {
         $student = $this->currentUserResolver->getCurrentUser();
-        $tips = $this->progressRegistryService->getAllTips();
+        $tips = $this->progressRegistrySystemService->getAllTips();
 //        $sli = $this->savedLearningItemRepository->findByStudentnr($student->student_id);
-        $sli = $this->ProgressRegistrySystemService->getSavedLearningItemByStudentId($student->student_id);
+        $sli = $this->progressRegistrySystemService->getSavedLearningItemByStudentId($student->student_id);
 
 //        $persons = $this->resourcePersonRepository->all();
         $persons = $this->studentSystemService->getAllResourcePersons();
@@ -122,7 +122,7 @@ class SavedLearningItemController extends Controller
         if ($student->educationProgram->educationprogramType->isActing()) {
             //TODO ProgressRegistrySystemService ->
 //            $allActivities = $this->learningActivityActingRepository->getActivitiesForStudent($student);
-            $allActivities = $this->ProgressRegistrySystemService->getLearningActivityActingForStudent($student);
+            $allActivities = $this->progressRegistrySystemService->getLearningActivityActingForStudent($student);
             foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->laa_id] = $activity;
             }
@@ -130,7 +130,7 @@ class SavedLearningItemController extends Controller
         } elseif ($student->educationProgram->educationprogramType->isProducing()) {
             //TODO StudentSystemService(studentId) -> ProgressRegistrySystemService getSavedLearningItemsByStudentId()
 //            $allActivities = $this->learningActivityProducingRepository->getActivitiesForStudent($student);
-            $allActivities = $this->ProgressRegistrySystemService->getActivitiesProducingForStudent($student);
+            $allActivities = $this->progressRegistrySystemService->getActivitiesProducingForStudent($student);
             foreach ($allActivities as $activity) {
                 $associatedActivities[$activity->lap_id] = $activity;
             }
@@ -177,7 +177,7 @@ class SavedLearningItemController extends Controller
 
 
 //        $itemExists = $this->savedLearningItemRepository->itemExists($category, $item_id, $student->student_id);
-        $itemExists = $this->ProgressRegistrySystemService->savedLearningItemExists($category, $item_id, $student->student_id);
+        $itemExists = $this->progressRegistrySystemService->savedLearningItemExists($category, $item_id, $student->student_id);
         if (!$itemExists) {
             $savedLearningItem = new SavedLearningItem();
             $savedLearningItem->category = $category;
@@ -186,7 +186,7 @@ class SavedLearningItemController extends Controller
             $savedLearningItem->created_at = date('Y-m-d H:i:s');
             $savedLearningItem->updated_at = date('Y-m-d H:i:s');
 //            $this->savedLearningItemRepository->save($savedLearningItem);
-            $this->ProgressRegistrySystemService->saveSavedLearningItem($savedLearningItem);
+            $this->progressRegistrySystemService->saveSavedLearningItem($savedLearningItem);
 
             $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
         }
@@ -204,7 +204,7 @@ class SavedLearningItemController extends Controller
         }
 
 //        $this->savedLearningItemRepository->delete($sli);
-        $this->ProgressRegistrySystemService->deleteSavedLearningItem($sli);
+        $this->progressRegistrySystemService->deleteSavedLearningItem($sli);
 
         return redirect('saved-learning-items');
     }
@@ -237,7 +237,7 @@ class SavedLearningItemController extends Controller
 
 
         /** @var SavedLearningItem $savedLearningItem */
-        $savedLearningItem = $this->ProgressRegistrySystemService->getSavedLearningItemById($sliId);
+        $savedLearningItem = $this->progressRegistrySystemService->getSavedLearningItemById($sliId);
 
         //TODO should this be moved to the service aswell?
 
