@@ -29,10 +29,14 @@ class TeacherDigestSender
             return $notification->type === FolderSharedWithTeacher::class;
         });
 
-        $this->mailer->to($user->email)->send(new TeacherDigest($user, $usableNotifications));
+        if( count($usableNotifications) > 0 ) {
 
-        foreach ($usableNotifications as $notification) {
-            $notification->markAsRead();
+            $this->mailer->to($user->email)->send(new TeacherDigest($user, $usableNotifications));
+
+            foreach ($usableNotifications as $notification) {
+                $notification->markAsRead();
+            }
+
         }
     }
 }

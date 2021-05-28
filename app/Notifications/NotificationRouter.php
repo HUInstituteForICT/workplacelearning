@@ -24,13 +24,15 @@ class NotificationRouter
     public function routeForUsers(Collection $users): void
     {
         foreach ($users as $user) {
+            // Removed ->all() from unreadNotifications. According to the documentation unreadNotifications allready gives all unread Notifications.
+            // $notifications = $user->unreadNotifications->all();
             $notifications = $user->unreadNotifications->all();
 
             if (count($notifications) === 0) {
                 continue;
             }
 
-            if ($user->isTeacher()) {
+            if ($user->isTeacher() || $user->isAdmin()) {
                 // filtered within call
                 $this->teacherDigestSender->sendNotifications($notifications, $user);
                 $this->inactiveStudentSender->sendNotifications($notifications, $user);

@@ -84,6 +84,7 @@ class ProducingActivityController
     ) {
         $referrer = $request->header('referer');
         $redirect = route('process-producing');
+        
         if ($referrer && $referrer === route('progress-producing')) {
             $redirect = route('progress-producing');
         }
@@ -188,11 +189,20 @@ class ProducingActivityController
         Request $request,
         Redirector $redirector
     ): RedirectResponse {
+
+        $referrer = $request->header('referer');
+
         $savedLearningItem = $learningActivityProducing->bookmark();
         $this->savedLearningItemRepository->save($savedLearningItem);
-
+        
         $request->session()->flash('success', __('saved_learning_items.saved-succesfully'));
+        
+        $redirect = $redirector->route('process-producing');
 
-        return $redirector->route('process-producing');
+        if ($referrer && $referrer === route('progress-producing')) {
+            $redirect = $redirector->route('progress-producing');
+        } 
+
+        return $redirect;
     }
 }

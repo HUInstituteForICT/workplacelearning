@@ -29,10 +29,15 @@ class StudentDigestSender
             return $notification->type === FolderFeedbackGiven::class;
         });
 
-        $this->mailer->to($user->email)->send(new StudentDigest($user, $usableNotifications));
+        if( count($usableNotifications) > 0 ) {
 
-        foreach ($usableNotifications as $notification) {
-            $notification->markAsRead();
+            $this->mailer->to($user->email)->send(new StudentDigest($user, $usableNotifications));
+
+            foreach ($usableNotifications as $notification) {
+                $notification->markAsRead();
+            }
+        
         }
+        
     }
 }

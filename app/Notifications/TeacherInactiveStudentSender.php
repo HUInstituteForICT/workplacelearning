@@ -29,10 +29,14 @@ class TeacherInactiveStudentSender
             return $notification->type === NoActivityOfStudent::class;
         });
 
-        $this->mailer->to($teacher->email)->send(new InactiveStudent($teacher, $usableNotifications));
+        if( count($usableNotifications) > 0 ) {
 
-        foreach ($usableNotifications as $notification) {
-            $notification->markAsRead();
+            $this->mailer->to($teacher->email)->send(new InactiveStudent($teacher, $usableNotifications));
+
+            foreach ($usableNotifications as $notification) {
+                $notification->markAsRead();
+            }
+        
         }
     }
 }

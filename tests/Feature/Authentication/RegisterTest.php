@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+/**
+ * @group failed
+ */
 class RegisterTest extends \Tests\TestCase
 {
     public function testRegistration(): void
@@ -19,12 +22,12 @@ class RegisterTest extends \Tests\TestCase
             'studentnr'             => '1234567',
             'firstname'             => 'John',
             'lastname'              => 'Doe',
-            'gender'                => 'male',
             'email'                 => 'test@test.com',
             'password'              => 'johnjohnjohndoe',
             'password_confirmation' => 'johnjohnjohndoe',
             'education'             => $ep->ep_id,
             'secret'                => 'Stage2017',
+            'privacy'               => 1
         ]);
 
         $response->assertRedirect('/home');
