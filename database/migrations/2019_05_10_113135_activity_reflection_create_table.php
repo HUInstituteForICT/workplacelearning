@@ -13,7 +13,7 @@ class ActivityReflectionCreateTable extends Migration
      */
     public function up()
     {
-        Schema::create('activity_reflection', function (Blueprint $table) {
+        Schema::create('activity_reflections', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('learning_activity_id');
             $table->string('learning_activity_type');
@@ -26,6 +26,6 @@ class ActivityReflectionCreateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activity_reflection');
+        Schema::dropIfExists('activity_reflections');
     }
 }
