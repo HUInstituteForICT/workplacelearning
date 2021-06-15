@@ -36,8 +36,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $is_in_analytics
  * @property Student|null $teacher
  * @property \Illuminate\Database\Eloquent\Collection|\App\Category[] $categories
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[] $learningActivityActing
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+//* @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[] $learningActivityActing
+//* @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ * @property \Illuminate\Database\Eloquent\Collection|\App\GenericLearningActivity[] $genericLearningActivity
+
  * @property \Illuminate\Database\Eloquent\Collection|\App\LearningGoal[] $learningGoals
  * @property \Illuminate\Database\Eloquent\Collection|\App\ResourceMaterial[] $resourceMaterial
  * @property \Illuminate\Database\Eloquent\Collection|\App\ResourcePerson[] $resourcePerson
@@ -134,78 +136,104 @@ class WorkplaceLearningPeriod extends Model
         return $this->hasMany(LearningGoal::class, 'wplp_id', 'wplp_id');
     }
 
-    public function getLearningActivityActingById($id)
+//    public function getLearningActivityActingById($id)
+//    {
+//        return $this->learningActivityActing()
+//            ->where('laa_id', '=', $id)
+//            ->first();
+//    }
+    public function getGenericLearningActivityById($id)
     {
-        return $this->learningActivityActing()
-            ->where('laa_id', '=', $id)
+        return $this->genericLearningActivity()
+            ->where('gla_id', '=', $id)
             ->first();
     }
 
-    public function learningActivityActing(): HasMany
+//    public function learningActivityActing(): HasMany
+//    {
+//        return $this->hasMany(LearningActivityActing::class, 'wplp_id', 'wplp_id');
+//    }
+    public function genericLearningActivity(): HasMany
     {
-        return $this->hasMany(LearningActivityActing::class, 'wplp_id', 'wplp_id');
+        return $this->hasMany(GenericLearningActivity::class, 'wplp_id', 'wplp_id');
     }
 
-    public function getLearningActivityProducingById($id)
-    {
-        return $this->learningActivityProducing()
-            ->where('lap_id', '=', $id)
-            ->first();
-    }
+//    public function getLearningActivityProducingById($id)
+//    {
+//        return $this->learningActivityProducing()
+//            ->where('lap_id', '=', $id)
+//            ->first();
+//    }
 
-    public function learningActivityProducing(): HasMany
-    {
-        return $this->hasMany(LearningActivityProducing::class, 'wplp_id', 'wplp_id');
-    }
+//    public function learningActivityProducing(): HasMany
+//    {
+//        return $this->hasMany(LearningActivityProducing::class, 'wplp_id', 'wplp_id');
+//    }
 
-    public function getUnfinishedActivityProducing(): Collection
-    {
-        return $this->learningActivityProducing()
-            ->where('status_id', '=', '2')
-            ->orderBy('date', 'asc')
-            ->orderBy('lap_id', 'desc')
-            ->get();
-    }
+
+//    public function getUnfinishedActivityProducing(): Collection
+//    {
+//        return $this->learningActivityProducing()
+//            ->where('status_id', '=', '2')
+//            ->orderBy('date', 'asc')
+//            ->orderBy('lap_id', 'desc')
+//            ->get();
+//    }
 
     public function hasLoggedHours(): bool
     {
         return \count($this->getLastActivity(1)) > 0;
     }
 
+//    public function getLastActivity($count, $offset = 0)
+//    {
+//        switch ($this->student->educationProgram->eptype_id) {
+//            case 2:
+//                return $this->getLastActivityProducing($count, $offset);
+//            case 1:
+//                return $this->getLastActivityActing($count, $offset);
+//            default:
+//                return collect([]);
+//        }
+//    }
+
     public function getLastActivity($count, $offset = 0)
     {
-        switch ($this->student->educationProgram->eptype_id) {
-            case 2:
-                return $this->getLastActivityProducing($count, $offset);
-            case 1:
-                return $this->getLastActivityActing($count, $offset);
-            default:
-                return collect([]);
-        }
+        return $this->getLastGenericLearningActivity($count, $offset);
     }
 
-    private function getLastActivityProducing($count, $offset = 0)
+//    private function getLastActivityProducing($count, $offset = 0)
+//    {
+//        return $this->learningActivityProducing()
+//            ->orderBy('date', 'desc')
+//            ->orderBy('lap_id', 'desc')
+//            ->skip($offset)
+//            ->take($count)
+//            ->get();
+//    }
+    private function getLastGenericLearningActivity($count, $offset = 0)
     {
-        return $this->learningActivityProducing()
+        return $this->genericLearningActivity()
             ->orderBy('date', 'desc')
-            ->orderBy('lap_id', 'desc')
+            ->orderBy('gla_id', 'desc')
             ->skip($offset)
             ->take($count)
             ->get();
     }
 
-    private function getLastActivityActing($count, $offset = 0)
-    {
-        return $this->learningActivityActing()
-            ->orderBy('date', 'desc')
-            ->orderBy('laa_id', 'desc')
-            ->skip($offset)
-            ->take($count)
-            ->get();
-    }
+//    private function getLastActivityActing($count, $offset = 0)
+//    {
+//        return $this->learningActivityActing()
+//            ->orderBy('date', 'desc')
+//            ->orderBy('laa_id', 'desc')
+//            ->skip($offset)
+//            ->take($count)
+//            ->get();
+//    }
 
     public function getNumLoggedHours()
     {
+        //TODO: duration zetten in genericlearningactivity
         return $this->getLastActivity(1000000, 0)->sum('duration');
     }
 
@@ -261,8 +289,9 @@ class WorkplaceLearningPeriod extends Model
             'resourcePerson',
             'timeslot',
             'resourceMaterial',
-            'learningActivityProducing',
-            'learningActivityActing',
+            'genericLearningActivity'
+//            'learningActivityProducing',
+//            'learningActivityActing',
         ];
     }
 
@@ -271,8 +300,8 @@ class WorkplaceLearningPeriod extends Model
      */
     public function getEffectiveDays(): int
     {
-        $activities = $this->learningActivityProducing->all();
-        $daysWithHours = array_reduce($activities, static function (array $carry, LearningActivityProducing $activity) {
+        $activities = $this->genericLearningActivity->all();
+        $daysWithHours = array_reduce($activities, static function (array $carry, GenericLearningActivity $activity) {
             // Timestamp is okay for string representation because DB field type is "date" and has no H:i:s indication
             if (!isset($carry[$activity->date->timestamp])) {
                 $carry[$activity->date->timestamp] = 0;
@@ -301,7 +330,7 @@ class WorkplaceLearningPeriod extends Model
 
     public function hasActivities(): bool
     {
-        return $this->learningActivityActing()->count() > 0 || $this->learningActivityProducing()->count() > 0;
+        return $this->genericLearningActivity()->count() > 0;  // || $this->learningActivityProducing()->count() > 0;
     }
 
     public function daysSinceLastActivity(): int
