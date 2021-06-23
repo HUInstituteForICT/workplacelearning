@@ -59,15 +59,21 @@ class Competence extends Model implements HasLabelProperty, IsTranslatable
         return $this->belongsTo(\App\EducationProgram::class, 'educationprogram_id', 'ep_id');
     }
 
-    public function learningActivityActing()
+    public function genericLearningActivity()
     {
-        return $this->belongsToMany(\App\LearningActivityActing::class, 'activityforcompetence', 'competence_id', 'learningactivity_id');
+        return $this->belongsToMany(\App\GenericLearningActivity::class, 'activityforcompetence', 'competence_id', 'genericlearningactivity_id');
     }
 
+//    public function learningActivityActing()
+//    {
+//        return $this->belongsToMany(\App\LearningActivityActing::class, 'activityforcompetence', 'competence_id', 'learningactivity_id');
+//    }
+
     // Relations for query builder
+
     public function getRelationships()
     {
-        return ['cohort', 'educationProgram', 'learningActivityActing'];
+        return ['cohort', 'educationProgram', 'genericLearningActivity'];
     }
 
     public function getLabel(): string

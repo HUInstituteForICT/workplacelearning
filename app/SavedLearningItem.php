@@ -22,8 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class SavedLearningItem extends Model
 {
     public const CATEGORY_TIP = 'tip';
-    public const CATEGORY_LAA = 'laa';
-    public const CATEGORY_LAP = 'lap';
+    public const CATEGORY_GLA = 'gla';
 
 
     // Disable using created_at and updated_at columns
@@ -62,14 +61,16 @@ class SavedLearningItem extends Model
         if ($this->isTip()) {
             return $this->belongsTo(Tip::class);
         }
-
+//TODO: Deze kloppend maken
         if ($this->isActivity()) {
-            if ($this->category === self::CATEGORY_LAA) {
-                return $this->belongsTo(LearningActivityActing::class, 'item_id', 'laa_id');
+            if ($this->category === self::CATEGORY_GLA) {
+                return $this->belongsTo(GenericLearningActivity::class, 'item_id', 'gla_id');
             }
-            if ($this->category === self::CATEGORY_LAP) {
-                return $this->belongsTo(LearningActivityProducing::class, 'item_id', 'lap_id');
-            }
+            //if ($this->category === self::CATEGORY_LAA) {
+            //    return $this->belongsTo(LearningActivityActing::class, 'item_id', 'laa_id');
+            //}
+            //if ($this->category === self::CATEGORY_LAP) {
+            //    return $this->belongsTo(LearningActivityProducing::class, 'item_id', 'lap_id');
         }
 
         throw new UnknownLearningItemType();
@@ -82,6 +83,7 @@ class SavedLearningItem extends Model
 
     public function isActivity(): bool
     {
-        return \in_array($this->category, [self::CATEGORY_LAA, self::CATEGORY_LAP], true);
+        return \in_array($this->category, [self::CATEGORY_GLA], true);
+        //return $this->category === self::CATEGORY_GLA;
     }
 }

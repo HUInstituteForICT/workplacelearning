@@ -25,15 +25,15 @@ class ChainManager
 
         $chain->save();
     }
-
-    public function attachActivity(LearningActivityProducing $learningActivityProducing, Chain $chain): void
+//TODO:: Veranderd
+    public function attachActivity(GenericLearningActivity $genericLearningActivity, Chain $chain): void
     {
-        $learningActivityProducing->chain()->associate($chain);
+        $genericLearningActivity->chain()->associate($chain);
     }
 
-    public function detachActivity(LearningActivityProducing $learningActivityProducing): void
+    public function detachActivity(GenericLearningActivity $genericLearningActivity): void
     {
-        $learningActivityProducing->chain()->dissociate();
+        $genericLearningActivity->chain()->dissociate();
     }
 
     /**
