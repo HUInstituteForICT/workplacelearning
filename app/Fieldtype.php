@@ -6,6 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Class fieldtype
+ * @package App
+ *
+ * @property int $fieldtype_id
+ * @property string $fieldtype
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fieldtype whereFieldtype_id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fieldtype whereFieldtype($value)
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fieldtype newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fieldtype newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Fieldtype query()
+ */
+
 class fieldtype extends Model
 {
     protected $table = 'fieldtype';
