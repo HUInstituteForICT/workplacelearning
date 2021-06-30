@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\LearningActivityActing;
+use App\GenericLearningActivity;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 
@@ -23,12 +23,12 @@ class EvidenceUploadHandler
     /**
      * @throws \Exception
      */
-    public function process(Request $request, LearningActivityActing $learningActivityActing): void
+    public function process(Request $request, GenericLearningActivity $genericLearningActivity): void
     {
-        array_map(function (UploadedFile $evidenceFile) use ($learningActivityActing) {
+        array_map(function (UploadedFile $evidenceFile) use ($genericLearningActivity) {
             $evidence = $this->evidenceFileHandler->store($evidenceFile);
 
-            $learningActivityActing->evidence()->save($evidence);
+            $genericLearningActivity->evidence()->save($evidence);
         }, $request->file('evidence'));
     }
 }

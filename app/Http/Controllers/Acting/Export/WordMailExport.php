@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Acting\Export;
 use App\Http\Controllers\Controller;
 use App\Mail\ActingActivitiesWordExportMail;
 use App\Repository\Eloquent\LearningActivityActingRepository;
-use App\Services\ActingActivityExporter;
+use App\Services\ActivityExporter;
 use App\Services\CurrentUserResolver;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 class WordMailExport extends Controller
 {
     /**
-     * @var ActingActivityExporter
+     * @var ActivityExporter
      */
     private $actingActivityExporter;
     /**
@@ -28,7 +28,7 @@ class WordMailExport extends Controller
     private $userResolver;
 
     public function __construct(
-        ActingActivityExporter $actingActivityExporter,
+        ActivityExporter $actingActivityExporter,
         LearningActivityActingRepository $actingRepository,
         CurrentUserResolver $userResolver
     ) {
