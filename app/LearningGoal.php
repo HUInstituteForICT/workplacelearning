@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string                       $learninggoal_label
  * @property string                       $description
  * @property int                          $wplp_id
- * @property \App\LearningActivityActing  $learningActivityActing
+ * @property \App\GenericLearningActivity  $genericLearningActivity
  * @property \App\WorkplaceLearningPeriod $workplaceLearningPeriod
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\LearningGoal whereDescription($value)
@@ -54,14 +54,14 @@ class LearningGoal extends Model
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningActivityActing()
+    public function genericLearningActivity()
     {
-        return $this->belongsTo('App\learningActivityActing', 'learninggoal_id', 'learninggoal_id');
+        return $this->hasMany('genericLearningActivity', 'learninggoal_id', 'learninggoal_id');
     }
 
     // Relations for query builder
     public function getRelationships()
     {
-        return ['workplaceLearningPeriod', 'learningActivityActing'];
+        return ['workplaceLearningPeriod', 'genericLearningActivity'];
     }
 }

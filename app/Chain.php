@@ -14,10 +14,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int                                    $id
  * @property string                                 $name
- * @property Collection|LearningActivityProducing[] $activities
+// * @property Collection|LearningActivityProducing[] $activities
  * @property int                                    $status
  * @property int                                    $wplp_id
  * @property \App\WorkplaceLearningPeriod           $workplaceLearningPeriod
+ * @property \App\GenericLearningActivity           $genericLearningActivity
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Chain whereName($value)
@@ -36,9 +37,10 @@ class Chain extends Model
     public const STATUS_BUSY = 0;
     public const STATUS_FINISHED = 1;
 
-    public function activities(): HasMany
+    public function genericLearningActivity(): HasMany
     {
-        return $this->hasMany(LearningActivityProducing::class, 'chain_id', 'id')->orderBy('date', 'ASC');
+        return $this->hasMany(GenericLearningActivity::class, 'chains_id', 'id')
+        //->orderBy('date', 'ASC');
     }
 
     public function workplaceLearningPeriod(): BelongsTo
@@ -46,12 +48,12 @@ class Chain extends Model
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
-    public function hours(): float
-    {
-        return array_reduce($this->activities->all(), function (float $hours, LearningActivityProducing $activity) {
-            $hours += $activity->duration;
-
-            return $hours;
-        }, 0);
-    }
+//    public function hours(): float
+//    {
+//        return array_reduce($this->activities->all(), function (float $hours, LearningActivityProducing $activity) {
+//            $hours += $activity->duration;
+//
+//            return $hours;
+//        }, 0);
+//    }
 }

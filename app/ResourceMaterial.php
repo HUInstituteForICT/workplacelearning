@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string                                                                    $rm_label
  * @property int                                                                       $wplp_id
  * @property int                                                                       $rm_id
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ * @property \Illuminate\Database\Eloquent\Collection|\App\GenericLearningActivity[] $genericLearningActivity
  * @property \App\WorkplaceLearningPeriod                                              $workplaceLearningPeriod
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourceMaterial whereRmId($value)
@@ -46,14 +46,14 @@ class ResourceMaterial extends Model
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningActivityProducing(): HasMany
+    public function genericLearningActivity(): HasMany
     {
-        return $this->hasMany(LearningActivityProducing::class, 'res_material_id');
+        return $this->hasMany(GenericLearningActivity::class, 'res_material_id', 'rm_id');
     }
 
     // Relations for query builder
     public function getRelationships(): array
     {
-        return ['workplaceLearningPeriod', 'learningActivityProducing'];
+        return ['workplaceLearningPeriod', 'genericLearningActivity'];
     }
 }

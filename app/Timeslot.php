@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|null                                                               $cohort_id
  * @property \App\Cohort|null                                                       $cohort
  * @property \App\EducationProgram|null                                             $educationProgram
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityActing[] $learningActivitiesActing
+ * @property \Illuminate\Database\Eloquent\Collection|\App\GenericLearningActivity[] $genericLearningActivity
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot whereCohortId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Timeslot whereEdprogId($value)
@@ -67,7 +67,7 @@ class Timeslot extends Model implements HasLabelProperty, IsTranslatable
 
     public function learningActivitiesActing(): HasMany
     {
-        return $this->hasMany(LearningActivityActing::class, 'timeslot_id', 'timeslot_id');
+        return $this->hasMany(GenericLearningActivity::class, 'timeslot_id', 'timeslot_id');
     }
 
     public function workplaceLearningPeriod(): BelongsTo
@@ -78,7 +78,7 @@ class Timeslot extends Model implements HasLabelProperty, IsTranslatable
     // Relations for query builder
     public function getRelationships(): array
     {
-        return ['cohort', 'educationProgram'];
+        return ['cohort', 'educationProgram', 'genericLearningActivity', 'workplaceLearningPeriod'];
     }
 
     public function getLabel(): string

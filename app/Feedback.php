@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * App\Feedback.
  *
- * @property learningActivityProducing $learningActivityProducing
+ * @property genericLearningActivity $genericLearningActivity
  * @property int                       $fb_id
  * @property string                    $notfinished
  * @property string                    $initiative
@@ -27,11 +27,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string                    $nextstep_self
  * @property string                    $support_needed_wp
  * @property string                    $support_needed_ed
- * @property int                       $learningactivity_id
+ * @property int                       $genericlearningactivity_id
  *
  * @method static Builder|Feedback whereFbId($value)
  * @method static Builder|Feedback whereInitiative($value)
- * @method static Builder|Feedback whereLearningactivityId($value)
+ * @method static Builder|Feedback whereGenericLearningActivityId($value)
  * @method static Builder|Feedback whereNextstepSelf($value)
  * @method static Builder|Feedback whereNotfinished($value)
  * @method static Builder|Feedback whereProgressSatisfied($value)
@@ -61,7 +61,7 @@ class Feedback extends Model
     // Default
     protected $fillable = [
         'fb_id',
-        'learningactivity_id',
+        'genericlearningactivity_id',
         'notfinished',
         'initiative',
         'progress_satisfied',
@@ -81,8 +81,8 @@ class Feedback extends Model
         return $this->notfinished !== '';
     }
 
-    public function learningActivityProducing(): BelongsTo
+    public function genericLearningActivity(): BelongsTo
     {
-        return $this->belongsTo(LearningActivityProducing::class, 'learningactivity_id', 'lap_id');
+        return $this->belongsTo(GenericLearningActivity::class, 'genericlearningactivity_id', 'gla_id');
     }
 }
