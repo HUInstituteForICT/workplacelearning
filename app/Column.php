@@ -6,6 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Class Column
+ * @package App
+ *
+ * @property int $column_id
+ * @property int $gla_id
+ * @property int $fieldtype_id
+ * @property string $name
+ * @property string $column_options
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Column whereColumn_id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Column whereGla_id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Column whereFieldtype_id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Column whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Column whereColumn_options($value)
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Column newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Column newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Column query()
+ */
 
 class Column extends Model
 {

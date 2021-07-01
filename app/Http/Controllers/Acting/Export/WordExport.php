@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Acting\Export;
 
 use App\Http\Controllers\Controller;
 use App\Repository\Eloquent\LearningActivityActingRepository;
-use App\Services\ActingActivityExporter;
+use App\Services\ActivityExporter;
 use App\Services\CurrentUserResolver;
 use App\Traits\PhpWordDownloader;
 use Illuminate\Http\Request;
@@ -19,11 +19,11 @@ class WordExport extends Controller
      */
     private $actingRepository;
     /**
-     * @var ActingActivityExporter
+     * @var ActivityExporter
      */
     private $actingActivityExporter;
 
-    public function __construct(LearningActivityActingRepository $actingRepository, ActingActivityExporter $actingActivityExporter)
+    public function __construct(LearningActivityActingRepository $actingRepository, ActivityExporter $actingActivityExporter)
     {
         $this->actingRepository = $actingRepository;
         $this->actingActivityExporter = $actingActivityExporter;

@@ -6,7 +6,7 @@ namespace App\Services\Factories;
 
 use App\Services\CurrentUserResolver;
 
-class ActingWorkplaceFactory
+class LearningGoalDefaultFactory
 {
     /**
      * @var WorkplaceFactory
