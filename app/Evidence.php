@@ -14,15 +14,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @mixin \Eloquent
  *
  * @property int                         $id
- * @property int                         $learning_activity_acting_id
+ * @property int                         $genericlearningactivity_id
  * @property string                      $filename
  * @property string                      $mime
- * @property \App\LearningActivityActing $learningActivity
+ * @property \App\GenericLearningActivity $genericLearningActivity
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Evidence whereDiskFilename($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Evidence whereFilename($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Evidence whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Evidence whereLearningActivityActingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Evidence whereGenericLearningActivityId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Evidence whereMime($value)
  *
  * @property string $disk_filename
@@ -41,8 +41,8 @@ class Evidence extends Model
         'mime',
     ];
 
-    public function learningActivity(): BelongsTo
+    public function genericLearningActivity(): BelongsTo
     {
-        return $this->belongsTo(LearningActivityActing::class, 'learning_activity_acting_id', 'laa_id');
+        return $this->belongsTo(GenericLearningActivity::class, 'genericlearningactivity_id', 'gla_id');
     }
 }

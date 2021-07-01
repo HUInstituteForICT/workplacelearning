@@ -337,9 +337,9 @@ class Student extends Authenticatable implements MustVerifyEmail
             return $carry;
         }, []);
 
-        $activities = $this->currentWorkplaceLearningPeriod->learningActivityActing()->whereHas('reflection')->get()->all();
-        array_walk($activities, static function (LearningActivityActing $laa) use (&$count) {
-            ++$count[$laa->reflection->reflection_type];
+        $activities = $this->currentWorkplaceLearningPeriod->genericLearningActivity()->whereHas('reflection')->get()->all();
+        array_walk($activities, static function (GenericLearningActivity $gla) use (&$count) {
+            ++$count[$gla->reflection->reflection_type];
         });
         arsort($count);
 

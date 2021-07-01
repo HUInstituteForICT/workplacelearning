@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property string                                                                    $status_label
  * @property int                                                                       $status_id
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ * @property \Illuminate\Database\Eloquent\Collection|\App\GenericLearningActivity[] $genericLearningActivity
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Status whereStatusLabel($value)
@@ -41,15 +41,15 @@ class Status extends Model
         'status_label',
     ];
 
-    public function learningActivityProducing()
+    public function genericLearningActivity()
     {
-        return $this->hasMany(LearningActivityProducing::class, 'status_id', 'status_id');
+        return $this->hasMany(GenericLearningActivity::class, 'status_id', 'status_id');
     }
 
     // Relations for query builder
     public function getRelationships()
     {
-        return ['learningActivityProducing'];
+        return ['genericLearningActivity'];
     }
 
     public function isFinished(): bool

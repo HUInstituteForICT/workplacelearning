@@ -13,17 +13,17 @@ class ActivityReflectionFieldCreateTable extends Migration
      */
     public function up()
     {
-        Schema::create('activity_reflection_field', function (Blueprint $table) {
+        Schema::create('activity_reflection_fields', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('activity_reflection_id')->unsigned();
             $table->string('name');
             $table->text('value');
         });
 
-        Schema::table('activity_reflection_field', function (Blueprint $table) {
+        Schema::table('activity_reflection_fields', function (Blueprint $table) {
             $table->foreign('activity_reflection_id', 'reflection_field_to_reflection')
                 ->references('id')
-                ->on('activity_reflection')
+                ->on('activity_reflections')
                 ->onDelete('CASCADE');
         });
     }
@@ -33,6 +33,6 @@ class ActivityReflectionFieldCreateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activity_reflection_field');
+        Schema::dropIfExists('activity_reflection_fields');
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property string                                                                    $difficulty_label
  * @property int                                                                       $difficulty_id
- * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $learningActivityProducing
+ * @property \Illuminate\Database\Eloquent\Collection|\App\LearningActivityProducing[] $genericLearningActivity
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Difficulty whereDifficultyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Difficulty whereDifficultyLabel($value)
@@ -37,15 +37,15 @@ class Difficulty extends Model
         'difficulty_label',
     ];
 
-    public function learningActivityProducing(): HasMany
+    public function genericLearningActivity(): HasMany
     {
-        return $this->hasMany(\App\LearningActivityProducing::class, 'difficulty_id', 'difficulty_id');
+        return $this->hasMany(\App\GenericLearningActivity::class, 'difficulty_id', 'difficulty_id');
     }
 
     // Relations for query builder
     public function getRelationships()
     {
-        return ['learningActivityProducing'];
+        return ['genericLearningActivity'];
     }
 
     public function isEasy(): bool

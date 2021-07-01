@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null                       $cohort_id
  * @property \App\Cohort|null               $cohort
  * @property \App\EducationProgram|null     $educationProgram
- * @property \App\LearningActivityProducing $learningActivityProducing
+ * @property \App\GenericLearningActivity   $genericLearningActivity
  * @property \App\WorkplaceLearningPeriod   $workplaceLearningPeriod
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\ResourcePerson whereCohortId($value)
@@ -69,9 +69,9 @@ class ResourcePerson extends Model implements HasLabelProperty, IsTranslatable
         return $this->belongsTo(WorkplaceLearningPeriod::class, 'wplp_id', 'wplp_id');
     }
 
-    public function learningActivityProducing(): BelongsTo
+    public function genericLearningActivity(): BelongsTo
     {
-        return $this->belongsTo(LearningActivityProducing::class, 'rp_id', 'res_person_id');
+        return $this->belongsTo(GenericLearningActivity::class, 'rp_id', 'res_person_id');
     }
 
     public function educationProgram(): BelongsTo
@@ -82,7 +82,7 @@ class ResourcePerson extends Model implements HasLabelProperty, IsTranslatable
     // Relations for query builder
     public function getRelationships(): array
     {
-        return ['cohort', 'workplaceLearningPeriod', 'learningActivityProducing', 'educationProgram'];
+        return ['cohort', 'workplaceLearningPeriod', 'genericLearningActivity', 'educationProgram'];
     }
 
     public function getLabel(): string
