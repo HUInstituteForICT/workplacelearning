@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
-use App\Events\LearningActivityProducingCreated;
 
 /**
  * Class GenericLearningActivity
@@ -47,6 +46,7 @@ use App\Events\LearningActivityProducingCreated;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\GenericLearningActivity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\GenericLearningActivity query()
  */
+
 class GenericLearningActivity extends Model implements LearningActivityInterface, Bookmarkable
 {
     // Disable using created_at and updated_at columns
