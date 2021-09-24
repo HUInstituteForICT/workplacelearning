@@ -2,5 +2,6 @@
 set -e
 
 
-cron && php-fpm
+#cron && 
+php-fpm
 
