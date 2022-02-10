@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "laravel-mix": "^5.0.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "normalizr": "^3.5.0",
     "react-joyride": "^2.2.1",
     "prop-types": "^15.7.2",
