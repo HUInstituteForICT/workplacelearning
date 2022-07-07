@@ -20,7 +20,7 @@
     "less-loader": "^5.0.0",
     "webpack": "^4.0.0",
     "lodash": "^4.17.*",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "^16.12.*",
     "react-datepicker": "^2.12.1",
     "react-dom": "^16.12.0",
